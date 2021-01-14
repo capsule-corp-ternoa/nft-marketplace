@@ -1,27 +1,46 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Switch, Route, BrowserRouter, Link } from 'react-router-dom';
 
-function App() {
-  return (
-    <div className="App">
+const TopPage: React.FC = () => (
+  <>
+    <p>test for test page</p>;
+  </>
+);
+
+const DetailsPage: React.FC = () => (
+  <div className="details">
+    <p>test for details page</p>;
+  </div>
+);
+
+const App: React.FC = () => (
+  <div className="App">
+    <BrowserRouter>
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.Edit{' '}
-          <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <ul>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/details">detaisl</Link>
+          </li>
+        </ul>
       </header>
-    </div>
-  );
-}
+
+      <div className="container">
+        <Switch>
+          <Route exact path="/">
+            <TopPage />
+          </Route>
+          <Route path="/details">
+            <DetailsPage />
+          </Route>
+        </Switch>
+      </div>
+
+      <div className="footer">Here is my footer</div>
+    </BrowserRouter>
+  </div>
+);
 
 export default App;

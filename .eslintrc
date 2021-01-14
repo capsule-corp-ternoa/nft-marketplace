@@ -13,6 +13,7 @@
     }
   },
   "rules": {
+    "import/no-named-as-default": 0,
     "object-curly-spacing": ["warn", "always"],
     "no-unused-vars": [
       "warn",

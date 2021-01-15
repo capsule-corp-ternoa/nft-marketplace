@@ -12,8 +12,7 @@ Related APIS/blockchain APIs are: TBD
 
 This application is based on [Create-react-app](https://reactjs.org/docs/create-a-new-react-app.html) with typescript.
 
-An "digital Experience" API based on ([express](https://www.npmjs.com/package/express)) is included into the application (`server/server.ts`) and act as 'super-proxy' for calling external API/blockchain.
-Axios is used for HTTP/S requests (frontend and API side).
+A `backend` based on ([express](https://www.npmjs.com/package/express)) is included into the application (`server/server.ts`) and act as 'super-proxy' for calling external API/blockchain.
 
 ## Install
 
@@ -32,7 +31,7 @@ npm run dev
 (WIP) This command will start multiples npm tasks :
 
 - `start`, for starting the application dev react server (_port 3000_)
-- `start-process-api-mockup`, for starting the blockchain mockup (temp solution)(_port 8080_)
+- `start-process-bc-mockup`, for starting the blockchain mockup (temp solution)(_port 8080_)
 
 # How to run the tests
 
@@ -40,12 +39,6 @@ All the Tests can be run in interactive mode with
 
 ```
 npm test
-```
-
-For CI environment, prefer following as it will run all test and report coverage in non interactive mode
-
-```
-npm run test:ci
 ```
 
 # About authentication process

@@ -1,43 +1,26 @@
 import React from 'react';
-import { Switch, Route, BrowserRouter, Link } from 'react-router-dom';
-
-const TopPage: React.FC = () => (
-  <>
-    <p>test for test page</p>;
-  </>
-);
-
-const DetailsPage: React.FC = () => (
-  <div className="details">
-    <p>test for details page</p>;
-  </div>
-);
+import { Switch, Route, BrowserRouter } from 'react-router-dom';
+import Container from 'react-bootstrap/Container';
+import MainHeader from './components/common/MainHeader/MainHeader';
+import TopPage from './components/pages/TopPage/TopPage';
+import Profile from './components/pages/Profile/Profile';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App: React.FC = () => (
   <div className="App">
     <BrowserRouter>
-      <header className="App-header">
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/details">detaisl</Link>
-          </li>
-        </ul>
-      </header>
+      <MainHeader />
 
-      <div className="container">
+      <Container>
         <Switch>
           <Route exact path="/">
             <TopPage />
           </Route>
-          <Route path="/details">
-            <DetailsPage />
+          <Route path="/profile">
+            <Profile />
           </Route>
         </Switch>
-      </div>
-
+      </Container>
       <div className="footer">Here is my footer</div>
     </BrowserRouter>
   </div>

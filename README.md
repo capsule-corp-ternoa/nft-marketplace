@@ -1,46 +1,69 @@
-# Getting Started with Create React App
+# Getting started
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Front-end for NFT-marketplace web application.
 
-## Available Scripts
+Related APIS/blockchain APIs are: TBD
 
-In the project directory, you can run:
+## High Level Design
 
-### `npm start`
+![HLD](nft-marketplace-HLD.png)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Technology stack
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+This application is based on [Create-react-app](https://reactjs.org/docs/create-a-new-react-app.html) with typescript.
 
-### `npm test`
+An "digital Experience" API based on ([express](https://www.npmjs.com/package/express)) is included into the application (`server/server.ts`) and act as 'super-proxy' for calling external API/blockchain.
+Axios is used for HTTP/S requests (frontend and API side).
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Install
 
-### `npm run build`
+Install all requiered packages with
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```
+npm install
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## How to run locally
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```
+npm run dev
+```
 
-### `npm run eject`
+(WIP) This command will start multiples npm tasks :
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- `start`, for starting the application dev react server (_port 3000_)
+- `start-process-api-mockup`, for starting the blockchain mockup (temp solution)(_port 8080_)
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+# How to run the tests
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+All the Tests can be run in interactive mode with
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```
+npm test
+```
 
-## Learn More
+For CI environment, prefer following as it will run all test and report coverage in non interactive mode
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```
+npm run test:ci
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+# About authentication process
+
+TBD
+
+# How to do a PR
+
+Please don't push directly to an environment branch. If you don't know how to make a PR, please ask to someone.
+
+# Maintenance mode
+
+TBD
+
+## Branch strategy
+
+We are using `Trunk base on test Branch` strategy
+
+## CI/CD strategy & pipeline
+
+Jenkins will be here soon .... stay tuned !

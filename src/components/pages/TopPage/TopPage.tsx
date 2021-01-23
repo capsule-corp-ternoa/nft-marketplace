@@ -4,7 +4,6 @@ import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Category from './Category/Category';
 import NftCard from '../../common/NftCard/NftCard';
-import { NftListMockup } from '../../../utils/utils';
 import { fetchNfts } from '../../../utils/store/dataFetcher';
 import { Context } from '../../../utils/store/store';
 

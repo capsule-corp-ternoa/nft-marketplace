@@ -7,7 +7,7 @@ dotenv.config();
 
 const app = express();
 
-const nftApiUrl = `${process.env.NFT_API_HOST}/${process.env.NFT_API_PORT}`;
+const nftApiUrl = `${process.env.NFT_API_HOST}:${process.env.NFT_API_PORT}`;
 
 app.use(express.static(path.join(__dirname, 'build')));
 

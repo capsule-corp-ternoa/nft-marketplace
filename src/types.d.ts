@@ -17,8 +17,7 @@ type ContextAction = {
 type CategoryType = {
   id: number;
   name: string;
-  position: number;
-  logo?: string;
+  position?: number;
 };
 
 type NftListMockupType = {

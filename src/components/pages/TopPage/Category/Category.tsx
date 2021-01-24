@@ -7,6 +7,8 @@ const CategoryList = styled.ul``;
 const CategoryElement = styled.li`
   border: solid 1px;
   display: inline;
+  border-radius: 10%;
+  margin:10px 10px 10px 0;
   padding: 3px 15px;
   &:hover {
     background-color: black;

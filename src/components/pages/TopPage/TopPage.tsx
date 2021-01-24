@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
-import Row from 'react-bootstrap/Row';
-import Container from 'react-bootstrap/Container';
-import Col from 'react-bootstrap/Col';
 import Category from './Category/Category';
 import NftCard from '../../common/NftCard/NftCard';
 import { fetchNfts } from '../../../utils/store/dataFetcher';
 import { Context } from '../../../utils/store/store';
+
+import Row  from '../../common/ui-library/Row/Row';
+import Col from '../../common/ui-library/Col/Col';
+import Container from '../../common/ui-library/Container/Container';
 
 const TopPage: React.FC = () => {
 
@@ -23,7 +24,7 @@ const TopPage: React.FC = () => {
       <Container>
         <Row>
           {state.nftList?.map((nft) => (
-            <Col key="r" sm={4}>
+            <Col key="r" size="one-third">
               <NftCard key="1" nft={nft} />
             </Col>
           ))}

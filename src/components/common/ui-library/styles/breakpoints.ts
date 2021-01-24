@@ -19,7 +19,8 @@ export const PcHide = styled.div`
     display: none;
   }
 `;
-export default {
+
+const breakpoints = {
   smallMax,
   mediumMin,
   mediumMax,
@@ -56,3 +57,5 @@ export default {
   SpHide,
   PcHide,
 };
+
+export default breakpoints;

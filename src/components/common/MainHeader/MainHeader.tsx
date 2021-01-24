@@ -7,7 +7,7 @@ import Row from '../ui-library/Row/Row';
 import colors from '../ui-library/styles/colors';
 
 const ContainerHeader = styled.div`
-  background-color: ${colors.grayBackground};
+  background-color: ${colors.gray};
   padding:15px;
 `;
 

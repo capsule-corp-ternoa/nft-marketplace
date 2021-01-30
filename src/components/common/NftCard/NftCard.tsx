@@ -38,7 +38,7 @@ const ImageHolder = styled.div`
 const NftCard: React.FC<NftCardType> = (props: NftCardType) => (
   <>
     <Card border={true} shadow={true}>
-      <div className="card-body">
+      <div>
         <Row>
           {/* Category */}
           <Col style={{ textAlign: 'left' }}>
@@ -62,7 +62,7 @@ const NftCard: React.FC<NftCardType> = (props: NftCardType) => (
         <p>
           price : {props.nft.price} / {props.nft.quantity}
         </p>
-        <Button value="Buy" />
+        <Button primary>Buy</Button>
       </div>
     </Card>
   </>

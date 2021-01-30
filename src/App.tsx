@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Switch, Route, BrowserRouter } from 'react-router-dom';
 
 import MainHeader from './components/common/MainHeader/MainHeader';
+import Footer from './components/common/Footer/Footer';
 import TopPage from './components/pages/TopPage/TopPage';
 import Profile from './components/pages/Profile/Profile';
 import ContextProvider from './utils/store/store';
@@ -28,7 +29,7 @@ const App: React.FC = () => (
             </Route>
           </Switch>
         </AppContainer>
-        <div className="footer">Here is my footer</div>
+        <Footer />
       </BrowserRouter>
     </div>
   </ContextProvider>

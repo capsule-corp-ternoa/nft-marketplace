@@ -6,7 +6,7 @@ import componentBase from '../styles/componentBase';
 export const CardBase = styled.div<{ border: boolean; shadow: boolean }>`
   ${componentBase}
   background-color: ${colors.white};
-  margin-bottom:20px;
+  margin:20px;
   ${breakpoints.smallOnly(css`
     padding: 24px 14px;
   `)}

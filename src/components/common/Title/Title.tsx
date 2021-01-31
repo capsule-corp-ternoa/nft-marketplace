@@ -32,6 +32,12 @@ export const H4 = styled.h4`
 `;
 
 export const H5 = styled.h5`
+  ${shared};
   font-size: 22px;
   padding-left: 50px;
+`;
+
+export const P = styled.p`
+  ${shared};
+  font-size: 16px;
 `;

@@ -23,13 +23,23 @@ const TernoaButton = styled.button<ButtonProps>`
           background: linear-gradient(180deg, #1e34a9 0%, #131062 100%);
           color: ${colors.white};
           box-shadow: 0px 3px 4px rgba(30, 52, 169, 0.29);
-          border:none;
+          border: none;
+          & a,
+          a:visited {
+            color: ${colors.white};
+            text-decoration: none;
+          }
         `
       : css`
           background-color: ${colors.white};
           color: ${colors.gray_button};
           box-shadow: 0px 3px 4px rgba(30, 52, 169, 0.29);
           border: 1px solid #ebeaea;
+          & a,
+          a:visited {
+            color: ${colors.gray_button};
+            text-decoration: none;
+          }
         `}
 `;
 

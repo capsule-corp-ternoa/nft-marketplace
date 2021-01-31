@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import Col from '../ui-library/Col/Col';
 import Row from '../ui-library/Row/Row';
 import Button from '../ui-library/Button/Button';
@@ -19,7 +20,10 @@ const MainHeader: React.FC = () => (
       {/* Application name */}
       <Col size="20">
         <H3 style={{ paddingTop: '-20px' }}>
-          <i><ReactLogo />&nbsp;</i>
+          <i>
+            <ReactLogo />
+            &nbsp;
+          </i>
           Ternoa Stamp
         </H3>
       </Col>
@@ -29,7 +33,9 @@ const MainHeader: React.FC = () => (
       </Col>
       {/* Buttons */}
       <Col size="30">
-        <Button primary>Create</Button>
+        <Button primary>
+          <Link to="/create">Create</Link>
+        </Button>
         <Button>Connect Wallet</Button>
       </Col>
     </Row>

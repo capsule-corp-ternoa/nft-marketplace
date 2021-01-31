@@ -13,6 +13,7 @@
     }
   },
   "rules": {
+    "jsx-a11y/label-has-associated-control": "warn",
     "import/no-named-as-default": 0,
     "object-curly-spacing": ["warn", "always"],
     "no-unused-vars": [

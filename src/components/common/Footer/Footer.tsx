@@ -91,7 +91,7 @@ const Footer: React.FC = () => (
         <Col size="50">
           <div style={{ textAlign: 'center' }}>
             <H3>Keep in touch</H3>
-            <Input placeholder="satoshi@gmail.com" />
+            <Input light placeholder="satoshi@gmail.com" />
             <Button primary>Go</Button>
           </div>
         </Col>

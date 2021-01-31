@@ -19,11 +19,6 @@ export const H2 = styled.h2`
   font-size: 50px;
 `;
 
-export const H2SiteName = styled.h2`
-  ${shared};
-  font-size: 18px;
-`;
-
 export const H3 = styled.h3`
   ${shared};
   font-size: 22px;

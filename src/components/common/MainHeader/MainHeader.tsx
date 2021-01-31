@@ -4,10 +4,11 @@ import Col from '../ui-library/Col/Col';
 import Row from '../ui-library/Row/Row';
 import Button from '../ui-library/Button/Button';
 import Input from '../ui-library/Input/Input';
-import { H2SiteName } from '../Title/Title';
+import { H3 } from '../Title/Title';
+import { ReactComponent as ReactLogo } from '../assets/logo-ternoa.svg';
 
 const ContainerHeader = styled.div`
-  padding:21px 40px;
+  padding:21px 0;
   width:100%;
   height: 44px;
 `;
@@ -17,7 +18,10 @@ const MainHeader: React.FC = () => (
     <Row>
       {/* Application name */}
       <Col size="20">
-        <H2SiteName>Ternoa Stamp</H2SiteName>
+        <H3 style={{ paddingTop: '-20px' }}>
+          <i><ReactLogo />&nbsp;</i>
+          Ternoa Stamp
+        </H3>
       </Col>
       {/* Search Button */}
       <Col size="50">

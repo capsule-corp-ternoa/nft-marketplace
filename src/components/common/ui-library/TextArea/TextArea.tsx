@@ -1,17 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
 
-export type SearchFieldProps = React.InputHTMLAttributes<HTMLInputElement> & {
+export type SearchFieldProps = React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
   full?: boolean;
   medium?: boolean;
   light?: boolean;
 };
 
-const SearchField = styled.input<SearchFieldProps>`
-  height: 43px;
+const SearchField = styled.textarea<SearchFieldProps>`
+  height: 143px;
   left: 211px;
   top: 1px;
-  text-indent: 10px;
+  height: 100px;
   ${({ full }) =>
     full &&
     `
@@ -38,6 +38,8 @@ const SearchField = styled.input<SearchFieldProps>`
   `}
 `;
 
-const Input: React.FC<SearchFieldProps> = (props) => <SearchField {...props} />;
+const TextArea: React.FC<SearchFieldProps> = (props) => (
+  <SearchField {...props} />
+);
 
-export default Input;
+export default TextArea;

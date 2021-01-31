@@ -7,10 +7,11 @@ import Row from '../ui-library/Row/Row';
 import Col from '../ui-library/Col/Col';
 import Input from '../ui-library/Input/Input';
 import Button from '../ui-library/Button/Button';
+import { H3 } from '../Title/Title';
 
 import { ReactComponent as ReactLogo } from '../assets/logo-ternoa.svg';
 
-import FooterSubMenu, { FooterMenuTitle } from './FooterSubMenu/FooterSubMenu';
+import FooterSubMenu from './FooterSubMenu/FooterSubMenu';
 
 const FooterContainer = styled.div`
   margin-top:50px;
@@ -89,7 +90,7 @@ const Footer: React.FC = () => (
         </Col>
         <Col size="50">
           <div style={{ textAlign: 'center' }}>
-            <FooterMenuTitle>Keep in touch</FooterMenuTitle>
+            <H3>Keep in touch</H3>
             <Input placeholder="satoshi@gmail.com" />
             <Button primary>Go</Button>
           </div>

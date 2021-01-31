@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import colors from '../../ui-library/styles/colors';
-
+import { H3 } from '../../Title/Title';
 
 const FooterMenu = styled.ul`
   list-style: none;
@@ -22,12 +22,6 @@ const FooterMenuElement = styled.li`
   }
 `;
 
-export const FooterMenuTitle = styled.h3`
-  font-size: 22px;
-  padding-left: 50px;
-  color: ${colors.dark_blue};
-`;
-
 type MenuElementType = {
   uri: string,
   text: string,
@@ -40,7 +34,7 @@ type FooterSubMenuType = {
 
 const FooterSubMenu: React.FC<FooterSubMenuType> = (props) => (
   <>
-    <FooterMenuTitle>{props.subTitle}</FooterMenuTitle>
+    <H3>{props.subTitle}</H3>
     <FooterMenu>
       {props.menuElements.map((menu, index) => (
         <FooterMenuElement key="index">

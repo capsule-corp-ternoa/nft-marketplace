@@ -4,6 +4,7 @@ import Col from '../ui-library/Col/Col';
 import Row from '../ui-library/Row/Row';
 import Button from '../ui-library/Button/Button';
 import Input from '../ui-library/Input/Input';
+import { H2SiteName } from '../Title/Title';
 
 const ContainerHeader = styled.div`
   padding:21px 40px;
@@ -11,24 +12,16 @@ const ContainerHeader = styled.div`
   height: 44px;
 `;
 
-const SiteName = styled.h3`
-  font-family: Montserrat;
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 700;
-  text-align: left;
-`;
-
 const MainHeader: React.FC = () => (
   <ContainerHeader>
     <Row>
       {/* Application name */}
       <Col size="20">
-        <SiteName>Ternoa Stamp</SiteName>
+        <H2SiteName>Ternoa Stamp</H2SiteName>
       </Col>
       {/* Search Button */}
       <Col size="50">
-        <Input full placeholder="test" type="search"  />
+        <Input full placeholder="test" type="search" />
       </Col>
       {/* Buttons */}
       <Col size="30">

@@ -22,7 +22,7 @@ export const CardBase = styled.div<{ border: boolean; shadow: boolean }>`
         border-width: 1px;
       `)}
       ${breakpoints.mediumUp(css`
-        border-width: 2px;
+        border-width: 1px;
       `)}
     `}
   ${({ shadow }): FlattenSimpleInterpolation | false =>

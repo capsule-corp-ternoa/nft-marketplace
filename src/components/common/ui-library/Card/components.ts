@@ -3,7 +3,7 @@ import colors from '../styles/colors';
 import breakpoints from '../styles/breakpoints';
 import componentBase from '../styles/componentBase';
 
-export const CardBase = styled.div<{ border: boolean; shadow: boolean }>`
+export const CardBase = styled.div<{ border: boolean; shadow: boolean; clickable: boolean; }>`
   ${componentBase}
   background-color: ${colors.white};
   margin:20px;
@@ -29,6 +29,11 @@ export const CardBase = styled.div<{ border: boolean; shadow: boolean }>`
     shadow &&
     css`
       box-shadow: 0 1px 10px 0 rgba(0, 0, 0, 0.15);
+    `}
+    ${({ clickable }): FlattenSimpleInterpolation | false =>
+    clickable &&
+    css`
+      cursor: pointer;
     `}
 `;
 

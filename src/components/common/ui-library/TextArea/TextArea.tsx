@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
-export type SearchFieldProps = React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
+export type SearchFieldProps = 
+React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
   full?: boolean;
   medium?: boolean;
   light?: boolean;

@@ -4,6 +4,9 @@ import {
   fetchNftBegin,
   fetchNftSuccess,
   fetchNftFailure,
+  fetchOneNftBegin,
+  fetchOneNftSuccess,
+  fetchOneNftFailure,
 } from './actions';
 
 const proxyBackend= '/nft-api';
@@ -17,5 +20,16 @@ export const fetchNfts: any = async ( dispatch: any ) => {
     fetchNftSuccess(dispatch, nftList);
   } catch (error) {
     fetchNftFailure(dispatch);
+  }
+};
+
+// Retrieve one NFT information through the proxy-backend
+export const fetchOneNft: any = async ( dispatch: any ) => {
+  fetchOneNftBegin(dispatch);
+  try {
+    const res = await axios.get(`${proxyBackend}/nft/1`);
+    fetchOneNftSuccess(dispatch, res.data.nft);
+  } catch (error) {
+    fetchOneNftFailure(dispatch);
   }
 };

@@ -6,7 +6,9 @@ import ContextProvider from './utils/store/store';
 import MainHeader from './components/common/MainHeader/MainHeader';
 import Footer from './components/common/Footer/Footer';
 import TopPage from './components/pages/TopPage/TopPage';
+import ConnectWalletPage from './components/pages/ConnectWalletPage/ConnectWalletPage';
 import Profile from './components/pages/Profile/Profile';
+import NftDetailsPage from './components/pages/NftDetailsPage/NftDetailsPage';
 import CreateCollectiblePage from './components/pages/CreateCollectiblePage/CreateCollectiblePage';
 import CreateSingleCollectiblePage from './components/pages/CreateSingleCollectiblePage/CreateSingleCollectiblePage';
 import CreateMultipleCollectiblePage from './components/pages/CreateMultipleCollectiblePage/CreateMultipleCollectiblePage';
@@ -30,6 +32,9 @@ const App: React.FC = () => (
             <Route exact path="/">
               <TopPage />
             </Route>
+            <Route exact path="/details">
+              <NftDetailsPage />
+            </Route>
             <Route path="/profile">
               <Profile />
             </Route>
@@ -41,6 +46,9 @@ const App: React.FC = () => (
             </Route>
             <Route path="/create-multiple-collectible">
               <CreateMultipleCollectiblePage />
+            </Route>
+            <Route path="/connect-wallet">
+              <ConnectWalletPage />
             </Route>
           </Switch>
         </AppContainer>

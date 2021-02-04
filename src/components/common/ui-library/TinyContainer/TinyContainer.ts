@@ -2,10 +2,10 @@ import styled from 'styled-components';
 
 const TinyContainer = styled.div`
   @media (min-width: 992px) {
-    margin: 0 150px;
+    margin: 0 100px;
   }
   @media (min-width: 1200px) {
-    margin: 0 300px;
+    margin: 0 200px;
   }
 `;
 

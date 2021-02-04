@@ -4,7 +4,6 @@ import InputBox, { InputType } from '../../common/InputBox/InputBox';
 import { H1 } from '../../common/Title/Title';
 import Button from '../../common/ui-library/Button/Button';
 
-
 const WarningMessageStyled = styled.p`
   font-family: Montserrat;
   font-style: normal;
@@ -18,6 +17,7 @@ const WarningMessageStyled = styled.p`
 
 const Profile: React.FC = () => (
   <>
+
     <H1>Settings</H1>
 
     <InputBox inputType={InputType.Standard} key="fd" label="Display name" />

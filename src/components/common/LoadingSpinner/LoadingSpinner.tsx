@@ -25,7 +25,7 @@ const OverlayContent = styled.div`
 `;
 
 const LoadingSpinner: React.FC = () => {
-  const { dispatch, state } = useContext(Context);
+  const { state } = useContext(Context);
   return (
     <>
       {state.isLoading &&

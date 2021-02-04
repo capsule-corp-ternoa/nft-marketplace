@@ -2,8 +2,8 @@ import React, { useEffect, useContext } from 'react';
 import { fetchNfts } from '../../../utils/store/dataFetcher';
 import { Context } from '../../../utils/store/store';
 import Carousel from './Carousel/Carousel';
-import LoadingSpinner from '../../common/LoadingSpinner/LoadingSpinner';
 import { H1, H4 } from '../../common/Title/Title';
+import colors from '../../common/ui-library/styles/colors';
 
 const TopPage: React.FC = () => {
 
@@ -17,16 +17,21 @@ const TopPage: React.FC = () => {
 
   return (
     <>
-      {state.isLoading && <LoadingSpinner />}
       <H1>
-        Buy your collectibles <br />
-        stamp to send your <br />
-        ternoa capsules.
+        Buy your &nbsp;
+        <span style={{ color: colors.purple }}>
+          collectible stamps &nbsp;
+        </span>
+        to  <br />
+        send your ternoa capsules.
       </H1>
+
       <H4>Featured Creators</H4>
       <Carousel nftList={state.nftList} />
+
       <H4>Top Collectors</H4>
       <Carousel nftList={state.nftList} />
+      
       <H4>Popular Creations</H4>
       <Carousel nftList={state.nftList} />
     </>

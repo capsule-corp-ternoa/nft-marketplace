@@ -7,6 +7,7 @@ type ContextArgs = {
 type ContextState = {
   isLoading: boolean;
   nftList: any[];
+  selectedNft:any;
 };
 
 type ContextAction = {
@@ -21,11 +22,16 @@ type CategoryType = {
 };
 
 type NftListMockupType = {
+  id: number;
   labels: number[];
   name: string;
   quantity: string;
   price: string;
   image: string;
+  view: number;
+  owner: string;
+  creator: string;
+  collectionName: string;
 };
 
 // For spinner

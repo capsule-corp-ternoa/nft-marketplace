@@ -1,7 +1,7 @@
 import React from 'react';
 import { FaArrowLeft } from 'react-icons/fa';
-import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
+import styled from 'styled-components';
 import { H1, H3, P } from '../../common/Title/Title';
 import Col from '../../common/ui-library/Col/Col';
 import Row from '../../common/ui-library/Row/Row';

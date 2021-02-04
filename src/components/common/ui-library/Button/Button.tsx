@@ -4,6 +4,7 @@ import colors from '../styles/colors';
 
 export type ButtonProps = React.ButtonHTMLAttributes<HTMLElement> & {
   primary?: boolean;
+  full?:boolean;
 };
 
 const TernoaButton = styled.button<ButtonProps>`
@@ -17,10 +18,16 @@ const TernoaButton = styled.button<ButtonProps>`
   border-radius: 1000px;
   padding: 10px 30px;
   margin: 0 10px;
+  ${({ full }) =>
+    full &&
+  css`
+  width:100%;
+  `
+}
   ${({ primary }) =>
     primary
       ? css`
-          background: linear-gradient(180deg, #1e34a9 0%, #131062 100%);
+          background: ${colors.purple_gradient};
           color: ${colors.white};
           box-shadow: 0px 3px 4px rgba(30, 52, 169, 0.29);
           border: none;

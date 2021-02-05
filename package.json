@@ -5,7 +5,7 @@
   "proxy": "http://localhost:8181",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.9",
-    "@testing-library/react": "^11.2.3",
+    "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.6.0",
     "@types/jest": "^26.0.20",
     "@types/node": "^12.19.13",
@@ -41,7 +41,7 @@
     "format": "prettier --write 'src/**/*.{ts,tsx,scss,css,json}'",
     "isready": "npm run format && npm run lint && npm run build",
     "dev": "npm-run-all -p start-mockup start-backend start",
-    "test": "react-scripts test --env=jest-environment-jsdom-sixteen",
+    "test": "react-scripts test",
     "test:cov": "npm test -- --coverage --watchAll=false",
     "start-backend": "node server/server",
     "start-mockup": "mockserver -p 8282 -m './mocks'"

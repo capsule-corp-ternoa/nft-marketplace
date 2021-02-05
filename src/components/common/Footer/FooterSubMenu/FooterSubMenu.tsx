@@ -23,6 +23,7 @@ const FooterMenuElement = styled.li`
 `;
 
 export type MenuElementType = {
+  id: number;
   uri: string,
   text: string,
 };

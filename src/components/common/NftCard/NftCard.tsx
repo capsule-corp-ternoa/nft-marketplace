@@ -6,15 +6,11 @@ import Card from '../ui-library/Card/Card';
 import Row from '../ui-library/Row/Row';
 import Col from '../ui-library/Col/Col';
 import colors from '../ui-library/styles/colors';
+import NftImage from '../NftImage/NftImage';
 
 type NftCardType = {
   nft: NftListMockupType;
 };
-
-const NftImg = styled.img`
-  width:100%;
-  margin: 10px 0;
-`;
 
 const ImageHolder = styled.div`
   text-align: center;
@@ -48,7 +44,13 @@ const NftCard: React.FC<NftCardType> = (props: NftCardType) => {
         <div>
           {/* Nft image */}
           <ImageHolder>
-            <NftImg alt="nft-image" src={props.nft.image} />
+            
+            <NftImage 
+              style={{ margin: '10px 0', width: '100%' }}
+              alt="nft-image" 
+              src={props.nft.image}
+            />
+
           </ImageHolder>
           {/* information */}
           <Row> 

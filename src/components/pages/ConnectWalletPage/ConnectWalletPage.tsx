@@ -13,10 +13,10 @@ const WalletButton = styled(Button)`
 `;
 
 const walletsList = [
-  { label: 'Metamask', img: '/wallets/Metamask.png' },
-  { label: 'Wallet Connect', img: '/wallets/WalletConnect.png' },
-  { label: 'Fortmatic', img: '/wallets/Fortmatic.png' },
-  { label: 'WalletLink', img: '/wallets/WalletLink.png' },
+  { is: 1, label: 'Metamask', img: '/wallets/Metamask.png' },
+  { is: 2, label: 'Wallet Connect', img: '/wallets/WalletConnect.png' },
+  { is: 3, label: 'Fortmatic', img: '/wallets/Fortmatic.png' },
+  { is: 4, label: 'WalletLink', img: '/wallets/WalletLink.png' },
 ];
 
 const ConnectWalletPage: React.FC = () => (
@@ -32,7 +32,7 @@ const ConnectWalletPage: React.FC = () => (
     <div>
       {walletsList.map( (wallet) => (
         <>
-          <WalletButton key="df">
+          <WalletButton key={wallet.id}>
             <i>
               <img alt="wallet" src={wallet.img} />
             </i>

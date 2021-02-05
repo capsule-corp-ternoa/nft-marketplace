@@ -8,6 +8,7 @@ import { fetchOneNft } from '../../../utils/store/dataFetcher';
 import { Context } from '../../../utils/store/store';
 import { RoundedSpan, SquaredSpan } from '../../common/Shapes/Shapes';
 import PurchaseModal from './PurchaseModal/PurchaseModal';
+import NftImage from '../../common/NftImage/NftImage';
 
 type DetailsLabelProps = {
   label: string;
@@ -42,12 +43,15 @@ const NftDetailsPage: React.FC = () => {
       {state.selectedNft && (
         <>
 
-          {displayModal && <PurchaseModal closeModal={() => {setDisplayModal(false);}} />}
+          {displayModal && 
+          <PurchaseModal closeModal={() => {setDisplayModal(false);}} />}
+          
           <Row>
             {/* NFT image  */}
             <Col size="50">
               <div style={{ textAlign: 'center' }}>
-                <img 
+                <NftImage 
+                  full={true}
                   alt={state.selectedNft.name} 
                   src={state.selectedNft.image}
                 />

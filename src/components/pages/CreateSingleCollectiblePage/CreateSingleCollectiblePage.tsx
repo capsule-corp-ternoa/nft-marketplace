@@ -30,61 +30,66 @@ const CreateSingleCollectiblePage: React.FC = () => (
     <H1>Create single collectible</H1>
 
     <Row>
+    
       <Col size="70">
         <InputBox
           inputType={InputType.Upload}
-          key="fd"
+          key="create_upload"
           label="Upload"
           subTitle="PNG, GIF, WEBP, MP4 or MP3. Max 30mb."
         />
 
         <InputBox
           inputType={InputType.Switch}
-          key="fd"
+          key="create_bids"
           label="Put on sale"
           subTitle="You’ll receive bids on this item"
         />
 
         <InputBox
           inputType={InputType.Switch}
-          key="fd"
+          key="create_price"
           label="Instant sale price"
           subTitle="Enter the price for which the item will be instantly sold"
         />
 
         <InputBox
           inputType={InputType.Switch}
-          key="fd"
+          key="create_unlock"
           label="Unlock once purchased"
           subTitle="Content will be unlocked after successful transaction"
         />
 
         <InputBox
           inputType={InputType.BoxSelection}
-          key="fd"
+          key="create_unlock_2"
           boxOptions={options}
           label="Unlock once purchased"
           subTitle="Content will be unlocked after successful transaction"
         />
 
-        <InputBox inputType={InputType.Standard} key="fd" label="Name" />
+        <InputBox 
+          inputType={InputType.Standard} 
+          key="create_name" 
+          label="Name"
+        />
 
         <InputBox
           inputType={InputType.Standard}
-          key="fd"
+          key="create_description"
           label="Description"
         />
 
         <InputBox
           inputType={InputType.Standard}
-          key="fd"
+          key="create_Royalties"
           label="Royalties"
           subTitle="Suggested: 10%, 20%, 30%"
         />
 
         <InputBox
           inputType={InputType.Properties}
-          key="fd"
+          key="create_properties"
           label="Properties (Optional)"
         />
 

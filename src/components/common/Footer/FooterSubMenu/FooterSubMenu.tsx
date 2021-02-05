@@ -22,7 +22,7 @@ const FooterMenuElement = styled.li`
   }
 `;
 
-type MenuElementType = {
+export type MenuElementType = {
   uri: string,
   text: string,
 };
@@ -37,7 +37,7 @@ const FooterSubMenu: React.FC<FooterSubMenuType> = (props) => (
     <H3>{props.subTitle}</H3>
     <FooterMenu>
       {props.menuElements.map((menu, index) => (
-        <FooterMenuElement key="index">
+        <FooterMenuElement key={menu.id}>
           <Link to={menu.uri}>{menu.text}</Link>
         </FooterMenuElement>
       ))}

@@ -11,7 +11,7 @@ import { H3 } from '../Title/Title';
 
 import { ReactComponent as ReactLogo } from '../assets/logo-ternoa.svg';
 
-import FooterSubMenu from './FooterSubMenu/FooterSubMenu';
+import FooterSubMenu, { MenuElementType } from './FooterSubMenu/FooterSubMenu';
 
 const FooterContainer = styled.div`
   margin-top:50px;
@@ -40,24 +40,24 @@ const Logo: React.FC = () => (
   </RoundedWrapper>
 );
 
-const listLinks = {
+const listLinks: MenuElementType[] = {
   column1: [
-    { uri: '', text: 'Team' },
-    { uri: '', text: 'Community' },
-    { uri: '', text: 'How it works' },
-    { uri: '', text: 'Ternoa tokens' },
+    { id: 1, uri: '', text: 'Team' },
+    { id: 2, uri: '', text: 'Community' },
+    { id: 3, uri: '', text: 'How it works' },
+    { id: 4, uri: '', text: 'Ternoa tokens' },
   ],
   column2: [
-    { uri: '', text: 'Give us feedback' },
-    { uri: '', text: 'Support center' },
-    { uri: '', text: 'Download NFT template' },
-    { uri: '', text: 'FAQ' },
+    { id: 5, uri: '', text: 'Give us feedback' },
+    { id: 6, uri: '', text: 'Support center' },
+    { id: 7, uri: '', text: 'Download NFT template' },
+    { id: 8, uri: '', text: 'FAQ' },
   ],
   column3: [
-    { uri: '', text: 'Twitter' },
-    { uri: '', text: 'Facebook' },
-    { uri: '', text: 'Discord' },
-    { uri: '', text: 'Instragram' },
+    { id: 9, uri: '', text: 'Twitter' },
+    { id: 10, uri: '', text: 'Facebook' },
+    { id: 11, uri: '', text: 'Discord' },
+    { id: 12, uri: '', text: 'Instragram' },
   ],
 };
 

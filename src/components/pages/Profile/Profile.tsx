@@ -20,22 +20,34 @@ const Profile: React.FC = () => (
 
     <H1>Settings</H1>
 
-    <InputBox inputType={InputType.Standard} key="fd" label="Display name" />
+    <InputBox 
+      inputType={InputType.Standard} 
+      key="settings_name" 
+      label="Display name"
+    />
 
-    <InputBox inputType={InputType.Standard} key="fd" label="Custom Url" />
+    <InputBox 
+      inputType={InputType.Standard} 
+      key="settings_url" 
+      label="Custom Url"
+    />
 
-    <InputBox inputType={InputType.TextBox} key="fd" label="Bio" />
+    <InputBox 
+      inputType={InputType.TextBox} 
+      key="settings_bio" 
+      label="Bio"
+    />
 
     <InputBox
       inputType={InputType.Standard}
-      key="fd"
+      key="settings_twitter"
       label="Twitter username"
       subTitle="Verify your Twitter account in order to get the verification badge"
     />
 
     <InputBox
       inputType={InputType.Standard}
-      key="fd"
+      key="settings_portfolio"
       label="Personal site or portfolio"
       subTitle="Register your personal URL"
     />

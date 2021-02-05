@@ -11,7 +11,7 @@ import { H3 } from '../Title/Title';
 
 import { ReactComponent as ReactLogo } from '../assets/logo-ternoa.svg';
 
-import FooterSubMenu, { MenuElementType } from './FooterSubMenu/FooterSubMenu';
+import FooterSubMenu from './FooterSubMenu/FooterSubMenu';
 
 const FooterContainer = styled.div`
   margin-top:50px;
@@ -40,7 +40,7 @@ const Logo: React.FC = () => (
   </RoundedWrapper>
 );
 
-const listLinks: MenuElementType[] = {
+const listLinks = {
   column1: [
     { id: 1, uri: '', text: 'Team' },
     { id: 2, uri: '', text: 'Community' },

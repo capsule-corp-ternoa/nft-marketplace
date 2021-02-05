@@ -11,7 +11,12 @@ export type CardProps = React.HTMLAttributes<HTMLDivElement> & {
 };
 
 const Card: React.FC<CardProps> = (props) => {
-  const { children, border = true, shadow = false, clickable = false, ...rest } = props;
+  const { 
+    children, 
+    border = true, 
+    shadow = false, 
+    clickable = false, 
+    ...rest } = props;
 
   return (
     <CardBase border={border} shadow={shadow} clickable={clickable} {...rest}>

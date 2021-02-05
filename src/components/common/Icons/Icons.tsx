@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React from 'react';
 import { FaShareAlt, FaRegHeart, FaEye, FaWallet } from 'react-icons/fa';
 

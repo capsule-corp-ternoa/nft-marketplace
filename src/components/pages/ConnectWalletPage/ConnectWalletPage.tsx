@@ -13,10 +13,10 @@ const WalletButton = styled(Button)`
 `;
 
 const walletsList = [
-  { is: 1, label: 'Metamask', img: '/wallets/Metamask.png' },
-  { is: 2, label: 'Wallet Connect', img: '/wallets/WalletConnect.png' },
-  { is: 3, label: 'Fortmatic', img: '/wallets/Fortmatic.png' },
-  { is: 4, label: 'WalletLink', img: '/wallets/WalletLink.png' },
+  { id: 1, label: 'Metamask', img: '/wallets/Metamask.png' },
+  { id: 2, label: 'Wallet Connect', img: '/wallets/WalletConnect.png' },
+  { id: 3, label: 'Fortmatic', img: '/wallets/Fortmatic.png' },
+  { id: 4, label: 'WalletLink', img: '/wallets/WalletLink.png' },
 ];
 
 const ConnectWalletPage: React.FC = () => (

@@ -1,6 +1,5 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-import colors from '../ui-library/styles/colors';
 
 const NftImageStyled = styled.img<{full?: boolean}>`
   border: solid 1px rgba(0, 0, 0, 0.2);

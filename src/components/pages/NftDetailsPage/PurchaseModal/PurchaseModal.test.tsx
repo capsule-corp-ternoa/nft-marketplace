@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import Profile from './Profile';
+import PurchaseModal from './PurchaseModal';
 
 const original = console.error;
 
@@ -13,11 +13,15 @@ afterEach(() => {
   console.error = original;
 });
 
-describe('Profile', () => {
+const closeModal= () => {
+  console.log('will close modal');
+};
+
+describe('PurchaseModal', () => {
 
   it('renders component properly', () => {
-    render(<Profile />);
-    expect(screen.getByText('Display name')).toBeInTheDocument();
+    render(<PurchaseModal closeModal={closeModal} />);
+    // expect(screen.getByText('You are about to purchase :')).toBeInTheDocument();
 
   });
 

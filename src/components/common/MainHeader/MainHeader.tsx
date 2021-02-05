@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { useHistory, Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import Col from '../ui-library/Col/Col';
 import Row from '../ui-library/Row/Row';

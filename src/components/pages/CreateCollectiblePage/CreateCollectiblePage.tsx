@@ -31,8 +31,6 @@ const SampleCard = styled.div`
   width: 79px;
 `;
 
-
-
 const CreateCollectiblePage: React.FC = () => {
 
   const history = useHistory();

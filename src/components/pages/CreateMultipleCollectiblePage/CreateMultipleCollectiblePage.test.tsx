@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import ConnectWalletPage from './ConnectWalletPage';
+import CreateMultipleCollectiblePage from './CreateMultipleCollectiblePage';
 
 // Known issue: error and warning does not work for console
 // https://github.com/facebook/react/issues/7047
@@ -15,14 +15,11 @@ afterEach(() => {
   console.error = original;
 });
 
-describe('ConnectWalletPage', () => {
+describe('CreateMultipleCollectiblePage', () => {
 
   it('renders component properly', () => {
-    render(<ConnectWalletPage />);
-    expect(screen.getByText('Metamask')).toBeInTheDocument();
-    expect(screen.getByText('Wallet Connect')).toBeInTheDocument();
-    expect(screen.getByText('Fortmatic')).toBeInTheDocument();
-    expect(screen.getByText('WalletLink')).toBeInTheDocument();
+    render(<CreateMultipleCollectiblePage />);
+    expect(screen.getByText('CreateMultipleCollectiblePage')).toBeInTheDocument();
   });
 
 });

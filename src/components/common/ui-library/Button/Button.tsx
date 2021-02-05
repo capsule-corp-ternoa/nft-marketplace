@@ -27,7 +27,7 @@ const TernoaButton = styled.button<ButtonProps>`
   ${({ primary }) =>
     primary
       ? css`
-          background: ${colors.purple_gradient};
+          background: ${colors.blue_gradient};
           color: ${colors.white};
           box-shadow: 0px 3px 4px rgba(30, 52, 169, 0.29);
           border: none;

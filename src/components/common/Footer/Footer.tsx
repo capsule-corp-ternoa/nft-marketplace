@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
+
 import Container from '../ui-library/Container/Container';
 import colors from '../ui-library/styles/colors';
-
 import Row from '../ui-library/Row/Row';
 import Col from '../ui-library/Col/Col';
 import Input from '../ui-library/Input/Input';
@@ -61,43 +62,78 @@ const listLinks = {
   ],
 };
 
-const Footer: React.FC = () => (
-  <FooterContainer>
-    <Logo />
-    <Container>
-      <Row>
-        <Col small="100" medium="50" large="50">
-          <Row>
-            <Col size="one-third">
-              <FooterSubMenu
-                subTitle="About Us"
-                menuElements={listLinks.column1}
-              />
-            </Col>
-            <Col size="one-third">
-              <FooterSubMenu
-                subTitle="Support"
-                menuElements={listLinks.column2}
-              />
-            </Col>
-            <Col size="one-third">
-              <FooterSubMenu
-                subTitle="Community"
-                menuElements={listLinks.column3}
-              />
-            </Col>
-          </Row>
-        </Col>
-        <Col small="100" medium="50" large="50">
-          <div style={{ marginLeft: '40px' }}>
-            <H3>Keep in touch</H3>
-            <Input light placeholder="satoshi@gmail.com" />
-            <Button primary>Go</Button>
-          </div>
-        </Col>
-      </Row>
-    </Container>
-  </FooterContainer>
-);
+const Footer: React.FC = () => {
+
+  const { i18n } = useTranslation();
+
+  const changeLang = (lang: string) => {
+    i18n.changeLanguage(lang);
+  };
+
+  return (
+    <FooterContainer>
+      <Logo />
+      <Container>
+        <Row>
+          <Col small="100" medium="50" large="50">
+            <Row>
+              <Col size="one-third">
+                <FooterSubMenu
+                  subTitle="About Us"
+                  menuElements={listLinks.column1}
+                />
+              </Col>
+              <Col size="one-third">
+                <FooterSubMenu
+                  subTitle="Support"
+                  menuElements={listLinks.column2}
+                />
+              </Col>
+              <Col size="one-third">
+                <FooterSubMenu
+                  subTitle="Community"
+                  menuElements={listLinks.column3}
+                />
+              </Col>
+            </Row>
+          </Col>
+          <Col small="100" medium="50" large="50">
+            <div style={{ marginLeft: '40px' }}>
+              <H3>Keep in touch</H3>
+              <Input light placeholder="satoshi@gmail.com" />
+              <Button primary>Go</Button>
+            </div>
+          </Col>
+        </Row>
+      </Container>
+    
+      <button
+        type="button"
+        onClick={() => changeLang('en')}
+        className="text-center btn btn-warning mr-2"
+      >
+        English
+      </button>
+
+      <button
+        type="button"
+        onClick={() => changeLang('fr')}
+        className="text-center btn btn-primary mr-2"
+      >
+        Français
+      </button>
+
+      <button
+        type="button"
+        onClick={() => changeLang('ja')}
+        className="text-center btn btn-secondary mr-2"
+      >
+        日本語
+      </button>
+  
+
+    </FooterContainer>
+  );
+};
 
 export default Footer;

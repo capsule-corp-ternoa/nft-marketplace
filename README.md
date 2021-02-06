@@ -36,14 +36,26 @@ npm run dev
 - `start-backend`, for starting the backend (_port 8181_)
 - `start`, for starting the application through `dev react server` (_port 3000_)
 
-
-
 # How to run the tests
 
 All the Tests can be run in interactive mode with
 
 ```
 npm test
+```
+
+# how to run in production
+
+Build the application, set the environment variables and run the application :
+
+```
+npm run build
+
+NFT_API_HOST=http://localhost # blockchain host name
+NFT_API_PORT=8282 # blockchain host port
+EXPRESS_PORT=8181 # application port
+
+npm run production
 ```
 
 # About authentication process

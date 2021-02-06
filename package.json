@@ -44,7 +44,8 @@
     "test": "react-scripts test",
     "test:cov": "npm test -- --coverage --watchAll=false",
     "start-backend": "node server/server",
-    "start-mockup": "mockserver -p 8282 -m './mocks'"
+    "start-mockup": "mockserver -p 8282 -m './mocks'",
+    "production": "node server/server"
   },
   "eslintConfig": {
     "extends": [

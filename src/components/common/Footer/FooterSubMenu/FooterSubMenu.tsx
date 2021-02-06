@@ -6,10 +6,11 @@ import { H3 } from '../../Title/Title';
 
 const FooterMenu = styled.ul`
   list-style: none;
+  padding-left:0px;
 `;
 
 const FooterMenuElement = styled.li`
-  display: inline-block;
+  display: block;
   margin: 0 10px;
   line-height: 25px;
   & a {

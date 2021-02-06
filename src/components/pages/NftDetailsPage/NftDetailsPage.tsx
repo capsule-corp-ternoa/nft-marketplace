@@ -48,7 +48,7 @@ const NftDetailsPage: React.FC = () => {
           
           <Row>
             {/* NFT image  */}
-            <Col size="50">
+            <Col small="100" medium="50" large="50">
               <div style={{ textAlign: 'center' }}>
                 <NftImage 
                   full={true}
@@ -59,7 +59,7 @@ const NftDetailsPage: React.FC = () => {
             </Col>
 
             {/* NFT details  */}
-            <Col size="50">
+            <Col small="100" medium="50" large="50">
               <div style={{ margin: '0 auto' }}>
                 <H1>{state.selectedNft.name}</H1>
                 <Button primary full onClick={() => {setDisplayModal(true);}}>

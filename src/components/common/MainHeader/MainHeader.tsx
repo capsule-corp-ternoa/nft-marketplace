@@ -13,7 +13,6 @@ import { ReactComponent as TernoaLogo } from '../assets/logo-ternoa.svg';
 const ContainerHeader = styled.div`
   padding:21px 0;
   width:100%;
-  height: 44px;
 `;
 
 const TitleHeader = styled(H3)`
@@ -36,7 +35,7 @@ const MainHeader: React.FC = () => {
       {state.isLoading && <LoadingSpinner />}
       <Row>
         {/* Application name */}
-        <Col size="20">
+        <Col small="50" medium="20" large="20">
           <TitleHeader role="button" tabIndex={0} onClick={goToTopPage}>
             <TernoaLogo />
             &nbsp;
@@ -44,24 +43,26 @@ const MainHeader: React.FC = () => {
           </TitleHeader>
         </Col>
         {/* Search Button */}
-        <Col size="50">
+        <Col small="50" medium="50" large="50">
           <Input full placeholder="test" type="search" />
         </Col>
         
         {/* Buttons menu */}
-        <Col size="30">
-          <Button 
-            primary 
-            onClick={() => {history.push('/create');}}
-          >
-            Create
-          </Button>
+        <Col small="100" medium="30" large="30">
+          <div style={{ textAlign: 'center' }}>
+            <Button 
+              primary 
+              onClick={() => {history.push('/create');}}
+            >
+              Create
+            </Button>
         
-          <Button 
-            onClick={() => {history.push('/connect-wallet');}}
-          >
-            Connect Wallet
-          </Button>
+            <Button 
+              onClick={() => {history.push('/connect-wallet');}}
+            >
+              Connect Wallet
+            </Button>
+          </div>
         
         </Col>
       </Row>

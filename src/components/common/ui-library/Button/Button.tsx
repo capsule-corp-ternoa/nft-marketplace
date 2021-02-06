@@ -21,7 +21,7 @@ const TernoaButton = styled.button<ButtonProps>`
   ${({ full }) =>
     full &&
   css`
-  width:100%;
+  width:90%;
   `
 }
   ${({ primary }) =>

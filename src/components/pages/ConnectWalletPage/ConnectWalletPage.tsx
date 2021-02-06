@@ -20,7 +20,7 @@ const walletsList = [
 ];
 
 const ConnectWalletPage: React.FC = () => (
-  <TinyContainer>
+  <TinyContainer style={{ textAlign: 'center' }}>
     <H1>Connect your wallet</H1>
 
     <P>

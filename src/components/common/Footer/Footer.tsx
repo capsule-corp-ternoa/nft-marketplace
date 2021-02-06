@@ -66,7 +66,7 @@ const Footer: React.FC = () => (
     <Logo />
     <Container>
       <Row>
-        <Col size="50">
+        <Col small="100" medium="50" large="50">
           <Row>
             <Col size="one-third">
               <FooterSubMenu
@@ -88,8 +88,8 @@ const Footer: React.FC = () => (
             </Col>
           </Row>
         </Col>
-        <Col size="50">
-          <div style={{ textAlign: 'center' }}>
+        <Col small="100" medium="50" large="50">
+          <div style={{ marginLeft: '40px' }}>
             <H3>Keep in touch</H3>
             <Input light placeholder="satoshi@gmail.com" />
             <Button primary>Go</Button>

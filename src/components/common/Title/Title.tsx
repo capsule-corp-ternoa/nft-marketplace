@@ -1,5 +1,6 @@
 import styled, { css, FlattenSimpleInterpolation } from 'styled-components';
 import colors from '../ui-library/styles/colors';
+import breakpoints from '../ui-library/styles/breakpoints';
 
 const shared = (): FlattenSimpleInterpolation => css`
   font-family: Montserrat;
@@ -21,7 +22,9 @@ export const H2 = styled.h2`
 export const H3 = styled.h3`
   ${shared};
   font-size: 22px;
-  padding-left: 50px;
+  @media only screen and (max-width: ${breakpoints.smallMaxPx}) {
+    font-size: 16px;
+  }
 `;
 
 export const H4 = styled.h4`
@@ -34,7 +37,7 @@ export const H4 = styled.h4`
 export const H5 = styled.h5`
   ${shared};
   font-size: 22px;
-  padding-left: 50px;
+  
 `;
 
 export const P = styled.p`

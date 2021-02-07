@@ -1,5 +1,6 @@
 import React, { useEffect, useContext } from 'react';
 import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
 import { fetchNfts } from '../../../utils/store/dataFetcher';
 import { Context } from '../../../utils/store/store';
 import Carousel from './Carousel/Carousel';
@@ -17,6 +18,8 @@ const GradientText = styled.span`
 `;
 
 const TopPage: React.FC = () => {
+
+  const { t } = useTranslation();
 
   // Get the context
   const { dispatch, state } = useContext(Context);
@@ -37,13 +40,13 @@ const TopPage: React.FC = () => {
         send your ternoa capsules.
       </H1>
 
-      <H4>Featured Creators</H4>
+      <H4>{t('topPage.categoryTitle')}</H4>
       <Carousel nftList={state.nftList} />
 
-      <H4>Top Collectors</H4>
+      <H4>{t('topPage.topCollector')}</H4>
       <Carousel nftList={state.nftList} />
       
-      <H4>Popular Creations</H4>
+      <H4>{t('topPage.popularCreations')}</H4>
       <Carousel nftList={state.nftList} />
     </>
   );

@@ -8,6 +8,7 @@ export type ButtonProps = React.ButtonHTMLAttributes<HTMLElement> & {
 };
 
 const TernoaButton = styled.button<ButtonProps>`
+  cursor:pointer;
   font-family: Montserrat;
   font-size: 14px;
   font-style: normal;

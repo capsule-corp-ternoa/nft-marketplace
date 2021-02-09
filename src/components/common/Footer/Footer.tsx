@@ -8,9 +8,12 @@ import Row from '../ui-library/Row/Row';
 import Col from '../ui-library/Col/Col';
 import Input from '../ui-library/Input/Input';
 import Button from '../ui-library/Button/Button';
-import { H3 } from '../Title/Title';
+import { H3, P } from '../Title/Title';
 
 import { ReactComponent as ReactLogo } from '../assets/logo-ternoa.svg';
+import { ReactComponent as EnglishFlag } from '../assets/english-flag.svg';
+import { ReactComponent as FrenchFlag } from '../assets/french-flag.svg';
+import { ReactComponent as JapaneseFlag } from '../assets/japanese-flag.svg';
 
 import FooterSubMenu from './FooterSubMenu/FooterSubMenu';
 
@@ -105,32 +108,26 @@ const Footer: React.FC = () => {
             </div>
           </Col>
         </Row>
+
+        <Row>
+          <Col>
+            <P>
+              © Ternoa Stamps     All rights reserved     Terms     Privacy
+            </P>
+          </Col>
+          <Col>
+            
+            <P>
+              Languages &nbsp;
+              <EnglishFlag style={{ cursor: 'pointer' }} onClick={()=>changeLang('en')} />
+              &nbsp;
+              <FrenchFlag style={{ cursor: 'pointer' }} onClick={()=>changeLang('fr')} />
+              &nbsp;
+              <JapaneseFlag style={{ cursor: 'pointer' }} onClick={()=>changeLang('ja')} />
+            </P>
+          </Col>
+        </Row>
       </Container>
-    
-      <button
-        type="button"
-        onClick={() => changeLang('en')}
-        className="text-center btn btn-warning mr-2"
-      >
-        English
-      </button>
-
-      <button
-        type="button"
-        onClick={() => changeLang('fr')}
-        className="text-center btn btn-primary mr-2"
-      >
-        Français
-      </button>
-
-      <button
-        type="button"
-        onClick={() => changeLang('ja')}
-        className="text-center btn btn-secondary mr-2"
-      >
-        日本語
-      </button>
-  
 
     </FooterContainer>
   );

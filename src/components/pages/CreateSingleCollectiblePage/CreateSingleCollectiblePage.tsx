@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
 import { FaArrowLeft } from 'react-icons/fa';
 import { H1 } from '../../common/Title/Title';
 import Col from '../../common/ui-library/Col/Col';
@@ -20,88 +21,92 @@ const options = [
   { value: 'strawberry', label: 'Ternoa Rare TIIME' },
 ];
 
-const CreateSingleCollectiblePage: React.FC = () => (
-  <TinyContainer>
-    <span>
-      <FaArrowLeft />
-      <span>Manage collectible type</span>
-    </span>
+const CreateSingleCollectiblePage: React.FC = () => {
 
-    <H1>Create single collectible</H1>
+  const { t } = useTranslation();
 
-    <Row>
+  return (
+    <TinyContainer>
+      <span>
+        <FaArrowLeft />
+        <span>{t('upload.goBack')}</span>
+      </span>
+
+      <H1>{t('upload.title')}</H1>
+
+      <Row>
     
-      <Col size="70">
-        <InputBox
-          inputType={InputType.Upload}
-          key="create_upload"
-          label="Upload"
-          subTitle="PNG, GIF, WEBP, MP4 or MP3. Max 30mb."
-        />
+        <Col size="70">
+          <InputBox
+            inputType={InputType.Upload}
+            key="create_upload"
+            label={t('upload.upload')}
+            subTitle="PNG, GIF, WEBP, MP4 or MP3. Max 30mb."
+          />
 
-        <InputBox
-          inputType={InputType.Switch}
-          key="create_bids"
-          label="Put on sale"
-          subTitle="You’ll receive bids on this item"
-        />
+          <InputBox
+            inputType={InputType.Switch}
+            key="create_bids"
+            label={t('upload.putOnSale')}
+            subTitle={t('upload.putOnSaleDetails')}
+          />
 
-        <InputBox
-          inputType={InputType.Switch}
-          key="create_price"
-          label="Instant sale price"
-          subTitle="Enter the price for which the item will be instantly sold"
-        />
+          <InputBox
+            inputType={InputType.Switch}
+            key="create_price"
+            label={t('upload.instantSalePrice')}
+            subTitle={t('upload.instantSalePriceDetails')}
+          />
 
-        <InputBox
-          inputType={InputType.Switch}
-          key="create_unlock"
-          label="Unlock once purchased"
-          subTitle="Content will be unlocked after successful transaction"
-        />
+          <InputBox
+            inputType={InputType.Switch}
+            key="create_unlock"
+            label={t('upload.unlock')}
+            subTitle={t('upload.unlockDetails')}
+          />
 
-        <InputBox
-          inputType={InputType.BoxSelection}
-          key="create_unlock_2"
-          boxOptions={options}
-          label="Unlock once purchased"
-          subTitle="Content will be unlocked after successful transaction"
-        />
+          <InputBox
+            inputType={InputType.BoxSelection}
+            key="create_unlock_2"
+            boxOptions={options}
+            label={t('upload.chooseCollection')}
+          />
 
-        <InputBox 
-          inputType={InputType.Standard} 
-          key="create_name" 
-          label="Name"
-        />
+          <InputBox 
+            inputType={InputType.Standard} 
+            key="create_name" 
+            label={t('upload.name')}
+          />
 
-        <InputBox
-          inputType={InputType.Standard}
-          key="create_description"
-          label="Description"
-        />
+          <InputBox
+            inputType={InputType.Standard}
+            key="create_description"
+            label={t('upload.description')}
+          />
 
-        <InputBox
-          inputType={InputType.Standard}
-          key="create_Royalties"
-          label="Royalties"
-          subTitle="Suggested: 10%, 20%, 30%"
-        />
+          <InputBox
+            inputType={InputType.Standard}
+            key="create_Royalties"
+            label={t('upload.royalties')}
+            subTitle={t('upload.royaltiesDetails')}
+          />
 
-        <InputBox
-          inputType={InputType.Properties}
-          key="create_properties"
-          label="Properties (Optional)"
-        />
+          <InputBox
+            inputType={InputType.Properties}
+            key="create_properties"
+            label={t('upload.properties')}
+          />
 
-        <br />
+          <br />
 
-        <Button primary>Create item</Button>
-      </Col>
-      <Col size="30">
-        <PreviewStyled />
-      </Col>
-    </Row>
-  </TinyContainer>
-);
+          <Button primary>{t('upload.createItem')}</Button>
+        </Col>
+        <Col size="30">
+          <PreviewStyled />
+        </Col>
+      </Row>
+    </TinyContainer>
+  );
+};
 
 export default CreateSingleCollectiblePage;

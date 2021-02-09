@@ -20,12 +20,11 @@ const TopPage: React.FC = () => {
   return (
     <>
       <H1>
-        Buy your &nbsp;
+        {t('topPage.introduction1')}
         <GradientText>
-          collectible stamps &nbsp;
+          {t('topPage.introduction2')}
         </GradientText>
-        to  <br />
-        send your ternoa capsules.
+        {t('topPage.introduction3')}
       </H1>
 
       <H4>{t('topPage.categoryTitle')}</H4>

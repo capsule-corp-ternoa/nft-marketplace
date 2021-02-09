@@ -1,7 +1,80 @@
 {
+  "header": {
+    "createButton": "Create",
+    "connectWallet": "Connect Wallet"
+  },
+  "footer": {
+    "aboutUs": "About us",
+    "team": "Team",
+    "community": "Community",
+    "howitWorks": "How it works",
+    "ternoaTokens": "Ternoa Tokens",
+    "support": "Support",
+    "giveUsFeedbacks": "Give us feedbacks",
+    "supportCenter": "Support Center",
+    "DownloadNftTemplate": "Download NFT template",
+    "Faq": "FAQ",
+    "Community": "Community",
+    "twitter": "twitter",
+    "facebook": "Facebook",
+    "discord": "Discord",
+    "instagram": "Instagram"
+  },
   "topPage": {
-    "categoryTitle": "Créateurs à l'affiche",
-    "topCollector": "Meilleurs éléments",
-    "popularCreations": "Créations en vogue"
+    "introduction1":"Buy your",
+    "introduction2":"collectible stamps",
+    "introduction3":"to send your ternoa capsules.",
+    "categoryTitle": "注目制作者",
+    "topCollector": "上位コレクター",
+    "popularCreations": "人気作品"
+  },
+  "walletConnection": {
+    "title": "Connect your wallet",
+    "introduction1": "Connect with one of available wallet providers or create a new wallet.",
+    "introduction2": "What is wallet?"
+  },
+  "createCollectible": {
+    "goBack": "Go back",
+    "title": "Create Collectible",
+    "introduction": "Choose “Single” if you want your collectible to be one of a kind or “Multiple” if you want to sell one collectible multiple times",
+    "single": "Single",
+    "multiple": "Multiple",
+    "closing": "We do not own your private keys and cannot access your funds without your confirmation"
+  },
+  "upload": {
+    "title": "Create single collectible",
+    "goBack": "Manage collectible type",
+    "upload": "Upload",
+    "putOnSale": "Put on sale",
+    "putOnSaleDetails": "You’ll receive bids on this item",
+    "instantSalePrice": "Instant sale price",
+    "instantSalePriceDetails": "Enter the price for which the item will be instantly sold",
+    "unlock": "Unlock once purchased",
+    "unlockDetails": "Content will be unlocked after successful transaction",
+    "chooseCollection": "Choose collection",
+    "name": "Name",
+    "description": "Description",
+    "royalties": "Royalties",
+    "royaltiesDetails": "Suggested: 10%, 20%, 30%",
+    "properties": "Properties (Optional)",
+    "createItem": "Create item"
+  },
+  "details": {
+    "buy": "Buy",
+    "owner": "Owner",
+    "creator": "Creator",
+    "type": "Type",
+    "serviceFees": "Service fees",
+    "checkoutModal": {
+      "checkout": "Checkout",
+      "aboutPurchase": "You are about to purchase :",
+      "from": "from",
+      "yourBalance": "Your balance",
+      "serviceFees": "Service fees",
+      "youWillPay": "You will pay",
+      "processPayment": "Process payment",
+      "cancel": "Cancel"
+    }
+
   }
 }

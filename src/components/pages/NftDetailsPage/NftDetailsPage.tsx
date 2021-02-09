@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { EyeIcon, ShareIcon, HeartIcon } from '../../common/Icons/Icons';
 import Col from '../../common/ui-library/Col/Col';
 import Row from '../../common/ui-library/Row/Row';
@@ -26,6 +27,7 @@ const DetailsLabel: React.FC<DetailsLabelProps> = (props) => (
   </>
 
 );
+
 const NftDetailsPage: React.FC = () => {
 
   // Get the context
@@ -38,13 +40,15 @@ const NftDetailsPage: React.FC = () => {
     fetchOneNft(dispatch);
   }, [dispatch]);
 
+  const { t } = useTranslation();
+
   return (
     <>
       {state.selectedNft && (
         <>
 
           {displayModal && 
-          <PurchaseModal closeModal={() => {setDisplayModal(false);}} />}
+          <PurchaseModal nft={state.selectedNft} closeModal={() => {setDisplayModal(false);}} />}
           
           <Row>
             {/* NFT image  */}
@@ -63,10 +67,13 @@ const NftDetailsPage: React.FC = () => {
               <div style={{ margin: '0 auto' }}>
                 <H1>{state.selectedNft.name}</H1>
                 <Button primary full onClick={() => {setDisplayModal(true);}}>
-                  Buy - {state.selectedNft.price}
+                  {t('details.buy')} - 
+                  {state.selectedNft.price}
                 </Button>
 
-                <SubTitle style={{ width: '100%', textAlign: 'center' }}>Service fee 2.5%.</SubTitle>
+                <SubTitle style={{ width: '100%', textAlign: 'center' }}>
+                  Service fee 2.5%.
+                </SubTitle>
 
                 <div style={{ marginTop: '40px', height: '100px' }}>
                   <SquaredSpan><EyeIcon />
@@ -77,9 +84,18 @@ const NftDetailsPage: React.FC = () => {
                 </div>
 
                 <div>
-                  <DetailsLabel label="Owner" value={state.selectedNft.owner} />
-                  <DetailsLabel label="Creator" value={state.selectedNft.creator} />
-                  <DetailsLabel label="Type" value={state.selectedNft.collectionName} />
+                  <DetailsLabel 
+                    label={t('details.owner')}
+                    value={state.selectedNft.owner}
+                  />
+                  <DetailsLabel 
+                    label={t('details.creator')}
+                    value={state.selectedNft.creator}
+                  />
+                  <DetailsLabel 
+                    label={t('details.type')}
+                    value={state.selectedNft.collectionName}
+                  />
                 </div>
               
               </div>

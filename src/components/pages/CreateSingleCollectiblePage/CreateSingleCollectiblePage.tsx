@@ -21,7 +21,11 @@ const options = [
   { value: 'strawberry', label: 'Ternoa Rare TIIME' },
 ];
 
-const CreateSingleCollectiblePage: React.FC = () => {
+type CreateProps = {
+  multiple: boolean;
+};
+
+const CreateSingleCollectiblePage: React.FC<CreateProps> = (props) => {
 
   const { t } = useTranslation();
 
@@ -32,7 +36,9 @@ const CreateSingleCollectiblePage: React.FC = () => {
         <span>{t('upload.goBack')}</span>
       </span>
 
-      <H1>{t('upload.title')}</H1>
+      <H1>
+        {props.multiple ? t('upload.titleMultiple'):t('upload.title')}
+      </H1>
 
       <Row>
     

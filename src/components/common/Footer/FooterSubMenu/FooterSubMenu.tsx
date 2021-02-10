@@ -27,6 +27,7 @@ export type MenuElementType = {
   id: number;
   uri: string,
   text: string,
+  isInternal: boolean,
 };
 
 type FooterSubMenuType = {
@@ -40,7 +41,10 @@ const FooterSubMenu: React.FC<FooterSubMenuType> = (props) => (
     <FooterMenu>
       {props.menuElements.map((menu, index) => (
         <FooterMenuElement key={menu.id}>
-          <Link to={menu.uri}>{menu.text}</Link>
+          {menu.isInternal ?
+            (<Link to={menu.uri}>{menu.text}</Link>)
+            :
+            (<a href={menu.uri}>{menu.text}</a>)}
         </FooterMenuElement>
       ))}
     </FooterMenu>

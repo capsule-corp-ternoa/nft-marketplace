@@ -3,9 +3,6 @@ import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
 import Card from '../ui-library/Card/Card';
-import Row from '../ui-library/Row/Row';
-import Col from '../ui-library/Col/Col';
-import colors from '../ui-library/styles/colors';
 import NftImage from '../NftImage/NftImage';
 
 type NftCardType = {
@@ -15,13 +12,6 @@ type NftCardType = {
 const ImageHolder = styled.div`
   text-align: center;
   display: block;
-`;
-
-const DetailsStyled = styled.p`
-  color: ${colors.dark_blue};
-  font-weight: 'bold';
-  font-size: 12px;
-  margin-top:0;
 `;
 
 const NftCard: React.FC<NftCardType> = (props: NftCardType) => {
@@ -52,19 +42,6 @@ const NftCard: React.FC<NftCardType> = (props: NftCardType) => {
             />
 
           </ImageHolder>
-          {/* information */}
-          <Row> 
-            
-            <Col size="70">
-              <DetailsStyled>{props.nft.name}</DetailsStyled>
-              <DetailsStyled>by {props.nft.creator}</DetailsStyled>
-            </Col>
-
-            <Col size="30">
-              <DetailsStyled>price</DetailsStyled>
-              <DetailsStyled>{props.nft.price}</DetailsStyled>
-            </Col>
-          </Row>
 
         </div>
       </Card>

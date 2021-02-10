@@ -10,6 +10,10 @@ import {
   FETCH_ONE_NFT_SUCCESS,
   FETCH_ONE_NFT_FAILURE,
 
+  FETCH_ONE_USER_BEGIN,
+  FETCH_ONE_USER_SUCCESS,
+  FETCH_ONE_USER_FAILURE,
+
 } from './actions';
 
 // Reducer for updating the store based on the 'action.type'
@@ -50,6 +54,24 @@ export const Reducer = (state: ContextState, action: ContextAction): any => {
         isLoading: false,
         selectedNft: null,
       };
+
+    case FETCH_ONE_USER_BEGIN:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case FETCH_ONE_USER_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        user: action.payload,
+      };
+    case FETCH_ONE_USER_FAILURE:
+      return {
+        ...state,
+        isLoading: false,
+        user: null,
+      };
     default:
       return state;
   }
@@ -63,6 +85,7 @@ const initialState = {
   nftList: [],
   selectedNftId: 0,
   selectedNft: null,
+  user: null,
 };
 
 export const ContextProvider: React.FC = ({ children }) => {

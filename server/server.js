@@ -39,6 +39,19 @@ app.get('/nft-api/nft/:id', (req, res) => {
   
 });
 
+// Get nfts info
+app.get('/nft-api/user/:id', (req, res) => {
+  console.log(' >>>>>>> Entered in the backend side');
+  const options = {
+    url: `${nftApiUrl}/user/1`,
+    method: 'get',
+  };
+
+  return axios(options)
+    .then((response) => res.send(response.data));
+  
+});
+
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });

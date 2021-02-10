@@ -7,7 +7,8 @@ type ContextArgs = {
 type ContextState = {
   isLoading: boolean;
   nftList: any[];
-  selectedNft:any;
+  selectedNft: any;
+  user: any
 };
 
 type ContextAction = {

@@ -1,12 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios';
 import {
+
   fetchNftBegin,
   fetchNftSuccess,
   fetchNftFailure,
+  
   fetchOneNftBegin,
   fetchOneNftSuccess,
   fetchOneNftFailure,
+
+  fetchOneUserBegin,
+  fetchOneUserSuccess,
+  fetchOneUserFailure,
 } from './actions';
 
 const proxyBackend= '/nft-api';
@@ -31,5 +37,16 @@ export const fetchOneNft: any = async ( dispatch: any ) => {
     fetchOneNftSuccess(dispatch, res.data.nft);
   } catch (error) {
     fetchOneNftFailure(dispatch);
+  }
+};
+
+// Retrieve one NFT information through the proxy-backend
+export const fetchOneUser: any = async ( dispatch: any ) => {
+  fetchOneUserBegin(dispatch);
+  try {
+    const res = await axios.get(`${proxyBackend}/user/1`);
+    fetchOneUserSuccess(dispatch, res.data.user);
+  } catch (error) {
+    fetchOneUserFailure(dispatch);
   }
 };

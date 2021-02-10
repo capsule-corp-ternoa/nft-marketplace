@@ -1,0 +1,15 @@
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+Response-Delay: 2000
+
+{
+  "user":
+  {
+    "id":1,
+    "displayName": "johann",
+    "customUrl": "http://www.google.com",
+    "bio": "lorem ipsum blablabalbal",
+    "twitter": "johann-twitter",
+    "site": "http://www.google.com"
+  }
+}

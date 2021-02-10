@@ -26,70 +26,83 @@ export enum InputType {
   BoxSelection
 }
 
-type InputElementType = {
+type InputElementType = React.InputHTMLAttributes<HTMLInputElement> & {
   inputType: InputType;
   label: string;
   key: string;
   subTitle?: string;
   boxOptions?: any[];
+  value?: string;
 };
 
 /** Box that contains Input (text, teaxarea,...) with label, and prefix/ suffix */
-const InputBox: React.FC<InputElementType> = (props) => (
-  <>
-    {props.inputType === InputType.Standard && (
+const InputBox: React.FC<InputElementType> = (props) => {
+
+  const { 
+    inputType,
+    label,
+    key,
+    subTitle,
+    boxOptions,
+    value,
+  } = props;
+
+  return (
+    <>
+      {inputType === InputType.Standard && (
       <>
-        <LabelStyled>{props.label}</LabelStyled>
-        <Input medium light key={props.key} />
-        {props.subTitle && <SubTitle>{props.subTitle}</SubTitle>}
+        <LabelStyled>{label}</LabelStyled>
+        <Input medium light key={key} value={value} />
+        {subTitle && <SubTitle>{subTitle}</SubTitle>}
       </>
-    )}
-    {props.inputType === InputType.TextBox && (
+      )}
+      {inputType === InputType.TextBox && (
       <>
-        <LabelStyled>{props.label}</LabelStyled>
-        <TextArea medium light key={props.key} />
-        {props.subTitle && <SubTitle>{props.subTitle}</SubTitle>}
+        <LabelStyled>{label}</LabelStyled>
+        <TextArea medium light key={key}>{value}</TextArea>
+        {subTitle && <SubTitle>{subTitle}</SubTitle>}
       </>
-    )}
-    {props.inputType === InputType.Switch && (
+      )}
+      {inputType === InputType.Switch && (
       <Row>
         <Col>
-          <LabelStyled>{props.label}</LabelStyled>
-          {props.subTitle && <SubTitle>{props.subTitle}</SubTitle>}
+          <LabelStyled>{label}</LabelStyled>
+          {subTitle && <SubTitle>{subTitle}</SubTitle>}
         </Col>
         <Col style={{ paddingTop: '30px' }}>
           <CheckBox />
         </Col>
       </Row>
-    )}
-    {props.inputType === InputType.Upload && (
+      )}
+      {inputType === InputType.Upload && (
       <>
-        <LabelStyled>{props.label}</LabelStyled>
-        <UploadBox subTitle={props.subTitle || ''} />
+        <LabelStyled>{label}</LabelStyled>
+        <UploadBox subTitle={subTitle || ''} />
       </>
-    )}
-    {props.inputType === InputType.Properties && (
+      )}
+      {inputType === InputType.Properties && (
       <>
-        <LabelStyled>{props.label}</LabelStyled>
+        <LabelStyled>{label}</LabelStyled>
         <Row>
           <Col size="50">
-            <Input full light key={props.key} />
+            <Input full light key={key} />
           </Col>
           <Col size="50">
-            <Input full light key={props.key} />
+            <Input full light key={key} />
           </Col>
         </Row>
-        {props.subTitle && <SubTitle>{props.subTitle}</SubTitle>}
+        {subTitle && <SubTitle>{subTitle}</SubTitle>}
       </>
-    )}
+      )}
 
-    {props.inputType === InputType.BoxSelection && (
+      {inputType === InputType.BoxSelection && (
       <>
-        <LabelStyled>{props.label}</LabelStyled>
-        <Select options={props.boxOptions} />
+        <LabelStyled>{label}</LabelStyled>
+        <Select options={boxOptions} />
       </>
-    )}
-  </>
-);
+      )}
+    </>
+  );
+};
 
 export default InputBox;

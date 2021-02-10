@@ -1,14 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 
-export type SearchFieldProps = 
+export type TextAreaProps = 
 React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
   full?: boolean;
   medium?: boolean;
   light?: boolean;
 };
 
-const SearchField = styled.textarea<SearchFieldProps>`
+const TextAreaStyled = styled.textarea<TextAreaProps>`
   height: 143px;
   left: 211px;
   top: 1px;
@@ -39,8 +39,12 @@ const SearchField = styled.textarea<SearchFieldProps>`
   `}
 `;
 
-const TextArea: React.FC<SearchFieldProps> = (props) => (
-  <SearchField {...props} />
-);
+const TextArea: React.FC<SearchFieldProps> = (props) => {
+  const { children, ...rest } = props;
+
+  return (
+    <TextAreaStyled {...rest}>{children}</TextAreaStyled>
+  );
+};
 
 export default TextArea;

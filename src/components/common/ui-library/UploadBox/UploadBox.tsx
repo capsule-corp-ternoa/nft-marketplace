@@ -14,12 +14,13 @@ const DottedBox = styled.div`
 
 type UploadBoxType= {
   subTitle: string;
+  key?: string;
 };
 
 const UploadBox: React.FC<UploadBoxType> = (props) => (
   <DottedBox>
     <p>{props.subTitle}</p>
-    <Button primary>Upload</Button>
+    <Button key={props.key} primary>Upload</Button>
   </DottedBox>
 );
 

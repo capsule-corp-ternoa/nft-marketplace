@@ -17,79 +17,144 @@ const LabelStyled = styled(H3)`
   margin-bottom:10px;
 `;
 
-export enum InputType {
-  Standard,
-  TextBox,
-  Switch,
-  Upload,
-  Properties,
-  BoxSelection
+interface InputConfig {
+  uid: string;
+  label?: string;
+  subTitle?: string;
 }
 
-type InputElementType = {
-  inputType: InputType;
-  label: string;
-  key: string;
-  subTitle?: string;
+interface StandartType extends 
+  InputConfig, React.InputHTMLAttributes<HTMLInputElement> {}
+
+interface TextAreaType extends 
+  InputConfig, React.TextareaHTMLAttributes<HTMLTextAreaElement> {}
+
+interface SelectType extends InputConfig {
   boxOptions?: any[];
+}
+
+
+// Standard input  (<input type="text"/>)
+export const InputBoxStandart: React.FC<StandartType> = (props) => {
+
+  const { 
+    label,
+    uid,
+    subTitle,
+    ...rest
+  } = props;
+
+  return (
+    <>
+      {label && <LabelStyled>{label}</LabelStyled> }
+      <Input medium light key={uid} {...rest} />
+      {subTitle && <SubTitle>{subTitle}</SubTitle>}
+    </>
+  );
+
 };
 
-/** Box that contains Input (text, teaxarea,...) with label, and prefix/ suffix */
-const InputBox: React.FC<InputElementType> = (props) => (
-  <>
-    {props.inputType === InputType.Standard && (
-      <>
-        <LabelStyled>{props.label}</LabelStyled>
-        <Input medium light key={props.key} />
-        {props.subTitle && <SubTitle>{props.subTitle}</SubTitle>}
-      </>
-    )}
-    {props.inputType === InputType.TextBox && (
-      <>
-        <LabelStyled>{props.label}</LabelStyled>
-        <TextArea medium light key={props.key} />
-        {props.subTitle && <SubTitle>{props.subTitle}</SubTitle>}
-      </>
-    )}
-    {props.inputType === InputType.Switch && (
+// TextArea input (<textarea>)
+export const InputBoxTextArea: React.FC<TextAreaType> = (props) => {
+
+  const { 
+    label,
+    uid,
+    subTitle,
+    value,
+    ...rest
+  } = props;
+
+  return (
+    <>
+      {label && <LabelStyled>{label}</LabelStyled>}
+      <TextArea medium light key={uid} {...rest}>{value}</TextArea>
+      {subTitle && <SubTitle>{subTitle}</SubTitle>}
+    </>
+  );
+};
+
+// Toggle input
+export const InputBoxToggle: React.FC<InputConfig> = (props) => {
+
+  const { 
+    label,
+    uid,
+    subTitle,
+  } = props;
+
+  return (
+    <Row>
+      <Col>
+        {label && <LabelStyled>{label}</LabelStyled>}
+        {subTitle && <SubTitle>{subTitle}</SubTitle>}
+      </Col>
+      <Col style={{ paddingTop: '30px' }}>
+        <CheckBox name={uid} />
+      </Col>
+    </Row>
+  );
+};
+
+// Upload input
+export const InputBoxUpload: React.FC<InputConfig> = (props) => {
+
+  const { 
+    label,
+    uid,
+    subTitle,
+  } = props;
+
+  return (
+    <>
+      {label && <LabelStyled>{label}</LabelStyled>}
+      <UploadBox key={uid} subTitle={subTitle || ''} />
+      {subTitle && <SubTitle>{subTitle}</SubTitle>}
+    </>
+  );
+};
+
+// selectBox input
+export const InputBoxSelect: React.FC<SelectType> = (props) => {
+
+  const { 
+    label,
+    uid,
+    subTitle,
+    boxOptions,
+  } = props;
+
+  return (
+    <>
+      {label && <LabelStyled>{label}</LabelStyled> }
+      <Select key={uid} options={boxOptions} />
+      {subTitle && <SubTitle>{subTitle}</SubTitle>}
+    </>  
+  );
+};
+
+// Standard input
+export const InputBoxProperties: React.FC<InputConfig> = (props) => {
+
+  const { 
+    label,
+    uid,
+    subTitle,
+  } = props;
+
+  return (
+    <>
+      {label && <LabelStyled>{label}</LabelStyled> }
       <Row>
-        <Col>
-          <LabelStyled>{props.label}</LabelStyled>
-          {props.subTitle && <SubTitle>{props.subTitle}</SubTitle>}
+        <Col size="50">
+          <Input key={`key-${uid}`} full light />
         </Col>
-        <Col style={{ paddingTop: '30px' }}>
-          <CheckBox />
+        <Col size="50">
+          <Input key={`value-${uid}`} full light />
         </Col>
       </Row>
-    )}
-    {props.inputType === InputType.Upload && (
-      <>
-        <LabelStyled>{props.label}</LabelStyled>
-        <UploadBox subTitle={props.subTitle || ''} />
-      </>
-    )}
-    {props.inputType === InputType.Properties && (
-      <>
-        <LabelStyled>{props.label}</LabelStyled>
-        <Row>
-          <Col size="50">
-            <Input full light key={props.key} />
-          </Col>
-          <Col size="50">
-            <Input full light key={props.key} />
-          </Col>
-        </Row>
-        {props.subTitle && <SubTitle>{props.subTitle}</SubTitle>}
-      </>
-    )}
-
-    {props.inputType === InputType.BoxSelection && (
-      <>
-        <LabelStyled>{props.label}</LabelStyled>
-        <Select options={props.boxOptions} />
-      </>
-    )}
-  </>
-);
-
-export default InputBox;
+      {subTitle && <SubTitle>{subTitle}</SubTitle>}
+    </>
+     
+  );
+};

@@ -24,9 +24,9 @@
     "introduction1":"Buy your ",
     "introduction2":"collectible stamps ",
     "introduction3":"to send your ternoa capsules.",
-    "categoryTitle": "注目制作者",
-    "topCollector": "上位コレクター",
-    "popularCreations": "人気作品"
+    "categoryTitle": "Featured Creators",
+    "topCollector": "Top Collectors",
+    "popularCreations": "Popular Creations"
   },
   "walletConnection": {
     "title": "Connect your wallet",
@@ -36,13 +36,14 @@
   "createCollectible": {
     "goBack": "Go back",
     "title": "Create Collectible",
-    "introduction": "Choose “Single” if you want your collectible to be one of a kind or “Multiple” if you want to sell one collectible multiple times",
+    "introduction": "Choose 'Single' if you want your collectible to be one of a kind or 'Multiple' if you want to sell one collectible multiple times",
     "single": "Single",
     "multiple": "Multiple",
     "closing": "We do not own your private keys and cannot access your funds without your confirmation"
   },
   "upload": {
     "title": "Create single collectible",
+    "titleMultiple": "Create multiple collectible",
     "goBack": "Manage collectible type",
     "upload": "Upload",
     "putOnSale": "Put on sale",

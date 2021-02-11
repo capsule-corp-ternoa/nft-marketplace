@@ -28,11 +28,13 @@ type CarouselType = {
 };
 
 const Carousel: React.FC<CarouselType> = (props) => (
-  <MultiCarousel responsive={responsive}>
-    {props.nftList?.map((nft, index) => (
-      <NftCard key={nft.id} nft={nft} />
-    ))}
-  </MultiCarousel>
+  <div style={{ marginBottom: '40px' }}>
+    <MultiCarousel responsive={responsive}>
+      {props.nftList?.map((nft, index) => (
+        <NftCard key={nft.id} nft={nft} />
+      ))}
+    </MultiCarousel>
+  </div>
 );
 
 export default Carousel;

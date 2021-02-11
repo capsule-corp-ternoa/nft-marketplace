@@ -46,22 +46,22 @@ const Logo: React.FC = () => (
 
 const listLinks = {
   column1: [
-    { id: 1, uri: '', text: 'Team' },
-    { id: 2, uri: '', text: 'Community' },
-    { id: 3, uri: '', text: 'How it works' },
-    { id: 4, uri: '', text: 'Ternoa tokens' },
+    { id: 1, uri: 'http://google.com', text: 'Team', isInternal: false },
+    { id: 2, uri: 'http://google.com', text: 'Community', isInternal: true },
+    { id: 3, uri: 'http://google.com', text: 'How it works', isInternal: false },
+    { id: 4, uri: 'http://google.com', text: 'Ternoa tokens', isInternal: false },
   ],
   column2: [
-    { id: 5, uri: '', text: 'Give us feedback' },
-    { id: 6, uri: '', text: 'Support center' },
-    { id: 7, uri: '', text: 'Download NFT template' },
-    { id: 8, uri: '', text: 'FAQ' },
+    { id: 5, uri: 'http://google.com', text: 'Give us feedback', isInternal: false },
+    { id: 6, uri: 'http://google.com', text: 'Support center', isInternal: false },
+    { id: 7, uri: 'http://google.com', text: 'Download NFT template', isInternal: false },
+    { id: 8, uri: 'http://google.com', text: 'FAQ', isInternal: false },
   ],
   column3: [
-    { id: 9, uri: '', text: 'Twitter' },
-    { id: 10, uri: '', text: 'Facebook' },
-    { id: 11, uri: '', text: 'Discord' },
-    { id: 12, uri: '', text: 'Instragram' },
+    { id: 9, uri: 'http://google.com', text: 'Twitter', isInternal: false },
+    { id: 10, uri: 'http://google.com', text: 'Facebook', isInternal: false },
+    { id: 11, uri: 'http://google.com', text: 'Discord', isInternal: false },
+    { id: 12, uri: 'http://google.com', text: 'Instragram', isInternal: false },
   ],
 };
 

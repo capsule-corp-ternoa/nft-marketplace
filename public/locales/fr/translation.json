@@ -36,6 +36,7 @@
   "createCollectible": {
     "goBack": "Go back",
     "title": "Create Collectible",
+    "titleMultiple": "Create multiple collectible",
     "introduction": "Choose “Single” if you want your collectible to be one of a kind or “Multiple” if you want to sell one collectible multiple times",
     "single": "Single",
     "multiple": "Multiple",

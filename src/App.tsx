@@ -10,8 +10,7 @@ import ConnectWalletPage from './components/pages/ConnectWalletPage/ConnectWalle
 import Profile from './components/pages/Profile/Profile';
 import NftDetailsPage from './components/pages/NftDetailsPage/NftDetailsPage';
 import CreateCollectiblePage from './components/pages/CreateCollectiblePage/CreateCollectiblePage';
-import CreateSingleCollectiblePage from './components/pages/CreateSingleCollectiblePage/CreateSingleCollectiblePage';
-import CreateMultipleCollectiblePage from './components/pages/CreateMultipleCollectiblePage/CreateMultipleCollectiblePage';
+import CreateSingleOrMultiplePage from './components/pages/CreateSingleOrMultiplePage/CreateSingleOrMultiplePage';
 
 import Container from './components/common/ui-library/Container/Container';
 import LoadingSpinner from './components/common/LoadingSpinner/LoadingSpinner';
@@ -26,30 +25,25 @@ const App: React.FC = () => (
     <div className="App">
       <BrowserRouter>
         <MainHeader />
-
         <AppContainer>
           <Switch>
-            <Route exact path="/">
-              <TopPage />
-            </Route>
-            <Route exact path="/details">
-              <NftDetailsPage />
-            </Route>
-            <Route path="/profile">
-              <Profile />
-            </Route>
-            <Route path="/create">
-              <CreateCollectiblePage />
-            </Route>
-            <Route path="/create-single-collectible">
-              <CreateSingleCollectiblePage />
-            </Route>
-            <Route path="/create-multiple-collectible">
-              <CreateMultipleCollectiblePage />
-            </Route>
-            <Route path="/connect-wallet">
-              <ConnectWalletPage />
-            </Route>
+            <Route exact path="/" component={TopPage} />
+            <Route exact path="/details" component={NftDetailsPage} />
+            <Route path="/profile" component={Profile} />
+            <Route path="/create" component={CreateCollectiblePage} />
+            <Route path="/connect-wallet" component={ConnectWalletPage} />
+            <Route
+              path="/create-single-collectible"
+              render={(props) => (
+                <CreateSingleOrMultiplePage {...props} multiple={false} />
+              )}
+            />
+            <Route
+              path="/create-multiple-collectible"
+              render={(props) => (
+                <CreateSingleOrMultiplePage {...props} multiple={true} />
+              )}
+            />
           </Switch>
         </AppContainer>
         <Footer />

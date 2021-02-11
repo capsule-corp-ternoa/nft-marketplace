@@ -1,6 +1,5 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { FaArrowLeft } from 'react-icons/fa';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { H1, H3, P } from '../../common/Title/Title';
@@ -9,6 +8,7 @@ import Row from '../../common/ui-library/Row/Row';
 import Card from '../../common/ui-library/Card/Card';
 import TinyContainer from '../../common/ui-library/TinyContainer/TinyContainer';
 import Colors from '../../common/ui-library/styles/colors';
+import { GoBack } from '../../common/Utils/Utils';
 
 const CategoryCard = styled(Card)`
   text-align: center;
@@ -48,11 +48,8 @@ const CreateCollectiblePage: React.FC = () => {
 
   return (
     <TinyContainer>
-      <span>
-        <FaArrowLeft />
-        &nbsp;
-        {t('createCollectible.goBack')}
-      </span>
+
+      <GoBack text={t('createCollectible.goBack')} history={history} />
 
       <H1>{t('createCollectible.title')}</H1>
 

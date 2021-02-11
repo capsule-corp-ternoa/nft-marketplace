@@ -1,12 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { FaArrowLeft } from 'react-icons/fa';
 import { H1 } from '../../common/Title/Title';
 import Col from '../../common/ui-library/Col/Col';
 import Row from '../../common/ui-library/Row/Row';
 import TinyContainer from '../../common/ui-library/TinyContainer/TinyContainer';
 import Button from '../../common/ui-library/Button/Button';
+import { GoBack } from '../../common/Utils/Utils';
 import { 
   InputBoxStandart,
   InputBoxToggle,
@@ -33,13 +34,12 @@ type CreateProps = {
 const CreateSingleCollectiblePage: React.FC<CreateProps> = (props) => {
 
   const { t } = useTranslation();
+  const history = useHistory();
 
   return (
     <TinyContainer>
-      <span>
-        <FaArrowLeft />
-        <span>{t('upload.goBack')}</span>
-      </span>
+
+      <GoBack history={history} text={t('upload.goBack')} />
 
       <H1>
         {props.multiple ? t('upload.titleMultiple'):t('upload.title')}

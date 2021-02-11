@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { FaArrowLeft } from 'react-icons/fa';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
@@ -35,6 +36,8 @@ const CreateCollectiblePage: React.FC = () => {
 
   const history = useHistory();
 
+  const { t } = useTranslation();
+
   const createSingle = () => {
     history.push('/create-single-collectible');
   };  
@@ -47,35 +50,34 @@ const CreateCollectiblePage: React.FC = () => {
     <TinyContainer>
       <span>
         <FaArrowLeft />
-        &nbsp; Go back
+        &nbsp;
+        {t('createCollectible.goBack')}
       </span>
 
-      <H1>Create Collectible</H1>
+      <H1>{t('createCollectible.title')}</H1>
 
       <P>
-        Choose “Single” if you want your collectible to be one of a kind or
-        “Multiple” if you want to sell one collectible multiple times
+        {t('createCollectible.introduction')}
       </P>
 
       <Row>
         <Col size="50">
           <CategoryCard onClick={createSingle}>
             <SampleCard />
-            <H3>Single</H3>
+            <H3>{t('createCollectible.single')}</H3>
           </CategoryCard>
         </Col>
 
         <Col size="50">
           <CategoryCard onClick={createMultiple}>
             <SampleCard />
-            <H3>Multiple</H3>
+            <H3>{t('createCollectible.multiple')}</H3>
           </CategoryCard>
         </Col>
       </Row>
 
       <P>
-        We do not own your private keys and cannot access your funds without
-        your confirmation
+        {t('createCollectible.closing')}
       </P>
     </TinyContainer>
   );

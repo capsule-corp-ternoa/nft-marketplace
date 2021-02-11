@@ -10,7 +10,7 @@ const Colors = {
   sub_label_gray:'#969393',
   blue_gradient: 'linear-gradient(180deg, #1e34a9 0%, #131062 100%)',
   purple_gradient: 'linear-gradient(180deg, #F29FFF 0%, #878CFF 100%)',
-
+  rose_gradient: 'linear-gradient(180deg, #F29FFF 0%, #878CFF 100%)',
 };
 
 export default Colors;

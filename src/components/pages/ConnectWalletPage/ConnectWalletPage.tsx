@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
 import { H1, P } from '../../common/Title/Title';
 import TinyContainer from '../../common/ui-library/TinyContainer/TinyContainer';
 import Button from '../../common/ui-library/Button/Button';
@@ -19,31 +20,36 @@ const walletsList = [
   { id: 4, label: 'WalletLink', img: '/wallets/WalletLink.png' },
 ];
 
-const ConnectWalletPage: React.FC = () => (
-  <TinyContainer style={{ textAlign: 'center' }}>
-    <H1>Connect your wallet</H1>
+const ConnectWalletPage: React.FC = () => {
 
-    <P>
-      Connect with one of available wallet providers or create a new wallet.
-      <br />
-      What is wallet?
-    </P>
+  const { t } = useTranslation();
 
-    <div>
-      {walletsList.map( (wallet) => (
-        <>
-          <WalletButton key={wallet.id}>
-            <i>
-              <img alt="wallet" src={wallet.img} />
-            </i>
-            {wallet.label}
-          </WalletButton>
-          <br />
-        </>
-      ))}
-    </div>
+  return (
+    <TinyContainer style={{ textAlign: 'center' }}>
+      <H1>{t('walletConnection.title')}</H1>
 
-  </TinyContainer>
-);
+      <P>
+        {t('walletConnection.introduction1')}
+        <br />
+        {t('walletConnection.introduction2')}
+      </P>
+
+      <div>
+        {walletsList.map( (wallet) => (
+          <>
+            <WalletButton key={wallet.id}>
+              <i>
+                <img alt="wallet" src={wallet.img} />
+              </i>
+              {wallet.label}
+            </WalletButton>
+            <br />
+          </>
+        ))}
+      </div>
+
+    </TinyContainer>
+  );
+};
 
 export default ConnectWalletPage;

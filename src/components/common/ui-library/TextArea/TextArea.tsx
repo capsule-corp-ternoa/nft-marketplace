@@ -39,7 +39,7 @@ const TextAreaStyled = styled.textarea<TextAreaProps>`
   `}
 `;
 
-const TextArea: React.FC<SearchFieldProps> = (props) => {
+const TextArea: React.FC<TextAreaProps> = (props) => {
   const { children, ...rest } = props;
 
   return (

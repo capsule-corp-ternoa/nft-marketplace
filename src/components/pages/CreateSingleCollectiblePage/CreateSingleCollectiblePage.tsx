@@ -7,7 +7,12 @@ import Col from '../../common/ui-library/Col/Col';
 import Row from '../../common/ui-library/Row/Row';
 import TinyContainer from '../../common/ui-library/TinyContainer/TinyContainer';
 import Button from '../../common/ui-library/Button/Button';
-import InputBox, { InputType } from '../../common/InputBox/InputBox';
+import { 
+  InputBoxStandart,
+  InputBoxToggle,
+  InputBoxUpload,
+  InputBoxSelect,
+  InputBoxProperties } from '../../common/InputBox/InputBox';
 
 const PreviewStyled = styled.div`
   width: 90%;
@@ -43,63 +48,54 @@ const CreateSingleCollectiblePage: React.FC<CreateProps> = (props) => {
       <Row>
     
         <Col size="70">
-          <InputBox
-            inputType={InputType.Upload}
-            key="create_upload"
+          <InputBoxUpload
+            uid="create_upload"
             label={t('upload.upload')}
             subTitle="PNG, GIF, WEBP, MP4 or MP3. Max 30mb."
           />
 
-          <InputBox
-            inputType={InputType.Switch}
-            key="create_bids"
+          <InputBoxToggle
+            uid="create_bids"
             label={t('upload.putOnSale')}
             subTitle={t('upload.putOnSaleDetails')}
           />
 
-          <InputBox
-            inputType={InputType.Switch}
-            key="create_price"
+          <InputBoxToggle
+            uid="create_price"
             label={t('upload.instantSalePrice')}
             subTitle={t('upload.instantSalePriceDetails')}
           />
 
-          <InputBox
-            inputType={InputType.Switch}
-            key="create_unlock"
+          <InputBoxToggle
+            uid="create_unlock"
             label={t('upload.unlock')}
             subTitle={t('upload.unlockDetails')}
           />
 
-          <InputBox
-            inputType={InputType.BoxSelection}
-            key="create_unlock_2"
+          <InputBoxSelect
+            uid="create_unlock_2"
             boxOptions={options}
             label={t('upload.chooseCollection')}
           />
 
-          <InputBox 
-            inputType={InputType.Standard} 
-            key="create_name" 
+          <InputBoxStandart 
+            uid="create_name" 
             label={t('upload.name')}
           />
 
-          <InputBox
-            inputType={InputType.Standard}
-            key="create_description"
+          <InputBoxStandart
+            uid="create_description"
             label={t('upload.description')}
           />
 
-          <InputBox
-            inputType={InputType.Standard}
-            key="create_Royalties"
+          <InputBoxStandart
+            uid="create_royalties"
             label={t('upload.royalties')}
             subTitle={t('upload.royaltiesDetails')}
           />
 
-          <InputBox
-            inputType={InputType.Properties}
-            key="create_properties"
+          <InputBoxProperties
+            uid="create_properties"
             label={t('upload.properties')}
           />
 

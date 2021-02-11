@@ -48,7 +48,10 @@ const NftDetailsPage: React.FC = () => {
         <>
 
           {displayModal && 
-          <PurchaseModal nft={state.selectedNft} closeModal={() => {setDisplayModal(false);}} />}
+          <PurchaseModal 
+            nft={state.selectedNft} 
+            closeModal={() => {setDisplayModal(false);}} 
+          />}
           
           <Row>
             {/* NFT image  */}

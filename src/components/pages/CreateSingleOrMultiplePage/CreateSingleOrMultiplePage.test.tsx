@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import CreateSingleCollectiblePage from './CreateSingleCollectiblePage';
+import CreateSingleOrMultiplePage from './CreateSingleOrMultiplePage';
 
 // Known issue: error and warning does not work for console
 // https://github.com/facebook/react/issues/7047
@@ -15,10 +15,10 @@ afterEach(() => {
   console.error = original;
 });
 
-describe('CreateSingleCollectiblePage', () => {
+describe('CreateSingleOrMultiplePage', () => {
 
   it('renders component properly', () => {
-    render(<CreateSingleCollectiblePage />);
+    render(<CreateSingleOrMultiplePage />);
     expect(screen.getByText('Create single collectible')).toBeInTheDocument();
 
     // TODO test all fields

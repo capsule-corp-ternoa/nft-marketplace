@@ -31,7 +31,7 @@ type CreateProps = {
   multiple: boolean;
 };
 
-const CreateSingleCollectiblePage: React.FC<CreateProps> = (props) => {
+const CreateSingleOrMultiplePage: React.FC<CreateProps> = (props) => {
 
   const { t } = useTranslation();
   const history = useHistory();
@@ -111,4 +111,4 @@ const CreateSingleCollectiblePage: React.FC<CreateProps> = (props) => {
   );
 };
 
-export default CreateSingleCollectiblePage;
+export default CreateSingleOrMultiplePage;

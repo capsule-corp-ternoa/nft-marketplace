@@ -10,7 +10,7 @@ import ConnectWalletPage from './components/pages/ConnectWalletPage/ConnectWalle
 import Profile from './components/pages/Profile/Profile';
 import NftDetailsPage from './components/pages/NftDetailsPage/NftDetailsPage';
 import CreateCollectiblePage from './components/pages/CreateCollectiblePage/CreateCollectiblePage';
-import CreateSingleCollectiblePage from './components/pages/CreateSingleCollectiblePage/CreateSingleCollectiblePage';
+import CreateSingleOrMultiplePage from './components/pages/CreateSingleOrMultiplePage/CreateSingleOrMultiplePage';
 
 import Container from './components/common/ui-library/Container/Container';
 import LoadingSpinner from './components/common/LoadingSpinner/LoadingSpinner';
@@ -35,13 +35,13 @@ const App: React.FC = () => (
             <Route
               path="/create-single-collectible"
               render={(props) => (
-                <CreateSingleCollectiblePage {...props} multiple={false} />
+                <CreateSingleOrMultiplePage {...props} multiple={false} />
               )}
             />
             <Route
               path="/create-multiple-collectible"
               render={(props) => (
-                <CreateSingleCollectiblePage {...props} multiple={true} />
+                <CreateSingleOrMultiplePage {...props} multiple={true} />
               )}
             />
           </Switch>

@@ -1,5 +1,6 @@
 {
   "header": {
+    "find": "find your stamp",
     "createButton": "Create",
     "connectWallet": "Connect Wallet"
   },
@@ -12,21 +13,22 @@
     "support": "Support",
     "giveUsFeedbacks": "Give us feedbacks",
     "supportCenter": "Support Center",
-    "DownloadNftTemplate": "Download NFT template",
-    "Faq": "FAQ",
-    "Community": "Community",
+    "downloadNftTemplate": "Download NFT template",
+    "faq": "FAQ",
+    "community2": "Community",
     "twitter": "twitter",
     "facebook": "Facebook",
     "discord": "Discord",
-    "instagram": "Instagram"
+    "instagram": "Instagram",
+    "keepInTouch": "Keep in touch"
   },
   "topPage": {
-    "introduction1":"Buy your",
-    "introduction2":"collectible stamps",
+    "introduction1":"Buy your ",
+    "introduction2":"collectible stamps ",
     "introduction3":"to send your ternoa capsules.",
-    "categoryTitle": "注目制作者",
-    "topCollector": "上位コレクター",
-    "popularCreations": "人気作品",
+    "categoryTitle": "Highlight creators",
+    "topCollector": "Top collectors",
+    "popularCreations": "Popular stamps",
     "seo": {
       "title": "my top page",
       "description": "my description",
@@ -59,6 +61,7 @@
   },
   "upload": {
     "title": "Create single collectible",
+    "titleMultiple": "Create multiple collectible",
     "goBack": "Manage collectible type",
     "upload": "Upload",
     "putOnSale": "Put on sale",

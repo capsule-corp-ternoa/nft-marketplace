@@ -1,6 +1,8 @@
 import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
+
 import { FaSearch } from 'react-icons/fa';
 import Col from '../ui-library/Col/Col';
 import Row from '../ui-library/Row/Row';
@@ -55,7 +57,8 @@ const MainHeader: React.FC = () => {
   
   const { state } = useContext(Context);
   const history = useHistory();
-  
+  const { t } = useTranslation();
+
   const goToTopPage= () => {
     history.push('/');
   };
@@ -76,7 +79,7 @@ const MainHeader: React.FC = () => {
         <Col small="50" medium="50" large="50">
           <SearchStyled>
             <FaSearchStyled />
-            <InputStyled full placeholder="find your stamp" type="search" />
+            <InputStyled full placeholder={t('header.find')} type="search" />
           </SearchStyled>
         </Col>
         
@@ -87,13 +90,13 @@ const MainHeader: React.FC = () => {
               primary 
               onClick={() => {history.push('/create');}}
             >
-              Create
+              {t('header.createButton')}
             </Button>
         
             <Button 
               onClick={() => {history.push('/connect-wallet');}}
             >
-              Connect Wallet
+              {t('header.connectWallet')}
             </Button>
           </div>
         

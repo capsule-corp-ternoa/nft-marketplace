@@ -1,5 +1,6 @@
 import React, { useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Helmet } from 'react-helmet';
 import { fetchNfts } from '../../../utils/store/dataFetcher';
 import { Context } from '../../../utils/store/store';
 import Carousel from './Carousel/Carousel';
@@ -19,6 +20,13 @@ const TopPage: React.FC = () => {
 
   return (
     <>
+
+      <Helmet>
+        <title>{t('topPage.seo.title')}</title>
+        <meta name="description" content={t('topPage.seo.description')} />
+        <meta name="keywords" content={t('topPage.seo.keywords')} />
+      </Helmet>
+  
       <H1>
         {t('topPage.introduction1')}
         <GradientText>

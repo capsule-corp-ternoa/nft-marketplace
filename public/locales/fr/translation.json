@@ -26,21 +26,36 @@
     "introduction3":"to send your ternoa capsules.",
     "categoryTitle": "注目制作者",
     "topCollector": "上位コレクター",
-    "popularCreations": "人気作品"
+    "popularCreations": "人気作品",
+    "seo": {
+      "title": "my top page",
+      "description": "my description",
+      "keywords": "my keywords"
+    }
   },
   "walletConnection": {
+    "goBack": "Go back",
     "title": "Connect your wallet",
     "introduction1": "Connect with one of available wallet providers or create a new wallet.",
-    "introduction2": "What is wallet?"
+    "introduction2": "What is wallet?",
+    "seo": {
+      "title": "my top page",
+      "description": "my description",
+      "keywords": "my keywords"
+    }
   },
   "createCollectible": {
-    "goBack": "Go back",
     "title": "Create Collectible",
     "titleMultiple": "Create multiple collectible",
     "introduction": "Choose “Single” if you want your collectible to be one of a kind or “Multiple” if you want to sell one collectible multiple times",
     "single": "Single",
     "multiple": "Multiple",
-    "closing": "We do not own your private keys and cannot access your funds without your confirmation"
+    "closing": "We do not own your private keys and cannot access your funds without your confirmation",
+    "seo": {
+      "title": "my top page",
+      "description": "my description",
+      "keywords": "my keywords"
+    }
   },
   "upload": {
     "title": "Create single collectible",
@@ -58,7 +73,12 @@
     "royalties": "Royalties",
     "royaltiesDetails": "Suggested: 10%, 20%, 30%",
     "properties": "Properties (Optional)",
-    "createItem": "Create item"
+    "createItem": "Create item",
+    "seo": {
+      "title": "my top page",
+      "description": "my description",
+      "keywords": "my keywords"
+    }
   },
   "details": {
     "buy": "Buy",
@@ -75,7 +95,29 @@
       "youWillPay": "You will pay",
       "processPayment": "Process payment",
       "cancel": "Cancel"
+    },
+    "seo": {
+      "title": "my top page",
+      "description": "my description",
+      "keywords": "my keywords"
     }
-
+  },
+  "profile": {
+    "settings": "Settings",
+    "displayName" : "Display name",
+    "customUrl" : "Custom Url",
+    "bio" : "Bio",
+    "twitterName" : "Twitter username",
+    "twitterSubText" : "Verify your Twitter account in order to get the verification badge",
+    "personalSite" : "Personal site or portfolio",
+    "personalSiteSubText" : "Register your personal URL",
+    "explanation1" : "To update your settings you should sign message through your wallet. ",
+    "explanation2" : "Click 'Update profile' then sign the message.",
+    "updateButton" : "Update profile",
+    "seo": {
+      "title": "my top page",
+      "description": "my description",
+      "keywords": "my keywords"
+    }
   }
 }

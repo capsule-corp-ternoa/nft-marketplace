@@ -2,6 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
+import { Helmet } from 'react-helmet';
 import { H1, H3, P } from '../../common/Title/Title';
 import Col from '../../common/ui-library/Col/Col';
 import Row from '../../common/ui-library/Row/Row';
@@ -48,6 +49,12 @@ const CreateCollectiblePage: React.FC = () => {
 
   return (
     <TinyContainer>
+
+      <Helmet>
+        <title>{t('createCollectible.seo.title')}</title>
+        <meta name="description" content={t('createCollectible.seo.description')} />
+        <meta name="keywords" content={t('createCollectible.seo.keywords')} />
+      </Helmet>
 
       <GoBack text={t('createCollectible.goBack')} history={history} />
 

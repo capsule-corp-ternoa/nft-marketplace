@@ -44,33 +44,33 @@ const Logo: React.FC = () => (
   </RoundedWrapper>
 );
 
-const listLinks = {
-  column1: [
-    { id: 1, uri: 'http://google.com', text: 'Team', isInternal: false },
-    { id: 2, uri: 'http://google.com', text: 'Community', isInternal: true },
-    { id: 3, uri: 'http://google.com', text: 'How it works', isInternal: false },
-    { id: 4, uri: 'http://google.com', text: 'Ternoa tokens', isInternal: false },
-  ],
-  column2: [
-    { id: 5, uri: 'http://google.com', text: 'Give us feedback', isInternal: false },
-    { id: 6, uri: 'http://google.com', text: 'Support center', isInternal: false },
-    { id: 7, uri: 'http://google.com', text: 'Download NFT template', isInternal: false },
-    { id: 8, uri: 'http://google.com', text: 'FAQ', isInternal: false },
-  ],
-  column3: [
-    { id: 9, uri: 'http://google.com', text: 'Twitter', isInternal: false },
-    { id: 10, uri: 'http://google.com', text: 'Facebook', isInternal: false },
-    { id: 11, uri: 'http://google.com', text: 'Discord', isInternal: false },
-    { id: 12, uri: 'http://google.com', text: 'Instragram', isInternal: false },
-  ],
-};
-
 const Footer: React.FC = () => {
 
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
 
   const changeLang = (lang: string) => {
     i18n.changeLanguage(lang);
+  };
+
+  const listLinks = {
+    column1: [
+      { id: 1, uri: 'http://google.com', text: t('footer.team'), isInternal: false },
+      { id: 2, uri: 'http://google.com', text: t('footer.community'), isInternal: true },
+      { id: 3, uri: 'http://google.com', text: t('footer.howitWorks'), isInternal: false },
+      { id: 4, uri: 'http://google.com', text: t('footer.ternoaTokens'), isInternal: false },
+    ],
+    column2: [
+      { id: 5, uri: 'http://google.com', text: t('footer.giveUsFeedbacks'), isInternal: false },
+      { id: 6, uri: 'http://google.com', text: t('footer.supportCenter'), isInternal: false },
+      { id: 7, uri: 'http://google.com', text: t('footer.downloadNftTemplate'), isInternal: false },
+      { id: 8, uri: 'http://google.com', text: t('footer.faq'), isInternal: false },
+    ],
+    column3: [
+      { id: 9, uri: 'http://google.com', text: t('footer.twitter'), isInternal: false },
+      { id: 10, uri: 'http://google.com', text: t('footer.facebook'), isInternal: false },
+      { id: 11, uri: 'http://google.com', text: t('footer.discord'), isInternal: false },
+      { id: 12, uri: 'http://google.com', text: t('footer.instagram'), isInternal: false },
+    ],
   };
 
   return (
@@ -82,19 +82,19 @@ const Footer: React.FC = () => {
             <Row>
               <Col size="one-third">
                 <FooterSubMenu
-                  subTitle="About Us"
+                  subTitle={t('footer.aboutUs')}
                   menuElements={listLinks.column1}
                 />
               </Col>
               <Col size="one-third">
                 <FooterSubMenu
-                  subTitle="Support"
+                  subTitle={t('footer.support')}
                   menuElements={listLinks.column2}
                 />
               </Col>
               <Col size="one-third">
                 <FooterSubMenu
-                  subTitle="Community"
+                  subTitle={t('footer.community')}
                   menuElements={listLinks.column3}
                 />
               </Col>
@@ -102,7 +102,7 @@ const Footer: React.FC = () => {
           </Col>
           <Col small="100" medium="50" large="50">
             <div style={{ marginLeft: '40px' }}>
-              <H3>Keep in touch</H3>
+              <H3>{t('footer.keepInTouch')}</H3>
               <Input light placeholder="satoshi@gmail.com" />
               <Button primary>Go</Button>
             </div>

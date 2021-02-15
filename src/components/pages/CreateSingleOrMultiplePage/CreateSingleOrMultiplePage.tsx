@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { Helmet } from 'react-helmet';
 import { H1 } from '../../common/Title/Title';
 import Col from '../../common/ui-library/Col/Col';
 import Row from '../../common/ui-library/Row/Row';
@@ -38,6 +39,12 @@ const CreateSingleOrMultiplePage: React.FC<CreateProps> = (props) => {
 
   return (
     <TinyContainer>
+
+      <Helmet>
+        <title>{t('upload.seo.title')}</title>
+        <meta name="description" content={t('upload.seo.description')} />
+        <meta name="keywords" content={t('upload.seo.keywords')} />
+      </Helmet>
 
       <GoBack history={history} text={t('upload.goBack')} />
 

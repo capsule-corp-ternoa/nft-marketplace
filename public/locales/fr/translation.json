@@ -1,81 +1,126 @@
 {
   "header": {
-    "createButton": "Create",
-    "connectWallet": "Connect Wallet"
+    "find": "Chercher un stamp",
+    "createButton": "Créer",
+    "connectWallet": "Connection wallet"
   },
   "footer": {
-    "aboutUs": "About us",
-    "team": "Team",
-    "community": "Community",
-    "howitWorks": "How it works",
-    "ternoaTokens": "Ternoa Tokens",
+    "aboutUs": "A propos de nous",
+    "team": "L'équipe",
+    "community": "la communité",
+    "howitWorks": "Comment ca fonctionne",
+    "ternoaTokens": "Stamps Ternoa",
     "support": "Support",
-    "giveUsFeedbacks": "Give us feedbacks",
-    "supportCenter": "Support Center",
-    "DownloadNftTemplate": "Download NFT template",
-    "Faq": "FAQ",
-    "Community": "Community",
+    "giveUsFeedbacks": "Donnez nous votre avis",
+    "supportCenter": "Support",
+    "downloadNftTemplate": "Télécharger la template NFT",
+    "faq": "FAQ",
+    "community2": "Communité",
     "twitter": "twitter",
     "facebook": "Facebook",
     "discord": "Discord",
-    "instagram": "Instagram"
+    "instagram": "Instagram",
+    "keepInTouch": "Restons connectés"
   },
   "topPage": {
-    "introduction1":"Buy your",
-    "introduction2":"collectible stamps",
-    "introduction3":"to send your ternoa capsules.",
-    "categoryTitle": "注目制作者",
-    "topCollector": "上位コレクター",
-    "popularCreations": "人気作品"
+    "introduction1":"Achetez votre ",
+    "introduction2":"Stamp collectible ",
+    "introduction3":"afin d'envoyer votre capsule ternoa.",
+    "categoryTitle": "Catégories mises en avant",
+    "topCollector": "meilleurs collections",
+    "popularCreations": "Les meilleurs stamp",
+    "seo": {
+      "title": "TBD",
+      "description": "TBD",
+      "keywords": "TBD"
+    }
   },
   "walletConnection": {
-    "title": "Connect your wallet",
-    "introduction1": "Connect with one of available wallet providers or create a new wallet.",
-    "introduction2": "What is wallet?"
+    "goBack": "Retour",
+    "title": "Connecter votre wallet",
+    "introduction1": "Connecter avec un des wallets ci dessous ou ajouter un nouveau",
+    "introduction2": "Qu'est ce qu'un wallet?",
+    "seo": {
+      "title": "TBD",
+      "description": "TBD",
+      "keywords": "TBD"
+    }
   },
   "createCollectible": {
-    "goBack": "Go back",
-    "title": "Create Collectible",
-    "titleMultiple": "Create multiple collectible",
-    "introduction": "Choose “Single” if you want your collectible to be one of a kind or “Multiple” if you want to sell one collectible multiple times",
+    "title": "Créer un Collectible",
+    "titleMultiple": "Créer un collectible multiple",
+    "introduction": "Choisissez “Single” si votre stamp est unique ou “Multiple” si vous souhaitez en proposer plusieurs",
     "single": "Single",
     "multiple": "Multiple",
-    "closing": "We do not own your private keys and cannot access your funds without your confirmation"
+    "closing": "Nous ne possédons pas vos clés privées et ne pouvons accéder à vos fonds sans votre confirmation.",
+    "seo": {
+      "title": "TBD",
+      "description": "TBD",
+      "keywords": "TBD"
+    }
   },
   "upload": {
-    "title": "Create single collectible",
-    "goBack": "Manage collectible type",
+    "title": "Créer un 'single' collectible",
+    "titleMultiple": "Créer un 'multiple' collectible",
+    "goBack": "Gérer les types de collectible",
     "upload": "Upload",
-    "putOnSale": "Put on sale",
-    "putOnSaleDetails": "You’ll receive bids on this item",
-    "instantSalePrice": "Instant sale price",
-    "instantSalePriceDetails": "Enter the price for which the item will be instantly sold",
-    "unlock": "Unlock once purchased",
-    "unlockDetails": "Content will be unlocked after successful transaction",
-    "chooseCollection": "Choose collection",
-    "name": "Name",
+    "putOnSale": "Vendre aux enchères",
+    "putOnSaleDetails": "Vous recevrez des enchères pour ce collectible",
+    "instantSalePrice": "Prix pour vente instantanée",
+    "instantSalePriceDetails": "Veuillez renseigner le prix de vente instantanée",
+    "unlock": "Débloquer après achat",
+    "unlockDetails": "Le stamp sera débloqué apres la validation de la transaction",
+    "chooseCollection": "Choisissez un collection",
+    "name": "Nom",
     "description": "Description",
     "royalties": "Royalties",
-    "royaltiesDetails": "Suggested: 10%, 20%, 30%",
-    "properties": "Properties (Optional)",
-    "createItem": "Create item"
+    "royaltiesDetails": "suggestion: 10%, 20%, 30%",
+    "properties": "propriétés (Optional)",
+    "createItem": "Créer le collectible",
+    "seo": {
+      "title": "TBD",
+      "description": "TBD",
+      "keywords": "TBD"
+    }
   },
   "details": {
-    "buy": "Buy",
-    "owner": "Owner",
-    "creator": "Creator",
+    "buy": "Acheter",
+    "owner": "Propriétaire",
+    "creator": "Créateur",
     "type": "Type",
-    "serviceFees": "Service fees",
+    "serviceFees": "Frais de Service",
     "checkoutModal": {
-      "checkout": "Checkout",
-      "aboutPurchase": "You are about to purchase :",
-      "from": "from",
-      "yourBalance": "Your balance",
-      "serviceFees": "Service fees",
-      "youWillPay": "You will pay",
-      "processPayment": "Process payment",
-      "cancel": "Cancel"
+      "checkout": "Transaction",
+      "aboutPurchase": "Vous vous apprétez à acheter :",
+      "from": "De",
+      "yourBalance": "votre balance",
+      "serviceFees": "Frais de service",
+      "youWillPay": "Vous allez payer",
+      "processPayment": "Procéder au paiement",
+      "cancel": "annuler"
+    },
+    "seo": {
+      "title": "TBD",
+      "description": "TBD",
+      "keywords": "TBD"
     }
-
+  },
+  "profile": {
+    "settings": "Réglages",
+    "displayName" : "Nom affiché",
+    "customUrl" : "Url personalisée",
+    "bio" : "Bio",
+    "twitterName" : "Compte Twitter",
+    "twitterSubText" : "Vérifiez votre compte twitter pour recevoir votre badge de confirmation",
+    "personalSite" : "Site personel ou portfolio",
+    "personalSiteSubText" : "Renseignez votre URL personnelle",
+    "explanation1" : "Pour mettre à jour votre profile, vous devez signer le message avec votre wallet",
+    "explanation2" : "Cliquez sur 'Mettre à jour' et signer ensuite le message.",
+    "updateButton" : "Mettre à jour",
+    "seo": {
+      "title": "TBD",
+      "description": "TBD",
+      "keywords": "TBD"
+    }
   }
 }

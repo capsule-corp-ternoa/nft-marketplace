@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 import { H1, P } from '../../common/Title/Title';
 import TinyContainer from '../../common/ui-library/TinyContainer/TinyContainer';
@@ -26,6 +27,13 @@ const ConnectWalletPage: React.FC = () => {
 
   return (
     <TinyContainer style={{ textAlign: 'center' }}>
+
+      <Helmet>
+        <title>{t('walletConnection.seo.title')}</title>
+        <meta name="description" content={t('walletConnection.seo.description')} />
+        <meta name="keywords" content={t('walletConnection.seo.keywords')} />
+      </Helmet>
+
       <H1>{t('walletConnection.title')}</H1>
 
       <P>

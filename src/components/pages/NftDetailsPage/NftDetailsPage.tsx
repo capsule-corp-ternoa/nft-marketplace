@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Helmet } from 'react-helmet';
 import { EyeIcon, ShareIcon, HeartIcon } from '../../common/Icons/Icons';
 import Col from '../../common/ui-library/Col/Col';
 import Row from '../../common/ui-library/Row/Row';
@@ -44,6 +45,13 @@ const NftDetailsPage: React.FC = () => {
 
   return (
     <>
+
+      <Helmet>
+        <title>{t('details.seo.title')}</title>
+        <meta name="description" content={t('details.seo.description')} />
+        <meta name="keywords" content={t('details.seo.keywords')} />
+      </Helmet>
+
       {state.selectedNft && (
         <>
 

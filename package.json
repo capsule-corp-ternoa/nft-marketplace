@@ -46,6 +46,7 @@
     "isready": "npm run format && npm run lint && npm run build",
     "dev": "npm-run-all -p start-mockup start-backend start",
     "test": "react-scripts test",
+    "test:nowatch": "react-scripts test --watchAll=false",
     "test:cov": "npm test -- --coverage --watchAll=false",
     "start-backend": "node server/server",
     "start-mockup": "mockserver -p 8282 -m './mocks'",

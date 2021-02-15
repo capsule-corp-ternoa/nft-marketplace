@@ -16,6 +16,10 @@ afterEach(() => {
   console.error = original;
 });
 
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({ t: (key) => key }),
+}));
+
 const nftList = {
   nfts: [
     {
@@ -55,9 +59,6 @@ describe('TopPage', () => {
   it('renders component properly', () => {
     renderTopPageEmpty();
     expect(screen.getByText('Featured Creators')).toBeInTheDocument();
-    // TODO validate nft injection in the page
-    // expect(screen.getByText('Price')).toBeInTheDocument();
-
   });
 
 });

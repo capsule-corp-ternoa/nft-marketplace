@@ -15,11 +15,19 @@ afterEach(() => {
   console.error = original;
 });
 
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({ t: (key) => key }),
+}));
+
 describe('CreateSingleOrMultiplePage', () => {
 
   it('renders component properly', () => {
-    render(<CreateSingleOrMultiplePage />);
-    expect(screen.getByText('Create single collectible')).toBeInTheDocument();
+    render(
+      
+      <CreateSingleOrMultiplePage />
+
+    );
+    expect(screen.getByText('upload.title')).toBeInTheDocument();
 
     // TODO test all fields
     // const transaction = screen.getByLabelText('create_name');

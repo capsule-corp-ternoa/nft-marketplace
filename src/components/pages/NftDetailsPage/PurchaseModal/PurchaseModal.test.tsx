@@ -13,6 +13,10 @@ afterEach(() => {
   console.error = original;
 });
 
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({ t: (key) => key }),
+}));
+
 const closeModal= () => {
   console.log('will close modal');
 };

@@ -2,6 +2,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import Profile from './Profile';
+import ContextProvider from '../../../utils/store/store';
 
 const original = console.error;
 
@@ -16,7 +17,10 @@ afterEach(() => {
 describe('Profile', () => {
 
   it('renders component properly', () => {
-    render(<Profile />);
+    render(
+      <ContextProvider>
+        <Profile />
+      </ContextProvider>);
     expect(screen.getByText('Display name')).toBeInTheDocument();
 
   });

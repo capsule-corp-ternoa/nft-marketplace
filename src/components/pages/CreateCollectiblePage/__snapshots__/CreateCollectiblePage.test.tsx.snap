@@ -1,0 +1,405 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CreateCollectiblePage CreateCollectiblePage renders correctly with snapshots 1`] = `
+<div
+  className="sc-crrsfI gDQLBn"
+>
+  <div
+    style={
+      Object {
+        "cursor": "pointer",
+      }
+    }
+  >
+    <svg
+      fill="currentColor"
+      height="1em"
+      stroke="currentColor"
+      strokeWidth="0"
+      style={
+        Object {
+          "color": undefined,
+        }
+      }
+      viewBox="0 0 448 512"
+      width="1em"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M257.5 445.1l-22.2 22.2c-9.4 9.4-24.6 9.4-33.9 0L7 273c-9.4-9.4-9.4-24.6 0-33.9L201.4 44.7c9.4-9.4 24.6-9.4 33.9 0l22.2 22.2c9.5 9.5 9.3 25-.4 34.3L136.6 216H424c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24H136.6l120.5 114.8c9.8 9.3 10 24.8.4 34.3z"
+      />
+    </svg>
+      
+    <span
+      onClick={[Function]}
+      role="button"
+      style={
+        Object {
+          "verticalAlign": "top",
+        }
+      }
+      tabIndex={0}
+    >
+      createCollectible.goBack
+    </span>
+  </div>
+  <h1
+    className="sc-dlfnbm jnRgnW"
+  >
+    createCollectible.title
+  </h1>
+  <p
+    className="sc-iBPRYJ kEpCMi"
+  >
+    createCollectible.introduction
+  </p>
+  <div
+    className="sc-kEjbxe jPZapw"
+  >
+    <div
+      className="sc-jrAGrp hwipwK"
+      size="50"
+    >
+      <div
+        className="sc-iqHYGH kQHiEq sc-dQppl dPDMLy"
+        onClick={[Function]}
+      >
+        <div
+          className="sc-bqyKva fJrUzg"
+        />
+        <h3
+          className="sc-eCssSg dNNVqm"
+        >
+          createCollectible.single
+        </h3>
+      </div>
+    </div>
+    <div
+      className="sc-jrAGrp hwipwK"
+      size="50"
+    >
+      <div
+        className="sc-iqHYGH kQHiEq sc-dQppl dPDMLy"
+        onClick={[Function]}
+      >
+        <div
+          className="sc-bqyKva fJrUzg"
+        />
+        <h3
+          className="sc-eCssSg dNNVqm"
+        >
+          createCollectible.multiple
+        </h3>
+      </div>
+    </div>
+  </div>
+  <p
+    className="sc-iBPRYJ kEpCMi"
+  >
+    createCollectible.closing
+  </p>
+</div>
+`;
+
+exports[`CreateCollectiblePage Link renders correctly 1`] = `
+<div
+  className="sc-crrsfI gDQLBn"
+>
+  <div
+    style={
+      Object {
+        "cursor": "pointer",
+      }
+    }
+  >
+    <svg
+      fill="currentColor"
+      height="1em"
+      stroke="currentColor"
+      strokeWidth="0"
+      style={
+        Object {
+          "color": undefined,
+        }
+      }
+      viewBox="0 0 448 512"
+      width="1em"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M257.5 445.1l-22.2 22.2c-9.4 9.4-24.6 9.4-33.9 0L7 273c-9.4-9.4-9.4-24.6 0-33.9L201.4 44.7c9.4-9.4 24.6-9.4 33.9 0l22.2 22.2c9.5 9.5 9.3 25-.4 34.3L136.6 216H424c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24H136.6l120.5 114.8c9.8 9.3 10 24.8.4 34.3z"
+      />
+    </svg>
+      
+    <span
+      onClick={[Function]}
+      role="button"
+      style={
+        Object {
+          "verticalAlign": "top",
+        }
+      }
+      tabIndex={0}
+    >
+      createCollectible.goBack
+    </span>
+  </div>
+  <h1
+    className="sc-dlfnbm jnRgnW"
+  >
+    createCollectible.title
+  </h1>
+  <p
+    className="sc-iBPRYJ kEpCMi"
+  >
+    createCollectible.introduction
+  </p>
+  <div
+    className="sc-kEjbxe jPZapw"
+  >
+    <div
+      className="sc-jrAGrp hwipwK"
+      size="50"
+    >
+      <div
+        className="sc-iqHYGH kQHiEq sc-dQppl dPDMLy"
+        onClick={[Function]}
+      >
+        <div
+          className="sc-bqyKva fJrUzg"
+        />
+        <h3
+          className="sc-eCssSg dNNVqm"
+        >
+          createCollectible.single
+        </h3>
+      </div>
+    </div>
+    <div
+      className="sc-jrAGrp hwipwK"
+      size="50"
+    >
+      <div
+        className="sc-iqHYGH kQHiEq sc-dQppl dPDMLy"
+        onClick={[Function]}
+      >
+        <div
+          className="sc-bqyKva fJrUzg"
+        />
+        <h3
+          className="sc-eCssSg dNNVqm"
+        >
+          createCollectible.multiple
+        </h3>
+      </div>
+    </div>
+  </div>
+  <p
+    className="sc-iBPRYJ kEpCMi"
+  >
+    createCollectible.closing
+  </p>
+</div>
+`;
+
+exports[`CreateCollectiblePage snapshots CreateCollectiblePage renders correctly 1`] = `
+<div
+  className="sc-crrsfI gDQLBn"
+>
+  <div
+    style={
+      Object {
+        "cursor": "pointer",
+      }
+    }
+  >
+    <svg
+      fill="currentColor"
+      height="1em"
+      stroke="currentColor"
+      strokeWidth="0"
+      style={
+        Object {
+          "color": undefined,
+        }
+      }
+      viewBox="0 0 448 512"
+      width="1em"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M257.5 445.1l-22.2 22.2c-9.4 9.4-24.6 9.4-33.9 0L7 273c-9.4-9.4-9.4-24.6 0-33.9L201.4 44.7c9.4-9.4 24.6-9.4 33.9 0l22.2 22.2c9.5 9.5 9.3 25-.4 34.3L136.6 216H424c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24H136.6l120.5 114.8c9.8 9.3 10 24.8.4 34.3z"
+      />
+    </svg>
+      
+    <span
+      onClick={[Function]}
+      role="button"
+      style={
+        Object {
+          "verticalAlign": "top",
+        }
+      }
+      tabIndex={0}
+    >
+      createCollectible.goBack
+    </span>
+  </div>
+  <h1
+    className="sc-dlfnbm jnRgnW"
+  >
+    createCollectible.title
+  </h1>
+  <p
+    className="sc-iBPRYJ kEpCMi"
+  >
+    createCollectible.introduction
+  </p>
+  <div
+    className="sc-kEjbxe jPZapw"
+  >
+    <div
+      className="sc-jrAGrp hwipwK"
+      size="50"
+    >
+      <div
+        className="sc-iqHYGH kQHiEq sc-dQppl dPDMLy"
+        onClick={[Function]}
+      >
+        <div
+          className="sc-bqyKva fJrUzg"
+        />
+        <h3
+          className="sc-eCssSg dNNVqm"
+        >
+          createCollectible.single
+        </h3>
+      </div>
+    </div>
+    <div
+      className="sc-jrAGrp hwipwK"
+      size="50"
+    >
+      <div
+        className="sc-iqHYGH kQHiEq sc-dQppl dPDMLy"
+        onClick={[Function]}
+      >
+        <div
+          className="sc-bqyKva fJrUzg"
+        />
+        <h3
+          className="sc-eCssSg dNNVqm"
+        >
+          createCollectible.multiple
+        </h3>
+      </div>
+    </div>
+  </div>
+  <p
+    className="sc-iBPRYJ kEpCMi"
+  >
+    createCollectible.closing
+  </p>
+</div>
+`;
+
+exports[`Link renders correctly 1`] = `
+<div
+  className="sc-crrsfI gDQLBn"
+>
+  <div
+    style={
+      Object {
+        "cursor": "pointer",
+      }
+    }
+  >
+    <svg
+      fill="currentColor"
+      height="1em"
+      stroke="currentColor"
+      strokeWidth="0"
+      style={
+        Object {
+          "color": undefined,
+        }
+      }
+      viewBox="0 0 448 512"
+      width="1em"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M257.5 445.1l-22.2 22.2c-9.4 9.4-24.6 9.4-33.9 0L7 273c-9.4-9.4-9.4-24.6 0-33.9L201.4 44.7c9.4-9.4 24.6-9.4 33.9 0l22.2 22.2c9.5 9.5 9.3 25-.4 34.3L136.6 216H424c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24H136.6l120.5 114.8c9.8 9.3 10 24.8.4 34.3z"
+      />
+    </svg>
+      
+    <span
+      onClick={[Function]}
+      role="button"
+      style={
+        Object {
+          "verticalAlign": "top",
+        }
+      }
+      tabIndex={0}
+    >
+      createCollectible.goBack
+    </span>
+  </div>
+  <h1
+    className="sc-dlfnbm jnRgnW"
+  >
+    createCollectible.title
+  </h1>
+  <p
+    className="sc-iBPRYJ kEpCMi"
+  >
+    createCollectible.introduction
+  </p>
+  <div
+    className="sc-kEjbxe jPZapw"
+  >
+    <div
+      className="sc-jrAGrp hwipwK"
+      size="50"
+    >
+      <div
+        className="sc-iqHYGH kQHiEq sc-dQppl dPDMLy"
+        onClick={[Function]}
+      >
+        <div
+          className="sc-bqyKva fJrUzg"
+        />
+        <h3
+          className="sc-eCssSg dNNVqm"
+        >
+          createCollectible.single
+        </h3>
+      </div>
+    </div>
+    <div
+      className="sc-jrAGrp hwipwK"
+      size="50"
+    >
+      <div
+        className="sc-iqHYGH kQHiEq sc-dQppl dPDMLy"
+        onClick={[Function]}
+      >
+        <div
+          className="sc-bqyKva fJrUzg"
+        />
+        <h3
+          className="sc-eCssSg dNNVqm"
+        >
+          createCollectible.multiple
+        </h3>
+      </div>
+    </div>
+  </div>
+  <p
+    className="sc-iBPRYJ kEpCMi"
+  >
+    createCollectible.closing
+  </p>
+</div>
+`;

@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NftDetailsPage snapshots NftDetailsPage renders correctly 1`] = `<detailsWithStates />`;

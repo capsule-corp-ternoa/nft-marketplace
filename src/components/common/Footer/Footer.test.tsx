@@ -16,6 +16,10 @@ afterEach(() => {
   console.error = original;
 });
 
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({ t: (key) => key }),
+}));
+
 describe('Footer', () => {
 
   it('renders component properly', () => {
@@ -25,7 +29,7 @@ describe('Footer', () => {
       </Router>
     );
     // render(<Footer />);
-    expect(screen.getByText('Keep in touch')).toBeInTheDocument();
+    expect(screen.getByText('footer.keepInTouch')).toBeInTheDocument();
   });
 
 });

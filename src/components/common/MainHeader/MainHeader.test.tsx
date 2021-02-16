@@ -16,6 +16,10 @@ afterEach(() => {
   console.error = original;
 });
 
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({ t: (key) => key }),
+}));
+
 const renderMainHeader: React.FC = () => render( 
   <ContextProvider>
     <MainHeader />

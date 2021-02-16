@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TopPage snapshots TopPage renders correctly 1`] = `<renderTopPageEmpty />`;

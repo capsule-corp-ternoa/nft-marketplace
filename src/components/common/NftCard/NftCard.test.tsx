@@ -32,7 +32,7 @@ describe('NftCard', () => {
 
   it('renders component properly', () => {
     render(<NftCard nft={nft} />);
-    expect(screen.getByText('by johann')).toBeInTheDocument();
+    expect(screen.getByAltText('nft-image')).toBeInTheDocument();
   });
 
 });

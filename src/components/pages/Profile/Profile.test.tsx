@@ -14,6 +14,10 @@ afterEach(() => {
   console.error = original;
 });
 
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({ t: (key) => key }),
+}));
+
 describe('Profile', () => {
 
   it('renders component properly', () => {
@@ -21,7 +25,7 @@ describe('Profile', () => {
       <ContextProvider>
         <Profile />
       </ContextProvider>);
-    expect(screen.getByText('Display name')).toBeInTheDocument();
+    expect(screen.getByText('profile.displayName')).toBeInTheDocument();
 
   });
 

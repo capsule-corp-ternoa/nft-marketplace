@@ -15,6 +15,10 @@ afterEach(() => {
   console.error = original;
 });
 
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({ t: (key) => key }),
+}));
+
 describe('ConnectWalletPage', () => {
 
   it('renders component properly', () => {

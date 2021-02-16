@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import renderer from 'react-test-renderer';
 import TopPage from './TopPage';
 import ContextProvider from '../../../utils/store/store';
 
@@ -55,10 +56,24 @@ const renderTopPageEmpty: React.FC = () => render(
   </ContextProvider>
 );
 
+describe('TopPage snapshots', () => {
+
+  test('TopPage renders correctly', () => {
+    const tree = renderer
+      .create(<renderTopPageEmpty />)
+      .toJSON();
+    expect(tree).toMatchSnapshot();
+  });
+
+});
+
+
 describe('TopPage', () => {
   it('renders component properly', () => {
     renderTopPageEmpty();
-    expect(screen.getByText('Featured Creators')).toBeInTheDocument();
+    expect(screen.getByText('topPage.categoryTitle')).toBeInTheDocument();
+    expect(screen.getByText('topPage.topCollector')).toBeInTheDocument();
+    expect(screen.getByText('topPage.popularCreations')).toBeInTheDocument();
   });
 
 });

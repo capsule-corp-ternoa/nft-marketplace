@@ -10,6 +10,6 @@ test('renders learn react link', () => {
   render(
     <App />
   );
-  const linkElement = screen.getAllByText(/Ternoa Stamp/i);
-  expect(linkElement).toBeInTheDocument();
+  return screen.getAllByText(/Ternoa Stamp/i).toBeInTheDocument;
+  
 });

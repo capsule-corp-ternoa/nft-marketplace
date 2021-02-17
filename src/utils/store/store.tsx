@@ -14,11 +14,24 @@ import {
   FETCH_ONE_USER_SUCCESS,
   FETCH_ONE_USER_FAILURE,
 
+  UPDATE_STORE_ELEMENT,
+
 } from './actions';
+
+const updateStoreElement = 
+(state: ContextState, action: ContextAction): any => {
+  const { propertyName, propertyNewValue } = action.payload;
+  return {
+    ...state,
+    [propertyName]: propertyNewValue,
+  };
+};
 
 // Reducer for updating the store based on the 'action.type'
 export const Reducer = (state: ContextState, action: ContextAction): any => {
   switch (action.type) {
+    case UPDATE_STORE_ELEMENT:
+      return updateStoreElement(state, action);
     case FETCH_NFT_BEGIN:
       return {
         ...state,
@@ -86,6 +99,7 @@ const initialState = {
   selectedNftId: 0,
   selectedNft: null,
   user: null,
+  searchValue: null,
 };
 
 export const ContextProvider: React.FC = ({ children }) => {

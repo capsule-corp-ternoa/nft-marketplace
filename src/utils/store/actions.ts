@@ -12,6 +12,22 @@ export const FETCH_ONE_USER_BEGIN = 'FETCH_ONE_USER_BEGIN';
 export const FETCH_ONE_USER_SUCCESS = 'FETCH_ONE_USER_SUCCESS';
 export const FETCH_ONE_USER_FAILURE = 'FETCH_ONE_USER_FAILURE';
 
+export const UPDATE_STORE_ELEMENT = 'UPDATE_STORE_ELEMENT';
+
+export const updateStoreElement = 
+(
+  dispatch: any,
+  propertyName: string,
+  propertyNewValue: string|number|boolean
+): any => 
+  dispatch({
+    type: UPDATE_STORE_ELEMENT,
+    payload: {
+      propertyName,
+      propertyNewValue,
+    },
+  });
+
 export const fetchNftBegin = (dispatch: any): any => 
   dispatch({ type: FETCH_NFT_BEGIN }
   );

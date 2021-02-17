@@ -47,6 +47,7 @@
     }
   },
   "createCollectible": {
+    "goBack": "戻る",
     "title": "スタンプ作成",
     "titleMultiple": "multiple型スタンプを作成",
     "introduction": "一個限定のスタンプを作成されたい場合は「single」,複数のアイテムを作成されたい場合は「multiple」を選んでください。",

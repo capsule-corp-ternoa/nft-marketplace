@@ -47,6 +47,7 @@
     }
   },
   "createCollectible": {
+    "goBack": "Retour",
     "title": "Créer un Collectible",
     "titleMultiple": "Créer un collectible multiple",
     "introduction": "Choisissez “Single” si votre stamp est unique ou “Multiple” si vous souhaitez en proposer plusieurs",

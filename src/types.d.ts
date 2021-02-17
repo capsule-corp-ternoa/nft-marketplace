@@ -8,7 +8,8 @@ type ContextState = {
   isLoading: boolean;
   nftList: any[];
   selectedNft: any;
-  user: any
+  user: any;
+  searchValue: string;
 };
 
 type ContextAction = {

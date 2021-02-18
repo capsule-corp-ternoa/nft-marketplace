@@ -32,7 +32,7 @@ const ConnectWalletPage: React.FC = () => {
 
   
   const connectWallet = () => {
-    updateStoreElement(dispatch, 'walletId', '0xAC...3804');
+    updateStoreElement(dispatch, 'walletId', '12,450');
   };
 
   return (

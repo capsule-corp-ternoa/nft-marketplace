@@ -123,5 +123,18 @@
       "description": "TBD",
       "keywords": "TBD"
     }
+  },
+  "searchPage": {
+    "resultsFor": "検索キーワード: "
+  },
+  "profileTopPage": {
+    "tab1": "On sale",
+    "tab2": "Collectible",
+    "tab3": "Created",
+    "tab4": "Liked",
+    "tab5": "Followers",
+    "tab6": "Followings",
+    "editProfile": "Edit profile"
+
   }
 }

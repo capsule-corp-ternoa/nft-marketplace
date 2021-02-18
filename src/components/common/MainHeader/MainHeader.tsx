@@ -15,6 +15,7 @@ import { updateStoreElement } from '../../../utils/store/actions';
 import { H3 } from '../Title/Title';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 import { ReactComponent as TernoaLogo } from '../assets/logo-ternoa.svg';
+import { ReactComponent as Caps } from '../assets/caps.svg';
 
 const ContainerHeader = styled.div`
   padding:21px 0;
@@ -102,17 +103,25 @@ const MainHeader: React.FC = () => {
               {t('header.createButton')}
             </Button>
         
-            <Button 
-              onClick={() => {history.push('/connect-wallet');}}
-            >
-              {
-                state.walletId ? 
-                  <span>{state.walletId}</span>
-                  :
+            { state.walletId ? 
+
+              (
+                <Button 
+                  onClick={() => {history.push('/profile-top');}}
+                >
+                  <span>{state.walletId} &nbsp; <Caps /></span>
+                </Button>
+              )
+              :
+              (
+                <Button 
+                  onClick={() => {history.push('/connect-wallet');}}
+                >
                   <span>{t('header.connectWallet')} </span>
-              }
+                </Button>
+              )}
               
-            </Button>
+            
           </div>
         
         </Col>

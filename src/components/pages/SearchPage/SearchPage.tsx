@@ -1,4 +1,5 @@
 import React, { useEffect, useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import { fetchNfts } from '../../../utils/store/dataFetcher';
 import { Context } from '../../../utils/store/store';
 import NftCard from '../../common/NftCard/NftCard';
@@ -18,9 +19,11 @@ const SearchPage: React.FC = () => {
     fetchNfts(dispatch);
   }, [dispatch]);
 
+  const { t } = useTranslation();
+
   return (
     <>
-      <H4 style={{ margin: '20px' }}>Results for : <GradientText> {query.get('q')} </GradientText></H4>
+      <H4 style={{ margin: '20px' }}>{t('searchPage.resultsFor')} <GradientText> {query.get('q')} </GradientText></H4>
       <Row>
         {state.nftList?.map((nft, index) => (
           <NftCard key={nft.id} nft={nft} />

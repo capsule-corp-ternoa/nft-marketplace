@@ -9,7 +9,7 @@ const app = express();
 
 const nftApiUrl = `${process.env.NFT_API_HOST}:${process.env.NFT_API_PORT}`;
 
-app.use(express.static(path.join(__dirname, 'build')));
+app.use(express.static(path.join(__dirname, '../build'), { index: false }));
 
 app.get('/ping', (req, res) => res.send('pong'));
 
@@ -53,7 +53,7 @@ app.get('/nft-api/user/:id', (req, res) => {
 });
 
 app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  res.sendFile(path.join(__dirname, '../build', 'index.html'));
 });
 
 app.listen(8181);

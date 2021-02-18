@@ -54,7 +54,7 @@
     "test:cov": "npm test -- --coverage --watchAll=false",
     "start-backend": "node server/server",
     "start-mockup": "mockserver -p 8282 -m './mocks'",
-    "production": "node server/server"
+    "production": "npm-run-all -p start-mockup start-backend"
   },
   "eslintConfig": {
     "extends": [

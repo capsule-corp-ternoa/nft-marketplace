@@ -10,6 +10,7 @@ type ContextState = {
   selectedNft: any;
   user: any;
   searchValue: string;
+  walletId: string;
 };
 
 type ContextAction = {
@@ -33,6 +34,8 @@ type NftListMockupType = {
   view: number;
   owner: string;
   creator: string;
+  ownerPicture: string;
+  creatorPicture: string;
   collectionName: string;
 };
 
@@ -100,5 +103,12 @@ declare module 'react-loader-spinner' {
   }
   export default class Loader extends React.Component<LoaderProps> {
     constructor(props: LoaderProps);
+  }
+}
+
+declare global {
+  interface Document {
+    /** documentation on foo */
+    ethereum: string;
   }
 }

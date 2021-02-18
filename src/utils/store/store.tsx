@@ -100,6 +100,7 @@ const initialState = {
   selectedNft: null,
   user: null,
   searchValue: null,
+  walletId: null,
 };
 
 export const ContextProvider: React.FC = ({ children }) => {

@@ -90,7 +90,7 @@ const MainHeader: React.FC = () => {
           <div>
 
             <Button 
-              onClick={() => {history.push('/search');}}
+              onClick={() => {history.push(`/search?q=${state.searchValue}`);}}
             >
               <FaSearch />
             </Button>
@@ -105,7 +105,13 @@ const MainHeader: React.FC = () => {
             <Button 
               onClick={() => {history.push('/connect-wallet');}}
             >
-              {t('header.connectWallet')}
+              {
+                state.walletId ? 
+                  <span>{state.walletId}</span>
+                  :
+                  <span>{t('header.connectWallet')} </span>
+              }
+              
             </Button>
           </div>
         

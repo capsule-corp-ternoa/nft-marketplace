@@ -5,11 +5,14 @@ import NftCard from '../../common/NftCard/NftCard';
 import Col from '../../common/ui-library/Col/Col';
 import Row from '../../common/ui-library/Row/Row';
 import { H4, GradientText } from '../../common/Title/Title';
+import useQuery from '../../../hooks/useQuery';
 
 const SearchPage: React.FC = () => {
  
   // Get the context
   const { dispatch, state } = useContext(Context);
+
+  const query = useQuery();
 
   useEffect( () => {
     fetchNfts(dispatch);
@@ -17,7 +20,7 @@ const SearchPage: React.FC = () => {
 
   return (
     <>
-      <H4 style={{ margin: '20px' }}>Results for : <GradientText>{state.searchValue} </GradientText></H4>
+      <H4 style={{ margin: '20px' }}>Results for : <GradientText> {query.get('q')} </GradientText></H4>
       <Row>
         {state.nftList?.map((nft, index) => (
           <NftCard key={nft.id} nft={nft} />

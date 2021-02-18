@@ -1,7 +1,10 @@
-import React from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
+import { Context } from '../../../utils/store/store';
+import { updateStoreElement } from '../../../utils/store/actions';
 import { H1, P } from '../../common/Title/Title';
 import TinyContainer from '../../common/ui-library/TinyContainer/TinyContainer';
 import Button from '../../common/ui-library/Button/Button';
@@ -25,6 +28,13 @@ const ConnectWalletPage: React.FC = () => {
 
   const { t } = useTranslation();
 
+  const { dispatch } = useContext(Context);
+
+  
+  const connectWallet = () => {
+    updateStoreElement(dispatch, 'walletId', '0xAC...3804');
+  };
+
   return (
     <TinyContainer style={{ textAlign: 'center' }}>
 
@@ -45,7 +55,7 @@ const ConnectWalletPage: React.FC = () => {
       <div>
         {walletsList.map( (wallet) => (
           <>
-            <WalletButton key={wallet.id}>
+            <WalletButton onClick={connectWallet} key={wallet.id}>
               <i>
                 <img alt="wallet" src={wallet.img} />
               </i>

@@ -47,6 +47,7 @@
     }
   },
   "createCollectible": {
+    "goBack": "Retour",
     "title": "Créer un Collectible",
     "titleMultiple": "Créer un collectible multiple",
     "introduction": "Choisissez “Single” si votre stamp est unique ou “Multiple” si vous souhaitez en proposer plusieurs",
@@ -122,5 +123,18 @@
       "description": "TBD",
       "keywords": "TBD"
     }
+  },
+  "searchPage": {
+    "resultsFor": "Résultats pour: "
+  },
+  "profileTopPage": {
+    "tab1": "On sale",
+    "tab2": "Collectible",
+    "tab3": "Created",
+    "tab4": "Liked",
+    "tab5": "Followers",
+    "tab6": "Followings",
+    "editProfile": "Edit profile"
+
   }
 }

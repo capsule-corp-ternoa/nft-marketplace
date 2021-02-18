@@ -8,8 +8,8 @@ type IconType= {
 
 export const EyeIcon: React.FC<IconType> = (props) => <FaEye {...props} />;
 
-export const ShareIcon: React.FC<IconType> = (props) => <FaShareAlt />;
+export const ShareIcon: React.FC<IconType> = (props) => <FaShareAlt {...props} />;
 
-export const HeartIcon: React.FC<IconType> = (props) => <FaRegHeart />;
+export const HeartIcon: React.FC<IconType> = (props) => <FaRegHeart {...props} />;
 
 export const WalletIcon: React.FC<IconType> = (props) => <FaWallet {...props} />;

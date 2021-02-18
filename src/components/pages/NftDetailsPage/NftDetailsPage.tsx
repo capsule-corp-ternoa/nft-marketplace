@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet';
 import { EyeIcon, ShareIcon, HeartIcon } from '../../common/Icons/Icons';
 import Col from '../../common/ui-library/Col/Col';
 import Row from '../../common/ui-library/Row/Row';
+import Image from '../../common/ui-library/Image/Image';
 import Button from '../../common/ui-library/Button/Button';
 import { H1, H4, SubTitle } from '../../common/Title/Title';
 import { fetchOneNft } from '../../../utils/store/dataFetcher';
@@ -15,17 +16,25 @@ import NftImage from '../../common/NftImage/NftImage';
 type DetailsLabelProps = {
   label: string;
   value: string;
+  image?: string;
 };
 
 const DetailsLabel: React.FC<DetailsLabelProps> = (props) => (
-  <>
-    <H4 style={{ color: '#969393', margin: '0', fontWeight: 'bold' }}>
-      {props.label}
-    </H4>          
-    <div style={{ fontWeight: 'bold', marginBottom: '20px' }}>
-      {props.value}
-    </div>
-  </>
+  
+  <Row>
+    <Col size="10">
+      { props.image && 
+      <Image responsive src={props.image} />}
+    </Col>
+    <Col size="90">
+      <H4 style={{ color: '#969393', margin: '0', fontWeight: 'bold' }}>
+        {props.label}
+      </H4>          
+      <div style={{ fontWeight: 'bold', marginBottom: '20px' }}>
+        {props.value}
+      </div>
+    </Col>
+  </Row>
 
 );
 
@@ -98,10 +107,12 @@ const NftDetailsPage: React.FC = () => {
                   <DetailsLabel 
                     label={t('details.owner')}
                     value={state.selectedNft.owner}
+                    image={state.selectedNft.ownerPicture}
                   />
                   <DetailsLabel 
                     label={t('details.creator')}
                     value={state.selectedNft.creator}
+                    image={state.selectedNft.creatorPicture}
                   />
                   <DetailsLabel 
                     label={t('details.type')}

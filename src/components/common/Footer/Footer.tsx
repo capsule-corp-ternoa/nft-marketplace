@@ -18,6 +18,7 @@ import { ReactComponent as JapaneseFlag } from '../assets/japanese-flag.svg';
 import FooterSubMenu from './FooterSubMenu/FooterSubMenu';
 
 const FooterContainer = styled.div`
+  z-index:-100;
   margin-top:50px;
   height: 363px;
   width: 100%;
@@ -26,6 +27,7 @@ const FooterContainer = styled.div`
 `;
 
 const RoundedWrapper = styled.div`
+  z-index:-1;
   width: 300px;
   height: 300px;
   background: #fff;

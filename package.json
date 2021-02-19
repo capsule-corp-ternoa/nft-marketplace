@@ -22,7 +22,6 @@
     "i18next": "^19.8.7",
     "i18next-browser-languagedetector": "^6.0.1",
     "i18next-xhr-backend": "^3.2.2",
-    "mockserver": "^3.1.1",
     "npm-run-all": "^4.1.5",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
@@ -48,13 +47,12 @@
     "lint": "eslint --ext .js,.jsx,.ts,.tsx src --color",
     "format": "prettier --write 'src/**/*.{ts,tsx,scss,css,json}'",
     "isready": "npm run format && npm run lint && npm run build",
-    "dev": "npm-run-all -p start-mockup start-backend start",
+    "dev": "npm-run-all -p start-backend start",
     "test": "react-scripts test",
     "test:nowatch": "react-scripts test --watchAll=false",
     "test:cov": "npm test -- --coverage --watchAll=false",
     "start-backend": "node server/server",
-    "start-mockup": "mockserver -p 8282 -m './mocks'",
-    "production": "npm-run-all -p start-mockup start-backend"
+    "production": "npm start-backend"
   },
   "eslintConfig": {
     "extends": [

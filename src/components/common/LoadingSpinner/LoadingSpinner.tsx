@@ -16,9 +16,15 @@ const Overlay = styled.div`
   overflow-x: hidden;
 `;
 
+const OverlayTitle = styled.div`
+  text-align:center;
+  color:white;
+  padding-top:20px;
+`;
+
 const OverlayContent = styled.div`
   position: relative;
-  top: 45%;
+  top: 40%;
   width: 100%;
   text-align: center;
   color:white;
@@ -30,7 +36,11 @@ const LoadingSpinner: React.FC = () => {
     <>
       {state.isLoading &&
       <Overlay>
-        <OverlayContent>
+        <OverlayTitle>
+          loading...
+        </OverlayTitle>        
+        
+        <OverlayContent>          
           <Loader type="TailSpin" color="#00BFFF" height={80} width={80} />
         </OverlayContent>
       </Overlay>}

@@ -108,8 +108,7 @@ export const InputBoxUpload: React.FC<InputConfig> = (props) => {
   return (
     <>
       {label && <LabelStyled>{label}</LabelStyled>}
-      <UploadBox key={uid} subTitle={subTitle || ''} />
-      {subTitle && <SubTitle>{subTitle}</SubTitle>}
+      <UploadBox key={uid} subTitle={subTitle || ''} />      
     </>
   );
 };

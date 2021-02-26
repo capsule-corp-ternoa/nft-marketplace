@@ -33,11 +33,13 @@ const nft = {
     'views': 5201,
     'owner': 'mickael canu',
     'creator': 'inri',
-    'collectionName': 'Test name',
+    'collectionName': 'Test name collection',
+    'ownerPicture': 'owner.jpg',
+    'creatorPicture': 'creator.jpg',
   }
 };
 
-// Jest mock
+// Axios mock
 jest.mock('axios');
 const resp = { data: nft };
 axios.get.mockResolvedValue(resp);
@@ -60,12 +62,25 @@ describe('NftDetailsPage snapshots', () => {
 });
 
 
-it('renders component properly', async () => {
-  // detailsWithStates();
-  // await screen.findByText('details.buy');
+it('renders component properly', () => {
 
-  // console.log(prettyDOM(div))
-  // await findByText('details.owner');
-    
+  detailsWithStates();
+  screen.findByText('details.buy');
+
+  screen.findByText('0.2');
+
+  // owner displayed
+  screen.findByText('mickael canu');
+  // creator displayed
+  screen.findByText('inri');
+  // owner picture displayed
+  screen.findByText('owner.jpg');
+  // creator picture displayed
+  screen.findByText('creator.jpg');
+  //  collection name displayed
+  screen.findByText('Test name collection');
+  // views displayed
+  screen.findByText('5201');
+
     
 });

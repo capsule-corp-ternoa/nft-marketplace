@@ -1,9 +1,10 @@
 /* eslint-disable no-console */
 import React from 'react';
+import axios from 'axios';
 import { render, screen } from '@testing-library/react';
 import renderer from 'react-test-renderer';
 import TopPage from './TopPage';
-import ContextProvider from '../../../utils/store/store';
+import { Context } from '../../../utils/store/store';
 
 // Known issue: error and warning does not work for console
 // https://github.com/facebook/react/issues/7047
@@ -50,18 +51,27 @@ const nftList = {
   ]
 };
 
-const renderTopPageEmpty: React.FC = () => render( 
-  <ContextProvider nftList={nftList}>
-    <TopPage />
-  </ContextProvider>
-);
+// Axios mock
+jest.mock('axios');
+const resp = { data: nftList };
+axios.get.mockResolvedValue(resp);
 
 describe('TopPage snapshots', () => {
 
-  test('TopPage renders correctly', () => {
+
+  it('TopPage renders correctly', () => {
+
+    const dispatch = jest.fn();
+    const state = {
+      nftList: nftList.nfts,
+    };
+    
     const tree = renderer
-      .create(<renderTopPageEmpty />)
-      .toJSON();
+      .create(
+        <Context.Provider value={{ state, dispatch }}>
+          <TopPage />
+        </Context.Provider>
+      ).toJSON();
     expect(tree).toMatchSnapshot();
   });
 
@@ -70,10 +80,26 @@ describe('TopPage snapshots', () => {
 
 describe('TopPage', () => {
   it('renders component properly', () => {
-    renderTopPageEmpty();
+
+    const dispatch = jest.fn();
+    const state = {
+      nftList: nftList.nfts,
+    };
+
+    render(
+      <Context.Provider value={{ state, dispatch }}>
+        <TopPage />
+      </Context.Provider>
+    );
+
     expect(screen.getByText('topPage.categoryTitle')).toBeInTheDocument();
     expect(screen.getByText('topPage.topCollector')).toBeInTheDocument();
     expect(screen.getByText('topPage.popularCreations')).toBeInTheDocument();
+
+    // TODO fix this text.. nft info not reachable
+    // await expect(screen.findByText('my NFT 1')).toBeVisible()();
+    
+
   });
 
 });

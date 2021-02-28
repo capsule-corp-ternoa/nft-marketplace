@@ -4,7 +4,6 @@ import axios from 'axios';
 import { render, screen } from '@testing-library/react';
 import renderer from 'react-test-renderer';
 import TopPage from './TopPage';
-import { Context } from '../../../utils/store/store';
 
 // Known issue: error and warning does not work for console
 // https://github.com/facebook/react/issues/7047
@@ -60,17 +59,10 @@ describe('TopPage snapshots', () => {
 
 
   it('TopPage renders correctly', () => {
-
-    const dispatch = jest.fn();
-    const state = {
-      nftList: nftList.nfts,
-    };
     
     const tree = renderer
       .create(
-        <Context.Provider value={{ state, dispatch }}>
-          <TopPage />
-        </Context.Provider>
+        <TopPage setIsLoading={()=> jest.fn()} />
       ).toJSON();
     expect(tree).toMatchSnapshot();
   });
@@ -81,16 +73,8 @@ describe('TopPage snapshots', () => {
 describe('TopPage', () => {
   it('renders component properly', () => {
 
-    const dispatch = jest.fn();
-    const state = {
-      nftList: nftList.nfts,
-    };
-
-    render(
-      <Context.Provider value={{ state, dispatch }}>
-        <TopPage />
-      </Context.Provider>
-    );
+    const setIsLoading = jest.fn();
+    render(<TopPage setIsLoading={setIsLoading} />);
 
     expect(screen.getByText('topPage.categoryTitle')).toBeInTheDocument();
     expect(screen.getByText('topPage.topCollector')).toBeInTheDocument();

@@ -3,8 +3,6 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import renderer from 'react-test-renderer';
 import ConnectWalletPage from './ConnectWalletPage';
-import MainHeader from '../../common/MainHeader/MainHeader';
-import ContextProvider from '../../../utils/store/store';
 
 // Known issue: error and warning does not work for console
 // https://github.com/facebook/react/issues/7047
@@ -22,15 +20,13 @@ jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key) => key }),
 }));
 
-jest.mock('../../../utils/store/actions', () => ({
-  updateStoreElement: jest.fn(),
-}));
-
 describe('ConnectWalletPage snapshots', () => {
 
   test('ConnectWalletPage renders correctly', () => {
+    const setWalletId = jest.fn();
+
     const tree = renderer
-      .create(<ConnectWalletPage />)
+      .create(<ConnectWalletPage setWalletId={setWalletId} />)
       .toJSON();
     expect(tree).toMatchSnapshot();
   });
@@ -40,7 +36,8 @@ describe('ConnectWalletPage snapshots', () => {
 describe('ConnectWalletPage', () => {
 
   it('renders component properly', () => {
-    render(<ConnectWalletPage />);
+    const setWalletId = jest.fn();
+    render(<ConnectWalletPage setWalletId={setWalletId} />);
     expect(screen.getByText('Metamask')).toBeInTheDocument();
     expect(screen.getByText('Wallet Connect')).toBeInTheDocument();
     expect(screen.getByText('Fortmatic')).toBeInTheDocument();
@@ -48,17 +45,13 @@ describe('ConnectWalletPage', () => {
   });
 
   it('Show wallet amount after clicking', () => {
-    render(
-      <ContextProvider>
-        <MainHeader />
-        <ConnectWalletPage />
-      </ContextProvider>
-    );
+    const setWalletId = jest.fn();
+    render( <ConnectWalletPage setWalletId={setWalletId} />);
 
     const metaMask = screen.getByText('Metamask');
     expect(metaMask).toBeInTheDocument();
     fireEvent.click(metaMask);
-    screen.findByText('12,450');
+    expect(setWalletId.mock.calls.length).toBe(1);
 
   });
 

@@ -1,4 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet';
 import { EyeIcon, ShareIcon, HeartIcon } from '../../common/Icons/Icons';
@@ -7,11 +8,10 @@ import Row from '../../common/ui-library/Row/Row';
 import Image from '../../common/ui-library/Image/Image';
 import Button from '../../common/ui-library/Button/Button';
 import { H1, H4, SubTitle } from '../../common/Title/Title';
-import { fetchOneNft } from '../../../utils/store/dataFetcher';
-import { Context } from '../../../utils/store/store';
 import { RoundedSpan, SquaredSpan } from '../../common/Shapes/Shapes';
 import PurchaseModal from './PurchaseModal/PurchaseModal';
 import NftImage from '../../common/NftImage/NftImage';
+import { ApiProxyUri } from '../../../utils/utils';
 
 type DetailsLabelProps = {
   label: string;
@@ -38,17 +38,24 @@ const DetailsLabel: React.FC<DetailsLabelProps> = (props) => (
 
 );
 
-const NftDetailsPage: React.FC = () => {
+const NftDetailsPage: React.FC<LoadablePageType> = ( { setIsLoading }) => {
 
-  // Get the context
-  const { dispatch, state } = useContext(Context);
-
+  // Modal for payment
   const [displayModal, setDisplayModal] = useState(false);
 
+  // Nft information
+  const [nft, setNft] = useState({} as NftListMockupType);
+
   // Retrieve NFT info when component loaded
-  useEffect(() => {
-    fetchOneNft(dispatch);
-  }, [dispatch]);
+  useEffect(  () => {
+    async function fetchData() {
+      setIsLoading(true);
+      const res = await axios.get(`${ApiProxyUri}/nft/1`);
+      setNft(res.data.nft);
+      setIsLoading(false);
+    }
+    fetchData();
+  }, [setIsLoading]);
 
   const { t } = useTranslation();
 
@@ -61,12 +68,12 @@ const NftDetailsPage: React.FC = () => {
         <meta name="keywords" content={t('details.seo.keywords')} />
       </Helmet>
 
-      {state.selectedNft && (
+      {nft && (
         <>
 
           {displayModal && 
           <PurchaseModal 
-            nft={state.selectedNft} 
+            nft={nft} 
             closeModal={() => {setDisplayModal(false);}} 
           />}
           
@@ -76,8 +83,8 @@ const NftDetailsPage: React.FC = () => {
               <div style={{ textAlign: 'center' }}>
                 <NftImage 
                   full={true}
-                  alt={state.selectedNft.name} 
-                  src={state.selectedNft.image}
+                  alt={nft.name} 
+                  src={nft.image}
                 />
               </div>
             </Col>
@@ -85,10 +92,10 @@ const NftDetailsPage: React.FC = () => {
             {/* NFT details  */}
             <Col small="100" medium="50" large="50">
               <div style={{ margin: '0 auto' }}>
-                <H1>{state.selectedNft.name}</H1>
+                <H1>{nft.name}</H1>
                 <Button primary full onClick={() => {setDisplayModal(true);}}>
                   {t('details.buy')} - 
-                  {state.selectedNft.price}
+                  {nft.price}
                 </Button>
 
                 <SubTitle style={{ width: '100%', textAlign: 'center' }}>
@@ -97,7 +104,7 @@ const NftDetailsPage: React.FC = () => {
 
                 <div style={{ marginTop: '40px', height: '100px' }}>
                   <SquaredSpan><EyeIcon />
-                    {state.selectedNft.views}
+                    {nft.views}
                   </SquaredSpan>&nbsp;
                   <RoundedSpan><HeartIcon /></RoundedSpan>&nbsp;
                   <RoundedSpan><ShareIcon /></RoundedSpan>
@@ -106,17 +113,17 @@ const NftDetailsPage: React.FC = () => {
                 <div>
                   <DetailsLabel 
                     label={t('details.owner')}
-                    value={state.selectedNft.owner}
-                    image={state.selectedNft.ownerPicture}
+                    value={nft.owner}
+                    image={nft.ownerPicture}
                   />
                   <DetailsLabel 
                     label={t('details.creator')}
-                    value={state.selectedNft.creator}
-                    image={state.selectedNft.creatorPicture}
+                    value={nft.creator}
+                    image={nft.creatorPicture}
                   />
                   <DetailsLabel 
                     label={t('details.type')}
-                    value={state.selectedNft.collectionName}
+                    value={nft.collectionName}
                   />
                 </div>
               

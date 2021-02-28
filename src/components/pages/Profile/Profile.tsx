@@ -1,9 +1,9 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
-import { Context } from '../../../utils/store/store';
-import { fetchOneUser } from '../../../utils/store/dataFetcher';
+import { ApiProxyUri } from '../../../utils/utils';
 import { 
   InputBoxStandart, 
   InputBoxTextArea } from '../../common/InputBox/InputBox';
@@ -21,18 +21,24 @@ const WarningMessageStyled = styled.p`
   color: #878cff;
 `;
 
-const Profile: React.FC = () => {
+const Profile: React.FC<LoadablePageType> = ({ setIsLoading }) => {
 
-  // Get the context
-  const { dispatch, state } = useContext(Context);
+  // Nft information
+  const [user, setUser] = useState({} as UserType);
+  
+  // // Retrieve NFT info when component loaded
+  useEffect(  () => {
+    async function fetchData() {
+      setIsLoading(true);
+      const res = await axios.get(`${ApiProxyUri}/user/1`);
+      setUser(res.data.user);
+      setIsLoading(false);
+    }
+    fetchData();
+  }, [setIsLoading]);
 
   const { t } = useTranslation();
 
-  // Retrieve NFT info when component loaded
-  useEffect(() => {
-    fetchOneUser(dispatch);
-  }, [dispatch]);
-  
   return (
     <>
 
@@ -46,33 +52,33 @@ const Profile: React.FC = () => {
       <InputBoxStandart 
         uid="settings_name" 
         label={t('profile.displayName')}
-        value={state.user && state.user.displayName}
+        value={user && user.displayName}
       />
 
       <InputBoxStandart 
         uid="settings_url" 
         label={t('profile.customUrl')}
-        value={state.user && state.user.customUrl}
+        value={user && user.customUrl}
       />
 
       <InputBoxTextArea
         uid="settings_bio" 
         label={t('profile.bio')}
-        value={state.user && state.user.bio}
+        value={user && user.bio}
       />
 
       <InputBoxStandart
         uid="settings_twitter"
         label={t('profile.twitter')}
         subTitle={t('profile.twitterSubText')}
-        value={state.user && state.user.twitter}
+        value={user && user.twitter}
       />
 
       <InputBoxStandart
         uid="settings_portfolio"
         label={t('profile.personalSite')}
         subTitle={t('profile.personalSiteSubText')}
-        value={state.user && state.user.site}
+        value={user && user.site}
       />
 
       <WarningMessageStyled>

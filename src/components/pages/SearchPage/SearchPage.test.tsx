@@ -3,7 +3,6 @@ import React from 'react';
 import axios from 'axios';
 import renderer from 'react-test-renderer';
 import SearchPage from './SearchPage';
-import { Context } from '../../../utils/store/store';
 
 // Known issue: error and warning does not work for console
 // https://github.com/facebook/react/issues/7047
@@ -19,10 +18,6 @@ afterEach(() => {
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key) => key }),
-}));
-
-jest.mock('../../../utils/store/actions', () => ({
-  updateStoreElement: jest.fn(),
 }));
 
 const nftList = [
@@ -74,16 +69,9 @@ describe('SearchPage snapshots', () => {
 
   test('SearchPage renders correctly', () => {
 
-    const dispatch = jest.fn();
-    const state = {
-      nftList,
-    };
-
     const tree = renderer
       .create(
-        <Context.Provider value={{ state, dispatch }}>
-          <SearchPage />
-        </Context.Provider>
+        <SearchPage setIsLoading={()=> jest.fn()} />
       ).toJSON();
     expect(tree).toMatchSnapshot();
   });

@@ -2,7 +2,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import Profile from './Profile';
-import ContextProvider from '../../../utils/store/store';
 
 const original = console.error;
 
@@ -21,12 +20,8 @@ jest.mock('react-i18next', () => ({
 describe('Profile', () => {
 
   it('renders component properly', () => {
-    render(
-      <ContextProvider>
-        <Profile />
-      </ContextProvider>);
+    render(<Profile setIsLoading={()=> jest.fn()} />);
     expect(screen.getByText('profile.displayName')).toBeInTheDocument();
-
   });
 
 });

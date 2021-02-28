@@ -2,7 +2,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import MainHeader from './MainHeader';
-import ContextProvider from '../../../utils/store/store';
 
 // Known issue: error and warning does not work for console
 // https://github.com/facebook/react/issues/7047
@@ -21,9 +20,7 @@ jest.mock('react-i18next', () => ({
 }));
 
 const renderMainHeader: React.FC = () => render( 
-  <ContextProvider>
-    <MainHeader />
-  </ContextProvider>
+  <MainHeader />
 );
 
 describe('MainHeader', () => {

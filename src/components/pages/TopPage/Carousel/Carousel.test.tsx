@@ -44,8 +44,8 @@ describe('Carousel', () => {
 
   it('renders component properly', () => {
     render(<Carousel nftList={nftList} />);
-    // TODO
-    // expect(screen.getByText('price')).toBeInTheDocument();
+    
+    // TODO find out why carousel elements a re not shown (same as top page)
 
   });
 

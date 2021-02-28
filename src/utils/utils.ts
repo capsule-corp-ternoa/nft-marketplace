@@ -1,3 +1,5 @@
+export const ApiProxyUri: string = '/nft-api/';
+
 export const categoryList: CategoryType[] = [
   {
     id: 0,

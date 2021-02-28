@@ -4,7 +4,6 @@ import axios from 'axios';
 import { render, screen, fireEvent } from '@testing-library/react';
 import renderer from 'react-test-renderer';
 import ProfileTopPage from './ProfileTopPage';
-import ContextProvider from '../../../utils/store/store';
 
 // Known issue: error and warning does not work for console
 // https://github.com/facebook/react/issues/7047
@@ -20,10 +19,6 @@ afterEach(() => {
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key) => key }),
-}));
-
-jest.mock('../../../utils/store/actions', () => ({
-  updateStoreElement: jest.fn(),
 }));
 
 const nftList = {
@@ -69,21 +64,11 @@ jest.mock('react-router-dom', () => ({
   }),
 }));
 
-
-const renderTopProfilePageEmpty: React.FC = () => render( 
-  <ContextProvider>
-    <ProfileTopPage />
-  </ContextProvider>
-);
-
 describe('ProfileTopPage snapshots', () => {
 
   test('ProfileTopPage renders correctly', () => {
     const tree = renderer
-      .create(
-        <ContextProvider>
-          <ProfileTopPage />
-        </ContextProvider>)
+      .create(<ProfileTopPage setIsLoading={()=> jest.fn()} />)
       .toJSON();
     expect(tree).toMatchSnapshot();
   });
@@ -93,7 +78,7 @@ describe('ProfileTopPage snapshots', () => {
 describe('ProfileTopPage', () => {
 
   it('renders component tabs properly', () => {
-    renderTopProfilePageEmpty();
+    render(<ProfileTopPage setIsLoading={()=> jest.fn()} />);
     expect(screen.getByText('profileTopPage.tab1')).toBeInTheDocument();
     expect(screen.getByText('profileTopPage.tab2')).toBeInTheDocument();
     expect(screen.getByText('profileTopPage.tab3')).toBeInTheDocument();
@@ -103,14 +88,11 @@ describe('ProfileTopPage', () => {
   });
 
   it('Redirect to profile page', () => {
-    renderTopProfilePageEmpty();
-
+    render(<ProfileTopPage setIsLoading={()=> jest.fn()} />);
     const profile = screen.getByText('Profile');
     expect(profile).toBeInTheDocument();
     fireEvent.click(profile);
     expect(mockHistoryPush).toHaveBeenCalledWith('/profile');
-
-    
   });
 
   

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
@@ -10,10 +10,7 @@ import Button from '../ui-library/Button/Button';
 import Input from '../ui-library/Input/Input';
 
 import colors from '../ui-library/styles/colors';
-import { Context } from '../../../utils/store/store';
-import { updateStoreElement } from '../../../utils/store/actions';
 import { H3 } from '../Title/Title';
-import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 import { ReactComponent as TernoaLogo } from '../assets/logo-ternoa.svg';
 import { ReactComponent as Caps } from '../assets/caps.svg';
 
@@ -56,19 +53,24 @@ const InputStyled = styled(Input)`
   }
 `;
 
-const MainHeader: React.FC = () => {
+type MainHeaderType = {
+  walletId: string;
+};
+
+const MainHeader: React.FC<MainHeaderType> = ({ walletId }) => {
   
-  const { state, dispatch } = useContext(Context);
+  const [searchValue, setSearchValue] = useState('' as string);
+  
   const history = useHistory();
   const { t } = useTranslation();
 
   const updateKeywordSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    updateStoreElement(dispatch, 'searchValue', event.currentTarget.value);
+    setSearchValue(event.currentTarget.value);
   };
   
   return (
     <ContainerHeader>
-      {state.isLoading && <LoadingSpinner />}
+      
       <Row>
         {/* Application name */}
         <Col small="50" medium="20" large="20">
@@ -91,7 +93,7 @@ const MainHeader: React.FC = () => {
           <div>
 
             <Button 
-              onClick={() => {history.push(`/search?q=${state.searchValue}`);}}
+              onClick={() => {history.push(`/search?q=${searchValue}`);}}
             >
               <FaSearch />
             </Button>
@@ -103,13 +105,13 @@ const MainHeader: React.FC = () => {
               {t('header.createButton')}
             </Button>
         
-            { state.walletId ? 
+            { walletId ? 
 
               (
                 <Button 
                   onClick={() => {history.push('/profile-top');}}
                 >
-                  <span>{state.walletId} &nbsp; <Caps /></span>
+                  <span>{walletId} &nbsp; <Caps /></span>
                 </Button>
               )
               :

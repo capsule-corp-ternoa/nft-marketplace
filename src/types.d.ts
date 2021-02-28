@@ -1,4 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+type LoadablePageType = {
+  setIsLoading: (flag: boolean) => void;
+};
+
 type ContextArgs = {
   state: ContextState;
   dispatch: React.Dispatch<ContextAction>;
@@ -31,12 +35,21 @@ type NftListMockupType = {
   quantity: string;
   price: string;
   image: string;
-  view: number;
+  views: number;
   owner: string;
   creator: string;
   ownerPicture: string;
   creatorPicture: string;
   collectionName: string;
+};
+
+type UserType = {
+  id: integer;
+  displayName: string;
+  customUrl: string;
+  bio: string;
+  twitter: string;
+  site: string;
 };
 
 // For spinner

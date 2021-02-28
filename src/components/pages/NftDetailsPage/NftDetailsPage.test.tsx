@@ -4,7 +4,6 @@ import axios from 'axios';
 import { render, screen } from '@testing-library/react';
 import renderer from 'react-test-renderer';
 import NftDetailsPage from './NftDetailsPage';
-import ContextProvider from '../../../utils/store/store';
 
 // Known issue: error and warning does not work for console
 // https://github.com/facebook/react/issues/7047
@@ -44,17 +43,11 @@ jest.mock('axios');
 const resp = { data: nft };
 axios.get.mockResolvedValue(resp);
 
-const detailsWithStates: React.FC = () => render( 
-  <ContextProvider>
-    <NftDetailsPage />
-  </ContextProvider>
-);
-
 describe('NftDetailsPage snapshots', () => {
 
   test('NftDetailsPage renders correctly', () => {
     const tree = renderer
-      .create(<detailsWithStates />)
+      .create(<NftDetailsPage setIsLoading={false} />)
       .toJSON();
     expect(tree).toMatchSnapshot();
   });
@@ -64,7 +57,7 @@ describe('NftDetailsPage snapshots', () => {
 
 it('renders component properly', () => {
 
-  detailsWithStates();
+  render(<NftDetailsPage setIsLoading={false} />);
   screen.findByText('details.buy');
 
   screen.findByText('0.2');

@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
@@ -7,8 +8,7 @@ import Col from '../../common/ui-library/Col/Col';
 import Row from '../../common/ui-library/Row/Row';
 import Button from '../../common/ui-library/Button/Button';
 import NftCard from '../../common/NftCard/NftCard';
-import { fetchNfts } from '../../../utils/store/dataFetcher';
-import { Context } from '../../../utils/store/store';
+import { ApiProxyUri } from '../../../utils/utils';
 import 'react-tabs/style/react-tabs.css';
 
 type TempTabContentProps =  {
@@ -24,18 +24,25 @@ const TempTabContent: React.FC<TempTabContentProps> = ({ nftList }) => (
   </Row>
 );
 
-const ProfileTopPagePage: React.FC = () => {
-
-  // Get the context
-  const { dispatch, state } = useContext(Context);
+const ProfileTopPagePage: React.FC<LoadablePageType> = ({ setIsLoading }) => {
 
   const { t } = useTranslation();
 
   const history = useHistory();
 
-  useEffect( () => {
-    fetchNfts(dispatch);
-  }, [dispatch]);
+  // Nft list in state
+  const [nftList, setNftList] = useState([]);
+
+  // // Retrieve NFT info when component loaded
+  useEffect(  () => {
+    async function fetchData() {
+      setIsLoading(true);
+      const res = await axios.get(`${ApiProxyUri}/nfts`);
+      setNftList(res.data.nfts);
+      setIsLoading(false);
+    }
+    fetchData();
+  }, [setIsLoading]);
 
   return (
     <div>
@@ -53,22 +60,22 @@ const ProfileTopPagePage: React.FC = () => {
         </TabList>
 
         <TabPanel>
-          <TempTabContent nftList={state.nftList} />
+          <TempTabContent nftList={nftList} />
         </TabPanel>
         <TabPanel>
-          <TempTabContent nftList={state.nftList} />
+          <TempTabContent nftList={nftList} />
         </TabPanel>
         <TabPanel>
-          <TempTabContent nftList={state.nftList} />
+          <TempTabContent nftList={nftList} />
         </TabPanel>
         <TabPanel>
-          <TempTabContent nftList={state.nftList} />
+          <TempTabContent nftList={nftList} />
         </TabPanel>
         <TabPanel>
-          <TempTabContent nftList={state.nftList} />
+          <TempTabContent nftList={nftList} />
         </TabPanel>
         <TabPanel>
-          <TempTabContent nftList={state.nftList} />
+          <TempTabContent nftList={nftList} />
         </TabPanel>
       </Tabs>
     </div>

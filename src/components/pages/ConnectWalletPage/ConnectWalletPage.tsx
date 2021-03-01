@@ -1,10 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useContext } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
-import { Context } from '../../../utils/store/store';
-import { updateStoreElement } from '../../../utils/store/actions';
 import { H1, P } from '../../common/Title/Title';
 import TinyContainer from '../../common/ui-library/TinyContainer/TinyContainer';
 import Button from '../../common/ui-library/Button/Button';
@@ -24,15 +22,16 @@ const walletsList = [
   { id: 4, label: 'WalletLink', img: '/wallets/WalletLink.png' },
 ];
 
-const ConnectWalletPage: React.FC = () => {
+type ConnectWalletPageType = {
+  setWalletId: (walletId: string) => void;
+};
+
+const ConnectWalletPage: React.FC<ConnectWalletPageType> = (props) => {
 
   const { t } = useTranslation();
 
-  const { dispatch } = useContext(Context);
-
-  
   const connectWallet = () => {
-    updateStoreElement(dispatch, 'walletId', '12,450');
+    props.setWalletId('12,450');
   };
 
   return (

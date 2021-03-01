@@ -1,7 +1,6 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import Loader from 'react-loader-spinner';
-import { Context } from '../../../utils/store/store';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 
 const Overlay = styled.div`
@@ -30,22 +29,18 @@ const OverlayContent = styled.div`
   color:white;
 `;
 
-const LoadingSpinner: React.FC = () => {
-  const { state } = useContext(Context);
-  return (
-    <>
-      {state.isLoading &&
-      <Overlay>
-        <OverlayTitle>
-          loading...
-        </OverlayTitle>        
+const LoadingSpinner: React.FC = () => (
+  <>
+    <Overlay>
+      <OverlayTitle>
+        loading....
+      </OverlayTitle>        
         
-        <OverlayContent>          
-          <Loader type="TailSpin" color="#00BFFF" height={80} width={80} />
-        </OverlayContent>
-      </Overlay>}
-    </>
-  );
-};
+      <OverlayContent>          
+        <Loader type="TailSpin" color="#00BFFF" height={80} width={80} />
+      </OverlayContent>
+    </Overlay>
+  </>
+);
 
 export default LoadingSpinner;

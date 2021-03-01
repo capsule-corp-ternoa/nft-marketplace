@@ -23,60 +23,6 @@ Array [
     className="sc-gKsewC krDCXJ"
   >
     <div
-      className="sc-dlfnbm CRSIh"
-      onClick={[Function]}
-      style={
-        Object {
-          "padding": "0",
-        }
-      }
-    >
-      <div>
-        <div
-          className="sc-eCssSg kkAJat"
-        >
-          <img
-            alt="nft-image"
-            className="sc-hKgILt ftdnaw"
-            src="https://picsum.photos/200/300"
-            style={
-              Object {
-                "margin": "10px 0",
-                "width": "100%",
-              }
-            }
-          />
-        </div>
-      </div>
-    </div>
-    <div
-      className="sc-dlfnbm CRSIh"
-      onClick={[Function]}
-      style={
-        Object {
-          "padding": "0",
-        }
-      }
-    >
-      <div>
-        <div
-          className="sc-eCssSg kkAJat"
-        >
-          <img
-            alt="nft-image"
-            className="sc-hKgILt ftdnaw"
-            src="https://picsum.photos/201/300"
-            style={
-              Object {
-                "margin": "10px 0",
-                "width": "100%",
-              }
-            }
-          />
-        </div>
-      </div>
-    </div>
-    <div
       className="sc-jSgupP gUEbOS"
       size="20"
     />

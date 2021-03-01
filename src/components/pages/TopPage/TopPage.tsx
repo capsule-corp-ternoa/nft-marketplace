@@ -1,22 +1,28 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import axios from 'axios';
 import { Helmet } from 'react-helmet';
-import { fetchNfts } from '../../../utils/store/dataFetcher';
-import { Context } from '../../../utils/store/store';
+import { ApiProxyUri } from '../../../utils/utils';
 import Carousel from './Carousel/Carousel';
 import { H1, H4, GradientText } from '../../common/Title/Title';
 
-const TopPage: React.FC = () => {
+const TopPage: React.FC<LoadablePageType> = ({ setIsLoading }) => {
 
   const { t } = useTranslation();
 
-  // Get the context
-  const { dispatch, state } = useContext(Context);
+  // Nft list in state
+  const [nftList, setNftList] = useState([]);
 
-  // Retrieve NFT info when component loaded
-  useEffect( () => {
-    fetchNfts(dispatch);
-  }, [dispatch]);
+  // // Retrieve NFT info when component loaded
+  useEffect(  () => {
+    async function fetchData() {
+      setIsLoading(true);
+      const res = await axios.get(`${ApiProxyUri}/nfts`);
+      setNftList(res.data.nfts);
+      setIsLoading(false);
+    }
+    fetchData();
+  }, [setIsLoading]);
 
   return (
     <>
@@ -36,13 +42,13 @@ const TopPage: React.FC = () => {
       </H1>
 
       <H4>{t('topPage.categoryTitle')}</H4>
-      <Carousel nftList={state.nftList} />
+      <Carousel nftList={nftList} />
 
       <H4>{t('topPage.topCollector')}</H4>
-      <Carousel nftList={state.nftList} />
+      <Carousel nftList={nftList} />
       
       <H4>{t('topPage.popularCreations')}</H4>
-      <Carousel nftList={state.nftList} />
+      <Carousel nftList={nftList} />
     </>
   );
 };

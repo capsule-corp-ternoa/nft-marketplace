@@ -52,7 +52,7 @@
     "test:nowatch": "react-scripts test --watchAll=false",
     "test:cov": "npm test -- --coverage --watchAll=false",
     "start-backend": "node server/server",
-    "production": "npm start-backend"
+    "production": "npm-run-all -p start-backend"
   },
   "eslintConfig": {
     "extends": [

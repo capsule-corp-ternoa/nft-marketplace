@@ -15,7 +15,7 @@ afterEach(() => {
   console.error = original;
 });
 
-const nft: NftListMockupType = {
+const nft: NftObjectType = {
   id: 1,
   labels: [1, 2, 3],
   name: 'my nft',

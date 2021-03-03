@@ -50,7 +50,7 @@ margin: 30px 10px 20px 10px;
 
 type PurchaseModalType= {
   closeModal: () => void;
-  nft: NftListMockupType;
+  nft: NftObjectType;
 };
 const PurchaseModal: React.FC<PurchaseModalType> = (props) => {
 

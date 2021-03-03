@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import styled from 'styled-components';
 
@@ -6,6 +7,7 @@ React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
   full?: boolean;
   medium?: boolean;
   light?: boolean;
+  onChange: any;
 };
 
 const TextAreaStyled = styled.textarea<TextAreaProps>`
@@ -39,9 +41,9 @@ const TextAreaStyled = styled.textarea<TextAreaProps>`
   `}
 `;
 
+// TODO children is not properly displayed
 const TextArea: React.FC<TextAreaProps> = (props) => {
   const { children, ...rest } = props;
-
   return (
     <TextAreaStyled {...rest}>{children}</TextAreaStyled>
   );

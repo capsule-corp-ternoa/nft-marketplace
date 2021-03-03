@@ -18,36 +18,62 @@ const LabelStyled = styled(H3)`
 `;
 
 interface InputConfig {
-  uid: string;
   label?: string;
   subTitle?: string;
 }
 
+interface InputConfigUpload extends 
+  InputConfig, React.InputHTMLAttributes<HTMLInputElement>{
+  onChange: any;
+  name: string;
+}
+
 interface StandartType extends 
-  InputConfig, React.InputHTMLAttributes<HTMLInputElement> {}
+  InputConfig, React.InputHTMLAttributes<HTMLInputElement> {
+  onChange: any,
+}
+
+interface TextAreaType extends 
+  InputConfig, React.InputHTMLAttributes<HTMLTextAreaElement> {
+  onChange: any,
+}
+
+interface ToggleType extends 
+  InputConfig, React.InputHTMLAttributes<HTMLInputElement> {
+  onChange: any,
+  name: string,
+}
 
 interface TextAreaType extends 
   InputConfig, React.TextareaHTMLAttributes<HTMLTextAreaElement> {}
 
-interface SelectType extends InputConfig {
-  boxOptions?: any[];
+interface SelectType extends 
+  InputConfig, React.InputHTMLAttributes<HTMLInputElement> {
+  boxOptions?: any[],
+  onChange: any,
 }
 
 
-// Standard input  (<input type="text"/>)
 export const InputBoxStandart: React.FC<StandartType> = (props) => {
 
   const { 
     label,
-    uid,
     subTitle,
+    onChange,
     ...rest
   } = props;
+
+  const updateField = 
+  (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    onChange(
+      e.target.name, 
+      e.target.value);
+  };
 
   return (
     <>
       {label && <LabelStyled>{label}</LabelStyled> }
-      <Input medium light key={uid} {...rest} />
+      <Input medium onChange={updateField} light {...rest} />
       {subTitle && <SubTitle>{subTitle}</SubTitle>}
     </>
   );
@@ -59,29 +85,40 @@ export const InputBoxTextArea: React.FC<TextAreaType> = (props) => {
 
   const { 
     label,
-    uid,
     subTitle,
     value,
+    onChange,
     ...rest
   } = props;
 
+  const updateField = 
+  (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    onChange(
+      e.target.name, 
+      e.target.value);
+  };
   return (
     <>
       {label && <LabelStyled>{label}</LabelStyled>}
-      <TextArea medium light key={uid} {...rest}>{value}</TextArea>
+      <TextArea onChange={updateField} medium light {...rest}>{value}</TextArea>
       {subTitle && <SubTitle>{subTitle}</SubTitle>}
     </>
   );
 };
 
 // Toggle input
-export const InputBoxToggle: React.FC<InputConfig> = (props) => {
+export const InputBoxToggle: React.FC<ToggleType> = (props) => {
 
   const { 
     label,
-    uid,
     subTitle,
+    name,
+    onChange,
   } = props;
+
+  const updateField = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onChange(e.target.name, e.target.checked);
+  };
 
   return (
     <Row>
@@ -90,25 +127,33 @@ export const InputBoxToggle: React.FC<InputConfig> = (props) => {
         {subTitle && <SubTitle>{subTitle}</SubTitle>}
       </Col>
       <Col style={{ paddingTop: '30px' }}>
-        <CheckBox name={uid} />
+        <CheckBox name={name} onToggle={updateField} />
       </Col>
     </Row>
   );
 };
 
 // Upload input
-export const InputBoxUpload: React.FC<InputConfig> = (props) => {
+export const InputBoxUpload: React.FC<InputConfigUpload> = (props) => {
 
   const { 
     label,
-    uid,
     subTitle,
+    onChange,
+    name,
   } = props;
+
+  const updateField = 
+  (e: any) => {
+    onChange(
+      e.target.name, 
+      e.target.files[0]);
+  };
 
   return (
     <>
       {label && <LabelStyled>{label}</LabelStyled>}
-      <UploadBox key={uid} subTitle={subTitle || ''} />      
+      <UploadBox name={name} onChange={updateField} subTitle={subTitle || ''} />      
     </>
   );
 };
@@ -118,27 +163,34 @@ export const InputBoxSelect: React.FC<SelectType> = (props) => {
 
   const { 
     label,
-    uid,
     subTitle,
     boxOptions,
+    onChange,
+    name,
   } = props;
+
+  const updateField = (e: {label: string, value: string}) => {
+    onChange(
+      name, 
+      e.value);
+  };
 
   return (
     <>
       {label && <LabelStyled>{label}</LabelStyled> }
-      <Select key={uid} options={boxOptions} />
+      <Select onChange={updateField} options={boxOptions} />
       {subTitle && <SubTitle>{subTitle}</SubTitle>}
     </>  
   );
 };
 
-// Standard input
-export const InputBoxProperties: React.FC<InputConfig> = (props) => {
+// Standard input for properties
+export const InputBoxProperties: React.FC<StandartType> = (props) => {
 
   const { 
     label,
-    uid,
     subTitle,
+    name,
   } = props;
 
   return (
@@ -146,10 +198,10 @@ export const InputBoxProperties: React.FC<InputConfig> = (props) => {
       {label && <LabelStyled>{label}</LabelStyled> }
       <Row>
         <Col size="50">
-          <Input key={`key-${uid}`} full light />
+          <Input key={`key-${name}`} full light />
         </Col>
         <Col size="50">
-          <Input key={`value-${uid}`} full light />
+          <Input key={`value-${name}`} full light />
         </Col>
       </Row>
       {subTitle && <SubTitle>{subTitle}</SubTitle>}

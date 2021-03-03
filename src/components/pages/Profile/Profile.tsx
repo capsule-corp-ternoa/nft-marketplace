@@ -21,17 +21,41 @@ const WarningMessageStyled = styled.p`
   color: #878cff;
 `;
 
+type InitialStateType = { 
+  displayName: string;
+  customUrl: string;
+  bio: string;
+  twitter: string;
+  site: string;
+};
+
+const initialState = { 
+  displayName: '',
+  customUrl: '',
+  bio: '',
+  twitter: '',
+  site: '',
+};
+
 const Profile: React.FC<LoadablePageType> = ({ setIsLoading }) => {
 
-  // Nft information
-  const [user, setUser] = useState({} as UserType);
+  const [profile, setProfile] = 
+    useState(initialState as InitialStateType);
+
+  // Update partial element of the 'updateElement' state
+  const updateField = (name: string, value: string) => {
+    setProfile({
+      ...profile,
+      [name]: value,
+    });
+  };
   
-  // // Retrieve NFT info when component loaded
-  useEffect(  () => {
+  // // Retrieve user info when component loaded
+  useEffect( () => {
     async function fetchData() {
       setIsLoading(true);
       const res = await axios.get(`${ApiProxyUri}/user/1`);
-      setUser(res.data.user);
+      setProfile(res.data.user);
       setIsLoading(false);
     }
     fetchData();
@@ -49,36 +73,43 @@ const Profile: React.FC<LoadablePageType> = ({ setIsLoading }) => {
       </Helmet>
 
       <H1>{t('profile.settings')}</H1>
+
       <InputBoxStandart 
-        uid="settings_name" 
+        name="displayName" 
+        value={profile.displayName}
         label={t('profile.displayName')}
-        value={user && user.displayName}
+        onChange={updateField}
+        
       />
 
       <InputBoxStandart 
-        uid="settings_url" 
+        name="customUrl" 
         label={t('profile.customUrl')}
-        value={user && user.customUrl}
+        onChange={updateField}
+        value={profile.customUrl}
       />
 
       <InputBoxTextArea
-        uid="settings_bio" 
+        name="bio" 
         label={t('profile.bio')}
-        value={user && user.bio}
+        onChange={updateField}
+        value={profile.bio}
       />
 
       <InputBoxStandart
-        uid="settings_twitter"
+        name="twitter"
         label={t('profile.twitter')}
+        onChange={updateField}
         subTitle={t('profile.twitterSubText')}
-        value={user && user.twitter}
+        value={profile.twitter}
       />
 
       <InputBoxStandart
-        uid="settings_portfolio"
+        name="site"
         label={t('profile.personalSite')}
+        onChange={updateField}
         subTitle={t('profile.personalSiteSubText')}
-        value={user && user.site}
+        value={profile.site}
       />
 
       <WarningMessageStyled>

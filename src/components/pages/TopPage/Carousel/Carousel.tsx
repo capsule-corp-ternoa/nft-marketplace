@@ -5,7 +5,6 @@ import NftCard from '../../../common/NftCard/NftCard';
 
 const responsive = {
   superLargeDesktop: {
-    // the naming can be any, depends on you.
     breakpoint: { max: 4000, min: 3000 },
     items: 8,
   },
@@ -24,7 +23,7 @@ const responsive = {
 };
 
 type CarouselType = {
-  nftList: NftListMockupType[];
+  nftList: NftObjectType[];
 };
 
 const Carousel: React.FC<CarouselType> = (props) => (

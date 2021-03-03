@@ -3,32 +3,13 @@ type LoadablePageType = {
   setIsLoading: (flag: boolean) => void;
 };
 
-type ContextArgs = {
-  state: ContextState;
-  dispatch: React.Dispatch<ContextAction>;
-};
-
-type ContextState = {
-  isLoading: boolean;
-  nftList: any[];
-  selectedNft: any;
-  user: any;
-  searchValue: string;
-  walletId: string;
-};
-
-type ContextAction = {
-  type: string;
-  payload: any;
-};
-
 type CategoryType = {
   id: number;
   name: string;
   position?: number;
 };
 
-type NftListMockupType = {
+type NftObjectType = {
   id: number;
   labels: number[];
   name: string;

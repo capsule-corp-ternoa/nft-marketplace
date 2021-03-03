@@ -11,14 +11,9 @@ import useQuery from '../../../hooks/useQuery';
 const SearchPage: React.FC<LoadablePageType> = ({ setIsLoading }) => {
 
   // Nft list in state
-  const [nftList, setNftList] = useState([] as NftListMockupType[]);
+  const [nftList, setNftList] = useState([] as NftObjectType[]);
 
   const query = useQuery();
-
-  // useEffect( () => {
-  //   fetchNfts(dispatch);
-  // }, [dispatch]);
-
 
   useEffect(  () => {
     async function fetchData() {

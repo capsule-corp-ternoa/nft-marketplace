@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { Toggle } from 'react-toggle-component';
 
 type CheckBoxType= {
   name: string;
+  onToggle: any;
 };
 
 // https://github.com/gfazioli/react-toggle/blob/master/src/components/Toggle/index.tsx
@@ -14,6 +16,7 @@ const CheckBox: React.FC<CheckBoxType> = (props) => (
     rightBorderColor="#1E34A9"
     knobColor="white"
     name={props.name}
+    onToggle={props.onToggle}
   />
   
 );

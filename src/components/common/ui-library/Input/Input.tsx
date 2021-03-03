@@ -5,6 +5,7 @@ export type SearchFieldProps = React.InputHTMLAttributes<HTMLInputElement> & {
   full?: boolean;
   medium?: boolean;
   light?: boolean;
+  placeholder?: string;
 };
 
 const SearchField = styled.input<SearchFieldProps>`
@@ -38,6 +39,7 @@ const SearchField = styled.input<SearchFieldProps>`
   `}
 `;
 
-const Input: React.FC<SearchFieldProps> = (props) => <SearchField {...props} />;
+const Input = React.forwardRef<HTMLInputElement, SearchFieldProps>(
+  (props, ref) => <SearchField {...props} ref={ref} />);
 
 export default Input;

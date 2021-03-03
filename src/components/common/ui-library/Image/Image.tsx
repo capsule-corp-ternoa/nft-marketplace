@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 interface ImageInt extends React.ImgHTMLAttributes<HTMLImageElement>  {
   responsive?: boolean;
+  rounded?: boolean
 }
 
 const ImageStyled = styled.img<ImageInt>`
@@ -10,7 +11,11 @@ const ImageStyled = styled.img<ImageInt>`
     responsive &&
     `
     width: 100%; 
-    border-radius: 50%;
+  `}
+  ${({ rounded }) =>
+    rounded &&
+    `
+    border-radius: 50%; 
   `}
   height: auto;
 `;

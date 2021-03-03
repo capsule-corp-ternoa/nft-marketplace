@@ -6,7 +6,7 @@ import Card from '../ui-library/Card/Card';
 import NftImage from '../NftImage/NftImage';
 
 type NftCardType = {
-  nft: NftListMockupType;
+  nft: NftObjectType;
 };
 
 const ImageHolder = styled.div`

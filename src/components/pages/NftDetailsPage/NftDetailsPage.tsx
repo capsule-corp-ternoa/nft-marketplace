@@ -24,7 +24,7 @@ const DetailsLabel: React.FC<DetailsLabelProps> = (props) => (
   <Row>
     <Col size="10">
       { props.image && 
-      <Image responsive src={props.image} />}
+      <Image rounded responsive src={props.image} />}
     </Col>
     <Col size="90">
       <H4 style={{ color: '#969393', margin: '0', fontWeight: 'bold' }}>
@@ -44,7 +44,7 @@ const NftDetailsPage: React.FC<LoadablePageType> = ( { setIsLoading }) => {
   const [displayModal, setDisplayModal] = useState(false);
 
   // Nft information
-  const [nft, setNft] = useState({} as NftListMockupType);
+  const [nft, setNft] = useState({} as NftObjectType);
 
   // Retrieve NFT info when component loaded
   useEffect(  () => {

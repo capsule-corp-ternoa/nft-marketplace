@@ -9,7 +9,6 @@ import Row from '../ui-library/Row/Row';
 import Button from '../ui-library/Button/Button';
 import Input from '../ui-library/Input/Input';
 
-import colors from '../ui-library/styles/colors';
 import { H3 } from '../Title/Title';
 import { ReactComponent as TernoaLogo } from '../assets/logo-ternoa.svg';
 import { ReactComponent as Caps } from '../assets/caps.svg';
@@ -47,10 +46,6 @@ const InputStyled = styled(Input)`
   line-height: 30px;
   padding-left: 30px;
   z-index: 1;
-  &:focus {
-   outline: none;
-   border: 1px solid ${colors.gray_button};
-  }
 `;
 
 type MainHeaderType = {

@@ -113,6 +113,48 @@ const nfts = {
       'ownerPicture': 'https://tinyfac.es/data/avatars/26CFEFB3-21C8-49FC-8C19-8E6A62B6D2E0-200w.jpeg',
       'creatorPicture': 'https://tinyfac.es/data/avatars/344CFC24-61FB-426C-B3D1-CAD5BCBD3209-200w.jpeg',
       'collectionName': 'Test name'
+    },
+    {
+      'id':7,
+      'labels': [1, 2, 3],
+      'name': 'my NFT 6',
+      'quantity': '10 of 10',
+      'price': '0.22',
+      'image': 'https://picsum.photos/205/300',
+      'views': 5202,
+      'owner': 'mickael canu',
+      'creator': 'inri',
+      'ownerPicture': 'https://tinyfac.es/data/avatars/26CFEFB3-21C8-49FC-8C19-8E6A62B6D2E0-200w.jpeg',
+      'creatorPicture': 'https://tinyfac.es/data/avatars/344CFC24-61FB-426C-B3D1-CAD5BCBD3209-200w.jpeg',
+      'collectionName': 'Test name'
+    },
+    {
+      'id':8,
+      'labels': [1, 2, 3],
+      'name': 'my NFT 6',
+      'quantity': '10 of 10',
+      'price': '0.22',
+      'image': 'https://picsum.photos/205/300',
+      'views': 5202,
+      'owner': 'mickael canu',
+      'creator': 'inri',
+      'ownerPicture': 'https://tinyfac.es/data/avatars/26CFEFB3-21C8-49FC-8C19-8E6A62B6D2E0-200w.jpeg',
+      'creatorPicture': 'https://tinyfac.es/data/avatars/344CFC24-61FB-426C-B3D1-CAD5BCBD3209-200w.jpeg',
+      'collectionName': 'Test name'
+    },
+    {
+      'id':9,
+      'labels': [1, 2, 3],
+      'name': 'my NFT 6',
+      'quantity': '10 of 10',
+      'price': '0.22',
+      'image': 'https://picsum.photos/205/300',
+      'views': 5202,
+      'owner': 'mickael canu',
+      'creator': 'inri',
+      'ownerPicture': 'https://tinyfac.es/data/avatars/26CFEFB3-21C8-49FC-8C19-8E6A62B6D2E0-200w.jpeg',
+      'creatorPicture': 'https://tinyfac.es/data/avatars/344CFC24-61FB-426C-B3D1-CAD5BCBD3209-200w.jpeg',
+      'collectionName': 'Test name'
     }
   ]
 

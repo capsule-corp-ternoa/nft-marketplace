@@ -6,7 +6,7 @@ const mock = require('./mock');
 dotenv.config();
 const app = express();
 
-const TIMEOUT = 1500;
+const TIMEOUT = 500;
 
 app.use(express.static(path.join(__dirname, '../build'), { index: false }));
 

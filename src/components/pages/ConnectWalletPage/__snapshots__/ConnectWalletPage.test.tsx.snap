@@ -1,0 +1,79 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ConnectWalletPage snapshots ConnectWalletPage renders correctly 1`] = `
+<div
+  className="sc-jrAGrp fBvUYs"
+  style={
+    Object {
+      "textAlign": "center",
+    }
+  }
+>
+  <h1
+    className="sc-dlfnbm jnRgnW"
+  >
+    walletConnection.title
+  </h1>
+  <p
+    className="sc-iBPRYJ kEpCMi"
+  >
+    walletConnection.introduction1
+    <br />
+    walletConnection.introduction2
+  </p>
+  <div>
+    <button
+      className="sc-kEjbxe jGFMIo sc-iqHYGH cxgTKu"
+      onClick={[Function]}
+    >
+      <i>
+        <img
+          alt="wallet"
+          src="/wallets/Metamask.png"
+        />
+      </i>
+      Metamask
+    </button>
+    <br />
+    <button
+      className="sc-kEjbxe jGFMIo sc-iqHYGH cxgTKu"
+      onClick={[Function]}
+    >
+      <i>
+        <img
+          alt="wallet"
+          src="/wallets/WalletConnect.png"
+        />
+      </i>
+      Wallet Connect
+    </button>
+    <br />
+    <button
+      className="sc-kEjbxe jGFMIo sc-iqHYGH cxgTKu"
+      onClick={[Function]}
+    >
+      <i>
+        <img
+          alt="wallet"
+          src="/wallets/Fortmatic.png"
+        />
+      </i>
+      Fortmatic
+    </button>
+    <br />
+    <button
+      className="sc-kEjbxe jGFMIo sc-iqHYGH cxgTKu"
+      onClick={[Function]}
+    >
+      <i>
+        <img
+          alt="wallet"
+          src="/wallets/WalletLink.png"
+        />
+      </i>
+      WalletLink
+    </button>
+    <br />
+  </div>
+</div>
+`;

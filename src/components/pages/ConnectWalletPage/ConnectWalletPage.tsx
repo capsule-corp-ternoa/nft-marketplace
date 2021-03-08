@@ -1,5 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import styled from 'styled-components';
+import { Helmet } from 'react-helmet';
+import { useTranslation } from 'react-i18next';
 import { H1, P } from '../../common/Title/Title';
 import TinyContainer from '../../common/ui-library/TinyContainer/TinyContainer';
 import Button from '../../common/ui-library/Button/Button';
@@ -19,31 +22,51 @@ const walletsList = [
   { id: 4, label: 'WalletLink', img: '/wallets/WalletLink.png' },
 ];
 
-const ConnectWalletPage: React.FC = () => (
-  <TinyContainer style={{ textAlign: 'center' }}>
-    <H1>Connect your wallet</H1>
+type ConnectWalletPageType = {
+  setWalletId: (walletId: string) => void;
+};
 
-    <P>
-      Connect with one of available wallet providers or create a new wallet.
-      <br />
-      What is wallet?
-    </P>
+const ConnectWalletPage: React.FC<ConnectWalletPageType> = (props) => {
 
-    <div>
-      {walletsList.map( (wallet) => (
-        <>
-          <WalletButton key={wallet.id}>
-            <i>
-              <img alt="wallet" src={wallet.img} />
-            </i>
-            {wallet.label}
-          </WalletButton>
-          <br />
-        </>
-      ))}
-    </div>
+  const { t } = useTranslation();
 
-  </TinyContainer>
-);
+  const connectWallet = () => {
+    props.setWalletId('12,450');
+  };
+
+  return (
+    <TinyContainer style={{ textAlign: 'center' }}>
+
+      <Helmet>
+        <title>{t('walletConnection.seo.title')}</title>
+        <meta name="description" content={t('walletConnection.seo.description')} />
+        <meta name="keywords" content={t('walletConnection.seo.keywords')} />
+      </Helmet>
+
+      <H1>{t('walletConnection.title')}</H1>
+
+      <P>
+        {t('walletConnection.introduction1')}
+        <br />
+        {t('walletConnection.introduction2')}
+      </P>
+
+      <div>
+        {walletsList.map( (wallet) => (
+          <>
+            <WalletButton onClick={connectWallet} key={wallet.id}>
+              <i>
+                <img alt="wallet" src={wallet.img} />
+              </i>
+              {wallet.label}
+            </WalletButton>
+            <br />
+          </>
+        ))}
+      </div>
+
+    </TinyContainer>
+  );
+};
 
 export default ConnectWalletPage;

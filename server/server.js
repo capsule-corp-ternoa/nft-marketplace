@@ -1,46 +1,41 @@
 const express = require('express');
 const path = require('path');
-const axios = require('axios');
 const dotenv = require('dotenv');
+const mock = require('./mock');
 
 dotenv.config();
-
 const app = express();
 
-const nftApiUrl = `${process.env.NFT_API_HOST}:${process.env.NFT_API_PORT}`;
+const TIMEOUT = 500;
 
-app.use(express.static(path.join(__dirname, 'build')));
+app.use(express.static(path.join(__dirname, '../build'), { index: false }));
 
 app.get('/ping', (req, res) => res.send('pong'));
 
 // Get nfts info
-app.get('/nft-api/nfts', (req, res) => {
-  console.log(' >>>>>>> Entered in the backend side');
-  const options = {
-    url: `${nftApiUrl}/nfts`,
-    method: 'get',
-  };
-
-  return axios(options)
-    .then((response) => res.send(response.data));
-  
+app.get('/nft-api/nfts', async (req, res) => {
+  await new Promise(resolve => setTimeout(resolve, TIMEOUT));
+  res.setHeader('Content-Type', 'application/json');
+  return res.end(JSON.stringify(mock.nfts));
 });
 
-// Get nfts info
-app.get('/nft-api/nft/:id', (req, res) => {
-  console.log(' >>>>>>> Entered in the backend side');
-  const options = {
-    url: `${nftApiUrl}/nft/1`,
-    method: 'get',
-  };
+// Get single nft info
+app.get('/nft-api/nft/:id', async (req, res) => {
+  await new Promise(resolve => setTimeout(resolve, TIMEOUT));
+  res.setHeader('Content-Type', 'application/json');
+  return res.end(JSON.stringify(mock.nft));
+});
 
-  return axios(options)
-    .then((response) => res.send(response.data));
-  
+// Get user info
+app.get('/nft-api/user/:id', async (req, res) => {
+  await new Promise(resolve => setTimeout(resolve, TIMEOUT));
+  res.setHeader('Content-Type', 'application/json');
+  return res.end(JSON.stringify(mock.user));
 });
 
 app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  res.sendFile(path.join(__dirname, '../build', 'index.html'));
 });
 
-app.listen(8181);
+app.listen(process.env.PORT || 8181);
+

@@ -2,7 +2,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import MainHeader from './MainHeader';
-import ContextProvider from '../../../utils/store/store';
 
 // Known issue: error and warning does not work for console
 // https://github.com/facebook/react/issues/7047
@@ -16,10 +15,12 @@ afterEach(() => {
   console.error = original;
 });
 
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({ t: (key) => key }),
+}));
+
 const renderMainHeader: React.FC = () => render( 
-  <ContextProvider>
-    <MainHeader />
-  </ContextProvider>
+  <MainHeader />
 );
 
 describe('MainHeader', () => {

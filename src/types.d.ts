@@ -1,18 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-type ContextArgs = {
-  state: ContextState;
-  dispatch: React.Dispatch<ContextAction>;
-};
-
-type ContextState = {
-  isLoading: boolean;
-  nftList: any[];
-  selectedNft:any;
-};
-
-type ContextAction = {
-  type: string;
-  payload: any;
+type LoadablePageType = {
+  setIsLoading: (flag: boolean) => void;
 };
 
 type CategoryType = {
@@ -21,17 +9,28 @@ type CategoryType = {
   position?: number;
 };
 
-type NftListMockupType = {
+type NftObjectType = {
   id: number;
   labels: number[];
   name: string;
   quantity: string;
   price: string;
   image: string;
-  view: number;
+  views: number;
   owner: string;
   creator: string;
+  ownerPicture: string;
+  creatorPicture: string;
   collectionName: string;
+};
+
+type UserType = {
+  id: integer;
+  displayName: string;
+  customUrl: string;
+  bio: string;
+  twitter: string;
+  site: string;
 };
 
 // For spinner
@@ -98,5 +97,12 @@ declare module 'react-loader-spinner' {
   }
   export default class Loader extends React.Component<LoaderProps> {
     constructor(props: LoaderProps);
+  }
+}
+
+declare global {
+  interface Document {
+    /** documentation on foo */
+    ethereum: string;
   }
 }

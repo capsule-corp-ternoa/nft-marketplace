@@ -1,8 +1,9 @@
 /* eslint-disable no-console */
 import React from 'react';
+import axios from 'axios';
 import { render, screen } from '@testing-library/react';
+import renderer from 'react-test-renderer';
 import TopPage from './TopPage';
-import ContextProvider from '../../../utils/store/store';
 
 // Known issue: error and warning does not work for console
 // https://github.com/facebook/react/issues/7047
@@ -15,6 +16,10 @@ beforeEach(() => {
 afterEach(() => {
   console.error = original;
 });
+
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({ t: (key) => key }),
+}));
 
 const nftList = {
   nfts: [
@@ -45,18 +50,39 @@ const nftList = {
   ]
 };
 
-const renderTopPageEmpty: React.FC = () => render( 
-  <ContextProvider nftList={nftList}>
-    <TopPage />
-  </ContextProvider>
-);
+// Axios mock
+jest.mock('axios');
+const resp = { data: nftList };
+axios.get.mockResolvedValue(resp);
+
+describe('TopPage snapshots', () => {
+
+
+  it('TopPage renders correctly', () => {
+    
+    const tree = renderer
+      .create(
+        <TopPage setIsLoading={()=> jest.fn()} />
+      ).toJSON();
+    expect(tree).toMatchSnapshot();
+  });
+
+});
+
 
 describe('TopPage', () => {
   it('renders component properly', () => {
-    renderTopPageEmpty();
-    expect(screen.getByText('Featured Creators')).toBeInTheDocument();
-    // TODO validate nft injection in the page
-    // expect(screen.getByText('Price')).toBeInTheDocument();
+
+    const setIsLoading = jest.fn();
+    render(<TopPage setIsLoading={setIsLoading} />);
+
+    expect(screen.getByText('topPage.categoryTitle')).toBeInTheDocument();
+    expect(screen.getByText('topPage.topCollector')).toBeInTheDocument();
+    expect(screen.getByText('topPage.popularCreations')).toBeInTheDocument();
+
+    // TODO fix this text.. nft info not reachable
+    // await expect(screen.findByText('my NFT 1')).toBeVisible()();
+    
 
   });
 

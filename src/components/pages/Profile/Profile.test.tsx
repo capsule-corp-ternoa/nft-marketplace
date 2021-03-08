@@ -13,12 +13,15 @@ afterEach(() => {
   console.error = original;
 });
 
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({ t: (key) => key }),
+}));
+
 describe('Profile', () => {
 
   it('renders component properly', () => {
-    render(<Profile />);
-    expect(screen.getByText('Display name')).toBeInTheDocument();
-
+    render(<Profile setIsLoading={()=> jest.fn()} />);
+    expect(screen.getByText('profile.displayName')).toBeInTheDocument();
   });
 
 });

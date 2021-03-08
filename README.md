@@ -32,7 +32,6 @@ npm run dev
 
 (WIP) This command will start multiples npm tasks :
 
-- `start-mockup`, for starting the mockup for the external APIs (_port 8282_)
 - `start-backend`, for starting the backend (_port 8181_)
 - `start`, for starting the application through `dev react server` (_port 3000_)
 
@@ -41,7 +40,14 @@ npm run dev
 All the Tests can be run in interactive mode with
 
 ```
-npm test
+# all the tests
+npm run test
+
+# no watch mode
+npm run test:nowatch
+
+# no watch + coverage report
+test:cov
 ```
 
 # how to run in production

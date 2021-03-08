@@ -17,79 +17,195 @@ const LabelStyled = styled(H3)`
   margin-bottom:10px;
 `;
 
-export enum InputType {
-  Standard,
-  TextBox,
-  Switch,
-  Upload,
-  Properties,
-  BoxSelection
+interface InputConfig {
+  label?: string;
+  subTitle?: string;
 }
 
-type InputElementType = {
-  inputType: InputType;
-  label: string;
-  key: string;
-  subTitle?: string;
-  boxOptions?: any[];
+interface InputConfigUpload extends 
+  InputConfig, React.InputHTMLAttributes<HTMLInputElement>{
+  onChange: any;
+  name: string;
+}
+
+interface StandartType extends 
+  InputConfig, React.InputHTMLAttributes<HTMLInputElement> {
+  onChange: any,
+}
+
+interface TextAreaType extends 
+  InputConfig, React.InputHTMLAttributes<HTMLTextAreaElement> {
+  onChange: any,
+}
+
+interface ToggleType extends 
+  InputConfig, React.InputHTMLAttributes<HTMLInputElement> {
+  onChange: any,
+  name: string,
+}
+
+interface TextAreaType extends 
+  InputConfig, React.TextareaHTMLAttributes<HTMLTextAreaElement> {}
+
+interface SelectType extends 
+  InputConfig, React.InputHTMLAttributes<HTMLInputElement> {
+  boxOptions?: any[],
+  onChange: any,
+}
+
+
+export const InputBoxStandart: React.FC<StandartType> = (props) => {
+
+  const { 
+    label,
+    subTitle,
+    onChange,
+    ...rest
+  } = props;
+
+  const updateField = 
+  (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    onChange(
+      e.target.name, 
+      e.target.value);
+  };
+
+  return (
+    <>
+      {label && <LabelStyled>{label}</LabelStyled> }
+      <Input medium onChange={updateField} light {...rest} />
+      {subTitle && <SubTitle>{subTitle}</SubTitle>}
+    </>
+  );
+
 };
 
-/** Box that contains Input (text, teaxarea,...) with label, and prefix/ suffix */
-const InputBox: React.FC<InputElementType> = (props) => (
-  <>
-    {props.inputType === InputType.Standard && (
-      <>
-        <LabelStyled>{props.label}</LabelStyled>
-        <Input medium light key={props.key} />
-        {props.subTitle && <SubTitle>{props.subTitle}</SubTitle>}
-      </>
-    )}
-    {props.inputType === InputType.TextBox && (
-      <>
-        <LabelStyled>{props.label}</LabelStyled>
-        <TextArea medium light key={props.key} />
-        {props.subTitle && <SubTitle>{props.subTitle}</SubTitle>}
-      </>
-    )}
-    {props.inputType === InputType.Switch && (
+// TextArea input (<textarea>)
+export const InputBoxTextArea: React.FC<TextAreaType> = (props) => {
+
+  const { 
+    label,
+    subTitle,
+    value,
+    onChange,
+    ...rest
+  } = props;
+
+  const updateField = 
+  (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    onChange(
+      e.target.name, 
+      e.target.value);
+  };
+  return (
+    <>
+      {label && <LabelStyled>{label}</LabelStyled>}
+      <TextArea onChange={updateField} medium light {...rest}>{value}</TextArea>
+      {subTitle && <SubTitle>{subTitle}</SubTitle>}
+    </>
+  );
+};
+
+// Toggle input
+export const InputBoxToggle: React.FC<ToggleType> = (props) => {
+
+  const { 
+    label,
+    subTitle,
+    name,
+    onChange,
+  } = props;
+
+  const updateField = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onChange(e.target.name, e.target.checked);
+  };
+
+  return (
+    <Row>
+      <Col>
+        {label && <LabelStyled>{label}</LabelStyled>}
+        {subTitle && <SubTitle>{subTitle}</SubTitle>}
+      </Col>
+      <Col style={{ paddingTop: '30px' }}>
+        <CheckBox name={name} onToggle={updateField} />
+      </Col>
+    </Row>
+  );
+};
+
+// Upload input
+export const InputBoxUpload: React.FC<InputConfigUpload> = (props) => {
+
+  const { 
+    label,
+    subTitle,
+    onChange,
+    name,
+  } = props;
+
+  const updateField = 
+  (e: any) => {
+    onChange(
+      e.target.name, 
+      e.target.files[0]);
+  };
+
+  return (
+    <>
+      {label && <LabelStyled>{label}</LabelStyled>}
+      <UploadBox name={name} onChange={updateField} subTitle={subTitle || ''} />      
+    </>
+  );
+};
+
+// selectBox input
+export const InputBoxSelect: React.FC<SelectType> = (props) => {
+
+  const { 
+    label,
+    subTitle,
+    boxOptions,
+    onChange,
+    name,
+  } = props;
+
+  const updateField = (e: {label: string, value: string}) => {
+    onChange(
+      name, 
+      e.value);
+  };
+
+  return (
+    <>
+      {label && <LabelStyled>{label}</LabelStyled> }
+      <Select onChange={updateField} options={boxOptions} />
+      {subTitle && <SubTitle>{subTitle}</SubTitle>}
+    </>  
+  );
+};
+
+// Standard input for properties
+export const InputBoxProperties: React.FC<StandartType> = (props) => {
+
+  const { 
+    label,
+    subTitle,
+    name,
+  } = props;
+
+  return (
+    <>
+      {label && <LabelStyled>{label}</LabelStyled> }
       <Row>
-        <Col>
-          <LabelStyled>{props.label}</LabelStyled>
-          {props.subTitle && <SubTitle>{props.subTitle}</SubTitle>}
+        <Col size="50">
+          <Input key={`key-${name}`} full light />
         </Col>
-        <Col style={{ paddingTop: '30px' }}>
-          <CheckBox />
+        <Col size="50">
+          <Input key={`value-${name}`} full light />
         </Col>
       </Row>
-    )}
-    {props.inputType === InputType.Upload && (
-      <>
-        <LabelStyled>{props.label}</LabelStyled>
-        <UploadBox subTitle={props.subTitle || ''} />
-      </>
-    )}
-    {props.inputType === InputType.Properties && (
-      <>
-        <LabelStyled>{props.label}</LabelStyled>
-        <Row>
-          <Col size="50">
-            <Input full light key={props.key} />
-          </Col>
-          <Col size="50">
-            <Input full light key={props.key} />
-          </Col>
-        </Row>
-        {props.subTitle && <SubTitle>{props.subTitle}</SubTitle>}
-      </>
-    )}
-
-    {props.inputType === InputType.BoxSelection && (
-      <>
-        <LabelStyled>{props.label}</LabelStyled>
-        <Select options={props.boxOptions} />
-      </>
-    )}
-  </>
-);
-
-export default InputBox;
+      {subTitle && <SubTitle>{subTitle}</SubTitle>}
+    </>
+     
+  );
+};

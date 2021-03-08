@@ -1,13 +1,15 @@
 import React from 'react';
-import { FaArrowLeft } from 'react-icons/fa';
+import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
+import { Helmet } from 'react-helmet';
 import { H1, H3, P } from '../../common/Title/Title';
 import Col from '../../common/ui-library/Col/Col';
 import Row from '../../common/ui-library/Row/Row';
 import Card from '../../common/ui-library/Card/Card';
 import TinyContainer from '../../common/ui-library/TinyContainer/TinyContainer';
 import Colors from '../../common/ui-library/styles/colors';
+import { GoBack } from '../../common/Utils/Utils';
 
 const CategoryCard = styled(Card)`
   text-align: center;
@@ -35,6 +37,8 @@ const CreateCollectiblePage: React.FC = () => {
 
   const history = useHistory();
 
+  const { t } = useTranslation();
+
   const createSingle = () => {
     history.push('/create-single-collectible');
   };  
@@ -45,37 +49,39 @@ const CreateCollectiblePage: React.FC = () => {
 
   return (
     <TinyContainer>
-      <span>
-        <FaArrowLeft />
-        &nbsp; Go back
-      </span>
 
-      <H1>Create Collectible</H1>
+      <Helmet>
+        <title>{t('createCollectible.seo.title')}</title>
+        <meta name="description" content={t('createCollectible.seo.description')} />
+        <meta name="keywords" content={t('createCollectible.seo.keywords')} />
+      </Helmet>
+
+      <GoBack text={t('createCollectible.goBack')} history={history} />
+
+      <H1>{t('createCollectible.title')}</H1>
 
       <P>
-        Choose “Single” if you want your collectible to be one of a kind or
-        “Multiple” if you want to sell one collectible multiple times
+        {t('createCollectible.introduction')}
       </P>
 
       <Row>
         <Col size="50">
           <CategoryCard onClick={createSingle}>
             <SampleCard />
-            <H3>Single</H3>
+            <H3>{t('createCollectible.single')}</H3>
           </CategoryCard>
         </Col>
 
         <Col size="50">
           <CategoryCard onClick={createMultiple}>
             <SampleCard />
-            <H3>Multiple</H3>
+            <H3>{t('createCollectible.multiple')}</H3>
           </CategoryCard>
         </Col>
       </Row>
 
       <P>
-        We do not own your private keys and cannot access your funds without
-        your confirmation
+        {t('createCollectible.closing')}
       </P>
     </TinyContainer>
   );

@@ -15,7 +15,7 @@ afterEach(() => {
   console.error = original;
 });
 
-const nft: NftListMockupType = {
+const nft: NftObjectType = {
   id: 1,
   labels: [1, 2, 3],
   name: 'my nft',
@@ -32,7 +32,7 @@ describe('NftCard', () => {
 
   it('renders component properly', () => {
     render(<NftCard nft={nft} />);
-    expect(screen.getByText('by johann')).toBeInTheDocument();
+    expect(screen.getByAltText('nft-image')).toBeInTheDocument();
   });
 
 });

@@ -50,3 +50,13 @@ export const SubTitle = styled.p`
   font-size: 12px;
   margin-top: 5px;
 `;
+
+export const GradientText = styled.span`
+    background-color: #f3ec78;
+    background-image: ${colors.purple_gradient};
+    background-size: 100%;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    -webkit-text-fill-color: transparent; 
+    -moz-text-fill-color: transparent;
+`;

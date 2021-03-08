@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Shapes snapshots RoundedSpan renders correctly 1`] = `
+<span
+  className="sc-bdfBwQ clAelO"
+/>
+`;
+
+exports[`Shapes snapshots SquaredSpan renders correctly 1`] = `
+<span
+  className="sc-gsTCUz krigDU"
+/>
+`;

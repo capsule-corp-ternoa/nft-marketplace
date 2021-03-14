@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from 'react';
 import Switch from 'react-switch';
@@ -7,6 +8,8 @@ import 'react-multi-carousel/lib/styles.css';
 import style from './Showcase.module.scss';
 
 import NFTCard from '../../../common/NftCard/NftCard';
+import ArrowLeft from '../../../common/assets/arrowLeft';
+import ArrowRight from '../../../common/assets/arrowRight';
 
 const responsive = {
   desktop: {
@@ -20,16 +23,20 @@ const responsive = {
   mobile: {
     breakpoint: { max: 464, min: 0 },
     items: 2,
-  }
+  },
 };
 
 const Showcase: React.FC<any> = ({ NFTs, category }) => {
   const [isFiltered, setIsFiltered] = useState(false);
 
-  let carousel : Carousel | null = null;
+  let carousel: Carousel | null = null;
 
   function returnNFTs() {
-    return NFTs.map((item: any) => <NFTCard key={item.id} item={item} />);
+    return NFTs.map((item: any) => (
+      <div key={item.id} className={style.NFTShell}>
+        <NFTCard item={item} />
+      </div>
+    ));
   }
 
   return (
@@ -56,18 +63,29 @@ const Showcase: React.FC<any> = ({ NFTs, category }) => {
             </div>
           </div>
           <div className={style.Nav}>
-            <button type="button" onClick={() => carousel?.previous(1)}>-</button>
-            <button type="button" onClick={() => carousel?.next(1)}>+</button>
+            <div
+              onClick={() => carousel?.previous(1)}
+              className={style.NavButton}
+            >
+              <ArrowLeft className={style.ArrowSVG} />
+            </div>
+
+            <div onClick={() => carousel?.next(1)} className={style.NavButton}>
+              <ArrowRight className={style.ArrowSVG} />
+            </div>
           </div>
         </div>
         <div className={style.Wrapper}>
           <div className={style.NFTContainer}>
             <Carousel
-              ref={(el) => {carousel = el;}} 
-              responsive={responsive} 
+              ref={(el) => {
+                carousel = el;
+              }}
+              responsive={responsive}
               infinite
-              arrows={false} 
+              arrows={false}
               centerMode
+              className={style.CarouselContainer}
             >
               {returnNFTs()}
             </Carousel>

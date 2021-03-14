@@ -26,3 +26,4 @@ yarn-error.log*
 
 # no need to keep it 
 .env
+.eslintcache

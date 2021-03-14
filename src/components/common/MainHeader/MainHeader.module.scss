@@ -1,0 +1,117 @@
+.Header {
+  width: 100%;
+  margin: 0px;
+  padding: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.HeaderContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 90%;
+  box-sizing: border-box;
+  padding: 16px 40px;
+  padding-top: 24px;
+}
+
+.Logo {
+  width: 150px;
+  cursor: pointer;
+}
+
+.Input {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 30px;
+  font-size: 14px;
+  border: none;
+  width: 460px;
+  padding: 12px 24px;
+  outline: none;
+  font-family: 'Airbnb Cereal App Book';
+}
+
+.Infos {
+  display: flex;
+  align-items: center;
+}
+
+.Links {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 270px;
+}
+
+.LinkItem {
+  //font-family: "Airbnb Cereal App Bold";
+  font-family: 'Airbnb Cereal App Medium';
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 17px;
+  color: black;
+  text-decoration: none;
+}
+
+// wallets
+
+.Wallet {
+  display: flex;
+  margin-left: 100px;
+}
+
+.Regular {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Create {
+  margin-right: 24px;
+  font-family: 'Airbnb Cereal App Medium';
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 20px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  border-radius: 28px;
+  padding: 10px 28px;
+  border: 2px solid black;
+  cursor: pointer;
+  transition: all 0.4s ease-out;
+
+  &:hover {
+    color: white;
+    background-color: black;
+  }
+}
+
+.Connect {
+  margin-right: 24px;
+  font-family: 'Airbnb Cereal App Medium';
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 20px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  border-radius: 28px;
+  padding: 10px 28px;
+  border: 2px solid black;
+  color: white;
+  background-color: black;
+  cursor: pointer;
+  transition: all 0.4s ease-out;
+
+  &:hover {
+    color: black;
+    background-color: white;
+  }
+}

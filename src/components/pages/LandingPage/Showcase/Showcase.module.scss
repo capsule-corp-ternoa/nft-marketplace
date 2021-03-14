@@ -1,0 +1,76 @@
+.Showcase {
+  display: flex;
+  flex-direction: column;
+  width: 1350px;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+  padding: 70px 0px;
+  align-items: center;
+  justify-content: center;
+}
+
+.Top {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.Infos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 24px;
+}
+
+.Title {
+  font-family: 'Airbnb Cereal App Bold';
+  font-style: normal;
+  font-weight: bold;
+  font-size: 30px;
+  margin: 0px;
+}
+
+.Label {
+  font-family: 'Airbnb Cereal App Medium';
+  color: #686464;
+  font-size: 14px;
+  line-height: 18px;
+  display: flex;
+  align-items: center;
+  text-align: right;
+  margin-top: 3px;
+  margin-left: 16px;
+}
+
+.Wrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.NFTContainer {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  box-sizing: border-box;
+  margin-top: 24px;
+}
+
+// Switch
+
+.SwitchShell {
+  margin-top: 7px;
+  margin-left: 16px;
+  outline: none;
+}

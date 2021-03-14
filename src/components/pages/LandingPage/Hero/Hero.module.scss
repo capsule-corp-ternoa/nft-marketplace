@@ -1,0 +1,82 @@
+.Hero {
+  display: flex;
+  flex-direction: column;
+  width: 1350px;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+  padding: 70px 0px;
+  align-items: center;
+  justify-content: center;
+}
+
+.Head {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 100px;
+}
+
+.VideoContainer {
+  height: 400px;
+  width: 750px;
+  border: none;
+  background: #e0e0e0;
+  border-radius: 20px;
+}
+
+.Video {
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  display: flex;
+}
+
+.VideoContainer > video {
+  display: block;
+  object-fit: fill;
+  margin: 0;
+  padding: 0;
+  float: left;
+  outline: none;
+  //border: 1px solid #e0e0e0;
+}
+
+.Title {
+  font-family: 'Airbnb Cereal App Extra Bold';
+  font-style: normal;
+  font-weight: bold;
+  font-size: 64px;
+  line-height: 78px;
+  max-width: 450px;
+}
+
+.Creators {
+  display: flex;
+  flex-direction: column;
+  margin-top: 16px;
+  width: 100%;
+}
+
+.CreatorsDisplay {
+  display: flex;
+  width: 100%;
+  padding: 6px 3px;
+  //overflow-x: scroll;
+  //overflow-y: visible;
+}
+
+.CreatorsTitle {
+  font-family: 'Airbnb Cereal App Bold';
+  font-style: normal;
+  font-weight: bold;
+  font-size: 30px;
+  line-height: 35px;
+  margin: 0px;
+  margin-bottom: 16px;
+}
+
+.CreatorWrapper {
+  margin-right: 24px;
+}

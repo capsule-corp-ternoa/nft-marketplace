@@ -1,137 +1,69 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import Container from '../ui-library/Container/Container';
-import colors from '../ui-library/styles/colors';
-import Row from '../ui-library/Row/Row';
-import Col from '../ui-library/Col/Col';
-import Input from '../ui-library/Input/Input';
-import Button from '../ui-library/Button/Button';
-import { H3, P } from '../Title/Title';
-import { 
-  DiscordIcon,
-  TwitterIcon,
-  LinkedinIcon,
-  TelegramIcon,
-  InstagramIcon,
-  GithubIcon,
-  TwitchIcon,
-  YoutubeIcon,
-} from '../Icons/Icons';
+import { type } from 'os';
+import French from '../assets/Languages/France';
+import Japanese from '../assets/Languages/Japan';
+import English from '../assets/Languages/UK';
 
-import { ReactComponent as ReactLogo } from '../assets/logo-ternoa.svg';
-import { ReactComponent as EnglishFlag } from '../assets/english-flag.svg';
-import { ReactComponent as FrenchFlag } from '../assets/french-flag.svg';
-import { ReactComponent as JapaneseFlag } from '../assets/japanese-flag.svg';
+import Discord from '../assets/SocialMedias/Discord';
 
-const FooterContainer = styled.div`
-  z-index:-100;
-  margin-top:50px;
-  height: 363px;
-  width: 100%;
-  background: ${colors.background_gray};
-  border-top: solid 1px ${colors.background_gray_dark};
-`;
+import style from './Footer.module.scss';
+import WaterMark from '../assets/Watermark';
+import Telegram from '../assets/SocialMedias/Telegram';
+import Twitter from '../assets/SocialMedias/Twitter';
+import LinkedIn from '../assets/SocialMedias/LinkedIn';
+import Instagram from '../assets/SocialMedias/Instagram';
+import Twitch from '../assets/SocialMedias/Twitch';
+import Github from '../assets/SocialMedias/Github';
+import Youtube from '../assets/SocialMedias/Youtube';
 
-const RoundedWrapper = styled.div`
-  z-index:-1;
-  width: 300px;
-  height: 300px;
-  background: #fff;
-  border-radius: 10000px;
-  text-align: center;
-  vertical-align: middle;
-  margin-top: -250px;
-  margin-left: 50px;
-`;
-
-const Logo: React.FC = () => (
-  <RoundedWrapper>
-    <ReactLogo style={{ height: '25px', paddingTop: '230px' }} />
-    <div>Ternoa</div>
-  </RoundedWrapper>
-);
-
-const LinkStyled = styled.a`
-text-decoration: none;
-color:black;
-`;
-
-const Footer: React.FC = () => {
-
+const Footer: React.FC<any> = ({ item }) => {
   const { i18n, t } = useTranslation();
 
   const changeLang = (lang: string) => {
     i18n.changeLanguage(lang);
   };
-
   return (
-    <FooterContainer>
-      <Logo />
-      <Container>
-        <Row>
-
-          <Col small="100" medium="50" large="50">
-            <div style={{ marginLeft: '40px' }}>
-              <H3>{t('footer.keepInTouch')}</H3>
-              <div style={{ position: 'relative' }}>
-                <Input full light placeholder="Your Email..." />
-                <Button style={{ position: 'absolute', top: '0px', right: '0px', height: '47px', margin: '0px' }} primary>Go</Button>
-              </div>
-            </div>
-          </Col>
-
-          <Col small="100" medium="50" large="50">
-            <div>      
-              <div style={{ width: '150px', textAlign: 'center', margin: '0px auto' }}>
-                <H3>{t('footer.community')}</H3>
-                <Row>
-                  <Col size="one-third"><DiscordIcon size={40} /></Col>
-                  <Col size="one-third"><TwitterIcon size={40} /></Col>
-                  <Col size="one-third"><LinkedinIcon size={40} /></Col>
-                </Row>
-
-                <Row>
-                  <Col size="one-third"><TelegramIcon size={40} /></Col>
-                  <Col size="one-third"><InstagramIcon size={40} /></Col>
-                  <Col size="one-third"><GithubIcon size={40} /></Col>
-                </Row>
-
-                <Row>
-                  <Col size="one-third"><TwitchIcon size={40} /></Col>
-                  <Col size="one-third"><YoutubeIcon size={40} /></Col>
-                  <Col size="one-third"><YoutubeIcon size={40} /></Col>
-                </Row>
-              </div>
-            </div>
-          </Col>
-        </Row>
-
-        <Row>
-          <Col>
-            <P>
-              © Ternoa Stamps All rights reserved &nbsp;
-              <LinkStyled href="#">Terms</LinkStyled> &nbsp;
-              <LinkStyled href="#">Privacy</LinkStyled>
-              
-            </P>
-          </Col>
-          <Col>
-            
-            <P>
-              Languages &nbsp;
-              <EnglishFlag style={{ cursor: 'pointer' }} onClick={()=>changeLang('en')} />
-              &nbsp;
-              <FrenchFlag style={{ cursor: 'pointer' }} onClick={()=>changeLang('fr')} />
-              &nbsp;
-              <JapaneseFlag style={{ cursor: 'pointer' }} onClick={()=>changeLang('ja')} />
-            </P>
-          </Col>
-        </Row>
-      </Container>
-
-    </FooterContainer>
+    <div className={style.Footer}>
+      <WaterMark className={style.WaterMark} />
+      <div className={style.Container}>
+        <span className={style.Insight}>Keep in touch !</span>
+        <div className={style.InputContainer}>
+          <input
+            className={style.Input}
+            placeholder="Your email..."
+            type="text"
+          />
+          <div className={style.Button}>Go</div>
+        </div>
+        <div className={style.SocialMedias}>
+          <Discord onClick={(e) => true} className={style.SVGMedia} />
+          <Telegram onClick={(e) => true} className={style.SVGMedia} />
+          <Twitter onClick={(e) => true} className={style.SVGMedia} />
+          <LinkedIn onClick={(e) => true} className={style.SVGMedia} />
+          <Instagram onClick={(e) => true} className={style.SVGMedia} />
+          <Twitch onClick={(e) => true} className={style.SVGMedia} />
+          <Github onClick={(e) => true} className={style.SVGMedia} />
+          <Youtube onClick={(e) => true} className={style.SVGMedia} />
+        </div>
+      </div>
+      <div className={style.FooterBar}>
+        <div className={style.Legals}>
+          <div className={style.Link}>SECRET NFT</div>
+          <div className={style.Link}>All rights reserved</div>
+          <div className={style.Link}>Terms</div>
+          <div className={style.Link}>Privacy</div>
+          <div className={style.Link}>Support</div>
+        </div>
+        <div className={style.Languages}>
+          <div className={style.Text}>Languages</div>
+          <English onClick={() => changeLang('en')} className={style.Flag} />
+          <French onClick={() => changeLang('fr')} className={style.Flag} />
+          <Japanese onClick={() => changeLang('ja')} className={style.Flag} />
+        </div>
+      </div>
+    </div>
   );
 };
 

@@ -2,7 +2,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import Footer from './Footer';
+import Footer from './FooterOld';
 
 // Known issue: error and warning does not work for console
 // https://github.com/facebook/react/issues/7047
@@ -21,7 +21,6 @@ jest.mock('react-i18next', () => ({
 }));
 
 describe('Footer', () => {
-
   it('renders component properly', () => {
     render(
       <Router>
@@ -31,5 +30,4 @@ describe('Footer', () => {
     // render(<Footer />);
     expect(screen.getByText('footer.keepInTouch')).toBeInTheDocument();
   });
-
 });

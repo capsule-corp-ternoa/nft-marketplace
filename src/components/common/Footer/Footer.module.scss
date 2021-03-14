@@ -1,0 +1,121 @@
+.Footer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: black;
+  height: 450px;
+  box-sizing: border-box;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.WaterMark {
+  width: 260px;
+  position: absolute;
+  left: 25%;
+  top: 60px;
+  z-index: 1;
+}
+
+.Container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 100px;
+}
+
+.Insight {
+  text-align: center;
+  font-family: 'Airbnb Cereal App Book';
+  color: white;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 21px;
+  margin-bottom: 24px;
+}
+
+.InputContainer {
+  display: flex;
+  position: relative;
+  width: 550px;
+  z-index: 2;
+}
+.Input {
+  background: #1b1b1b;
+  border: 1px solid #0c0b0b;
+  box-sizing: border-box;
+  border-radius: 40px;
+  outline: none;
+  width: 100%;
+  padding: 20px 40px;
+  color: white;
+  font-family: 'Airbnb Cereal App Book';
+  font-size: 18px;
+}
+
+.Button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #7417ea;
+  color: white;
+  padding: 19px 50px;
+  border-radius: 40px;
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  cursor: pointer;
+  color: white;
+  font-family: 'Airbnb Cereal App Bold';
+  font-size: 14px;
+}
+
+.SocialMedias {
+  display: flex;
+  margin-top: 24px;
+  align-items: center;
+  justify-content: space-around;
+  width: 400px;
+  align-self: center;
+}
+
+.SVGMedia {
+  width: 22px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.FooterBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 90%;
+  border-top: 0.5px solid #686464;
+  padding: 24px 0px;
+}
+
+.Legals {
+  display: flex;
+  align-items: center;
+}
+
+.Link,
+.Text {
+  margin-right: 16px;
+  font-family: 'Airbnb Cereal App Medium';
+  font-size: 14px;
+  line-height: 15px;
+  color: #686464;
+  cursor: pointer;
+}
+
+.Languages {
+  display: flex;
+  align-items: center;
+}
+
+.Flag {
+  width: 24px;
+  margin-right: 10px;
+  cursor: pointer;
+}

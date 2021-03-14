@@ -1,0 +1,109 @@
+.Wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 1350px;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+  padding: 90px 0px;
+  align-items: center;
+  justify-content: center;
+}
+
+.Top {
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+  justify-content: flex-start;
+  box-sizing: border-box;
+}
+
+.Infos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 24px;
+}
+
+.Title {
+  font-family: 'Airbnb Cereal App Bold';
+  font-style: normal;
+  font-weight: bold;
+  font-size: 30px;
+  margin: 0px;
+}
+
+.BlazeSVG {
+  margin-left: 16px;
+  width: 20px;
+  margin-bottom: -3px;
+}
+
+.Label {
+  font-family: 'Airbnb Cereal App Medium';
+  color: #686464;
+  font-size: 14px;
+  line-height: 18px;
+  display: flex;
+  align-items: center;
+  text-align: right;
+  margin-top: 3px;
+  margin-left: 16px;
+}
+
+.SwitchShell {
+  margin-top: 8px;
+  margin-left: 16px;
+  outline: none;
+}
+
+.CreatorsWrapper {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 40px;
+}
+
+.CreatorShell {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  box-sizing: border-box;
+  margin-left: 24px;
+  margin-right: 24px;
+  margin-bottom: 24px;
+  width: 260px;
+}
+.CreatorInfos {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin-left: 24px;
+  text-align: left;
+}
+
+.CreatorName {
+  margin: 0px;
+  margin-bottom: 3px;
+  font-family: 'Airbnb Cereal App Medium';
+  font-style: normal;
+  font-size: 18px;
+}
+
+.CreatorCaps {
+  font-family: 'Airbnb Cereal App Book';
+  font-style: normal;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  color: #b1b1b1;
+}

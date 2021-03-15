@@ -5,7 +5,7 @@
   margin-left: auto;
   margin-right: auto;
   box-sizing: border-box;
-  padding: 70px 0px;
+  padding: 80px 0px;
   align-items: center;
   justify-content: center;
 }
@@ -15,12 +15,12 @@
   width: 100%;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 100px;
+  margin-bottom: 60px;
 }
 
 .VideoContainer {
   height: 400px;
-  width: 750px;
+  width: 720px;
   border: none;
   background: #e0e0e0;
   border-radius: 20px;
@@ -44,7 +44,7 @@
 }
 
 .Title {
-  font-family: 'Airbnb Cereal App Extra Bold';
+  font-family: "Airbnb Cereal App Extra Bold";
   font-style: normal;
   font-weight: bold;
   font-size: 64px;
@@ -57,24 +57,36 @@
   flex-direction: column;
   margin-top: 16px;
   width: 100%;
+  position: relative;
+}
+
+.Test {
+  display: flex;
+  overflow-x: scroll;
+  position: relative;
+  height: 200px;
+  width: 100%;
 }
 
 .CreatorsDisplay {
   display: flex;
   width: 100%;
-  padding: 6px 3px;
-  //overflow-x: scroll;
-  //overflow-y: visible;
+  padding: 8px 24px;
+  position: absolute;
+  bottom: 0;
 }
 
 .CreatorsTitle {
-  font-family: 'Airbnb Cereal App Bold';
+  font-family: "Airbnb Cereal App Bold";
   font-style: normal;
   font-weight: bold;
   font-size: 30px;
   line-height: 35px;
   margin: 0px;
-  margin-bottom: 16px;
+  margin-bottom: 10px;
+  position: absolute;
+  bottom: 110px;
+  left: 0px;
 }
 
 .CreatorWrapper {

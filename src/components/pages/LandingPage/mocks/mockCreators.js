@@ -1,7 +1,7 @@
 const creators = [
   {
     name: 'Fernando Vera',
-    caps: '730',
+    caps: 730,
     img:
       'https://images.unsplash.com/photo-1463453091185-61582044d556?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2250&q=80',
     verified: true,
@@ -9,7 +9,7 @@ const creators = [
   },
   {
     name: 'Darlene Alderson',
-    caps: '42 309',
+    caps: 42309,
     img:
       'https://images.unsplash.com/photo-1607746882042-944635dfe10e?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2250&q=80',
     verified: false,
@@ -17,7 +17,7 @@ const creators = [
   },
   {
     name: 'Jonas Kahnwald',
-    caps: '17 283',
+    caps: 17283,
     img:
       'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=934&q=80',
     verified: true,
@@ -25,7 +25,7 @@ const creators = [
   },
   {
     name: 'Martha Nielsen',
-    caps: '8 736',
+    caps: 8736,
     img:
       'https://images.unsplash.com/photo-1607746882042-944635dfe10e?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2250&q=80',
     verified: true,
@@ -33,7 +33,7 @@ const creators = [
   },
   {
     name: 'Phillip Price',
-    caps: '12 931',
+    caps: 12931,
     img:
       'https://images.unsplash.com/photo-1440133197387-5a6020d5ace2?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=934&q=80',
 
@@ -42,7 +42,7 @@ const creators = [
   },
   {
     name: 'Sansa Stark',
-    caps: '992',
+    caps: 992,
     img:
       'https://images.unsplash.com/photo-1508186225823-0963cf9ab0de?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=934&q=80',
     verified: true,
@@ -50,7 +50,7 @@ const creators = [
   },
   {
     name: 'Tyrell Wellick',
-    caps: '42 309',
+    caps: 42309,
     img:
       'https://images.unsplash.com/photo-1496345875659-11f7dd282d1d?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=2250&q=80',
     verified: false,
@@ -58,7 +58,7 @@ const creators = [
   },
   {
     name: 'Kristin Ortega',
-    caps: '7 309',
+    caps: 7309,
     img:
       'https://images.unsplash.com/photo-1485178575877-1a13bf489dfe?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=2191&q=80',
     verified: false,
@@ -66,7 +66,7 @@ const creators = [
   },
   {
     name: 'Takeshi Kovacs',
-    caps: '78 029',
+    caps: 78029,
     img:
       'https://images.unsplash.com/photo-1497551060073-4c5ab6435f12?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1267&q=80',
     verified: true,
@@ -74,7 +74,7 @@ const creators = [
   },
   {
     name: 'Kevin Garvey',
-    caps: '34 329',
+    caps: 34329,
     img:
       'https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2250&q=80',
     verified: false,
@@ -82,7 +82,7 @@ const creators = [
   },
   {
     name: 'Quellcrist Falconer',
-    caps: '42 309',
+    caps: 42309,
     img:
       'https://images.unsplash.com/photo-1464863979621-258859e62245?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=933&q=80',
     verified: true,
@@ -90,7 +90,7 @@ const creators = [
   },
   {
     name: 'Thomas Shelby',
-    caps: '14 920',
+    caps: 14920,
     img:
       'https://images.unsplash.com/photo-1499996860823-5214fcc65f8f?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1302&q=80',
     verified: false,

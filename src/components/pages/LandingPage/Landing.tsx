@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { Helmet } from 'react-helmet';
 import { ApiProxyUri } from '../../../utils/utils';
-import Carousel from './Carousel/Carousel';
 import { H1, H4, GradientText } from '../../common/Title/Title';
 import style from './Landing.module.scss';
 import Hero from './Hero/Hero';

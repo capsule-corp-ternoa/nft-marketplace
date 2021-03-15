@@ -6,10 +6,14 @@ import Blaze from '../../../common/assets/blaze';
 
 import Creator from '../../../common/Creator/Creator';
 
-const BestSellers: React.FC<any> = ({ creators }) => {
+export interface BestSellersProps {
+  creators: CreatorType[];
+}
+
+const BestSellers: React.FC<BestSellersProps> = ({ creators }) => {
   const [isFiltered, setIsFiltered] = useState(false);
   function returnCreators() {
-    return creators.map((item: any) => (
+    return creators.map((item) => (
       <div key={item.id} className={style.CreatorShell}>
         <Creator item={item} showTooltip={false} />
         <div className={style.CreatorInfos}>

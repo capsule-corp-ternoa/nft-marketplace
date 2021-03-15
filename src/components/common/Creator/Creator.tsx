@@ -3,7 +3,15 @@ import React, { useState } from 'react';
 import style from './Creator.module.scss';
 import Badge from '../assets/badge';
 
-const Creator: React.FC<any> = ({ item, showTooltip, size, className }) => {
+export interface CreatorProps {
+  item: CreatorType;
+  showTooltip?: boolean;
+  size?: string;
+  className?: string;
+}
+
+const Creator: React.FC<CreatorProps> = 
+({ item, showTooltip = true, size, className }) => {
   const [isHovering, setIsHovering] = useState(false);
 
   return (

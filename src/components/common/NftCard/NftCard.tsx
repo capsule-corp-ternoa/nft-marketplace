@@ -3,7 +3,11 @@ import style from './NftCard.module.scss';
 import Heart from '../assets/heart';
 import Creator from '../Creator/Creator';
 
-const NftCard: React.FC<any> = ({ item }) => {
+export interface NftCardProps {
+  item: NftType;
+}
+
+const NftCard: React.FC<NftCardProps> = ({ item }) => {
   const [isHovering, setIsHovering] = useState(false);
 
   return (
@@ -42,8 +46,8 @@ const NftCard: React.FC<any> = ({ item }) => {
 
         <div className={style.Infos}>
           <Creator
-            item={item.author}
-            className={isHovering && style.Slide}
+            item={item.creator}
+            className={isHovering ? style.Slide : ''}
             size="card"
             showTooltip={false}
           />
@@ -52,7 +56,7 @@ const NftCard: React.FC<any> = ({ item }) => {
               isHovering ? `${style.Author} ${style.Fade}` : style.Author
             }
           >
-            {item.author.name}
+            {item.creator.name}
           </div>
           <div
             className={

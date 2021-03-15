@@ -1,6 +1,6 @@
 const NFTSET3 = [
   {
-    author: {
+    creator: {
       name: 'Daryl Dixon',
       verified: true,
       img:
@@ -8,13 +8,13 @@ const NFTSET3 = [
       id: 1,
     },
     secret: true,
-    price: '2830',
+    price: 2830,
     img:
       'https://images.unsplash.com/photo-1499781350541-7783f6c6a0c8?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2615&q=80',
     id: 1,
   },
   {
-    author: {
+    creator: {
       name: 'Phillip Price',
       verified: false,
       img:
@@ -22,13 +22,13 @@ const NFTSET3 = [
       id: 5,
     },
     secret: false,
-    price: '21 098',
+    price: 21098,
     img:
       'https://images.unsplash.com/photo-1516222058090-5e0376837302?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1275&q=80',
     id: 2,
   },
   {
-    author: {
+    creator: {
       name: 'Bojack Horseman',
       verified: false,
       img:
@@ -36,7 +36,7 @@ const NFTSET3 = [
       id: 1,
     },
     secret: false,
-    price: '12982',
+    price: 12982,
     img:
       'https://images.unsplash.com/photo-1484136199491-6603c473c88b?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1275&q=80',
     id: 3,

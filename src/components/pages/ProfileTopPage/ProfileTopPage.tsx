@@ -17,9 +17,9 @@ type TempTabContentProps =  {
 
 const TempTabContent: React.FC<TempTabContentProps> = ({ nftList }) => (
   <Row>
-    {nftList?.map((nft, index) => (
+    {/* nftList?.map((nft, index) => (
       <NftCard key={nft.id} nft={nft} />
-    ))}
+    )) */}
     <Col size="20" />
   </Row>
 );

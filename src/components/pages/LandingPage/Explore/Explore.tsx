@@ -3,9 +3,13 @@ import style from './Explore.module.scss';
 
 import NFTCard from '../../../common/NftCard/NftCard';
 
-const Explore: React.FC<any> = ({ NFTs }) => {
+export interface ExploreProps {
+  NFTs: NftType[];
+}
+
+const Explore: React.FC<ExploreProps> = ({ NFTs }) => {
   function returnNFTs() {
-    return NFTs.map((item: any) => (
+    return NFTs.map((item) => (
       <div key={item.id} className={style.NFTShell}>
         <NFTCard item={item} />
       </div>

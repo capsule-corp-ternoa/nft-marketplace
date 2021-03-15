@@ -31,7 +31,7 @@ const nft: NftObjectType = {
 describe('NftCard', () => {
 
   it('renders component properly', () => {
-    render(<NftCard nft={nft} />);
+    // render(<NftCard nft={nft} />);
     expect(screen.getByAltText('nft-image')).toBeInTheDocument();
   });
 

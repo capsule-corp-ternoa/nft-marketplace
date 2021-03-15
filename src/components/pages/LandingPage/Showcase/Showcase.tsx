@@ -26,13 +26,18 @@ const responsive = {
   },
 };
 
-const Showcase: React.FC<any> = ({ NFTs, category }) => {
+export interface ShowcaseProps {
+  NFTs: NftType[];
+  category: string;
+}
+
+const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category }) => {
   const [isFiltered, setIsFiltered] = useState(false);
 
   let carousel: Carousel | null = null;
 
   function returnNFTs() {
-    return NFTs.map((item: any) => (
+    return NFTs.map((item) => (
       <div key={item.id} className={style.NFTShell}>
         <NFTCard item={item} />
       </div>

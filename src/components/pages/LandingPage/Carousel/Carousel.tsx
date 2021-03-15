@@ -49,9 +49,9 @@ const responsiveBig = {
 const Carousel: React.FC<CarouselType> = (props) => (
   <div style={{ marginBottom: '40px' }}>
     <MultiCarousel responsive={props.big ? responsiveBig: responsive}>
-      {props.nftList?.map((nft, index) => (
+      {/* props.nftList?.map((nft, index) => (
         <NftCard key={nft.id} nft={nft} />
-      ))}
+      )) */}
     </MultiCarousel>
   </div>
 );

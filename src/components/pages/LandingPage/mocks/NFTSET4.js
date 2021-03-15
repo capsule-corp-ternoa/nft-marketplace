@@ -1,6 +1,6 @@
 const NFTSET4 = [
   {
-    author: {
+    creator: {
       name: 'Daryl Dixon',
       verified: true,
       img:
@@ -8,28 +8,28 @@ const NFTSET4 = [
       id: 1,
     },
     secret: true,
-    price: '2830',
+    price: 2830,
     img:
       'https://images.unsplash.com/photo-1529593475364-4b228e07b8cb?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1275&q=80',
     id: 1,
   },
   {
-    author: {
+    creator: {
       name: 'Takeshi Kovacs',
-      caps: '78 029',
+      caps: 78029,
       img:
         'https://images.unsplash.com/photo-1497551060073-4c5ab6435f12?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1267&q=80',
       verified: true,
       id: 9,
     },
     secret: false,
-    price: '12 982',
+    price: 12982,
     img:
       'https://images.unsplash.com/photo-1531889813587-a7500af75f44?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1300&q=80',
     id: 2,
   },
   {
-    author: {
+    creator: {
       name: 'James Wilson',
       verified: true,
       img:
@@ -37,13 +37,13 @@ const NFTSET4 = [
       id: 1,
     },
     secret: true,
-    price: '730',
+    price: 730,
     img:
       'https://images.unsplash.com/photo-1496284045406-d3e0b918d7ba?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=934&q=80',
     id: 3,
   },
   {
-    author: {
+    creator: {
       name: 'Robert Chase',
       verified: true,
       img:
@@ -51,13 +51,13 @@ const NFTSET4 = [
       id: 1,
     },
     secret: false,
-    price: '24 736',
+    price: 24736,
     img:
       'https://images.unsplash.com/photo-1531643469783-2d086618d37a?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=934&q=80',
     id: 4,
   },
   {
-    author: {
+    creator: {
       name: 'Nathaniel Fisher',
       verified: true,
       img:
@@ -65,13 +65,13 @@ const NFTSET4 = [
       id: 1,
     },
     secret: false,
-    price: '127 562',
+    price: 127562,
     img:
       'https://images.unsplash.com/photo-1531279550271-23c2a77a765c?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1300&q=80',
     id: 6,
   },
   {
-    author: {
+    creator: {
       name: 'Rick Grimes',
       verified: true,
       img:
@@ -79,13 +79,13 @@ const NFTSET4 = [
       id: 1,
     },
     secret: true,
-    price: '2830',
+    price: 2830,
     img:
       'https://images.unsplash.com/photo-1553949333-0510da388b82?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=2250&q=80',
     id: 17,
   },
   {
-    author: {
+    creator: {
       name: 'Johnny Caraty',
       verified: false,
       img:
@@ -93,13 +93,13 @@ const NFTSET4 = [
       id: 11879,
     },
     secret: false,
-    price: '12 982',
+    price: 12982,
     img:
       'https://images.unsplash.com/photo-1597423244036-ef5020e83f3c?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1934&q=80',
     id: 17897,
   },
   {
-    author: {
+    creator: {
       name: 'Ben Wyatt',
       verified: true,
       img:
@@ -107,13 +107,13 @@ const NFTSET4 = [
       id: 1,
     },
     secret: false,
-    price: '24 736',
+    price: 24736,
     img:
       'https://images.unsplash.com/photo-1518640467707-6811f4a6ab73?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&q=80',
     id: 189089,
   },
   {
-    author: {
+    creator: {
       name: 'Laurie Garvey',
       verified: true,
       img:
@@ -121,14 +121,14 @@ const NFTSET4 = [
       id: 1,
     },
     secret: true,
-    price: '730',
+    price: 730,
     img:
       'https://images.unsplash.com/photo-1599422314077-f4dfdaa4cd09?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=934&q=80',
     // 'https://images.unsplash.com/photo-1598008663818-9120e98aa30f?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1934&q=80',
     id: 12,
   },
   {
-    author: {
+    creator: {
       name: 'Matt Jamison',
       verified: true,
       img:
@@ -136,7 +136,7 @@ const NFTSET4 = [
       id: 1,
     },
     secret: false,
-    price: '28 935',
+    price: 28935,
     img:
       'https://images.unsplash.com/photo-1604871000636-074fa5117945?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=934&q=80',
     id: 192,

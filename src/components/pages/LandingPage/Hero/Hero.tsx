@@ -4,11 +4,13 @@ import style from './Hero.module.scss';
 
 import Creator from '../../../common/Creator/Creator';
 
-// import Teaser from '../../../../../public/teaser.mp4';
+export interface HeroProps {
+  creators: CreatorType[];
+}
 
-const Hero: React.FC<any> = ({ creators }) => {
+const Hero: React.FC<HeroProps> = ({ creators }) => {
   function returnCreators() {
-    return creators.map((item: any) => (
+    return creators.map((item) => (
       <div key={item.id} className={style.CreatorWrapper}>
         <Creator item={item} showTooltip={true} />
       </div>

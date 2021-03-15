@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { type } from 'os';
 import French from '../assets/Languages/France';
 import Japanese from '../assets/Languages/Japan';
 import English from '../assets/Languages/UK';
@@ -18,7 +17,7 @@ import Twitch from '../assets/SocialMedias/Twitch';
 import Github from '../assets/SocialMedias/Github';
 import Youtube from '../assets/SocialMedias/Youtube';
 
-const Footer: React.FC<any> = ({ item }) => {
+const Footer: React.FC = () => {
   const { i18n, t } = useTranslation();
 
   const changeLang = (lang: string) => {

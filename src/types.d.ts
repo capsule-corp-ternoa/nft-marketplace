@@ -33,6 +33,22 @@ type UserType = {
   site: string;
 };
 
+type CreatorType = {
+  id: number;
+  name: string;
+  img: string;
+  caps?: number;
+  verified: boolean;
+};
+
+type NftType = {
+  id: number;
+  img: string;
+  secret: boolean;
+  creator: CreatorType;
+  price: number;
+}; 
+
 // For spinner
 declare module 'react-loader-spinner' {
   // Main Interface for the props

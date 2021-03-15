@@ -31,9 +31,9 @@ const SearchPage: React.FC<LoadablePageType> = ({ setIsLoading }) => {
     <>
       <H4 style={{ margin: '20px' }}>{t('searchPage.resultsFor')} <GradientText> {query.get('q')} </GradientText></H4>
       <Row>
-        {nftList?.map((nft, index) => (
+        {/* nftList?.map((nft, index) => (
           <NftCard key={nft.id} nft={nft} />
-        ))}
+        )) */}
         <Col size="20" />
       </Row>
     </>

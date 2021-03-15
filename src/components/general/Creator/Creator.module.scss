@@ -80,7 +80,7 @@
   border-right: 10px solid transparent;
   z-index: 100;
   border-top: 10px solid black;
-  content: "";
+  content: '';
   position: absolute;
   bottom: 0;
   transform: translateY(7px);
@@ -109,17 +109,50 @@
   font-size: 14px;
   margin-bottom: 0px;
   color: white;
-  font-family: "Airbnb Cereal App Bold";
+  font-family: 'Airbnb Cereal App Bold';
 }
 
 .CreatorsCaps {
   color: #a48fc9;
-  font-family: "Airbnb Cereal App Book";
+  font-family: 'Airbnb Cereal App Book';
   font-size: 12px;
 }
 
 .Hide {
   display: none;
+}
+
+@media (max-width: 1300px) {
+  .CreatorsItem {
+    width: 70px;
+    height: 70px;
+  }
+
+  .CreatorsItemCard {
+    width: 60px;
+    height: 60px;
+  }
+
+  .CreatorsItemSmall {
+    width: 70px;
+    height: 70px;
+  }
+
+  .CreatorsBadge {
+    position: absolute;
+    width: 24px;
+    top: 3px;
+    left: -5px;
+    z-index: 7;
+  }
+
+  .CreatorsBadgeSM {
+    position: absolute;
+    width: 15px;
+    top: 4px;
+    left: 0px;
+    z-index: 7;
+  }
 }
 
 /*

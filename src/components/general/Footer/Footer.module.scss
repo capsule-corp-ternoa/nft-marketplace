@@ -119,3 +119,62 @@
   margin-right: 10px;
   cursor: pointer;
 }
+
+@media (max-width: 1300px) {
+  .Footer {
+    height: 400px;
+  }
+
+  .WaterMark {
+    width: 180px;
+    position: absolute;
+    left: 20%;
+    top: 90px;
+    z-index: 1;
+  }
+
+  .InputContainer {
+    width: 500px;
+  }
+
+  .Input {
+    width: 100%;
+    padding: 18px 36px;
+    font-size: 16px;
+  }
+
+  .Button {
+    padding: 16px 44px;
+    right: 4px;
+    top: 5px;
+    font-size: 13px;
+  }
+
+  .SVGMedia {
+    width: 20px;
+  }
+
+  .Link,
+  .Text {
+    font-size: 12px;
+    line-height: 12px;
+  }
+
+  .Languages {
+    display: flex;
+    align-items: center;
+  }
+
+  .Flag {
+    width: 20px;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+
+  .FooterBar {
+    padding: 18px 0px;
+  }
+  .Insight {
+    font-size: 20px;
+  }
+}

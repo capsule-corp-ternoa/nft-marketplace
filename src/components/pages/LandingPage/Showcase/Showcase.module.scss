@@ -32,7 +32,7 @@
 }
 
 .Title {
-  font-family: "Airbnb Cereal App Bold";
+  font-family: 'Airbnb Cereal App Bold';
   font-style: normal;
   font-weight: bold;
   font-size: 30px;
@@ -40,7 +40,7 @@
 }
 
 .Label {
-  font-family: "Airbnb Cereal App Medium";
+  font-family: 'Airbnb Cereal App Medium';
   color: #686464;
   font-size: 14px;
   line-height: 18px;
@@ -92,4 +92,25 @@
 }
 .ArrowSVG {
   width: 8px;
+}
+
+@media (max-width: 1300px) {
+  .Title {
+    font-size: 26px;
+  }
+
+  .Label {
+    font-size: 13px;
+    line-height: 16px;
+  }
+
+  .Showcase {
+    width: 900px;
+    padding: 40px 0px;
+  }
+
+  .CarouselContainer {
+    overflow-y: visible;
+    padding: 20px 0px;
+  }
 }

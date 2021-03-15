@@ -32,7 +32,7 @@
 }
 
 .Title {
-  font-family: "Airbnb Cereal App Bold";
+  font-family: 'Airbnb Cereal App Bold';
   font-style: normal;
   font-weight: bold;
   font-size: 30px;
@@ -46,7 +46,7 @@
 }
 
 .Label {
-  font-family: "Airbnb Cereal App Medium";
+  font-family: 'Airbnb Cereal App Medium';
   color: #686464;
   font-size: 14px;
   line-height: 18px;
@@ -64,6 +64,7 @@
   align-items: center;
   margin-top: 40px;
   align-items: stretch;
+  box-sizing: border-box;
 }
 
 .NFTS {
@@ -101,4 +102,63 @@
 .CreatorItem {
   box-sizing: border-box;
   margin: 0px 6px;
+}
+
+.NFTShell {
+  margin-right: 40px;
+}
+
+@media (max-width: 1300px) {
+  .Wrapper {
+    width: 900px;
+  }
+
+  .Bottom {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .CreatorsContainer {
+    flex: inherit;
+    width: 100%;
+    padding: 24px 32px;
+    height: auto;
+    margin-top: 40px;
+  }
+
+  .CreatorsInner {
+    justify-content: space-around;
+  }
+
+  .NFTS {
+    justify-content: center;
+    width: 100%;
+    align-items: center;
+    display: flex;
+  }
+
+  .NFTShell {
+    margin: 0px 18px;
+  }
+
+  .Title {
+    font-size: 26px;
+  }
+
+  .Label {
+    font-size: 13px;
+    line-height: 16px;
+  }
+
+  .BlazeSVG {
+    margin-left: 16px;
+    width: 17px;
+    margin-bottom: -3px;
+  }
+
+  .SwitchShell {
+    margin-top: 5px;
+    margin-left: 16px;
+    outline: none;
+  }
 }

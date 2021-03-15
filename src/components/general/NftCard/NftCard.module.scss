@@ -2,7 +2,6 @@
   display: flex;
   position: relative;
   box-sizing: border-box;
-  margin-right: 40px;
   width: 250px;
   height: 390px;
   border-radius: 12px;
@@ -206,5 +205,27 @@
   }
   100% {
     transform: scale(1);
+  }
+}
+
+@media (max-width: 1300px) {
+  .NFT {
+    width: 220px;
+    height: 330px;
+  }
+
+  .Button {
+    padding: 6px 14px;
+    margin-top: 8px;
+  }
+
+  .ButtonText {
+    font-size: 12px;
+  }
+
+  .Price {
+    font-size: 11px;
+    margin-right: 12px;
+    margin-top: 0px;
   }
 }

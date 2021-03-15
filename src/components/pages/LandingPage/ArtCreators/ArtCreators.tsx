@@ -29,7 +29,11 @@ const ArtCreators: React.FC<ArtCreatorsProps> = ({
   }
 
   function returnNFTs() {
-    return NFTs.map((item) => <NFTCard key={item.id} item={item} />);
+    return NFTs.map((item) => (
+      <div key={item.id} className={style.NFTShell}>
+        <NFTCard item={item} />
+      </div>
+    ));
   }
 
   return (

@@ -13,8 +13,12 @@ import ArrowRight from '../../../general/assets/arrowRight';
 
 const responsive = {
   desktop: {
-    breakpoint: { max: 3000, min: 1024 },
+    breakpoint: { max: 3000, min: 1330 },
     items: 4.2,
+  },
+  desktop2: {
+    breakpoint: { max: 1330, min: 900 },
+    items: 3.8,
   },
   tablet: {
     breakpoint: { max: 1024, min: 464 },

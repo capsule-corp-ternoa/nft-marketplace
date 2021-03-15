@@ -31,7 +31,7 @@
   width: 430px;
   padding: 12px 24px;
   outline: none;
-  font-family: "Airbnb Cereal App Book";
+  font-family: 'Airbnb Cereal App Book';
 }
 
 .Infos {
@@ -48,7 +48,7 @@
 
 .LinkItem {
   //font-family: "Airbnb Cereal App Bold";
-  font-family: "Airbnb Cereal App Medium";
+  font-family: 'Airbnb Cereal App Medium';
   font-style: normal;
   font-weight: bold;
   font-size: 14px;
@@ -72,7 +72,7 @@
 
 .Create {
   margin-right: 24px;
-  font-family: "Airbnb Cereal App Medium";
+  font-family: 'Airbnb Cereal App Medium';
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
@@ -94,7 +94,7 @@
 
 .Connect {
   margin-right: 24px;
-  font-family: "Airbnb Cereal App Medium";
+  font-family: 'Airbnb Cereal App Medium';
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
@@ -113,5 +113,20 @@
   &:hover {
     color: black;
     background-color: white;
+  }
+}
+
+@media (max-width: 1300px) {
+  .Links {
+    display: none;
+  }
+
+  .HeaderContainer {
+    justify-content: space-around;
+    width: 100%;
+  }
+
+  .Wallet {
+    margin-left: 0px;
   }
 }

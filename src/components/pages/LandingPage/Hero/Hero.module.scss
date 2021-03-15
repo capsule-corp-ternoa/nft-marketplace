@@ -44,7 +44,7 @@
 }
 
 .Title {
-  font-family: "Airbnb Cereal App Extra Bold";
+  font-family: 'Airbnb Cereal App Extra Bold';
   font-style: normal;
   font-weight: bold;
   font-size: 60px;
@@ -67,7 +67,7 @@
 }
 
 .CreatorsTitle {
-  font-family: "Airbnb Cereal App Bold";
+  font-family: 'Airbnb Cereal App Bold';
   font-style: normal;
   font-weight: bold;
   font-size: 30px;
@@ -79,4 +79,36 @@
 .CreatorWrapper {
   margin-right: 24px;
   margin-bottom: 24px;
+}
+
+@media (max-width: 1300px) {
+  .Hero {
+    width: 900px;
+    padding: 60px 0px;
+  }
+
+  .Head {
+    margin-bottom: 50px;
+  }
+
+  .VideoContainer {
+    height: 320px;
+    width: 450px;
+  }
+
+  .Title {
+    font-size: 46px;
+    line-height: 55px;
+    max-width: 360px;
+  }
+
+  .CreatorsTitle {
+    font-size: 24px;
+    line-height: 28px;
+  }
+
+  .CreatorWrapper {
+    margin-right: 16px;
+    margin-bottom: 16px;
+  }
 }

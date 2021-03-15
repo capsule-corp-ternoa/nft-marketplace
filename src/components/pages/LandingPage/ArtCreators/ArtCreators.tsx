@@ -21,9 +21,9 @@ const ArtCreators: React.FC<ArtCreatorsProps> = ({
   const [isFiltered, setIsFiltered] = useState(false);
 
   function returnCreators() {
-    return creators.map((item) => (
+    return creators.slice(0, 9).map((item) => (
       <div key={item.id} className={style.CreatorItem}>
-        <Creator item={item} />
+        <Creator item={item} size="small" />
       </div>
     ));
   }

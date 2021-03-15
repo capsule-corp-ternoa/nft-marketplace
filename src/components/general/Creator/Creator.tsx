@@ -10,9 +10,19 @@ export interface CreatorProps {
   className?: string;
 }
 
-const Creator: React.FC<CreatorProps> = 
-({ item, showTooltip = true, size, className }) => {
+const Creator: React.FC<CreatorProps> = ({
+  item,
+  showTooltip = true,
+  size,
+  className,
+}) => {
   const [isHovering, setIsHovering] = useState(false);
+
+  function manageClass() {
+    if (size === 'card') return style.CreatorsItemCard;
+    if (size === 'small') return style.CreatorsItemSmall;
+    return style.CreatorsItem;
+  }
 
   return (
     <div
@@ -30,9 +40,7 @@ const Creator: React.FC<CreatorProps> =
       </div>
 
       <div
-        className={
-          size === 'card' ? style.CreatorsItemCard : style.CreatorsItem
-        }
+        className={manageClass()}
         onFocus={() => false}
         onBlur={() => false}
         onMouseOver={(e) => setIsHovering(true)}

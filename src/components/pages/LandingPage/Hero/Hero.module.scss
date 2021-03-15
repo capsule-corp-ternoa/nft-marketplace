@@ -1,7 +1,7 @@
 .Hero {
   display: flex;
   flex-direction: column;
-  width: 1350px;
+  width: 1200px;
   margin-left: auto;
   margin-right: auto;
   box-sizing: border-box;
@@ -19,8 +19,8 @@
 }
 
 .VideoContainer {
-  height: 400px;
-  width: 720px;
+  height: 360px;
+  width: 640px;
   border: none;
   background: #e0e0e0;
   border-radius: 20px;
@@ -47,7 +47,7 @@
   font-family: "Airbnb Cereal App Extra Bold";
   font-style: normal;
   font-weight: bold;
-  font-size: 64px;
+  font-size: 60px;
   line-height: 78px;
   max-width: 450px;
 }
@@ -57,23 +57,13 @@
   flex-direction: column;
   margin-top: 16px;
   width: 100%;
-  position: relative;
-}
-
-.Test {
-  display: flex;
-  overflow-x: scroll;
-  position: relative;
-  height: 200px;
-  width: 100%;
 }
 
 .CreatorsDisplay {
   display: flex;
   width: 100%;
-  padding: 8px 24px;
-  position: absolute;
-  bottom: 0;
+  padding: 6px 3px;
+  flex-wrap: wrap;
 }
 
 .CreatorsTitle {
@@ -83,12 +73,10 @@
   font-size: 30px;
   line-height: 35px;
   margin: 0px;
-  margin-bottom: 10px;
-  position: absolute;
-  bottom: 110px;
-  left: 0px;
+  margin-bottom: 16px;
 }
 
 .CreatorWrapper {
   margin-right: 24px;
+  margin-bottom: 24px;
 }

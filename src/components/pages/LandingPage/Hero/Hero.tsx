@@ -41,9 +41,7 @@ const Hero: React.FC<HeroProps> = ({ creators }) => {
         </div>
         <div className={style.Creators}>
           <h3 className={style.CreatorsTitle}>Creators of the week</h3>
-          <div className={style.Test}>
-            <div className={style.CreatorsDisplay}>{returnCreators()}</div>
-          </div>
+          <div className={style.CreatorsDisplay}>{returnCreators()}</div>
         </div>
       </div>
     </>

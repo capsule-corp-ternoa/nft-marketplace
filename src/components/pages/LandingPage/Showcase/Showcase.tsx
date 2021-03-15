@@ -14,7 +14,7 @@ import ArrowRight from '../../../general/assets/arrowRight';
 const responsive = {
   desktop: {
     breakpoint: { max: 3000, min: 1024 },
-    items: 4,
+    items: 4.2,
   },
   tablet: {
     breakpoint: { max: 1024, min: 464 },
@@ -89,7 +89,6 @@ const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category }) => {
               responsive={responsive}
               infinite
               arrows={false}
-              centerMode
               className={style.CarouselContainer}
             >
               {returnNFTs()}

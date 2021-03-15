@@ -1,7 +1,7 @@
 .Wrapper {
   display: flex;
   flex-direction: column;
-  width: 1350px;
+  width: 1200px;
   margin-left: auto;
   margin-right: auto;
   box-sizing: border-box;
@@ -79,8 +79,8 @@
   box-sizing: border-box;
   margin-left: 24px;
   margin-right: 24px;
-  margin-bottom: 24px;
-  width: 260px;
+  margin-bottom: 32px;
+  width: 240px;
 }
 .CreatorInfos {
   display: flex;
@@ -96,13 +96,13 @@
   margin-bottom: 3px;
   font-family: "Airbnb Cereal App Medium";
   font-style: normal;
-  font-size: 18px;
+  font-size: 17px;
 }
 
 .CreatorCaps {
   font-family: "Airbnb Cereal App Book";
   font-style: normal;
-  font-size: 16px;
+  font-size: 15px;
   display: flex;
   align-items: center;
   color: #b1b1b1;

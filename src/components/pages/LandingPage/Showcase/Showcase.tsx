@@ -7,9 +7,9 @@ import 'react-multi-carousel/lib/styles.css';
 
 import style from './Showcase.module.scss';
 
-import NFTCard from '../../../common/NftCard/NftCard';
-import ArrowLeft from '../../../common/assets/arrowLeft';
-import ArrowRight from '../../../common/assets/arrowRight';
+import NFTCard from '../../../general/NftCard/NftCard';
+import ArrowLeft from '../../../general/assets/arrowLeft';
+import ArrowRight from '../../../general/assets/arrowRight';
 
 const responsive = {
   desktop: {

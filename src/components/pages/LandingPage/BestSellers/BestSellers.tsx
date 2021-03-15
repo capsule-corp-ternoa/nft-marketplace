@@ -2,9 +2,9 @@
 import React, { useState } from 'react';
 import Switch from 'react-switch';
 import style from './BestSellers.module.scss';
-import Blaze from '../../../common/assets/blaze';
+import Blaze from '../../../general/assets/blaze';
 
-import Creator from '../../../common/Creator/Creator';
+import Creator from '../../../general/Creator/Creator';
 
 export interface BestSellersProps {
   creators: CreatorType[];

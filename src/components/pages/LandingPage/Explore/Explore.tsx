@@ -1,7 +1,7 @@
 import React from 'react';
 import style from './Explore.module.scss';
 
-import NFTCard from '../../../common/NftCard/NftCard';
+import NFTCard from '../../../general/NftCard/NftCard';
 
 export interface ExploreProps {
   NFTs: NftType[];

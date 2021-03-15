@@ -2,7 +2,7 @@
 import React from 'react';
 import style from './Hero.module.scss';
 
-import Creator from '../../../common/Creator/Creator';
+import Creator from '../../../general/Creator/Creator';
 
 export interface HeroProps {
   creators: CreatorType[];

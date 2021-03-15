@@ -1,27 +1,18 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 
 import Logo from '../assets/LogoTernoa';
 
-import { H3 } from '../Title/Title';
-import { ReactComponent as TernoaLogo } from '../assets/logo-ternoa.svg';
-import { ReactComponent as Caps } from '../assets/caps.svg';
-
 import style from './MainHeader.module.scss';
 
-
-type MainHeaderType = {
-  walletId: string;
-};
-
-const MainHeader: React.FC<MainHeaderType> = ({ walletId }) => {
-
+const MainHeader: React.FC<any> = () => {
   const [searchValue, setSearchValue] = useState('' as string);
 
   const history = useHistory();
   const { t } = useTranslation();
+
+  const walletId = null;
 
   const updateKeywordSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.currentTarget.value);
@@ -30,23 +21,37 @@ const MainHeader: React.FC<MainHeaderType> = ({ walletId }) => {
   return (
     <div className={style.Header}>
       <div className={style.HeaderContainer}>
-        <Logo className={style.Logo} onClick={e => true} />
+        <Logo className={style.Logo} onClick={(e) => true} />
         <div className={style.SearchBar}>
-          <input type="search" onChange={updateKeywordSearch} className={style.Input} placeholder="Search" />
+          <input
+            type="search"
+            onChange={updateKeywordSearch}
+            className={style.Input}
+            placeholder="Search"
+          />
         </div>
         <div className={style.Infos}>
           <div className={style.Links}>
-            <a className={style.LinkItem} href="#">Explore</a>
-            <a className={style.LinkItem} href="#">How it works ?</a>
-            <a className={style.LinkItem} href="#">Support</a>
+            <a className={style.LinkItem} href="#">
+              Explore
+            </a>
+            <a className={style.LinkItem} href="#">
+              How it works ?
+            </a>
+            <a className={style.LinkItem} href="#">
+              Support
+            </a>
           </div>
-          <div className={style.Wallet}> {walletId ?
-            <div>connected</div>
-            :
-            <div className={style.Regular}>
-              <div className={style.Create}>Create NFT</div>
-              <div className={style.Connect}>Connect</div>
-            </div>}
+          <div className={style.Wallet}>
+            {' '}
+            {walletId ? (
+              <div>connected</div>
+            ) : (
+              <div className={style.Regular}>
+                <div className={style.Create}>Create NFT</div>
+                <div className={style.Connect}>Connect</div>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -55,7 +60,6 @@ const MainHeader: React.FC<MainHeaderType> = ({ walletId }) => {
 };
 
 export default MainHeader;
-
 
 /*
 

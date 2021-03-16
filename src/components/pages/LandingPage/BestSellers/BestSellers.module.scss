@@ -150,3 +150,97 @@
     color: #b1b1b1;
   }
 }
+
+@media (max-width: 950px) {
+  .Wrapper {
+    width: 100%;
+    padding: 40px 24px;
+  }
+
+  .CreatorsWrapper {
+    justify-content: space-around;
+  }
+
+  .CreatorName {
+    margin: 0px;
+    margin-bottom: 3px;
+    font-size: 15px;
+  }
+
+  .CreatorCaps {
+    font-size: 13px;
+  }
+
+  .CreatorShell {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    margin-left: 18px;
+    margin-right: 18px;
+    margin-bottom: 22px;
+    width: 220px;
+  }
+}
+
+@media (max-width: 720px) {
+  .Wrapper {
+    width: 100%;
+    padding: 40px 16px;
+  }
+  .Top {
+    width: 100%;
+    flex-direction: column;
+  }
+  .SwitchShell {
+    margin-left: 0px;
+    margin-top: 9px;
+  }
+
+  .Toggle {
+    margin-left: 0px;
+  }
+
+  .CreatorsWrapper {
+    justify-content: space-around;
+  }
+
+  .CreatorShell {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    margin-left: 12px;
+    margin-right: 12px;
+    margin-bottom: 16px;
+    width: 220px;
+  }
+
+  .CreatorName {
+    margin: 0px;
+    margin-bottom: 3px;
+    font-size: 17px;
+  }
+
+  .CreatorCaps {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 500px) {
+  .CreatorsWrapper {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+
+  .CreatorShell {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    margin-left: 0px;
+    margin-bottom: 16px;
+    width: auto;
+  }
+}

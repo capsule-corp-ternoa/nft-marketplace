@@ -135,3 +135,14 @@
     cursor: pointer;
   }
 }
+
+@media (max-width: 1000px) {
+  .HeaderContainer {
+    display: none;
+  }
+
+  .Header {
+    height: 80px;
+    border-bottom: 1px solid #dedede;
+  }
+}

@@ -112,3 +112,37 @@
     }
   }
 }
+
+@media (max-width: 950px) {
+  .Wrapper {
+    width: 100%;
+    padding: 40px 24px;
+  }
+}
+
+@media (max-width: 870px) {
+  .Top {
+    flex-direction: column;
+    padding-left: 0px;
+  }
+
+  .Filters {
+    margin-left: 0px;
+  }
+
+  .Title {
+    margin-bottom: 24px;
+  }
+}
+
+@media (max-width: 720px) {
+  .Filters {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .Filter {
+    margin: 0px 8px;
+    margin-bottom: 12px;
+  }
+}

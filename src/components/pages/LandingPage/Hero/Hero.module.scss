@@ -35,7 +35,7 @@
 
 .VideoContainer > video {
   display: block;
-  object-fit: fill;
+  object-fit: cover;
   margin: 0;
   padding: 0;
   float: left;
@@ -110,5 +110,67 @@
   .CreatorWrapper {
     margin-right: 16px;
     margin-bottom: 16px;
+  }
+}
+
+@media (max-width: 950px) {
+  .Hero {
+    width: 100%;
+    padding: 50px 24px;
+  }
+
+  .VideoContainer {
+    height: 280px;
+    width: 390px;
+  }
+}
+
+@media (max-width: 720px) {
+  .Head {
+    flex-direction: column;
+  }
+
+  .Title {
+    font-size: 38px;
+    line-height: 43px;
+    max-width: 90%;
+    padding: 0px 16px;
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  .CreatorsTitle {
+    font-size: 20px;
+    line-height: 24px;
+  }
+
+  .CreatorsDisplay {
+    flex-wrap: nowrap;
+    overflow-x: scroll;
+  }
+
+  .CreatorWrapper {
+    margin-right: 16px;
+    margin-bottom: 16px;
+  }
+}
+
+@media (max-width: 640px) {
+  .Title {
+    font-size: 38px;
+    line-height: 43px;
+    max-width: 100%;
+    padding: 0px 16px;
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  .Hero {
+    width: 100%;
+    padding: 40px 16px;
+  }
+  .VideoContainer {
+    height: 280px;
+    width: 100%;
   }
 }

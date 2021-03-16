@@ -9,6 +9,8 @@
   box-shadow: 0px 0px 14.5243px 5.0835px rgba(0, 0, 0, 0.15);
   cursor: pointer;
   overflow: hidden;
+  //will-change: transform;
+  transform: translateZ(0);
 }
 
 .Container {
@@ -20,6 +22,7 @@
   position: absolute;
   box-sizing: border-box;
   z-index: 2;
+  border-radius: 12px;
 }
 
 .Filter {
@@ -31,6 +34,7 @@
   box-sizing: border-box;
   background: linear-gradient(180deg, rgba(57, 57, 57, 0) 60%, #030303 92.5%);
   border-radius: 0px 0px 10.167px 10.167px;
+  border-radius: 12px;
 }
 
 .NFTIMG {
@@ -69,6 +73,8 @@
   font-size: 20px;
   color: white;
   display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
 }
 .HeartSVG {
@@ -227,5 +233,25 @@
     font-size: 11px;
     margin-right: 12px;
     margin-top: 0px;
+  }
+}
+
+@media (max-width: 720px) {
+  .NFT {
+    width: 190px;
+    height: 280px;
+  }
+
+  .SecretLabel {
+    padding: 2.5px 16px;
+    font-size: 16px;
+  }
+
+  .Favorite {
+    padding: 6px 12px;
+    font-size: 16px;
+  }
+  .HeartSVG {
+    width: 16px;
   }
 }

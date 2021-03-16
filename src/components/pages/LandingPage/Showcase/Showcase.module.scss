@@ -94,6 +94,10 @@
   width: 8px;
 }
 
+.NFTShell {
+  border-radius: 20px;
+}
+
 @media (max-width: 1300px) {
   .Title {
     font-size: 26px;
@@ -112,5 +116,56 @@
   .CarouselContainer {
     overflow-y: visible;
     padding: 20px 0px;
+  }
+}
+
+@media (max-width: 950px) {
+  .Title {
+    font-size: 28px;
+    line-height: 32px;
+  }
+
+  .Label {
+    font-size: 12px;
+    line-height: 15px;
+  }
+  .Showcase {
+    width: 100%;
+    padding: 32px 24px;
+  }
+}
+
+@media (max-width: 720px) {
+  .Showcase {
+    padding: 32px 16px;
+  }
+  .Infos {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .Toggle {
+    margin-left: 0px;
+    margin-top: 4px;
+  }
+
+  .SwitchShell {
+    margin-left: 0px;
+  }
+  .Top {
+    width: 100%;
+  }
+
+  .Label {
+    margin-top: 0px;
+    margin-left: 10px;
+  }
+
+  .Nav {
+    margin-top: 16px;
+    align-self: flex-end;
+  }
+
+  .CarouselContainer {
+    padding: 24px 0px;
   }
 }

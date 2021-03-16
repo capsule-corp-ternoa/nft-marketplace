@@ -143,6 +143,7 @@
 
   .Title {
     font-size: 26px;
+    line-height: 32px;
   }
 
   .Label {
@@ -160,5 +161,68 @@
     margin-top: 5px;
     margin-left: 16px;
     outline: none;
+  }
+}
+
+@media (max-width: 950px) {
+  .Wrapper {
+    width: 100%;
+    padding: 40px 24px;
+  }
+}
+
+@media (max-width: 870px) {
+  .CreatorItem {
+    box-sizing: border-box;
+    margin: 8px;
+  }
+
+  .Bottom {
+    margin-top: 0px;
+  }
+
+  .NFTS {
+    display: flex;
+    box-sizing: border-box;
+    overflow-x: scroll;
+    justify-content: flex-start;
+    padding: 24px 0px;
+  }
+
+  .NFTShell {
+    margin: 0px 16px;
+  }
+
+  .NFTShell:nth-child(1) {
+    margin-left: 0px;
+  }
+
+  .CreatorsInner {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 720px) {
+  .Wrapper {
+    padding: 40px 16px;
+  }
+
+  .CreatorsInner {
+    justify-content: space-around;
+    width: auto;
+    padding: 0px;
+  }
+
+  .Top {
+    width: 100%;
+    flex-direction: column;
+  }
+  .SwitchShell {
+    margin-left: 0px;
+    margin-top: 9px;
+  }
+
+  .Toggle {
+    margin-left: 0px;
   }
 }

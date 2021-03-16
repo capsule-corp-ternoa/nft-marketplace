@@ -230,17 +230,17 @@
 @media (max-width: 500px) {
   .CreatorsWrapper {
     flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
+    justify-content: center;
+    align-items: flex;
   }
 
   .CreatorShell {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: flex-start;
     box-sizing: border-box;
     margin-left: 0px;
     margin-bottom: 16px;
-    width: auto;
+    width: 240px;
   }
 }

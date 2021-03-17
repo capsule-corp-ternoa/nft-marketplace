@@ -4,11 +4,13 @@ import './style/general.scss';
 import { Switch, Route, BrowserRouter } from 'react-router-dom';
 
 import MainHeader from './components/general/MainHeader/MainHeader';
+import AlphaBanner from './components/general/AlphaBanner/AlphaBanner';
 import Landing from './components/pages/LandingPage/Landing';
 
 const App: React.FC = () => (
   <div className="App">
     <BrowserRouter>
+      <AlphaBanner />
       <MainHeader />
       <Switch>
         <Route path="/" exact render={() => <Landing />} />

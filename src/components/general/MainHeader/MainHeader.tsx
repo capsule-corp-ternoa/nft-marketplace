@@ -8,7 +8,7 @@ import Creator from '../Creator/Creator';
 
 import style from './MainHeader.module.scss';
 
-const MainHeader: React.FC<any> = () => {
+const MainHeader: React.FC = () => {
   const [searchValue, setSearchValue] = useState('' as string);
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -49,13 +49,13 @@ const MainHeader: React.FC<any> = () => {
         </div>
         <div className={style.Infos}>
           <div className={style.Links}>
-            <a className={style.LinkItem} href="#">
+            <a className={style.LinkItem} href="/">
               Explore
             </a>
-            <a className={style.LinkItem} href="#">
+            <a className={style.LinkItem} href="/">
               How it works ?
             </a>
-            <a className={style.LinkItem} href="#">
+            <a className={style.LinkItem} href="/">
               Support
             </a>
           </div>

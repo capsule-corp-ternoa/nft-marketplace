@@ -16,7 +16,7 @@ import NFTSET2 from './mocks/NFTSET2';
 import NFTSET3 from './mocks/NFTSET3';
 import NFTSET4 from './mocks/NFTSET4';
 
-const Landing: React.FC<any> = () => {
+const Landing: React.FC = () => {
   const { t } = useTranslation();
 
   return (

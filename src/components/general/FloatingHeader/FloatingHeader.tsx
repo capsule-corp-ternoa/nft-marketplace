@@ -7,7 +7,7 @@ import Logo from '../assets/LogoTernoa';
 
 import style from './FloatingHeader.module.scss';
 
-const FloatingHeader: React.FC<any> = () => {
+const FloatingHeader: React.FC = () => {
   const [searchValue, setSearchValue] = useState('' as string);
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -51,10 +51,10 @@ const FloatingHeader: React.FC<any> = () => {
               placeholder="Search"
             />
           </div>
-          <a href="#" className={style.Link}>
+          <a href="/" className={style.Link}>
             How it works ?
           </a>
-          <a href="#" className={style.Link}>
+          <a href="/" className={style.Link}>
             Explore
           </a>
         </div>

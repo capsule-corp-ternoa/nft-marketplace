@@ -1,18 +1,35 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import Logo from '../assets/LogoTernoa';
+import Creator from '../Creator/Creator';
 
 import style from './MainHeader.module.scss';
 
 const MainHeader: React.FC<any> = () => {
   const [searchValue, setSearchValue] = useState('' as string);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const history = useHistory();
   const { t } = useTranslation();
 
-  const walletId = null;
+  // to update when wallet API will be integrated
+  // const walletId = null;
+
+  const walledId = {
+    id: 61768,
+  };
+
+  const item = {
+    name: 'Takeshi Kovacs',
+    caps: 78029,
+    img:
+      'https://images.unsplash.com/photo-1497551060073-4c5ab6435f12?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1267&q=80',
+    verified: true,
+    id: 9,
+  };
 
   const updateKeywordSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.currentTarget.value);
@@ -43,8 +60,26 @@ const MainHeader: React.FC<any> = () => {
             </a>
           </div>
           <div className={style.Wallet}>
-            {walletId ? (
-              <div>connected</div>
+            {walledId ? (
+              <div className={style.Regular}>
+                <div className={style.Create}>Create NFT</div>
+                <div
+                  onClick={(e: any) => setIsExpanded(!isExpanded)}
+                  className={style.Profile}
+                >
+                  <div className={style.Caps}>
+                    <span className={style.NumberCaps}>{item.caps}</span>
+                    caps
+                  </div>
+                  <div className={style.ProfileImageContainer}>
+                    <img
+                      className={style.ProfileImage}
+                      src={item.img}
+                      alt="profile"
+                    />
+                  </div>
+                </div>
+              </div>
             ) : (
               <div className={style.Regular}>
                 <div className={style.Create}>Create NFT</div>
@@ -53,6 +88,38 @@ const MainHeader: React.FC<any> = () => {
             )}
           </div>
         </div>
+        {walledId && isExpanded && (
+          <div className={style.Dropdown}>
+            <div className={style.DropdownContainer}>
+              <div className={style.DropdownProfile}>
+                <Creator item={item} size="xsmall" showTooltip={false} />
+                <div className={style.Name}>{item.name}</div>
+              </div>
+
+              <div className={style.Section}>
+                <div className={style.SectionTitle}>
+                  Wallet :
+                  <span className={style.SectionWallet}>
+                    gdt67fx6.....ej636373BH
+                  </span>
+                </div>
+              </div>
+              <div className={style.Section}>
+                <div className={style.SectionTitle}>Profile</div>
+              </div>
+              <div className={style.Section}>
+                <div className={style.SectionTitle}>Account</div>
+              </div>
+              <div className={style.Section}>
+                <div className={style.SectionTitle}>Disconnect</div>
+              </div>
+            </div>
+            <div className={style.CapsSection}>
+              <span>My wallet</span>
+              <div className={style.CapsPrice}>{item.caps} Caps</div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

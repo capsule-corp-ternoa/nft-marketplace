@@ -29,6 +29,15 @@
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
+.CreatorsItemXSmall {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  position: relative;
+  z-index: 6;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
 .CreatorsImage {
   object-fit: cover;
   width: 100%;
@@ -50,6 +59,13 @@
   width: 18px;
   top: 4px;
   left: 0px;
+  z-index: 7;
+}
+.CreatorsBadgeXSM {
+  position: absolute;
+  width: 16px;
+  top: 4px;
+  left: -5px;
   z-index: 7;
 }
 
@@ -80,7 +96,7 @@
   border-right: 10px solid transparent;
   z-index: 100;
   border-top: 10px solid black;
-  content: '';
+  content: "";
   position: absolute;
   bottom: 0;
   transform: translateY(7px);
@@ -109,12 +125,12 @@
   font-size: 14px;
   margin-bottom: 0px;
   color: white;
-  font-family: 'Airbnb Cereal App Bold';
+  font-family: "Airbnb Cereal App Bold";
 }
 
 .CreatorsCaps {
   color: #a48fc9;
-  font-family: 'Airbnb Cereal App Book';
+  font-family: "Airbnb Cereal App Book";
   font-size: 12px;
 }
 

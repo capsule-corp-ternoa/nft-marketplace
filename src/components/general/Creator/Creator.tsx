@@ -21,7 +21,14 @@ const Creator: React.FC<CreatorProps> = ({
   function manageClass() {
     if (size === 'card') return style.CreatorsItemCard;
     if (size === 'small') return style.CreatorsItemSmall;
+    if (size === 'xsmall') return style.CreatorsItemXSmall;
     return style.CreatorsItem;
+  }
+
+  function manageBadgeClass() {
+    if (size === 'card') return style.CreatorsBadgeSM;
+    if (size === 'xsmall') return style.CreatorsBadgeXSM;
+    return style.CreatorsBadge;
   }
 
   return (
@@ -48,13 +55,7 @@ const Creator: React.FC<CreatorProps> = ({
         data-tip
         data-for={showTooltip && `tooltip${item.id}`}
       >
-        {item.verified && (
-          <Badge
-            className={
-              size === 'card' ? style.CreatorsBadgeSM : style.CreatorsBadge
-            }
-          />
-        )}
+        {item.verified && <Badge className={manageBadgeClass()} />}
         <img src={item.img} className={style.CreatorsImage} alt="img" />
       </div>
     </div>

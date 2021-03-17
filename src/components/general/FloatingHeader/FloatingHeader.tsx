@@ -14,7 +14,21 @@ const FloatingHeader: React.FC<any> = () => {
   const history = useHistory();
   const { t } = useTranslation();
 
-  const walletId = null;
+  // to update when wallet API will be integrated
+  // const walletId = null;
+
+  const walledId = {
+    id: 61768,
+  };
+
+  const item = {
+    name: 'Takeshi Kovacs',
+    caps: 78029,
+    img:
+      'https://images.unsplash.com/photo-1497551060073-4c5ab6435f12?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1267&q=80',
+    verified: true,
+    id: 9,
+  };
 
   const updateKeywordSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.currentTarget.value);
@@ -63,7 +77,23 @@ const FloatingHeader: React.FC<any> = () => {
             </>
           )}
         </div>
-        <div className={style.Connect}>Connect Wallet</div>
+        {walledId ? (
+          <div className={style.Profile}>
+            <div className={style.Caps}>
+              <span className={style.NumberCaps}>{item.caps}</span>
+              caps
+            </div>
+            <div className={style.ProfileImageContainer}>
+              <img
+                className={style.ProfileImage}
+                src={item.img}
+                alt="profile"
+              />
+            </div>
+          </div>
+        ) : (
+          <div className={style.Connect}>Connect Wallet</div>
+        )}
       </div>
     </div>
   );

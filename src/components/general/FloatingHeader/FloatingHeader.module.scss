@@ -1,0 +1,122 @@
+.Header {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  align-items: center;
+  width: 260px;
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-sizing: border-box;
+  backdrop-filter: blur(20px);
+  border-radius: 40px;
+  position: fixed;
+  z-index: 100;
+  bottom: 50px;
+  right: 50px;
+  padding: 10px;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.HeaderExpanded {
+  border-radius: 28px;
+  padding: 14px;
+  padding-right: 16px;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.Container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.Connect {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 14px 26px;
+  font-family: "Airbnb Cereal App Medium";
+  font-size: 12px;
+  background: #ffffff;
+  border-radius: 25px;
+  color: rgb(99, 14, 14);
+  cursor: pointer;
+}
+
+.Burger {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  margin-left: 14px;
+}
+
+.Line {
+  width: 23px;
+  border-radius: 24px;
+  background-color: white;
+  height: 2px;
+  margin-bottom: 4px;
+}
+
+.Line:nth-child(3) {
+  margin-bottom: 0px;
+}
+.CrossLine {
+  transform: rotate(45deg);
+  width: 23px;
+  border-radius: 24px;
+  background-color: white;
+  height: 2px;
+}
+
+.CrossLine:nth-child(2) {
+  transform: rotate(-45deg) translate(1px, -1px);
+  width: 23px;
+  border-radius: 24px;
+  background-color: white;
+  height: 2px;
+}
+
+.FullHeader {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+  padding-left: 14px;
+  padding-bottom: 10px;
+}
+.Link {
+  font-family: "Airbnb Cereal App Medium";
+  font-style: normal;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 23px;
+  margin-bottom: 8px;
+  color: white;
+  text-decoration: none;
+}
+
+.Input {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 30px;
+  font-size: 14px;
+  border: none;
+  width: 90%;
+  padding: 8px 18px;
+  outline: none;
+  font-family: "Airbnb Cereal App Book";
+  margin-bottom: 16px;
+  color: white;
+}
+
+@media (max-width: 730px) {
+  .Header {
+    left: 0px;
+    right: 0px;
+    bottom: 40px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

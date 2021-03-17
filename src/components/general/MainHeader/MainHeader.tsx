@@ -43,7 +43,6 @@ const MainHeader: React.FC<any> = () => {
             </a>
           </div>
           <div className={style.Wallet}>
-            {' '}
             {walletId ? (
               <div>connected</div>
             ) : (

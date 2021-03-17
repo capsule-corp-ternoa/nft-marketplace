@@ -8,6 +8,7 @@ import ArtCreators from './ArtCreators/ArtCreators';
 import BestSellers from './BestSellers/BestSellers';
 import Explore from './Explore/Explore';
 import Footer from '../../general/Footer/Footer';
+import FloatingHeader from '../../general/FloatingHeader/FloatingHeader';
 
 import Creators from './mocks/mockCreators';
 import NFTSET1 from './mocks/NFTSET1';
@@ -33,6 +34,7 @@ const Landing: React.FC<any> = () => {
       <BestSellers creators={Creators} />
       <Explore NFTs={NFTSET4} />
       <Footer />
+      <FloatingHeader />
     </div>
   );
 };

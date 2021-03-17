@@ -50,7 +50,9 @@ export interface ShowcaseProps {
 const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category }) => {
   const [isFiltered, setIsFiltered] = useState(false);
 
-  let carousel: Carousel | null = null;
+  let carousel: Carousel | null = new Carousel(
+    { responsive: {}, children: (<></>) }
+  );
 
   function returnNFTs() {
     return NFTs.map((item) => (
@@ -85,13 +87,20 @@ const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category }) => {
           </div>
           <div className={style.Nav}>
             <div
-              onClick={() => carousel?.previous(1)}
+              onClick={() => {
+                carousel?.previous(1);
+              }}
               className={style.NavButton}
             >
               <ArrowLeft className={style.ArrowSVG} />
             </div>
 
-            <div onClick={() => carousel?.next(1)} className={style.NavButton}>
+            <div
+              onClick={() => { 
+                carousel?.next(1);
+              }}
+              className={style.NavButton}
+            >
               <ArrowRight className={style.ArrowSVG} />
             </div>
           </div>
@@ -106,6 +115,7 @@ const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category }) => {
               infinite
               arrows={false}
               className={style.CarouselContainer}
+              swipeable={false}
             >
               {returnNFTs()}
             </Carousel>

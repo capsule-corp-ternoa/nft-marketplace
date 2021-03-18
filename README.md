@@ -1,85 +1,41 @@
-# Getting started
+# TypeScript Next.js example
 
-Front-end for NFT-marketplace web application.
+This is a really simple project that shows the usage of Next.js with TypeScript.
 
-Related APIS/blockchain APIs are: TBD
+## Deploy your own
 
-## High Level Design
+Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example):
 
-![HLD](nft-marketplace-HLD.png)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-typescript&project-name=with-typescript&repository-name=with-typescript)
 
-## Technology stack
+## How to use it?
 
-This application is based on [Create-react-app](https://reactjs.org/docs/create-a-new-react-app.html) with typescript.
+Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init) or [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) to bootstrap the example:
 
-A `backend` based on ([express](https://www.npmjs.com/package/express)) is included into the application (`server/server.ts`) and act as 'super-proxy' for calling external API/blockchain.
-
-The external APIS are mocked with `mockserver`.
-
-## Install
-
-Install all requiered packages with
-
-```
-npm install
+```bash
+npx create-next-app --example with-typescript with-typescript-app
+# or
+yarn create next-app --example with-typescript with-typescript-app
 ```
 
-## How to run locally
+Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+
+## Notes
+
+This example shows how to integrate the TypeScript type system into Next.js. Since TypeScript is supported out of the box with Next.js, all we have to do is to install TypeScript.
 
 ```
-npm run dev
+npm install --save-dev typescript
 ```
 
-(WIP) This command will start multiples npm tasks :
-
-- `start-backend`, for starting the backend (_port 8181_)
-- `start`, for starting the application through `dev react server` (_port 3000_)
-
-# How to run the tests
-
-All the Tests can be run in interactive mode with
+To enable TypeScript's features, we install the type declarations for React and Node.
 
 ```
-# all the tests
-npm run test
-
-# no watch mode
-npm run test:nowatch
-
-# no watch + coverage report
-test:cov
+npm install --save-dev @types/react @types/react-dom @types/node
 ```
 
-# how to run in production
+When we run `next dev` the next time, Next.js will start looking for any `.ts` or `.tsx` files in our project and builds it. It even automatically creates a `tsconfig.json` file for our project with the recommended settings.
 
-Build the application, set the environment variables and run the application :
+Next.js has built-in TypeScript declarations, so we'll get autocompletion for Next.js' modules straight away.
 
-```
-npm run build
-
-NFT_API_HOST=http://localhost # blockchain host name
-NFT_API_PORT=8282 # blockchain host port
-EXPRESS_PORT=8181 # application port
-
-npm run production
-```
-
-# About authentication process
-
-TBD
-
-# How to do a PR
-
-Please don't push directly to an environment branch. If you don't know how to make a PR, please ask to someone.
-
-# Maintenance mode
-
-TBD
-
-## Branch strategy
-
-We are using `Trunk base on test Branch` strategy
-
-## CI/CD strategy & pipeline
-
-Jenkins will be here soon .... stay tuned !
+A `type-check` script is also added to `package.json`, which runs TypeScript's `tsc` CLI in `noEmit` mode to run type-checking separately. You can then include this, for example, in your `test` scripts.

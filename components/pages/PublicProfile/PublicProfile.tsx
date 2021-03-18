@@ -23,7 +23,7 @@ const PublicProfile: React.FC<any> = ({ item, NFTS }) => {
       <div className={style.Banner}>
         <img
           className={style.BannerIMG}
-          src="https://images.unsplash.com/photo-1579546929518-9e396f3cc809?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2250&q=80"
+          src="https://images.unsplash.com/photo-1583446763077-29c444445856?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2222&q=80"
           alt="banner"
         />
       </div>

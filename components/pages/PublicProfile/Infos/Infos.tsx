@@ -15,7 +15,7 @@ const Infos: React.FC<any> = ({ item }) => {
         <div className={style.AvatarShell}>
           <div className={style.Avatar}>
             <img className={style.AvatarIMG} src={item.img} />
-            <Badge className={style.Badge} />
+            {item.verified && <Badge className={style.Badge} />}
           </div>
         </div>
         <div className={style.ContainerInner}>

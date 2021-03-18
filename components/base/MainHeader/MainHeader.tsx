@@ -1,35 +1,18 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import React, { useState } from "react";
+import React, { useState } from 'react';
+import Link from 'next/link';
 //import { useTranslation } from 'react-i18next';
 
-import Logo from "components/assets/LogoTernoa";
-import Creator from "../Creator";
+import Logo from 'components/assets/LogoTernoa';
+import Creator from '../Creator';
+import CopyPaste from 'components/assets/copypaste';
 
-import style from "./MainHeader.module.scss";
+import style from './MainHeader.module.scss';
 
-const MainHeader: React.FC<any> = ({ setModalExpand }) => {
-  const [, setSearchValue] = useState("" as string);
+const MainHeader: React.FC<any> = ({ setModalExpand, item }) => {
+  const [, setSearchValue] = useState('' as string);
   const [isExpanded, setIsExpanded] = useState(false);
   //const { t } = useTranslation();
-
-  // to update when wallet API will be integrated
-  const walletId = null;
-  const item: any = null;
-
-  /*
-  const walletId = {
-    id: 61768,
-  };
-
-  const item = {
-    name: 'Takeshi Kovacs',
-    caps: 78029,
-    img:
-      'https://images.unsplash.com/photo-1497551060073-4c5ab6435f12?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1267&q=80',
-    verified: true,
-    id: 9,
-  };
-  */
 
   const updateKeywordSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.currentTarget.value);
@@ -38,7 +21,12 @@ const MainHeader: React.FC<any> = ({ setModalExpand }) => {
   return (
     <div className={style.Header}>
       <div className={style.HeaderContainer}>
-        <Logo className={style.Logo} onClick={() => true} />
+        <Link href="/">
+          <a>
+            <Logo className={style.Logo} onClick={() => true} />
+          </a>
+        </Link>
+
         <div className={style.SearchBar}>
           <input
             type="search"
@@ -60,7 +48,7 @@ const MainHeader: React.FC<any> = ({ setModalExpand }) => {
             </a>
           </div>
           <div className={style.Wallet}>
-            {walletId ? (
+            {item ? (
               <div className={style.Regular}>
                 <div className={style.Create}>Create NFT</div>
                 <div
@@ -93,7 +81,7 @@ const MainHeader: React.FC<any> = ({ setModalExpand }) => {
             )}
           </div>
         </div>
-        {walletId && item && isExpanded && (
+        {item && isExpanded && (
           <div className={style.Dropdown}>
             <div className={style.DropdownContainer}>
               <div className={style.DropdownProfile}>
@@ -106,6 +94,7 @@ const MainHeader: React.FC<any> = ({ setModalExpand }) => {
                   Wallet :
                   <span className={style.SectionWallet}>
                     gdt67fx6.....ej636373BH
+                    <CopyPaste className={style.CopyPaste} />
                   </span>
                 </div>
               </div>
@@ -131,70 +120,3 @@ const MainHeader: React.FC<any> = ({ setModalExpand }) => {
 };
 
 export default MainHeader;
-
-/*
-
-<ContainerHeader>
-
-            <Row>
-
-                <Col small="50" medium="20" large="20">
-                    <TitleHeader role="button" tabIndex={0} onClick={() => { history.push('/'); }}>
-                        <TernoaLogo />
-                        <span>&nbsp; Ternoa Stamp</span>
-                    </TitleHeader>
-
-                </Col>
-
-                <Col small="50" medium="40" large="40">
-                    <SearchStyled>
-                        <FaSearchStyled />
-                        <InputStyled onChange={updateKeywordSearch} full placeholder={t('header.find')} type="search" />
-                    </SearchStyled>
-                </Col>
-
-
-                <Col small="100" medium="40" large="40">
-                    <div>
-
-                        <Button
-                            onClick={() => { history.push(`/search?q=${searchValue}`); }}
-                        >
-                            <FaSearch />
-                        </Button>
-
-                        <Button
-                            primary
-                            onClick={() => { history.push('/create'); }}
-                        >
-                            {t('header.createButton')}
-                        </Button>
-
-                        {walletId ?
-
-                            (
-                                <Button
-                                    onClick={() => { history.push('/profile-top'); }}
-                                >
-                                    <span>{walletId} &nbsp; <Caps /></span>
-                                </Button>
-                            )
-                            :
-                            (
-                                <Button
-                                    onClick={() => { history.push('/connect-wallet'); }}
-                                >
-                                    <span>{t('header.connectWallet')} </span>
-                                </Button>
-                            )}
-
-
-                    </div>
-
-                </Col>
-            </Row>
-        </ContainerHeader>
-
-
-
-*/

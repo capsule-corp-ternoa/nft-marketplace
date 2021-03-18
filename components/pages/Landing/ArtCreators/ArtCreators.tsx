@@ -1,13 +1,14 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useState } from "react";
-import Switch from "react-switch";
-import style from "./ArtCreators.module.scss";
-import Creator from "components/base/Creator";
-import NFTCard from "components/base/NftCard";
+import React, { useState } from 'react';
+import Switch from 'react-switch';
+import Link from 'next/link';
+import style from './ArtCreators.module.scss';
+import Creator from 'components/base/Creator';
+import NFTCard from 'components/base/NftCard';
 
-import Blaze from "components/assets/blaze";
+import Blaze from 'components/assets/blaze';
 
-import { CreatorType, NftType } from "interfaces/index";
+import { CreatorType, NftType } from 'interfaces/index';
 
 export interface ArtCreatorsProps {
   creators: CreatorType[];
@@ -20,16 +21,18 @@ const ArtCreators: React.FC<ArtCreatorsProps> = ({ creators, NFTs }) => {
 
   function returnCreators() {
     return creators.slice(0, 9).map((item) => (
-      <div key={item.id} className={style.CreatorItem}>
-        <Creator item={item} size="small" />
-      </div>
+      <Link key={item.id} href={`/${item.name}`}>
+        <a className={style.CreatorItem}>
+          <Creator item={item} size="small" />
+        </a>
+      </Link>
     ));
   }
 
   function returnNFTs() {
     return NFTs.map((item) => (
       <div key={item.id} className={style.NFTShell}>
-        <NFTCard item={item} />
+        <NFTCard mode="show" item={item} />
       </div>
     ));
   }

@@ -1,10 +1,11 @@
 /* eslint-disable jsx-a11y/media-has-caption */
-import React from "react";
-import style from "./Hero.module.scss";
+import React from 'react';
+import style from './Hero.module.scss';
+import Link from 'next/link';
 
-import Creator from "components/base/Creator";
+import Creator from 'components/base/Creator';
 
-import { CreatorType } from "interfaces/index";
+import { CreatorType } from 'interfaces/index';
 
 export interface HeroProps {
   creators: CreatorType[];
@@ -13,9 +14,11 @@ export interface HeroProps {
 const Hero: React.FC<HeroProps> = ({ creators }) => {
   function returnCreators() {
     return creators.map((item) => (
-      <div key={item.id} className={style.CreatorWrapper}>
-        <Creator item={item} showTooltip={true} />
-      </div>
+      <Link key={item.id} href={`/${item.name}`}>
+        <a className={style.CreatorWrapper}>
+          <Creator item={item} showTooltip={true} />
+        </a>
+      </Link>
     ));
   }
 

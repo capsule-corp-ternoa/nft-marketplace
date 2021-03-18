@@ -1,17 +1,17 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useState } from "react";
-import Switch from "react-switch";
-import Carousel from "react-multi-carousel";
-import "react-multi-carousel/lib/styles.css";
+import React, { useState } from 'react';
+import Switch from 'react-switch';
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
 
-import style from "./Showcase.module.scss";
+import style from './Showcase.module.scss';
 
-import NFTCard from "components/base/NftCard";
-import ArrowLeft from "components/assets/arrowLeft";
-import ArrowRight from "components/assets/arrowRight";
+import NFTCard from 'components/base/NftCard';
+import ArrowLeft from 'components/assets/arrowLeft';
+import ArrowRight from 'components/assets/arrowRight';
 
-import { NftType } from "interfaces/index";
+import { NftType } from 'interfaces/index';
 
 const responsive = {
   desktop: {
@@ -60,7 +60,7 @@ const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category }) => {
   function returnNFTs() {
     return NFTs.map((item) => (
       <div key={item.id} className={style.NFTShell}>
-        <NFTCard item={item} />
+        <NFTCard mode="Carousel" item={item} />
       </div>
     ));
   }

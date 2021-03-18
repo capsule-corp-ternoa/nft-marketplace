@@ -1,12 +1,13 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useState } from "react";
-import Switch from "react-switch";
-import style from "./BestSellers.module.scss";
-import Blaze from "components/assets/blaze";
+import React, { useState } from 'react';
+import Switch from 'react-switch';
+import style from './BestSellers.module.scss';
+import Blaze from 'components/assets/blaze';
 
-import Creator from "components/base/Creator";
+import Creator from 'components/base/Creator';
 
-import { CreatorType } from "interfaces/index";
+import { CreatorType } from 'interfaces/index';
+import Link from 'next/link';
 
 export interface BestSellersProps {
   creators: CreatorType[];
@@ -16,13 +17,15 @@ const BestSellers: React.FC<BestSellersProps> = ({ creators }) => {
   const [isFiltered, setIsFiltered] = useState(false);
   function returnCreators() {
     return creators.map((item) => (
-      <div key={item.id} className={style.CreatorShell}>
-        <Creator item={item} showTooltip={false} />
-        <div className={style.CreatorInfos}>
-          <h2 className={style.CreatorName}>{item.name}</h2>
-          <span className={style.CreatorCaps}>{item.caps} caps</span>
-        </div>
-      </div>
+      <Link key={item.id} href={`/${item.name}`}>
+        <a className={style.CreatorShell}>
+          <Creator item={item} showTooltip={false} />
+          <div className={style.CreatorInfos}>
+            <h2 className={style.CreatorName}>{item.name}</h2>
+            <span className={style.CreatorCaps}>{item.caps} caps</span>
+          </div>
+        </a>
+      </Link>
     ));
   }
 

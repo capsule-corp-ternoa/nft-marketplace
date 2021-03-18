@@ -1,30 +1,17 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import React, { useState } from "react";
+import React, { useState } from 'react';
 //import { useTranslation } from 'react-i18next';
 
-import style from "./FloatingHeader.module.scss";
+import style from './FloatingHeader.module.scss';
+import Creator from 'components/base/Creator';
+import CopyPaste from 'components/assets/copypaste';
 
-const FloatingHeader: React.FC = () => {
-  const [, setSearchValue] = useState("" as string);
+const FloatingHeader: React.FC<any> = ({ item }) => {
+  const [, setSearchValue] = useState('' as string);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [fullProfile, setFullProfile] = useState(false);
 
   //const { t } = useTranslation();
-
-  // to update when wallet API will be integrated
-  // const walletId = null;
-
-  const walledId = {
-    id: 61768,
-  };
-
-  const item = {
-    name: "Takeshi Kovacs",
-    caps: 78029,
-    img:
-      "https://images.unsplash.com/photo-1497551060073-4c5ab6435f12?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1267&q=80",
-    verified: true,
-    id: 9,
-  };
 
   const updateKeywordSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.currentTarget.value);
@@ -73,10 +60,31 @@ const FloatingHeader: React.FC = () => {
             </>
           )}
         </div>
-        {walledId ? (
-          <div className={style.Profile}>
-            <div className={style.Caps}>
-              <span className={style.NumberCaps}>{item.caps}</span>
+        {item ? (
+          <div
+            className={
+              fullProfile
+                ? `${style.Profile} ${style.ProfileSelect}`
+                : style.Profile
+            }
+            onClick={() => setFullProfile(!fullProfile)}
+          >
+            <div
+              className={
+                fullProfile
+                  ? `${style.Caps} ${style.ProfileSelect}`
+                  : style.Caps
+              }
+            >
+              <span
+                className={
+                  fullProfile
+                    ? `${style.NumberCaps} ${style.ProfileSelect}`
+                    : style.NumberCaps
+                }
+              >
+                {item.caps}
+              </span>
               caps
             </div>
             <div className={style.ProfileImageContainer}>
@@ -91,6 +99,39 @@ const FloatingHeader: React.FC = () => {
           <div className={style.Connect}>Connect Wallet</div>
         )}
       </div>
+      {item && fullProfile && (
+        <div className={style.Dropdown}>
+          <div className={style.DropdownContainer}>
+            <div className={style.DropdownProfile}>
+              <Creator item={item} size="xsmall" showTooltip={false} />
+              <div className={style.Name}>{item?.name}</div>
+            </div>
+
+            <div className={style.Section}>
+              <div className={style.SectionTitle}>
+                Wallet :
+                <span className={style.SectionWallet}>
+                  gdt67fx6.....ej636373BH
+                  <CopyPaste className={style.CopyPaste} />
+                </span>
+              </div>
+            </div>
+            <div className={style.Section}>
+              <div className={style.SectionTitle}>Profile</div>
+            </div>
+            <div className={style.Section}>
+              <div className={style.SectionTitle}>Account</div>
+            </div>
+            <div className={style.Section}>
+              <div className={style.SectionTitle}>Disconnect</div>
+            </div>
+          </div>
+          <div className={style.CapsSection}>
+            <span>My wallet</span>
+            <div className={style.CapsPrice}>{item?.caps} Caps</div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

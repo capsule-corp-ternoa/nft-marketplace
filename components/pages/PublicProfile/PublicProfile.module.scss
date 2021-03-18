@@ -1,0 +1,55 @@
+.Container {
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.Banner {
+  display: flex;
+  width: 100%;
+  height: 300px;
+  position: relative;
+}
+
+.BannerIMG {
+  position: absolute;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.NFTWrapper {
+  display: flex;
+  width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  flex-wrap: wrap;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 60px 0px;
+}
+
+.NFTShell {
+  margin-bottom: 30px;
+  margin-right: 12px;
+  margin-left: 12px;
+}
+
+@media (max-width: 1300px) {
+  .NFTWrapper {
+    width: 900px;
+    padding: 50px 0px;
+  }
+
+  .Banner {
+    height: 220px;
+  }
+}
+
+@media (max-width: 950px) {
+  .NFTWrapper {
+    width: 100%;
+    padding: 50px 24px;
+  }
+}

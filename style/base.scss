@@ -46,6 +46,11 @@ body {
   src: local("Airbnb Cereal App Black"), url(../fonts/AirbnbCerealBlack.woff) format("woff");
 }
 
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
 .App {
   padding: 0px;
   margin: 0px;

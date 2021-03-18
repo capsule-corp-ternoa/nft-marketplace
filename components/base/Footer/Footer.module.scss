@@ -91,6 +91,13 @@
   z-index: 10;
 }
 
+.SVGMediaTwitter {
+  width: 22px;
+  cursor: pointer;
+  z-index: 10;
+  fill: white;
+}
+
 .FooterBar {
   display: flex;
   align-items: center;
@@ -161,6 +168,11 @@
     margin: 0px 8px;
   }
 
+  .SVGMediaTwitter {
+    width: 20px;
+    margin: 0px 8px;
+  }
+
   .Link,
   .Text {
     font-size: 12px;
@@ -208,6 +220,10 @@
   }
 
   .SVGMedia {
+    width: 16px;
+  }
+
+  .SVGMediaTwitter {
     width: 16px;
   }
   .SocialMedias {
@@ -262,6 +278,10 @@
   }
 
   .SVGMedia {
+    width: 16px;
+  }
+
+  .SVGMediaTwitter {
     width: 16px;
   }
 

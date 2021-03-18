@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
-import style from "./Creator.module.scss";
-import Badge from "components/assets/badge";
+import style from './Creator.module.scss';
+import Badge from 'components/assets/badge';
 
-import { CreatorType } from "interfaces/index";
+import { CreatorType } from 'interfaces/index';
 
 export interface CreatorProps {
   item: CreatorType;
@@ -21,15 +21,15 @@ const Creator: React.FC<CreatorProps> = ({
   const [isHovering, setIsHovering] = useState(false);
 
   function manageClass() {
-    if (size === "card") return style.CreatorsItemCard;
-    if (size === "small") return style.CreatorsItemSmall;
-    if (size === "xsmall") return style.CreatorsItemXSmall;
+    if (size === 'card') return style.CreatorsItemCard;
+    if (size === 'small') return style.CreatorsItemSmall;
+    if (size === 'xsmall') return style.CreatorsItemXSmall;
     return style.CreatorsItem;
   }
 
   function manageBadgeClass() {
-    if (size === "card") return style.CreatorsBadgeSM;
-    if (size === "xsmall") return style.CreatorsBadgeXSM;
+    if (size === 'card') return style.CreatorsBadgeSM;
+    if (size === 'xsmall') return style.CreatorsBadgeXSM;
     return style.CreatorsBadge;
   }
 

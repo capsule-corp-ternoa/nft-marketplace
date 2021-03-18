@@ -1,20 +1,21 @@
-import React, { useState } from "react";
-import style from "./NftCard.module.scss";
-import Heart from "components/assets/heart";
-import Creator from "../Creator";
+import React, { useState } from 'react';
+import style from './NftCard.module.scss';
+import Heart from 'components/assets/heart';
+import Creator from '../Creator';
 
-import { NftType } from "interfaces/index";
+import { NftType } from 'interfaces/index';
 
 export interface NftCardProps {
   item: NftType;
+  mode: string;
 }
 
-const NftCard: React.FC<NftCardProps> = ({ item }) => {
+const NftCard: React.FC<NftCardProps> = ({ item, mode }) => {
   const [isHovering, setIsHovering] = useState(false);
 
   return (
     <div
-      className={style.NFT}
+      className={mode === 'grid' ? style.NFTGrid : style.NFT}
       onFocus={() => false}
       onBlur={() => false}
       onMouseOver={() => setIsHovering(true)}
@@ -49,7 +50,7 @@ const NftCard: React.FC<NftCardProps> = ({ item }) => {
         <div className={style.Infos}>
           <Creator
             item={item.creator}
-            className={isHovering ? style.Slide : ""}
+            className={isHovering ? style.Slide : ''}
             size="card"
             showTooltip={false}
           />

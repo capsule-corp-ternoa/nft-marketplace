@@ -1,4 +1,4 @@
-@import "style/colors.scss";
+@import 'style/colors.scss';
 
 .NFT {
   display: flex;
@@ -50,7 +50,6 @@
   transition: all 0.5s ease-out;
   box-sizing: border-box;
   background: linear-gradient(180deg, rgba(57, 57, 57, 0) 60%, #030303 92.5%);
-  border-radius: 0px 0px 10.167px 10.167px;
   border-radius: 12px;
 }
 
@@ -70,7 +69,7 @@
   padding: 2.5px 20px;
   z-index: 4;
   border-radius: 35px;
-  font-family: "Airbnb Cereal App Medium";
+  font-family: 'Airbnb Cereal App Medium';
   font-size: 19px;
   margin: 0px;
   color: white;
@@ -86,7 +85,7 @@
   padding: 8px 16px;
   z-index: 4;
   border-radius: 20px;
-  font-family: "Airbnb Cereal App Medium";
+  font-family: 'Airbnb Cereal App Medium';
   font-size: 20px;
   color: white;
   display: flex;
@@ -108,7 +107,7 @@
 }
 
 .Author {
-  font-family: "Airbnb Cereal App Book";
+  font-family: 'Airbnb Cereal App Book';
   font-style: normal;
   font-weight: normal;
   font-size: 13px;
@@ -153,7 +152,7 @@
 }
 
 .ButtonText {
-  font-family: "Airbnb Cereal App Bold";
+  font-family: 'Airbnb Cereal App Bold';
   color: white;
   font-style: normal;
   font-weight: bold;
@@ -161,7 +160,7 @@
 }
 
 .Price {
-  font-family: "Airbnb Cereal App Light";
+  font-family: 'Airbnb Cereal App Light';
   text-transform: uppercase;
   color: white;
   font-size: 13px;

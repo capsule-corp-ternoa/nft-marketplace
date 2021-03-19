@@ -1,0 +1,294 @@
+.SidebarMenu {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  min-width: 300px;
+  margin-right: 60px;
+  padding: 40px 0px;
+}
+
+.Infos {
+  box-sizing: border-box;
+  background-color: black;
+  background: #0c0b0b;
+  box-shadow: 0px 0px 8px 4px rgba(0, 0, 0, 0.15);
+  border-radius: 15px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 24px;
+}
+
+.Avatar {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  position: relative;
+  z-index: 6;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.AvatarIMG {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  position: absolute;
+}
+
+.Badge {
+  position: absolute;
+  width: 26px;
+  top: 12px;
+  left: -4px;
+  z-index: 7;
+}
+
+.Edit {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 16px;
+  font-size: 14px;
+  line-height: 17px;
+  font-family: 'Airbnb Cereal App Medium';
+  color: white;
+  background: #1b1b1b;
+  padding: 10px 24px;
+  border-radius: 25px;
+  cursor: pointer;
+  margin-bottom: 40px;
+}
+
+.Name {
+  font-family: 'Airbnb Cereal App Bold';
+  font-size: 24px;
+  line-height: 29px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: white;
+  margin: 0px;
+  margin-bottom: 10px;
+}
+
+.Address {
+  font-family: 'Airbnb Cereal App Bold';
+  font-size: 12px;
+  line-height: 15px;
+  margin: 0px;
+  cursor: pointer;
+  color: #b1b1b1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+}
+
+.Address:active {
+  color: white;
+}
+
+.CopyPaste {
+  width: 13px;
+  fill: #cbc9c9;
+  margin-left: 8px;
+  transform: translateY(-1px);
+}
+
+.Separator {
+  border-bottom: 1px solid #b1b1b1;
+  margin: 18px 0px;
+  width: 40px;
+  border-radius: 24px;
+}
+
+.Caps {
+  font-size: 14px;
+  line-height: 16px;
+  text-align: center;
+  color: white;
+  font-family: 'Airbnb Cereal App Medium';
+  margin-bottom: 10px;
+}
+
+.Sections {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  padding: 0px 16px;
+  margin-top: 52px;
+  width: 100%;
+}
+
+.Section {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.SectionTitle {
+  font-size: 16px;
+  line-height: 21px;
+  font-family: 'Airbnb Cereal App Book';
+  cursor: pointer;
+}
+
+.SectionTitleActive {
+  font-family: 'Airbnb Cereal App Bold';
+}
+
+.SectionNumber {
+  font-size: 14px;
+  line-height: 21px;
+  font-family: 'Airbnb Cereal App Book';
+  color: #b1b1b1;
+  border: 1px solid #f7f7f7;
+  padding: 1px 14px;
+  border-radius: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.SectionNumberActive {
+  font-family: 'Airbnb Cereal App Bold';
+  color: white;
+  border: 1px solid black;
+  background-color: black;
+}
+
+.Disconnect {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Airbnb Cereal App Bold';
+  color: black;
+  border: 1px solid #e0e0e0;
+  border-radius: 25px;
+  padding: 14px 32px;
+  margin-top: 24px;
+  font-size: 14px;
+  line-height: 18px;
+  align-self: center;
+  cursor: pointer;
+}
+
+.PowerOff {
+  width: 18px;
+  margin-right: 10px;
+}
+
+@media (max-width: 1300px) {
+  .SidebarMenu {
+    min-width: 250px;
+    margin-right: 32px;
+    padding: 32px 0px;
+  }
+
+  .Infos {
+    padding: 24px 18px;
+  }
+
+  .Avatar {
+    width: 95px;
+    height: 95px;
+  }
+
+  .Edit {
+    margin-top: 16px;
+    font-size: 12px;
+    line-height: 15px;
+    padding: 10px 24px;
+    margin-bottom: 32px;
+  }
+
+  .Name {
+    font-size: 20px;
+    line-height: 24px;
+    margin-bottom: 8px;
+  }
+
+  .Address {
+    font-size: 11px;
+  }
+
+  .Address:active {
+    color: white;
+  }
+
+  .CopyPaste {
+    width: 11px;
+  }
+
+  .Caps {
+    font-size: 13px;
+    line-height: 16px;
+    margin-bottom: 8px;
+  }
+
+  .Sections {
+    padding: 0px 16px;
+    margin-top: 42px;
+  }
+
+  .Section {
+    margin-bottom: 18px;
+  }
+
+  .SectionTitle {
+    font-size: 15px;
+  }
+
+  .SectionNumber {
+    font-size: 12px;
+  }
+
+  .Disconnect {
+    padding: 12px 28px;
+    margin-top: 24px;
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  .PowerOff {
+    width: 16px;
+    margin-right: 10px;
+  }
+}
+
+@media (max-width: 1150px) {
+  .SidebarMenu {
+    margin-right: 18px;
+  }
+}
+
+@media (max-width: 870px) {
+  .SidebarMenu {
+    display: flex;
+    flex-direction: row;
+    align-self: center;
+    width: 70%;
+    min-width: 500px;
+  }
+
+  .Infos {
+    margin-right: 24px;
+  }
+}
+
+@media (max-width: 640px) {
+  .SidebarMenu {
+    width: 100%;
+    min-width: auto;
+    max-width: 300px;
+    flex-direction: column;
+    margin-right: 0px;
+  }
+}

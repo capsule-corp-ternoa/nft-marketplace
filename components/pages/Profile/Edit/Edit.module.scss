@@ -1,0 +1,305 @@
+@import 'style/colors.scss';
+
+.EditContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 40px 24px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.Title {
+  font-size: 40px;
+  font-family: 'Airbnb Cereal App Bold';
+  margin: 0px;
+  margin-bottom: 24px;
+}
+
+.InnerContainer {
+  display: flex;
+  justify-content: flex-start;
+  box-sizing: border-box;
+}
+
+.Form {
+  display: flex;
+  flex-direction: column;
+  width: 450px;
+  margin-right: 180px;
+}
+
+.Subtitle {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+  margin: 0px;
+  margin-bottom: 12px;
+  font-family: 'Airbnb Cereal App Medium';
+  font-weight: 400;
+}
+
+.Input {
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  box-sizing: border-box;
+  border-radius: 7px;
+  outline: none;
+  width: 100%;
+  padding: 14px 16px;
+  margin-bottom: 32px;
+  font-size: 15px;
+}
+
+.Textarea {
+  font-size: 15px;
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  resize: none;
+  border-radius: 7px;
+  height: 100px;
+  font-family: 'Airbnb Cereal App Book';
+  padding: 12px;
+  outline: none;
+  box-sizing: border-box;
+  margin-bottom: 32px;
+}
+
+.TopInput {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ClaimTwitter {
+  font-size: 12px;
+  color: $primary;
+  font-family: 'Airbnb Cereal App Book';
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+
+.TwitterInsight {
+  font-size: 10px;
+  font-family: 'Airbnb Cereal App Book';
+  margin-bottom: 32px;
+  margin-top: -24px;
+  align-self: center;
+  color: #686464;
+}
+
+.Warning {
+  margin-top: 48px;
+  font-size: 12px;
+  color: $primary;
+  font-family: 'Airbnb Cereal App Book';
+  margin-bottom: 16px;
+}
+
+.Button {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 24px;
+  color: white;
+  background-color: black;
+  font-family: 'Airbnb Cereal App Bold';
+  border-radius: 25px;
+  font-size: 14px;
+  align-self: flex-start;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+
+  &:hover {
+    color: white;
+    background-color: $primary;
+  }
+}
+
+.IMG {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 60px;
+}
+
+.Avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  position: relative;
+  z-index: 6;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.AvatarIMG {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  position: absolute;
+}
+
+.IMGSize {
+  font-size: 12px;
+  font-family: 'Airbnb Cereal App Book';
+  margin-bottom: 16px;
+  margin-top: 16px;
+  align-self: center;
+  color: #686464;
+  text-align: center;
+  max-width: 130px;
+}
+
+.UploadButton {
+  font-size: 14px;
+  line-height: 17px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #e0e0e0;
+  box-sizing: border-box;
+  border-radius: 40px;
+  background: #ffffff;
+  padding: 12px 24px;
+  cursor: pointer;
+  font-family: 'Airbnb Cereal App Medium';
+}
+
+.Certification {
+  font-size: 13px;
+  line-height: 17px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  font-family: 'Airbnb Cereal App Medium';
+  color: $primary;
+  border: 1px solid $primary;
+  position: relative;
+  border-radius: 40px;
+  padding: 16px 16px;
+  margin-top: 80px;
+  cursor: pointer;
+}
+
+.Badge {
+  width: 30px;
+  position: absolute;
+  top: -20px;
+  left: 0px;
+  right: 0px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 1300px) {
+  .EditContainer {
+    margin-left: 40px;
+  }
+  .Form {
+    display: flex;
+    flex-direction: column;
+    width: 340px;
+    margin-right: 50px;
+  }
+
+  .Title {
+    font-size: 32px;
+  }
+
+  .Subtitle {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  .Input {
+    margin-bottom: 24px;
+    font-size: 13px;
+  }
+
+  .Textarea {
+    font-size: 13px;
+  }
+
+  .TwitterInsight {
+    font-size: 10px;
+    margin-bottom: 32px;
+    margin-top: -16px;
+  }
+
+  .Warning {
+    margin-top: 24px;
+    font-size: 11px;
+  }
+
+  .Avatar {
+    width: 120px;
+    height: 120px;
+  }
+
+  .IMGSize {
+    font-size: 12px;
+    font-family: 'Airbnb Cereal App Book';
+    margin-bottom: 16px;
+    margin-top: 16px;
+    align-self: center;
+    color: #686464;
+    text-align: center;
+    max-width: 130px;
+  }
+
+  .UploadButton {
+    font-size: 12px;
+    line-height: 17px;
+    padding: 10px 18px;
+  }
+
+  .Certification {
+    font-size: 11px;
+    line-height: 17px;
+    padding: 12px 16px;
+    margin-top: 60px;
+  }
+
+  .Badge {
+    width: 20px;
+    position: absolute;
+    top: -12px;
+    left: 0px;
+    right: 0px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .EditContainer {
+    margin-left: 0px;
+  }
+  .Form {
+    margin-right: 0px;
+    width: 100%;
+    padding: 0px 24px;
+    order: 2;
+  }
+  .IMG {
+    order: 1;
+    padding-top: 32px;
+  }
+
+  .Certification {
+    margin-top: 20px;
+    margin-bottom: 32px;
+  }
+  .InnerContainer {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .Button {
+    align-self: center;
+    margin-top: 32px;
+  }
+}

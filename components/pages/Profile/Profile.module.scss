@@ -1,0 +1,303 @@
+@import 'style/colors.scss';
+
+.Container {
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.Banner {
+  display: flex;
+  width: 100%;
+  height: 280px;
+  position: relative;
+}
+
+.EditButton {
+  position: absolute;
+  bottom: -25px;
+  left: 35%;
+  font-size: 14px;
+  line-height: 17px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #e0e0e0;
+  box-sizing: border-box;
+  box-shadow: 0px 0px 7px 4px rgba(0, 0, 0, 0.05);
+  border-radius: 40px;
+  background: #ffffff;
+  padding: 12px 24px;
+  cursor: pointer;
+  font-family: 'Airbnb Cereal App Medium';
+}
+
+.BannerIMG {
+  position: absolute;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.Wrapper {
+  display: flex;
+  width: 1300px;
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
+  box-sizing: border-box;
+  margin-bottom: 80px;
+}
+
+.NFTs {
+  display: flex;
+  flex-direction: column;
+  padding: 40px 24px;
+  box-sizing: border-box;
+}
+
+.NFTTitle {
+  font-size: 40px;
+  line-height: 52px;
+  font-family: 'Airbnb Cereal App Bold';
+  margin: 0px;
+  padding-left: 20px;
+}
+
+.NFTsContainer {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+  padding: 32px 0px;
+  padding-left: 20px;
+  width: 100%;
+}
+
+.FollowsContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+  padding: 52px 0px;
+  padding-left: 20px;
+  width: 100%;
+}
+
+.NFTShell {
+  margin-right: 24px;
+  margin-bottom: 24px;
+}
+
+.Top {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+// Switch
+
+.SwitchShell {
+  margin-top: 7px;
+  margin-left: 16px;
+  outline: none;
+}
+
+.Toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 24px;
+}
+
+.Label {
+  font-family: 'Airbnb Cereal App Medium';
+  color: #686464;
+  font-size: 14px;
+  line-height: 18px;
+  display: flex;
+  align-items: center;
+  text-align: right;
+  margin-top: 3px;
+  margin-left: 16px;
+}
+
+.Input {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 30px;
+  font-size: 16px;
+  border: none;
+  width: 330px;
+  padding: 10px 24px;
+  margin-left: 40px;
+  outline: none;
+  font-family: 'Airbnb Cereal App Light';
+}
+
+.SearchContainer {
+  display: flex;
+}
+
+// CREATORS
+
+.CreatorShell {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  box-sizing: border-box;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-bottom: 28px;
+  width: 210px;
+}
+.CreatorInfos {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin-left: 16px;
+  text-align: left;
+}
+
+.CreatorName {
+  margin: 0px;
+  margin-bottom: 3px;
+  font-family: 'Airbnb Cereal App Medium';
+  font-style: normal;
+  font-size: 14px;
+}
+
+.CreatorFollowers {
+  font-family: 'Airbnb Cereal App Book';
+  font-style: normal;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  color: #b1b1b1;
+}
+
+.Unfollow {
+  font-size: 11px;
+  line-height: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid $primary;
+  color: $primary;
+  font-family: 'Airbnb Cereal App Bold';
+  border-radius: 25px;
+  padding: 6px 16px;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  margin-top: 8px;
+  cursor: pointer;
+
+  &:hover {
+    color: white;
+    background-color: $primary;
+    border: 1px solid $primary;
+  }
+}
+
+@media (max-width: 1300px) {
+  .Banner {
+    height: 220px;
+  }
+
+  .Wrapper {
+    width: auto;
+    margin-left: 5%;
+  }
+
+  .NFTs {
+    width: 100%;
+  }
+
+  .FollowsContainer {
+    justify-content: space-around;
+  }
+
+  .Top {
+    flex-direction: column;
+  }
+
+  .SearchContainer {
+    margin-top: 32px;
+  }
+}
+
+@media (max-width: 1150px) {
+  .NFTsContainer {
+    justify-content: center;
+    align-items: center;
+  }
+
+  .Wrapper {
+    margin-left: 24px;
+  }
+}
+
+@media (max-width: 870px) {
+  .Wrapper {
+    width: 100%;
+    padding: 40px 16px;
+    flex-direction: column;
+    margin-left: 0px;
+  }
+
+  .NFTsContainer {
+    width: 100%;
+    margin: 0px;
+    padding: 40px 16px;
+  }
+
+  .FollowsContainer {
+    padding-left: 0px;
+  }
+
+  .SearchContainer {
+    flex-direction: column;
+  }
+
+  .Toggle {
+    margin: 0px;
+    margin-top: 10px;
+  }
+
+  .NFTs {
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .NFTTitle {
+    padding-left: 0px;
+    font-size: 32px;
+    line-height: 42px;
+    text-align: center;
+  }
+
+  .Input {
+    margin: 0px;
+    width: 280px;
+  }
+
+  .NFTShell {
+    margin-right: 12px;
+    margin-left: 12px;
+    margin-bottom: 24px;
+  }
+
+  .EditButton {
+    left: 0px;
+    right: 0px;
+    width: 150px;
+    margin-right: auto;
+    margin-left: auto;
+    align-self: center;
+  }
+}

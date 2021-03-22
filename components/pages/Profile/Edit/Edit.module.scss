@@ -274,6 +274,9 @@
 }
 
 @media (max-width: 640px) {
+  .Title {
+    align-self: center;
+  }
   .EditContainer {
     margin-left: 0px;
   }

@@ -4,6 +4,7 @@ import React from 'react';
 import style from './Sidebar.module.scss';
 import Badge from 'components/assets/badge';
 import CopyPaste from 'components/assets/copypaste';
+import Edit from 'components/assets/edit';
 
 import PowerOff from 'components/assets/poweroff';
 
@@ -36,6 +37,7 @@ const Sidebar: React.FC<any> = ({ item, scope, setScope }) => {
 
         {scope !== 'edit' && (
           <div className={style.Edit} onClick={() => setScope('edit')}>
+            <Edit className={style.EditSVG} />
             Edit profile
           </div>
         )}

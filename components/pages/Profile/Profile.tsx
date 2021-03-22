@@ -8,6 +8,7 @@ import NFTCard from 'components/base/NftCard';
 import Creator from 'components/base/Creator';
 
 import Sidebar from './Sidebar';
+import FloatingMenu from './FloatingMenu';
 import Edit from './Edit';
 import Switch from 'react-switch';
 
@@ -15,6 +16,7 @@ const Profile: React.FC<any> = ({ item, NFTS, creators }) => {
   //const { t } = useTranslation();
   const [isFiltered, setIsFiltered] = useState(false);
   const [scope, setScope] = useState('My NFTs on sale');
+  const [expand, setExpand] = useState(false);
   const [, setSearchValue] = useState('' as string);
 
   const updateKeywordSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -119,11 +121,19 @@ const Profile: React.FC<any> = ({ item, NFTS, creators }) => {
         )}
       </div>
       <div className={style.Wrapper}>
-        <Sidebar item={item} scope={scope} setScope={setScope} />
+        <Sidebar
+          item={item}
+          scope={scope}
+          setScope={setScope}
+          setExpand={setExpand}
+        />
         {returnCategory()}
       </div>
       <FloatingHeader item={item} />
       <Footer />
+      {expand && (
+        <FloatingMenu setScope={setScope} scope={scope} setExpand={setExpand} />
+      )}
     </div>
   );
 };

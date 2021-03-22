@@ -1,14 +1,12 @@
 import React from 'react';
-
+import Link from 'next/link';
 //import { useTranslation } from 'react-i18next';
-import style from './Sidebar.module.scss';
-import Badge from 'components/assets/badge';
-import CopyPaste from 'components/assets/copypaste';
-import Edit from 'components/assets/edit';
+import style from './FloatingMenu.module.scss';
 
 import PowerOff from 'components/assets/poweroff';
+import Close from 'components/assets/close';
 
-const Sidebar: React.FC<any> = ({ item, scope, setScope, setExpand }) => {
+const FloatingMenu: React.FC<any> = ({ item, scope, setScope, setExpand }) => {
   //const { t } = useTranslation();
 
   function returnActiveTitle(name: any) {
@@ -26,46 +24,17 @@ const Sidebar: React.FC<any> = ({ item, scope, setScope, setExpand }) => {
   }
 
   return (
-    <div className={style.SidebarMenu}>
-      <div className={style.Infos}>
-        <div className={style.AvatarShell}>
-          <div className={style.Avatar}>
-            <img className={style.AvatarIMG} src={item.img} />
-            {item.verified && <Badge className={style.Badge} />}
-          </div>
-        </div>
-
-        {scope !== 'edit' && (
-          <div className={style.Edit} onClick={() => setScope('edit')}>
-            <Edit className={style.EditSVG} />
-            Edit profile
-          </div>
-        )}
-
-        <h1 className={style.Name}>{item.name}</h1>
-        <div
-          className={style.Address}
-          onClick={() => {
-            navigator.clipboard.writeText(item.address);
-          }}
-        >
-          {item.address} <CopyPaste className={style.CopyPaste} />
-        </div>
-
-        <div className={style.Separator} />
-        <div className={style.Caps}>
-          <span className={style.CapsData}>{item.caps} caps</span>
-          <div className={style.Burger} onClick={() => setExpand(true)}>
-            <span className={style.Line} />
-            <span className={style.Line} />
-            <span className={style.Line} />
-          </div>
-        </div>
-      </div>
+    <div id="FPM" className={`${style.FloatingMenu} ${style.PopMenu}`}>
       <div className={style.Sections}>
+        <Link href="/edit">
+          <a className={style.Section}>Edit profile</a>
+        </Link>
         <div className={style.Section}>
           <div
-            onClick={() => setScope('My NFTs on sale')}
+            onClick={() => {
+              setScope('My NFTs on sale');
+              setExpand(false);
+            }}
             className={returnActiveTitle('My NFTs on sale')}
           >
             On sale
@@ -74,7 +43,10 @@ const Sidebar: React.FC<any> = ({ item, scope, setScope, setExpand }) => {
         </div>
         <div className={style.Section}>
           <div
-            onClick={() => setScope('My Collectibles')}
+            onClick={() => {
+              setScope('My Collectibles');
+              setExpand(false);
+            }}
             className={returnActiveTitle('My Collectibles')}
           >
             Collectibles
@@ -83,7 +55,10 @@ const Sidebar: React.FC<any> = ({ item, scope, setScope, setExpand }) => {
         </div>
         <div className={style.Section}>
           <div
-            onClick={() => setScope('My creations')}
+            onClick={() => {
+              setScope('My creations');
+              setExpand(false);
+            }}
             className={returnActiveTitle('My creations')}
           >
             Created
@@ -92,7 +67,10 @@ const Sidebar: React.FC<any> = ({ item, scope, setScope, setExpand }) => {
         </div>
         <div className={style.Section}>
           <div
-            onClick={() => setScope('Likes')}
+            onClick={() => {
+              setScope('Likes');
+              setExpand(false);
+            }}
             className={returnActiveTitle('Likes')}
           >
             Likes
@@ -101,7 +79,10 @@ const Sidebar: React.FC<any> = ({ item, scope, setScope, setExpand }) => {
         </div>
         <div className={style.Section}>
           <div
-            onClick={() => setScope('Followers')}
+            onClick={() => {
+              setScope('Followers');
+              setExpand(false);
+            }}
             className={returnActiveTitle('Followers')}
           >
             Followers
@@ -110,20 +91,28 @@ const Sidebar: React.FC<any> = ({ item, scope, setScope, setExpand }) => {
         </div>
         <div className={style.Section}>
           <div
-            onClick={() => setScope('Followings')}
+            onClick={() => {
+              setScope('Followings');
+              setExpand(false);
+            }}
             className={returnActiveTitle('Followings')}
           >
             Followings
           </div>
           <div className={returnActiveNumber('Followings')}>38</div>
         </div>
-        <div className={style.Disconnect}>
+
+        <div onClick={() => setExpand(false)} className={style.Logoff}>
+          <div className={style.SectionTitle}>Disconnect</div>
           <PowerOff className={style.PowerOff} />
-          Disconnect
+        </div>
+
+        <div className={style.Close} onClick={() => setExpand(false)}>
+          <Close onClick={() => true} className={style.CloseSVG} />
         </div>
       </div>
     </div>
   );
 };
 
-export default Sidebar;
+export default FloatingMenu;

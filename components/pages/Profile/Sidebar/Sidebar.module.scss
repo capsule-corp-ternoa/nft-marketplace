@@ -1,3 +1,5 @@
+@import 'style/colors.scss';
+
 .SidebarMenu {
   display: flex;
   flex-direction: column;
@@ -112,12 +114,25 @@
 }
 
 .Caps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0px 18px;
+  box-sizing: border-box;
+}
+
+.CapsData {
   font-size: 14px;
   line-height: 16px;
   text-align: center;
   color: white;
   font-family: 'Airbnb Cereal App Medium';
-  margin-bottom: 10px;
+  margin-top: 12px;
+}
+
+.Burger {
+  display: none;
 }
 
 .Sections {
@@ -296,5 +311,43 @@
     max-width: 300px;
     flex-direction: column;
     margin-right: 0px;
+  }
+
+  .Sections {
+    display: none;
+  }
+
+  .Caps {
+    justify-content: space-between;
+  }
+
+  .CapsData {
+    padding: 10px 24px;
+    border-radius: 25px;
+    background: #1b1b1b;
+    margin-top: 0px;
+  }
+
+  .Burger {
+    display: flex;
+    background-color: $primary;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    padding: 14px;
+    cursor: pointer;
+  }
+
+  .Line {
+    width: 18px;
+    border-radius: 24px;
+    background-color: white;
+    height: 2px;
+    margin-bottom: 4px;
+  }
+
+  .Line:nth-child(3) {
+    margin-bottom: 0px;
   }
 }

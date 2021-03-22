@@ -6,7 +6,7 @@ import style from './FloatingMenu.module.scss';
 import PowerOff from 'components/assets/poweroff';
 import Close from 'components/assets/close';
 
-const FloatingMenu: React.FC<any> = ({ item, scope, setScope, setExpand }) => {
+const FloatingMenu: React.FC<any> = ({ scope, setScope, setExpand }) => {
   //const { t } = useTranslation();
 
   function returnActiveTitle(name: any) {

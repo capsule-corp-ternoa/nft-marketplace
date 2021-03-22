@@ -12,7 +12,7 @@ import FloatingMenu from './FloatingMenu';
 import Edit from './Edit';
 import Switch from 'react-switch';
 
-const Profile: React.FC<any> = ({ item, NFTS, creators }) => {
+const Profile: React.FC<any> = ({ item, NFTS, creators, setModalExpand }) => {
   //const { t } = useTranslation();
   const [isFiltered, setIsFiltered] = useState(false);
   const [scope, setScope] = useState('My NFTs on sale');
@@ -129,7 +129,7 @@ const Profile: React.FC<any> = ({ item, NFTS, creators }) => {
         />
         {returnCategory()}
       </div>
-      <FloatingHeader item={item} />
+      <FloatingHeader setModalExpand={setModalExpand} item={item} />
       <Footer />
       {expand && (
         <FloatingMenu setScope={setScope} scope={scope} setExpand={setExpand} />

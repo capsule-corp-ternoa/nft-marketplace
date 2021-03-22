@@ -6,7 +6,7 @@ import style from './FloatingHeader.module.scss';
 import Creator from 'components/base/Creator';
 import CopyPaste from 'components/assets/copypaste';
 
-const FloatingHeader: React.FC<any> = ({ item }) => {
+const FloatingHeader: React.FC<any> = ({ item, setModalExpand }) => {
   const [, setSearchValue] = useState('' as string);
   const [isExpanded, setIsExpanded] = useState(false);
   const [fullProfile, setFullProfile] = useState(false);
@@ -96,7 +96,9 @@ const FloatingHeader: React.FC<any> = ({ item }) => {
             </div>
           </div>
         ) : (
-          <div className={style.Connect}>Connect Wallet</div>
+          <div className={style.Connect} onClick={() => setModalExpand(true)}>
+            Connect Wallet
+          </div>
         )}
       </div>
       {item && fullProfile && (

@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import AlphaBanner from 'components/base/AlphaBanner';
 import MainHeader from 'components/base/MainHeader';
 import TernoaWallet from 'components/base/TernoaWallet';
-import PublicProfile from 'components/pages/PublicProfile';
-import NFTSET4 from 'utils/mocks/NFTSET4';
+import Wallet from 'components/pages/Wallet';
 
-const PublicProfilePage = () => {
+const WalletPage = () => {
   const [modalExpand, setModalExpand] = useState(false);
 
   const item: any = {
@@ -29,13 +28,9 @@ const PublicProfilePage = () => {
       {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
       <AlphaBanner />
       <MainHeader item={item} setModalExpand={setModalExpand} />
-      <PublicProfile
-        item={item}
-        NFTS={NFTSET4}
-        setModalExpand={setModalExpand}
-      />
+      <Wallet item={item} setModalExpand={setModalExpand} />
     </>
   );
 };
 
-export default PublicProfilePage;
+export default WalletPage;

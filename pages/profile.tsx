@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import AlphaBanner from 'components/base/AlphaBanner';
 import MainHeader from 'components/base/MainHeader';
-import ModalWallets from 'components/base/ModalWallets';
+import TernoaWallet from 'components/base/TernoaWallet';
 import Profile from 'components/pages/Profile';
 import NFTSET4 from 'utils/mocks/NFTSET4';
 import Creators from 'utils/mocks/mockCreators';
@@ -27,10 +27,15 @@ const ProfilePage = () => {
 
   return (
     <>
-      {modalExpand && <ModalWallets setModalExpand={setModalExpand} />}
+      {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
       <AlphaBanner />
       <MainHeader item={item} setModalExpand={setModalExpand} />
-      <Profile item={item} NFTS={NFTSET4} creators={Creators} />
+      <Profile
+        item={item}
+        NFTS={NFTSET4}
+        creators={Creators}
+        setModalExpand={setModalExpand}
+      />
     </>
   );
 };

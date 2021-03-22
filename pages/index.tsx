@@ -1,17 +1,17 @@
-import React, { useState } from "react";
-import AlphaBanner from "components/base/AlphaBanner";
-import MainHeader from "components/base/MainHeader";
-import Landing from "components/pages/Landing";
-import ModalWallets from "components/base/ModalWallets";
+import React, { useState } from 'react';
+import AlphaBanner from 'components/base/AlphaBanner';
+import MainHeader from 'components/base/MainHeader';
+import Landing from 'components/pages/Landing';
+import TernoaWallet from 'components/base/TernoaWallet';
 
 const LandingPage = () => {
   const [modalExpand, setModalExpand] = useState(false);
   return (
     <>
-      {modalExpand && <ModalWallets setModalExpand={setModalExpand} />}
+      {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
       <AlphaBanner />
       <MainHeader setModalExpand={setModalExpand} />
-      <Landing />
+      <Landing setModalExpand={setModalExpand} />
     </>
   );
 };

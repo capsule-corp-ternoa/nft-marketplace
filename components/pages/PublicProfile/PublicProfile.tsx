@@ -7,7 +7,7 @@ import Infos from './Infos';
 
 import NFTCard from 'components/base/NftCard';
 
-const PublicProfile: React.FC<any> = ({ item, NFTS }) => {
+const PublicProfile: React.FC<any> = ({ item, NFTS, setModalExpand }) => {
   //const { t } = useTranslation();
 
   function returnNFTs() {
@@ -29,7 +29,7 @@ const PublicProfile: React.FC<any> = ({ item, NFTS }) => {
       </div>
       <Infos item={item} />
       <div className={style.NFTWrapper}>{returnNFTs()}</div>
-      <FloatingHeader item={item} />
+      <FloatingHeader item={item} setModalExpand={setModalExpand} />
       <Footer />
     </div>
   );

@@ -25,7 +25,7 @@ const NFTPage: React.FC<any> = ({ setExp, NFT, setModalExpand }) => {
         </div>
         <div className={style.Text}>
           <div className={style.Top}>
-            <h1 className={style.Title}>Nature art floral</h1>
+            <h1 className={style.Title}>Urban Summer Night</h1>
             <div className={style.TopInfos}>
               <div className={style.Views}>
                 <Eye className={style.EyeSVG} />
@@ -55,8 +55,11 @@ const NFTPage: React.FC<any> = ({ setExp, NFT, setModalExpand }) => {
             </div>
           </div>
           <p className={style.Description}>
-            Description jdiezaoje jdeizaopeijd eizoapiejd iopaziejd jiezopaiejd
-            deizpaoiejh dheapzoeihde uzoapeuhfeuzoap.
+            This work is a fantastical, environmental machete consisting of
+            drab, cluttered office which is reminiscent of the subject-object
+            hierarchy being destabilized. The work deploys every location in
+            which an email has been opened in the past as representative of the
+            beauty in our own differences.
           </p>
           <div className={style.Buy}>
             <div className={style.BuyLeft}>
@@ -85,7 +88,7 @@ const NFTPage: React.FC<any> = ({ setExp, NFT, setModalExpand }) => {
               </div>
               <div className={style.HistoryUser}>
                 <div className={style.HistoryRole}>Creator</div>
-                <div className={style.HistoryName}>Jean Jack</div>
+                <div className={style.HistoryName}>Satoshi Nakamoto</div>
               </div>
             </div>
             <div className={style.HistoryItem}>
@@ -98,7 +101,7 @@ const NFTPage: React.FC<any> = ({ setExp, NFT, setModalExpand }) => {
               </div>
               <div className={style.HistoryUser}>
                 <div className={style.HistoryRole}>Owner</div>
-                <div className={style.HistoryName}>Jean Jack</div>
+                <div className={style.HistoryName}>Satoshi Nakamoto</div>
               </div>
             </div>
             <div className={style.HistoryItem}>
@@ -111,7 +114,7 @@ const NFTPage: React.FC<any> = ({ setExp, NFT, setModalExpand }) => {
               </div>
               <div className={`${style.HistoryUser} ${style.HistoryPast}`}>
                 <div className={style.HistoryRole}>Previous Owner</div>
-                <div className={style.HistoryName}>Jean Jack</div>
+                <div className={style.HistoryName}>Satoshi Nakamoto</div>
               </div>
             </div>
             <div className={style.HistoryItem}>
@@ -125,7 +128,7 @@ const NFTPage: React.FC<any> = ({ setExp, NFT, setModalExpand }) => {
 
               <div className={`${style.HistoryUser} ${style.HistoryPast}`}>
                 <div className={style.HistoryRole}>Previous Owner</div>
-                <div className={style.HistoryName}>Jean Jack</div>
+                <div className={style.HistoryName}>Satoshi Nakamoto</div>
               </div>
             </div>
           </div>

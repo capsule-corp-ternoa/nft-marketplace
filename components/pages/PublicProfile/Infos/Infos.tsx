@@ -21,7 +21,7 @@ const Infos: React.FC<any> = ({ item }) => {
         <div className={style.ContainerInner}>
           <div className={style.Left}>
             <h1 className={style.Name}>{item.name}</h1>
-            <a href="#" className={style.Twitter}>
+            <a href="https://twitter.com/elonmusk" className={style.Twitter}>
               <Twitter onClick={() => true} className={style.TwitterSVG} />@
               {item.twitter}
             </a>

@@ -118,7 +118,7 @@ const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category }) => {
               infinite
               arrows={false}
               className={style.CarouselContainer}
-              swipeable={false}
+              swipeable={true}
             >
               {returnNFTs()}
             </Carousel>

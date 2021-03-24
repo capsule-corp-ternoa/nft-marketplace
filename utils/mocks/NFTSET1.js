@@ -30,7 +30,7 @@ const NFTSET1 = [
   },
   {
     creator: {
-      name: 'James Wilson',
+      name: 'Remy Hadley',
       verified: true,
       img:
         'https://images.unsplash.com/photo-1607746882042-944635dfe10e?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2250&q=80',
@@ -44,7 +44,7 @@ const NFTSET1 = [
   },
   {
     creator: {
-      name: 'Robert Chase',
+      name: 'Nathaniel Fisher',
       verified: true,
       img:
         'https://images.unsplash.com/photo-1496345875659-11f7dd282d1d?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=2250&q=80',
@@ -58,7 +58,7 @@ const NFTSET1 = [
   },
   {
     creator: {
-      name: 'Nathaniel Fisher',
+      name: 'Robert Chase',
       verified: true,
       img:
         'https://images.unsplash.com/photo-1515966523937-767fe11921a1?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=954&q=80',

@@ -37,10 +37,10 @@ const FloatingHeader: React.FC<any> = ({ item, setModalExpand }) => {
           </div>
           <div className={style.Links}>
             <Link href="/#explore">
-              <a className={style.LinkItem}>Explore</a>
+              <a className={style.Link}>Explore</a>
             </Link>
             <Link href="/">
-              <a className={style.LinkItem}>How it works</a>
+              <a className={style.Link}>How it works</a>
             </Link>
           </div>
         </div>

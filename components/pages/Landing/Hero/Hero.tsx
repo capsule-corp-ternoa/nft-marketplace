@@ -14,7 +14,7 @@ export interface HeroProps {
 const Hero: React.FC<HeroProps> = ({ creators }) => {
   function returnCreators() {
     return creators.map((item) => (
-      <Link key={item.id} href={`/${item.name}`}>
+      <Link key={item.id} href={`/creator-test`}>
         <a className={style.CreatorWrapper}>
           <Creator item={item} showTooltip={true} />
         </a>

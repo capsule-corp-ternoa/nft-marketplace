@@ -20,7 +20,7 @@ const Explore: React.FC<ExploreProps> = ({ NFTs }) => {
 
   return (
     <>
-      <div className={style.Wrapper}>
+      <div id="explore" className={style.Wrapper}>
         <div className={style.Top}>
           <h3 className={style.Title}>Explore</h3>
           <div className={style.Filters}>

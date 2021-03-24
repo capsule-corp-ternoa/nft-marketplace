@@ -106,6 +106,14 @@
   margin-bottom: 24px;
 }
 
+.Auth {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
 .Author {
   font-family: 'Airbnb Cereal App Book';
   font-style: normal;

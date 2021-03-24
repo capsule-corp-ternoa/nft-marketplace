@@ -1,4 +1,4 @@
-@import "style/colors.scss";
+@import 'style/colors.scss';
 
 .Header {
   width: 100%;
@@ -34,7 +34,7 @@
   width: 430px;
   padding: 12px 24px;
   outline: none;
-  font-family: "Airbnb Cereal App Book";
+  font-family: 'Airbnb Cereal App Book';
 }
 
 .Infos {
@@ -51,7 +51,7 @@
 
 .LinkItem {
   //font-family: "Airbnb Cereal App Bold";
-  font-family: "Airbnb Cereal App Medium";
+  font-family: 'Airbnb Cereal App Medium';
   font-style: normal;
   font-weight: bold;
   font-size: 14px;
@@ -75,7 +75,7 @@
 
 .Create {
   margin-right: 24px;
-  font-family: "Airbnb Cereal App Medium";
+  font-family: 'Airbnb Cereal App Medium';
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
@@ -98,7 +98,7 @@
 
 .Connect {
   margin-right: 24px;
-  font-family: "Airbnb Cereal App Medium";
+  font-family: 'Airbnb Cereal App Medium';
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
@@ -156,14 +156,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: "Airbnb Cereal App Light";
+  font-family: 'Airbnb Cereal App Light';
   text-transform: uppercase;
   font-size: 11px;
   letter-spacing: 1.05px;
 }
 
 .NumberCaps {
-  font-family: "Airbnb Cereal App Bold";
+  font-family: 'Airbnb Cereal App Bold';
   letter-spacing: 0.5px;
   font-size: 13px;
   margin-right: 6px;
@@ -193,7 +193,7 @@
   border-right: 20px solid transparent;
   z-index: 101;
   border-top: 10px solid white;
-  content: "";
+  content: '';
   position: absolute;
   top: -15px;
   right: 30px;
@@ -215,7 +215,7 @@
 }
 
 .Name {
-  font-family: "Airbnb Cereal App Bold";
+  font-family: 'Airbnb Cereal App Bold';
   margin-left: 16px;
   font-size: 16px;
   line-height: 24px;
@@ -225,12 +225,17 @@
   display: flex;
   border-bottom: 1px solid #ebebeb;
   cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+
+  &:hover {
+    color: $primary;
+  }
 }
 
 .SectionWallet {
   color: #686464;
   margin-left: 8px;
-  font-family: "Airbnb Cereal App Light";
+  font-family: 'Airbnb Cereal App Light';
   display: flex;
   align-items: center;
   justify-content: center;
@@ -248,7 +253,7 @@
   padding-bottom: 4px;
 }
 .SectionTitle {
-  font-family: "Airbnb Cereal App Bold";
+  font-family: 'Airbnb Cereal App Bold';
   font-size: 12px;
 }
 
@@ -264,13 +269,13 @@
   border-radius: 0px 0 15px 15px;
 
   span {
-    font-family: "Airbnb Cereal App Light";
+    font-family: 'Airbnb Cereal App Light';
     font-size: 10px;
   }
 }
 
 .CapsPrice {
-  font-family: "Airbnb Cereal App Bold";
+  font-family: 'Airbnb Cereal App Bold';
   font-size: 15px;
   margin-left: 10px;
 }

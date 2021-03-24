@@ -37,20 +37,22 @@ const MainHeader: React.FC<any> = ({ setModalExpand, item }) => {
         </div>
         <div className={style.Infos}>
           <div className={style.Links}>
-            <a className={style.LinkItem} href="/">
-              Explore
-            </a>
-            <a className={style.LinkItem} href="/">
-              How it works ?
-            </a>
-            <a className={style.LinkItem} href="/">
-              Support
-            </a>
+            <Link href="/#explore">
+              <a className={style.LinkItem}>Explore</a>
+            </Link>
+            <Link href="/">
+              <a className={style.LinkItem}>How it works</a>
+            </Link>
+            <Link href="/">
+              <a className={style.LinkItem}>Support</a>
+            </Link>
           </div>
           <div className={style.Wallet}>
             {item ? (
               <div className={style.Regular}>
-                <div className={style.Create}>Create NFT</div>
+                <Link href="/create">
+                  <a className={style.Create}>Create NFT</a>
+                </Link>
                 <div
                   onClick={() => setIsExpanded(!isExpanded)}
                   className={style.Profile}
@@ -70,7 +72,9 @@ const MainHeader: React.FC<any> = ({ setModalExpand, item }) => {
               </div>
             ) : (
               <div className={style.Regular}>
-                <div className={style.Create}>Create NFT</div>
+                <Link href="/create">
+                  <a className={style.Create}>Create NFT</a>
+                </Link>
                 <div
                   onClick={() => setModalExpand(true)}
                   className={style.Connect}
@@ -98,20 +102,26 @@ const MainHeader: React.FC<any> = ({ setModalExpand, item }) => {
                   </span>
                 </div>
               </div>
-              <div className={style.Section}>
-                <div className={style.SectionTitle}>Profile</div>
-              </div>
-              <div className={style.Section}>
-                <div className={style.SectionTitle}>Account</div>
-              </div>
+              <Link href="/test-author">
+                <a className={style.Section}>
+                  <div className={style.SectionTitle}>Profile</div>
+                </a>
+              </Link>
+              <Link href="/profile">
+                <a className={style.Section}>
+                  <div className={style.SectionTitle}>Account</div>
+                </a>
+              </Link>
               <div className={style.Section}>
                 <div className={style.SectionTitle}>Disconnect</div>
               </div>
             </div>
-            <div className={style.CapsSection}>
-              <span>My wallet</span>
-              <div className={style.CapsPrice}>{item?.caps} Caps</div>
-            </div>
+            <Link href="/wallet">
+              <a className={style.CapsSection}>
+                <span>My wallet</span>
+                <div className={style.CapsPrice}>{item?.caps} Caps</div>
+              </a>
+            </Link>
           </div>
         )}
       </div>

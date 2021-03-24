@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useState } from 'react';
+import Link from 'next/link';
 //import { useTranslation } from 'react-i18next';
 
 import style from './FloatingHeader.module.scss';
@@ -34,12 +35,14 @@ const FloatingHeader: React.FC<any> = ({ item, setModalExpand }) => {
               placeholder="Search"
             />
           </div>
-          <a href="/" className={style.Link}>
-            How it works ?
-          </a>
-          <a href="/" className={style.Link}>
-            Explore
-          </a>
+          <div className={style.Links}>
+            <Link href="/#explore">
+              <a className={style.LinkItem}>Explore</a>
+            </Link>
+            <Link href="/">
+              <a className={style.LinkItem}>How it works</a>
+            </Link>
+          </div>
         </div>
       )}
       <div className={style.Container}>
@@ -118,20 +121,26 @@ const FloatingHeader: React.FC<any> = ({ item, setModalExpand }) => {
                 </span>
               </div>
             </div>
-            <div className={style.Section}>
-              <div className={style.SectionTitle}>Profile</div>
-            </div>
-            <div className={style.Section}>
-              <div className={style.SectionTitle}>Account</div>
-            </div>
+            <Link href="/test-author">
+              <a className={style.Section}>
+                <div className={style.SectionTitle}>Profile</div>
+              </a>
+            </Link>
+            <Link href="/profile">
+              <a className={style.Section}>
+                <div className={style.SectionTitle}>Account</div>
+              </a>
+            </Link>
             <div className={style.Section}>
               <div className={style.SectionTitle}>Disconnect</div>
             </div>
           </div>
-          <div className={style.CapsSection}>
-            <span>My wallet</span>
-            <div className={style.CapsPrice}>{item?.caps} Caps</div>
-          </div>
+          <Link href="/wallet">
+            <a className={style.CapsSection}>
+              <span>My wallet</span>
+              <div className={style.CapsPrice}>{item?.caps} Caps</div>
+            </a>
+          </Link>
         </div>
       )}
     </div>

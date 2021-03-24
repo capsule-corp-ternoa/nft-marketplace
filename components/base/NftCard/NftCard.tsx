@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import style from './NftCard.module.scss';
 import Heart from 'components/assets/heart';
 import Creator from '../Creator';
+import Router from 'next/router';
 
 import { NftType } from 'interfaces/index';
 
@@ -10,11 +11,17 @@ export interface NftCardProps {
   mode: string;
 }
 
+function manageRouting(e: any) {
+  e.stopPropagation();
+  Router.push('/test-author');
+}
+
 const NftCard: React.FC<NftCardProps> = ({ item, mode }) => {
   const [isHovering, setIsHovering] = useState(false);
 
   return (
     <div
+      onClick={() => Router.push(`/nft/nft-test`)}
       className={mode === 'grid' ? style.NFTGrid : style.NFT}
       onFocus={() => false}
       onBlur={() => false}
@@ -48,18 +55,20 @@ const NftCard: React.FC<NftCardProps> = ({ item, mode }) => {
         </div>
 
         <div className={style.Infos}>
-          <Creator
-            item={item.creator}
-            className={isHovering ? style.Slide : ''}
-            size="card"
-            showTooltip={false}
-          />
-          <div
-            className={
-              isHovering ? `${style.Author} ${style.Fade}` : style.Author
-            }
-          >
-            {item.creator.name}
+          <div onClick={(e) => manageRouting(e)} className={style.Auth}>
+            <Creator
+              item={item.creator}
+              className={isHovering ? style.Slide : ''}
+              size="card"
+              showTooltip={false}
+            />
+            <div
+              className={
+                isHovering ? `${style.Author} ${style.Fade}` : style.Author
+              }
+            >
+              {item.creator.name}
+            </div>
           </div>
           <div
             className={

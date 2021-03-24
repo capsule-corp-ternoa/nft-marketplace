@@ -42,8 +42,9 @@ const Hero: React.FC<HeroProps> = ({ creators }) => {
             <video
               className={style.Video}
               autoPlay
+              muted={true}
               loop
-              muted
+              playsInline
               //controls={true}
               data-reactid=".0.1.0.0"
               height="100%"

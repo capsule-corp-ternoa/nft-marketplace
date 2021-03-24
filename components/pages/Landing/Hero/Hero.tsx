@@ -1,10 +1,13 @@
 /* eslint-disable jsx-a11y/media-has-caption */
-import React from 'react';
+import React, { useState } from 'react';
 import style from './Hero.module.scss';
 import Link from 'next/link';
 
 import Creator from 'components/base/Creator';
 import Ternoart from 'components/assets/ternoart';
+
+import SoundOn from 'components/assets/SoundOn';
+import SoundOff from 'components/assets/SoundOff';
 
 import { CreatorType } from 'interfaces/index';
 
@@ -13,6 +16,8 @@ export interface HeroProps {
 }
 
 const Hero: React.FC<HeroProps> = ({ creators }) => {
+  const [mute, setMute] = useState(true);
+
   function returnCreators() {
     return creators.slice(0, 10).map((item) => (
       <Link key={item.id} href={`/creator-test`}>
@@ -23,6 +28,12 @@ const Hero: React.FC<HeroProps> = ({ creators }) => {
     ));
   }
 
+  function toggleMute() {
+    var video = document.getElementById('video');
+    video!.muted = !video!.muted;
+    setMute(!mute);
+  }
+
   return (
     <>
       <div className={style.Hero}>
@@ -31,11 +42,13 @@ const Hero: React.FC<HeroProps> = ({ creators }) => {
             <video
               className={style.Video}
               autoPlay
+              loop
               muted
-              controls={true}
+              //controls={true}
               data-reactid=".0.1.0.0"
               height="100%"
               width="100%"
+              id="video"
             >
               <source
                 type="video/mp4"
@@ -43,6 +56,13 @@ const Hero: React.FC<HeroProps> = ({ creators }) => {
                 src="ternoart.mp4"
               />
             </video>
+            <span className={style.Sound} onClick={(e) => toggleMute()}>
+              {mute ? (
+                <SoundOff className={style.SoundOffSVG} />
+              ) : (
+                <SoundOn className={style.SoundOnSVG} />
+              )}
+            </span>
           </div>
 
           <div className={style.Content}>

@@ -29,7 +29,7 @@ const Hero: React.FC<HeroProps> = ({ creators }) => {
   }
 
   function toggleMute() {
-    var video = document.getElementById('video');
+    var video = document.getElementById('video') as HTMLVideoElement;
     video!.muted = !video!.muted;
     setMute(!mute);
   }
@@ -56,7 +56,7 @@ const Hero: React.FC<HeroProps> = ({ creators }) => {
                 src="ternoart.mp4"
               />
             </video>
-            <span className={style.Sound} onClick={(e) => toggleMute()}>
+            <span className={style.Sound} onClick={() => toggleMute()}>
               {mute ? (
                 <SoundOff className={style.SoundOffSVG} />
               ) : (

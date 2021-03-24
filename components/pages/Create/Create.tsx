@@ -14,7 +14,7 @@ const Create: React.FC<any> = ({ setModalExpand }) => {
   const [select, setSelect] = useState('Select NFT Option');
   const [exp, setExp] = useState(false);
   const [NFT, setNFT] = useState(null);
-  const [surpriseNFT, setSurpriseNFT] = useState(null);
+  const [secretNFT, setSecretNFT] = useState(null);
 
   function loadfile(event: any, type: string) {
     console.log(URL.createObjectURL(event.target.files[0]));
@@ -26,13 +26,13 @@ const Create: React.FC<any> = ({ setModalExpand }) => {
         URL.revokeObjectURL(output!.src);
       };
     } else {
-      setSurpriseNFT(event.target.files[0]);
-      var outputSurprise = document.getElementById(
-        'outputSurprise'
+      setSecretNFT(event.target.files[0]);
+      var outputSecret = document.getElementById(
+        'outputSecret'
       ) as HTMLImageElement;
-      outputSurprise!.src = URL.createObjectURL(event.target.files[0]);
-      outputSurprise!.onload = function () {
-        URL.revokeObjectURL(outputSurprise!.src);
+      outputSecret!.src = URL.createObjectURL(event.target.files[0]);
+      outputSecret!.onload = function () {
+        URL.revokeObjectURL(outputSecret!.src);
       };
     }
   }
@@ -91,21 +91,19 @@ const Create: React.FC<any> = ({ setModalExpand }) => {
                     </div>
                   </div>
                 )}
-                {select === 'Surprise' && (
+                {select === 'Secret' && (
                   <div
                     className={
-                      surpriseNFT
+                      secretNFT
                         ? style.NFTSPreview
                         : `${style.NFTSPreview} ${style.NFTPreviewBorder}`
                     }
                   >
-                    <div
-                      className={surpriseNFT ? style.Hidden : style.NFTSNull}
-                    >
+                    <div className={secretNFT ? style.Hidden : style.NFTSNull}>
                       <div className={style.Label}>Coming soon</div>
                       <Upload className={style.UploadSVG2} />
                       <div className={style.NFTSTips}>
-                        Click to select yoru file that will hide your NFT for
+                        Click to select your file that will hide your NFT for
                         the surprise.
                       </div>
                       <div className={style.NFTSTips2}>
@@ -113,12 +111,10 @@ const Create: React.FC<any> = ({ setModalExpand }) => {
                       </div>
                     </div>
                     <img
-                      className={
-                        surpriseNFT ? style.IMGBackground : style.Hidden
-                      }
+                      className={secretNFT ? style.IMGBackground : style.Hidden}
                       src="#"
                       alt="img"
-                      id="outputSurprise"
+                      id="outputSecret"
                     />
                     <div className={style.HiddenShell}>
                       <input
@@ -189,11 +185,11 @@ const Create: React.FC<any> = ({ setModalExpand }) => {
                       <div
                         className={style.SelectItem}
                         onClick={() => {
-                          setSelect('Surprise');
+                          setSelect('Secret');
                           setExp(false);
                         }}
                       >
-                        Surprise
+                        Secret
                       </div>
                       <div
                         className={style.SelectItem}

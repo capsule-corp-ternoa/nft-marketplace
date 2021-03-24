@@ -1,0 +1,243 @@
+@import "style/colors.scss";
+
+.Modal {
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 1000;
+  box-sizing: border-box;
+}
+
+.Close {
+  position: absolute;
+  top: 50px;
+  right: 50px;
+  fill: white;
+  cursor: pointer;
+  width: 32px;
+}
+
+.NFT {
+  display: flex;
+  position: relative;
+  box-sizing: border-box;
+  width: 390px;
+  height: 680px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #f29fff 0%, #878cff 100%);
+  box-shadow: 0px 0px 14.5243px 5.0835px rgba(0, 0, 0, 0.15);
+  border-radius: 12px;
+}
+
+.NFTIMG {
+  object-fit: cover;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  border-radius: 12px;
+}
+
+// Modal Checkout
+
+.ModalCheckout {
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: flex-end;
+  background-color: rgba(255, 255, 255, 0.9);
+  z-index: 1000;
+  box-sizing: border-box;
+}
+
+.Container {
+  width: 450px;
+  right: 0px;
+  height: 100vh;
+  background-color: black;
+  padding: 60px 42px;
+  box-sizing: border-box;
+  color: white;
+}
+
+.Close2 {
+  fill: white;
+  cursor: pointer;
+  width: 24px;
+}
+
+.Top {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.Title {
+  font-family: "Airbnb Cereal App Bold";
+  font-size: 30px;
+}
+
+.WalletSVG {
+  width: 32px;
+  margin-right: 16px;
+  fill: white;
+}
+
+.Section {
+  margin: 120px 0px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.Insight {
+  font-family: "Airbnb Cereal App Book";
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.Infos {
+  font-family: "Airbnb Cereal App Bold";
+  font-size: 21px;
+  line-height: 24px;
+  margin-top: 8px;
+}
+.PricingContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.SB {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 3px;
+}
+
+.PriceNumber {
+  font-family: "Airbnb Cereal App Bold";
+  font-size: 28px;
+  line-height: 34px;
+}
+
+.PriceCaps {
+  font-family: "Airbnb Cereal App Bold";
+  font-size: 28px;
+  line-height: 34px;
+  text-transform: uppercase;
+}
+
+.Line {
+  margin-top: 12px;
+  margin-bottom: 24px;
+  width: 100%;
+  border-bottom: 1px solid white;
+}
+
+.SBLight {
+  font-family: "Airbnb Cereal App Book";
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.SBBold {
+  font-family: "Airbnb Cereal App Bold";
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.Buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-top: 100px;
+  box-sizing: border-box;
+}
+
+.Buy {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+  background-color: $primary;
+  color: white;
+  border-radius: 30px;
+  padding: 14px 0px;
+  font-size: 16px;
+  font-family: "Airbnb Cereal App Medium";
+  margin-bottom: 16px;
+  width: 100%;
+  cursor: pointer;
+  transition: all 0.3s ease-out;
+
+  &:hover {
+    background-color: white;
+    color: black;
+  }
+}
+
+.Cancel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+  background-color: #282626;
+  color: white;
+  border-radius: 30px;
+  padding: 14px 0px;
+  font-size: 16px;
+  font-family: "Airbnb Cereal App Medium";
+  width: 100%;
+  cursor: pointer;
+  transition: all 0.3s ease-out;
+
+  &:hover {
+    background-color: white;
+    color: black;
+  }
+}
+
+@media (max-width: 720px) {
+  .Close {
+    position: absolute;
+    top: 42px;
+    right: auto;
+    fill: white;
+    cursor: pointer;
+    width: 32px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .NFT {
+    width: 300px;
+    height: 470px;
+  }
+
+  //Modal
+
+  .Container {
+    width: 100%;
+    height: 100vh;
+    background-color: black;
+    padding: 30px 24px;
+    box-sizing: border-box;
+    color: white;
+  }
+
+  .Section {
+    margin: 70px 0px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+}

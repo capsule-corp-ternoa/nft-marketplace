@@ -30,6 +30,7 @@ const Hero: React.FC<HeroProps> = ({ creators }) => {
           <div className={style.VideoContainer}>
             <video
               className={style.Video}
+              autoPlay
               muted
               controls={true}
               data-reactid=".0.1.0.0"

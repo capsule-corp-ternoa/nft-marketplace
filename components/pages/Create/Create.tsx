@@ -13,28 +13,29 @@ const Create: React.FC<any> = ({ setModalExpand }) => {
   //const { t } = useTranslation();
   const [select, setSelect] = useState('Select NFT Option');
   const [exp, setExp] = useState(false);
-  const [NFT, setNFT] = useState(null);
-  const [secretNFT, setSecretNFT] = useState(null);
+  const [NFT, setNFT] = useState<File | null>(null);
+  const [secretNFT, setSecretNFT] = useState<File | null>(null);
 
-  function loadfile(event: any, type: string) {
-    console.log(URL.createObjectURL(event.target.files[0]));
-    if (type === 'main') {
-      setNFT(event.target.files[0]);
-      var output = document.getElementById('output') as HTMLImageElement;
-      output!.src = URL.createObjectURL(event.target.files[0]);
-      output!.onload = function () {
-        URL.revokeObjectURL(output!.src);
-      };
-    } else {
-      setSecretNFT(event.target.files[0]);
-      var outputSecret = document.getElementById(
-        'outputSecret'
-      ) as HTMLImageElement;
-      outputSecret!.src = URL.createObjectURL(event.target.files[0]);
-      outputSecret!.onload = function () {
-        URL.revokeObjectURL(outputSecret!.src);
-      };
-    }
+  function returnType(NFTarg: File) {
+    if (NFTarg!.type.substr(0, 5) === 'image')
+      return (
+        <img
+          className={style.IMGBackground}
+          src={URL.createObjectURL(NFTarg)}
+          alt="img"
+          id="output"
+        />
+      );
+    else if (NFTarg!.type.substr(0, 5) === 'video')
+      return (
+        <video autoPlay muted className={style.IMGBackground}>
+          <source
+            id="outputVideo"
+            src={URL.createObjectURL(NFTarg)}
+            type="video/mp4"
+          />
+        </video>
+      );
   }
 
   return (
@@ -68,17 +69,17 @@ const Create: React.FC<any> = ({ setModalExpand }) => {
                     PNG, GIF, WEBP, MP4 or MP3. Max 30mb.
                   </div>
                 </div>
-                <img
-                  className={NFT ? style.IMGBackground : style.Hidden}
-                  src="#"
-                  alt="img"
-                  id="output"
-                />
+
+                {NFT && returnType(NFT)}
+
                 <div className={style.HiddenShell}>
                   <input
                     type="file"
                     id="theFileInput"
-                    onChange={(event) => loadfile(event, 'main')}
+                    onChange={(event) => {
+                      const { target } = event;
+                      if (target && target.files) setNFT(target.files[0]);
+                    }}
                     className={style.HiddenInput}
                   />
                 </div>
@@ -110,16 +111,15 @@ const Create: React.FC<any> = ({ setModalExpand }) => {
                         Once purchased, the owner will be able to see your NFT
                       </div>
                     </div>
-                    <img
-                      className={secretNFT ? style.IMGBackground : style.Hidden}
-                      src="#"
-                      alt="img"
-                      id="outputSecret"
-                    />
+                    {secretNFT && returnType(secretNFT)}
                     <div className={style.HiddenShell}>
                       <input
                         type="file"
-                        onChange={(event) => loadfile(event, 'secondary')}
+                        onChange={(event) => {
+                          const { target } = event;
+                          if (target && target.files)
+                            setSecretNFT(target.files[0]);
+                        }}
                         className={style.HiddenInput}
                       />
                     </div>

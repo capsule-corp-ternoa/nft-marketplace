@@ -1,3 +1,5 @@
+@import "style/colors.scss";
+
 .Hero {
   display: flex;
   flex-direction: column;
@@ -6,6 +8,7 @@
   margin-right: auto;
   box-sizing: border-box;
   padding: 80px 0px;
+  padding-bottom: 20px;
   align-items: center;
   justify-content: center;
 }
@@ -14,13 +17,13 @@
   display: flex;
   width: 100%;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 60px;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .VideoContainer {
-  height: 360px;
-  width: 640px;
+  height: 440px;
+  width: 810px;
   border: none;
   background: #e0e0e0;
   border-radius: 20px;
@@ -43,15 +46,158 @@
   //border: 1px solid #e0e0e0;
 }
 
-.Title {
-  font-family: 'Airbnb Cereal App Extra Bold';
-  font-style: normal;
-  font-weight: bold;
-  font-size: 60px;
-  line-height: 78px;
-  max-width: 450px;
+.Content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  margin: 100px 16px;
+  position: relative;
 }
 
+.Left,
+.Right {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.Logo {
+  position: absolute;
+  margin-right: 0px;
+  margin-left: 0px;
+}
+
+.Left {
+  background-color: $primary;
+  border-radius: 64px 0px 0px 0px;
+  padding: 52px 80px;
+  position: relative;
+  padding-right: 150px;
+}
+
+.Ternoart {
+  width: 170px;
+}
+
+.Right {
+  align-items: center;
+  justify-content: center;
+}
+
+.Label {
+  position: absolute;
+  top: -16px;
+  left: 80px;
+  font-family: "Airbnb Cereal App Bold";
+  font-size: 12px;
+  color: white;
+  border-radius: 25px;
+  padding: 8px 16px;
+  background-color: black;
+}
+
+.Headline {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.Light {
+  font-size: 28px;
+  color: white;
+  font-family: "Airbnb Cereal App Light";
+}
+
+.Bold {
+  font-size: 34px;
+  color: white;
+  font-family: "Airbnb Cereal App Bold";
+}
+
+.Description {
+  color: white;
+  font-family: "Airbnb Cereal App Light";
+  font-size: 14px;
+  line-height: 20px;
+  margin-top: 24px;
+
+  span {
+    font-family: "Airbnb Cereal App Bold";
+    margin-left: 4px;
+  }
+}
+
+.Button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: flex-start;
+  border: 1px solid white;
+  color: white;
+  border-radius: 30px;
+  padding: 12px 32px;
+  font-size: 14px;
+  margin-top: 24px;
+  font-family: "Airbnb Cereal App Medium";
+  background-color: $primary;
+  cursor: pointer;
+  transition: all 0.3s ease-out;
+
+  &:hover {
+    background-color: white;
+    color: $primary;
+  }
+}
+
+.RightContainer {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-sizing: border-box;
+  font-family: "Airbnb Cereal App Bold";
+}
+
+.Step {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 26px;
+}
+
+.StepNumber {
+  background-color: $primary;
+  color: white;
+  padding: 4px 0px;
+  width: 50px;
+  border-radius: 50px;
+  margin-right: 16px;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  z-index: 3;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.StepText {
+  font-size: 20px;
+  font-family: "Airbnb Cereal App Bold";
+}
+
+.Line {
+  height: 85%;
+  position: absolute;
+  left: 23px;
+  width: 5px;
+  z-index: 1;
+  background-color: $primary-light;
+  opacity: 0.2;
+}
+
+//Creators
 .Creators {
   display: flex;
   flex-direction: column;
@@ -67,7 +213,7 @@
 }
 
 .CreatorsTitle {
-  font-family: 'Airbnb Cereal App Bold';
+  font-family: "Airbnb Cereal App Bold";
   font-style: normal;
   font-weight: bold;
   font-size: 30px;
@@ -92,14 +238,8 @@
   }
 
   .VideoContainer {
-    height: 320px;
-    width: 450px;
-  }
-
-  .Title {
-    font-size: 46px;
-    line-height: 55px;
-    max-width: 360px;
+    height: 400px;
+    width: 720px;
   }
 
   .CreatorsTitle {
@@ -111,6 +251,79 @@
     margin-right: 16px;
     margin-bottom: 16px;
   }
+
+  .Content {
+    margin: 100px 16px;
+  }
+
+  .Left {
+    padding: 40px 52px;
+    padding-right: 120px;
+  }
+
+  .Ternoart {
+    width: 140px;
+  }
+
+  .Label {
+    top: -14px;
+    left: 50px;
+    font-size: 11px;
+  }
+
+  .Light {
+    font-size: 22px;
+  }
+
+  .Bold {
+    font-size: 26px;
+  }
+
+  .Description {
+    font-size: 12px;
+    line-height: 20px;
+    margin-top: 18px;
+
+    span {
+      font-family: "Airbnb Cereal App Bold";
+      margin-left: 4px;
+    }
+  }
+
+  .Button {
+    padding: 10px 24px;
+    font-size: 12px;
+    margin-top: 18px;
+
+    &:hover {
+      background-color: white;
+      color: $primary;
+    }
+  }
+
+  .RightContainer {
+    margin-left: 30px;
+  }
+
+  .Step {
+    margin-bottom: 22px;
+  }
+
+  .StepNumber {
+    width: 40px;
+    border-radius: 50px;
+    margin-right: 16px;
+    font-size: 18px;
+  }
+
+  .StepText {
+    font-size: 18px;
+  }
+
+  .Line {
+    left: 18px;
+    width: 5px;
+  }
 }
 
 @media (max-width: 950px) {
@@ -120,25 +333,45 @@
   }
 
   .VideoContainer {
-    height: 280px;
-    width: 390px;
+    height: 340px;
+    width: 500px;
+  }
+
+  .Content {
+    flex-direction: column;
+    margin: 100px 0px;
+    margin-bottom: 0px;
+  }
+
+  .Logo {
+    display: none;
+  }
+
+  .Left {
+    border-radius: 20px;
+    padding: 40px;
+    padding-right: 0px;
+    width: 80%;
+  }
+
+  .Description {
+    max-width: 90%;
+  }
+
+  .ContentContainer {
+    width: 100%;
+  }
+
+  .Right {
+    margin-top: 64px;
+  }
+
+  .RightContainer {
+    margin-left: 0px;
   }
 }
 
 @media (max-width: 720px) {
-  .Head {
-    flex-direction: column;
-  }
-
-  .Title {
-    font-size: 38px;
-    line-height: 43px;
-    max-width: 90%;
-    padding: 0px 16px;
-    text-align: center;
-    margin-bottom: 60px;
-  }
-
   .CreatorsTitle {
     font-size: 20px;
     line-height: 24px;
@@ -156,21 +389,23 @@
 }
 
 @media (max-width: 640px) {
-  .Title {
-    font-size: 38px;
-    line-height: 43px;
-    max-width: 100%;
-    padding: 0px 16px;
-    text-align: center;
-    margin-bottom: 60px;
-  }
-
   .Hero {
     width: 100%;
     padding: 40px 16px;
   }
   .VideoContainer {
     height: 280px;
+    width: 100%;
+  }
+
+  .Left {
+    border-radius: 24px;
+    padding: 40px;
+    padding-right: 0px;
+    width: 100%;
+  }
+
+  .Right {
     width: 100%;
   }
 }

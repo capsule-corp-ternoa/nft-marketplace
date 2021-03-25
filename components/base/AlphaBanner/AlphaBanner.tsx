@@ -1,6 +1,7 @@
-import React from "react";
+import React from 'react';
+import Link from 'next/link';
 //import { useTranslation } from 'react-i18next';
-import style from "./AlphaBanner.module.scss";
+import style from './AlphaBanner.module.scss';
 
 const AlphaBanner: React.FC = () => {
   //const { i18n, t } = useTranslation();
@@ -16,9 +17,9 @@ const AlphaBanner: React.FC = () => {
         secret NFT. All the marketplace is in chaos net. Only FAKE CAPS are
         used.
       </p>
-      <a href="#" className={style.More}>
-        More infos
-      </a>
+      <Link href="/faq">
+        <a className={style.More}>More infos</a>
+      </Link>
     </div>
   );
 };

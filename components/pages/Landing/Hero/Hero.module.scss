@@ -1,4 +1,4 @@
-@import 'style/colors.scss';
+@import "style/colors.scss";
 
 .Hero {
   display: flex;
@@ -111,7 +111,7 @@
   position: absolute;
   top: -16px;
   left: 80px;
-  font-family: 'Airbnb Cereal App Bold';
+  font-family: "Airbnb Cereal App Bold";
   font-size: 12px;
   color: white;
   border-radius: 25px;
@@ -128,24 +128,24 @@
 .Light {
   font-size: 28px;
   color: white;
-  font-family: 'Airbnb Cereal App Light';
+  font-family: "Airbnb Cereal App Light";
 }
 
 .Bold {
   font-size: 34px;
   color: white;
-  font-family: 'Airbnb Cereal App Bold';
+  font-family: "Airbnb Cereal App Bold";
 }
 
 .Description {
   color: white;
-  font-family: 'Airbnb Cereal App Light';
+  font-family: "Airbnb Cereal App Light";
   font-size: 14px;
   line-height: 20px;
   margin-top: 24px;
 
   span {
-    font-family: 'Airbnb Cereal App Bold';
+    font-family: "Airbnb Cereal App Bold";
     margin-left: 4px;
   }
 }
@@ -161,7 +161,7 @@
   padding: 12px 32px;
   font-size: 14px;
   margin-top: 24px;
-  font-family: 'Airbnb Cereal App Medium';
+  font-family: "Airbnb Cereal App Medium";
   background-color: $primary;
   cursor: pointer;
   transition: all 0.3s ease-out;
@@ -177,7 +177,7 @@
   flex-direction: column;
   position: relative;
   box-sizing: border-box;
-  font-family: 'Airbnb Cereal App Bold';
+  font-family: "Airbnb Cereal App Bold";
 }
 
 .Step {
@@ -205,7 +205,7 @@
 
 .StepText {
   font-size: 20px;
-  font-family: 'Airbnb Cereal App Bold';
+  font-family: "Airbnb Cereal App Bold";
 }
 
 .Line {
@@ -230,11 +230,11 @@
   display: flex;
   width: 100%;
   padding: 6px 3px;
-  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 .CreatorsTitle {
-  font-family: 'Airbnb Cereal App Bold';
+  font-family: "Airbnb Cereal App Bold";
   font-style: normal;
   font-weight: bold;
   font-size: 30px;
@@ -314,7 +314,7 @@
     margin-top: 18px;
 
     span {
-      font-family: 'Airbnb Cereal App Bold';
+      font-family: "Airbnb Cereal App Bold";
       margin-left: 4px;
     }
   }

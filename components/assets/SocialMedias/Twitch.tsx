@@ -10,22 +10,13 @@ const Twitch: React.FC<TwitchProps> = ({ className, onClick }) => (
     xmlns="http://www.w3.org/2000/svg"
     className={className}
     onClick={onClick}
-    fill="none"
-    viewBox="0 0 19 24"
+    viewBox="0 0 24 24"
   >
-    <g fill="#fff" clipPath="url(#clip0TWI)">
-      <path d="M0 4.149v16.11h4.674v3.021H7.23l2.55-3.022h3.829l5.1-6.04V.119H1.274L0 4.148zM2.974 2.13h14.03V13.21l-2.973 3.524H9.353l-2.547 3.018v-3.018H2.974V2.131z" />
-      <path d="M7.652 6.162h1.7v6.04h-1.7v-6.04zM12.33 6.162h1.7v6.04h-1.7v-6.04z" />
-    </g>
-    <defs>
-      <clipPath id="clip0TWI">
-        <path
-          fill="#fff"
-          d="M0 0H18.709V23.163H0z"
-          transform="translate(0 .118)"
-        />
-      </clipPath>
-    </defs>
+    <path
+      fillRule="evenodd"
+      d="M2.149 0L.537 4.119v16.836h5.731V24h3.224l3.045-3.045h4.657l6.269-6.269V0H2.149zm19.164 13.612l-3.582 3.582H12l-3.045 3.045v-3.045H4.119V2.149h17.194v11.463zm-3.582-7.343v6.262h-2.149V6.269h2.149zm-5.731 0v6.262H9.851V6.269H12z"
+      clipRule="evenodd"
+    ></path>
   </svg>
 );
 

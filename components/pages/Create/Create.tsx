@@ -9,7 +9,7 @@ import Upload from 'components/assets/upload';
 import WhiteWaterMark from 'components/assets/WhiteWaterMark';
 import Eye from 'components/assets/eye';
 
-const Create: React.FC<any> = ({ setModalExpand }) => {
+const Create: React.FC<any> = ({ setModalExpand, setNotAvailable }) => {
   //const { t } = useTranslation();
   const [select, setSelect] = useState('Select NFT Option');
   const [exp, setExp] = useState(false);
@@ -146,12 +146,6 @@ const Create: React.FC<any> = ({ setModalExpand }) => {
               </div>
 
               <div className={style.InputShell}>
-                <h4 className={style.Subtitle}>Royalties</h4>
-                <input type="text" placeholder="10%" className={style.Input} />
-                <span className={style.Insight}>Suggested: 10%, 20%, 30%</span>
-              </div>
-
-              <div className={style.InputShell}>
                 <h4 className={style.Subtitle}>
                   Original Size
                   <span className={style.Insight}>(optional)</span>
@@ -212,17 +206,19 @@ const Create: React.FC<any> = ({ setModalExpand }) => {
                     </div>
                   )}
                 </div>
-                <Link href="/">
+                <Link href="/faq">
                   <a className={style.Link}>How it works</a>
                 </Link>
               </div>
             </div>
           </div>
-          <div className={style.Create}>Create NFT</div>
+          <div className={style.Create} onClick={() => setNotAvailable(true)}>
+            Create NFT
+          </div>
         </div>
       </div>
 
-      <Footer />
+      <Footer setNotAvailable={setNotAvailable} />
       <FloatingHeader setModalExpand={setModalExpand} />
     </div>
   );

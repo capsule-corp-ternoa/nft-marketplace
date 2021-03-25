@@ -15,7 +15,7 @@ import NFTSET2 from 'utils/mocks/NFTSET2';
 import NFTSET3 from 'utils/mocks/NFTSET3';
 import NFTSET4 from 'utils/mocks/NFTSET4';
 
-const Landing: React.FC<any> = ({ setModalExpand }) => {
+const Landing: React.FC<any> = ({ setModalExpand, setNotAvailable }) => {
   //const { t } = useTranslation();
 
   return (
@@ -26,7 +26,7 @@ const Landing: React.FC<any> = ({ setModalExpand }) => {
       <ArtCreators NFTs={NFTSET3} creators={Creators} />
       <BestSellers creators={Creators} />
       <Explore NFTs={NFTSET4} />
-      <Footer />
+      <Footer setNotAvailable={setNotAvailable} />
       <FloatingHeader setModalExpand={setModalExpand} />
     </div>
   );

@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
+import Head from 'next/head';
 import AlphaBanner from 'components/base/AlphaBanner';
 import MainHeader from 'components/base/MainHeader';
 import TernoaWallet from 'components/base/TernoaWallet';
 import Profile from 'components/pages/Profile';
 import NFTSET4 from 'utils/mocks/NFTSET4';
 import Creators from 'utils/mocks/mockCreators';
+import NotAvailableModal from 'components/base/NotAvailable';
 
 const ProfilePage = () => {
   const [modalExpand, setModalExpand] = useState(false);
+  const [notAvailable, setNotAvailable] = useState(false);
 
   const item: any = {
     name: 'Takeshi Kovacs',
@@ -27,7 +30,13 @@ const ProfilePage = () => {
 
   return (
     <>
+      <Head>
+        <title>Ternoart - {item.name}</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <meta name="description" content="Ternoa - Your profile." />
+      </Head>
       {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
+      {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
       <AlphaBanner />
       <MainHeader item={item} setModalExpand={setModalExpand} />
       <Profile
@@ -35,6 +44,7 @@ const ProfilePage = () => {
         NFTS={NFTSET4}
         creators={Creators}
         setModalExpand={setModalExpand}
+        setNotAvailable={setNotAvailable}
       />
     </>
   );

@@ -44,7 +44,7 @@ const ArtCreators: React.FC<ArtCreatorsProps> = ({ creators, NFTs }) => {
           <h3 className={style.Title}>
             Best art creators <Blaze className={style.BlazeSVG} />
           </h3>
-          <div className={style.Toggle}>
+          <div className={`${style.Toggle} ${style.Hide}`}>
             <label>
               <Switch
                 checked={isFiltered}

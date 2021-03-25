@@ -1,0 +1,95 @@
+@import "style/colors.scss";
+
+.Section {
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin-bottom: 32px;
+}
+
+.Data {
+  display: flex;
+  flex-direction: column;
+  width: 650px;
+}
+
+.Top {
+  font-family: "Airbnb Cereal App Bold";
+  font-size: 24px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease-out;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  align-self: flex-start;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.Select {
+  color: $primary;
+}
+
+.Bottom {
+  font-family: "Airbnb Cereal App Book";
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 21px;
+  color: #686464;
+}
+
+.Arrow {
+  width: 20px;
+  transform: translateY(5px) rotate(0deg);
+  margin-right: 24px;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.ArrowTilted {
+  width: 20px;
+  transform: translateY(5px) rotate(90deg);
+  margin-right: 24px;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.Hide {
+  display: none;
+}
+
+@media (max-width: 950px) {
+  .Data {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .Top {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+
+  .Select {
+    color: $primary;
+  }
+
+  .Bottom {
+    font-size: 13px;
+    line-height: 18px;
+  }
+
+  .Arrow {
+    width: 17px;
+    transform: translateY(4px) rotate(0deg);
+    margin-right: 24px;
+    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .ArrowTilted {
+    width: 17px;
+    transform: translateY(4px) rotate(90deg);
+    margin-right: 24px;
+    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+}

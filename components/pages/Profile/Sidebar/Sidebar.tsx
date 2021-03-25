@@ -8,7 +8,13 @@ import Edit from 'components/assets/edit';
 
 import PowerOff from 'components/assets/poweroff';
 
-const Sidebar: React.FC<any> = ({ item, scope, setScope, setExpand }) => {
+const Sidebar: React.FC<any> = ({
+  item,
+  scope,
+  setScope,
+  setExpand,
+  setNotAvailable,
+}) => {
   //const { t } = useTranslation();
 
   function returnActiveTitle(name: any) {
@@ -117,7 +123,7 @@ const Sidebar: React.FC<any> = ({ item, scope, setScope, setExpand }) => {
           </div>
           <div className={returnActiveNumber('Followings')}>38</div>
         </div>
-        <div className={style.Disconnect}>
+        <div className={style.Disconnect} onClick={() => setNotAvailable(true)}>
           <PowerOff className={style.PowerOff} />
           Disconnect
         </div>

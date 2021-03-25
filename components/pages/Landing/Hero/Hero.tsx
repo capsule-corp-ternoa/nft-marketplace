@@ -81,9 +81,14 @@ const Hero: React.FC<HeroProps> = ({ creators }) => {
                   <span>earn NFTs in return</span> !
                 </p>
               </div>
-              <div className={style.Button}>
+
+              <a
+                className={style.Button}
+                href="https://docs.google.com/forms/d/1LJYmtMUDKn8Enw5u1Ui0c0TKpvDd6uf7vRGgu3qL1jQ/viewform?edit_requested=true"
+                target="blank"
+              >
                 Are you an artist ? Submit your art
-              </div>
+              </a>
             </div>
             <div className={style.Logo}>
               <Ternoart className={style.Ternoart} />

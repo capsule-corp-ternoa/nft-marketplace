@@ -6,7 +6,7 @@ import Badge from 'components/assets/badge';
 import CopyPaste from 'components/assets/copypaste';
 import Twitter from 'components/assets/SocialMedias/Twitter';
 
-const Infos: React.FC<any> = ({ item }) => {
+const Infos: React.FC<any> = ({ item, setNotAvailable }) => {
   //const { t } = useTranslation();
 
   return (
@@ -37,7 +37,12 @@ const Infos: React.FC<any> = ({ item }) => {
               >
                 {item.address} <CopyPaste className={style.CopyPaste} />
               </div>
-              <div className={style.Button}>Follow</div>
+              <div
+                className={style.Button}
+                onClick={() => setNotAvailable(true)}
+              >
+                Follow
+              </div>
             </div>
             <div className={style.Bottom}>
               <span className={style.Bold}>{item.followers}</span>followers

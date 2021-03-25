@@ -11,7 +11,12 @@ import Share from 'components/assets/share';
 import Like from 'components/assets/heart';
 import Eye from 'components/assets/eye';
 
-const NFTPage: React.FC<any> = ({ setExp, NFT, setModalExpand }) => {
+const NFTPage: React.FC<any> = ({
+  setExp,
+  NFT,
+  setModalExpand,
+  setNotAvailable,
+}) => {
   //const { t } = useTranslation();
 
   return (
@@ -134,7 +139,7 @@ const NFTPage: React.FC<any> = ({ setExp, NFT, setModalExpand }) => {
           </div>
         </div>
       </div>
-      <Footer />
+      <Footer setNotAvailable={setNotAvailable} />
       <FloatingHeader setModalExpand={setModalExpand} />
     </div>
   );

@@ -17,7 +17,7 @@ import Twitch from 'components/assets/SocialMedias/Twitch';
 import Github from 'components/assets/SocialMedias/Github';
 import Youtube from 'components/assets/SocialMedias/Youtube';
 
-const Footer: React.FC = () => {
+const Footer: React.FC<any> = ({ setNotAvailable }) => {
   //const { i18n, t } = useTranslation();
 
   const changeLang = (lang?: string) => {
@@ -36,7 +36,9 @@ const Footer: React.FC = () => {
             placeholder="Your email..."
             type="text"
           />
-          <div className={style.Button}>Go</div>
+          <div className={style.Button} onClick={() => setNotAvailable(true)}>
+            Go
+          </div>
         </div>
         <div className={style.SocialMedias}>
           <Discord onClick={() => true} className={style.SVGMedia} />

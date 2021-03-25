@@ -8,7 +8,7 @@ import CopyPaste from 'components/assets/copypaste';
 import WalletSVG from 'components/assets/wallet';
 import Badge from 'components/assets/badge';
 
-const Wallet: React.FC<any> = ({ item, setModalExpand }) => {
+const Wallet: React.FC<any> = ({ item, setModalExpand, setNotAvailable }) => {
   //const { t } = useTranslation();
 
   return (
@@ -37,9 +37,11 @@ const Wallet: React.FC<any> = ({ item, setModalExpand }) => {
 
         <div className={style.Separator} />
         <div className={style.Caps}>{item.caps} Caps</div>
-        <div className={style.Button}>Buy Caps</div>
+        <div className={style.Button} onClick={() => setNotAvailable(true)}>
+          Buy Caps
+        </div>
       </div>
-      <Footer />
+      <Footer setNotAvailable={setNotAvailable} />
       <FloatingHeader setModalExpand={setModalExpand} />
     </div>
   );

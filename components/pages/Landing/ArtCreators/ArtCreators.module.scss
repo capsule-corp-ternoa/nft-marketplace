@@ -32,7 +32,7 @@
 }
 
 .Title {
-  font-family: 'Airbnb Cereal App Bold';
+  font-family: "Airbnb Cereal App Bold";
   font-style: normal;
   font-weight: bold;
   font-size: 30px;
@@ -46,7 +46,7 @@
 }
 
 .Label {
-  font-family: 'Airbnb Cereal App Medium';
+  font-family: "Airbnb Cereal App Medium";
   color: #686464;
   font-size: 14px;
   line-height: 18px;
@@ -106,6 +106,10 @@
 
 .NFTShell {
   margin-right: 40px;
+}
+
+.Hide {
+  display: none;
 }
 
 @media (max-width: 1300px) {

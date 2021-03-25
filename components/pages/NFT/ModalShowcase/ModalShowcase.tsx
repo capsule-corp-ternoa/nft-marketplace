@@ -4,7 +4,7 @@ import style from './ModalShowcase.module.scss';
 import Close from 'components/assets/close';
 import Wallet from 'components/assets/wallet';
 
-const Modal: React.FC<any> = ({ NFT, setExp, exp }) => {
+const Modal: React.FC<any> = ({ NFT, setExp, exp, setNotAvailable }) => {
   return (
     <>
       {exp === 1 ? (
@@ -52,7 +52,9 @@ const Modal: React.FC<any> = ({ NFT, setExp, exp }) => {
               </div>
             </div>
             <div className={style.Buttons}>
-              <div className={style.Buy}>Proceed to payment</div>
+              <div className={style.Buy} onClick={() => setNotAvailable(true)}>
+                Proceed to payment
+              </div>
               <div onClick={() => setExp(0)} className={style.Cancel}>
                 Cancel
               </div>

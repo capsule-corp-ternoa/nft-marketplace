@@ -71,7 +71,7 @@ const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category }) => {
         <div className={style.Top}>
           <div className={style.Infos}>
             <h3 className={style.Title}>{category}</h3>
-            <div className={style.Toggle}>
+            <div className={`${style.Toggle} ${style.Hide}`}>
               <label>
                 <Switch
                   checked={isFiltered}

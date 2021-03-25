@@ -12,7 +12,13 @@ import FloatingMenu from './FloatingMenu';
 import Edit from './Edit';
 import Switch from 'react-switch';
 
-const Profile: React.FC<any> = ({ item, NFTS, creators, setModalExpand }) => {
+const Profile: React.FC<any> = ({
+  item,
+  NFTS,
+  creators,
+  setModalExpand,
+  setNotAvailable,
+}) => {
   //const { t } = useTranslation();
   const [isFiltered, setIsFiltered] = useState(false);
   const [scope, setScope] = useState('My NFTs on sale');
@@ -50,7 +56,7 @@ const Profile: React.FC<any> = ({ item, NFTS, creators, setModalExpand }) => {
                   placeholder="Search"
                 />
               </div>
-              <div className={style.Toggle}>
+              <div className={`${style.Toggle} ${style.Hidden}`}>
                 <label>
                   <Switch
                     checked={isFiltered}
@@ -73,7 +79,7 @@ const Profile: React.FC<any> = ({ item, NFTS, creators, setModalExpand }) => {
       );
     }
     if (scope === 'edit') {
-      return <Edit item={item} />;
+      return <Edit item={item} setNotAvailable={setNotAvailable} />;
     } else {
       return (
         <div className={style.NFTs}>
@@ -100,7 +106,13 @@ const Profile: React.FC<any> = ({ item, NFTS, creators, setModalExpand }) => {
             </a>
           </Link>
           <span className={style.CreatorFollowers}>{item.caps} followers</span>
-          <div onClick={(e) => e.stopPropagation()} className={style.Unfollow}>
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+              setNotAvailable(true);
+            }}
+            className={style.Unfollow}
+          >
             Unfollow
           </div>
         </div>
@@ -117,7 +129,12 @@ const Profile: React.FC<any> = ({ item, NFTS, creators, setModalExpand }) => {
           alt="banner"
         />
         {scope === 'edit' && (
-          <div className={style.EditButton}>Edit banner</div>
+          <div
+            className={style.EditButton}
+            onClick={() => setNotAvailable(true)}
+          >
+            Edit banner
+          </div>
         )}
       </div>
       <div className={style.Wrapper}>
@@ -126,11 +143,12 @@ const Profile: React.FC<any> = ({ item, NFTS, creators, setModalExpand }) => {
           scope={scope}
           setScope={setScope}
           setExpand={setExpand}
+          setNotAvailable={setNotAvailable}
         />
         {returnCategory()}
       </div>
       <FloatingHeader setModalExpand={setModalExpand} item={item} />
-      <Footer />
+      <Footer setNotAvailable={setNotAvailable} />
       {expand && (
         <FloatingMenu setScope={setScope} scope={scope} setExpand={setExpand} />
       )}

@@ -3,7 +3,7 @@ import React from 'react';
 import style from './Edit.module.scss';
 import Badge from 'components/assets/badge';
 
-const Edit: React.FC<any> = ({ item }) => {
+const Edit: React.FC<any> = ({ item, setNotAvailable }) => {
   //const { t } = useTranslation();
 
   return (
@@ -48,14 +48,21 @@ const Edit: React.FC<any> = ({ item }) => {
             To update your settings you should sign message through your wallet.
             Click 'Update profile' then sign the message
           </div>
-          <div className={style.Button}>Update your profile</div>
+          <div className={style.Button} onClick={() => setNotAvailable(true)}>
+            Update your profile
+          </div>
         </div>
         <div className={style.IMG}>
           <div className={style.Avatar}>
             <img className={style.AvatarIMG} src={item.img} />
           </div>
           <div className={style.IMGSize}>500x500px recommanded</div>
-          <div className={style.UploadButton}>Upload</div>
+          <div
+            className={style.UploadButton}
+            onClick={() => setNotAvailable(true)}
+          >
+            Upload
+          </div>
 
           <div className={style.Certification}>
             <Badge className={style.Badge} />

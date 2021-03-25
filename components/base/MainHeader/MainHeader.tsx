@@ -40,7 +40,7 @@ const MainHeader: React.FC<any> = ({ setModalExpand, item }) => {
             <Link href="/#explore">
               <a className={style.LinkItem}>Explore</a>
             </Link>
-            <Link href="/">
+            <Link href="/faq">
               <a className={style.LinkItem}>How it works</a>
             </Link>
             <Link href="/">

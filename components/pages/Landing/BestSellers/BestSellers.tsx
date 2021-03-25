@@ -36,7 +36,7 @@ const BestSellers: React.FC<BestSellersProps> = ({ creators }) => {
           <h3 className={style.Title}>
             Best sellers <Blaze className={style.BlazeSVG} />
           </h3>
-          <div className={style.Toggle}>
+          <div className={`${style.Toggle} ${style.Hide}`}>
             <label>
               <Switch
                 checked={isFiltered}

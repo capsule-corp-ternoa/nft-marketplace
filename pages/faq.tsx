@@ -3,10 +3,12 @@ import Head from 'next/head';
 import AlphaBanner from 'components/base/AlphaBanner';
 import MainHeader from 'components/base/MainHeader';
 import TernoaWallet from 'components/base/TernoaWallet';
-import Wallet from 'components/pages/Wallet';
+import NFTSET4 from 'utils/mocks/NFTSET4';
+import Creators from 'utils/mocks/mockCreators';
 import NotAvailableModal from 'components/base/NotAvailable';
+import FAQ from 'components/pages/FAQ';
 
-const WalletPage = () => {
+const FAQPage = () => {
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
 
@@ -17,7 +19,7 @@ const WalletPage = () => {
       'https://images.unsplash.com/photo-1497551060073-4c5ab6435f12?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1267&q=80',
     verified: true,
     id: 9,
-    twitter: 'rayanreynolds',
+    twitter: 'elonmusk',
     description: 'Famous artist living in LA.',
     address: '0x31R15fd5...4e3E75bf',
     views: 1234,
@@ -29,16 +31,18 @@ const WalletPage = () => {
   return (
     <>
       <Head>
-        <title>Ternoart - Wallet</title>
+        <title>Ternoart - FAQ</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-        <meta name="description" content="Ternoa Wallet" />
+        <meta name="description" content="FAQ page of Ternoart" />
       </Head>
       {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
       {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
       <AlphaBanner />
       <MainHeader item={item} setModalExpand={setModalExpand} />
-      <Wallet
+      <FAQ
         item={item}
+        NFTS={NFTSET4}
+        creators={Creators}
         setModalExpand={setModalExpand}
         setNotAvailable={setNotAvailable}
       />
@@ -46,4 +50,4 @@ const WalletPage = () => {
   );
 };
 
-export default WalletPage;
+export default FAQPage;

@@ -14,8 +14,7 @@ const AlphaBanner: React.FC = () => {
     <div className={style.Banner}>
       <p className={style.Text}>
         Welcome to the <span className={style.Alpha}> Alpha Version</span> of
-        secret NFT. All the marketplace is in chaos net. Only FAKE CAPS are
-        used.
+        SecretNFT. All the marketplace is in chaos net. Only FAKE CAPS are used.
       </p>
       <Link href="/faq">
         <a className={style.More}>More infos</a>

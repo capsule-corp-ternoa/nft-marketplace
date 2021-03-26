@@ -31,7 +31,7 @@ const ProfilePage = () => {
   return (
     <>
       <Head>
-        <title>Ternoart - {item.name}</title>
+        <title>SecretNFT - {item.name}</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta name="description" content="Ternoa - Your profile." />
       </Head>

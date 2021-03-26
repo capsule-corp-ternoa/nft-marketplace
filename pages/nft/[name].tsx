@@ -48,7 +48,7 @@ const NftPage = () => {
   return (
     <>
       <Head>
-        <title>{NFT.name} - Ternoart</title>
+        <title>{NFT.name} - SecretNFT</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta name="description" content="SecretNFT Marketplace, by Ternoa." />
       </Head>

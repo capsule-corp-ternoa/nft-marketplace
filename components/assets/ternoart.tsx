@@ -1,10 +1,10 @@
 import React from 'react';
 
-interface TernoatProps {
+interface TernoartProps {
   className: string;
 }
 
-const Ternoat: React.FC<TernoatProps> = ({ className }) => (
+const Ternoart: React.FC<TernoartProps> = ({ className }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     className={className}
@@ -67,4 +67,4 @@ const Ternoat: React.FC<TernoatProps> = ({ className }) => (
   </svg>
 );
 
-export default Ternoat;
+export default Ternoart;

@@ -8,7 +8,7 @@ import Section from './Section';
 const FAQ: React.FC<any> = ({ item, setModalExpand, setNotAvailable }) => {
   const sec = [
     {
-      question: 'What is Secret NFT Marketplace ?',
+      question: 'What is SecretNFT Marketplace ?',
       answer:
         'Description jdiezaoje jdeizaopeijd eizoapiejd iopaziejd jiezopaiejd deizpaoiejh dheapzoeihde uzoapeuhfeuzoap. Description jdiezaoje jdeizaopeijd eizoapiejd iopaziejd jiezopaiejd deizpaoiejh dheapzoeihde uzoapeuhfeuzoap. Description jdiezaoje jdeizaopeijd eizoapiejd...',
     },
@@ -17,7 +17,7 @@ const FAQ: React.FC<any> = ({ item, setModalExpand, setNotAvailable }) => {
       answer: 'Description jdiezaoje jdeizaopeijd eizoapiejd...',
     },
     {
-      question: 'What do i use for payment when buying on Secret NFT ?',
+      question: 'What do i use for payment when buying on SecretNFT ?',
       answer:
         'Description jdiezaoje jdeizaopeijd eizoapiejd... Description jdiezaoje jdeizaopeijd eizoapiejd iopaziejd jiezopaiejd deizpaoiejh',
     },

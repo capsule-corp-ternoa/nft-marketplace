@@ -41,14 +41,33 @@ const Footer: React.FC<any> = ({ setNotAvailable }) => {
           </div>
         </div>
         <div className={style.SocialMedias}>
-          <Discord onClick={() => true} className={style.SVGMedia} />
-          <Telegram onClick={() => true} className={style.SVGMedia} />
-          <Twitter onClick={() => true} className={style.SVGMediaTwitter} />
-          <LinkedIn onClick={() => true} className={style.SVGMedia} />
-          <Instagram onClick={() => true} className={style.SVGMedia} />
-          <Twitch onClick={() => true} className={style.SVGMedia} />
-          <Github onClick={() => true} className={style.SVGMedia} />
-          <Youtube onClick={() => true} className={style.SVGMedia} />
+          <a href="https://discord.gg/cNZTGtGJNR" target="_blank">
+            <Discord onClick={() => true} className={style.SVGMedia} />
+          </a>
+          <a href="https://t.me/ternoa" target="_blank">
+            <Telegram onClick={() => true} className={style.SVGMedia} />
+          </a>
+          <a href="https://twitter.com/ternoa_">
+            <Twitter onClick={() => true} className={style.SVGMediaTwitter} />
+          </a>
+          <a href="https://www.linkedin.com/company/50607388/" target="_blank">
+            <LinkedIn onClick={() => true} className={style.SVGMedia} />
+          </a>
+          <a href="https://www.instagram.com/ternoa_/" target="_blank">
+            <Instagram onClick={() => true} className={style.SVGMedia} />
+          </a>
+          <a href="#" target="_blank">
+            <Twitch onClick={() => true} className={style.SVGMedia} />
+          </a>
+          <a href="https://github.com/capsule-corp-ternoa" target="_blank">
+            <Github onClick={() => true} className={style.SVGMedia} />
+          </a>
+          <a
+            href="https://www.youtube.com/channel/UCUYvbtRE5HoWPz7z88V7Khw"
+            target="_blank"
+          >
+            <Youtube onClick={() => true} className={style.SVGMedia} />
+          </a>
         </div>
       </div>
       <div className={style.FooterBar}>

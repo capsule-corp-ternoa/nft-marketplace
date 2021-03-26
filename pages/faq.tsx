@@ -8,9 +8,11 @@ import Creators from 'utils/mocks/mockCreators';
 import NotAvailableModal from 'components/base/NotAvailable';
 import FAQ from 'components/pages/FAQ';
 
-const FAQPage = () => {
+const FAQPage: React.FC<any> = ({ data }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
+
+  console.log(data);
 
   const item: any = {
     name: 'Takeshi Kovacs',
@@ -31,9 +33,9 @@ const FAQPage = () => {
   return (
     <>
       <Head>
-        <title>Ternoart - FAQ</title>
+        <title>SecretNFT - FAQ</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-        <meta name="description" content="FAQ page of Ternoart" />
+        <meta name="description" content="FAQ page of SecretNFT, by Ternoa." />
       </Head>
       {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
       {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
@@ -51,3 +53,15 @@ const FAQPage = () => {
 };
 
 export default FAQPage;
+
+export async function getServerSideProps() {
+  const res = await fetch(
+    'https://ternoa-marketplace-nft.herokuapp.com/api/NFTs?page=1&limit=10'
+  );
+
+  const data = await res.json();
+
+  return {
+    props: { data }, // will be passed to the page component as props
+  };
+}

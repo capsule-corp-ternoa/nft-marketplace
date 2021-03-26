@@ -29,7 +29,7 @@ const CreatePage = () => {
   return (
     <>
       <Head>
-        <title>Ternoart - Create your NFT</title>
+        <title>SecretNFT - Create your NFT</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta name="description" content="SecretNFT Marketplace, by Ternoa." />
       </Head>

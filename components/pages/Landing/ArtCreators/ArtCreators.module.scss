@@ -1,0 +1,232 @@
+.Wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+  padding: 40px 0px;
+  align-items: center;
+  justify-content: center;
+}
+
+.Top {
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+  justify-content: flex-start;
+  box-sizing: border-box;
+}
+
+.Infos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 24px;
+}
+
+.Title {
+  font-family: "Airbnb Cereal App Bold";
+  font-style: normal;
+  font-weight: bold;
+  font-size: 30px;
+  margin: 0px;
+}
+
+.BlazeSVG {
+  margin-left: 16px;
+  width: 20px;
+  margin-bottom: -3px;
+}
+
+.Label {
+  font-family: "Airbnb Cereal App Medium";
+  color: #686464;
+  font-size: 14px;
+  line-height: 18px;
+  display: flex;
+  align-items: center;
+  text-align: right;
+  margin-top: 3px;
+  margin-left: 16px;
+}
+
+.Bottom {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 40px;
+  align-items: stretch;
+  box-sizing: border-box;
+}
+
+.NFTS {
+  display: flex;
+  box-sizing: border-box;
+}
+
+.SwitchShell {
+  margin-top: 8px;
+  margin-left: 16px;
+  outline: none;
+}
+
+// Creators
+
+.CreatorsContainer {
+  display: flex;
+  height: 390px;
+  background: #ffffff;
+  box-shadow: 0px 0px 9px 4px rgba(0, 0, 0, 0.05);
+  border-radius: 20px;
+  padding: 14px;
+  box-sizing: border-box;
+  flex: 1;
+}
+
+.CreatorsInner {
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.CreatorItem {
+  box-sizing: border-box;
+  margin: 0px 6px;
+}
+
+.NFTShell {
+  margin-right: 40px;
+}
+
+.Hide {
+  display: none;
+}
+
+@media (max-width: 1300px) {
+  .Wrapper {
+    width: 900px;
+  }
+
+  .Bottom {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .CreatorsContainer {
+    flex: inherit;
+    width: 100%;
+    padding: 24px 32px;
+    height: auto;
+    margin-top: 40px;
+  }
+
+  .CreatorsInner {
+    justify-content: space-around;
+  }
+
+  .NFTS {
+    justify-content: center;
+    width: 100%;
+    align-items: center;
+    display: flex;
+  }
+
+  .NFTShell {
+    margin: 0px 18px;
+  }
+
+  .Title {
+    font-size: 26px;
+    line-height: 32px;
+  }
+
+  .Label {
+    font-size: 13px;
+    line-height: 16px;
+  }
+
+  .BlazeSVG {
+    margin-left: 16px;
+    width: 17px;
+    margin-bottom: -3px;
+  }
+
+  .SwitchShell {
+    margin-top: 5px;
+    margin-left: 16px;
+    outline: none;
+  }
+}
+
+@media (max-width: 950px) {
+  .Wrapper {
+    width: 100%;
+    padding: 40px 24px;
+  }
+}
+
+@media (max-width: 870px) {
+  .CreatorItem {
+    box-sizing: border-box;
+    margin: 8px;
+  }
+
+  .Bottom {
+    margin-top: 0px;
+  }
+
+  .NFTS {
+    display: flex;
+    box-sizing: border-box;
+    overflow-x: scroll;
+    justify-content: flex-start;
+    padding: 24px 0px;
+  }
+
+  .NFTShell {
+    margin: 0px 16px;
+  }
+
+  .NFTShell:nth-child(1) {
+    margin-left: 0px;
+  }
+
+  .CreatorsInner {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 720px) {
+  .Wrapper {
+    padding: 40px 16px;
+  }
+
+  .CreatorsInner {
+    justify-content: space-around;
+    width: auto;
+    padding: 0px;
+  }
+
+  .Top {
+    width: 100%;
+    flex-direction: column;
+  }
+  .SwitchShell {
+    margin-left: 0px;
+    margin-top: 9px;
+  }
+
+  .Toggle {
+    margin-left: 0px;
+  }
+}

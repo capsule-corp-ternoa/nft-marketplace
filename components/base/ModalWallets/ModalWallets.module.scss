@@ -1,0 +1,151 @@
+.Background {
+  width: 100%;
+  position: fixed;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 110;
+  box-sizing: border-box;
+}
+
+.Container {
+  width: 440px;
+  border-radius: 25px;
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  align-items: center;
+  padding: 52px 40px;
+  position: relative;
+}
+
+.Title {
+  font-family: 'Airbnb Cereal App Bold';
+  color: white;
+  font-size: 28px;
+  line-height: 32px;
+  text-align: center;
+}
+
+.Subtitle {
+  color: white;
+  font-size: 11px;
+  line-height: 14px;
+  font-family: 'Airbnb Cereal App Light';
+  margin-top: 8px;
+}
+
+.Wallets {
+  display: flex;
+  flex-direction: column;
+  margin-top: 32px;
+}
+
+.WalletItem {
+  border-radius: 28px;
+  margin-bottom: 16px;
+  transition: 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  font-family: 'Airbnb Cereal App Bold';
+  font-size: 15px;
+  color: white;
+  border: 1px solid #bdbdbd;
+  padding: 12px 32px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: white;
+    color: black;
+  }
+}
+
+.WalletSVG {
+  width: 26px;
+  margin-right: 24px;
+}
+
+.Secret {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 16px;
+  padding: 0px 32px;
+}
+
+.KeySVG {
+  width: 17px;
+}
+
+.Text {
+  font-family: 'Airbnb Cereal App Light';
+  color: #a8a8a8;
+  font-size: 13px;
+  line-height: 18px;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.Close {
+  display: flex;
+  position: absolute;
+  z-index: 130;
+  fill: white;
+  top: 28px;
+  right: 28px;
+  width: 18px;
+  cursor: pointer;
+}
+
+@media (max-width: 720px) {
+  .Container {
+    width: 340px;
+    padding: 32px 18px;
+  }
+
+  .Title {
+    color: white;
+    font-size: 24px;
+    line-height: 28px;
+  }
+
+  .Subtitle {
+    font-size: 9px;
+    line-height: 12px;
+    margin-top: 6px;
+  }
+
+  .Wallets {
+    margin-top: 24px;
+  }
+
+  .WalletItem {
+    margin-bottom: 12px;
+    font-size: 13px;
+    padding: 8px 24px;
+  }
+
+  .WalletSVG {
+    width: 20px;
+    margin-right: 18px;
+  }
+
+  .Close {
+    top: 20px;
+    right: 20px;
+    width: 16px;
+  }
+
+  .Text {
+    font-family: 'Airbnb Cereal App Light';
+    color: #a8a8a8;
+    font-size: 11px;
+    line-height: 16px;
+    margin-top: 8px;
+  }
+}

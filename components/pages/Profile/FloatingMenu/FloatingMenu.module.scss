@@ -1,0 +1,130 @@
+@import 'style/colors.scss';
+
+.FloatingMenu {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 16px 70px;
+  background-color: black;
+  position: fixed;
+  z-index: 112;
+  bottom: 0px;
+  border-radius: 24px 24px 0px 0px;
+  transform: translateY(350px);
+}
+
+.Sections {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+}
+
+.Section {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.SectionTitle {
+  font-size: 16px;
+  line-height: 21px;
+  font-family: 'Airbnb Cereal App Book';
+  cursor: pointer;
+  color: #b1b1b1;
+}
+
+.Logoff {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 40px;
+}
+
+.SectionTitleActive {
+  font-family: 'Airbnb Cereal App Bold';
+  color: white;
+}
+
+.SectionNumber {
+  font-size: 14px;
+  line-height: 21px;
+  font-family: 'Airbnb Cereal App Book';
+  color: #b1b1b1;
+  background: #1b1b1b;
+  padding: 1px 14px;
+  border-radius: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.SectionNumberActive {
+  font-family: 'Airbnb Cereal App Bold';
+  color: white;
+  background-color: $primary;
+}
+
+.Disconnect {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Airbnb Cereal App Bold';
+  color: black;
+  border: 1px solid #e0e0e0;
+  border-radius: 25px;
+  padding: 14px 32px;
+  margin-top: 24px;
+  font-size: 14px;
+  line-height: 18px;
+  align-self: center;
+  cursor: pointer;
+}
+
+.PowerOff {
+  width: 18px;
+  margin-right: 10px;
+}
+
+.Close {
+  background: #1b1b1b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 24px;
+  border-radius: 50%;
+  padding: 16px;
+  cursor: pointer;
+  align-self: center;
+}
+
+.CloseSVG {
+  fill: white;
+  width: 22px;
+}
+
+.PopMenu {
+  display: flex;
+  animation: pop 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  animation-fill-mode: forwards;
+}
+
+@keyframes pop {
+  0% {
+    transform: translateY(350px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@media (max-width: 430px) {
+  .FloatingMenu {
+    padding: 16px 48px;
+  }
+}

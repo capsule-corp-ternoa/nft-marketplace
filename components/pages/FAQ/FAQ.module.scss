@@ -1,0 +1,62 @@
+@import "style/colors.scss";
+
+.Container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.Wrapper {
+  margin-left: auto;
+  margin-right: auto;
+  width: 700px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 100px 24px;
+}
+
+.Title {
+  font-family: "Airbnb Cereal App Black";
+  font-size: 42px;
+  line-height: 48px;
+  margin: 0px;
+  margin-top: 18px;
+  margin-bottom: 0px;
+}
+
+.FAQ {
+  font-family: "Airbnb Cereal App Light";
+  font-size: 32px;
+  line-height: 30px;
+}
+
+.Inner {
+  margin: 60px 0px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 950px) {
+  .Wrapper {
+    width: 100%;
+    padding: 80px 40px;
+  }
+
+  .Title {
+    font-family: "Airbnb Cereal App Black";
+    font-size: 38px;
+    line-height: 42px;
+    margin: 0px;
+    margin-top: 18px;
+    margin-bottom: 0px;
+  }
+
+  .FAQ {
+    font-family: "Airbnb Cereal App Light";
+    font-size: 28px;
+    line-height: 30px;
+  }
+}

@@ -1,0 +1,176 @@
+.Showcase {
+  display: flex;
+  flex-direction: column;
+  width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+  padding: 70px 0px;
+  align-items: center;
+  justify-content: center;
+}
+
+.Top {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.Infos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 24px;
+}
+
+.Title {
+  font-family: "Airbnb Cereal App Bold";
+  font-style: normal;
+  font-weight: bold;
+  font-size: 30px;
+  margin: 0px;
+}
+
+.Label {
+  font-family: "Airbnb Cereal App Medium";
+  color: #686464;
+  font-size: 14px;
+  line-height: 18px;
+  display: flex;
+  align-items: center;
+  text-align: right;
+  margin-top: 3px;
+  margin-left: 16px;
+}
+
+.Wrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.NFTContainer {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+// Switch
+
+.SwitchShell {
+  margin-top: 7px;
+  margin-left: 16px;
+  outline: none;
+}
+
+.CarouselContainer {
+  overflow-y: visible;
+  padding: 24px 0px;
+}
+
+.Nav {
+  display: flex;
+}
+
+.NavButton {
+  background: #f8f8f8;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0px 4px;
+  cursor: pointer;
+  padding: 10px 11px;
+}
+.ArrowSVG {
+  width: 8px;
+}
+
+.NFTShell {
+  border-radius: 20px;
+}
+
+.Hide {
+  display: none;
+}
+
+@media (max-width: 1300px) {
+  .Title {
+    font-size: 26px;
+  }
+
+  .Label {
+    font-size: 13px;
+    line-height: 16px;
+  }
+
+  .Showcase {
+    width: 900px;
+    padding: 40px 0px;
+  }
+
+  .CarouselContainer {
+    overflow-y: visible;
+    padding: 20px 0px;
+  }
+}
+
+@media (max-width: 950px) {
+  .Title {
+    font-size: 28px;
+    line-height: 32px;
+  }
+
+  .Label {
+    font-size: 12px;
+    line-height: 15px;
+  }
+  .Showcase {
+    width: 100%;
+    padding: 32px 24px;
+  }
+}
+
+@media (max-width: 720px) {
+  .Showcase {
+    padding: 32px 16px;
+  }
+  .Infos {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .Toggle {
+    margin-left: 0px;
+    margin-top: 4px;
+  }
+
+  .SwitchShell {
+    margin-left: 0px;
+  }
+  .Top {
+    width: 100%;
+  }
+
+  .Label {
+    margin-top: 0px;
+    margin-left: 10px;
+  }
+
+  .Nav {
+    margin-top: 16px;
+    align-self: flex-end;
+  }
+
+  .CarouselContainer {
+    padding: 24px 0px;
+    overflow-x: scroll;
+  }
+}

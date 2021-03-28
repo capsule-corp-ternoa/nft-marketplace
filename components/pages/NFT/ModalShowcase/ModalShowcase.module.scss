@@ -209,7 +209,8 @@
 @media (max-width: 720px) {
   .Close {
     position: absolute;
-    top: 42px;
+    top: inherit;
+    bottom: 64px;
     right: auto;
     fill: white;
     cursor: pointer;
@@ -221,6 +222,7 @@
   .NFT {
     width: 300px;
     height: 480px;
+    margin-top: -120px;
   }
 
   //Modal

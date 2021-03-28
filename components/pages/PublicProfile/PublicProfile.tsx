@@ -18,7 +18,7 @@ const PublicProfile: React.FC<any> = ({
   function returnNFTs() {
     return NFTS.map((item: any) => (
       <div key={item.id} className={style.NFTShell}>
-        <NFTCard mode="grid" item={item} />
+        <NFTCard mode="profile" item={item} />
       </div>
     ));
   }

@@ -8,6 +8,7 @@
   padding: 90px 0px;
   align-items: center;
   justify-content: center;
+  overflow-x: hidden;
 }
 
 .Top {
@@ -205,10 +206,6 @@
     margin-left: 0px;
   }
 
-  .CreatorsWrapper {
-    justify-content: space-around;
-  }
-
   .CreatorShell {
     display: flex;
     align-items: center;
@@ -231,11 +228,24 @@
   }
 }
 
-@media (max-width: 500px) {
+@media (max-width: 670px) {
   .CreatorsWrapper {
+    display: flex;
+    width: 100%;
+    padding: 6px 3px;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    overflow-x: scroll;
+  }
+
+  .CreatorInfos {
+    display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    margin-left: 16px;
+    text-align: left;
+    width: 140px;
   }
 
   .CreatorShell {
@@ -246,5 +256,6 @@
     margin-left: 0px;
     margin-bottom: 16px;
     width: 240px;
+    margin-right: 24px;
   }
 }

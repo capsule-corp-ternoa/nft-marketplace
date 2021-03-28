@@ -50,6 +50,12 @@
 @media (max-width: 950px) {
   .NFTWrapper {
     width: 100%;
-    padding: 50px 24px;
+    padding: 50px 16px;
+    background-color: red;
+    justify-content: center;
+  }
+
+  .NFTShell {
+    margin: 10px 10px;
   }
 }

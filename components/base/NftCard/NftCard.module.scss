@@ -1,4 +1,4 @@
-@import 'style/colors.scss';
+@import "style/colors.scss";
 
 .NFT {
   display: flex;
@@ -16,6 +16,21 @@
 }
 
 .NFTGrid {
+  display: flex;
+  position: relative;
+  box-sizing: border-box;
+  width: 250px;
+  height: 390px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #f29fff 0%, #878cff 100%);
+  box-shadow: 0px 0px 14.5243px 5.0835px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  overflow: hidden;
+  //will-change: transform;
+  transform: translateZ(0);
+}
+
+.NFTProfile {
   display: flex;
   position: relative;
   box-sizing: border-box;
@@ -69,7 +84,7 @@
   padding: 2.5px 20px;
   z-index: 4;
   border-radius: 35px;
-  font-family: 'Airbnb Cereal App Medium';
+  font-family: "Airbnb Cereal App Medium";
   font-size: 19px;
   margin: 0px;
   color: white;
@@ -85,7 +100,7 @@
   padding: 8px 16px;
   z-index: 4;
   border-radius: 20px;
-  font-family: 'Airbnb Cereal App Medium';
+  font-family: "Airbnb Cereal App Medium";
   font-size: 20px;
   color: white;
   display: flex;
@@ -115,7 +130,7 @@
 }
 
 .Author {
-  font-family: 'Airbnb Cereal App Book';
+  font-family: "Airbnb Cereal App Book";
   font-style: normal;
   font-weight: normal;
   font-size: 13px;
@@ -160,7 +175,7 @@
 }
 
 .ButtonText {
-  font-family: 'Airbnb Cereal App Bold';
+  font-family: "Airbnb Cereal App Bold";
   color: white;
   font-style: normal;
   font-weight: bold;
@@ -168,7 +183,7 @@
 }
 
 .Price {
-  font-family: 'Airbnb Cereal App Light';
+  font-family: "Airbnb Cereal App Light";
   text-transform: uppercase;
   color: white;
   font-size: 13px;
@@ -263,7 +278,8 @@
 
 @media (max-width: 720px) {
   .NFT,
-  .NFTGrid {
+  .NFTGrid,
+  .NFTProfile {
     width: 190px;
     height: 280px;
   }
@@ -271,11 +287,15 @@
   .SecretLabel {
     padding: 2.5px 16px;
     font-size: 16px;
+    top: 12px;
+    right: 12px;
   }
 
   .Favorite {
     padding: 6px 12px;
     font-size: 16px;
+    top: 12px;
+    right: 12px;
   }
   .HeartSVG {
     width: 16px;
@@ -290,5 +310,17 @@
   .NFT {
     width: 190px;
     height: 280px;
+  }
+
+  .NFTProfile {
+    width: 150px;
+    height: 265px;
+  }
+}
+
+@media (max-width: 380px) {
+  .NFTProfile {
+    width: 130px;
+    height: 230px;
   }
 }

@@ -19,10 +19,20 @@ function manageRouting(e: any) {
 const NftCard: React.FC<NftCardProps> = ({ item, mode }) => {
   const [isHovering, setIsHovering] = useState(false);
 
+  function manageClass() {
+    if (mode === 'grid') {
+      return style.NFTGrid;
+    } else if (mode === 'profile') {
+      return style.NFTProfile;
+    } else {
+      return style.NFT;
+    }
+  }
+
   return (
     <div
       onClick={() => Router.push(`/nft/nft-test`)}
-      className={mode === 'grid' ? style.NFTGrid : style.NFT}
+      className={manageClass()}
       onFocus={() => false}
       onBlur={() => false}
       onMouseOver={() => setIsHovering(true)}

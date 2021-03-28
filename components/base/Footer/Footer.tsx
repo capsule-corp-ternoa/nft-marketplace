@@ -56,9 +56,10 @@ const Footer: React.FC<any> = ({ setNotAvailable }) => {
           <a href="https://www.instagram.com/ternoa_/" target="_blank">
             <Instagram onClick={() => true} className={style.SVGMedia} />
           </a>
+          {/* 
           <a href="#" target="_blank">
             <Twitch onClick={() => true} className={style.SVGMedia} />
-          </a>
+          </a> */}
           <a href="https://github.com/capsule-corp-ternoa" target="_blank">
             <Github onClick={() => true} className={style.SVGMedia} />
           </a>

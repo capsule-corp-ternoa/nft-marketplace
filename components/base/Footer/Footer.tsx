@@ -13,7 +13,6 @@ import Telegram from 'components/assets/SocialMedias/Telegram';
 import Twitter from 'components/assets/SocialMedias/Twitter';
 import LinkedIn from 'components/assets/SocialMedias/LinkedIn';
 import Instagram from 'components/assets/SocialMedias/Instagram';
-import Twitch from 'components/assets/SocialMedias/Twitch';
 import Github from 'components/assets/SocialMedias/Github';
 import Youtube from 'components/assets/SocialMedias/Youtube';
 

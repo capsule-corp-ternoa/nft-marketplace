@@ -8,11 +8,13 @@ import Creator from 'components/base/Creator';
 import CopyPaste from 'components/assets/copypaste';
 
 import { middleEllipsis } from 'utils/strings';
+import gradient from 'random-gradient';
 
 const FloatingHeader: React.FC<any> = ({ user, setModalExpand }) => {
   const [, setSearchValue] = useState('' as string);
   const [isExpanded, setIsExpanded] = useState(false);
   const [fullProfile, setFullProfile] = useState(false);
+  const bgGradient = { background: gradient(user.name) };
 
   //const { t } = useTranslation();
 
@@ -93,11 +95,7 @@ const FloatingHeader: React.FC<any> = ({ user, setModalExpand }) => {
               caps
             </div>
             <div className={style.ProfileImageContainer}>
-              <img
-                className={style.ProfileImage}
-                src={user.img}
-                alt="profile"
-              />
+              <div className={style.ProfileImage} style={bgGradient} />
             </div>
           </div>
         ) : (

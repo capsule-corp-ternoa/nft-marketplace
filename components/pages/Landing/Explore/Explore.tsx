@@ -23,7 +23,7 @@ const Explore: React.FC<ExploreProps> = ({ NFTs }) => {
       <div id="explore" className={style.Wrapper}>
         <div className={style.Top}>
           <h3 className={style.Title}>Explore</h3>
-          <div className={style.Filters}>
+          <div className={style.Hide}>
             <span className={style.Filter}>
               <span role="img" className={style.Emoji} aria-label="art">
                 🎨

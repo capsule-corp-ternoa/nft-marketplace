@@ -9,7 +9,10 @@ const Edit: React.FC<any> = ({ section }) => {
 
   return (
     <div className={style.Section}>
-      <Arr className={exp ? style.ArrowTilted : style.Arrow} />
+      <Arr
+        className={exp ? style.ArrowTilted : style.Arrow}
+        onClick={() => setExp(!exp)}
+      />
       <div className={style.Data}>
         <div
           className={exp ? `${style.Top} ${style.Select}` : style.Top}

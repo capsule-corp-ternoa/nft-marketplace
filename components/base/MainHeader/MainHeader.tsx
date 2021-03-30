@@ -9,10 +9,12 @@ import CopyPaste from 'components/assets/copypaste';
 
 import style from './MainHeader.module.scss';
 import { middleEllipsis } from 'utils/strings';
+import gradient from 'random-gradient';
 
 const MainHeader: React.FC<any> = ({ setModalExpand, user }) => {
   const [, setSearchValue] = useState('' as string);
   const [isExpanded, setIsExpanded] = useState(false);
+  const bgGradient = { background: gradient(user.name) };
   //const { t } = useTranslation();
 
   const updateKeywordSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -63,11 +65,7 @@ const MainHeader: React.FC<any> = ({ setModalExpand, user }) => {
                     caps
                   </div>
                   <div className={style.ProfileImageContainer}>
-                    <img
-                      className={style.ProfileImage}
-                      src={user?.img}
-                      alt="profile"
-                    />
+                    <div className={style.ProfileImage} style={bgGradient} />
                   </div>
                 </div>
               </div>

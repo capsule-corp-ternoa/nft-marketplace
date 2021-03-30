@@ -66,11 +66,7 @@ const NFTPage: React.FC<any> = ({
             </div>
           </div>
           <div className={style.Line} />
-          <div className={style.Infos}>
-            <div className={style.Collection}>
-              <div className={style.TopCol}>Collection ERC 721</div>
-              <div className={style.BotCol}>Name</div>
-            </div>
+          <div className={style.Hide}>
             <div className={style.Tags}>
               <div className={style.Tag}>
                 <span role="img" className={style.Emoji} aria-label="art">
@@ -86,7 +82,6 @@ const NFTPage: React.FC<any> = ({
               <div onClick={() => setExp(2)} className={style.Button}>
                 Buy
               </div>
-              <span className={style.Fees}>Service fee 1.5%</span>
             </div>
             <div className={style.BuyRight}>
               <div className={style.Price}>

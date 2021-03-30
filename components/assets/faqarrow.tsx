@@ -2,12 +2,14 @@ import React from 'react';
 
 interface ArrProps {
   className: string;
+  onClick: React.MouseEventHandler<SVGSVGElement>;
 }
 
-const Arr: React.FC<ArrProps> = ({ className }) => (
+const Arr: React.FC<ArrProps> = ({ className, onClick }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     className={className}
+    onClick={onClick}
     fill="none"
     viewBox="0 0 20 20"
   >

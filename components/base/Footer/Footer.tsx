@@ -40,9 +40,9 @@ const Footer: React.FC<any> = ({ setNotAvailable }) => {
           </div>
         </div>
         <div className={style.SocialMedias}>
-          <a href="https://discord.gg/cNZTGtGJNR" target="_blank">
+          {/*<a href="https://discord.gg/cNZTGtGJNR" target="_blank">
             <Discord onClick={() => true} className={style.SVGMedia} />
-          </a>
+  </a>*/}
           <a href="https://t.me/ternoa" target="_blank">
             <Telegram onClick={() => true} className={style.SVGMedia} />
           </a>

@@ -54,9 +54,9 @@ const Modal: React.FC<any> = ({
             <div className={style.PricingContainer}>
               <div className={style.SB}>
                 <div className={style.PriceNumber}>
-                  {shortString(Number(NFT.price))} caps
+                  {shortString(Number(NFT.price))} CAPS
                 </div>
-                <div className={style.PriceCaps}>Caps</div>
+                <div className={style.PriceCaps}>CAPS</div>
               </div>
               <div className={style.Line} />
               <div className={style.SB}>

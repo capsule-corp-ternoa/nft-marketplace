@@ -39,9 +39,9 @@ const Wallet: React.FC<any> = ({ user, setModalExpand, setNotAvailable }) => {
         </div>
 
         <div className={style.Separator} />
-        <div className={style.Caps}>{user.caps} Caps</div>
+        <div className={style.Caps}>{user.caps} CAPS</div>
         <div className={style.Button} onClick={() => setNotAvailable(true)}>
-          Buy Caps
+          Buy CAPS
         </div>
       </div>
       <Footer setNotAvailable={setNotAvailable} />

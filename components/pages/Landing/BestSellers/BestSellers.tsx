@@ -22,7 +22,7 @@ const BestSellers: React.FC<BestSellersProps> = ({ creators }) => {
           <Creator user={item} showTooltip={false} />
           <div className={style.CreatorInfos}>
             <h2 className={style.CreatorName}>{item.name}</h2>
-            <span className={style.CreatorCaps}>0 caps</span>
+            <span className={style.CreatorCaps}>0 CAPS</span>
           </div>
         </a>
       </Link>

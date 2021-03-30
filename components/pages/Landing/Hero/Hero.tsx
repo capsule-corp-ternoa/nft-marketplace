@@ -102,7 +102,7 @@ const Hero: React.FC<HeroProps> = ({ creators }) => {
                 </div>
                 <div className={style.Step}>
                   <div className={style.StepNumber}>2</div>
-                  <div className={style.StepText}>Get free caps : FCAPS</div>
+                  <div className={style.StepText}>Get free CAPS : FCAPS</div>
                 </div>
                 <div className={style.Step}>
                   <div className={style.StepNumber}>3</div>

@@ -5,8 +5,6 @@ import French from '../../assets/Languages/France';
 import Japanese from '../../assets/Languages/Japan';
 import English from '../../assets/Languages/UK';
 
-import Discord from '../../assets/SocialMedias/Discord';
-
 import style from './Footer.module.scss';
 import WaterMark from 'components/assets/Watermark';
 import Telegram from 'components/assets/SocialMedias/Telegram';

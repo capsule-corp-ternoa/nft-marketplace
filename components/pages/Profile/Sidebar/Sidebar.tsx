@@ -62,7 +62,7 @@ const Sidebar: React.FC<any> = ({
 
         <div className={style.Separator} />
         <div className={style.Caps}>
-          <span className={style.CapsData}>{user.caps} caps</span>
+          <span className={style.CapsData}>{user.caps} CAPS</span>
           <div className={style.Burger} onClick={() => setExpand(true)}>
             <span className={style.Line} />
             <span className={style.Line} />

@@ -92,7 +92,7 @@ const FloatingHeader: React.FC<any> = ({ user, setModalExpand }) => {
               >
                 {user.caps}
               </span>
-              caps
+              CAPS
             </div>
             <div className={style.ProfileImageContainer}>
               <div className={style.ProfileImage} style={bgGradient} />
@@ -143,7 +143,7 @@ const FloatingHeader: React.FC<any> = ({ user, setModalExpand }) => {
           <Link href="/wallet">
             <a className={style.CapsSection}>
               <span>My wallet</span>
-              <div className={style.CapsPrice}>{user?.caps} Caps</div>
+              <div className={style.CapsPrice}>{user?.caps} CAPS</div>
             </a>
           </Link>
         </div>

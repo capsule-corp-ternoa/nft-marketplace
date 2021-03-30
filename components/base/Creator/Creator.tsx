@@ -49,7 +49,7 @@ const Creator: React.FC<CreatorProps> = ({
         }
       >
         <div className={style.CreatorName}>{user.name}</div>
-        <div className={style.CreatorsCaps}>0 caps</div>
+        <div className={style.CreatorsCaps}>0 CAPS</div>
       </div>
 
       <div

@@ -85,7 +85,7 @@ const NFTPage: React.FC<any> = ({
             </div>
             <div className={style.BuyRight}>
               <div className={style.Price}>
-                {shortString(Number(NFT.price))} caps
+                {shortString(Number(NFT.price))} CAPS
               </div>
               <span className={style.FiatPrice}>13 500$</span>
             </div>

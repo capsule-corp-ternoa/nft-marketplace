@@ -62,7 +62,7 @@ const MainHeader: React.FC<any> = ({ setModalExpand, user }) => {
                 >
                   <div className={style.Caps}>
                     <span className={style.NumberCaps}>{user?.caps}</span>
-                    caps
+                    CAPS
                   </div>
                   <div className={style.ProfileImageContainer}>
                     <div className={style.ProfileImage} style={bgGradient} />
@@ -123,7 +123,7 @@ const MainHeader: React.FC<any> = ({ setModalExpand, user }) => {
             <Link href="/wallet">
               <a className={style.CapsSection}>
                 <span>My wallet</span>
-                <div className={style.CapsPrice}>{user?.caps} Caps</div>
+                <div className={style.CapsPrice}>{user?.caps} CAPS</div>
               </a>
             </Link>
           </div>

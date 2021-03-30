@@ -13,7 +13,7 @@ import Edit from './Edit';
 import Switch from 'react-switch';
 
 const Profile: React.FC<any> = ({
-  item,
+  user,
   NFTS,
   creators,
   setModalExpand,
@@ -79,7 +79,7 @@ const Profile: React.FC<any> = ({
       );
     }
     if (scope === 'edit') {
-      return <Edit item={item} setNotAvailable={setNotAvailable} />;
+      return <Edit user={user} setNotAvailable={setNotAvailable} />;
     } else {
       return (
         <div className={style.NFTs}>
@@ -95,7 +95,7 @@ const Profile: React.FC<any> = ({
       <div key={item.id} className={style.CreatorShell}>
         <Link href={`/${item.name}`}>
           <a>
-            <Creator item={item} size="small" showTooltip={false} />
+            <Creator user={item} size="small" showTooltip={false} />
           </a>
         </Link>
 
@@ -125,7 +125,7 @@ const Profile: React.FC<any> = ({
       <div className={style.Banner}>
         <img
           className={style.BannerIMG}
-          src="https://images.unsplash.com/photo-1529641484336-ef35148bab06?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2250&q=80"
+          src="https://images.unsplash.com/photo-1579546929518-9e396f3cc809?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2250&q=80"
           alt="banner"
         />
         {scope === 'edit' && (
@@ -139,7 +139,7 @@ const Profile: React.FC<any> = ({
       </div>
       <div className={style.Wrapper}>
         <Sidebar
-          item={item}
+          user={user}
           scope={scope}
           setScope={setScope}
           setExpand={setExpand}
@@ -147,7 +147,7 @@ const Profile: React.FC<any> = ({
         />
         {returnCategory()}
       </div>
-      <FloatingHeader setModalExpand={setModalExpand} item={item} />
+      <FloatingHeader setModalExpand={setModalExpand} user={user} />
       <Footer setNotAvailable={setNotAvailable} />
       {expand && (
         <FloatingMenu setScope={setScope} scope={scope} setExpand={setExpand} />

@@ -6,25 +6,11 @@ import TernoaWallet from 'components/base/TernoaWallet';
 import Wallet from 'components/pages/Wallet';
 import NotAvailableModal from 'components/base/NotAvailable';
 
-const WalletPage = () => {
+import { getUser } from 'actions/user';
+
+const WalletPage = ({ user }: any) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
-
-  const item: any = {
-    name: 'Takeshi Kovacs',
-    caps: 78029,
-    img:
-      'https://images.unsplash.com/photo-1497551060073-4c5ab6435f12?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1267&q=80',
-    verified: true,
-    id: 9,
-    twitter: 'rayanreynolds',
-    description: 'Famous artist living in LA.',
-    address: '0x31R15fd5...4e3E75bf',
-    views: 1234,
-    followers: 40,
-    following: 21,
-    walletId: 1325,
-  };
 
   return (
     <>
@@ -36,14 +22,21 @@ const WalletPage = () => {
       {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
       {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
       <AlphaBanner />
-      <MainHeader item={item} setModalExpand={setModalExpand} />
+      <MainHeader user={user} setModalExpand={setModalExpand} />
       <Wallet
-        item={item}
+        user={user}
         setModalExpand={setModalExpand}
         setNotAvailable={setNotAvailable}
       />
     </>
   );
 };
+
+export async function getServerSideProps() {
+  const user = await getUser();
+  return {
+    props: { user },
+  };
+}
 
 export default WalletPage;

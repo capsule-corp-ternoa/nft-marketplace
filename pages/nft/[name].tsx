@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import AlphaBanner from 'components/base/AlphaBanner';
 import MainHeader from 'components/base/MainHeader';
@@ -7,43 +7,26 @@ import NFTPage from 'components/pages/NFT';
 import ModalShowcase from 'components/pages/NFT/ModalShowcase';
 import NotAvailableModal from 'components/base/NotAvailable';
 
-const NftPage = () => {
+import { getUser } from 'actions/user';
+import { getNFT } from 'actions/nft';
+
+const NftPage = ({ user, NFT }: any) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [exp, setExp] = useState(0);
   const [notAvailable, setNotAvailable] = useState(false);
+  const [type, setType] = useState<string | null>(null);
+  const [nftMedia, setNftMedia] = useState<string | null>(null);
 
-  const item: any = {
-    name: 'Takeshi Kovacs',
-    caps: 78029,
-    img:
-      'https://images.unsplash.com/photo-1497551060073-4c5ab6435f12?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1267&q=80',
-    verified: true,
-    id: 9,
-    twitter: 'rayanreynolds',
-    description: 'Famous artist living in LA.',
-    address: '0x31R15fd5...4e3E75bf',
-    views: 1234,
-    followers: 40,
-    following: 21,
-    walletId: 1325,
-  };
+  useEffect(() => {
+    async function callBack() {
+      let res = await fetch(NFT.media!.url);
+      setType(res.headers.get('Content-Type'));
+      setNftMedia(URL.createObjectURL(await res.blob()));
+      return res;
+    }
 
-  const NFT = {
-    creator: {
-      name: 'Takeshi Kovacs',
-      caps: 78029,
-      img:
-        'https://images.unsplash.com/photo-1497551060073-4c5ab6435f12?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1267&q=80',
-      verified: true,
-      id: 9,
-    },
-    secret: false,
-    price: 12982,
-    img:
-      'https://images.unsplash.com/photo-1531889813587-a7500af75f44?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1300&q=80',
-    id: 2,
-    name: 'Urban Summer Night',
-  };
+    callBack();
+  }, []);
 
   return (
     <>
@@ -59,20 +42,42 @@ const NftPage = () => {
           setExp={setExp}
           exp={exp}
           setNotAvailable={setNotAvailable}
+          type={type}
+          nftMedia={nftMedia}
         />
       )}
       {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
 
       <AlphaBanner />
-      <MainHeader item={item} setModalExpand={setModalExpand} />
+      <MainHeader user={user} setModalExpand={setModalExpand} />
       <NFTPage
         NFT={NFT}
         setExp={setExp}
         setModalExpand={setModalExpand}
         setNotAvailable={setNotAvailable}
+        user={user}
+        type={type}
+        nftMedia={nftMedia}
       />
     </>
   );
 };
+
+export async function getServerSideProps({ query }: any) {
+  try {
+    const user = await getUser();
+    const NFT = await getNFT(query.name);
+    return {
+      props: { user, NFT },
+    };
+  } catch {
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/',
+      },
+    };
+  }
+}
 
 export default NftPage;

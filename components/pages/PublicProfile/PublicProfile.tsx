@@ -8,7 +8,8 @@ import Infos from './Infos';
 import NFTCard from 'components/base/NftCard';
 
 const PublicProfile: React.FC<any> = ({
-  item,
+  user,
+  profile,
   NFTS,
   setModalExpand,
   setNotAvailable,
@@ -28,13 +29,13 @@ const PublicProfile: React.FC<any> = ({
       <div className={style.Banner}>
         <img
           className={style.BannerIMG}
-          src="https://images.unsplash.com/photo-1529641484336-ef35148bab06?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2250&q=80"
+          src="https://images.unsplash.com/photo-1579546929518-9e396f3cc809?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2250&q=80"
           alt="banner"
         />
       </div>
-      <Infos item={item} setNotAvailable={setNotAvailable} />
+      <Infos user={profile} setNotAvailable={setNotAvailable} />
       <div className={style.NFTWrapper}>{returnNFTs()}</div>
-      <FloatingHeader item={item} setModalExpand={setModalExpand} />
+      <FloatingHeader user={user} setModalExpand={setModalExpand} />
       <Footer setNotAvailable={setNotAvailable} />
     </div>
   );

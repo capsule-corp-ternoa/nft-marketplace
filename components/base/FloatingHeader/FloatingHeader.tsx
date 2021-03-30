@@ -7,7 +7,9 @@ import style from './FloatingHeader.module.scss';
 import Creator from 'components/base/Creator';
 import CopyPaste from 'components/assets/copypaste';
 
-const FloatingHeader: React.FC<any> = ({ item, setModalExpand }) => {
+import { middleEllipsis } from 'utils/strings';
+
+const FloatingHeader: React.FC<any> = ({ user, setModalExpand }) => {
   const [, setSearchValue] = useState('' as string);
   const [isExpanded, setIsExpanded] = useState(false);
   const [fullProfile, setFullProfile] = useState(false);
@@ -63,7 +65,7 @@ const FloatingHeader: React.FC<any> = ({ item, setModalExpand }) => {
             </>
           )}
         </div>
-        {item ? (
+        {user ? (
           <div
             className={
               fullProfile
@@ -86,14 +88,14 @@ const FloatingHeader: React.FC<any> = ({ item, setModalExpand }) => {
                     : style.NumberCaps
                 }
               >
-                {item.caps}
+                {user.caps}
               </span>
               caps
             </div>
             <div className={style.ProfileImageContainer}>
               <img
                 className={style.ProfileImage}
-                src={item.img}
+                src={user.img}
                 alt="profile"
               />
             </div>
@@ -104,19 +106,24 @@ const FloatingHeader: React.FC<any> = ({ item, setModalExpand }) => {
           </div>
         )}
       </div>
-      {item && fullProfile && (
+      {user && fullProfile && (
         <div className={style.Dropdown}>
           <div className={style.DropdownContainer}>
             <div className={style.DropdownProfile}>
-              <Creator item={item} size="xsmall" showTooltip={false} />
-              <div className={style.Name}>{item?.name}</div>
+              <Creator user={user} size="xsmall" showTooltip={false} />
+              <div className={style.Name}>{user?.name}</div>
             </div>
 
-            <div className={style.Section}>
+            <div
+              className={style.Section}
+              onClick={() => {
+                navigator.clipboard.writeText(user.walletId);
+              }}
+            >
               <div className={style.SectionTitle}>
                 Wallet :
                 <span className={style.SectionWallet}>
-                  gdt67fx6.....ej636373BH
+                  {middleEllipsis(user.walletId, 20)}
                   <CopyPaste className={style.CopyPaste} />
                 </span>
               </div>
@@ -138,7 +145,7 @@ const FloatingHeader: React.FC<any> = ({ item, setModalExpand }) => {
           <Link href="/wallet">
             <a className={style.CapsSection}>
               <span>My wallet</span>
-              <div className={style.CapsPrice}>{item?.caps} Caps</div>
+              <div className={style.CapsPrice}>{user?.caps} Caps</div>
             </a>
           </Link>
         </div>

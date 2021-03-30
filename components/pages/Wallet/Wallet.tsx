@@ -8,7 +8,9 @@ import CopyPaste from 'components/assets/copypaste';
 import WalletSVG from 'components/assets/wallet';
 import Badge from 'components/assets/badge';
 
-const Wallet: React.FC<any> = ({ item, setModalExpand, setNotAvailable }) => {
+import { middleEllipsis } from 'utils/strings';
+
+const Wallet: React.FC<any> = ({ user, setModalExpand, setNotAvailable }) => {
   //const { t } = useTranslation();
 
   return (
@@ -20,29 +22,30 @@ const Wallet: React.FC<any> = ({ item, setModalExpand, setNotAvailable }) => {
       <div className={style.Wallet}>
         <div className={style.AvatarShell}>
           <div className={style.Avatar}>
-            <img className={style.AvatarIMG} src={item.img} />
-            {item.verified && <Badge className={style.Badge} />}
+            <img className={style.AvatarIMG} src={user.img} />
+            {user.verified && <Badge className={style.Badge} />}
           </div>
         </div>
 
-        <h1 className={style.Name}>{item.name}</h1>
+        <h1 className={style.Name}>{user.name}</h1>
         <div
           className={style.Address}
           onClick={() => {
-            navigator.clipboard.writeText(item.address);
+            navigator.clipboard.writeText(user.walletId);
           }}
         >
-          {item.address} <CopyPaste className={style.CopyPaste} />
+          {middleEllipsis(user.walletId, 20)}
+          <CopyPaste className={style.CopyPaste} />
         </div>
 
         <div className={style.Separator} />
-        <div className={style.Caps}>{item.caps} Caps</div>
+        <div className={style.Caps}>{user.caps} Caps</div>
         <div className={style.Button} onClick={() => setNotAvailable(true)}>
           Buy Caps
         </div>
       </div>
       <Footer setNotAvailable={setNotAvailable} />
-      <FloatingHeader setModalExpand={setModalExpand} />
+      <FloatingHeader user={user} setModalExpand={setModalExpand} />
     </div>
   );
 };

@@ -1,15 +1,26 @@
-export type CreatorType = {
-  id: number;
+export type UserType = {
+  _id: string;
   name: string;
-  img: string;
-  caps?: number;
+  description?: string;
   verified: boolean;
+  nbFollowers: number;
+  nbFollowing: number;
+  views: number;
+  walletId: string;
 };
 
 export type NftType = {
-  id: number;
-  img: string;
-  secret: boolean;
-  creator: CreatorType;
-  price: number;
+  id: string;
+  owner: string;
+  creator: string;
+  listed: number;
+  timeStampList?: string;
+  uri?: string;
+  price: string;
+  name?: string;
+  description?: string;
+  media?: { url: string };
+  cryptedMedia?: { url: string };
+  ownerData?: UserType;
+  creatorData?: UserType;
 };

@@ -4,16 +4,35 @@ import style from './ModalShowcase.module.scss';
 import Close from 'components/assets/close';
 import Wallet from 'components/assets/wallet';
 
-const Modal: React.FC<any> = ({ NFT, setExp, exp, setNotAvailable }) => {
+import { shortString } from 'utils/strings';
+
+const Modal: React.FC<any> = ({
+  setExp,
+  exp,
+  setNotAvailable,
+  type,
+  nftMedia,
+  NFT,
+}) => {
+  function returnType() {
+    if (nftMedia === null) return null;
+    else if (type!.substr(0, 5) === 'image') {
+      return <img className={style.NFTIMG} src={nftMedia} alt="imgnft" />;
+    } else if (type!.substr(0, 5) === 'video')
+      return (
+        <video autoPlay muted loop className={style.NFTIMG}>
+          <source id="outputVideo" src={nftMedia} type="video/mp4" />
+        </video>
+      );
+  }
+
   return (
     <>
       {exp === 1 ? (
         <div className={style.Modal}>
           <Close onClick={() => setExp(0)} className={style.Close} />
           <div className={style.ModalBG}>
-            <div className={style.NFT}>
-              <img className={style.NFTIMG} src={NFT.img} alt="imgnft" />
-            </div>
+            <div className={style.NFT}>{returnType()}</div>
           </div>
         </div>
       ) : (
@@ -29,12 +48,14 @@ const Modal: React.FC<any> = ({ NFT, setExp, exp, setNotAvailable }) => {
 
             <div className={style.Section}>
               <div className={style.Insight}>You are about to purchase :</div>
-              <div className={style.Infos}>Art floral</div>
+              <div className={style.Infos}>{NFT.name}</div>
             </div>
 
             <div className={style.PricingContainer}>
               <div className={style.SB}>
-                <div className={style.PriceNumber}>145353</div>
+                <div className={style.PriceNumber}>
+                  {shortString(Number(NFT.price))} caps
+                </div>
                 <div className={style.PriceCaps}>Caps</div>
               </div>
               <div className={style.Line} />

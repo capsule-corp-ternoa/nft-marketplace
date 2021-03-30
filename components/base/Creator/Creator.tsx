@@ -3,22 +3,26 @@ import React, { useState } from 'react';
 import style from './Creator.module.scss';
 import Badge from 'components/assets/badge';
 
-import { CreatorType } from 'interfaces/index';
+import gradient from 'random-gradient';
+
+import { UserType } from 'interfaces/index';
 
 export interface CreatorProps {
-  item: CreatorType;
+  user: UserType;
   showTooltip?: boolean;
   size?: string;
   className?: string;
 }
 
 const Creator: React.FC<CreatorProps> = ({
-  item,
+  user,
   showTooltip = true,
   size,
   className,
 }) => {
   const [isHovering, setIsHovering] = useState(false);
+
+  const bgGradient = { background: gradient(user.name) };
 
   function manageClass() {
     if (size === 'card') return style.CreatorsItemCard;
@@ -44,8 +48,8 @@ const Creator: React.FC<CreatorProps> = ({
             : style.Hide
         }
       >
-        <div className={style.CreatorName}>{item.name}</div>
-        <div className={style.CreatorsCaps}>{item.caps} caps</div>
+        <div className={style.CreatorName}>{user.name}</div>
+        <div className={style.CreatorsCaps}>0 caps</div>
       </div>
 
       <div
@@ -55,10 +59,10 @@ const Creator: React.FC<CreatorProps> = ({
         onMouseOver={() => setIsHovering(true)}
         onMouseOut={() => setIsHovering(false)}
         data-tip
-        data-for={showTooltip && `tooltip${item.id}`}
+        data-for={showTooltip && `tooltip${user._id}`}
       >
-        {item.verified && <Badge className={manageBadgeClass()} />}
-        <img src={item.img} className={style.CreatorsImage} alt="img" />
+        {user.verified && <Badge className={manageBadgeClass()} />}
+        <div style={bgGradient} className={style.CreatorsImage} />
       </div>
     </div>
   );

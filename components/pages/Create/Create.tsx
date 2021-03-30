@@ -9,7 +9,7 @@ import Upload from 'components/assets/upload';
 import WhiteWaterMark from 'components/assets/WhiteWaterMark';
 import Eye from 'components/assets/eye';
 
-const Create: React.FC<any> = ({ setModalExpand, setNotAvailable }) => {
+const Create: React.FC<any> = ({ setModalExpand, setNotAvailable, user }) => {
   //const { t } = useTranslation();
   const [select, setSelect] = useState('Select NFT Option');
   const [exp, setExp] = useState(false);
@@ -219,7 +219,7 @@ const Create: React.FC<any> = ({ setModalExpand, setNotAvailable }) => {
       </div>
 
       <Footer setNotAvailable={setNotAvailable} />
-      <FloatingHeader setModalExpand={setModalExpand} />
+      <FloatingHeader user={user} setModalExpand={setModalExpand} />
     </div>
   );
 };

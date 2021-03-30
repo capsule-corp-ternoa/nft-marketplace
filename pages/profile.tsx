@@ -4,44 +4,30 @@ import AlphaBanner from 'components/base/AlphaBanner';
 import MainHeader from 'components/base/MainHeader';
 import TernoaWallet from 'components/base/TernoaWallet';
 import Profile from 'components/pages/Profile';
-import NFTSET4 from 'utils/mocks/NFTSET4';
 import Creators from 'utils/mocks/mockCreators';
 import NotAvailableModal from 'components/base/NotAvailable';
 
-const ProfilePage = () => {
+import { getUser } from 'actions/user';
+import { getNFTS } from 'actions/nft';
+
+const ProfilePage = ({ user, data }: any) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
-
-  const item: any = {
-    name: 'Takeshi Kovacs',
-    caps: 78029,
-    img:
-      'https://images.unsplash.com/photo-1497551060073-4c5ab6435f12?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1267&q=80',
-    verified: true,
-    id: 9,
-    twitter: 'elonmusk',
-    description: 'Famous artist living in LA.',
-    address: '0x31R15fd5...4e3E75bf',
-    views: 1234,
-    followers: 40,
-    following: 21,
-    walletId: 1325,
-  };
 
   return (
     <>
       <Head>
-        <title>SecretNFT - {item.name}</title>
+        <title>SecretNFT - {user.name}</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta name="description" content="Ternoa - Your profile." />
       </Head>
       {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
       {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
       <AlphaBanner />
-      <MainHeader item={item} setModalExpand={setModalExpand} />
+      <MainHeader user={user} setModalExpand={setModalExpand} />
       <Profile
-        item={item}
-        NFTS={NFTSET4}
+        user={user}
+        NFTS={data}
         creators={Creators}
         setModalExpand={setModalExpand}
         setNotAvailable={setNotAvailable}
@@ -49,5 +35,17 @@ const ProfilePage = () => {
     </>
   );
 };
+
+export async function getServerSideProps() {
+  const user = await getUser();
+  const res = await getNFTS();
+  let data = await res.json();
+
+  data = data.filter((item: any) => item.media);
+
+  return {
+    props: { user, data },
+  };
+}
 
 export default ProfilePage;

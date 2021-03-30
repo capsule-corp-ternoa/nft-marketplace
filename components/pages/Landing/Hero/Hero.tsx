@@ -9,10 +9,10 @@ import Ternoart from 'components/assets/ternoart';
 import SoundOn from 'components/assets/SoundOn';
 import SoundOff from 'components/assets/SoundOff';
 
-import { CreatorType } from 'interfaces/index';
+import { UserType } from 'interfaces/index';
 
 export interface HeroProps {
-  creators: CreatorType[];
+  creators: UserType[];
 }
 
 const Hero: React.FC<HeroProps> = ({ creators }) => {
@@ -20,9 +20,9 @@ const Hero: React.FC<HeroProps> = ({ creators }) => {
 
   function returnCreators() {
     return creators.slice(0, 10).map((item) => (
-      <Link key={item.id} href={`/creator-test`}>
+      <Link key={item.walletId} href={`/creator-test`}>
         <a className={style.CreatorWrapper}>
-          <Creator item={item} showTooltip={true} />
+          <Creator user={item} showTooltip={true} />
         </a>
       </Link>
     ));

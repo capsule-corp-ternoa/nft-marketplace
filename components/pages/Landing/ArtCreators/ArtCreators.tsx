@@ -8,10 +8,10 @@ import NFTCard from 'components/base/NftCard';
 
 import Blaze from 'components/assets/blaze';
 
-import { CreatorType, NftType } from 'interfaces/index';
+import { UserType, NftType } from 'interfaces/index';
 
 export interface ArtCreatorsProps {
-  creators: CreatorType[];
+  creators: UserType[];
   NFTs: NftType[];
   category?: string;
 }
@@ -21,9 +21,9 @@ const ArtCreators: React.FC<ArtCreatorsProps> = ({ creators, NFTs }) => {
 
   function returnCreators() {
     return creators.slice(0, 9).map((item) => (
-      <Link key={item.id} href={`/${item.name}`}>
+      <Link key={item.walletId} href={`/${item.name}`}>
         <a className={style.CreatorItem}>
-          <Creator item={item} size="small" />
+          <Creator user={item} size="small" />
         </a>
       </Link>
     ));

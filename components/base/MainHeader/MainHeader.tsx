@@ -8,8 +8,9 @@ import Creator from '../Creator';
 import CopyPaste from 'components/assets/copypaste';
 
 import style from './MainHeader.module.scss';
+import { middleEllipsis } from 'utils/strings';
 
-const MainHeader: React.FC<any> = ({ setModalExpand, item }) => {
+const MainHeader: React.FC<any> = ({ setModalExpand, user }) => {
   const [, setSearchValue] = useState('' as string);
   const [isExpanded, setIsExpanded] = useState(false);
   //const { t } = useTranslation();
@@ -48,7 +49,7 @@ const MainHeader: React.FC<any> = ({ setModalExpand, item }) => {
             </Link>
           </div>
           <div className={style.Wallet}>
-            {item ? (
+            {user ? (
               <div className={style.Regular}>
                 <Link href="/create">
                   <a className={style.Create}>Create NFT</a>
@@ -58,13 +59,13 @@ const MainHeader: React.FC<any> = ({ setModalExpand, item }) => {
                   className={style.Profile}
                 >
                   <div className={style.Caps}>
-                    <span className={style.NumberCaps}>{item?.caps}</span>
+                    <span className={style.NumberCaps}>{user?.caps}</span>
                     caps
                   </div>
                   <div className={style.ProfileImageContainer}>
                     <img
                       className={style.ProfileImage}
-                      src={item?.img}
+                      src={user?.img}
                       alt="profile"
                     />
                   </div>
@@ -85,19 +86,24 @@ const MainHeader: React.FC<any> = ({ setModalExpand, item }) => {
             )}
           </div>
         </div>
-        {item && isExpanded && (
+        {user && isExpanded && (
           <div className={style.Dropdown}>
             <div className={style.DropdownContainer}>
               <div className={style.DropdownProfile}>
-                <Creator item={item} size="xsmall" showTooltip={false} />
-                <div className={style.Name}>{item?.name}</div>
+                <Creator user={user} size="xsmall" showTooltip={false} />
+                <div className={style.Name}>{user?.name}</div>
               </div>
 
               <div className={style.Section}>
-                <div className={style.SectionTitle}>
+                <div
+                  className={style.SectionTitle}
+                  onClick={() => {
+                    navigator.clipboard.writeText(user.walletId);
+                  }}
+                >
                   Wallet :
                   <span className={style.SectionWallet}>
-                    gdt67fx6.....ej636373BH
+                    {middleEllipsis(user.walletId, 20)}
                     <CopyPaste className={style.CopyPaste} />
                   </span>
                 </div>
@@ -119,7 +125,7 @@ const MainHeader: React.FC<any> = ({ setModalExpand, item }) => {
             <Link href="/wallet">
               <a className={style.CapsSection}>
                 <span>My wallet</span>
-                <div className={style.CapsPrice}>{item?.caps} Caps</div>
+                <div className={style.CapsPrice}>{user?.caps} Caps</div>
               </a>
             </Link>
           </div>

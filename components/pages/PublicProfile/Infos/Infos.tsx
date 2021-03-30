@@ -6,36 +6,45 @@ import Badge from 'components/assets/badge';
 import CopyPaste from 'components/assets/copypaste';
 import Twitter from 'components/assets/SocialMedias/Twitter';
 
-const Infos: React.FC<any> = ({ item, setNotAvailable }) => {
+import gradient from 'random-gradient';
+
+import { middleEllipsis } from 'utils/strings';
+
+const Infos: React.FC<any> = ({ user, setNotAvailable }) => {
   //const { t } = useTranslation();
+
+  const bgGradient = { background: gradient(user.name) };
 
   return (
     <div className={style.Infos}>
       <div className={style.Container}>
         <div className={style.AvatarShell}>
           <div className={style.Avatar}>
-            <img className={style.AvatarIMG} src={item.img} />
-            {item.verified && <Badge className={style.Badge} />}
+            <div style={bgGradient} className={style.AvatarIMG} />
+            {user.verified && <Badge className={style.Badge} />}
           </div>
         </div>
         <div className={style.ContainerInner}>
           <div className={style.Left}>
-            <h1 className={style.Name}>{item.name}</h1>
-            <a href="https://twitter.com/elonmusk" className={style.Twitter}>
-              <Twitter onClick={() => true} className={style.TwitterSVG} />@
-              {item.twitter}
-            </a>
-            <div className={style.Description}>{item.description}</div>
+            <h1 className={style.Name}>{user.name}</h1>
+            {user.twitter && (
+              <a href="https://twitter.com/ternoa_" className={style.Twitter}>
+                <Twitter onClick={() => true} className={style.TwitterSVG} />@
+                {user.twitter}
+              </a>
+            )}
+            <div className={style.Description}>{user.description}</div>
           </div>
           <div className={style.Right}>
             <div className={style.Top}>
               <div
                 className={style.Address}
                 onClick={() => {
-                  navigator.clipboard.writeText(item.address);
+                  navigator.clipboard.writeText(user.walletId);
                 }}
               >
-                {item.address} <CopyPaste className={style.CopyPaste} />
+                {middleEllipsis(user.walletId, 20)}
+                <CopyPaste className={style.CopyPaste} />
               </div>
               <div
                 className={style.Button}
@@ -45,11 +54,11 @@ const Infos: React.FC<any> = ({ item, setNotAvailable }) => {
               </div>
             </div>
             <div className={style.Bottom}>
-              <span className={style.Bold}>{item.followers}</span>followers
+              <span className={style.Bold}>{user.nbFollowers}</span>followers
               <span className={style.Separator}>·</span>
-              <span className={style.Bold}>{item.following}</span>following
+              <span className={style.Bold}>{user.nbFollowing}</span>following
               <span className={style.Separator}>·</span>
-              <span className={style.Bold}>{item.views}</span>vues
+              <span className={style.Bold}>{user.views}</span>vues
             </div>
           </div>
         </div>

@@ -3,7 +3,7 @@ import React from 'react';
 import style from './Edit.module.scss';
 import Badge from 'components/assets/badge';
 
-const Edit: React.FC<any> = ({ item, setNotAvailable }) => {
+const Edit: React.FC<any> = ({ user, setNotAvailable }) => {
   //const { t } = useTranslation();
 
   return (
@@ -54,7 +54,7 @@ const Edit: React.FC<any> = ({ item, setNotAvailable }) => {
         </div>
         <div className={style.IMG}>
           <div className={style.Avatar}>
-            <img className={style.AvatarIMG} src={item.img} />
+            <img className={style.AvatarIMG} src={user.img} />
           </div>
           <div className={style.IMGSize}>500x500px recommanded</div>
           <div

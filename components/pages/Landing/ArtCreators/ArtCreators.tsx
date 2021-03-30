@@ -20,8 +20,8 @@ const ArtCreators: React.FC<ArtCreatorsProps> = ({ creators, NFTs }) => {
   const [isFiltered, setIsFiltered] = useState(false);
 
   function returnCreators() {
-    return creators.slice(0, 9).map((item) => (
-      <Link key={item.walletId} href={`/${item.name}`}>
+    return creators.slice(0, 9).map((item, index) => (
+      <Link key={index} href={`/${item.name}`}>
         <a className={style.CreatorItem}>
           <Creator user={item} size="small" />
         </a>

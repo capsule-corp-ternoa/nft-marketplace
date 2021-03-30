@@ -25,10 +25,14 @@ const NftCard: React.FC<NftCardProps> = ({ item, mode }) => {
 
   useEffect(() => {
     async function callBack() {
-      let res = await fetch(item.media!.url);
-      setType(res.headers.get('Content-Type'));
-      setNftMedia(URL.createObjectURL(await res.blob()));
-      return res;
+      try {
+        let res = await fetch(item.media!.url);
+        setType(res.headers.get('Content-Type'));
+        setNftMedia(URL.createObjectURL(await res.blob()));
+        return res;
+      } catch (err) {
+        console.log('Error :', err);
+      }
     }
 
     callBack();
@@ -58,7 +62,7 @@ const NftCard: React.FC<NftCardProps> = ({ item, mode }) => {
       );
     } else if (type!.substr(0, 5) === 'video')
       return (
-        <video autoPlay muted loop className={style.IMGBackground}>
+        <video autoPlay muted loop className={style.NFTIMG}>
           <source id="outputVideo" src={nftMedia} type="video/mp4" />
         </video>
       );

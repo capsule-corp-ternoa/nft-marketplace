@@ -19,8 +19,8 @@ const Hero: React.FC<HeroProps> = ({ creators }) => {
   const [mute, setMute] = useState(true);
 
   function returnCreators() {
-    return creators.slice(0, 10).map((item) => (
-      <Link key={item.walletId} href={`/creator-test`}>
+    return creators.slice(0, 10).map((item, index) => (
+      <Link key={index} href={`/creator-test`}>
         <a className={style.CreatorWrapper}>
           <Creator user={item} showTooltip={true} />
         </a>

@@ -26,6 +26,7 @@ const NFTPage: React.FC<any> = ({
 }) => {
   const bgGradientOwner = { background: gradient(NFT.ownerData.name) };
   const bgGradientCreator = { background: gradient(NFT.creatorData.name) };
+  const bgGradient = { background: gradient(user.name) };
 
   function returnType() {
     if (nftMedia === null) return null;
@@ -122,10 +123,7 @@ const NFTPage: React.FC<any> = ({
             <div className={style.HistoryItem}>
               <Check className={style.Check} />
               <div className={style.HistoryAvatar}>
-                <img
-                  className={style.HistoryIMG}
-                  src="https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=934&q=80"
-                />
+                <div className={style.HistoryIMG} style={bgGradient} />
               </div>
               <div className={`${style.HistoryUser} ${style.HistoryPast}`}>
                 <div className={style.HistoryRole}>Previous Owner</div>
@@ -135,10 +133,7 @@ const NFTPage: React.FC<any> = ({
             <div className={style.HistoryItem}>
               <Check className={style.Check} />
               <div className={style.HistoryAvatar}>
-                <img
-                  className={style.HistoryIMG}
-                  src="https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=934&q=80"
-                />
+                <div className={style.HistoryIMG} style={bgGradient} />
               </div>
 
               <div className={`${style.HistoryUser} ${style.HistoryPast}`}>

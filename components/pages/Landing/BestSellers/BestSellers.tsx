@@ -16,8 +16,8 @@ export interface BestSellersProps {
 const BestSellers: React.FC<BestSellersProps> = ({ creators }) => {
   const [isFiltered, setIsFiltered] = useState(false);
   function returnCreators() {
-    return creators.map((item) => (
-      <Link key={item.walletId} href={`/${item.name}`}>
+    return creators.map((item, index) => (
+      <Link key={index} href={`/${item.name}`}>
         <a className={style.CreatorShell}>
           <Creator user={item} showTooltip={false} />
           <div className={style.CreatorInfos}>

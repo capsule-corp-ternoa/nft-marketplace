@@ -2,8 +2,9 @@ export const getNFTS = async () => {
   const res = await fetch(
     'https://ternoa-marketplace-nft.herokuapp.com/api/NFTs'
   );
+  const data = await res.json();
 
-  return res;
+  return data;
 };
 
 export const getProfileNFTS = async (id: any) => {

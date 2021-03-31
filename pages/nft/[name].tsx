@@ -35,8 +35,9 @@ const NftPage = ({ user, NFT }: any) => {
       <Head>
         <title>{NFT.name} - SecretNFT</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-        <meta name="description" content="SecretNFT Marketplace, by Ternoa." />
-        <meta name="og:image" content="ternoa-social-banner.jpg" />
+        <meta name="description" content={NFT.description} />
+        <meta name="og:image" content={NFT.media.url} />
+        <meta property="og:image" content={NFT.media.url} />
       </Head>
       {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
       {exp !== 0 && (
@@ -67,7 +68,8 @@ const NftPage = ({ user, NFT }: any) => {
 export async function getServerSideProps({ query }: any) {
   try {
     const user = await getUser();
-    const NFT = await getNFT(query.name);
+    let NFT = await getNFT(query.name);
+
     return {
       props: { user, NFT },
     };

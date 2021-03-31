@@ -42,7 +42,9 @@ export async function getServerSideProps({ query }: any) {
   try {
     const user = await getUser();
     const profile = await getProfile(query.name);
-    const data = await getProfileNFTS(query.name);
+    let data = await getProfileNFTS(query.name);
+
+    data = data.filter((item: any) => item.media);
 
     return {
       props: { user, profile, data },

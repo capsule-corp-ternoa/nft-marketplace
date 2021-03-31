@@ -39,8 +39,7 @@ const ProfilePage = ({ user, data }: any) => {
 
 export async function getServerSideProps() {
   const user = await getUser();
-  const res = await getNFTS();
-  let data = await res.json();
+  let data = await getNFTS();
 
   data = data.filter((item: any) => item.media);
 

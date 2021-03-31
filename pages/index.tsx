@@ -19,6 +19,7 @@ const LandingPage: React.FC<any> = ({ user, data }) => {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta name="description" content="SecretNFT Marketplace, by Ternoa." />
         <meta name="og:image" content="ternoa-social-banner.jpg" />
+        <meta property="og:image" content="ternoa-social-banner.jpg" />
       </Head>
       {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
       {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
@@ -36,8 +37,7 @@ const LandingPage: React.FC<any> = ({ user, data }) => {
 
 export async function getServerSideProps() {
   const user = await getUser();
-  const res = await getNFTS();
-  let data = await res.json();
+  let data = await getNFTS();
 
   data = data.filter((item: any) => item.media);
 

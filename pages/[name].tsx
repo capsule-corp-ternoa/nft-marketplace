@@ -19,9 +19,10 @@ const PublicProfilePage = ({ user, data, profile }: any) => {
         <title>SecretNFT - {user.name}</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta
-          name="description"
+          name="og:description"
           content={`Ternoart - ${user.name} profile page.`}
         />
+        <meta name="og:image" content="ternoa-social-banner.jpg" />
       </Head>
       {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
       {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}

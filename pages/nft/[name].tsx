@@ -15,14 +15,16 @@ const NftPage = ({ user, NFT }: any) => {
   const [exp, setExp] = useState(0);
   const [notAvailable, setNotAvailable] = useState(false);
   const [type, setType] = useState<string | null>(null);
-  const [nftMedia, setNftMedia] = useState<string | null>(null);
 
   useEffect(() => {
     async function callBack() {
-      let res = await fetch(NFT.media!.url);
-      setType(res.headers.get('Content-Type'));
-      setNftMedia(URL.createObjectURL(await res.blob()));
-      return res;
+      try {
+        let res = await fetch(NFT.media!.url, { method: 'HEAD' });
+        setType(res.headers.get('Content-Type'));
+        return res;
+      } catch (err) {
+        console.log('Error :', err);
+      }
     }
 
     callBack();
@@ -33,10 +35,7 @@ const NftPage = ({ user, NFT }: any) => {
       <Head>
         <title>{NFT.name} - SecretNFT</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-        <meta
-          name="og:description"
-          content="SecretNFT Marketplace, by Ternoa."
-        />
+        <meta name="description" content="SecretNFT Marketplace, by Ternoa." />
         <meta name="og:image" content="ternoa-social-banner.jpg" />
       </Head>
       {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
@@ -47,7 +46,6 @@ const NftPage = ({ user, NFT }: any) => {
           exp={exp}
           setNotAvailable={setNotAvailable}
           type={type}
-          nftMedia={nftMedia}
         />
       )}
       {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
@@ -61,7 +59,6 @@ const NftPage = ({ user, NFT }: any) => {
         setNotAvailable={setNotAvailable}
         user={user}
         type={type}
-        nftMedia={nftMedia}
       />
     </>
   );

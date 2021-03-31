@@ -21,14 +21,12 @@ function manageRouting(e: any, id: any) {
 const NftCard: React.FC<NftCardProps> = ({ item, mode }) => {
   const [isHovering, setIsHovering] = useState(false);
   const [type, setType] = useState<string | null>(null);
-  const [nftMedia, setNftMedia] = useState<string | null>(null);
 
   useEffect(() => {
     async function callBack() {
       try {
-        let res = await fetch(item.media!.url);
+        let res = await fetch(item.media!.url, { method: 'HEAD' });
         setType(res.headers.get('Content-Type'));
-        setNftMedia(URL.createObjectURL(await res.blob()));
         return res;
       } catch (err) {
         console.log('Error :', err);
@@ -49,11 +47,11 @@ const NftCard: React.FC<NftCardProps> = ({ item, mode }) => {
   }
 
   function returnType() {
-    if (nftMedia === null) return null;
-    else if (type!.substr(0, 5) === 'image') {
+    if (!type) return null;
+    if (type!.substr(0, 5) === 'image') {
       return (
         <img
-          src={nftMedia}
+          src={item.media!.url}
           alt="imgnft"
           className={
             isHovering ? `${style.NFTIMG} ${style.ImgScaling}` : style.NFTIMG
@@ -63,7 +61,7 @@ const NftCard: React.FC<NftCardProps> = ({ item, mode }) => {
     } else if (type!.substr(0, 5) === 'video')
       return (
         <video autoPlay muted loop className={style.NFTIMG}>
-          <source id="outputVideo" src={nftMedia} type="video/mp4" />
+          <source id="outputVideo" src={item.media!.url} type="video/mp4" />
         </video>
       );
   }

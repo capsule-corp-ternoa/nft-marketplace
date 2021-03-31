@@ -20,7 +20,9 @@ const Infos: React.FC<any> = ({ user, setNotAvailable }) => {
       <div className={style.Container}>
         <div className={style.AvatarShell}>
           <div className={style.Avatar}>
-            <div style={bgGradient} className={style.AvatarIMG} />
+            <div style={bgGradient} className={style.AvatarIMG}>
+              <div className={style.CreatorLetter}>{user.name.charAt(0)}</div>
+            </div>
             {user.verified && <Badge className={style.Badge} />}
           </div>
         </div>

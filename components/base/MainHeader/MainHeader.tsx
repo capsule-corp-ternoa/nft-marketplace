@@ -107,11 +107,13 @@ const MainHeader: React.FC<any> = ({ setModalExpand, user }) => {
                   </span>
                 </div>
               </div>
-              <Link href="/test-author">
+
+              <Link href="/5FnhujHhfXdD9Ahkn2Aw7T71GnoRr4yU42Ne5Sxc2RmmhAnm">
                 <a className={style.Section}>
                   <div className={style.SectionTitle}>Profile</div>
                 </a>
               </Link>
+
               <Link href="/profile">
                 <a className={style.Section}>
                   <div className={style.SectionTitle}>Account</div>

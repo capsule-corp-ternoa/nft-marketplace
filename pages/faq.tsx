@@ -17,10 +17,7 @@ const FAQPage: React.FC<any> = ({ user }) => {
       <Head>
         <title>SecretNFT - FAQ</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-        <meta
-          name="og:description"
-          content="FAQ page of SecretNFT, by Ternoa."
-        />
+        <meta name="description" content="FAQ page of SecretNFT, by Ternoa." />
         <meta name="og:image" content="ternoa-social-banner.jpg" />
       </Head>
       {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}

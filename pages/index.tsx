@@ -17,10 +17,7 @@ const LandingPage: React.FC<any> = ({ user, data }) => {
       <Head>
         <title>SecretNFT - Welcome</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-        <meta
-          name="og:description"
-          content="SecretNFT Marketplace, by Ternoa."
-        />
+        <meta name="description" content="SecretNFT Marketplace, by Ternoa." />
         <meta name="og:image" content="ternoa-social-banner.jpg" />
       </Head>
       {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}

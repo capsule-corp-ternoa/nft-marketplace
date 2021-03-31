@@ -13,6 +13,7 @@
     "i18next-browser-languagedetector": "^6.0.1",
     "next": "latest",
     "node-sass": "^5.0.0",
+    "nprogress": "^0.2.0",
     "random-gradient": "0.0.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
@@ -21,6 +22,7 @@
   },
   "devDependencies": {
     "@types/node": "^12.12.21",
+    "@types/nprogress": "^0.2.0",
     "@types/random-gradient": "0.0.0",
     "@types/react": "^17.0.2",
     "@types/react-dom": "^17.0.1",

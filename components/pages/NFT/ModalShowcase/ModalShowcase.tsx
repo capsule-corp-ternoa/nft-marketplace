@@ -6,22 +6,15 @@ import Wallet from 'components/assets/wallet';
 
 import { shortString } from 'utils/strings';
 
-const Modal: React.FC<any> = ({
-  setExp,
-  exp,
-  setNotAvailable,
-  type,
-  nftMedia,
-  NFT,
-}) => {
+const Modal: React.FC<any> = ({ setExp, exp, setNotAvailable, type, NFT }) => {
   function returnType() {
-    if (nftMedia === null) return null;
-    else if (type!.substr(0, 5) === 'image') {
-      return <img className={style.NFTIMG} src={nftMedia} alt="imgnft" />;
+    if (!type) return null;
+    if (type!.substr(0, 5) === 'image') {
+      return <img className={style.NFTIMG} src={NFT.media.url} alt="imgnft" />;
     } else if (type!.substr(0, 5) === 'video')
       return (
         <video autoPlay muted loop className={style.NFTIMG}>
-          <source id="outputVideo" src={nftMedia} type="video/mp4" />
+          <source id="outputVideo" src={NFT.media.url} type="video/mp4" />
         </video>
       );
   }

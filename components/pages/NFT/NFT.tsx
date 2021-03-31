@@ -22,7 +22,6 @@ const NFTPage: React.FC<any> = ({
   setNotAvailable,
   user,
   type,
-  nftMedia,
 }) => {
   const bgGradientOwner = { background: gradient(NFT.ownerData.name) };
   const bgGradientCreator = { background: gradient(NFT.creatorData.name) };
@@ -31,13 +30,14 @@ const NFTPage: React.FC<any> = ({
   const fiatPrice = NFT.price * 0.008;
 
   function returnType() {
-    if (nftMedia === null) return null;
-    else if (type!.substr(0, 5) === 'image') {
-      return <img className={style.NFTIMG} src={nftMedia} alt="imgnft" />;
-    } else if (type!.substr(0, 5) === 'video')
+    if (!type) return null;
+    if (type!.substr(0, 5) === 'image') {
+      return <img className={style.NFTIMG} src={NFT.media.url} alt="imgnft" />;
+    }
+    if (type!.substr(0, 5) === 'video')
       return (
         <video autoPlay muted loop className={style.NFTIMG}>
-          <source id="outputVideo" src={nftMedia} type="video/mp4" />
+          <source id="outputVideo" src={NFT.media.url} type="video/mp4" />
         </video>
       );
   }

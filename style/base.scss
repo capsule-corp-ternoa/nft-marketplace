@@ -5,51 +5,45 @@ body {
 }
 
 @font-face {
-  font-family: 'Airbnb Cereal App Book';
+  font-family: "Airbnb Cereal App Book";
   font-style: normal;
   font-weight: normal;
-  src: local('Airbnb Cereal App Book'),
-    url(../fonts/AirbnbCerealBook.woff) format('woff');
+  src: local("Airbnb Cereal App Book"), url(../fonts/AirbnbCerealBook.woff) format("woff");
 }
 
 @font-face {
-  font-family: 'Airbnb Cereal App Light';
+  font-family: "Airbnb Cereal App Light";
   font-style: normal;
   font-weight: normal;
-  src: local('Airbnb Cereal App Light'),
-    url(../fonts/AirbnbCerealLight.woff) format('woff');
+  src: local("Airbnb Cereal App Light"), url(../fonts/AirbnbCerealLight.woff) format("woff");
 }
 
 @font-face {
-  font-family: 'Airbnb Cereal App Medium';
+  font-family: "Airbnb Cereal App Medium";
   font-style: normal;
   font-weight: normal;
-  src: local('Airbnb Cereal App Medium'),
-    url(../fonts/AirbnbCerealMedium.woff) format('woff');
+  src: local("Airbnb Cereal App Medium"), url(../fonts/AirbnbCerealMedium.woff) format("woff");
 }
 
 @font-face {
-  font-family: 'Airbnb Cereal App Bold';
+  font-family: "Airbnb Cereal App Bold";
   font-style: normal;
   font-weight: normal;
-  src: local('Airbnb Cereal App Bold'),
-    url(../fonts/AirbnbCerealBold.woff) format('woff');
+  src: local("Airbnb Cereal App Bold"), url(../fonts/AirbnbCerealBold.woff) format("woff");
 }
 
 @font-face {
-  font-family: 'Airbnb Cereal App Extra Bold';
+  font-family: "Airbnb Cereal App Extra Bold";
   font-style: normal;
   font-weight: normal;
-  src: local('Airbnb Cereal App Extra Bold'),
-    url(../fonts/AirbnbCerealExtraBold.woff) format('woff');
+  src: local("Airbnb Cereal App Extra Bold"), url(../fonts/AirbnbCerealExtraBold.woff) format("woff");
 }
 
 @font-face {
-  font-family: 'Airbnb Cereal App Black';
+  font-family: "Airbnb Cereal App Black";
   font-style: normal;
   font-weight: normal;
-  src: local('Airbnb Cereal App Black'),
-    url(../fonts/AirbnbCerealBlack.woff) format('woff');
+  src: local("Airbnb Cereal App Black"), url(../fonts/AirbnbCerealBlack.woff) format("woff");
 }
 
 a {
@@ -65,6 +59,34 @@ a {
 
 #FloatingHeader {
   display: none;
+}
+
+.cookies {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 24px;
+  border-radius: 23px;
+  font-family: "Airbnb Cereal App Medium";
+  color: white;
+  position: fixed;
+  z-index: 1000;
+  bottom: 40px;
+  left: 40px;
+  background-color: rgb(18, 18, 18);
+  font-size: 12px;
+}
+.cookiesLink {
+  margin-left: 8px;
+  color: #7417ea;
+  font-family: "Airbnb Cereal App Bold";
+}
+
+.cross {
+  width: 10px;
+  fill: white;
+  margin-left: 16px;
+  cursor: pointer;
 }
 
 @media (max-width: 950px) {

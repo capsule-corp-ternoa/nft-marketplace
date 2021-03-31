@@ -25,7 +25,12 @@ const FAQ: React.FC<any> = ({ user, setModalExpand, setNotAvailable }) => {
     {
       question: 'What is CAPS and why do i need some ?',
       answer:
-        'CAPS is the Ternoa token. You can see more about the CAPS here. You need some CAPS to make to buy or sell creations.',
+        'CAPS is the Ternoa token. You can see more about the CAPS here. You need some CAPS to buy or sell creations.',
+    },
+    {
+      question: 'What is “chaos CAPS”?',
+      answer:
+        '“Chaos CAPS” are fake CAPS usable on our chaos net (the first blockchain version). Real CAPS will come on testnet.',
     },
   ];
   function returnSections() {

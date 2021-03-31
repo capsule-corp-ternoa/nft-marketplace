@@ -72,9 +72,18 @@ const Footer: React.FC<any> = ({ setNotAvailable }) => {
         <div className={style.Legals}>
           <div className={style.Link}>SECRET NFT</div>
           <div className={style.Link}>All rights reserved</div>
-          <div className={style.Link}>Terms</div>
-          <div className={style.Link}>Privacy</div>
-          <div className={style.Link}>Support</div>
+          <a
+            href="https://intercom.help/ternoa/fr/collections/2774679-legal"
+            className={style.Link}
+          >
+            Terms
+          </a>
+          <a
+            href="https://intercom.help/ternoa/fr/collections/2774679-legal"
+            className={style.Link}
+          >
+            Privacy
+          </a>
         </div>
         <div className={style.Languages}>
           <div className={style.Text}>Languages</div>

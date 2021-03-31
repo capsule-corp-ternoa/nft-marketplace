@@ -74,6 +74,8 @@
   box-sizing: border-box;
   margin: 100px 16px;
   position: relative;
+  border-radius: 64px;
+  border: 2px solid $primary;
 }
 
 .Left,
@@ -92,7 +94,7 @@
 
 .Left {
   background-color: $primary;
-  border-radius: 64px 0px 0px 0px;
+  border-radius: 56px 0px 0px 56px;
   padding: 52px 80px;
   position: relative;
   padding-right: 150px;
@@ -117,6 +119,13 @@
   border-radius: 25px;
   padding: 8px 16px;
   background-color: black;
+  padding-right: 12px;
+}
+
+.Emoji {
+  margin-left: 6px;
+  font-size: 14px;
+  line-height: 6px;
 }
 
 .Headline {
@@ -156,18 +165,17 @@
   align-items: center;
   align-self: flex-start;
   border: 1px solid white;
-  color: white;
+  color: black;
   border-radius: 30px;
   padding: 12px 32px;
   font-size: 14px;
   margin-top: 24px;
   font-family: "Airbnb Cereal App Medium";
-  background-color: $primary;
+  background-color: white;
   cursor: pointer;
   transition: all 0.3s ease-out;
 
   &:hover {
-    background-color: white;
     color: $primary;
   }
 }
@@ -180,11 +188,26 @@
   font-family: "Airbnb Cereal App Bold";
 }
 
+.AvailableSoon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Airbnb Cereal App Bold";
+  font-size: 10px;
+  color: white;
+  border-radius: 25px;
+  padding: 6px 14px;
+  background-color: #ea174a;
+  align-self: flex-start;
+  margin-bottom: 24px;
+}
+
 .Step {
   display: flex;
   align-items: center;
   justify-content: flex-start;
   margin-bottom: 26px;
+  opacity: 0.4;
 }
 
 .StepNumber {
@@ -209,13 +232,14 @@
 }
 
 .Line {
-  height: 85%;
+  height: 65%;
   position: absolute;
   left: 23px;
   width: 5px;
   z-index: 1;
   background-color: $primary-light;
-  opacity: 0.2;
+  opacity: 0.1;
+  bottom: 30px;
 }
 
 //Creators
@@ -370,6 +394,11 @@
     flex-direction: column;
     margin: 100px 0px;
     margin-bottom: 0px;
+    border: none;
+  }
+
+  .AvailableSoon {
+    align-self: center;
   }
 
   .Logo {

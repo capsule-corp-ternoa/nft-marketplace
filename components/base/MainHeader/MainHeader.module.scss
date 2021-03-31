@@ -46,7 +46,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 250px;
+  width: 180px;
 }
 
 .LinkItem {
@@ -147,6 +147,16 @@
   width: 100%;
   height: 100%;
   border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.CreatorLetter {
+  font-size: 18px;
+  font-family: "Airbnb Cereal App Medium";
+  text-transform: uppercase;
+  color: white;
 }
 
 .Caps {

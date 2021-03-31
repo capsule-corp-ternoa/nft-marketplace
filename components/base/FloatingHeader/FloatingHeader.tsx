@@ -95,7 +95,9 @@ const FloatingHeader: React.FC<any> = ({ user, setModalExpand }) => {
               CAPS
             </div>
             <div className={style.ProfileImageContainer}>
-              <div className={style.ProfileImage} style={bgGradient} />
+              <div style={bgGradient} className={style.ProfileImage}>
+                <div className={style.CreatorLetter}>{user.name.charAt(0)}</div>
+              </div>
             </div>
           </div>
         ) : (

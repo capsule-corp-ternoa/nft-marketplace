@@ -28,6 +28,8 @@ const NFTPage: React.FC<any> = ({
   const bgGradientCreator = { background: gradient(NFT.creatorData.name) };
   const bgGradient = { background: gradient(user.name) };
 
+  const fiatPrice = NFT.price * 0.008;
+
   function returnType() {
     if (nftMedia === null) return null;
     else if (type!.substr(0, 5) === 'image') {
@@ -87,7 +89,7 @@ const NFTPage: React.FC<any> = ({
               <div className={style.Price}>
                 {shortString(Number(NFT.price))} CAPS
               </div>
-              <span className={style.FiatPrice}>13 500$</span>
+              <span className={style.FiatPrice}>{fiatPrice}$</span>
             </div>
           </div>
           <div className={style.HistoryTop}>

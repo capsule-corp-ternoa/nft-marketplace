@@ -62,7 +62,9 @@ const Creator: React.FC<CreatorProps> = ({
         data-for={showTooltip && `tooltip${user._id}`}
       >
         {user.verified && <Badge className={manageBadgeClass()} />}
-        <div style={bgGradient} className={style.CreatorsImage} />
+        <div style={bgGradient} className={style.CreatorsImage}>
+          <div className={style.CreatorLetter}>{user.name.charAt(0)}</div>
+        </div>
       </div>
     </div>
   );

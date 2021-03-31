@@ -46,9 +46,6 @@ const MainHeader: React.FC<any> = ({ setModalExpand, user }) => {
             <Link href="/faq">
               <a className={style.LinkItem}>How it works</a>
             </Link>
-            <Link href="/">
-              <a className={style.LinkItem}>Support</a>
-            </Link>
           </div>
           <div className={style.Wallet}>
             {user ? (
@@ -65,7 +62,11 @@ const MainHeader: React.FC<any> = ({ setModalExpand, user }) => {
                     CAPS
                   </div>
                   <div className={style.ProfileImageContainer}>
-                    <div className={style.ProfileImage} style={bgGradient} />
+                    <div style={bgGradient} className={style.ProfileImage}>
+                      <div className={style.CreatorLetter}>
+                        {user.name.charAt(0)}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

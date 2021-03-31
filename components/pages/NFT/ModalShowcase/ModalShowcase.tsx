@@ -56,7 +56,7 @@ const Modal: React.FC<any> = ({
                 <div className={style.PriceNumber}>
                   {shortString(Number(NFT.price))} CAPS
                 </div>
-                <div className={style.PriceCaps}>CAPS</div>
+                <div className={style.PriceCaps}>10000 CAPS</div>
               </div>
               <div className={style.Line} />
               <div className={style.SB}>
@@ -64,13 +64,16 @@ const Modal: React.FC<any> = ({
                 <div className={style.SBLight}>12000 CAPS</div>
               </div>
               <div className={style.SB}>
-                <div className={style.SBLight}>Service fee</div>
+                <div className={style.SBLight}>Gas fee</div>
                 <div className={style.SBLight}>0.0025 CAPS</div>
               </div>
               <div className={style.SB}>
                 <div className={style.SBBold}>You will pay</div>
-                <div className={style.SBBold}>29389 CAPS</div>
+                <div className={style.SBBold}>9999,975 CAPS</div>
               </div>
+            </div>
+            <div className={style.Warning}>
+              This is an exemple using fake data.
             </div>
             <div className={style.Buttons}>
               <div className={style.Buy} onClick={() => setNotAvailable(true)}>

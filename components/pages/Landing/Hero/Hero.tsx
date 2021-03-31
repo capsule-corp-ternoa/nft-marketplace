@@ -68,17 +68,21 @@ const Hero: React.FC<HeroProps> = ({ creators }) => {
 
           <div className={style.Content}>
             <div className={style.Left}>
-              <div className={style.Label}>Be Alpha User !</div>
+              <div className={style.Label}>
+                Hello Alpha tester
+                <span role="img" className={style.Emoji} aria-label="wave">
+                  👋🏼
+                </span>
+              </div>
               <div className={style.ContentContainer}>
                 <div className={style.Headline}>
-                  <span className={style.Light}>Be the first</span>
-                  <div className={style.Bold}>to use SECRET NFT</div>
+                  <span className={style.Light}>Be the firsts</span>
+                  <div className={style.Bold}>Try SecretNFT</div>
                 </div>
                 <p className={style.Description}>
-                  We invit you to test our Secret NFT Marketplace in alpha
-                  version on the ternoa Blockchain. Help us discover bugs, give
-                  feedback to improve the Blockchain and the Marketplace and
-                  <span>earn NFTs in return</span> !
+                  We invit you to try “SecretNFT” our NFTs marketplace in alpha
+                  version on Ternoa Chain. Help us discover bugs, give feedbacks
+                  to improve our products and <span>earn NFTs in return</span> !
                 </p>
               </div>
 
@@ -87,7 +91,7 @@ const Hero: React.FC<HeroProps> = ({ creators }) => {
                 href="https://docs.google.com/forms/d/1LJYmtMUDKn8Enw5u1Ui0c0TKpvDd6uf7vRGgu3qL1jQ/viewform?edit_requested=true"
                 target="blank"
               >
-                Are you an artist ? Submit your art
+                Submit your creations
               </a>
             </div>
             <div className={style.Logo}>
@@ -95,6 +99,7 @@ const Hero: React.FC<HeroProps> = ({ creators }) => {
             </div>
             <div className={style.Right}>
               <div className={style.RightContainer}>
+                <div className={style.AvailableSoon}>Available Soon</div>
                 <div className={style.Line} />
                 <div className={style.Step}>
                   <div className={style.StepNumber}>1</div>
@@ -102,7 +107,7 @@ const Hero: React.FC<HeroProps> = ({ creators }) => {
                 </div>
                 <div className={style.Step}>
                   <div className={style.StepNumber}>2</div>
-                  <div className={style.StepText}>Get free CAPS : FCAPS</div>
+                  <div className={style.StepText}>Get “chaos CAPS”</div>
                 </div>
                 <div className={style.Step}>
                   <div className={style.StepNumber}>3</div>

@@ -35,6 +35,14 @@ const WalletPage = ({ user }: any) => {
 
 export async function getServerSideProps() {
   const user = await getUser();
+  if (!user) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/',
+      },
+    };
+  }
   return {
     props: { user },
   };

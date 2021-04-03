@@ -14,7 +14,7 @@ const FloatingHeader: React.FC<any> = ({ user, setModalExpand }) => {
   const [, setSearchValue] = useState('' as string);
   const [isExpanded, setIsExpanded] = useState(false);
   const [fullProfile, setFullProfile] = useState(false);
-  const bgGradient = { background: gradient(user.name) };
+  const bgGradient = user ? { background: gradient(user.name) } : {};
 
   //const { t } = useTranslation();
 
@@ -40,7 +40,7 @@ const FloatingHeader: React.FC<any> = ({ user, setModalExpand }) => {
             />
           </div>
           <div className={style.Links}>
-            <Link href="/#explore">
+            <Link href="/explore">
               <a className={style.Link}>Explore</a>
             </Link>
             <Link href="/faq">
@@ -135,17 +135,13 @@ const FloatingHeader: React.FC<any> = ({ user, setModalExpand }) => {
             </Link>
             <Link href="/profile">
               <a className={style.Section}>
-                <div className={style.SectionTitle}>Account</div>
+                <div className={style.SectionTitle}> My Account</div>
               </a>
             </Link>
-            <div className={style.Section}>
-              <div className={style.SectionTitle}>Disconnect</div>
-            </div>
           </div>
-          <Link href="/wallet">
+          <Link href="/5FnhujHhfXdD9Ahkn2Aw7T71GnoRr4yU42Ne5Sxc2RmmhAnm">
             <a className={style.CapsSection}>
-              <span>My wallet</span>
-              <div className={style.CapsPrice}>{user?.caps} CAPS</div>
+              <div className={style.SectionTitle}>My artist profile</div>
             </a>
           </Link>
         </div>

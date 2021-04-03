@@ -4,7 +4,7 @@ import style from './Landing.module.scss';
 import Hero from './Hero';
 import Showcase from './Showcase';
 import ArtCreators from './ArtCreators';
-import BestSellers from './BestSellers';
+//import BestSellers from './BestSellers';
 import Explore from './Explore';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
@@ -15,21 +15,21 @@ const Landing: React.FC<any> = ({
   setModalExpand,
   setNotAvailable,
   user,
-  NFTS,
+  NFTSET1,
+  NFTSET2,
+  NFTCreators,
+  NFTExplore,
 }) => {
   //const { t } = useTranslation();
 
   return (
     <div className={style.Container}>
       <Hero creators={Creators} />
-      <Showcase category="Most popular" NFTs={NFTS.slice(0, NFTS.length / 2)} />
-      <Showcase
-        category="Best sellers"
-        NFTs={NFTS.slice(NFTS.length / 3, (NFTS.length / 3) * 2)}
-      />
-      <ArtCreators NFTs={NFTS.slice(4, 7)} creators={Creators} />
-      <BestSellers creators={Creators} />
-      <Explore NFTs={NFTS} />
+      <Showcase category="Most popular" NFTs={NFTSET1} />
+      <Showcase category="Best sellers" NFTs={NFTSET2} />
+      <ArtCreators NFTs={NFTCreators} creators={Creators} />
+      {/*<BestSellers creators={Creators} />*/}
+      <Explore NFTs={NFTExplore} />
       <Footer setNotAvailable={setNotAvailable} />
       <FloatingHeader user={user} setModalExpand={setModalExpand} />
     </div>

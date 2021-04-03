@@ -1,13 +1,36 @@
-import React from 'react';
+import React, { useState } from 'react';
 //import { useTranslation } from 'react-i18next';
 import style from './Edit.module.scss';
 import Badge from 'components/assets/badge';
+import gradient from 'random-gradient';
 
-const Edit: React.FC<any> = ({ user, setNotAvailable }) => {
+const Edit: React.FC<any> = ({ user, setNotAvailable, setBanner }) => {
   //const { t } = useTranslation();
+  const bgGradient = user ? { background: gradient(user.name) } : {};
+  const [data, setData] = useState(user);
+
+  function manageSetBanner(x: any) {
+    setBanner(x);
+    setData({ ...data, banner: x });
+  }
 
   return (
     <div className={style.EditContainer}>
+      <label htmlFor="uploadBanner" className={style.EditButton}>
+        Edit banner
+        <div className={style.HiddenShell}>
+          <input
+            type="file"
+            id="uploadBanner"
+            onChange={(event) => {
+              const { target } = event;
+              if (target && target.files)
+                manageSetBanner(URL.createObjectURL(target.files[0]));
+            }}
+            className={style.HiddenInput}
+          />
+        </div>
+      </label>
       <div className={style.Title}>Edit my profile</div>
       <div className={style.InnerContainer}>
         <div className={style.Form}>
@@ -16,6 +39,7 @@ const Edit: React.FC<any> = ({ user, setNotAvailable }) => {
             placeholder="Enter your display name"
             type="text"
             className={style.Input}
+            value={data.name}
           />
           <h4 className={style.Subtitle}>Custom URL</h4>
           <input
@@ -28,6 +52,7 @@ const Edit: React.FC<any> = ({ user, setNotAvailable }) => {
           <textarea
             placeholder="Tell about yourself in a few words..."
             className={style.Textarea}
+            value={data.description}
           />
 
           <div className={style.TopInput}>
@@ -36,7 +61,12 @@ const Edit: React.FC<any> = ({ user, setNotAvailable }) => {
               Verify your twitter account
             </div>
           </div>
-          <input placeholder="@username" type="text" className={style.Input} />
+          <input
+            placeholder="@username"
+            type="text"
+            value={data.twitter}
+            className={style.Input}
+          />
           <div className={style.TwitterInsight}>
             Verify your Twitter account in order to get the verification badge
           </div>
@@ -53,16 +83,32 @@ const Edit: React.FC<any> = ({ user, setNotAvailable }) => {
           </div>
         </div>
         <div className={style.IMG}>
-          <div className={style.Avatar}>
-            <img className={style.AvatarIMG} src={user.img} />
+          <div style={bgGradient} className={style.Avatar}>
+            {data.img ? (
+              <img className={style.AvatarIMG} src={data.img} />
+            ) : (
+              <div className={style.CreatorLetter}>{user.name.charAt(0)}</div>
+            )}
           </div>
           <div className={style.IMGSize}>500x500px recommanded</div>
-          <div
-            className={style.UploadButton}
-            onClick={() => setNotAvailable(true)}
-          >
+          <label htmlFor="uploadProfile" className={style.UploadButton}>
             Upload
-          </div>
+            <div className={style.HiddenShell}>
+              <input
+                type="file"
+                id="uploadProfile"
+                onChange={(event) => {
+                  const { target } = event;
+                  if (target && target.files)
+                    setData({
+                      ...data,
+                      img: URL.createObjectURL(target.files[0]),
+                    });
+                }}
+                className={style.HiddenInput}
+              />
+            </div>
+          </label>
 
           <div className={style.Certification}>
             <Badge className={style.Badge} />

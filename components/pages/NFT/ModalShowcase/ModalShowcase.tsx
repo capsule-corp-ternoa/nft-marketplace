@@ -56,14 +56,6 @@ const Modal: React.FC<any> = ({ setExp, exp, setNotAvailable, type, NFT }) => {
                 <div className={style.SBLight}>Your balance</div>
                 <div className={style.SBLight}>12000 CAPS</div>
               </div>
-              <div className={style.SB}>
-                <div className={style.SBLight}>Gas fee</div>
-                <div className={style.SBLight}>0.0025 CAPS</div>
-              </div>
-              <div className={style.SB}>
-                <div className={style.SBBold}>You will pay</div>
-                <div className={style.SBBold}>9999,975 CAPS</div>
-              </div>
             </div>
             <div className={style.Warning}>
               This is an exemple using fake data.

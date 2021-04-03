@@ -17,7 +17,7 @@ const ProfilePage = ({ user, data }: any) => {
   return (
     <>
       <Head>
-        <title>SecretNFT - {user.name}</title>
+        <title>SecretNFT - My account</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta name="description" content="Ternoa - Your profile." />
         <meta name="og:image" content="ternoa-social-banner.jpg" />
@@ -39,6 +39,15 @@ const ProfilePage = ({ user, data }: any) => {
 
 export async function getServerSideProps() {
   const user = await getUser();
+  if (!user) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/',
+      },
+    };
+  }
+
   let data = await getNFTS();
 
   data = data.filter((item: any) => item.media);

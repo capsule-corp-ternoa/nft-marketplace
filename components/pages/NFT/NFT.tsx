@@ -56,8 +56,7 @@ const NFTPage: React.FC<any> = ({
             <h1 className={style.Title}>{NFT.name}</h1>
             <div className={style.TopInfos}>
               <div className={style.Views}>
-                <Eye className={style.EyeSVG} />
-                105
+                <Eye className={style.EyeSVG} />0
               </div>
               <div className={style.Like}>
                 <Like className={style.LikeSVG} />

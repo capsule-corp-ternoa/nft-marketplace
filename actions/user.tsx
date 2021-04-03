@@ -11,9 +11,7 @@ export const getUser = async () => {
 
   const user = {
     name: 'Ternoart',
-    caps: 89302,
-    img:
-      'https://images.unsplash.com/photo-1604076913837-52ab5629fba9?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=934&q=80',
+    caps: 0,
     verified: true,
     id: 9,
     twitter: 'ternoa_',

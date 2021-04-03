@@ -58,7 +58,7 @@ const Infos: React.FC<any> = ({ user, setNotAvailable }) => {
             <div className={style.Bottom}>
               <span className={style.Bold}>{user.nbFollowers}</span>followers
               <span className={style.Separator}>·</span>
-              <span className={style.Bold}>{user.nbFollowing}</span>following
+              <span className={style.Bold}>{user.nbFollowings}</span>following
               <span className={style.Separator}>·</span>
               <span className={style.Bold}>{user.views}</span>vues
             </div>

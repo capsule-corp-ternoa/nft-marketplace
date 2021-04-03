@@ -8,6 +8,7 @@ import Edit from 'components/assets/edit';
 
 import PowerOff from 'components/assets/poweroff';
 import { middleEllipsis } from 'utils/strings';
+import gradient from 'random-gradient';
 
 const Sidebar: React.FC<any> = ({
   user,
@@ -17,6 +18,7 @@ const Sidebar: React.FC<any> = ({
   setNotAvailable,
 }) => {
   //const { t } = useTranslation();
+  const bgGradient = user ? { background: gradient(user.name) } : {};
 
   function returnActiveTitle(name: any) {
     if (scope === name) {
@@ -36,8 +38,13 @@ const Sidebar: React.FC<any> = ({
     <div className={style.SidebarMenu}>
       <div className={style.Infos}>
         <div className={style.AvatarShell}>
-          <div className={style.Avatar}>
-            <img className={style.AvatarIMG} src={user.img} />
+          <div style={bgGradient} className={style.Avatar}>
+            {user.img ? (
+              <img className={style.AvatarIMG} src={user.img} />
+            ) : (
+              <div className={style.CreatorLetter}>{user.name.charAt(0)}</div>
+            )}
+
             {user.verified && <Badge className={style.Badge} />}
           </div>
         </div>

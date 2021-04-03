@@ -2,28 +2,22 @@ import React, { useState } from 'react';
 import Head from 'next/head';
 import AlphaBanner from 'components/base/AlphaBanner';
 import MainHeader from 'components/base/MainHeader';
-import Landing from 'components/pages/Landing';
+import Explore from 'components/pages/Explore';
 import TernoaWallet from 'components/base/TernoaWallet';
 import NotAvailableModal from 'components/base/NotAvailable';
-
-import arrayShuffle from 'array-shuffle';
+import Footer from 'components/base/Footer';
+import FloatingHeader from 'components/base/FloatingHeader';
 
 import { getUser } from 'actions/user';
 import { getNFTS } from 'actions/nft';
 
-const LandingPage: React.FC<any> = ({
-  user,
-  NFTSET1,
-  NFTSET2,
-  NFTCreators,
-  NFTExplore,
-}) => {
+const ExplorePage: React.FC<any> = ({ user, data }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
   return (
     <>
       <Head>
-        <title>SecretNFT - Welcome</title>
+        <title>SecretNFT - Explore</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta name="description" content="SecretNFT Marketplace, by Ternoa." />
         <meta name="og:image" content="ternoa-social-banner.jpg" />
@@ -33,15 +27,9 @@ const LandingPage: React.FC<any> = ({
       {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
       <AlphaBanner />
       <MainHeader user={user} setModalExpand={setModalExpand} />
-      <Landing
-        setModalExpand={setModalExpand}
-        setNotAvailable={setNotAvailable}
-        user={user}
-        NFTSET1={NFTSET1}
-        NFTSET2={NFTSET2}
-        NFTCreators={NFTCreators}
-        NFTExplore={NFTExplore}
-      />
+      <Explore NFTS={data} />
+      <Footer setNotAvailable={setNotAvailable} />
+      <FloatingHeader user={user} setModalExpand={setModalExpand} />
     </>
   );
 };
@@ -52,16 +40,9 @@ export async function getServerSideProps() {
 
   data = data.filter((item: any) => item.media);
 
-  let NFTSET1 = arrayShuffle(data.slice(0, 8));
-  let NFTSET2 = arrayShuffle(data.slice(9, 17));
-
-  let NFTCreators = arrayShuffle(data.slice(18, 21));
-
-  let NFTExplore = arrayShuffle(data.slice(0, 8));
-
   return {
-    props: { user, NFTSET1, NFTSET2, NFTCreators, NFTExplore },
+    props: { user, data },
   };
 }
 
-export default LandingPage;
+export default ExplorePage;

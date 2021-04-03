@@ -4,7 +4,7 @@ export type UserType = {
   description?: string;
   verified: boolean;
   nbFollowers: number;
-  nbFollowing: number;
+  nbFollowings: number;
   views: number;
   walletId: string;
 };

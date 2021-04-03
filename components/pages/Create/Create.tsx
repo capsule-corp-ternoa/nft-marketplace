@@ -53,7 +53,8 @@ const Create: React.FC<any> = ({ setModalExpand, setNotAvailable, user }) => {
           </div>
           <div className={style.Data}>
             <div className={style.Left}>
-              <div
+              <label
+                htmlFor="uploadNFT"
                 className={
                   NFT
                     ? style.NFTPreview
@@ -75,7 +76,7 @@ const Create: React.FC<any> = ({ setModalExpand, setNotAvailable, user }) => {
                 <div className={style.HiddenShell}>
                   <input
                     type="file"
-                    id="theFileInput"
+                    id="uploadNFT"
                     onChange={(event) => {
                       const { target } = event;
                       if (target && target.files) setNFT(target.files[0]);
@@ -93,7 +94,8 @@ const Create: React.FC<any> = ({ setModalExpand, setNotAvailable, user }) => {
                   </div>
                 )}
                 {select === 'Secret' && (
-                  <div
+                  <label
+                    htmlFor="uploadSecretNFT"
                     className={
                       secretNFT
                         ? style.NFTSPreview
@@ -115,6 +117,7 @@ const Create: React.FC<any> = ({ setModalExpand, setNotAvailable, user }) => {
                     <div className={style.HiddenShell}>
                       <input
                         type="file"
+                        id="uploadSecretNFT"
                         onChange={(event) => {
                           const { target } = event;
                           if (target && target.files)
@@ -123,9 +126,9 @@ const Create: React.FC<any> = ({ setModalExpand, setNotAvailable, user }) => {
                         className={style.HiddenInput}
                       />
                     </div>
-                  </div>
+                  </label>
                 )}
-              </div>
+              </label>
             </div>
             <div className={style.Right}>
               <div className={style.InputShell}>

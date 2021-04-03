@@ -16,11 +16,11 @@ const PublicProfilePage = ({ user, data, profile }: any) => {
   return (
     <>
       <Head>
-        <title>SecretNFT - {user.name}</title>
+        <title>SecretNFT - {profile.name}</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta
           name="description"
-          content={`Ternoart - ${user.name} profile page.`}
+          content={`Ternoart - ${profile.name} profile page.`}
         />
         <meta name="og:image" content="ternoa-social-banner.jpg" />
       </Head>

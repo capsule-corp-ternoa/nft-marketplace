@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import 'style/base.scss';
+import Head from 'next/head';
 import Close from 'components/assets/close';
 
 import Router from 'next/router';
@@ -24,6 +25,22 @@ const App: React.FC<Props> = ({ Component, pageProps }) => {
   }, []);
   return (
     <>
+      <Head>
+        <script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-2ZD3ZDVEZD"
+        ></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){window.dataLayer.push(arguments)}
+        gtag("js", new Date());
+        gtag("config", "G-2ZD3ZDVEZD");
+    `,
+          }}
+        ></script>
+      </Head>
       <Component {...pageProps} />
       {!cookiesConsent && !hide && (
         <div className="cookies">

@@ -99,16 +99,6 @@ const NFTPage: React.FC<any> = ({
             <div className={style.HistoryItem}>
               <Check className={style.Check} />
               <div className={style.HistoryAvatar}>
-                <div className={style.HistoryIMG} style={bgGradientCreator} />
-              </div>
-              <div className={style.HistoryUser}>
-                <div className={style.HistoryRole}>Creator</div>
-                <div className={style.HistoryName}>{NFT.creatorData.name}</div>
-              </div>
-            </div>
-            <div className={style.HistoryItem}>
-              <Check className={style.Check} />
-              <div className={style.HistoryAvatar}>
                 <div className={style.HistoryIMG} style={bgGradientOwner} />
               </div>
               <div className={style.HistoryUser}>
@@ -135,6 +125,16 @@ const NFTPage: React.FC<any> = ({
               <div className={`${style.HistoryUser} ${style.HistoryPast}`}>
                 <div className={style.HistoryRole}>Previous Owner</div>
                 <div className={style.HistoryName}>Satoshi Nakamoto</div>
+              </div>
+            </div>
+            <div className={style.HistoryItem}>
+              <Check className={style.Check} />
+              <div className={style.HistoryAvatar}>
+                <div className={style.HistoryIMG} style={bgGradientCreator} />
+              </div>
+              <div className={style.HistoryUser}>
+                <div className={style.HistoryRole}>Creator</div>
+                <div className={style.HistoryName}>{NFT.creatorData.name}</div>
               </div>
             </div>
           </div>

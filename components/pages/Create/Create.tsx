@@ -9,7 +9,7 @@ import Upload from 'components/assets/upload';
 import WhiteWaterMark from 'components/assets/WhiteWaterMark';
 import Eye from 'components/assets/eye';
 
-const Create: React.FC<any> = ({ setModalExpand, setNotAvailable }) => {
+const Create: React.FC<any> = ({ setModalExpand, setNotAvailable, user }) => {
   //const { t } = useTranslation();
   const [select, setSelect] = useState('Select NFT Option');
   const [exp, setExp] = useState(false);
@@ -53,7 +53,8 @@ const Create: React.FC<any> = ({ setModalExpand, setNotAvailable }) => {
           </div>
           <div className={style.Data}>
             <div className={style.Left}>
-              <div
+              <label
+                htmlFor="uploadNFT"
                 className={
                   NFT
                     ? style.NFTPreview
@@ -75,7 +76,7 @@ const Create: React.FC<any> = ({ setModalExpand, setNotAvailable }) => {
                 <div className={style.HiddenShell}>
                   <input
                     type="file"
-                    id="theFileInput"
+                    id="uploadNFT"
                     onChange={(event) => {
                       const { target } = event;
                       if (target && target.files) setNFT(target.files[0]);
@@ -93,7 +94,8 @@ const Create: React.FC<any> = ({ setModalExpand, setNotAvailable }) => {
                   </div>
                 )}
                 {select === 'Secret' && (
-                  <div
+                  <label
+                    htmlFor="uploadSecretNFT"
                     className={
                       secretNFT
                         ? style.NFTSPreview
@@ -115,6 +117,7 @@ const Create: React.FC<any> = ({ setModalExpand, setNotAvailable }) => {
                     <div className={style.HiddenShell}>
                       <input
                         type="file"
+                        id="uploadSecretNFT"
                         onChange={(event) => {
                           const { target } = event;
                           if (target && target.files)
@@ -123,9 +126,9 @@ const Create: React.FC<any> = ({ setModalExpand, setNotAvailable }) => {
                         className={style.HiddenInput}
                       />
                     </div>
-                  </div>
+                  </label>
                 )}
-              </div>
+              </label>
             </div>
             <div className={style.Right}>
               <div className={style.InputShell}>
@@ -219,7 +222,7 @@ const Create: React.FC<any> = ({ setModalExpand, setNotAvailable }) => {
       </div>
 
       <Footer setNotAvailable={setNotAvailable} />
-      <FloatingHeader setModalExpand={setModalExpand} />
+      <FloatingHeader user={user} setModalExpand={setModalExpand} />
     </div>
   );
 };

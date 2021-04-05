@@ -4,18 +4,22 @@ import style from './Landing.module.scss';
 import Hero from './Hero';
 import Showcase from './Showcase';
 import ArtCreators from './ArtCreators';
-import BestSellers from './BestSellers';
+//import BestSellers from './BestSellers';
 import Explore from './Explore';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
 
 import Creators from 'utils/mocks/mockCreators';
-import NFTSET1 from 'utils/mocks/NFTSET1';
-import NFTSET2 from 'utils/mocks/NFTSET2';
-import NFTSET3 from 'utils/mocks/NFTSET3';
-import NFTSET4 from 'utils/mocks/NFTSET4';
 
-const Landing: React.FC<any> = ({ setModalExpand, setNotAvailable }) => {
+const Landing: React.FC<any> = ({
+  setModalExpand,
+  setNotAvailable,
+  user,
+  NFTSET1,
+  NFTSET2,
+  NFTCreators,
+  NFTExplore,
+}) => {
   //const { t } = useTranslation();
 
   return (
@@ -23,11 +27,11 @@ const Landing: React.FC<any> = ({ setModalExpand, setNotAvailable }) => {
       <Hero creators={Creators} />
       <Showcase category="Most popular" NFTs={NFTSET1} />
       <Showcase category="Best sellers" NFTs={NFTSET2} />
-      <ArtCreators NFTs={NFTSET3} creators={Creators} />
-      <BestSellers creators={Creators} />
-      <Explore NFTs={NFTSET4} />
+      <ArtCreators NFTs={NFTCreators} creators={Creators} />
+      {/*<BestSellers creators={Creators} />*/}
+      <Explore NFTs={NFTExplore} />
       <Footer setNotAvailable={setNotAvailable} />
-      <FloatingHeader setModalExpand={setModalExpand} />
+      <FloatingHeader user={user} setModalExpand={setModalExpand} />
     </div>
   );
 };

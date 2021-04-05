@@ -45,6 +45,7 @@
   transform: translateY(5px) rotate(0deg);
   margin-right: 24px;
   transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  cursor: pointer;
 }
 
 .ArrowTilted {
@@ -52,6 +53,7 @@
   transform: translateY(5px) rotate(90deg);
   margin-right: 24px;
   transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  cursor: pointer;
 }
 
 .Hide {

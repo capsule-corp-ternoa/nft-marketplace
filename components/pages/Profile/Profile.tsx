@@ -13,7 +13,7 @@ import Edit from './Edit';
 import Switch from 'react-switch';
 
 const Profile: React.FC<any> = ({
-  item,
+  user,
   NFTS,
   creators,
   setModalExpand,
@@ -23,6 +23,10 @@ const Profile: React.FC<any> = ({
   const [isFiltered, setIsFiltered] = useState(false);
   const [scope, setScope] = useState('My NFTs on sale');
   const [expand, setExpand] = useState(false);
+  const [banner, setBanner] = useState(
+    user.banner ??
+      'https://images.unsplash.com/photo-1579546929518-9e396f3cc809?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2250&q=80'
+  );
   const [, setSearchValue] = useState('' as string);
 
   const updateKeywordSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -79,7 +83,13 @@ const Profile: React.FC<any> = ({
       );
     }
     if (scope === 'edit') {
-      return <Edit item={item} setNotAvailable={setNotAvailable} />;
+      return (
+        <Edit
+          user={user}
+          setBanner={setBanner}
+          setNotAvailable={setNotAvailable}
+        />
+      );
     } else {
       return (
         <div className={style.NFTs}>
@@ -95,7 +105,7 @@ const Profile: React.FC<any> = ({
       <div key={item.id} className={style.CreatorShell}>
         <Link href={`/${item.name}`}>
           <a>
-            <Creator item={item} size="small" showTooltip={false} />
+            <Creator user={item} size="small" showTooltip={false} />
           </a>
         </Link>
 
@@ -105,7 +115,9 @@ const Profile: React.FC<any> = ({
               <h2 className={style.CreatorName}>{item.name}</h2>
             </a>
           </Link>
-          <span className={style.CreatorFollowers}>{item.caps} followers</span>
+          <span className={style.CreatorFollowers}>
+            {item.nbFollowers} followers
+          </span>
           <div
             onClick={(e) => {
               e.stopPropagation();
@@ -123,23 +135,11 @@ const Profile: React.FC<any> = ({
   return (
     <div className={style.Container}>
       <div className={style.Banner}>
-        <img
-          className={style.BannerIMG}
-          src="https://images.unsplash.com/photo-1529641484336-ef35148bab06?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2250&q=80"
-          alt="banner"
-        />
-        {scope === 'edit' && (
-          <div
-            className={style.EditButton}
-            onClick={() => setNotAvailable(true)}
-          >
-            Edit banner
-          </div>
-        )}
+        <img className={style.BannerIMG} src={banner} alt="banner" />
       </div>
       <div className={style.Wrapper}>
         <Sidebar
-          item={item}
+          user={user}
           scope={scope}
           setScope={setScope}
           setExpand={setExpand}
@@ -147,7 +147,7 @@ const Profile: React.FC<any> = ({
         />
         {returnCategory()}
       </div>
-      <FloatingHeader setModalExpand={setModalExpand} item={item} />
+      <FloatingHeader setModalExpand={setModalExpand} user={user} />
       <Footer setNotAvailable={setNotAvailable} />
       {expand && (
         <FloatingMenu setScope={setScope} scope={scope} setExpand={setExpand} />

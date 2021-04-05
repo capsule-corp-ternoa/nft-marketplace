@@ -46,6 +46,23 @@
   height: 100%;
   border-radius: 50%;
   position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.CreatorLetter {
+  font-size: 28px;
+  font-family: "Airbnb Cereal App Medium";
+  text-transform: uppercase;
+  color: white;
+}
+
+.CreatorLetterSmall {
+  font-size: 18px;
+  font-family: "Airbnb Cereal App Medium";
+  text-transform: uppercase;
+  color: white;
 }
 
 .CreatorsBadge {
@@ -75,7 +92,7 @@
   display: flex;
   flex-direction: column;
   position: absolute;
-  top: -80px;
+  top: -60px;
   left: 50%;
   transform: translateX(-52%);
   background-color: black;

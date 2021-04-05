@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import style from './NftCard.module.scss';
 import Heart from 'components/assets/heart';
 import Creator from '../Creator';
@@ -6,36 +6,77 @@ import Router from 'next/router';
 
 import { NftType } from 'interfaces/index';
 
+import { shortString } from 'utils/strings';
+
 export interface NftCardProps {
   item: NftType;
   mode: string;
 }
 
-function manageRouting(e: any) {
+function manageRouting(e: any, id: any) {
   e.stopPropagation();
-  Router.push('/test-author');
+  Router.push(`/${id}`);
 }
 
 const NftCard: React.FC<NftCardProps> = ({ item, mode }) => {
   const [isHovering, setIsHovering] = useState(false);
+  const [type, setType] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function callBack() {
+      try {
+        let res = await fetch(item.media!.url, { method: 'HEAD' });
+        setType(res.headers.get('Content-Type'));
+        return res;
+      } catch (err) {
+        console.log('Error :', err);
+      }
+    }
+
+    callBack();
+  }, []);
+
+  function manageClass() {
+    if (mode === 'grid') {
+      return style.NFTGrid;
+    } else if (mode === 'profile') {
+      return style.NFTProfile;
+    } else {
+      return style.NFT;
+    }
+  }
+
+  function returnType() {
+    if (!type) return null;
+    if (type!.substr(0, 5) === 'image') {
+      return (
+        <img
+          src={item.media!.url}
+          alt="imgnft"
+          className={
+            isHovering ? `${style.NFTIMG} ${style.ImgScaling}` : style.NFTIMG
+          }
+        />
+      );
+    } else if (type!.substr(0, 5) === 'video')
+      return (
+        <video autoPlay muted loop className={style.NFTIMG}>
+          <source id="outputVideo" src={item.media!.url} type="video/mp4" />
+        </video>
+      );
+  }
 
   return (
     <div
-      onClick={() => Router.push(`/nft/nft-test`)}
-      className={mode === 'grid' ? style.NFTGrid : style.NFT}
+      onClick={() => Router.push(`/nft/${item.id}`)}
+      className={manageClass()}
       onFocus={() => false}
       onBlur={() => false}
       onMouseOver={() => setIsHovering(true)}
       onMouseOut={() => setIsHovering(false)}
     >
-      <img
-        src={item.img}
-        alt="imgnft"
-        className={
-          isHovering ? `${style.NFTIMG} ${style.ImgScaling}` : style.NFTIMG
-        }
-      />
-      {item.secret && !isHovering && (
+      {returnType()}
+      {item.cryptedMedia?.url !== item.media?.url && !isHovering && (
         <span className={style.SecretLabel}>S</span>
       )}
       <div
@@ -55,27 +96,38 @@ const NftCard: React.FC<NftCardProps> = ({ item, mode }) => {
         </div>
 
         <div className={style.Infos}>
-          <div onClick={(e) => manageRouting(e)} className={style.Auth}>
-            <Creator
-              item={item.creator}
-              className={isHovering ? style.Slide : ''}
-              size="card"
-              showTooltip={false}
-            />
-            <div
-              className={
-                isHovering ? `${style.Author} ${style.Fade}` : style.Author
-              }
-            >
-              {item.creator.name}
-            </div>
+          <div
+            onClick={(e) => manageRouting(e, item.creatorData?.walletId)}
+            className={style.Auth}
+          >
+            {item.creatorData && (
+              <Creator
+                user={item.creatorData}
+                className={isHovering ? style.Slide : ''}
+                size="card"
+                showTooltip={false}
+              />
+            )}
+            {item.creatorData && (
+              <div
+                className={
+                  isHovering ? `${style.Author} ${style.Fade}` : style.Author
+                }
+              >
+                {item.creatorData.name}
+              </div>
+            )}
           </div>
           <div
             className={
               isHovering ? `${style.Button} ${style.FadeLong}` : style.Button
             }
           >
-            <div className={style.Price}>{item.price} CAPS</div>
+            {item.price && (
+              <div className={style.Price}>
+                {shortString(Number(item.price))} CAPS
+              </div>
+            )}
             <div className={style.ButtonText}>Buy</div>
           </div>
         </div>

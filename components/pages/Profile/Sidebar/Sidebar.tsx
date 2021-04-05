@@ -7,15 +7,18 @@ import CopyPaste from 'components/assets/copypaste';
 import Edit from 'components/assets/edit';
 
 import PowerOff from 'components/assets/poweroff';
+import { middleEllipsis } from 'utils/strings';
+import gradient from 'random-gradient';
 
 const Sidebar: React.FC<any> = ({
-  item,
+  user,
   scope,
   setScope,
   setExpand,
   setNotAvailable,
 }) => {
   //const { t } = useTranslation();
+  const bgGradient = user ? { background: gradient(user.name) } : {};
 
   function returnActiveTitle(name: any) {
     if (scope === name) {
@@ -35,9 +38,14 @@ const Sidebar: React.FC<any> = ({
     <div className={style.SidebarMenu}>
       <div className={style.Infos}>
         <div className={style.AvatarShell}>
-          <div className={style.Avatar}>
-            <img className={style.AvatarIMG} src={item.img} />
-            {item.verified && <Badge className={style.Badge} />}
+          <div style={bgGradient} className={style.Avatar}>
+            {user.img ? (
+              <img className={style.AvatarIMG} src={user.img} />
+            ) : (
+              <div className={style.CreatorLetter}>{user.name.charAt(0)}</div>
+            )}
+
+            {user.verified && <Badge className={style.Badge} />}
           </div>
         </div>
 
@@ -48,19 +56,20 @@ const Sidebar: React.FC<any> = ({
           </div>
         )}
 
-        <h1 className={style.Name}>{item.name}</h1>
+        <h1 className={style.Name}>{user.name}</h1>
         <div
           className={style.Address}
           onClick={() => {
-            navigator.clipboard.writeText(item.address);
+            navigator.clipboard.writeText(user.walletId);
           }}
         >
-          {item.address} <CopyPaste className={style.CopyPaste} />
+          {middleEllipsis(user.walletId, 20)}
+          <CopyPaste className={style.CopyPaste} />
         </div>
 
         <div className={style.Separator} />
         <div className={style.Caps}>
-          <span className={style.CapsData}>{item.caps} caps</span>
+          <span className={style.CapsData}>{user.caps} CAPS</span>
           <div className={style.Burger} onClick={() => setExpand(true)}>
             <span className={style.Line} />
             <span className={style.Line} />

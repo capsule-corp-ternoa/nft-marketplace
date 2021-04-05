@@ -5,15 +5,12 @@ import French from '../../assets/Languages/France';
 import Japanese from '../../assets/Languages/Japan';
 import English from '../../assets/Languages/UK';
 
-import Discord from '../../assets/SocialMedias/Discord';
-
 import style from './Footer.module.scss';
 import WaterMark from 'components/assets/Watermark';
 import Telegram from 'components/assets/SocialMedias/Telegram';
 import Twitter from 'components/assets/SocialMedias/Twitter';
 import LinkedIn from 'components/assets/SocialMedias/LinkedIn';
 import Instagram from 'components/assets/SocialMedias/Instagram';
-import Twitch from 'components/assets/SocialMedias/Twitch';
 import Github from 'components/assets/SocialMedias/Github';
 import Youtube from 'components/assets/SocialMedias/Youtube';
 
@@ -41,9 +38,9 @@ const Footer: React.FC<any> = ({ setNotAvailable }) => {
           </div>
         </div>
         <div className={style.SocialMedias}>
-          <a href="https://discord.gg/cNZTGtGJNR" target="_blank">
+          {/*<a href="https://discord.gg/cNZTGtGJNR" target="_blank">
             <Discord onClick={() => true} className={style.SVGMedia} />
-          </a>
+  </a>*/}
           <a href="https://t.me/ternoa" target="_blank">
             <Telegram onClick={() => true} className={style.SVGMedia} />
           </a>
@@ -56,9 +53,10 @@ const Footer: React.FC<any> = ({ setNotAvailable }) => {
           <a href="https://www.instagram.com/ternoa_/" target="_blank">
             <Instagram onClick={() => true} className={style.SVGMedia} />
           </a>
+          {/* 
           <a href="#" target="_blank">
             <Twitch onClick={() => true} className={style.SVGMedia} />
-          </a>
+          </a> */}
           <a href="https://github.com/capsule-corp-ternoa" target="_blank">
             <Github onClick={() => true} className={style.SVGMedia} />
           </a>
@@ -74,9 +72,18 @@ const Footer: React.FC<any> = ({ setNotAvailable }) => {
         <div className={style.Legals}>
           <div className={style.Link}>SECRET NFT</div>
           <div className={style.Link}>All rights reserved</div>
-          <div className={style.Link}>Terms</div>
-          <div className={style.Link}>Privacy</div>
-          <div className={style.Link}>Support</div>
+          <a
+            href="https://intercom.help/ternoa/fr/collections/2774679-legal"
+            className={style.Link}
+          >
+            Terms
+          </a>
+          <a
+            href="https://intercom.help/ternoa/fr/collections/2774679-legal"
+            className={style.Link}
+          >
+            Privacy
+          </a>
         </div>
         <div className={style.Languages}>
           <div className={style.Text}>Languages</div>

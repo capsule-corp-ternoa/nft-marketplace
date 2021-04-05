@@ -6,12 +6,12 @@ import NFTCard from 'components/base/NftCard';
 import { NftType } from 'interfaces/index';
 
 export interface ExploreProps {
-  NFTs: NftType[];
+  NFTS: NftType[];
 }
 
-const Explore: React.FC<ExploreProps> = ({ NFTs }) => {
+const Explore: React.FC<ExploreProps> = ({ NFTS }) => {
   function returnNFTs() {
-    return NFTs.map((item) => (
+    return NFTS.map((item) => (
       <div key={item.id} className={style.NFTShell}>
         <NFTCard mode="grid" item={item} />
       </div>
@@ -21,9 +21,9 @@ const Explore: React.FC<ExploreProps> = ({ NFTs }) => {
   return (
     <>
       <div id="explore" className={style.Wrapper}>
-        <div className={style.Hide}>
+        <div className={style.Top}>
           <h3 className={style.Title}>Explore</h3>
-          <div className={style.Filters}>
+          <div className={style.Hide}>
             <span className={style.Filter}>
               <span role="img" className={style.Emoji} aria-label="art">
                 🎨
@@ -63,7 +63,7 @@ const Explore: React.FC<ExploreProps> = ({ NFTs }) => {
           </div>
         </div>
         <div className={style.NFTWrapper}>{returnNFTs()}</div>
-        {/*<div className={style.Button}>Load more...</div>*/}
+        <div className={style.Button}>Load more...</div>
       </div>
     </>
   );

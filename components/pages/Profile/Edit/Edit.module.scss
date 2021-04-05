@@ -6,6 +6,47 @@
   padding: 40px 24px;
   box-sizing: border-box;
   width: 100%;
+  position: relative;
+}
+
+.EditButton {
+  position: absolute;
+  top: -20px;
+  left: 20px;
+  font-size: 14px;
+  line-height: 17px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #e0e0e0;
+  box-sizing: border-box;
+  box-shadow: 0px 0px 7px 4px rgba(0, 0, 0, 0.05);
+  border-radius: 40px;
+  background: #ffffff;
+  padding: 12px 24px;
+  cursor: pointer;
+  font-family: 'Airbnb Cereal App Medium';
+}
+
+.HiddenShell {
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  display: none;
+}
+
+.HiddenInput {
+  width: 100%;
+  height: 100%;
+  outline: none;
+  opacity: 0; /* Standard: FF gt 1.5, Opera, Safari */
+  filter: alpha(opacity=0); /* IE lt 8 */
+  -ms-filter: 'alpha(opacity=0)'; /* IE 8 */
+  -khtml-opacity: 0; /* Safari 1.x */
+  -moz-opacity: 0;
+  cursor: pointer;
 }
 
 .Title {
@@ -132,6 +173,9 @@
   position: relative;
   z-index: 6;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .AvatarIMG {
@@ -140,6 +184,16 @@
   height: 100%;
   border-radius: 50%;
   position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.CreatorLetter {
+  font-size: 40px;
+  font-family: 'Airbnb Cereal App Medium';
+  text-transform: uppercase;
+  color: white;
 }
 
 .IMGSize {

@@ -7,10 +7,14 @@ import style from './FloatingHeader.module.scss';
 import Creator from 'components/base/Creator';
 import CopyPaste from 'components/assets/copypaste';
 
-const FloatingHeader: React.FC<any> = ({ item, setModalExpand }) => {
+import { middleEllipsis } from 'utils/strings';
+import gradient from 'random-gradient';
+
+const FloatingHeader: React.FC<any> = ({ user, setModalExpand }) => {
   const [, setSearchValue] = useState('' as string);
   const [isExpanded, setIsExpanded] = useState(false);
   const [fullProfile, setFullProfile] = useState(false);
+  const bgGradient = user ? { background: gradient(user.name) } : {};
 
   //const { t } = useTranslation();
 
@@ -36,7 +40,7 @@ const FloatingHeader: React.FC<any> = ({ item, setModalExpand }) => {
             />
           </div>
           <div className={style.Links}>
-            <Link href="/#explore">
+            <Link href="/explore">
               <a className={style.Link}>Explore</a>
             </Link>
             <Link href="/faq">
@@ -63,7 +67,7 @@ const FloatingHeader: React.FC<any> = ({ item, setModalExpand }) => {
             </>
           )}
         </div>
-        {item ? (
+        {user ? (
           <div
             className={
               fullProfile
@@ -86,16 +90,14 @@ const FloatingHeader: React.FC<any> = ({ item, setModalExpand }) => {
                     : style.NumberCaps
                 }
               >
-                {item.caps}
+                {user.caps}
               </span>
-              caps
+              CAPS
             </div>
             <div className={style.ProfileImageContainer}>
-              <img
-                className={style.ProfileImage}
-                src={item.img}
-                alt="profile"
-              />
+              <div style={bgGradient} className={style.ProfileImage}>
+                <div className={style.CreatorLetter}>{user.name.charAt(0)}</div>
+              </div>
             </div>
           </div>
         ) : (
@@ -104,19 +106,24 @@ const FloatingHeader: React.FC<any> = ({ item, setModalExpand }) => {
           </div>
         )}
       </div>
-      {item && fullProfile && (
+      {user && fullProfile && (
         <div className={style.Dropdown}>
           <div className={style.DropdownContainer}>
             <div className={style.DropdownProfile}>
-              <Creator item={item} size="xsmall" showTooltip={false} />
-              <div className={style.Name}>{item?.name}</div>
+              <Creator user={user} size="xsmall" showTooltip={false} />
+              <div className={style.Name}>{user?.name}</div>
             </div>
 
-            <div className={style.Section}>
+            <div
+              className={style.Section}
+              onClick={() => {
+                navigator.clipboard.writeText(user.walletId);
+              }}
+            >
               <div className={style.SectionTitle}>
                 Wallet :
                 <span className={style.SectionWallet}>
-                  gdt67fx6.....ej636373BH
+                  {middleEllipsis(user.walletId, 20)}
                   <CopyPaste className={style.CopyPaste} />
                 </span>
               </div>
@@ -128,17 +135,13 @@ const FloatingHeader: React.FC<any> = ({ item, setModalExpand }) => {
             </Link>
             <Link href="/profile">
               <a className={style.Section}>
-                <div className={style.SectionTitle}>Account</div>
+                <div className={style.SectionTitle}> My Account</div>
               </a>
             </Link>
-            <div className={style.Section}>
-              <div className={style.SectionTitle}>Disconnect</div>
-            </div>
           </div>
-          <Link href="/wallet">
+          <Link href="/5FnhujHhfXdD9Ahkn2Aw7T71GnoRr4yU42Ne5Sxc2RmmhAnm">
             <a className={style.CapsSection}>
-              <span>My wallet</span>
-              <div className={style.CapsPrice}>{item?.caps} Caps</div>
+              <div className={style.SectionTitle}>My artist profile</div>
             </a>
           </Link>
         </div>

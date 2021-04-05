@@ -71,7 +71,7 @@ const Hero: React.FC<HeroProps> = ({ creators }) => {
               <div className={style.Label}>
                 Hello Alpha tester
                 <span role="img" className={style.Emoji} aria-label="wave">
-                  👋🏼
+                  👋
                 </span>
               </div>
               <div className={style.ContentContainer}>

@@ -28,7 +28,7 @@ const Create: React.FC<any> = ({ setModalExpand, setNotAvailable, user }) => {
       );
     else if (NFTarg!.type.substr(0, 5) === 'video')
       return (
-        <video autoPlay muted className={style.IMGBackground}>
+        <video autoPlay muted playsInline loop className={style.IMGBackground}>
           <source
             id="outputVideo"
             src={URL.createObjectURL(NFTarg)}

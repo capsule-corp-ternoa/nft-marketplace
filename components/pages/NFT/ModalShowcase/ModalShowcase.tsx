@@ -13,7 +13,7 @@ const Modal: React.FC<any> = ({ setExp, exp, setNotAvailable, type, NFT }) => {
       return <img className={style.NFTIMG} src={NFT.media.url} alt="imgnft" />;
     } else if (type!.substr(0, 5) === 'video')
       return (
-        <video autoPlay muted loop className={style.NFTIMG}>
+        <video autoPlay muted loop playsInline className={style.NFTIMG}>
           <source id="outputVideo" src={NFT.media.url} type="video/mp4" />
         </video>
       );

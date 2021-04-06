@@ -1,6 +1,42 @@
+@import "style/colors.scss";
+
 .Container {
   width: 100%;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+}
+
+.Button {
+  align-items: center;
+  border: 2px solid $primary;
+  color: $primary;
+  border-radius: 30px;
+  padding: 14px 64px;
+  font-size: 16px;
+  font-family: "Airbnb Cereal App Medium";
+  margin-top: 100px;
+  margin-bottom: 120px;
+  align-self: center;
+  cursor: pointer;
+  transition: all 0.3s ease-out;
+
+  &:hover {
+    background-color: $primary;
+    color: white;
+  }
+}
+
+@media (max-width: 1300px) {
+  .Button {
+    padding: 12px 58px;
+    font-size: 14px;
+    margin-top: 80px;
+    margin-bottom: 100px;
+
+    &:hover {
+      background-color: $primary;
+      color: white;
+    }
+  }
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 //import { useTranslation } from 'react-i18next';
+import Link from 'next/link';
 import style from './NFT.module.scss';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
@@ -96,40 +97,50 @@ const NFTPage: React.FC<any> = ({
             <div className={style.HistoryLine} />
           </div>
           <div className={style.History}>
-            <div className={style.HistoryItem}>
-              <Check className={style.Check} />
-              <div className={style.HistoryAvatar}>
-                {NFT.ownerData.picture ? (
-                  <img
-                    src={NFT.ownerData.picture}
-                    className={style.HistoryIMG}
-                  />
-                ) : (
-                  <div className={style.HistoryIMG} style={bgGradientOwner} />
-                )}
-              </div>
-              <div className={style.HistoryUser}>
-                <div className={style.HistoryRole}>Owner</div>
-                <div className={style.HistoryName}>{NFT.ownerData.name}</div>
-              </div>
-            </div>
-            <div className={style.HistoryItem}>
-              <Check className={style.Check} />
-              <div className={style.HistoryAvatar}>
-                {NFT.creatorData.picture ? (
-                  <img
-                    src={NFT.creatorData.picture}
-                    className={style.HistoryIMG}
-                  />
-                ) : (
-                  <div className={style.HistoryIMG} style={bgGradientCreator} />
-                )}
-              </div>
-              <div className={style.HistoryUser}>
-                <div className={style.HistoryRole}>Creator</div>
-                <div className={style.HistoryName}>{NFT.creatorData.name}</div>
-              </div>
-            </div>
+            <Link href={`/${NFT.ownerData.walletId}`}>
+              <a className={style.HistoryItem}>
+                <Check className={style.Check} />
+                <div className={style.HistoryAvatar}>
+                  {NFT.ownerData.picture ? (
+                    <img
+                      src={NFT.ownerData.picture}
+                      className={style.HistoryIMG}
+                    />
+                  ) : (
+                    <div className={style.HistoryIMG} style={bgGradientOwner} />
+                  )}
+                </div>
+                <div className={style.HistoryUser}>
+                  <div className={style.HistoryRole}>Owner</div>
+                  <div className={style.HistoryName}>{NFT.ownerData.name}</div>
+                </div>
+              </a>
+            </Link>
+
+            <Link href={`/${NFT.creatorData.walletId}`}>
+              <a className={style.HistoryItem}>
+                <Check className={style.Check} />
+                <div className={style.HistoryAvatar}>
+                  {NFT.creatorData.picture ? (
+                    <img
+                      src={NFT.creatorData.picture}
+                      className={style.HistoryIMG}
+                    />
+                  ) : (
+                    <div
+                      className={style.HistoryIMG}
+                      style={bgGradientCreator}
+                    />
+                  )}
+                </div>
+                <div className={style.HistoryUser}>
+                  <div className={style.HistoryRole}>Creator</div>
+                  <div className={style.HistoryName}>
+                    {NFT.creatorData.name}
+                  </div>
+                </div>
+              </a>
+            </Link>
           </div>
         </div>
       </div>

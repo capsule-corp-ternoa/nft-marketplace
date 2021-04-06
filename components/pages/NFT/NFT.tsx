@@ -13,7 +13,7 @@ import Eye from 'components/assets/eye';
 
 import gradient from 'random-gradient';
 
-import { shortString } from 'utils/strings';
+import { computeCaps } from 'utils/strings';
 
 const NFTPage: React.FC<any> = ({
   setExp,
@@ -25,9 +25,9 @@ const NFTPage: React.FC<any> = ({
 }) => {
   const bgGradientOwner = { background: gradient(NFT.ownerData.name) };
   const bgGradientCreator = { background: gradient(NFT.creatorData.name) };
-  const bgGradient = { background: gradient(user.name) };
+  //const bgGradient = user ? { background: gradient(user.name) } : {};
 
-  const fiatPrice = NFT.price * 0.008;
+  const fiatPrice = (Number(NFT.price) / 1000000000000000000) * 0.008;
 
   function returnType() {
     if (!type) return null;
@@ -77,7 +77,7 @@ const NFTPage: React.FC<any> = ({
               </div>
             </div>
           </div>
-          <p className={style.Description}>{NFT.descripion}</p>
+          <p className={style.Description}>{NFT.description}</p>
           <div className={style.Buy}>
             <div className={style.BuyLeft}>
               <div onClick={() => setExp(2)} className={style.Button}>
@@ -86,7 +86,7 @@ const NFTPage: React.FC<any> = ({
             </div>
             <div className={style.BuyRight}>
               <div className={style.Price}>
-                {shortString(Number(NFT.price))} CAPS
+                {computeCaps(Number(NFT.price))} CAPS
               </div>
               <span className={style.FiatPrice}>{fiatPrice}$</span>
             </div>
@@ -99,7 +99,14 @@ const NFTPage: React.FC<any> = ({
             <div className={style.HistoryItem}>
               <Check className={style.Check} />
               <div className={style.HistoryAvatar}>
-                <div className={style.HistoryIMG} style={bgGradientOwner} />
+                {NFT.ownerData.picture ? (
+                  <img
+                    src={NFT.ownerData.picture}
+                    className={style.HistoryIMG}
+                  />
+                ) : (
+                  <div className={style.HistoryIMG} style={bgGradientOwner} />
+                )}
               </div>
               <div className={style.HistoryUser}>
                 <div className={style.HistoryRole}>Owner</div>
@@ -109,28 +116,14 @@ const NFTPage: React.FC<any> = ({
             <div className={style.HistoryItem}>
               <Check className={style.Check} />
               <div className={style.HistoryAvatar}>
-                <div className={style.HistoryIMG} style={bgGradient} />
-              </div>
-              <div className={`${style.HistoryUser} ${style.HistoryPast}`}>
-                <div className={style.HistoryRole}>Previous Owner</div>
-                <div className={style.HistoryName}>Satoshi Nakamoto</div>
-              </div>
-            </div>
-            <div className={style.HistoryItem}>
-              <Check className={style.Check} />
-              <div className={style.HistoryAvatar}>
-                <div className={style.HistoryIMG} style={bgGradient} />
-              </div>
-
-              <div className={`${style.HistoryUser} ${style.HistoryPast}`}>
-                <div className={style.HistoryRole}>Previous Owner</div>
-                <div className={style.HistoryName}>Satoshi Nakamoto</div>
-              </div>
-            </div>
-            <div className={style.HistoryItem}>
-              <Check className={style.Check} />
-              <div className={style.HistoryAvatar}>
-                <div className={style.HistoryIMG} style={bgGradientCreator} />
+                {NFT.creatorData.picture ? (
+                  <img
+                    src={NFT.creatorData.picture}
+                    className={style.HistoryIMG}
+                  />
+                ) : (
+                  <div className={style.HistoryIMG} style={bgGradientCreator} />
+                )}
               </div>
               <div className={style.HistoryUser}>
                 <div className={style.HistoryRole}>Creator</div>

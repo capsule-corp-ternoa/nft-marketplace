@@ -63,7 +63,7 @@ const Explore: React.FC<ExploreProps> = ({ NFTS }) => {
           </div>
         </div>
         <div className={style.NFTWrapper}>{returnNFTs()}</div>
-        <div className={style.Button}>Load more...</div>
+        <div className={style.Hide}>Load more...</div>
       </div>
     </>
   );

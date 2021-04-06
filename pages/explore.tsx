@@ -36,7 +36,7 @@ const ExplorePage: React.FC<any> = ({ user, data }) => {
 
 export async function getServerSideProps() {
   const user = await getUser();
-  let data = await getNFTS();
+  let data = await getNFTS().catch(() => []);
 
   data = data.filter((item: any) => item.media);
 

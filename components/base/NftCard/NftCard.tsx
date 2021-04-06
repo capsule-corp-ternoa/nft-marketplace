@@ -6,7 +6,7 @@ import Router from 'next/router';
 
 import { NftType } from 'interfaces/index';
 
-import { shortString } from 'utils/strings';
+import { computeCaps } from 'utils/strings';
 
 export interface NftCardProps {
   item: NftType;
@@ -125,7 +125,7 @@ const NftCard: React.FC<NftCardProps> = ({ item, mode }) => {
           >
             {item.price && (
               <div className={style.Price}>
-                {shortString(Number(item.price))} CAPS
+                {computeCaps(Number(item.price))} CAPS
               </div>
             )}
             <div className={style.ButtonText}>Buy</div>

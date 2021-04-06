@@ -1,7 +1,8 @@
-export function shortString(n: number) {
+export function computeCaps(n: number) {
   if (typeof n !== 'number') {
     return n;
   }
+  n = n / 1000000000000000000;
 
   if (n <= 1e4) {
     return n;

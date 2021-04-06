@@ -39,8 +39,8 @@ const Sidebar: React.FC<any> = ({
       <div className={style.Infos}>
         <div className={style.AvatarShell}>
           <div style={bgGradient} className={style.Avatar}>
-            {user.img ? (
-              <img className={style.AvatarIMG} src={user.img} />
+            {user.picture ? (
+              <img className={style.AvatarIMG} src={user.picture} />
             ) : (
               <div className={style.CreatorLetter}>{user.name.charAt(0)}</div>
             )}

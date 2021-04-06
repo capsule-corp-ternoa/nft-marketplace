@@ -84,8 +84,8 @@ const Edit: React.FC<any> = ({ user, setNotAvailable, setBanner }) => {
         </div>
         <div className={style.IMG}>
           <div style={bgGradient} className={style.Avatar}>
-            {data.img ? (
-              <img className={style.AvatarIMG} src={data.img} />
+            {data.picture ? (
+              <img className={style.AvatarIMG} src={data.picture} />
             ) : (
               <div className={style.CreatorLetter}>{user.name.charAt(0)}</div>
             )}
@@ -102,7 +102,7 @@ const Edit: React.FC<any> = ({ user, setNotAvailable, setBanner }) => {
                   if (target && target.files)
                     setData({
                       ...data,
-                      img: URL.createObjectURL(target.files[0]),
+                      picture: URL.createObjectURL(target.files[0]),
                     });
                 }}
                 className={style.HiddenInput}

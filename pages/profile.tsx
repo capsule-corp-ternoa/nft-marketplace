@@ -48,7 +48,7 @@ export async function getServerSideProps() {
     };
   }
 
-  let data = await getNFTS();
+  let data = await getNFTS().catch(() => []);
 
   data = data.filter((item: any) => item.media);
 

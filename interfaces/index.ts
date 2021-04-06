@@ -7,6 +7,7 @@ export type UserType = {
   nbFollowing: number;
   views: number;
   walletId: string;
+  picture: string;
 };
 
 export type NftType = {

@@ -37,7 +37,7 @@ const NFTPage: React.FC<any> = ({
     }
     if (type!.substr(0, 5) === 'video')
       return (
-        <video autoPlay muted loop className={style.NFTIMG}>
+        <video autoPlay muted loop playsInline className={style.NFTIMG}>
           <source id="outputVideo" src={NFT.media.url} type="video/mp4" />
         </video>
       );

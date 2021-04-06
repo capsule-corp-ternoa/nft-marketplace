@@ -60,7 +60,7 @@ const NftCard: React.FC<NftCardProps> = ({ item, mode }) => {
       );
     } else if (type!.substr(0, 5) === 'video')
       return (
-        <video autoPlay muted loop className={style.NFTIMG}>
+        <video playsInline autoPlay muted loop className={style.NFTIMG}>
           <source id="outputVideo" src={item.media!.url} type="video/mp4" />
         </video>
       );

@@ -62,11 +62,15 @@ const MainHeader: React.FC<any> = ({ setModalExpand, user }) => {
                     CAPS
                   </div>
                   <div className={style.ProfileImageContainer}>
-                    <div style={bgGradient} className={style.ProfileImage}>
-                      <div className={style.CreatorLetter}>
-                        {user.name.charAt(0)}
+                    {user.picture ? (
+                      <img src={user.picture} className={style.ProfileImage} />
+                    ) : (
+                      <div style={bgGradient} className={style.ProfileImage}>
+                        <div className={style.CreatorLetter}>
+                          {user.name.charAt(0)}
+                        </div>
                       </div>
-                    </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -113,7 +117,7 @@ const MainHeader: React.FC<any> = ({ setModalExpand, user }) => {
                 </a>
               </Link>
             </div>
-            <Link href="/5FnhujHhfXdD9Ahkn2Aw7T71GnoRr4yU42Ne5Sxc2RmmhAnm">
+            <Link href={`/${user.walletId}`}>
               <a className={style.CapsSection}>
                 <div className={style.SectionTitle}>My artist profile</div>
               </a>

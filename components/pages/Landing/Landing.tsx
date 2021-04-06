@@ -9,12 +9,11 @@ import Explore from './Explore';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
 
-import Creators from 'utils/mocks/mockCreators';
-
 const Landing: React.FC<any> = ({
   setModalExpand,
   setNotAvailable,
   user,
+  users,
   NFTSET1,
   NFTSET2,
   NFTCreators,
@@ -24,10 +23,10 @@ const Landing: React.FC<any> = ({
 
   return (
     <div className={style.Container}>
-      <Hero creators={Creators} />
+      <Hero users={users} />
       <Showcase category="Most popular" NFTs={NFTSET1} />
       <Showcase category="Best sellers" NFTs={NFTSET2} />
-      <ArtCreators NFTs={NFTCreators} creators={Creators} />
+      <ArtCreators NFTs={NFTCreators} creators={users} />
       {/*<BestSellers creators={Creators} />*/}
       <Explore NFTs={NFTExplore} />
       <Footer setNotAvailable={setNotAvailable} />

@@ -4,7 +4,7 @@ import style from './ModalShowcase.module.scss';
 import Close from 'components/assets/close';
 import Wallet from 'components/assets/wallet';
 
-import { shortString } from 'utils/strings';
+import { computeCaps } from 'utils/strings';
 
 const Modal: React.FC<any> = ({ setExp, exp, setNotAvailable, type, NFT }) => {
   function returnType() {
@@ -47,7 +47,7 @@ const Modal: React.FC<any> = ({ setExp, exp, setNotAvailable, type, NFT }) => {
             <div className={style.PricingContainer}>
               <div className={style.SB}>
                 <div className={style.PriceNumber}>
-                  {shortString(Number(NFT.price))}
+                  {computeCaps(Number(NFT.price))}
                 </div>
                 <div className={style.PriceCaps}>CAPS</div>
               </div>

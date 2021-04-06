@@ -21,7 +21,7 @@ const ArtCreators: React.FC<ArtCreatorsProps> = ({ creators, NFTs }) => {
 
   function returnCreators() {
     return creators.slice(0, 9).map((item, index) => (
-      <Link key={index} href={`/${item.name}`}>
+      <Link key={index} href={`/${item.walletId}`}>
         <a className={style.CreatorItem}>
           <Creator user={item} size="small" />
         </a>

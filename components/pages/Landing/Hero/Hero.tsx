@@ -12,15 +12,15 @@ import SoundOff from 'components/assets/SoundOff';
 import { UserType } from 'interfaces/index';
 
 export interface HeroProps {
-  creators: UserType[];
+  users: UserType[];
 }
 
-const Hero: React.FC<HeroProps> = ({ creators }) => {
+const Hero: React.FC<HeroProps> = ({ users }) => {
   const [mute, setMute] = useState(true);
 
   function returnCreators() {
-    return creators.slice(0, 10).map((item, index) => (
-      <Link key={index} href={`/creator-test`}>
+    return users.slice(0, 10).map((item, index) => (
+      <Link key={index} href={`/${item.walletId}`}>
         <a className={style.CreatorWrapper}>
           <Creator user={item} showTooltip={true} />
         </a>

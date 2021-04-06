@@ -45,6 +45,7 @@ export async function getServerSideProps({ query }: any) {
     let data = await getProfileNFTS(query.name);
 
     data = data.filter((item: any) => item.media);
+    data = data.filter((item: any) => item.listed === 1);
 
     return {
       props: { user, profile, data },

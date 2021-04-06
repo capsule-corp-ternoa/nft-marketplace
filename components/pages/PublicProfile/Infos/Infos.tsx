@@ -44,7 +44,7 @@ const Infos: React.FC<any> = ({ user, setNotAvailable }) => {
           <div className={style.Right}>
             <div className={style.Top}>
               <div
-                className={style.Address}
+                className={style.Hide}
                 onClick={() => {
                   navigator.clipboard.writeText(user.walletId);
                 }}
@@ -59,7 +59,7 @@ const Infos: React.FC<any> = ({ user, setNotAvailable }) => {
                 Follow
               </div>
             </div>
-            <div className={style.Bottom}>
+            <div className={style.Hide}>
               <span className={style.Bold}>{user.nbFollowers}</span>followers
               <span className={style.Separator}>·</span>
               <span className={style.Bold}>{user.nbFollowing}</span>following

@@ -57,6 +57,7 @@ export async function getServerSideProps() {
   users = arrayShuffle(users);
 
   data = data.filter((item: any) => item.media);
+  data = data.filter((item: any) => item.listed === 1);
 
   let NFTSET1 = arrayShuffle(data.slice(0, 8));
   let NFTSET2 = arrayShuffle(data.slice(9, 17));
@@ -71,34 +72,3 @@ export async function getServerSideProps() {
 }
 
 export default LandingPage;
-
-/*
-
-export async function getServerSideProps() {
-  let users = [];
-  let NFTSET1;
-  let NFTSET2;
-  let NFTCreators;
-  let NFTExplore;
-  let data;
-  let user;
-  try {
-    user = await getUser();
-    users = await getUsers();
-    data = await getNFTS();
-    NFTSET1 = arrayShuffle(data.slice(0, 8));
-    NFTSET2 = arrayShuffle(data.slice(9, 17));
-    NFTCreators = arrayShuffle(data.slice(18, 21));
-    NFTExplore = arrayShuffle(data.slice(0, 8));
-
-    users = arrayShuffle(users);
-    data = data.filter((item: any) => item.media);
-  } catch (err) {
-    console.log(err);
-  }
-
-  return {
-    props: { user, users, NFTSET1, NFTSET2, NFTCreators, NFTExplore },
-  };
-}
-*/

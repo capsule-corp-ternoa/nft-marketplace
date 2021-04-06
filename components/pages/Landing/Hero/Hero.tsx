@@ -76,7 +76,7 @@ const Hero: React.FC<HeroProps> = ({ users }) => {
               </div>
               <div className={style.ContentContainer}>
                 <div className={style.Headline}>
-                  <span className={style.Light}>Be the firsts</span>
+                  <span className={style.Light}>Be the first</span>
                   <div className={style.Bold}>Try SecretNFT</div>
                 </div>
                 <p className={style.Description}>

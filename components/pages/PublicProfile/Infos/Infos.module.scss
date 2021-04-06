@@ -1,4 +1,4 @@
-@import 'style/colors.scss';
+@import "style/colors.scss";
 
 .Infos {
   display: flex;
@@ -34,7 +34,7 @@
 
 .CreatorLetter {
   font-size: 40px;
-  font-family: 'Airbnb Cereal App Medium';
+  font-family: "Airbnb Cereal App Medium";
   text-transform: uppercase;
   color: white;
 }
@@ -71,14 +71,14 @@
 }
 
 .Name {
-  font-family: 'Airbnb Cereal App Bold';
+  font-family: "Airbnb Cereal App Bold";
   font-size: 40px;
   line-height: 52px;
   margin: 0px;
 }
 
 .Twitter {
-  font-family: 'Airbnb Cereal App Light';
+  font-family: "Airbnb Cereal App Light";
   font-size: 16px;
   line-height: 21px;
   color: #b1b1b1;
@@ -102,7 +102,7 @@
 }
 
 .Description {
-  font-family: 'Airbnb Cereal App Book';
+  font-family: "Airbnb Cereal App Book";
   font-size: 16px;
   line-height: 21px;
   margin-top: 8px;
@@ -122,7 +122,7 @@
 }
 
 .Address {
-  font-family: 'Airbnb Cereal App Bold';
+  font-family: "Airbnb Cereal App Bold";
   font-size: 12px;
   line-height: 15px;
   margin: 0px;
@@ -137,7 +137,7 @@
 
 .Button {
   cursor: pointer;
-  font-family: 'Airbnb Cereal App Medium';
+  font-family: "Airbnb Cereal App Medium";
   display: flex;
   justify-content: center;
   align-items: center;
@@ -157,22 +157,26 @@
 .Bottom {
   display: flex;
   align-items: center;
-  font-family: 'Airbnb Cereal App Light';
+  font-family: "Airbnb Cereal App Light";
   font-size: 16px;
   line-height: 20px;
   margin-top: 10px;
 }
 
 .Separator {
-  font-family: 'Airbnb Cereal App Bold';
+  font-family: "Airbnb Cereal App Bold";
   margin: 0px 10px;
   font-size: 18px;
 }
 
 .Bold {
-  font-family: 'Airbnb Cereal App Bold';
+  font-family: "Airbnb Cereal App Bold";
   margin-right: 4px;
   margin-top: 0.5px;
+}
+
+.Hide {
+  display: none;
 }
 
 @media (max-width: 1300px) {
@@ -191,7 +195,7 @@
   }
 
   .Name {
-    font-family: 'Airbnb Cereal App Bold';
+    font-family: "Airbnb Cereal App Bold";
     font-size: 34px;
     line-height: 42px;
     margin-bottom: 4px;
@@ -228,7 +232,7 @@
   .Bottom {
     display: flex;
     align-items: center;
-    font-family: 'Airbnb Cereal App Light';
+    font-family: "Airbnb Cereal App Light";
     font-size: 14px;
     line-height: 18px;
     margin-top: 10px;
@@ -286,7 +290,7 @@
   }
 
   .Name {
-    font-family: 'Airbnb Cereal App Bold';
+    font-family: "Airbnb Cereal App Bold";
     font-size: 28px;
     line-height: 36px;
     margin-bottom: 4px;

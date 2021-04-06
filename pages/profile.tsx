@@ -51,6 +51,7 @@ export async function getServerSideProps() {
   let data = await getNFTS().catch(() => []);
 
   data = data.filter((item: any) => item.media);
+  data = data.filter((item: any) => item.listed === 1);
 
   return {
     props: { user, data },

@@ -54,12 +54,10 @@ const Modal: React.FC<any> = ({ setExp, exp, setNotAvailable, type, NFT }) => {
               <div className={style.Line} />
               <div className={style.SB}>
                 <div className={style.SBLight}>Your balance</div>
-                <div className={style.SBLight}>12000 CAPS</div>
+                <div className={style.SBLight}>0 CAPS</div>
               </div>
             </div>
-            <div className={style.Warning}>
-              This is an exemple using fake data.
-            </div>
+
             <div className={style.Buttons}>
               <div className={style.Buy} onClick={() => setNotAvailable(true)}>
                 Proceed to payment

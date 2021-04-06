@@ -17,7 +17,6 @@ const LandingPage: React.FC<any> = ({
   NFTSET1,
   NFTSET2,
   NFTCreators,
-  NFTExplore,
 }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
@@ -42,7 +41,6 @@ const LandingPage: React.FC<any> = ({
         NFTSET1={NFTSET1}
         NFTSET2={NFTSET2}
         NFTCreators={NFTCreators}
-        NFTExplore={NFTExplore}
       />
     </>
   );
@@ -64,10 +62,8 @@ export async function getServerSideProps() {
 
   let NFTCreators = arrayShuffle(data.slice(18, 21));
 
-  let NFTExplore = arrayShuffle(data.slice(0, 8));
-
   return {
-    props: { user, users, NFTSET1, NFTSET2, NFTCreators, NFTExplore },
+    props: { user, users, NFTSET1, NFTSET2, NFTCreators },
   };
 }
 

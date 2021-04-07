@@ -63,7 +63,11 @@ const Creator: React.FC<CreatorProps> = ({
       >
         {user.verified && <Badge className={manageBadgeClass()} />}
         {user.picture ? (
-          <img className={style.CreatorsImage} src={user.picture} />
+          <img
+            className={style.CreatorsImage}
+            draggable="false"
+            src={user.picture}
+          />
         ) : (
           <div style={bgGradient} className={style.CreatorsImage}>
             <div

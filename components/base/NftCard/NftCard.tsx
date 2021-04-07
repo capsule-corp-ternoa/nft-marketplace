@@ -3,6 +3,7 @@ import style from './NftCard.module.scss';
 import Heart from 'components/assets/heart';
 import Creator from '../Creator';
 import Router from 'next/router';
+import { useMediaQuery } from 'react-responsive';
 
 import { NftType } from 'interfaces/index';
 
@@ -11,6 +12,7 @@ import { computeCaps } from 'utils/strings';
 export interface NftCardProps {
   item: NftType;
   mode: string;
+  isDragging?: boolean;
 }
 
 function manageRouting(e: any, id: any) {
@@ -18,7 +20,7 @@ function manageRouting(e: any, id: any) {
   Router.push(`/${id}`);
 }
 
-const NftCard: React.FC<NftCardProps> = ({ item, mode }) => {
+const NftCard: React.FC<NftCardProps> = ({ item, mode, isDragging }) => {
   const [isHovering, setIsHovering] = useState(false);
   const [type, setType] = useState<string | null>(null);
 
@@ -66,14 +68,16 @@ const NftCard: React.FC<NftCardProps> = ({ item, mode }) => {
       );
   }
 
+  const isMobile = useMediaQuery({ query: '(max-device-width: 720px)' });
+
   return (
     <div
-      onClick={() => Router.push(`/nft/${item.id}`)}
+      onClick={() => !isDragging && Router.push(`/nft/${item.id}`)}
       className={manageClass()}
       onFocus={() => false}
       onBlur={() => false}
-      onMouseOver={() => setIsHovering(true)}
-      onMouseOut={() => setIsHovering(false)}
+      onMouseOver={() => !isMobile && setIsHovering(true)}
+      onMouseOut={() => !isMobile && setIsHovering(false)}
     >
       {returnType()}
       {item.cryptedMedia?.url !== item.media?.url && !isHovering && (

@@ -22,7 +22,7 @@ const Wallet: React.FC<any> = ({ user, setModalExpand, setNotAvailable }) => {
       <div className={style.Wallet}>
         <div className={style.AvatarShell}>
           <div className={style.Avatar}>
-            <img className={style.AvatarIMG} src={user.img} />
+            <img className={style.AvatarIMG} draggable="false" src={user.img} />
             {user.verified && <Badge className={style.Badge} />}
           </div>
         </div>

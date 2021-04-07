@@ -85,7 +85,11 @@ const Edit: React.FC<any> = ({ user, setNotAvailable, setBanner }) => {
         <div className={style.IMG}>
           <div style={bgGradient} className={style.Avatar}>
             {data.picture ? (
-              <img className={style.AvatarIMG} src={data.picture} />
+              <img
+                draggable="false"
+                className={style.AvatarIMG}
+                src={data.picture}
+              />
             ) : (
               <div className={style.CreatorLetter}>{user.name.charAt(0)}</div>
             )}

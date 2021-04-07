@@ -135,7 +135,12 @@ const Profile: React.FC<any> = ({
   return (
     <div className={style.Container}>
       <div className={style.Banner}>
-        <img className={style.BannerIMG} src={banner} alt="banner" />
+        <img
+          className={style.BannerIMG}
+          src={banner}
+          draggable="false"
+          alt="banner"
+        />
       </div>
       <div className={style.Wrapper}>
         <Sidebar

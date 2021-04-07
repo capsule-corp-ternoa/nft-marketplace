@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Switch from 'react-switch';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
@@ -51,6 +51,18 @@ export interface ShowcaseProps {
 
 const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category }) => {
   const [isFiltered, setIsFiltered] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+
+  useEffect(() => {
+    /*
+    let drag = false;
+
+    document.addEventListener('mousedown', () => (drag = false));
+    document.addEventListener('mousemove', () => (drag = true));
+    document.addEventListener('mouseup', () =>
+      console.log(drag ? 'drag' : 'click')
+    );*/
+  }, []);
 
   let carousel: Carousel | null = new Carousel({
     responsive: {},
@@ -60,7 +72,7 @@ const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category }) => {
   function returnNFTs() {
     return NFTs.map((item) => (
       <div key={item.id} className={style.NFTShell}>
-        <NFTCard mode="Carousel" item={item} />
+        <NFTCard mode="Carousel" isDragging={isDragging} item={item} />
       </div>
     ));
   }
@@ -109,7 +121,13 @@ const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category }) => {
           </div>
         </div>
         <div className={style.Wrapper}>
-          <div className={style.NFTContainer}>
+          <div
+            className={style.NFTContainer}
+            onMouseDown={() => setIsDragging(false)}
+            onMouseMove={() => setIsDragging(true)}
+            onTouchStart={() => setIsDragging(false)}
+            onTouchMove={() => setIsDragging(true)}
+          >
             <Carousel
               ref={(el) => {
                 carousel = el;

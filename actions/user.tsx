@@ -4,6 +4,8 @@ export const getUser = async () => {
     `https://ternoa-marketplace-nft.herokuapp.com/api/user/${id}`
   );
 
+  if (!res.ok) throw new Error();
+
   const data = await res.json();
 
   return data;

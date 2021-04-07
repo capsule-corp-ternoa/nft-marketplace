@@ -44,6 +44,12 @@
   padding: 6px 12px;
 }
 
+.Link {
+  text-decoration: underline;
+  color: white;
+  text-underline-offset: 1px;
+}
+
 @media (max-width: 950px) {
   .Banner {
     flex-direction: column;

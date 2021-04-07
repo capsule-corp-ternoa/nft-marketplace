@@ -63,7 +63,11 @@ const MainHeader: React.FC<any> = ({ setModalExpand, user }) => {
                   </div>
                   <div className={style.ProfileImageContainer}>
                     {user.picture ? (
-                      <img src={user.picture} className={style.ProfileImage} />
+                      <img
+                        src={user.picture}
+                        draggable="false"
+                        className={style.ProfileImage}
+                      />
                     ) : (
                       <div style={bgGradient} className={style.ProfileImage}>
                         <div className={style.CreatorLetter}>

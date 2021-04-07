@@ -215,15 +215,9 @@
 
 @media (max-width: 720px) {
   .Close {
-    position: absolute;
-    top: inherit;
-    bottom: 64px;
-    right: auto;
-    fill: white;
-    cursor: pointer;
-    width: 32px;
-    margin-left: auto;
-    margin-right: auto;
+    width: 20px;
+    top: 25px;
+    right: 25px;
   }
 
   .NFT {

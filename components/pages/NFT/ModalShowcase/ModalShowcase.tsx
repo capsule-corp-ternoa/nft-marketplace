@@ -10,7 +10,14 @@ const Modal: React.FC<any> = ({ setExp, exp, setNotAvailable, type, NFT }) => {
   function returnType() {
     if (!type) return null;
     if (type!.substr(0, 5) === 'image') {
-      return <img className={style.NFTIMG} src={NFT.media.url} alt="imgnft" />;
+      return (
+        <img
+          className={style.NFTIMG}
+          draggable="false"
+          src={NFT.media.url}
+          alt="imgnft"
+        />
+      );
     } else if (type!.substr(0, 5) === 'video')
       return (
         <video autoPlay muted loop playsInline className={style.NFTIMG}>

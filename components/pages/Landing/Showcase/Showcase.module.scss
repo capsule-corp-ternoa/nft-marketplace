@@ -141,7 +141,7 @@
 
 @media (max-width: 720px) {
   .Showcase {
-    padding: 32px 16px;
+    padding: 50px 16px;
   }
   .Infos {
     flex-direction: column;
@@ -170,7 +170,25 @@
   }
 
   .CarouselContainer {
-    padding: 24px 0px;
+    display: none;
+  }
+
+  .NFTContainer {
+    display: flex;
+    box-sizing: border-box;
     overflow-x: scroll;
+    justify-content: flex-start;
+    margin: 0px;
+    padding: 0px;
+    padding-top: 20px;
+    width: 100%;
+  }
+
+  .NFTShell {
+    margin: 0px 16px;
+  }
+
+  .NFTShell:nth-child(2) {
+    margin-left: 0px;
   }
 }

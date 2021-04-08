@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Switch from 'react-switch';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
+import { useMediaQuery } from 'react-responsive';
 
 import style from './Showcase.module.scss';
 
@@ -77,6 +78,8 @@ const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category }) => {
     ));
   }
 
+  const isMobile = useMediaQuery({ query: '(max-device-width: 720px)' });
+
   return (
     <>
       <div className={style.Showcase}>
@@ -133,7 +136,7 @@ const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category }) => {
                 carousel = el;
               }}
               responsive={responsive}
-              infinite
+              infinite={isMobile ? false : true}
               arrows={false}
               className={style.CarouselContainer}
               swipeable={true}

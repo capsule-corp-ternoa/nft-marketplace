@@ -3,11 +3,15 @@ import React from 'react';
 import Link from 'next/link';
 import style from './Landing.module.scss';
 import Hero from './Hero';
-import Showcase from './Showcase';
 import ArtCreators from './ArtCreators';
 //import BestSellers from './BestSellers';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
+
+import dynamic from 'next/dynamic';
+const Showcase = dynamic(() => import('./Showcase'), {
+  ssr: false,
+});
 
 const Landing: React.FC<any> = ({
   setModalExpand,

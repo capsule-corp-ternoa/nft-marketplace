@@ -57,6 +57,7 @@ const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category }) => {
   useEffect(() => {}, []);
 
   const isMobile = useMediaQuery({ query: '(max-width: 720px)' });
+
   let carousel: Carousel | null = new Carousel({
     responsive: {},
     children: <></>,
@@ -133,6 +134,7 @@ const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category }) => {
                   }}
                   responsive={responsive}
                   infinite
+                  ssr={false}
                   arrows={false}
                   className={style.CarouselContainer}
                   swipeable={true}

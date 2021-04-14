@@ -6,6 +6,7 @@ import TernoaWallet from 'components/base/TernoaWallet';
 import NFTPage from 'components/pages/NFT';
 import ModalShowcase from 'components/pages/NFT/ModalShowcase';
 import NotAvailableModal from 'components/base/NotAvailable';
+import cookies from 'next-cookies';
 
 import { getUser } from 'actions/user';
 import { getNFT } from 'actions/nft';
@@ -65,10 +66,18 @@ const NftPage = ({ user, NFT }: any) => {
   );
 };
 
-export async function getServerSideProps({ query }: any) {
+export async function getServerSideProps(ctx: any) {
   try {
-    const user = await getUser();
-    let NFT = await getNFT(query.name);
+    let user = null;
+    try {
+      const token = cookies(ctx).token;
+      if (token) {
+        user = await getUser(token);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    let NFT = await getNFT(ctx.query.name);
 
     return {
       props: { user, NFT },

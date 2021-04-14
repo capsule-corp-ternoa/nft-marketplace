@@ -6,6 +6,7 @@ import TernoaWallet from 'components/base/TernoaWallet';
 import Profile from 'components/pages/Profile';
 import Creators from 'utils/mocks/mockCreators';
 import NotAvailableModal from 'components/base/NotAvailable';
+import cookies from 'next-cookies';
 
 import { getUser } from 'actions/user';
 import { getNFTS } from 'actions/nft';
@@ -37,8 +38,17 @@ const ProfilePage = ({ user, data }: any) => {
   );
 };
 
-export async function getServerSideProps() {
-  const user = await getUser();
+export async function getServerSideProps(ctx: any) {
+  let user = null;
+  try {
+    const token = cookies(ctx).token;
+    if (token) {
+      user = await getUser(token);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+
   if (!user) {
     return {
       redirect: {

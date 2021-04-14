@@ -7,6 +7,7 @@ import TernoaWallet from 'components/base/TernoaWallet';
 import NotAvailableModal from 'components/base/NotAvailable';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
+import cookies from 'next-cookies';
 
 import { getUser } from 'actions/user';
 import { getNFTS } from 'actions/nft';
@@ -34,8 +35,16 @@ const ExplorePage: React.FC<any> = ({ user, data }) => {
   );
 };
 
-export async function getServerSideProps() {
-  const user = await getUser();
+export async function getServerSideProps(ctx: any) {
+  let user = null;
+  try {
+    const token = cookies(ctx).token;
+    if (token) {
+      user = await getUser(token);
+    }
+  } catch (error) {
+    console.error(error);
+  }
   let data = await getNFTS().catch(() => []);
 
   data = data.filter((item: any) => item.media);

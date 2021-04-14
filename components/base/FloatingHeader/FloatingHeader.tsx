@@ -90,7 +90,7 @@ const FloatingHeader: React.FC<any> = ({ user, setModalExpand }) => {
                     : style.NumberCaps
                 }
               >
-                {user.caps}
+                0
               </span>
               CAPS
             </div>

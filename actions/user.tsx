@@ -1,7 +1,13 @@
-export const getUser = async () => {
+export const getUser = async (token?: any) => {
   /*
   const res = await fetch(
-    `https://ternoa-marketplace-nft.herokuapp.com/api/user/${id}`
+    `https://ternoa-marketplace-nft.herokuapp.com/api/auth/me`,
+    {
+      headers: new Headers({
+        Authorization: 'Bearer ' + token,
+        'Content-Type': 'application/json',
+      }),
+    }
   );
 
   if (!res.ok) throw new Error();
@@ -11,7 +17,15 @@ export const getUser = async () => {
   return data;
   */
 
-  return false;
+  const res = await fetch(
+    `https://ternoa-marketplace-nft.herokuapp.com/api/users/${token}`
+  );
+
+  if (!res.ok) throw new Error();
+
+  const data = await res.json();
+
+  return data;
 };
 
 export const getProfile = async (id: any) => {

@@ -7,6 +7,7 @@ import TernoaWallet from 'components/base/TernoaWallet';
 import NotAvailableModal from 'components/base/NotAvailable';
 
 import arrayShuffle from 'array-shuffle';
+import cookies from 'next-cookies';
 
 import { getUser, getUsers } from 'actions/user';
 import { getNFTS } from 'actions/nft';
@@ -46,10 +47,19 @@ const LandingPage: React.FC<any> = ({
   );
 };
 
-export async function getServerSideProps() {
+export async function getServerSideProps(ctx: any) {
+  let user = null;
   let users = await getUsers().catch(() => []);
 
-  const user = await getUser();
+  try {
+    const token = cookies(ctx).token;
+    if (token) {
+      user = await getUser(token);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+
   let data = await getNFTS().catch(() => []);
 
   users = arrayShuffle(users);

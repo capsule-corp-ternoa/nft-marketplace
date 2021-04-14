@@ -5,6 +5,7 @@ import MainHeader from 'components/base/MainHeader';
 import TernoaWallet from 'components/base/TernoaWallet';
 import Create from 'components/pages/Create';
 import NotAvailableModal from 'components/base/NotAvailable';
+import cookies from 'next-cookies';
 
 import { getUser } from 'actions/user';
 
@@ -33,8 +34,17 @@ const CreatePage = ({ user }: any) => {
   );
 };
 
-export async function getServerSideProps() {
-  const user = await getUser();
+export async function getServerSideProps(ctx: any) {
+  let user = null;
+  try {
+    const token = cookies(ctx).token;
+    if (token) {
+      user = await getUser(token);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+
   return {
     props: { user },
   };

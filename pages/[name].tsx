@@ -5,6 +5,7 @@ import MainHeader from 'components/base/MainHeader';
 import TernoaWallet from 'components/base/TernoaWallet';
 import PublicProfile from 'components/pages/PublicProfile';
 import NotAvailableModal from 'components/base/NotAvailable';
+import cookies from 'next-cookies';
 
 import { getUser, getProfile } from 'actions/user';
 import { getProfileNFTS } from 'actions/nft';
@@ -38,11 +39,20 @@ const PublicProfilePage = ({ user, data, profile }: any) => {
     </>
   );
 };
-export async function getServerSideProps({ query }: any) {
+export async function getServerSideProps(ctx: any) {
   try {
-    const user = await getUser();
-    const profile = await getProfile(query.name);
-    let data = await getProfileNFTS(query.name);
+    let user = null;
+    try {
+      const token = cookies(ctx).token;
+      if (token) {
+        user = await getUser(token);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+
+    const profile = await getProfile(ctx.query.name);
+    let data = await getProfileNFTS(ctx.query.name);
 
     data = data.filter((item: any) => item.media);
     data = data.filter((item: any) => item.listed === 1);

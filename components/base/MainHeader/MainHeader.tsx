@@ -58,7 +58,7 @@ const MainHeader: React.FC<any> = ({ setModalExpand, user }) => {
                   className={style.Profile}
                 >
                   <div className={style.Caps}>
-                    <span className={style.NumberCaps}>{user?.caps}</span>
+                    <span className={style.NumberCaps}>0</span>
                     CAPS
                   </div>
                   <div className={style.ProfileImageContainer}>

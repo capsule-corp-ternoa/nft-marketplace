@@ -24,6 +24,10 @@ const TernoaWallet: React.FC<any> = ({ setModalExpand }) => {
       });
       window.location.reload();
     });
+
+    return function cleanup() {
+      socket.close();
+    };
   }, []);
 
   return (

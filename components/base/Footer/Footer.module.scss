@@ -1,4 +1,4 @@
-@import "style/colors.scss";
+@import 'style/colors.scss';
 
 .Footer {
   display: flex;
@@ -26,11 +26,12 @@
   margin-top: 100px;
   width: 100%;
   box-sizing: border-box;
+  z-index: 2;
 }
 
 .Insight {
   text-align: center;
-  font-family: "Airbnb Cereal App Book";
+  font-family: 'Airbnb Cereal App Book';
   color: white;
   font-style: normal;
   font-weight: bold;
@@ -55,7 +56,7 @@
   width: 100%;
   padding: 20px 40px;
   color: white;
-  font-family: "Airbnb Cereal App Book";
+  font-family: 'Airbnb Cereal App Book';
   font-size: 18px;
 }
 
@@ -72,7 +73,7 @@
   top: 4px;
   cursor: pointer;
   color: white;
-  font-family: "Airbnb Cereal App Bold";
+  font-family: 'Airbnb Cereal App Bold';
   font-size: 14px;
 }
 
@@ -116,7 +117,7 @@
 .Link,
 .Text {
   margin-right: 16px;
-  font-family: "Airbnb Cereal App Medium";
+  font-family: 'Airbnb Cereal App Medium';
   font-size: 14px;
   line-height: 15px;
   color: #686464;

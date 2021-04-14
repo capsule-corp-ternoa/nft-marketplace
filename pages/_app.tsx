@@ -37,7 +37,9 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
           }}
         ></script>
       </Head>
+
       <Component {...pageProps} />
+
       {!cookiesConsent && !hide && (
         <div className="cookies">
           We use cookies.

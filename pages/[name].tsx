@@ -5,6 +5,7 @@ import MainHeader from 'components/base/MainHeader';
 import TernoaWallet from 'components/base/TernoaWallet';
 import PublicProfile from 'components/pages/PublicProfile';
 import NotAvailableModal from 'components/base/NotAvailable';
+import cookies from 'next-cookies';
 
 import { getUser, getProfile } from 'actions/user';
 import { getProfileNFTS } from 'actions/nft';
@@ -50,12 +51,19 @@ const PublicProfilePage: React.FC<PublicProfileProps> = ({
     </>
   );
 };
-export async function getServerSideProps({ query }: NextPageContext) {
+export async function getServerSideProps(ctx: NextPageContext) {
   try {
-    const user = await getUser();
-    const profile = await getProfile(query.name as string);
-    let data = await getProfileNFTS(query.name as string);
-
+    let user = null;
+    try {
+      const token = cookies(ctx).token;
+      if (token) {
+        user = await getUser();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    const profile = await getProfile(ctx.query.name as string);
+    let data = await getProfileNFTS(ctx.query.name as string);
     data = data.filter((item: NftType) => item.listed === 1);
 
     return {

@@ -5,9 +5,10 @@ import MainHeader from 'components/base/MainHeader';
 import TernoaWallet from 'components/base/TernoaWallet';
 import NotAvailableModal from 'components/base/NotAvailable';
 import FAQ from 'components/pages/FAQ';
-
+import cookies from 'next-cookies';
 import { getUser } from 'actions/user';
 import { UserType } from 'interfaces';
+import { NextPageContext } from 'next';
 
 export interface FAQProps {
   user: UserType;
@@ -38,8 +39,16 @@ const FAQPage: React.FC<FAQProps> = ({ user }) => {
   );
 };
 
-export async function getServerSideProps() {
-  const user = await getUser();
+export async function getServerSideProps(ctx: NextPageContext) {
+  let user = null;
+  try {
+    const token = cookies(ctx).token;
+    if (token) {
+      user = await getUser();
+    }
+  } catch (error) {
+    console.error(error);
+  }
 
   return {
     props: { user },

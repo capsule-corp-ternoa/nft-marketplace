@@ -7,10 +7,12 @@ import TernoaWallet from 'components/base/TernoaWallet';
 import NotAvailableModal from 'components/base/NotAvailable';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
+import cookies from 'next-cookies';
 
 import { getUser } from 'actions/user';
 import { getNFTS } from 'actions/nft';
 import { NftType, UserType } from 'interfaces';
+import { NextPageContext } from 'next';
 
 export interface ExplorePage {
   user: UserType;
@@ -40,8 +42,16 @@ const ExplorePage: React.FC<ExplorePage> = ({ user, data }) => {
   );
 };
 
-export async function getServerSideProps() {
-  const user = await getUser();
+export async function getServerSideProps(ctx: NextPageContext) {
+  let user = null;
+  try {
+    const token = cookies(ctx).token;
+    if (token) {
+      user = await getUser();
+    }
+  } catch (error) {
+    console.error(error);
+  }
   let data = await getNFTS().catch(() => []);
 
   data = data.filter((item: NftType) => item.listed === 1);

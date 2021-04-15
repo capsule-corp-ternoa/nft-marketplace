@@ -4,7 +4,7 @@ export const getNFTS = async () => {
   );
   const data = await res.json();
 
-  return data;
+  return data.slice(0, 25);
 };
 
 export const getProfileNFTS = async (id: any) => {

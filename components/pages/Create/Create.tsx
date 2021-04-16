@@ -10,21 +10,30 @@ import Eye from 'components/assets/eye';
 
 import { UserType } from 'interfaces/index';
 
+import { imgToBlur, imgToWatermark } from 'utils/imageProcessing/image';
+
+import { cryptFile, useSkynetUpload, getNftJson } from 'actions/siasky';
+
 export interface CreateProps {
   user: UserType;
   setModalExpand: (b: boolean) => void;
   setNotAvailable: (b: boolean) => void;
+  setModalCreate: (b: boolean) => void;
 }
 
-const Create: React.FC<CreateProps> = ({
+const Create: React.FC<any> = ({
   setModalExpand,
   setNotAvailable,
+  setModalCreate,
   user,
 }) => {
   const [select, setSelect] = useState('Select NFT Option');
   const [exp, setExp] = useState(false);
   const [NFT, setNFT] = useState<File | null>(null);
   const [secretNFT, setSecretNFT] = useState<File | null>(null);
+  const [skylinkMedia, statusMedia, uploadFileMedia] = useSkynetUpload();
+  const [skylinkSecret, statusSecret, uploadFileSecret] = useSkynetUpload();
+  const [skylinkJSON, statusJSON, uploadFileJSON] = useSkynetUpload();
 
   function returnType(NFTarg: File) {
     if (NFTarg!.type.substr(0, 5) === 'image')
@@ -46,6 +55,52 @@ const Create: React.FC<CreateProps> = ({
           />
         </video>
       );
+  }
+
+  async function uploadFiles() {
+    // upload preview media
+    if (!NFT) return;
+    const link1 = await uploadFileMedia(NFT);
+
+    if (statusMedia === 'error') return;
+
+    // encrypt media
+    const crypted = await cryptFile(NFT!);
+    if (!crypted) return null;
+
+    // upload encrypted media
+    const link2 = await uploadFileSecret(crypted);
+    if(statusSecret === 'error') return;
+
+    const json = getNftJson({
+      internalid: '',
+      name: 'NFT Test',
+      description: 'Test description',
+      media: link1,
+      mediaType: 'image/jpeg',
+      cryptedMedia: link2,
+      cryptedMediaType: 'image/jpeg',
+    });
+
+    // upload json
+    const link3 = await uploadFileJSON(json);
+    console.log(link3);
+  }
+
+  async function processFile() {
+    if (select === 'Blur' && NFT!.type.substr(0, 5) === 'image') {
+      const res = await imgToBlur(NFT);
+      console.log(res);
+    }
+
+    if (select === 'Protect' && NFT!.type.substr(0, 5) === 'image') {
+      const res = imgToWatermark(NFT);
+      console.log(res);
+    }
+
+    setModalCreate(true);
+
+    //setPayload sia URL
   }
 
   return (
@@ -225,8 +280,8 @@ const Create: React.FC<CreateProps> = ({
               </div>
             </div>
           </div>
-          <div className={style.Create} onClick={() => setNotAvailable(true)}>
-            Create NFT
+          <div className={style.Create} onClick={() => uploadFiles()}>
+            Create NFT {`${statusMedia}/${statusSecret}/${statusJSON}`}
           </div>
         </div>
       </div>

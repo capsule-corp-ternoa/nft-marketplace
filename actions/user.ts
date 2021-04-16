@@ -4,7 +4,7 @@ export const getUser = async () => {
 
 export const getProfile = async (id: string) => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_NODE_API_DEV}/api/users/${id}`
+    `${process.env.NEXT_PUBLIC_NODE_API}/api/users/${id}`
   );
 
   if (!res.ok) throw new Error();
@@ -15,7 +15,7 @@ export const getProfile = async (id: string) => {
 };
 
 export const getUsers = async () => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API_DEV}/api/users`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/users`);
 
   if (!res.ok) throw new Error();
 

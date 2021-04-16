@@ -4,6 +4,7 @@ import AlphaBanner from 'components/base/AlphaBanner';
 import MainHeader from 'components/base/MainHeader';
 import TernoaWallet from 'components/base/TernoaWallet';
 import Create from 'components/pages/Create';
+import ModalMint from 'components/pages/Create/ModalMint';
 import NotAvailableModal from 'components/base/NotAvailable';
 import cookies from 'next-cookies';
 
@@ -18,6 +19,8 @@ export interface CreatePageProps {
 const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
+  const [modalCreate, setModalCreate] = useState(false);
+  const [payload, setPayload] = useState(null);
 
   return (
     <>
@@ -29,11 +32,20 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
       </Head>
       {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
       {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
+      {modalCreate && (
+        <ModalMint
+          setPayload={setPayload}
+          payload={payload}
+          setModalCreate={setModalCreate}
+        />
+      )}
       <AlphaBanner />
       <MainHeader user={user} setModalExpand={setModalExpand} />
       <Create
         setModalExpand={setModalExpand}
         setNotAvailable={setNotAvailable}
+        setModalCreate={setModalCreate}
+        setPayload={setPayload}
         user={user}
       />
     </>

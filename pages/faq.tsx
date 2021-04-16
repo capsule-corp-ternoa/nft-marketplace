@@ -5,10 +5,15 @@ import MainHeader from 'components/base/MainHeader';
 import TernoaWallet from 'components/base/TernoaWallet';
 import NotAvailableModal from 'components/base/NotAvailable';
 import FAQ from 'components/pages/FAQ';
-import cookies from 'next-cookies';
-import { getUser } from 'actions/user';
 
-const FAQPage: React.FC<any> = ({ user }) => {
+import { getUser } from 'actions/user';
+import { UserType } from 'interfaces';
+
+export interface FAQProps {
+  user: UserType;
+}
+
+const FAQPage: React.FC<FAQProps> = ({ user }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
 
@@ -33,16 +38,8 @@ const FAQPage: React.FC<any> = ({ user }) => {
   );
 };
 
-export async function getServerSideProps(ctx: any) {
-  let user = null;
-  try {
-    const token = cookies(ctx).token;
-    if (token) {
-      user = await getUser(token);
-    }
-  } catch (error) {
-    console.error(error);
-  }
+export async function getServerSideProps() {
+  const user = await getUser();
 
   return {
     props: { user },

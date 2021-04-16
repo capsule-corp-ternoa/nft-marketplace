@@ -5,11 +5,15 @@ import MainHeader from 'components/base/MainHeader';
 import TernoaWallet from 'components/base/TernoaWallet';
 import Wallet from 'components/pages/Wallet';
 import NotAvailableModal from 'components/base/NotAvailable';
-import cookies from 'next-cookies';
 
 import { getUser } from 'actions/user';
+import { UserType } from 'interfaces';
 
-const WalletPage = ({ user }: any) => {
+export interface WalletPageProps {
+  user: UserType;
+}
+
+const WalletPage: React.FC<WalletPageProps> = ({ user }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
 
@@ -34,17 +38,8 @@ const WalletPage = ({ user }: any) => {
   );
 };
 
-export async function getServerSideProps(ctx: any) {
-  let user = null;
-  try {
-    const token = cookies(ctx).token;
-    if (token) {
-      user = await getUser(token);
-    }
-  } catch (error) {
-    console.error(error);
-  }
-
+export async function getServerSideProps() {
+  const user = await getUser();
   if (!user) {
     return {
       redirect: {

@@ -1,23 +1,29 @@
 import React from 'react';
-//import { useTranslation } from 'react-i18next';
 import style from './PublicProfile.module.scss';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
 import Infos from './Infos';
 
 import NFTCard from 'components/base/NftCard';
+import { NftType, UserType } from 'interfaces';
 
-const PublicProfile: React.FC<any> = ({
+export interface PublicProfileProps {
+  user: UserType;
+  setNotAvailable: (b: boolean) => void;
+  setModalExpand: (b: boolean) => void;
+  NFTS: NftType[];
+  profile: UserType;
+}
+
+const PublicProfile: React.FC<PublicProfileProps> = ({
   user,
   profile,
   NFTS,
   setModalExpand,
   setNotAvailable,
 }) => {
-  //const { t } = useTranslation();
-
   function returnNFTs() {
-    return NFTS.map((item: any) => (
+    return NFTS.map((item: NftType) => (
       <div key={item.id} className={style.NFTShell}>
         <NFTCard mode="profile" item={item} />
       </div>

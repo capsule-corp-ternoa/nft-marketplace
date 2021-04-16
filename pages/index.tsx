@@ -7,12 +7,20 @@ import TernoaWallet from 'components/base/TernoaWallet';
 import NotAvailableModal from 'components/base/NotAvailable';
 
 import arrayShuffle from 'array-shuffle';
-import cookies from 'next-cookies';
 
 import { getUser, getUsers } from 'actions/user';
 import { getNFTS } from 'actions/nft';
+import { NftType, UserType } from 'interfaces';
 
-const LandingPage: React.FC<any> = ({
+export interface LandingProps {
+  user: UserType;
+  users: UserType[];
+  NFTSET1: NftType[];
+  NFTSET2: NftType[];
+  NFTCreators: NftType[];
+}
+
+const LandingPage: React.FC<LandingProps> = ({
   user,
   users,
   NFTSET1,
@@ -47,25 +55,15 @@ const LandingPage: React.FC<any> = ({
   );
 };
 
-export async function getServerSideProps(ctx: any) {
-  let user = null;
+export async function getServerSideProps() {
   let users = await getUsers().catch(() => []);
 
-  try {
-    const token = cookies(ctx).token;
-    if (token) {
-      user = await getUser(token);
-    }
-  } catch (error) {
-    console.error(error);
-  }
-
+  const user = await getUser();
   let data = await getNFTS().catch(() => []);
 
   users = arrayShuffle(users);
 
-  data = data.filter((item: any) => item.media);
-  data = data.filter((item: any) => item.listed === 1);
+  data = data.filter((item: NftType) => item.listed === 1);
 
   let NFTSET1 = arrayShuffle(data.slice(0, 8));
   let NFTSET2 = arrayShuffle(data.slice(9, 17));

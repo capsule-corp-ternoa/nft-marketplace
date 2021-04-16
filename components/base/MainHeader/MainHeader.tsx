@@ -1,7 +1,5 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useState } from 'react';
 import Link from 'next/link';
-//import { useTranslation } from 'react-i18next';
 
 import Logo from 'components/assets/LogoTernoa';
 import Creator from '../Creator';
@@ -11,11 +9,17 @@ import style from './MainHeader.module.scss';
 import { middleEllipsis } from 'utils/strings';
 import gradient from 'random-gradient';
 
-const MainHeader: React.FC<any> = ({ setModalExpand, user }) => {
+import { UserType } from 'interfaces/index';
+
+export interface HeaderProps {
+  user: UserType;
+  setModalExpand: (b: boolean) => void;
+}
+
+const MainHeader: React.FC<HeaderProps> = ({ setModalExpand, user }) => {
   const [, setSearchValue] = useState('' as string);
   const [isExpanded, setIsExpanded] = useState(false);
   const bgGradient = user ? { background: gradient(user.name) } : {};
-  //const { t } = useTranslation();
 
   const updateKeywordSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.currentTarget.value);

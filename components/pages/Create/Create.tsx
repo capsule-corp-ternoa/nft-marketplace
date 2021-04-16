@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-//import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import style from './Create.module.scss';
 import Footer from 'components/base/Footer';
@@ -9,8 +8,19 @@ import Upload from 'components/assets/upload';
 import WhiteWaterMark from 'components/assets/WhiteWaterMark';
 import Eye from 'components/assets/eye';
 
-const Create: React.FC<any> = ({ setModalExpand, setNotAvailable, user }) => {
-  //const { t } = useTranslation();
+import { UserType } from 'interfaces/index';
+
+export interface CreateProps {
+  user: UserType;
+  setModalExpand: (b: boolean) => void;
+  setNotAvailable: (b: boolean) => void;
+}
+
+const Create: React.FC<CreateProps> = ({
+  setModalExpand,
+  setNotAvailable,
+  user,
+}) => {
   const [select, setSelect] = useState('Select NFT Option');
   const [exp, setExp] = useState(false);
   const [NFT, setNFT] = useState<File | null>(null);

@@ -1,5 +1,4 @@
 import React from 'react';
-//import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import style from './NFT.module.scss';
 import Footer from 'components/base/Footer';
@@ -15,8 +14,18 @@ import Eye from 'components/assets/eye';
 import gradient from 'random-gradient';
 
 import { computeCaps } from 'utils/strings';
+import { UserType, NftType } from 'interfaces';
 
-const NFTPage: React.FC<any> = ({
+export interface NFTPageProps {
+  NFT: NftType;
+  user: UserType;
+  type: string | null;
+  setExp: (n: number) => void;
+  setNotAvailable: (b: boolean) => void;
+  setModalExpand: (b: boolean) => void;
+}
+
+const NFTPage: React.FC<NFTPageProps> = ({
   setExp,
   NFT,
   setModalExpand,
@@ -26,7 +35,6 @@ const NFTPage: React.FC<any> = ({
 }) => {
   const bgGradientOwner = { background: gradient(NFT.ownerData.name) };
   const bgGradientCreator = { background: gradient(NFT.creatorData.name) };
-  //const bgGradient = user ? { background: gradient(user.name) } : {};
 
   const fiatPrice = (Number(NFT.price) / 1000000000000000000) * 0.008;
 

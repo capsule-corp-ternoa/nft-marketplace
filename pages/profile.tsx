@@ -6,12 +6,17 @@ import TernoaWallet from 'components/base/TernoaWallet';
 import Profile from 'components/pages/Profile';
 import Creators from 'utils/mocks/mockCreators';
 import NotAvailableModal from 'components/base/NotAvailable';
-import cookies from 'next-cookies';
 
 import { getUser } from 'actions/user';
 import { getNFTS } from 'actions/nft';
+import { NftType, UserType } from 'interfaces';
 
-const ProfilePage = ({ user, data }: any) => {
+export interface ProfilePageProps {
+  user: UserType;
+  data: NftType[];
+}
+
+const ProfilePage: React.FC<ProfilePageProps> = ({ user, data }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
 
@@ -38,17 +43,8 @@ const ProfilePage = ({ user, data }: any) => {
   );
 };
 
-export async function getServerSideProps(ctx: any) {
-  let user = null;
-  try {
-    const token = cookies(ctx).token;
-    if (token) {
-      user = await getUser(token);
-    }
-  } catch (error) {
-    console.error(error);
-  }
-
+export async function getServerSideProps() {
+  const user = await getUser();
   if (!user) {
     return {
       redirect: {
@@ -60,8 +56,7 @@ export async function getServerSideProps(ctx: any) {
 
   let data = await getNFTS().catch(() => []);
 
-  data = data.filter((item: any) => item.media);
-  data = data.filter((item: any) => item.listed === 1);
+  data = data.filter((item: NftType) => item.listed === 1);
 
   return {
     props: { user, data },

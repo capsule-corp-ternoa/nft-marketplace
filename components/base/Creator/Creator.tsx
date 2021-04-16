@@ -22,7 +22,9 @@ const Creator: React.FC<CreatorProps> = ({
 }) => {
   const [isHovering, setIsHovering] = useState(false);
 
-  const bgGradient = { background: gradient(user.name) };
+  const bgGradient = {
+    background: user.name ? gradient(user.name) : gradient('ternoa'),
+  };
 
   function manageClass() {
     if (size === 'card') return style.CreatorsItemCard;
@@ -49,39 +51,41 @@ const Creator: React.FC<CreatorProps> = ({
         }
       >
         <div className={style.CreatorName}>{user.name}</div>
-        {/*<div className={style.CreatorsCaps}>0 CAPS</div>*/}
       </div>
-
-      <div
-        className={manageClass()}
-        onFocus={() => false}
-        onBlur={() => false}
-        onMouseOver={() => setIsHovering(true)}
-        onMouseOut={() => setIsHovering(false)}
-        data-tip
-        data-for={showTooltip && `tooltip${user._id}`}
-      >
-        {user.verified && <Badge className={manageBadgeClass()} />}
-        {user.picture ? (
-          <img
-            className={style.CreatorsImage}
-            draggable="false"
-            src={user.picture}
-          />
-        ) : (
-          <div style={bgGradient} className={style.CreatorsImage}>
-            <div
-              className={
-                size === 'xsmall'
-                  ? style.CreatorLetterSmall
-                  : style.CreatorLetter
-              }
-            >
-              {user.name.charAt(0)}
+      {user.name ? (
+        <div
+          className={manageClass()}
+          onFocus={() => false}
+          onBlur={() => false}
+          onMouseOver={() => setIsHovering(true)}
+          onMouseOut={() => setIsHovering(false)}
+          data-tip
+          data-for={showTooltip && `tooltip${user._id}`}
+        >
+          {user.verified && <Badge className={manageBadgeClass()} />}
+          {user.picture ? (
+            <img
+              className={style.CreatorsImage}
+              draggable="false"
+              src={user.picture}
+            />
+          ) : (
+            <div style={bgGradient} className={style.CreatorsImage}>
+              <div
+                className={
+                  size === 'xsmall'
+                    ? style.CreatorLetterSmall
+                    : style.CreatorLetter
+                }
+              >
+                {user.name.charAt(0)}
+              </div>
             </div>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      ) : (
+        ''
+      )}
     </div>
   );
 };

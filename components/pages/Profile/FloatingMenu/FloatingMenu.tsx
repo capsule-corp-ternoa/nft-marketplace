@@ -1,15 +1,23 @@
 import React from 'react';
 import Link from 'next/link';
-//import { useTranslation } from 'react-i18next';
+
 import style from './FloatingMenu.module.scss';
 
 import PowerOff from 'components/assets/poweroff';
 import Close from 'components/assets/close';
 
-const FloatingMenu: React.FC<any> = ({ scope, setScope, setExpand }) => {
-  //const { t } = useTranslation();
+export interface FloatingMenuProps {
+  setScope: (s: string) => void;
+  setExpand: (b: boolean) => void;
+  scope: string;
+}
 
-  function returnActiveTitle(name: any) {
+const FloatingMenu: React.FC<FloatingMenuProps> = ({
+  scope,
+  setScope,
+  setExpand,
+}) => {
+  function returnActiveTitle(name: string) {
     if (scope === name) {
       return `${style.SectionTitle} ${style.SectionTitleActive}`;
     } else {
@@ -17,7 +25,7 @@ const FloatingMenu: React.FC<any> = ({ scope, setScope, setExpand }) => {
     }
   }
 
-  function returnActiveNumber(name: any) {
+  function returnActiveNumber(name: string) {
     if (scope === name)
       return `${style.SectionNumber} ${style.SectionNumberActive}`;
     else return style.SectionNumber;

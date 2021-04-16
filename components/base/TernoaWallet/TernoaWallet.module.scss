@@ -1,4 +1,4 @@
-@import "style/colors.scss";
+@import 'style/colors.scss';
 
 .Background {
   width: 100%;
@@ -13,7 +13,7 @@
 }
 
 .Container {
-  width: 600px;
+  width: 550px;
   border-radius: 25px;
   background-color: black;
   display: flex;
@@ -30,7 +30,7 @@
   align-items: center;
   color: white;
   background-color: $primary;
-  font-family: "Airbnb Cereal App Medium";
+  font-family: 'Airbnb Cereal App Medium';
   font-size: 10px;
   text-transform: uppercase;
   border-radius: 25px;
@@ -38,7 +38,7 @@
 }
 
 .Title {
-  font-family: "Airbnb Cereal App Bold";
+  font-family: 'Airbnb Cereal App Bold';
   color: white;
   font-size: 42px;
   line-height: 45px;
@@ -50,11 +50,10 @@
   color: white;
   font-size: 14px;
   line-height: 20px;
-  font-family: "Airbnb Cereal App Medium";
-  margin-top: 16px;
+  font-family: 'Airbnb Cereal App Medium';
+  margin-top: 8px;
   text-align: center;
   max-width: 400px;
-  margin-bottom: 40px;
 }
 
 .Close {
@@ -74,18 +73,12 @@
   align-items: center;
   color: black;
   background-color: white;
-  font-family: "Airbnb Cereal App Medium";
+  font-family: 'Airbnb Cereal App Medium';
   font-size: 12px;
   border-radius: 25px;
   padding: 12px 32px;
   cursor: pointer;
   margin-top: 24px;
-}
-
-.Error {
-  margin-top: 40px;
-  font-family: "Airbnb Cereal App Medium";
-  color: red;
 }
 
 @media (max-width: 720px) {

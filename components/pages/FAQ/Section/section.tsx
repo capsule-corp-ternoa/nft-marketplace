@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-//import { useTranslation } from 'react-i18next';
 import style from './section.module.scss';
 import Arr from 'components/assets/faqarrow';
 
-const Edit: React.FC<any> = ({ section }) => {
-  //const { t } = useTranslation();
+export interface QuestionProps {
+  section: { question: string; answer: string };
+}
+
+const Question: React.FC<QuestionProps> = ({ section }) => {
   const [exp, setExp] = useState(false);
 
   return (
@@ -26,4 +28,4 @@ const Edit: React.FC<any> = ({ section }) => {
   );
 };
 
-export default Edit;
+export default Question;

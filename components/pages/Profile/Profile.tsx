@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
-//import { useTranslation } from 'react-i18next';
 import style from './Profile.module.scss';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
@@ -11,15 +10,23 @@ import Sidebar from './Sidebar';
 import FloatingMenu from './FloatingMenu';
 import Edit from './Edit';
 import Switch from 'react-switch';
+import { NftType, UserType } from 'interfaces';
 
-const Profile: React.FC<any> = ({
+export interface ProfileProps {
+  setModalExpand: (b: boolean) => void;
+  setNotAvailable: (b: boolean) => void;
+  user: UserType;
+  creators: UserType[];
+  NFTS: NftType[];
+}
+
+const Profile: React.FC<ProfileProps> = ({
   user,
   NFTS,
   creators,
   setModalExpand,
   setNotAvailable,
 }) => {
-  //const { t } = useTranslation();
   const [isFiltered, setIsFiltered] = useState(false);
   const [scope, setScope] = useState('My NFTs on sale');
   const [expand, setExpand] = useState(false);
@@ -38,7 +45,7 @@ const Profile: React.FC<any> = ({
   }
 
   function returnNFTs() {
-    return NFTS.map((item: any) => (
+    return NFTS.map((item: NftType) => (
       <div key={item.id} className={style.NFTShell}>
         <NFTCard mode="grid" item={item} />
       </div>
@@ -101,8 +108,8 @@ const Profile: React.FC<any> = ({
   }
 
   function returnCreators() {
-    return creators.map((item: any) => (
-      <div key={item.id} className={style.CreatorShell}>
+    return creators.map((item: UserType) => (
+      <div key={item._id} className={style.CreatorShell}>
         <Link href={`/${item.name}`}>
           <a>
             <Creator user={item} size="small" showTooltip={false} />

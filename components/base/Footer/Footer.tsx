@@ -1,9 +1,4 @@
 import React from 'react';
-//import { useTranslation } from "react-i18next";
-
-import French from '../../assets/Languages/France';
-import Japanese from '../../assets/Languages/Japan';
-import English from '../../assets/Languages/UK';
 
 import style from './Footer.module.scss';
 import WaterMark from 'components/assets/Watermark';
@@ -14,14 +9,11 @@ import Instagram from 'components/assets/SocialMedias/Instagram';
 import Github from 'components/assets/SocialMedias/Github';
 import Youtube from 'components/assets/SocialMedias/Youtube';
 
-const Footer: React.FC<any> = ({ setNotAvailable }) => {
-  //const { i18n, t } = useTranslation();
+export interface FooterProps {
+  setNotAvailable: (b: boolean) => void;
+}
 
-  const changeLang = (lang?: string) => {
-    //i18n.changeLanguage(lang);
-    return lang;
-  };
-
+const Footer: React.FC<FooterProps> = ({ setNotAvailable }) => {
   return (
     <div className={style.Footer}>
       <WaterMark className={style.WaterMark} />
@@ -38,9 +30,6 @@ const Footer: React.FC<any> = ({ setNotAvailable }) => {
           </div>
         </div>
         <div className={style.SocialMedias}>
-          {/*<a href="https://discord.gg/cNZTGtGJNR" target="_blank">
-            <Discord onClick={() => true} className={style.SVGMedia} />
-  </a>*/}
           <a href="https://t.me/ternoa" target="_blank">
             <Telegram onClick={() => true} className={style.SVGMedia} />
           </a>
@@ -53,10 +42,6 @@ const Footer: React.FC<any> = ({ setNotAvailable }) => {
           <a href="https://www.instagram.com/ternoa_/" target="_blank">
             <Instagram onClick={() => true} className={style.SVGMedia} />
           </a>
-          {/* 
-          <a href="#" target="_blank">
-            <Twitch onClick={() => true} className={style.SVGMedia} />
-          </a> */}
           <a href="https://github.com/capsule-corp-ternoa" target="_blank">
             <Github onClick={() => true} className={style.SVGMedia} />
           </a>
@@ -85,12 +70,7 @@ const Footer: React.FC<any> = ({ setNotAvailable }) => {
             Privacy
           </a>
         </div>
-        <div className={style.Languages}>
-          <div className={style.Text}>Languages</div>
-          <English onClick={() => changeLang('en')} className={style.Flag} />
-          <French onClick={() => changeLang('fr')} className={style.Flag} />
-          <Japanese onClick={() => changeLang('ja')} className={style.Flag} />
-        </div>
+        <div className={style.Languages}></div>
       </div>
     </div>
   );

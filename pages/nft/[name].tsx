@@ -6,12 +6,18 @@ import TernoaWallet from 'components/base/TernoaWallet';
 import NFTPage from 'components/pages/NFT';
 import ModalShowcase from 'components/pages/NFT/ModalShowcase';
 import NotAvailableModal from 'components/base/NotAvailable';
-import cookies from 'next-cookies';
 
 import { getUser } from 'actions/user';
 import { getNFT } from 'actions/nft';
+import { NftType, UserType } from 'interfaces';
+import { NextPageContext } from 'next';
 
-const NftPage = ({ user, NFT }: any) => {
+export interface NFTPageProps {
+  user: UserType;
+  NFT: NftType;
+}
+
+const NftPage: React.FC<NFTPageProps> = ({ user, NFT }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [exp, setExp] = useState(0);
   const [notAvailable, setNotAvailable] = useState(false);
@@ -66,18 +72,10 @@ const NftPage = ({ user, NFT }: any) => {
   );
 };
 
-export async function getServerSideProps(ctx: any) {
+export async function getServerSideProps({ query }: NextPageContext) {
   try {
-    let user = null;
-    try {
-      const token = cookies(ctx).token;
-      if (token) {
-        user = await getUser(token);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-    let NFT = await getNFT(ctx.query.name);
+    const user = await getUser();
+    let NFT = await getNFT(query.name as string);
 
     return {
       props: { user, NFT },

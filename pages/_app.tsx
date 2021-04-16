@@ -4,19 +4,15 @@ import Head from 'next/head';
 import Close from 'components/assets/close';
 
 import Router from 'next/router';
-import NProgress from 'nprogress'; //nprogress module
+import NProgress from 'nprogress';
 import 'style/nprogress.scss';
-
-interface Props {
-  Component: any;
-  pageProps: any;
-}
+import { AppProps } from 'next/dist/next-server/lib/router/router';
 
 Router.events.on('routeChangeStart', () => NProgress.start());
 Router.events.on('routeChangeComplete', () => NProgress.done());
 Router.events.on('routeChangeError', () => NProgress.done());
 
-const App: React.FC<Props> = ({ Component, pageProps }) => {
+const App: React.FC<AppProps> = ({ Component, pageProps }) => {
   const [cookiesConsent, setCookiesConsent] = useState<string | null>(null);
   const [hide, setHide] = useState(false);
 
@@ -41,9 +37,7 @@ const App: React.FC<Props> = ({ Component, pageProps }) => {
           }}
         ></script>
       </Head>
-
       <Component {...pageProps} />
-
       {!cookiesConsent && !hide && (
         <div className="cookies">
           We use cookies.

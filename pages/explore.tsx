@@ -7,12 +7,17 @@ import TernoaWallet from 'components/base/TernoaWallet';
 import NotAvailableModal from 'components/base/NotAvailable';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
-import cookies from 'next-cookies';
 
 import { getUser } from 'actions/user';
 import { getNFTS } from 'actions/nft';
+import { NftType, UserType } from 'interfaces';
 
-const ExplorePage: React.FC<any> = ({ user, data }) => {
+export interface ExplorePage {
+  user: UserType;
+  data: NftType[];
+}
+
+const ExplorePage: React.FC<ExplorePage> = ({ user, data }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
   return (
@@ -35,20 +40,11 @@ const ExplorePage: React.FC<any> = ({ user, data }) => {
   );
 };
 
-export async function getServerSideProps(ctx: any) {
-  let user = null;
-  try {
-    const token = cookies(ctx).token;
-    if (token) {
-      user = await getUser(token);
-    }
-  } catch (error) {
-    console.error(error);
-  }
+export async function getServerSideProps() {
+  const user = await getUser();
   let data = await getNFTS().catch(() => []);
 
-  data = data.filter((item: any) => item.media);
-  data = data.filter((item: any) => item.listed === 1);
+  data = data.filter((item: NftType) => item.listed === 1);
 
   return {
     props: { user, data },

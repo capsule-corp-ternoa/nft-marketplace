@@ -15,7 +15,10 @@ export interface NftCardProps {
   isDragging?: boolean;
 }
 
-function manageRouting(e: any, id: any) {
+function manageRouting(
+  e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+  id: string
+) {
   e.stopPropagation();
   Router.push(`/${id}`);
 }
@@ -101,7 +104,7 @@ const NftCard: React.FC<NftCardProps> = ({ item, mode, isDragging }) => {
 
         <div className={style.Infos}>
           <div
-            onClick={(e) => manageRouting(e, item.creatorData?.walletId)}
+            onClick={(e) => manageRouting(e, item.creatorData.walletId)}
             className={style.Auth}
           >
             {item.creatorData && (

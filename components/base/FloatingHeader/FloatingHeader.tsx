@@ -1,7 +1,5 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useState } from 'react';
 import Link from 'next/link';
-//import { useTranslation } from 'react-i18next';
 
 import style from './FloatingHeader.module.scss';
 import Creator from 'components/base/Creator';
@@ -10,13 +8,21 @@ import CopyPaste from 'components/assets/copypaste';
 import { middleEllipsis } from 'utils/strings';
 import gradient from 'random-gradient';
 
-const FloatingHeader: React.FC<any> = ({ user, setModalExpand }) => {
+import { UserType } from 'interfaces/index';
+
+export interface FloatingHeaderProps {
+  user: UserType;
+  setModalExpand: (b: boolean) => void;
+}
+
+const FloatingHeader: React.FC<FloatingHeaderProps> = ({
+  user,
+  setModalExpand,
+}) => {
   const [, setSearchValue] = useState('' as string);
   const [isExpanded, setIsExpanded] = useState(false);
   const [fullProfile, setFullProfile] = useState(false);
   const bgGradient = user ? { background: gradient(user.name) } : {};
-
-  //const { t } = useTranslation();
 
   const updateKeywordSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.currentTarget.value);
@@ -90,7 +96,7 @@ const FloatingHeader: React.FC<any> = ({ user, setModalExpand }) => {
                     : style.NumberCaps
                 }
               >
-                0
+                0 caps
               </span>
               CAPS
             </div>

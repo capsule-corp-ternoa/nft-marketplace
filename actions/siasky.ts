@@ -1,6 +1,6 @@
 import { SkynetClient } from 'skynet-js';
 import { blake2AsHex } from '@polkadot/util-crypto';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import JSZip from 'jszip';
 import asmCrypto from 'asmcrypto-lite';
 const openpgp = require('openpgp');
@@ -83,7 +83,6 @@ interface uploadExParams {
 }
 
 export const getNftJson = ({
-  internalid,
   name,
   description,
   media,

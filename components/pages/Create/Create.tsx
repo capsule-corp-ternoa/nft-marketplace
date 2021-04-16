@@ -10,7 +10,7 @@ import Eye from 'components/assets/eye';
 
 import { UserType } from 'interfaces/index';
 
-import { imgToBlur, imgToWatermark } from 'utils/imageProcessing/image';
+// import { imgToBlur, imgToWatermark } from 'utils/imageProcessing/image';
 
 import { cryptFile, useSkynetUpload, getNftJson } from 'actions/siasky';
 
@@ -24,16 +24,16 @@ export interface CreateProps {
 const Create: React.FC<any> = ({
   setModalExpand,
   setNotAvailable,
-  setModalCreate,
+  // setModalCreate,
   user,
 }) => {
   const [select, setSelect] = useState('Select NFT Option');
   const [exp, setExp] = useState(false);
   const [NFT, setNFT] = useState<File | null>(null);
   const [secretNFT, setSecretNFT] = useState<File | null>(null);
-  const [skylinkMedia, statusMedia, uploadFileMedia] = useSkynetUpload();
-  const [skylinkSecret, statusSecret, uploadFileSecret] = useSkynetUpload();
-  const [skylinkJSON, statusJSON, uploadFileJSON] = useSkynetUpload();
+  const [, statusMedia, uploadFileMedia] = useSkynetUpload();
+  const [, statusSecret, uploadFileSecret] = useSkynetUpload();
+  const [, statusJSON, uploadFileJSON] = useSkynetUpload();
 
   function returnType(NFTarg: File) {
     if (NFTarg!.type.substr(0, 5) === 'image')
@@ -70,7 +70,7 @@ const Create: React.FC<any> = ({
 
     // upload encrypted media
     const link2 = await uploadFileSecret(crypted);
-    if(statusSecret === 'error') return;
+    if (statusSecret === 'error') return;
 
     const json = getNftJson({
       internalid: '',
@@ -87,7 +87,7 @@ const Create: React.FC<any> = ({
     console.log(link3);
   }
 
-  async function processFile() {
+  /* async function processFile() {
     if (select === 'Blur' && NFT!.type.substr(0, 5) === 'image') {
       const res = await imgToBlur(NFT);
       console.log(res);
@@ -101,7 +101,7 @@ const Create: React.FC<any> = ({
     setModalCreate(true);
 
     //setPayload sia URL
-  }
+  } */
 
   return (
     <div className={style.Container}>

@@ -14,10 +14,15 @@ export interface TernoaWalletProps {
 const TernoaWallet: React.FC<TernoaWalletProps> = ({ setModalExpand }) => {
   const [session] = useState(randomstring.generate());
   const [error, setError] = useState('');
+  const [showQR, setShowQR] = useState(false);
 
   useEffect(() => {
     const socket = io(`${process.env.NEXT_PUBLIC_SOCKETIO_URL}/socket/login`, {
       query: { session },
+    });
+
+    socket.on('connect', () => {
+      setShowQR(true);
     });
 
     socket.on('CONNECTION_FAILURE', (data) => setError(data.msg));
@@ -43,7 +48,7 @@ const TernoaWallet: React.FC<TernoaWalletProps> = ({ setModalExpand }) => {
           To authenticate, scan this QR Code from your Ternoa Wallet mobile
           application.
         </div>
-        <QRCode data={{ session }} action={'LOGIN'} />
+        {showQR && <QRCode data={{ session }} action={'LOGIN'} />}
         {error && <div className={style.Error}>{error}</div>}
       </div>
     </div>

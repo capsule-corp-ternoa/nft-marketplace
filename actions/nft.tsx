@@ -1,7 +1,7 @@
 import { NftType } from 'interfaces/index';
 
 export const getNFTS = async () => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API_DEV}/api/NFTs`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/NFTs`);
   let data: NftType[] = await res.json();
   data = data.filter((item) => item.creatorData && item.ownerData);
   data = data.filter((item) => item.media);
@@ -11,7 +11,7 @@ export const getNFTS = async () => {
 
 export const getProfileNFTS = async (id: string) => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_NODE_API_DEV}/api/NFTs/owner/${id}`
+    `${process.env.NEXT_PUBLIC_NODE_API}/api/NFTs/owner/${id}`
   );
 
   let data: NftType[] = await res.json();
@@ -22,9 +22,7 @@ export const getProfileNFTS = async (id: string) => {
 };
 
 export const getNFT = async (id: string) => {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_NODE_API_DEV}/api/NFTs/${id}`
-  );
+  const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/NFTs/${id}`);
 
   if (!res.ok) throw new Error();
 

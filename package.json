@@ -34,6 +34,7 @@
     "socket.io-client": "^4.0.1"
   },
   "devDependencies": {
+    "@netlify/plugin-nextjs": "^3.1.0",
     "@types/js-cookie": "^2.2.6",
     "@types/node": "^12.12.21",
     "@types/nprogress": "^0.2.0",

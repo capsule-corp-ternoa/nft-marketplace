@@ -5,7 +5,8 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "type-check": "tsc"
+    "type-check": "tsc",
+    "export": "next build && next export"
   },
   "dependencies": {
     "@polkadot/util-crypto": "^6.1.1",

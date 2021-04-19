@@ -8,5 +8,4 @@ module.exports = {
     }
     return config;
   },
-  target: 'serverless',
 };

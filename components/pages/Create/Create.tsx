@@ -12,7 +12,7 @@ import { UserType } from 'interfaces/index';
 
 // import { imgToBlur, imgToWatermark } from 'utils/imageProcessing/image';
 
-import { cryptFile, useSkynetUpload, getNftJson } from 'actions/siasky';
+import { cryptFile, useSkynetUpload, getNftJsons } from 'utils/nftCreation/siasky';
 
 export interface CreateProps {
   user: UserType;
@@ -65,26 +65,27 @@ const Create: React.FC<any> = ({
     if (statusMedia === 'error') return;
 
     // encrypt media
-    const crypted = await cryptFile(NFT!);
-    if (!crypted) return null;
+    const { cryptedFile, gpgkhash } = await cryptFile(NFT!);
+    if (!cryptedFile) return null;
 
     // upload encrypted media
-    const link2 = await uploadFileSecret(crypted);
+    const link2 = await uploadFileSecret(cryptedFile);
     if (statusSecret === 'error') return;
 
-    const json = getNftJson({
-      internalid: '',
+    const jsons = getNftJsons({
       name: 'NFT Test',
       description: 'Test description',
       media: link1,
+      quantity: 1,
       mediaType: 'image/jpeg',
       cryptedMedia: link2,
       cryptedMediaType: 'image/jpeg',
+      gpgkhash,
     });
 
-    // upload json
-    const link3 = await uploadFileJSON(json);
-    console.log(link3);
+    // upload json(s)
+    const links = await Promise.all(jsons.map(j => uploadFileJSON(j)));
+    console.log(links);
   }
 
   /* async function processFile() {

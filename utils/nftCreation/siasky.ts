@@ -1,6 +1,7 @@
 import { SkynetClient } from 'skynet-js';
 import { blake2AsHex } from '@polkadot/util-crypto';
 import { useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import JSZip from 'jszip';
 import asmCrypto from 'asmcrypto-lite';
 const openpgp = require('openpgp');
@@ -30,7 +31,9 @@ export const useSkynetUpload = () => {
   return [skylink, status, uploadFile] as const;
 };
 
-export const cryptFile = async (file: File) => {
+export const cryptFile = async (
+  file: File
+): Promise<{ cryptedFile: File | null; gpgkhash: string }> => {
   try {
     let result = '';
     const characters =
@@ -39,7 +42,7 @@ export const cryptFile = async (file: File) => {
     for (let i = 0; i < 20; i++) {
       result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
-    const hash = blake2AsHex(result);
+    const hash = blake2AsHex(result); // gpgk hash
 
     const { publicKeyArmored } = await openpgp.generateKey({
       curve: 'curve25519',
@@ -66,32 +69,35 @@ export const cryptFile = async (file: File) => {
       type: 'blob',
     });
     const f = new File([blob], file.name + '-' + hashFile + '.ternoa.zip');
-    return f;
+    return { cryptedFile: f, gpgkhash: hash };
   } catch (err) {
-    return null;
+    return { cryptedFile: null, gpgkhash: '' };
   }
 };
 
-interface uploadExParams {
-  internalid: string;
+interface nftParams {
+  quantity: number;
   name: string;
   description: string;
   media: string;
   mediaType: string;
   cryptedMedia: string;
   cryptedMediaType: string;
+  gpgkhash: string;
 }
 
-export const getNftJson = ({
+export const getNftJsons = ({
+  quantity,
   name,
   description,
   media,
   mediaType,
   cryptedMedia,
   cryptedMediaType,
-}: uploadExParams) => {
+  gpgkhash,
+}: nftParams): File[] => {
   let modifiedData = {
-    internalid: 'c18',
+    quantity,
     name,
     description,
     media: {
@@ -101,12 +107,24 @@ export const getNftJson = ({
     cryptedMedia: {
       url: cryptedMedia,
       cryptedMediaType: cryptedMediaType,
+      gpgkhash,
     },
   };
+  try {
+    const internalid = uuidv4();
+    const files: File[] = [];
 
-  const s = JSON.stringify(modifiedData);
-  const b = new Blob([s]);
-  const f = new File([b], 'ok', { type: 'application/json' });
+    for (let i = 0; i < Number(quantity); i += 1) {
+      const s = JSON.stringify({ ...modifiedData, internalid, id: i + 1 });
+      const b = new Blob([s]);
+      const f = new File([b], `${internalid}#${i + 1}`, {
+        type: 'application/json',
+      });
+      files.push(f);
+    }
 
-  return f;
+    return files;
+  } catch (error) {
+    return [];
+  }
 };

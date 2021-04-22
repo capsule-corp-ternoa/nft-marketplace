@@ -7,7 +7,9 @@ module.exports = {
         fs: 'empty',
       };
     }
-    config.externals = [nodeExternals()];
+    else {
+      config.externals = [nodeExternals()];
+    }
     return config;
   },
   target: 'serverless',

@@ -4,7 +4,7 @@ import style from './QRCode.module.scss';
 import QRCode from 'qrcode.react';
 
 interface CodeProps {
-  data: { session: string };
+  data: { session?: string; links?: string[] };
   action: string;
 }
 

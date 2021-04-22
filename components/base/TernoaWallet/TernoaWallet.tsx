@@ -15,15 +15,18 @@ const TernoaWallet: React.FC<TernoaWalletProps> = ({ setModalExpand }) => {
   const [session] = useState(randomstring.generate());
   const [error, setError] = useState('');
   const [showQR, setShowQR] = useState(false);
+  console.log(session);
 
   useEffect(() => {
     const socket = io(`${process.env.NEXT_PUBLIC_SOCKETIO_URL}/socket/login`, {
       query: { session },
+      transports: ['websocket'],
     });
 
     socket.on('connect', () => {
       setShowQR(true);
     });
+    socket.on('disconnect', (data) => console.log('deco', data));
 
     socket.on('CONNECTION_FAILURE', (data) => setError(data.msg));
     socket.on('RECEIVE_WALLET_ID', (data) => {

@@ -14,7 +14,7 @@ export const useSkynetUpload = () => {
 
   const uploadFile = async (file: File): Promise<string> => {
     try {
-      setStatus('uploading');
+      setStatus('processing');
       const response = await client.uploadFile(file);
 
       const portalUrl = client.getSkylinkUrl(response.skylink);
@@ -76,7 +76,7 @@ export const cryptFile = async (
 };
 
 interface nftParams {
-  quantity: number;
+  itemTotal: number;
   name: string;
   description: string;
   media: string;
@@ -87,7 +87,7 @@ interface nftParams {
 }
 
 export const getNftJsons = ({
-  quantity,
+  itemTotal,
   name,
   description,
   media,
@@ -97,7 +97,7 @@ export const getNftJsons = ({
   gpgkhash,
 }: nftParams): File[] => {
   let modifiedData = {
-    quantity,
+    itemTotal,
     name,
     description,
     media: {
@@ -111,13 +111,13 @@ export const getNftJsons = ({
     },
   };
   try {
-    const internalid = uuidv4();
+    const internalId = uuidv4();
     const files: File[] = [];
 
-    for (let i = 0; i < Number(quantity); i += 1) {
-      const s = JSON.stringify({ ...modifiedData, internalid, id: i + 1 });
+    for (let i = 0; i < Number(itemTotal); i += 1) {
+      const s = JSON.stringify({ ...modifiedData, internalId, itemId: i + 1 });
       const b = new Blob([s]);
-      const f = new File([b], `${internalid}#${i + 1}`, {
+      const f = new File([b], `${internalId}#${i + 1}`, {
         type: 'application/json',
       });
       files.push(f);

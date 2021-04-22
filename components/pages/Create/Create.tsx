@@ -10,30 +10,55 @@ import Eye from 'components/assets/eye';
 
 import { UserType } from 'interfaces/index';
 
-// import { imgToBlur, imgToWatermark } from 'utils/imageProcessing/image';
-
-import { cryptFile, useSkynetUpload, getNftJsons } from 'utils/nftCreation/siasky';
+import { NFTProps } from 'pages/create';
 
 export interface CreateProps {
   user: UserType;
   setModalExpand: (b: boolean) => void;
   setNotAvailable: (b: boolean) => void;
   setModalCreate: (b: boolean) => void;
+  NFTData: NFTProps;
+  setNFTData: (o: NFTProps) => void;
+  NFT: File | null;
+  setNFT: (f: File) => void;
+  secretNFT: File | null;
+  setSecretNFT: (f: File) => void;
+  select: string;
+  setSelect: (s: string) => void;
+  uploadNFT: () => Promise<string[]>;
+  processFile: () => Promise<void>;
+  setError: (s: string) => void;
+  setProcessed: (b: boolean) => void;
 }
 
-const Create: React.FC<any> = ({
+const Create: React.FC<CreateProps> = ({
   setModalExpand,
   setNotAvailable,
-  // setModalCreate,
+  setModalCreate,
+  NFT,
+  setNFT,
+  secretNFT,
+  setSecretNFT,
+  NFTData,
+  setNFTData,
   user,
+  select,
+  setSelect,
+  processFile,
+  setError,
+  setProcessed,
 }) => {
-  const [select, setSelect] = useState('Select NFT Option');
   const [exp, setExp] = useState(false);
-  const [NFT, setNFT] = useState<File | null>(null);
-  const [secretNFT, setSecretNFT] = useState<File | null>(null);
-  const [, statusMedia, uploadFileMedia] = useSkynetUpload();
-  const [, statusSecret, uploadFileSecret] = useSkynetUpload();
-  const [, statusJSON, uploadFileJSON] = useSkynetUpload();
+
+  const { name, description, quantity } = NFTData;
+
+  function onChange(
+    e:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLTextAreaElement>
+  ) {
+    setNFTData({ ...NFTData, [e.target.name]: e.target.value });
+  }
 
   function returnType(NFTarg: File) {
     if (NFTarg!.type.substr(0, 5) === 'image')
@@ -57,52 +82,38 @@ const Create: React.FC<any> = ({
       );
   }
 
-  async function uploadFiles() {
-    // upload preview media
-    if (!NFT) return;
-    const link1 = await uploadFileMedia(NFT);
-
-    if (statusMedia === 'error') return;
-
-    // encrypt media
-    const { cryptedFile, gpgkhash } = await cryptFile(NFT!);
-    if (!cryptedFile) return null;
-
-    // upload encrypted media
-    const link2 = await uploadFileSecret(cryptedFile);
-    if (statusSecret === 'error') return;
-
-    const jsons = getNftJsons({
-      name: 'NFT Test',
-      description: 'Test description',
-      media: link1,
-      quantity: 1,
-      mediaType: 'image/jpeg',
-      cryptedMedia: link2,
-      cryptedMediaType: 'image/jpeg',
-      gpgkhash,
-    });
-
-    // upload json(s)
-    const links = await Promise.all(jsons.map(j => uploadFileJSON(j)));
-    console.log(links);
+  function uploadFiles() {
+    if (
+      !name ||
+      !description ||
+      !quantity ||
+      quantity > 10 ||
+      select === 'Select NFT Option'
+    ) {
+      setError('Please fill the form entirely.');
+      setModalCreate(true);
+      return false;
+    }
+    if (
+      secretNFT!.type.substr(0, 5) === 'image' &&
+      select !== 'None' &&
+      select !== 'Secret'
+    ) {
+      processFile();
+    } else {
+      setProcessed(true);
+    }
+    setModalCreate(true);
   }
 
-  /* async function processFile() {
-    if (select === 'Blur' && NFT!.type.substr(0, 5) === 'image') {
-      const res = await imgToBlur(NFT);
-      console.log(res);
-    }
-
-    if (select === 'Protect' && NFT!.type.substr(0, 5) === 'image') {
-      const res = imgToWatermark(NFT);
-      console.log(res);
-    }
-
-    setModalCreate(true);
-
-    //setPayload sia URL
-  } */
+  function checkType() {
+    if (
+      secretNFT!.type.substr(0, 5) === 'video' ||
+      secretNFT!.type === 'image/gif'
+    )
+      return false;
+    else return true;
+  }
 
   return (
     <div className={style.Container}>
@@ -122,22 +133,22 @@ const Create: React.FC<any> = ({
               <label
                 htmlFor="uploadNFT"
                 className={
-                  NFT
+                  secretNFT
                     ? style.NFTPreview
                     : `${style.NFTPreview} ${style.NFTPreviewBorder}`
                 }
               >
-                <div className={NFT ? style.Hidden : style.NFTNull}>
+                <div className={secretNFT ? style.Hidden : style.NFTNull}>
                   <Upload className={style.UploadSVG} />
                   <div className={style.InsightMedium}>
                     Click here to upload your file.
                   </div>
                   <div className={style.InsightLight}>
-                    PNG, GIF, WEBP, MP4 or MP3. Max 30mb.
+                    JPEG, JPG, PNG, GIF, or MP4. Max 30mb.
                   </div>
                 </div>
 
-                {NFT && returnType(NFT)}
+                {secretNFT && returnType(secretNFT)}
 
                 <div className={style.HiddenShell}>
                   <input
@@ -145,14 +156,17 @@ const Create: React.FC<any> = ({
                     id="uploadNFT"
                     onChange={(event) => {
                       const { target } = event;
-                      if (target && target.files) setNFT(target.files[0]);
+                      if (target && target.files) setSecretNFT(target.files[0]);
                     }}
                     className={style.HiddenInput}
+                    accept=".jpg, .jpeg, .png, .gif, .mp4"
                   />
                 </div>
 
-                {select === 'Blur' && NFT && <div className={style.Blur} />}
-                {select === 'Protect' && NFT && (
+                {select === 'Blur' && secretNFT && (
+                  <div className={style.Blur} />
+                )}
+                {select === 'Protect' && secretNFT && (
                   <div className={style.OPTN}>
                     <div className={style.OPTNCTNR}>
                       <WhiteWaterMark className={style.WaterMarkSVG} />
@@ -163,12 +177,12 @@ const Create: React.FC<any> = ({
                   <label
                     htmlFor="uploadSecretNFT"
                     className={
-                      secretNFT
+                      NFT
                         ? style.NFTSPreview
                         : `${style.NFTSPreview} ${style.NFTPreviewBorder}`
                     }
                   >
-                    <div className={secretNFT ? style.Hidden : style.NFTSNull}>
+                    <div className={NFT ? style.Hidden : style.NFTSNull}>
                       <div className={style.Label}>Coming soon</div>
                       <Upload className={style.UploadSVG2} />
                       <div className={style.NFTSTips}>
@@ -179,17 +193,17 @@ const Create: React.FC<any> = ({
                         Once purchased, the owner will be able to see your NFT
                       </div>
                     </div>
-                    {secretNFT && returnType(secretNFT)}
+                    {NFT && returnType(NFT)}
                     <div className={style.HiddenShell}>
                       <input
                         type="file"
                         id="uploadSecretNFT"
                         onChange={(event) => {
                           const { target } = event;
-                          if (target && target.files)
-                            setSecretNFT(target.files[0]);
+                          if (target && target.files) setNFT(target.files[0]);
                         }}
                         className={style.HiddenInput}
+                        accept=".jpg, .jpeg, .png, .gif, .mp4"
                       />
                     </div>
                   </label>
@@ -202,6 +216,9 @@ const Create: React.FC<any> = ({
                 <input
                   type="text"
                   placeholder="Ternoa collection"
+                  onChange={onChange}
+                  name="name"
+                  value={name}
                   className={style.Input}
                 />
               </div>
@@ -210,25 +227,35 @@ const Create: React.FC<any> = ({
                 <h4 className={style.Subtitle}>Description</h4>
                 <textarea
                   placeholder="A cool description"
+                  name="description"
+                  value={description}
+                  onChange={onChange}
                   className={style.Textarea}
                 />
               </div>
 
               <div className={style.InputShell}>
                 <h4 className={style.Subtitle}>
-                  Original Size
-                  <span className={style.Insight}>(optional)</span>
+                  Quantity <span className={style.Insight}>(max: 10)</span>
                 </h4>
                 <input
                   type="text"
-                  placeholder="ex: 3000x6000px"
+                  name="quantity"
+                  value={quantity}
+                  onChange={onChange}
+                  placeholder="1"
                   className={style.Input}
                 />
               </div>
 
               <div className={style.SelectShell}>
                 <div className={style.SelectContainer}>
-                  <div className={style.Select} onClick={() => setExp(!exp)}>
+                  <div
+                    className={secretNFT ? style.Select : style.SelectDisabled}
+                    onClick={() => {
+                      secretNFT ? setExp(!exp) : false;
+                    }}
+                  >
                     {select}
                     <ArrowBottom
                       className={exp ? style.arrowbtmselect : style.arrowbtm}
@@ -236,15 +263,17 @@ const Create: React.FC<any> = ({
                   </div>
                   {exp && (
                     <div className={style.SelectOptn}>
-                      <div
-                        className={style.SelectItem}
-                        onClick={() => {
-                          setSelect('Protect');
-                          setExp(false);
-                        }}
-                      >
-                        Protect
-                      </div>
+                      {checkType() && (
+                        <div
+                          className={style.SelectItem}
+                          onClick={() => {
+                            setSelect('Protect');
+                            setExp(false);
+                          }}
+                        >
+                          Protect
+                        </div>
+                      )}
                       <div
                         className={style.SelectItem}
                         onClick={() => {
@@ -254,15 +283,18 @@ const Create: React.FC<any> = ({
                       >
                         Secret
                       </div>
-                      <div
-                        className={style.SelectItem}
-                        onClick={() => {
-                          setSelect('Blur');
-                          setExp(false);
-                        }}
-                      >
-                        Blur
-                      </div>
+
+                      {checkType() && (
+                        <div
+                          className={style.SelectItem}
+                          onClick={() => {
+                            setSelect('Blur');
+                            setExp(false);
+                          }}
+                        >
+                          Blur
+                        </div>
+                      )}
                       <div
                         className={style.SelectItem}
                         onClick={() => {
@@ -282,7 +314,7 @@ const Create: React.FC<any> = ({
             </div>
           </div>
           <div className={style.Create} onClick={() => uploadFiles()}>
-            Create NFT {`${statusMedia}/${statusSecret}/${statusJSON}`}
+            Create NFT
           </div>
         </div>
       </div>

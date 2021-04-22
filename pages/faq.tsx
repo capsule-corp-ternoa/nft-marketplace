@@ -44,7 +44,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
   try {
     const token = cookies(ctx).token;
     if (token) {
-      user = await getUser();
+      user = await getUser(token);
     }
   } catch (error) {
     console.error(error);

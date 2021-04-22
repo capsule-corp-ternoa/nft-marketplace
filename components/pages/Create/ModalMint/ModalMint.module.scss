@@ -87,6 +87,58 @@
   }
 }
 
+.Status {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  margin-top: 24px;
+  text-align: left;
+
+  span {
+    color: white;
+    margin-bottom: 8px;
+    font-family: "Airbnb Cereal App Medium";
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: left;
+  }
+}
+
+.Step {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: left;
+}
+
+.Error {
+  font-family: "Airbnb Cereal App Medium";
+  font-size: 14px;
+  color: red;
+  align-self: center;
+  margin-top: 24px;
+  text-align: center;
+}
+
+.CheckMark {
+  fill: $primary;
+  width: 12px;
+  margin-left: 6px;
+}
+
+.QR {
+  margin-top: 40px;
+}
+
+.Test {
+  margin-top: 14px;
+  font-family: "Airbnb Cereal App Medium";
+  color: white;
+  font-size: 12px;
+  cursor: pointer;
+}
 @media (max-width: 720px) {
   .Container {
     width: 100%;

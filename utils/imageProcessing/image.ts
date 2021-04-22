@@ -53,5 +53,5 @@ export async function imgToWatermark(NFT: File | null) {
     });
   }
   const buffer = await image.getBufferAsync('image/jpeg');
-  console.log('data:image/jpeg;base64,' + buffer.toString('base64'));
+  return 'data:image/jpeg;base64,' + buffer.toString('base64');
 }

@@ -27,5 +27,6 @@ module.exports = {
     return config
   },
 
-  target: 'server'
+  target: 'experimental-serverless-trace'
+
 }

@@ -12,6 +12,7 @@
     "@polkadot/util-crypto": "^6.2.1",
     "array-shuffle": "^2.0.0",
     "asmcrypto-lite": "^1.1.0",
+    "bufferutil": "^4.0.3",
     "eslint": "^7.24.0",
     "i18next": "^19.9.2",
     "i18next-browser-languagedetector": "^6.1.0",
@@ -33,6 +34,7 @@
     "react-switch": "^6.0.0",
     "skynet-js": "^3.0.2",
     "socket.io-client": "^4.0.1",
+    "utf-8-validate": "^5.0.4",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

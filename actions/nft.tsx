@@ -6,7 +6,7 @@ export const getNFTS = async () => {
   );
   let data: NftType[] = await res.json();
 
-  data = data.filter((item) => Number(item.id) < 26);
+  data = data.filter((item) => Number(item.id) < 35);
 
   return data;
 };
@@ -18,7 +18,7 @@ export const getProfileNFTS = async (id: string) => {
 
   let data: NftType[] = await res.json();
 
-  data = data.filter((item) => Number(item.id) < 25);
+  data = data.filter((item) => Number(item.id) < 35);
 
   return data;
 };
@@ -28,7 +28,7 @@ export const getNFT = async (id: string) => {
     `https://ternoa-marketplace-nft.herokuapp.com/api/NFTs/${id}`
   );
 
-  if (!res.ok || Number(id) > 25) throw new Error();
+  if (!res.ok || Number(id) > 35) throw new Error();
 
   const data = await res.json();
 

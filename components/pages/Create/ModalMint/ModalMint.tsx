@@ -58,7 +58,7 @@ const ModalMint: React.FC<ModalProps> = ({
             Ternoa blockchain.
           </div>
           <div className={style.QR}>
-            <QRCode data={{ links: output }} action={'MINT'} />
+            <QRCode data={{ session, links: output }} action={'MINT'} />
           </div>
         </>
       );

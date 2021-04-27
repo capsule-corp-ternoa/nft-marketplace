@@ -12,13 +12,13 @@ export interface ModalProps {
   type: string | null;
   exp: number;
   setExp: (n: number) => void;
-  setNotAvailable: (b: boolean) => void;
+  setModalExpand: (b: boolean) => void;
 }
 
 const Modal: React.FC<ModalProps> = ({
   setExp,
   exp,
-  setNotAvailable,
+  setModalExpand,
   type,
   NFT,
 }) => {
@@ -81,7 +81,7 @@ const Modal: React.FC<ModalProps> = ({
             </div>
 
             <div className={style.Buttons}>
-              <div className={style.Buy} onClick={() => setNotAvailable(true)}>
+              <div className={style.Buy} onClick={() => setModalExpand(true)}>
                 Proceed to payment
               </div>
               <div onClick={() => setExp(0)} className={style.Cancel}>

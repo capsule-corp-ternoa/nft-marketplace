@@ -6,7 +6,7 @@ export const getNFTS = async () => {
   data = data.filter((item) => item.creatorData && item.ownerData);
   data = data.filter((item) => item.media);
 
-  return data.slice(0, 25);
+  return data;
 };
 
 export const getProfileNFTS = async (id: string) => {

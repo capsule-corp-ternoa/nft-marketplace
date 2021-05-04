@@ -12,10 +12,9 @@ import { UserType } from 'interfaces';
 
 export interface InfosProps {
   user: UserType;
-  setNotAvailable: (b: boolean) => void;
 }
 
-const Infos: React.FC<InfosProps> = ({ user, setNotAvailable }) => {
+const Infos: React.FC<InfosProps> = ({ user }) => {
   const bgGradient = user ? { background: gradient(user.name) } : {};
 
   return (
@@ -59,12 +58,7 @@ const Infos: React.FC<InfosProps> = ({ user, setNotAvailable }) => {
                 {middleEllipsis(user.walletId, 20)}
                 <CopyPaste className={style.CopyPaste} />
               </div>
-              <div
-                className={style.Button}
-                onClick={() => setNotAvailable(true)}
-              >
-                Follow
-              </div>
+              <div></div>
             </div>
             <div className={style.Hide}>
               <span className={style.Bold}>{user.nbFollowers}</span>followers

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import style from './NftCard.module.scss';
-import Heart from 'components/assets/heart';
 import Creator from '../Creator';
 import Router from 'next/router';
 import { useMediaQuery } from 'react-responsive';
@@ -83,7 +82,7 @@ const NftCard: React.FC<NftCardProps> = ({ item, mode, isDragging }) => {
       onMouseOut={() => !isMobile && setIsHovering(false)}
     >
       {returnType()}
-      {item.cryptedMedia?.url !== item.media?.url && !isHovering && (
+      {item.cryptedMedia?.url !== item.media?.url && (
         <span className={style.SecretLabel}>S</span>
       )}
       <div
@@ -94,13 +93,7 @@ const NftCard: React.FC<NftCardProps> = ({ item, mode, isDragging }) => {
         }
       />
       <div className={isHovering ? `${style.Container}` : style.Hide}>
-        <div
-          className={
-            isHovering ? `${style.Favorite} ${style.FadeSimple}` : style.Hide
-          }
-        >
-          <Heart className={style.HeartSVG} />
-        </div>
+        <div></div>
 
         <div className={style.Infos}>
           <div

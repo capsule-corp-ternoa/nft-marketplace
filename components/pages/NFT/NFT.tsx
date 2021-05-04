@@ -7,10 +7,6 @@ import FloatingHeader from 'components/base/FloatingHeader';
 import Scale from 'components/assets/scale';
 
 import Check from 'components/assets/check';
-import Share from 'components/assets/share';
-import Like from 'components/assets/heart';
-import Eye from 'components/assets/eye';
-
 import gradient from 'random-gradient';
 
 import { computeCaps } from 'utils/strings';
@@ -71,15 +67,7 @@ const NFTPage: React.FC<NFTPageProps> = ({
           <div className={style.Top}>
             <h1 className={style.Title}>{NFT.name}</h1>
             <div className={style.TopInfos}>
-              <div className={style.Views}>
-                <Eye className={style.EyeSVG} />0
-              </div>
-              <div className={style.Like}>
-                <Like className={style.LikeSVG} />
-              </div>
-              <div className={style.Share}>
-                <Share className={style.ShareSVG} />
-              </div>
+          
             </div>
           </div>
           <div className={style.Line} />

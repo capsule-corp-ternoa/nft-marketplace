@@ -39,7 +39,7 @@ const PublicProfile: React.FC<PublicProfileProps> = ({
           alt="banner"
         />
       </div>
-      <Infos user={profile} setNotAvailable={setNotAvailable} />
+      <Infos user={profile} />
       <div className={style.NFTWrapper}>{returnNFTs()}</div>
       <FloatingHeader user={user} setModalExpand={setModalExpand} />
       <Footer setNotAvailable={setNotAvailable} />

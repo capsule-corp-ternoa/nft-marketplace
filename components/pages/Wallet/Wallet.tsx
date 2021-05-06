@@ -57,7 +57,9 @@ const Wallet: React.FC<WalletProps> = ({
         </div>
       </div>
       <Footer setNotAvailable={setNotAvailable} />
-      <FloatingHeader user={user} setModalExpand={setModalExpand} />
+      {!window.isRNApp && (
+        <FloatingHeader user={user} setModalExpand={setModalExpand} />
+      )}
     </div>
   );
 };

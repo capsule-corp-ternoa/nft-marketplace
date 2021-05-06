@@ -159,7 +159,9 @@ const Profile: React.FC<ProfileProps> = ({
         />
         {returnCategory()}
       </div>
-      <FloatingHeader setModalExpand={setModalExpand} user={user} />
+      {!window.isRNApp && (
+        <FloatingHeader user={user} setModalExpand={setModalExpand} />
+      )}
       <Footer setNotAvailable={setNotAvailable} />
       {expand && (
         <FloatingMenu setScope={setScope} scope={scope} setExpand={setExpand} />

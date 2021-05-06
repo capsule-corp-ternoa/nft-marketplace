@@ -29,6 +29,7 @@ const ModalMint: React.FC<ModalProps> = ({
   output,
 }) => {
   const [session] = useState(randomstring.generate());
+  const [showQR, setShowQR] = useState(false);
 
   useEffect(() => {
     const socket = io(
@@ -38,6 +39,10 @@ const ModalMint: React.FC<ModalProps> = ({
         transports: ['websocket'],
       }
     );
+
+    socket.on('CONNECTION_SUCCESS', () => {
+      setShowQR(true);
+    });
 
     socket.on('CONNECTION_FAILURE', (data) => setError(data.msg));
     socket.on('MINTING_NFT', (data) => {
@@ -57,9 +62,15 @@ const ModalMint: React.FC<ModalProps> = ({
             Flash this QR Code on your mobile wallet app to mint your NFT on the
             Ternoa blockchain.
           </div>
-          <div className={style.QR}>
+          {showQR ? (
             <QRCode data={{ session, links: output }} action={'MINT'} />
-          </div>
+          ) : (
+            <div className={style.Loading}>
+              <span className={style.Dot}></span>
+              <span className={style.Dot}></span>
+              <span className={style.Dot}></span>
+            </div>
+          )}
         </>
       );
     } else {
@@ -111,7 +122,7 @@ const ModalMint: React.FC<ModalProps> = ({
                   'Uploading JSON File...'
                 ) : (
                   <div className={style.Step}>
-                    JSON File upload completed{' '}
+                    JSON File upload completed
                     <CheckMark className={style.CheckMark} />
                   </div>
                 )}
@@ -127,7 +138,6 @@ const ModalMint: React.FC<ModalProps> = ({
       <div className={style.Container}>
         <Close onClick={() => setModalCreate(false)} className={style.Close} />
         <div className={style.Title}>Create NFT</div>
-
         {error ? <div className={style.Error}>{error}</div> : returnState()}
       </div>
     </div>

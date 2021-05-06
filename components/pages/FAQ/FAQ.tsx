@@ -53,7 +53,9 @@ const FAQ: React.FC<FAQProps> = ({ user, setModalExpand, setNotAvailable }) => {
         <span className={style.FAQ}>FAQ</span>
         <div className={style.Inner}>{returnSections()}</div>
       </div>
-      <FloatingHeader setModalExpand={setModalExpand} user={user} />
+      {!window.isRNApp && (
+        <FloatingHeader user={user} setModalExpand={setModalExpand} />
+      )}
       <Footer setNotAvailable={setNotAvailable} />
     </div>
   );

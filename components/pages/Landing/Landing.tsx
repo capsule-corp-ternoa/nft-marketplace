@@ -40,7 +40,9 @@ const Landing: React.FC<LandingProps> = ({
         <a className={style.Button}>See more</a>
       </Link>
       <Footer setNotAvailable={setNotAvailable} />
-      <FloatingHeader user={user} setModalExpand={setModalExpand} />
+      {!window.isRNApp && (
+        <FloatingHeader user={user} setModalExpand={setModalExpand} />
+      )}
     </div>
   );
 };

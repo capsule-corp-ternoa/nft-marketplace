@@ -15,7 +15,6 @@ const TernoaWallet: React.FC<TernoaWalletProps> = ({ setModalExpand }) => {
   const [session] = useState(randomstring.generate());
   const [error, setError] = useState('');
   const [showQR, setShowQR] = useState(false);
-  console.log(session);
 
   useEffect(() => {
     const socket = io(`${process.env.NEXT_PUBLIC_SOCKETIO_URL}/socket/login`, {
@@ -23,13 +22,13 @@ const TernoaWallet: React.FC<TernoaWalletProps> = ({ setModalExpand }) => {
       transports: ['websocket'],
     });
 
-    socket.on('connect', () => {
+    socket.on('CONNECTION_SUCCESS', () => {
       setShowQR(true);
     });
     socket.on('disconnect', (data) => console.log('deco', data));
 
     socket.on('CONNECTION_FAILURE', (data) => setError(data.msg));
-    socket.on('RECEIVE_WALLET_ID', (data) => {
+    socket.on('SEND_WALLET_ID', (data) => {
       Cookies.set('token', data.walletId, {
         sameSite: 'strict',
         expires: 1,
@@ -51,7 +50,17 @@ const TernoaWallet: React.FC<TernoaWalletProps> = ({ setModalExpand }) => {
           To authenticate, scan this QR Code from your Ternoa Wallet mobile
           application.
         </div>
-        {showQR && <QRCode data={{ session }} action={'LOGIN'} />}
+        <div className={style.QR}>
+          {showQR ? (
+            <QRCode data={{ session }} action={'LOGIN'} />
+          ) : (
+            <div className={style.Loading}>
+              <span className={style.Dot}></span>
+              <span className={style.Dot}></span>
+              <span className={style.Dot}></span>
+            </div>
+          )}
+        </div>
         {error && <div className={style.Error}>{error}</div>}
       </div>
     </div>

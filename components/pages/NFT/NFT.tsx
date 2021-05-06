@@ -66,9 +66,7 @@ const NFTPage: React.FC<NFTPageProps> = ({
         <div className={style.Text}>
           <div className={style.Top}>
             <h1 className={style.Title}>{NFT.name}</h1>
-            <div className={style.TopInfos}>
-          
-            </div>
+            <div className={style.TopInfos}></div>
           </div>
           <div className={style.Line} />
           <div className={style.Hide}>
@@ -148,7 +146,9 @@ const NFTPage: React.FC<NFTPageProps> = ({
         </div>
       </div>
       <Footer setNotAvailable={setNotAvailable} />
-      <FloatingHeader user={user} setModalExpand={setModalExpand} />
+      {!window.isRNApp && (
+        <FloatingHeader user={user} setModalExpand={setModalExpand} />
+      )}
     </div>
   );
 };

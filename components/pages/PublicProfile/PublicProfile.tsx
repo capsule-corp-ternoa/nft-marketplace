@@ -41,7 +41,9 @@ const PublicProfile: React.FC<PublicProfileProps> = ({
       </div>
       <Infos user={profile} />
       <div className={style.NFTWrapper}>{returnNFTs()}</div>
-      <FloatingHeader user={user} setModalExpand={setModalExpand} />
+      {!window.isRNApp && (
+        <FloatingHeader user={user} setModalExpand={setModalExpand} />
+      )}
       <Footer setNotAvailable={setNotAvailable} />
     </div>
   );

@@ -37,7 +37,9 @@ const ExplorePage: React.FC<ExplorePage> = ({ user, data }) => {
       <MainHeader user={user} setModalExpand={setModalExpand} />
       <Explore NFTS={data} />
       <Footer setNotAvailable={setNotAvailable} />
-      <FloatingHeader user={user} setModalExpand={setModalExpand} />
+      {!window.isRNApp && (
+        <FloatingHeader user={user} setModalExpand={setModalExpand} />
+      )}
     </>
   );
 };

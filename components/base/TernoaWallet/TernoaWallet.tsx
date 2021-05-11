@@ -18,6 +18,9 @@ const TernoaWallet: React.FC<TernoaWalletProps> = ({ setModalExpand }) => {
   console.log(session);
 
   useEffect(() => {
+    console.log('use effect');
+
+    console.log('process.env.NEXT_PUBLIC_SOCKETIO_URL', `${process.env.NEXT_PUBLIC_SOCKETIO_URL}/socket/login`);
     const socket = io(`${process.env.NEXT_PUBLIC_SOCKETIO_URL}/socket/login`, {
       query: { session },
       transports: ['websocket'],
@@ -25,6 +28,9 @@ const TernoaWallet: React.FC<TernoaWalletProps> = ({ setModalExpand }) => {
 
     socket.on('connect', () => {
       setShowQR(true);
+    });
+    socket.on('connect_error', (e) => {
+      console.error('connection error socket', e)
     });
     socket.on('disconnect', (data) => console.log('deco', data));
 
@@ -34,10 +40,12 @@ const TernoaWallet: React.FC<TernoaWalletProps> = ({ setModalExpand }) => {
         sameSite: 'strict',
         expires: 1,
       });
+      socket.emit('RECEIVED_WALLET_ID', data);
       window.location.reload();
     });
 
     return function cleanup() {
+      console.log('cleanup');
       socket.close();
     };
   }, []);

@@ -18,9 +18,6 @@ const TernoaWallet: React.FC<TernoaWalletProps> = ({ setModalExpand }) => {
   console.log(session);
 
   useEffect(() => {
-    console.log('use effect');
-
-    console.log('process.env.NEXT_PUBLIC_SOCKETIO_URL', `${process.env.NEXT_PUBLIC_SOCKETIO_URL}/socket/login`);
     const socket = io(`${process.env.NEXT_PUBLIC_SOCKETIO_URL}/socket/login`, {
       query: { session },
       transports: ['websocket'],
@@ -45,7 +42,6 @@ const TernoaWallet: React.FC<TernoaWalletProps> = ({ setModalExpand }) => {
     });
 
     return function cleanup() {
-      console.log('cleanup');
       socket.close();
     };
   }, []);

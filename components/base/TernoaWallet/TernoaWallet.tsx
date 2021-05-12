@@ -26,6 +26,9 @@ const TernoaWallet: React.FC<TernoaWalletProps> = ({ setModalExpand }) => {
     socket.on('connect', () => {
       setShowQR(true);
     });
+    socket.on('connect_error', (e) => {
+      console.error('connection error socket', e)
+    });
     socket.on('disconnect', (data) => console.log('deco', data));
 
     socket.on('CONNECTION_FAILURE', (data) => setError(data.msg));
@@ -34,6 +37,7 @@ const TernoaWallet: React.FC<TernoaWalletProps> = ({ setModalExpand }) => {
         sameSite: 'strict',
         expires: 1,
       });
+      socket.emit('RECEIVED_WALLET_ID', data);
       window.location.reload();
     });
 

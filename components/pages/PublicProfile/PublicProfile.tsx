@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import style from './PublicProfile.module.scss';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
@@ -22,6 +22,12 @@ const PublicProfile: React.FC<PublicProfileProps> = ({
   setModalExpand,
   setNotAvailable,
 }) => {
+  const [isRN, setIsRN] = useState(false);
+
+  useEffect(() => {
+    setIsRN(window.isRNApp);
+  }, []);
+
   function returnNFTs() {
     return NFTS.map((item: NftType) => (
       <div key={item.id} className={style.NFTShell}>
@@ -41,9 +47,7 @@ const PublicProfile: React.FC<PublicProfileProps> = ({
       </div>
       <Infos user={profile} />
       <div className={style.NFTWrapper}>{returnNFTs()}</div>
-      {!window.isRNApp && (
-        <FloatingHeader user={user} setModalExpand={setModalExpand} />
-      )}
+      {!isRN && <FloatingHeader user={user} setModalExpand={setModalExpand} />}
       <Footer setNotAvailable={setNotAvailable} />
     </div>
   );

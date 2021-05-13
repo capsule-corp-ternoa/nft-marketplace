@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import style from './NFT.module.scss';
 import Footer from 'components/base/Footer';
@@ -29,6 +29,12 @@ const NFTPage: React.FC<NFTPageProps> = ({
   user,
   type,
 }) => {
+  const [isRN, setIsRN] = useState(false);
+
+  useEffect(() => {
+    setIsRN(window.isRNApp);
+  }, []);
+
   const bgGradientOwner = { background: gradient(NFT.ownerData.name) };
   const bgGradientCreator = { background: gradient(NFT.creatorData.name) };
 
@@ -146,9 +152,7 @@ const NFTPage: React.FC<NFTPageProps> = ({
         </div>
       </div>
       <Footer setNotAvailable={setNotAvailable} />
-      {!window.isRNApp && (
-        <FloatingHeader user={user} setModalExpand={setModalExpand} />
-      )}
+      {!isRN && <FloatingHeader user={user} setModalExpand={setModalExpand} />}
     </div>
   );
 };

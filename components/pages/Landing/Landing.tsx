@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import style from './Landing.module.scss';
 import Hero from './Hero';
@@ -30,11 +30,6 @@ const Landing: React.FC<LandingProps> = ({
   NFTSET2,
   NFTCreators,
 }) => {
-  const [isRN, setIsRN] = useState(false);
-
-  useEffect(() => {
-    setIsRN(window.isRNApp);
-  }, []);
   return (
     <div className={style.Container}>
       <Hero users={users} />
@@ -45,7 +40,7 @@ const Landing: React.FC<LandingProps> = ({
         <a className={style.Button}>See more</a>
       </Link>
       <Footer setNotAvailable={setNotAvailable} />
-      {!isRN && <FloatingHeader user={user} setModalExpand={setModalExpand} />}
+      <FloatingHeader user={user} setModalExpand={setModalExpand} />
     </div>
   );
 };

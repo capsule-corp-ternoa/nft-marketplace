@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import style from './Create.module.scss';
 import Footer from 'components/base/Footer';
@@ -49,10 +49,6 @@ const Create: React.FC<CreateProps> = ({
   setProcessed,
 }) => {
   const [exp, setExp] = useState(false);
-  const [isRN, setIsRN] = useState(false);
-  useEffect(() => {
-    setIsRN(window.isRNApp);
-  }, []);
 
   const { name, description, quantity } = NFTData;
 
@@ -324,7 +320,7 @@ const Create: React.FC<CreateProps> = ({
       </div>
 
       <Footer setNotAvailable={setNotAvailable} />
-      {!isRN && <FloatingHeader user={user} setModalExpand={setModalExpand} />}
+      <FloatingHeader user={user} setModalExpand={setModalExpand} />
     </div>
   );
 };

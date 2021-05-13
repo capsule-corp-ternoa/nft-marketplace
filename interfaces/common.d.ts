@@ -1,4 +1,5 @@
 interface Window {
-  isRNApp: any;
+  isRNApp: boolean;
+  walletId: string;
   ReactNativeWebView: any;
 }

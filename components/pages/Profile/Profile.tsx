@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import style from './Profile.module.scss';
 import Footer from 'components/base/Footer';
@@ -35,11 +35,6 @@ const Profile: React.FC<ProfileProps> = ({
       'https://images.unsplash.com/photo-1579546929518-9e396f3cc809?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2250&q=80'
   );
   const [, setSearchValue] = useState('' as string);
-  const [isRN, setIsRN] = useState(false);
-
-  useEffect(() => {
-    setIsRN(window.isRNApp ? true : false);
-  }, []);
 
   const updateKeywordSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.currentTarget.value);
@@ -164,7 +159,7 @@ const Profile: React.FC<ProfileProps> = ({
         />
         {returnCategory()}
       </div>
-      {!isRN && <FloatingHeader user={user} setModalExpand={setModalExpand} />}
+      <FloatingHeader user={user} setModalExpand={setModalExpand} />
       <Footer setNotAvailable={setNotAvailable} />
       {expand && (
         <FloatingMenu setScope={setScope} scope={scope} setExpand={setExpand} />

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import AlphaBanner from 'components/base/AlphaBanner';
 import MainHeader from 'components/base/MainHeader';
@@ -25,6 +25,19 @@ const PublicProfilePage: React.FC<PublicProfileProps> = ({
 }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
+  const [walletUser, setWalletUser] = useState(user);
+
+  useEffect(() => {
+    async function callBack() {
+      try {
+        let res = await getUser(window.walletId);
+        setWalletUser(res);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    if (window.isRNApp && window.walletId) callBack();
+  }, []);
 
   return (
     <>
@@ -40,9 +53,9 @@ const PublicProfilePage: React.FC<PublicProfileProps> = ({
       {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
       {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
       <AlphaBanner />
-      <MainHeader user={user} setModalExpand={setModalExpand} />
+      <MainHeader user={walletUser} setModalExpand={setModalExpand} />
       <PublicProfile
-        user={user}
+        user={walletUser}
         profile={profile}
         NFTS={data}
         setModalExpand={setModalExpand}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import style from './FAQ.module.scss';
 import Footer from 'components/base/Footer';
@@ -14,11 +14,6 @@ export interface FAQProps {
 }
 
 const FAQ: React.FC<FAQProps> = ({ user, setModalExpand, setNotAvailable }) => {
-  const [isRN, setIsRN] = useState(false);
-
-  useEffect(() => {
-    setIsRN(window.isRNApp);
-  }, []);
   const sec = [
     {
       question: 'What is SecretNFT Marketplace ?',
@@ -58,7 +53,7 @@ const FAQ: React.FC<FAQProps> = ({ user, setModalExpand, setNotAvailable }) => {
         <span className={style.FAQ}>FAQ</span>
         <div className={style.Inner}>{returnSections()}</div>
       </div>
-      {!isRN && <FloatingHeader user={user} setModalExpand={setModalExpand} />}
+      <FloatingHeader user={user} setModalExpand={setModalExpand} />
       <Footer setNotAvailable={setNotAvailable} />
     </div>
   );

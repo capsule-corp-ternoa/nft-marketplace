@@ -48,6 +48,19 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
     description: '',
     quantity: 1,
   });
+  const [walletUser, setWalletUser] = useState(user);
+
+  useEffect(() => {
+    async function callBack() {
+      try {
+        let res = await getUser(window.walletId);
+        setWalletUser(res);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    if (window.isRNApp && window.walletId) callBack();
+  }, []);
 
   const [NFT, setNFT] = useState<File | null>(null);
   const [secretNFT, setSecretNFT] = useState<File | null>(null);
@@ -155,12 +168,12 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
         />
       )}
       <AlphaBanner />
-      <MainHeader user={user} setModalExpand={setModalExpand} />
+      <MainHeader user={walletUser} setModalExpand={setModalExpand} />
       <Create
         setModalExpand={setModalExpand}
         setNotAvailable={setNotAvailable}
         setModalCreate={setModalCreate}
-        user={user}
+        user={walletUser}
         NFT={NFT}
         setNFT={setNFT}
         secretNFT={secretNFT}

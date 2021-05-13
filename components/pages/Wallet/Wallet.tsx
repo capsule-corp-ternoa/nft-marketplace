@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import style from './Wallet.module.scss';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
@@ -21,12 +21,6 @@ const Wallet: React.FC<WalletProps> = ({
   setModalExpand,
   setNotAvailable,
 }) => {
-  const [isRN, setIsRN] = useState(false);
-
-  useEffect(() => {
-    setIsRN(window.isRNApp);
-  }, []);
-
   return (
     <div className={style.Container}>
       <div className={style.Head}>
@@ -63,7 +57,7 @@ const Wallet: React.FC<WalletProps> = ({
         </div>
       </div>
       <Footer setNotAvailable={setNotAvailable} />
-      {!isRN && <FloatingHeader user={user} setModalExpand={setModalExpand} />}
+      <FloatingHeader user={user} setModalExpand={setModalExpand} />
     </div>
   );
 };

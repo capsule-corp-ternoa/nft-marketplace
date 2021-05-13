@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import AlphaBanner from 'components/base/AlphaBanner';
 import MainHeader from 'components/base/MainHeader';
@@ -22,6 +22,20 @@ export interface ExplorePage {
 const ExplorePage: React.FC<ExplorePage> = ({ user, data }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
+  const [walletUser, setWalletUser] = useState(user);
+
+  useEffect(() => {
+    async function callBack() {
+      try {
+        let res = await getUser(window.walletId);
+        setWalletUser(res);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    if (window.isRNApp && window.walletId) callBack();
+  }, []);
+
   return (
     <>
       <Head>
@@ -34,12 +48,10 @@ const ExplorePage: React.FC<ExplorePage> = ({ user, data }) => {
       {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
       {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
       <AlphaBanner />
-      <MainHeader user={user} setModalExpand={setModalExpand} />
+      <MainHeader user={walletUser} setModalExpand={setModalExpand} />
       <Explore NFTS={data} />
       <Footer setNotAvailable={setNotAvailable} />
-      {!window.isRNApp && (
-        <FloatingHeader user={user} setModalExpand={setModalExpand} />
-      )}
+      <FloatingHeader user={walletUser} setModalExpand={setModalExpand} />
     </>
   );
 };

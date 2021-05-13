@@ -23,6 +23,19 @@ const NftPage: React.FC<NFTPageProps> = ({ user, NFT }) => {
   const [exp, setExp] = useState(0);
   const [notAvailable, setNotAvailable] = useState(false);
   const [type, setType] = useState<string | null>(null);
+  const [walletUser, setWalletUser] = useState(user);
+
+  useEffect(() => {
+    async function callBack() {
+      try {
+        let res = await getUser(window.walletId);
+        setWalletUser(res);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    if (window.isRNApp && window.walletId) callBack();
+  }, []);
 
   useEffect(() => {
     async function callBack() {
@@ -60,13 +73,13 @@ const NftPage: React.FC<NFTPageProps> = ({ user, NFT }) => {
       {modalExpand && <ModalBuy setModalExpand={setModalExpand} id={NFT.id} />}
 
       <AlphaBanner />
-      <MainHeader user={user} setModalExpand={setModalExpand} />
+      <MainHeader user={walletUser} setModalExpand={setModalExpand} />
       <NFTPage
         NFT={NFT}
         setExp={setExp}
         setModalExpand={setModalExpand}
         setNotAvailable={setNotAvailable}
-        user={user}
+        user={walletUser}
         type={type}
       />
     </>

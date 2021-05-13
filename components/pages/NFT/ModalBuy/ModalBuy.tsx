@@ -17,15 +17,17 @@ const ModalBuy: React.FC<ModalBuyProps> = ({ setModalExpand, id }) => {
   const [error, setError] = useState('');
   const [showQR, setShowQR] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [isRN, setIsRN] = useState(false);
 
   useEffect(() => {
+    setIsRN(window.isRNApp);
     const socket = io(`${process.env.NEXT_PUBLIC_SOCKETIO_URL}/socket/buyNft`, {
       query: { session },
       transports: ['websocket'],
     });
 
     socket.on('CONNECTION_SUCCESS', () => {
-      if (window.isRNApp) {
+      if (isRN) {
         const data = { session, nft_id: id };
         setTimeout(function () {
           window.ReactNativeWebView.postMessage(JSON.stringify({ data }));
@@ -65,18 +67,20 @@ const ModalBuy: React.FC<ModalBuyProps> = ({ setModalExpand, id }) => {
       return (
         <>
           <div className={style.Text}>
-            Flash the QR Code on your mobile wallet to buy this NFT.
+            {isRN
+              ? 'Trasaction in progress...'
+              : 'Flash the QR Code on your mobile wallet to buy this NFT'}
           </div>
           <div className={style.QR}>
             {showQR ? (
               <QRCode data={{ session, nft_id: id }} action={'BUY'} />
             ) : (
-                <div className={style.Loading}>
-                  <span className={style.Dot}></span>
-                  <span className={style.Dot}></span>
-                  <span className={style.Dot}></span>
-                </div>
-              )}
+              <div className={style.Loading}>
+                <span className={style.Dot}></span>
+                <span className={style.Dot}></span>
+                <span className={style.Dot}></span>
+              </div>
+            )}
           </div>
         </>
       );

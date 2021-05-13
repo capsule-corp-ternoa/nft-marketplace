@@ -28,7 +28,7 @@ const ModalBuy: React.FC<ModalBuyProps> = ({ setModalExpand, id }) => {
       if (window.isRNApp) {
         const data = { session, nft_id: id };
         setTimeout(function () {
-          window.ReactNativeWebView.postMessage(data);
+          window.ReactNativeWebView.postMessage(JSON.stringify({ data }));
         }, 2000);
       } else {
         setShowQR(true);
@@ -71,12 +71,12 @@ const ModalBuy: React.FC<ModalBuyProps> = ({ setModalExpand, id }) => {
             {showQR ? (
               <QRCode data={{ session, nft_id: id }} action={'BUY'} />
             ) : (
-              <div className={style.Loading}>
-                <span className={style.Dot}></span>
-                <span className={style.Dot}></span>
-                <span className={style.Dot}></span>
-              </div>
-            )}
+                <div className={style.Loading}>
+                  <span className={style.Dot}></span>
+                  <span className={style.Dot}></span>
+                  <span className={style.Dot}></span>
+                </div>
+              )}
           </div>
         </>
       );

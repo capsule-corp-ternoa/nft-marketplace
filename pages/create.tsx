@@ -142,7 +142,7 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
             method: 'POST',
             body: new URLSearchParams({
               name,
-              descripion: description,
+              description,
               fileHash: result.fileHash,
               keyPath: result.keyPath,
               media: previewLink,

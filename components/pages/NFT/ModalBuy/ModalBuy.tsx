@@ -27,7 +27,7 @@ const ModalBuy: React.FC<ModalBuyProps> = ({ setModalExpand, id }) => {
     });
 
     socket.on('CONNECTION_SUCCESS', () => {
-      if (isRN) {
+      if (window.isRNApp) {
         const data = { session, nft_id: id };
         setTimeout(function () {
           window.ReactNativeWebView.postMessage(JSON.stringify({ data }));

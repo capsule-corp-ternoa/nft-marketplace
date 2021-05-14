@@ -12,12 +12,6 @@ import { getUser } from 'actions/user';
 import { UserType } from 'interfaces';
 import { NextPageContext } from 'next';
 
-import {
-  cryptFile,
-  useSkynetUpload,
-  getNftJsons,
-} from 'utils/nftCreation/siasky';
-
 import { imgToBlur, imgToWatermark } from 'utils/imageProcessing/image';
 
 export interface CreatePageProps {
@@ -37,9 +31,6 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
   const [select, setSelect] = useState('Select NFT Option');
   const [processed, setProcessed] = useState(false);
   //
-  const [, statusMedia, uploadFileMedia] = useSkynetUpload();
-  const [, statusSecret, uploadFileSecret] = useSkynetUpload();
-  const [, statusJSON, uploadFileJSON] = useSkynetUpload();
   const [error, setError] = useState('');
   const [output, setOutput] = useState<string[]>([]);
 
@@ -52,6 +43,12 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
   const [NFT, setNFT] = useState<File | null>(null);
   const [secretNFT, setSecretNFT] = useState<File | null>(null);
   const { name, description, quantity } = NFTData;
+  const [QRData, setQRData] = useState({
+    links: output,
+    walletId: user ? user.walletId : '',
+    fileHash: '',
+    price: 1,
+  });
 
   useEffect(() => {
     if (processed) {
@@ -70,7 +67,9 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
         });
         let res = await imgToBlur(processFile);
         const blob = await (await fetch(res as string)).blob();
-        const file = new File([blob], 'NFT', { type: secretNFT.type });
+        const file = new File([blob], secretNFT.name, {
+          type: secretNFT.type,
+        });
         setNFT(file);
         setProcessed(true);
       } else if (
@@ -82,7 +81,9 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
         });
         let res = await imgToWatermark(processFile);
         const blob = await (await fetch(res as string)).blob();
-        const file = new File([blob], 'NFT', { type: secretNFT.type });
+        const file = new File([blob], secretNFT.name, {
+          type: secretNFT.type,
+        });
         setNFT(file);
         setProcessed(true);
       }
@@ -94,6 +95,9 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
 
   async function uploadNFT() {
     try {
+      if (!user) {
+        setError('Please login to create an NFT.');
+      }
       if (
         !secretNFT ||
         !name ||
@@ -102,29 +106,66 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
       ) {
         throw new Error('Elements are undefined');
       }
-      const link1 = await uploadFileMedia(NFT ? NFT : secretNFT);
 
-      const { cryptedFile, gpgkhash } = await cryptFile(NFT ? NFT : secretNFT);
-      if (!cryptedFile) throw new Error('encryption error');
+      const data = new FormData();
+      {
+        NFT ? data.append('file', NFT) : data.append('file', secretNFT);
+      }
 
-      const link2 = await uploadFileSecret(cryptedFile);
+      const resUpload = await fetch(
+        `${process.env.NEXT_PUBLIC_SDK_URL}/api/uploadIM`,
+        {
+          method: 'POST',
+          body: data,
+        }
+      );
 
-      //fix media when NFT doesn't exist
-      const jsons = getNftJsons({
-        name,
-        description,
-        media: link1,
-        itemTotal: quantity,
-        mediaType: secretNFT.type,
-        cryptedMedia: NFT ? link2 : link1,
-        cryptedMediaType: secretNFT.type,
-        gpgkhash,
-      });
+      const previewLink = (await resUpload.json()).url;
 
-      const links = await Promise.all(jsons.map((j) => uploadFileJSON(j)));
-      setOutput(links);
+      let cryptPromises = [];
+      for (let i = 0; i < quantity; i++) {
+        const formData = new FormData();
+        formData.append('file', secretNFT);
+        cryptPromises.push(
+          fetch(`${process.env.NEXT_PUBLIC_SDK_URL}/api/cryptFile`, {
+            method: 'POST',
+            body: data,
+          })
+        );
+      }
+      try {
+        const cryptResults = await Promise.all(cryptPromises);
+        const cryptJSONs = await Promise.all(cryptResults.map((r) => r.json()));
 
-      return links;
+        const results = cryptJSONs.map((result, index) => {
+          return fetch(`${process.env.NEXT_PUBLIC_SDK_URL}/api/uploadEx`, {
+            method: 'POST',
+            body: new URLSearchParams({
+              name,
+              descripion: description,
+              fileHash: result.fileHash,
+              keyPath: result.keyPath,
+              media: previewLink,
+              mediaType: secretNFT.type,
+              cryptedMedia: result.file,
+              cryptedMediaType: secretNFT.type,
+              itemTotal: quantity + '',
+              itemId: index + 1 + '',
+            }),
+          });
+        });
+        const JSONPromises = await Promise.all(results);
+        const JSONURLS = await Promise.all(JSONPromises.map((r) => r.json()));
+        setOutput(JSONURLS);
+        setQRData({
+          ...QRData,
+          links: JSONURLS,
+          fileHash: cryptJSONs[0].fileHash,
+        });
+      } catch (err) {
+        console.error(err);
+      }
+      return output;
     } catch (err) {
       setError('Please try again.');
       console.log(err);
@@ -146,12 +187,10 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
         <ModalMint
           setModalCreate={setModalCreate}
           processed={processed}
-          statusMedia={statusMedia}
-          statusSecret={statusSecret}
-          statusJSON={statusJSON}
           error={error}
           setError={setError}
           output={output}
+          QRData={QRData}
         />
       )}
       <AlphaBanner />

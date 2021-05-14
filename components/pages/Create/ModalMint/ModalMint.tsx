@@ -10,25 +10,21 @@ import CheckMark from 'components/assets/checkmark';
 export interface ModalProps {
   setModalCreate: (b: boolean) => void;
   processed: boolean;
-  statusMedia: string;
-  statusSecret: string;
-  statusJSON: string;
   error: string;
   setError: (s: string) => void;
   output: string[];
+  QRData: any;
 }
 
 const ModalMint: React.FC<ModalProps> = ({
   setModalCreate,
-  processed,
-  statusSecret,
-  statusMedia,
-  statusJSON,
   error,
   setError,
   output,
+  QRData,
 }) => {
   const [session] = useState(randomstring.generate());
+  const { walletId, price, links, fileHash } = QRData;
 
   useEffect(() => {
     const socket = io(
@@ -58,7 +54,10 @@ const ModalMint: React.FC<ModalProps> = ({
             Ternoa blockchain.
           </div>
           <div className={style.QR}>
-            <QRCode data={{ session, links: output }} action={'MINT'} />
+            <QRCode
+              data={{ session, walletId, price, links, fileHash }}
+              action={'MINT'}
+            />
           </div>
         </>
       );
@@ -69,53 +68,19 @@ const ModalMint: React.FC<ModalProps> = ({
             Please wait while we are processing your files.
           </div>
           <div className={style.Status}>
-            <span>
-              {!processed ? (
-                <div className={style.Step}>Processing media...</div>
-              ) : (
-                <div className={style.Step}>
-                  Media processing completed
-                  <CheckMark className={style.CheckMark} />
+            {output.length > 0 ? (
+              <div className={style.Step}>
+                Upload completed <CheckMark className={style.CheckMark} />
+              </div>
+            ) : (
+              <div className={style.Waiting}>
+                <div className={style.Mess}>Minting NFT...</div>
+                <div className={style.Loading}>
+                  <span className={style.Dot}></span>
+                  <span className={style.Dot}></span>
+                  <span className={style.Dot}></span>
                 </div>
-              )}
-            </span>
-
-            {statusMedia && (
-              <span>
-                {statusMedia === 'processing' ? (
-                  'Encrypting your NFT...'
-                ) : (
-                  <div className={style.Step}>
-                    Encryption completed
-                    <CheckMark className={style.CheckMark} />
-                  </div>
-                )}
-              </span>
-            )}
-
-            {statusSecret && (
-              <span>
-                {statusSecret === 'processing' ? (
-                  'Uploading your NFT...'
-                ) : (
-                  <div className={style.Step}>
-                    Upload completed <CheckMark className={style.CheckMark} />
-                  </div>
-                )}
-              </span>
-            )}
-
-            {statusJSON && (
-              <span>
-                {statusJSON === 'processing' ? (
-                  'Uploading JSON File...'
-                ) : (
-                  <div className={style.Step}>
-                    JSON File upload completed{' '}
-                    <CheckMark className={style.CheckMark} />
-                  </div>
-                )}
-              </span>
+              </div>
             )}
           </div>
         </>

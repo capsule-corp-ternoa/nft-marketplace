@@ -107,6 +107,10 @@
 }
 
 .Step {
+  color: white;
+  margin-bottom: 8px;
+  font-family: 'Airbnb Cereal App Medium';
+  font-size: 14px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -132,6 +136,19 @@
   margin-top: 40px;
 }
 
+.Waiting {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.Mess {
+  font-family: 'Airbnb Cereal App Medium';
+  font-size: 14px;
+  margin-bottom: 10px;
+  color: white;
+}
 .Loading {
   display: flex;
   justify-content: center;

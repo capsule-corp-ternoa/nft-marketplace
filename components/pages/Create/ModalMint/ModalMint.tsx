@@ -10,28 +10,26 @@ import CheckMark from 'components/assets/checkmark';
 export interface ModalProps {
   setModalCreate: (b: boolean) => void;
   processed: boolean;
-  statusMedia: string;
-  statusSecret: string;
-  statusJSON: string;
   error: string;
   setError: (s: string) => void;
   output: string[];
+  QRData: any;
 }
 
 const ModalMint: React.FC<ModalProps> = ({
   setModalCreate,
-  processed,
-  statusSecret,
-  statusMedia,
-  statusJSON,
   error,
   setError,
   output,
+  QRData,
 }) => {
   const [session] = useState(randomstring.generate());
   const [showQR, setShowQR] = useState(false);
+  const [isRN, setIsRN] = useState(false);
+  const { walletId, price, links, fileHash } = QRData;
 
   useEffect(() => {
+    setIsRN(window.isRNApp);
     const socket = io(
       `${process.env.NEXT_PUBLIC_SOCKETIO_URL}/socket/createNft`,
       {
@@ -41,7 +39,14 @@ const ModalMint: React.FC<ModalProps> = ({
     );
 
     socket.on('CONNECTION_SUCCESS', () => {
-      setShowQR(true);
+      if (isRN) {
+        const data = { session, walletId, price, links, fileHash };
+        setTimeout(function () {
+          window.ReactNativeWebView.postMessage(JSON.stringify({ data }));
+        }, 2000);
+      } else {
+        setShowQR(true);
+      }
     });
 
     socket.on('CONNECTION_FAILURE', (data) => setError(data.msg));
@@ -63,7 +68,12 @@ const ModalMint: React.FC<ModalProps> = ({
             Ternoa blockchain.
           </div>
           {showQR ? (
-            <QRCode data={{ session, links: output }} action={'MINT'} />
+            <div className={style.QR}>
+              <QRCode
+                data={{ session, walletId, price, links, fileHash }}
+                action={'MINT'}
+              />
+            </div>
           ) : (
             <div className={style.Loading}>
               <span className={style.Dot}></span>
@@ -80,53 +90,19 @@ const ModalMint: React.FC<ModalProps> = ({
             Please wait while we are processing your files.
           </div>
           <div className={style.Status}>
-            <span>
-              {!processed ? (
-                <div className={style.Step}>Processing media...</div>
-              ) : (
-                <div className={style.Step}>
-                  Media processing completed
-                  <CheckMark className={style.CheckMark} />
+            {output.length > 0 ? (
+              <div className={style.Step}>
+                Upload completed <CheckMark className={style.CheckMark} />
+              </div>
+            ) : (
+              <div className={style.Waiting}>
+                <div className={style.Mess}>Minting NFT...</div>
+                <div className={style.Loading}>
+                  <span className={style.Dot}></span>
+                  <span className={style.Dot}></span>
+                  <span className={style.Dot}></span>
                 </div>
-              )}
-            </span>
-
-            {statusMedia && (
-              <span>
-                {statusMedia === 'processing' ? (
-                  'Encrypting your NFT...'
-                ) : (
-                  <div className={style.Step}>
-                    Encryption completed
-                    <CheckMark className={style.CheckMark} />
-                  </div>
-                )}
-              </span>
-            )}
-
-            {statusSecret && (
-              <span>
-                {statusSecret === 'processing' ? (
-                  'Uploading your NFT...'
-                ) : (
-                  <div className={style.Step}>
-                    Upload completed <CheckMark className={style.CheckMark} />
-                  </div>
-                )}
-              </span>
-            )}
-
-            {statusJSON && (
-              <span>
-                {statusJSON === 'processing' ? (
-                  'Uploading JSON File...'
-                ) : (
-                  <div className={style.Step}>
-                    JSON File upload completed
-                    <CheckMark className={style.CheckMark} />
-                  </div>
-                )}
-              </span>
+              </div>
             )}
           </div>
         </>

@@ -42,7 +42,7 @@ const ModalMint: React.FC<ModalProps> = ({
       if (isRN) {
         const data = { session, walletId, price, links, fileHash };
         setTimeout(function () {
-          window.ReactNativeWebView.postMessage(JSON.stringify({ data }));
+          window.ReactNativeWebView.postMessage(JSON.stringify({action:'MINT', data }));
         }, 2000);
       } else {
         setShowQR(true);

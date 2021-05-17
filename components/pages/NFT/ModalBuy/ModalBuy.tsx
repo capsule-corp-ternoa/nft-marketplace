@@ -30,7 +30,7 @@ const ModalBuy: React.FC<ModalBuyProps> = ({ setModalExpand, id }) => {
       if (window.isRNApp) {
         const data = { session, nft_id: id };
         setTimeout(function () {
-          window.ReactNativeWebView.postMessage(JSON.stringify({ data }));
+          window.ReactNativeWebView.postMessage(JSON.stringify({action:'BUY', data }));
         }, 2000);
       } else {
         setShowQR(true);

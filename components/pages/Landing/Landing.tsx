@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import style from './Landing.module.scss';
 import Hero from './Hero';
@@ -7,6 +7,7 @@ import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
 import { UserType, NftType } from 'interfaces/index';
 import dynamic from 'next/dynamic';
+import { getUser } from 'actions/user';
 const Showcase = dynamic(() => import('./Showcase'), {
   ssr: false,
 });
@@ -30,6 +31,18 @@ const Landing: React.FC<LandingProps> = ({
   NFTSET2,
   NFTCreators,
 }) => {
+  const [walletUser, setWalletUser] = useState(user);
+  useEffect(() => {
+    async function callBack() {
+      try {
+        let res = await getUser(window.walletId);
+        setWalletUser(res);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    if (window.isRNApp && window.walletId) callBack();
+  }, []);
   return (
     <div className={style.Container}>
       <Hero users={users} />
@@ -40,7 +53,7 @@ const Landing: React.FC<LandingProps> = ({
         <a className={style.Button}>See more</a>
       </Link>
       <Footer setNotAvailable={setNotAvailable} />
-      <FloatingHeader user={user} setModalExpand={setModalExpand} />
+      <FloatingHeader user={walletUser} setModalExpand={setModalExpand} />
     </div>
   );
 };

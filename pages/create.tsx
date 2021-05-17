@@ -237,7 +237,6 @@ export async function getServerSideProps(ctx: NextPageContext) {
     if (token) {
       user = await getUser(token);
     }
-    user = await getUser('5CDsp9bWeGfe6BKHDqYSkMFMiCBzRK5e3hJnWL4p4yHY4nxt');
   } catch (error) {
     console.error(error);
   }

@@ -142,7 +142,7 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
         cryptPromises.push(
           fetch(`${process.env.NEXT_PUBLIC_SDK_URL}/api/cryptFile`, {
             method: 'POST',
-            body: data,
+            body: formData,
           })
         );
       }

@@ -26,4 +26,7 @@ export type NftType = {
   cryptedMedia?: { url: string };
   ownerData: UserType;
   creatorData: UserType;
+  serieId: string;
+  itemTotal: string;
+  itemId: string;
 };

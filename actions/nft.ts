@@ -6,7 +6,22 @@ export const getNFTS = async () => {
   data = data.filter((item) => item.creatorData && item.ownerData);
   data = data.filter((item) => item.media);
 
-  return data;
+  const displayNFTs: NftType[] = [];
+  const seriesShown: any = {};
+
+  data.forEach((nft) => {
+    console.log(nft.serieId);
+    if (nft.serieId === '0') {
+      displayNFTs.push(nft);
+    } else {
+      if (!seriesShown[nft.serieId]) {
+        displayNFTs.push(nft);
+        seriesShown[nft.serieId] = true;
+      }
+    }
+  });
+
+  return displayNFTs;
 };
 
 export const getProfileNFTS = async (id: string) => {
@@ -18,7 +33,22 @@ export const getProfileNFTS = async (id: string) => {
   data = data.filter((item) => item.creatorData && item.ownerData);
   data = data.filter((item) => item.media);
 
-  return data;
+  const displayNFTs: NftType[] = [];
+  const seriesShown: any = {};
+
+  data.forEach((nft) => {
+    console.log(nft.serieId);
+    if (nft.serieId === '0') {
+      displayNFTs.push(nft);
+    } else {
+      if (!seriesShown[nft.serieId]) {
+        displayNFTs.push(nft);
+        seriesShown[nft.serieId] = true;
+      }
+    }
+  });
+
+  return displayNFTs;
 };
 
 export const getNFT = async (id: string) => {

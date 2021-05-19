@@ -3,6 +3,7 @@ import Head from 'next/head';
 import AlphaBanner from 'components/base/AlphaBanner';
 import MainHeader from 'components/base/MainHeader';
 import ModalBuy from 'components/pages/NFT/ModalBuy';
+import TernoaWallet from 'components/base/TernoaWallet';
 import NFTPage from 'components/pages/NFT';
 import ModalShowcase from 'components/pages/NFT/ModalShowcase';
 import NotAvailableModal from 'components/base/NotAvailable';
@@ -61,16 +62,17 @@ const NftPage: React.FC<NFTPageProps> = ({ user, NFT }) => {
         <meta property="og:image" content={NFT.media.url} />
       </Head>
       {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
-      {exp !== 0 && (
+      {exp === 2 && (
         <ModalShowcase
           NFT={NFT}
           setExp={setExp}
           exp={exp}
-          setModalExpand={setModalExpand}
+          setModalExpand={() => setExp(3)}
           type={type}
         />
       )}
-      {modalExpand && <ModalBuy setModalExpand={setModalExpand} id={NFT.id} />}
+      {exp === 3 && <ModalBuy setModalExpand={() => setExp(0)} id={NFT.id} />}
+      {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
 
       <AlphaBanner />
       <MainHeader user={walletUser} setModalExpand={setModalExpand} />

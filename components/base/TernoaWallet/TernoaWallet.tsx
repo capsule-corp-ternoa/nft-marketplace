@@ -38,7 +38,6 @@ const TernoaWallet: React.FC<TernoaWalletProps> = ({ setModalExpand }) => {
         expires: 1,
       });
       socket.emit('RECEIVED_WALLET_ID', data);
-      socket.close();
       window.location.reload();
     });
 

@@ -52,6 +52,7 @@ const ModalMint: React.FC<ModalProps> = ({
     socket.on('CONNECTION_FAILURE', (data) => setError(data.msg));
     socket.on('MINTING_NFT', (data) => {
       console.log(data), setModalCreate(false);
+      socket.emit('MINTING_NFT_RECEIVED')
     });
 
     return () => {

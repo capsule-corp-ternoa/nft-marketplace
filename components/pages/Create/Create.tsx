@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import style from './Create.module.scss';
 import Footer from 'components/base/Footer';
@@ -49,8 +49,13 @@ const Create: React.FC<CreateProps> = ({
   setProcessed,
 }) => {
   const [exp, setExp] = useState(false);
+  const [isRN, setIsRN] = useState(false);
 
   const { name, description, quantity } = NFTData;
+
+  useEffect(() => {
+    setIsRN(window.isRNApp);
+  });
 
   function onChange(
     e:
@@ -313,9 +318,11 @@ const Create: React.FC<CreateProps> = ({
               </div>
             </div>
           </div>
-          <div className={style.Create} onClick={() => uploadFiles()}>
-            Create NFT
-          </div>
+          {!isRN && (
+            <div className={style.Create} onClick={() => uploadFiles()}>
+              Create NFT
+            </div>
+          )}
         </div>
       </div>
 

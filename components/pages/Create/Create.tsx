@@ -319,7 +319,7 @@ const Create: React.FC<CreateProps> = ({
             </div>
           </div>
           {!isRN && (
-            <div className={style.Create} onClick={() => uploadFiles()}>
+            <div className={style.Create} onClick={() => setNotAvailable(true)}>
               Create NFT
             </div>
           )}

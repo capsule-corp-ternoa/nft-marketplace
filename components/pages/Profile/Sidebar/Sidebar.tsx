@@ -1,6 +1,5 @@
 import React from 'react';
 
-//import { useTranslation } from 'react-i18next';
 import style from './Sidebar.module.scss';
 import Badge from 'components/assets/badge';
 import CopyPaste from 'components/assets/copypaste';
@@ -10,17 +9,26 @@ import PowerOff from 'components/assets/poweroff';
 import { middleEllipsis } from 'utils/strings';
 import gradient from 'random-gradient';
 
-const Sidebar: React.FC<any> = ({
+import { UserType } from 'interfaces';
+
+export interface SidebarProps {
+  setScope: (s: string) => void;
+  setExpand: (b: boolean) => void;
+  setNotAvailable: (b: boolean) => void;
+  scope: string;
+  user: UserType;
+}
+
+const Sidebar: React.FC<SidebarProps> = ({
   user,
   scope,
   setScope,
   setExpand,
   setNotAvailable,
 }) => {
-  //const { t } = useTranslation();
   const bgGradient = user ? { background: gradient(user.name) } : {};
 
-  function returnActiveTitle(name: any) {
+  function returnActiveTitle(name: string) {
     if (scope === name) {
       return `${style.SectionTitle} ${style.SectionTitleActive}`;
     } else {
@@ -28,7 +36,7 @@ const Sidebar: React.FC<any> = ({
     }
   }
 
-  function returnActiveNumber(name: any) {
+  function returnActiveNumber(name: string) {
     if (scope === name)
       return `${style.SectionNumber} ${style.SectionNumberActive}`;
     else return style.SectionNumber;
@@ -73,7 +81,7 @@ const Sidebar: React.FC<any> = ({
 
         <div className={style.Separator} />
         <div className={style.Caps}>
-          <span className={style.CapsData}>{user.caps} CAPS</span>
+          <span className={style.CapsData}>0 CAPS</span>
           <div className={style.Burger} onClick={() => setExpand(true)}>
             <span className={style.Line} />
             <span className={style.Line} />

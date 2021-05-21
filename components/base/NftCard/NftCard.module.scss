@@ -89,6 +89,20 @@
   right: 16px;
 }
 
+.QtyLabel {
+  background-color: white;
+  position: absolute;
+  padding: 2.5px 20px;
+  z-index: 4;
+  border-radius: 35px;
+  font-family: "Airbnb Cereal App Medium";
+  font-size: 19px;
+  margin: 0px;
+  color: $primary;
+  top: 16px;
+  left: 16px;
+}
+
 .Favorite {
   background-color: $primary;
   align-self: flex-end;

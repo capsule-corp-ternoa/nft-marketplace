@@ -1,15 +1,18 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-import React from "react";
+import React from 'react';
 
-import style from "./ModalWallets.module.scss";
-import Metamask from "components/assets/wallets/metamask";
-import Fortmatic from "components/assets/wallets/fortmatic";
-import WalletConnect from "components/assets/wallets/walletconnect";
-import WalletLink from "components/assets/wallets/walletlink";
-import Key from "components/assets/key";
-import Close from "components/assets/close";
+import style from './ModalWallets.module.scss';
+import Metamask from 'components/assets/wallets/metamask';
+import Fortmatic from 'components/assets/wallets/fortmatic';
+import WalletConnect from 'components/assets/wallets/walletconnect';
+import WalletLink from 'components/assets/wallets/walletlink';
+import Key from 'components/assets/key';
+import Close from 'components/assets/close';
 
-const ModalWallets: React.FC<any> = ({ setModalExpand }) => (
+export interface ModalWalletProps {
+  setModalExpand: (b: boolean) => void;
+}
+
+const ModalWallets: React.FC<ModalWalletProps> = ({ setModalExpand }) => (
   <div id="modalWallet" className={style.Background}>
     <div className={style.Container}>
       <Close onClick={() => setModalExpand(false)} className={style.Close} />

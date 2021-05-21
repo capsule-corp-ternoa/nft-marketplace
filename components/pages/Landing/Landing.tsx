@@ -1,19 +1,28 @@
-import React from 'react';
-//import { useTranslation } from 'react-i18next';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import style from './Landing.module.scss';
 import Hero from './Hero';
 import ArtCreators from './ArtCreators';
-//import BestSellers from './BestSellers';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
-
+import { UserType, NftType } from 'interfaces/index';
 import dynamic from 'next/dynamic';
+import { getUser } from 'actions/user';
 const Showcase = dynamic(() => import('./Showcase'), {
   ssr: false,
 });
 
-const Landing: React.FC<any> = ({
+export interface LandingProps {
+  user: UserType;
+  users: UserType[];
+  setModalExpand: (b: boolean) => void;
+  setNotAvailable: (b: boolean) => void;
+  NFTSET1: NftType[];
+  NFTSET2: NftType[];
+  NFTCreators: NftType[];
+}
+
+const Landing: React.FC<LandingProps> = ({
   setModalExpand,
   setNotAvailable,
   user,
@@ -22,20 +31,29 @@ const Landing: React.FC<any> = ({
   NFTSET2,
   NFTCreators,
 }) => {
-  //const { t } = useTranslation();
-
+  const [walletUser, setWalletUser] = useState(user);
+  useEffect(() => {
+    async function callBack() {
+      try {
+        let res = await getUser(window.walletId);
+        setWalletUser(res);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    if (window.isRNApp && window.walletId) callBack();
+  }, []);
   return (
     <div className={style.Container}>
       <Hero users={users} />
       <Showcase category="Most popular" NFTs={NFTSET1} />
       <Showcase category="Best sellers" NFTs={NFTSET2} />
       <ArtCreators NFTs={NFTCreators} creators={users} />
-      {/*<BestSellers creators={Creators} />*/}
       <Link href="/explore">
         <a className={style.Button}>See more</a>
       </Link>
       <Footer setNotAvailable={setNotAvailable} />
-      <FloatingHeader user={user} setModalExpand={setModalExpand} />
+      <FloatingHeader user={walletUser} setModalExpand={setModalExpand} />
     </div>
   );
 };

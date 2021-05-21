@@ -1,16 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import AlphaBanner from 'components/base/AlphaBanner';
 import MainHeader from 'components/base/MainHeader';
 import TernoaWallet from 'components/base/TernoaWallet';
 import Wallet from 'components/pages/Wallet';
 import NotAvailableModal from 'components/base/NotAvailable';
+import cookies from 'next-cookies';
 
 import { getUser } from 'actions/user';
+import { UserType } from 'interfaces';
+import { NextPageContext } from 'next';
 
-const WalletPage = ({ user }: any) => {
+export interface WalletPageProps {
+  user: UserType;
+  token: string;
+}
+
+const WalletPage: React.FC<WalletPageProps> = ({ user }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
+  const [walletUser, setWalletUser] = useState(user);
+
+  useEffect(() => {
+    async function callBack() {
+      try {
+        let res = await getUser(window.walletId);
+        setWalletUser(res);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    if (window.isRNApp && window.walletId) callBack();
+  }, []);
 
   return (
     <>
@@ -23,9 +44,9 @@ const WalletPage = ({ user }: any) => {
       {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
       {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
       <AlphaBanner />
-      <MainHeader user={user} setModalExpand={setModalExpand} />
+      <MainHeader user={walletUser} setModalExpand={setModalExpand} />
       <Wallet
-        user={user}
+        user={walletUser}
         setModalExpand={setModalExpand}
         setNotAvailable={setNotAvailable}
       />
@@ -33,8 +54,17 @@ const WalletPage = ({ user }: any) => {
   );
 };
 
-export async function getServerSideProps() {
-  const user = await getUser();
+export async function getServerSideProps(ctx: NextPageContext) {
+  let user = null;
+  try {
+    const token = cookies(ctx).token;
+    if (token) {
+      user = await getUser(token);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+
   if (!user) {
     return {
       redirect: {

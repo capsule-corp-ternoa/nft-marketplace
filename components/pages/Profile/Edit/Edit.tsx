@@ -1,15 +1,20 @@
 import React, { useState } from 'react';
-//import { useTranslation } from 'react-i18next';
 import style from './Edit.module.scss';
 import Badge from 'components/assets/badge';
 import gradient from 'random-gradient';
+import { UserType } from 'interfaces';
 
-const Edit: React.FC<any> = ({ user, setNotAvailable, setBanner }) => {
-  //const { t } = useTranslation();
+export interface EditProps {
+  user: UserType;
+  setNotAvailable: (b: boolean) => void;
+  setBanner: (s: string) => void;
+}
+
+const Edit: React.FC<EditProps> = ({ user, setNotAvailable, setBanner }) => {
   const bgGradient = user ? { background: gradient(user.name) } : {};
   const [data, setData] = useState(user);
 
-  function manageSetBanner(x: any) {
+  function manageSetBanner(x: string) {
     setBanner(x);
     setData({ ...data, banner: x });
   }

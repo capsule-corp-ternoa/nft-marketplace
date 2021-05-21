@@ -1,5 +1,4 @@
 import React from 'react';
-//import { useTranslation } from 'react-i18next';
 import style from './Infos.module.scss';
 
 import Badge from 'components/assets/badge';
@@ -9,11 +8,14 @@ import Twitter from 'components/assets/SocialMedias/Twitter';
 import gradient from 'random-gradient';
 
 import { middleEllipsis } from 'utils/strings';
+import { UserType } from 'interfaces';
 
-const Infos: React.FC<any> = ({ user, setNotAvailable }) => {
-  //const { t } = useTranslation();
+export interface InfosProps {
+  user: UserType;
+}
 
-  const bgGradient = { background: gradient(user.name) };
+const Infos: React.FC<InfosProps> = ({ user }) => {
+  const bgGradient = user ? { background: gradient(user.name) } : {};
 
   return (
     <div className={style.Infos}>
@@ -56,12 +58,7 @@ const Infos: React.FC<any> = ({ user, setNotAvailable }) => {
                 {middleEllipsis(user.walletId, 20)}
                 <CopyPaste className={style.CopyPaste} />
               </div>
-              <div
-                className={style.Button}
-                onClick={() => setNotAvailable(true)}
-              >
-                Follow
-              </div>
+              <div></div>
             </div>
             <div className={style.Hide}>
               <span className={style.Bold}>{user.nbFollowers}</span>followers

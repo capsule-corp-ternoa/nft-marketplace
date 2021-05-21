@@ -22,7 +22,9 @@ const Creator: React.FC<CreatorProps> = ({
 }) => {
   const [isHovering, setIsHovering] = useState(false);
 
-  const bgGradient = { background: user.name ? gradient(user.name) : gradient('ternoa') };
+  const bgGradient = {
+    background: user.name ? gradient(user.name) : gradient('ternoa'),
+  };
 
   function manageClass() {
     if (size === 'card') return style.CreatorsItemCard;
@@ -49,9 +51,8 @@ const Creator: React.FC<CreatorProps> = ({
         }
       >
         <div className={style.CreatorName}>{user.name}</div>
-        {/*<div className={style.CreatorsCaps}>0 CAPS</div>*/}
       </div>
-      { user.name ? (
+      {user.name ? (
         <div
           className={manageClass()}
           onFocus={() => false}
@@ -82,7 +83,9 @@ const Creator: React.FC<CreatorProps> = ({
             </div>
           )}
         </div>
-      ): ''}
+      ) : (
+        ''
+      )}
     </div>
   );
 };

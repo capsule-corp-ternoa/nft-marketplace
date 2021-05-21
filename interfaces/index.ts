@@ -1,13 +1,15 @@
 export type UserType = {
   _id: string;
   name: string;
+  banner?: string;
   description?: string;
   verified: boolean;
   nbFollowers: number;
   nbFollowing: number;
   views: number;
   walletId: string;
-  picture: string;
+  picture?: string;
+  twitter?: string;
 };
 
 export type NftType = {
@@ -20,8 +22,11 @@ export type NftType = {
   price: string;
   name?: string;
   description?: string;
-  media?: { url: string };
+  media: { url: string };
   cryptedMedia?: { url: string };
-  ownerData?: UserType;
-  creatorData?: UserType;
+  ownerData: UserType;
+  creatorData: UserType;
+  seriesId: number;
+  itemTotal: string;
+  itemId: string;
 };

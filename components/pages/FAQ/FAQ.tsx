@@ -5,7 +5,15 @@ import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
 import Section from './Section';
 
-const FAQ: React.FC<any> = ({ user, setModalExpand, setNotAvailable }) => {
+import { UserType } from 'interfaces/index';
+
+export interface FAQProps {
+  user: UserType;
+  setModalExpand: (b: boolean) => void;
+  setNotAvailable: (b: boolean) => void;
+}
+
+const FAQ: React.FC<FAQProps> = ({ user, setModalExpand, setNotAvailable }) => {
   const sec = [
     {
       question: 'What is SecretNFT Marketplace ?',
@@ -45,7 +53,7 @@ const FAQ: React.FC<any> = ({ user, setModalExpand, setNotAvailable }) => {
         <span className={style.FAQ}>FAQ</span>
         <div className={style.Inner}>{returnSections()}</div>
       </div>
-      <FloatingHeader setModalExpand={setModalExpand} user={user} />
+      <FloatingHeader user={user} setModalExpand={setModalExpand} />
       <Footer setNotAvailable={setNotAvailable} />
     </div>
   );

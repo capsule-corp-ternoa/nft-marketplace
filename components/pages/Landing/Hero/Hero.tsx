@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/media-has-caption */
 import React, { useState } from 'react';
 import style from './Hero.module.scss';
 import Link from 'next/link';
@@ -45,7 +44,6 @@ const Hero: React.FC<HeroProps> = ({ users }) => {
               muted={true}
               loop
               playsInline
-              //controls={true}
               data-reactid=".0.1.0.0"
               height="100%"
               width="100%"

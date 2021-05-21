@@ -2,19 +2,41 @@ import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import AlphaBanner from 'components/base/AlphaBanner';
 import MainHeader from 'components/base/MainHeader';
+import ModalBuy from 'components/pages/NFT/ModalBuy';
 import TernoaWallet from 'components/base/TernoaWallet';
 import NFTPage from 'components/pages/NFT';
 import ModalShowcase from 'components/pages/NFT/ModalShowcase';
 import NotAvailableModal from 'components/base/NotAvailable';
+import cookies from 'next-cookies';
 
 import { getUser } from 'actions/user';
 import { getNFT } from 'actions/nft';
+import { NftType, UserType } from 'interfaces';
+import { NextPageContext } from 'next';
 
-const NftPage = ({ user, NFT }: any) => {
+export interface NFTPageProps {
+  user: UserType;
+  NFT: NftType;
+}
+
+const NftPage: React.FC<NFTPageProps> = ({ user, NFT }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [exp, setExp] = useState(0);
   const [notAvailable, setNotAvailable] = useState(false);
   const [type, setType] = useState<string | null>(null);
+  const [walletUser, setWalletUser] = useState(user);
+
+  useEffect(() => {
+    async function callBack() {
+      try {
+        let res = await getUser(window.walletId);
+        setWalletUser(res);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    if (window.isRNApp && window.walletId) callBack();
+  }, []);
 
   useEffect(() => {
     async function callBack() {
@@ -40,35 +62,44 @@ const NftPage = ({ user, NFT }: any) => {
         <meta property="og:image" content={NFT.media.url} />
       </Head>
       {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
-      {exp !== 0 && (
+      {exp === 2 && (
         <ModalShowcase
           NFT={NFT}
           setExp={setExp}
           exp={exp}
-          setNotAvailable={setNotAvailable}
+          setModalExpand={() => setExp(3)}
           type={type}
         />
       )}
+      {exp === 3 && <ModalBuy setModalExpand={() => setExp(0)} id={NFT.id} />}
       {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
 
       <AlphaBanner />
-      <MainHeader user={user} setModalExpand={setModalExpand} />
+      <MainHeader user={walletUser} setModalExpand={setModalExpand} />
       <NFTPage
         NFT={NFT}
         setExp={setExp}
         setModalExpand={setModalExpand}
         setNotAvailable={setNotAvailable}
-        user={user}
+        user={walletUser}
         type={type}
       />
     </>
   );
 };
 
-export async function getServerSideProps({ query }: any) {
+export async function getServerSideProps(ctx: NextPageContext) {
   try {
-    const user = await getUser();
-    let NFT = await getNFT(query.name);
+    let user = null;
+    try {
+      const token = cookies(ctx).token;
+      if (token) {
+        user = await getUser(token);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    let NFT = await getNFT(ctx.query.name as string);
 
     return {
       props: { user, NFT },

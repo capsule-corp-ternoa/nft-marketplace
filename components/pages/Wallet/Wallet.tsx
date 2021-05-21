@@ -1,5 +1,4 @@
 import React from 'react';
-//import { useTranslation } from 'react-i18next';
 import style from './Wallet.module.scss';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
@@ -9,10 +8,19 @@ import WalletSVG from 'components/assets/wallet';
 import Badge from 'components/assets/badge';
 
 import { middleEllipsis } from 'utils/strings';
+import { UserType } from 'interfaces';
 
-const Wallet: React.FC<any> = ({ user, setModalExpand, setNotAvailable }) => {
-  //const { t } = useTranslation();
+export interface WalletProps {
+  setNotAvailable: (b: boolean) => void;
+  setModalExpand: (b: boolean) => void;
+  user: UserType;
+}
 
+const Wallet: React.FC<WalletProps> = ({
+  user,
+  setModalExpand,
+  setNotAvailable,
+}) => {
   return (
     <div className={style.Container}>
       <div className={style.Head}>
@@ -22,7 +30,11 @@ const Wallet: React.FC<any> = ({ user, setModalExpand, setNotAvailable }) => {
       <div className={style.Wallet}>
         <div className={style.AvatarShell}>
           <div className={style.Avatar}>
-            <img className={style.AvatarIMG} draggable="false" src={user.img} />
+            <img
+              className={style.AvatarIMG}
+              draggable="false"
+              src={user.picture}
+            />
             {user.verified && <Badge className={style.Badge} />}
           </div>
         </div>
@@ -39,7 +51,7 @@ const Wallet: React.FC<any> = ({ user, setModalExpand, setNotAvailable }) => {
         </div>
 
         <div className={style.Separator} />
-        <div className={style.Caps}>{user.caps} CAPS</div>
+        <div className={style.Caps}>0 CAPS</div>
         <div className={style.Button} onClick={() => setNotAvailable(true)}>
           Buy CAPS
         </div>

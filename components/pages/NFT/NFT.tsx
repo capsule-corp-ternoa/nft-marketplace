@@ -1,5 +1,4 @@
 import React from 'react';
-//import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import style from './NFT.module.scss';
 import Footer from 'components/base/Footer';
@@ -8,15 +7,21 @@ import FloatingHeader from 'components/base/FloatingHeader';
 import Scale from 'components/assets/scale';
 
 import Check from 'components/assets/check';
-import Share from 'components/assets/share';
-import Like from 'components/assets/heart';
-import Eye from 'components/assets/eye';
-
 import gradient from 'random-gradient';
 
 import { computeCaps } from 'utils/strings';
+import { UserType, NftType } from 'interfaces';
 
-const NFTPage: React.FC<any> = ({
+export interface NFTPageProps {
+  NFT: NftType;
+  user: UserType;
+  type: string | null;
+  setExp: (n: number) => void;
+  setNotAvailable: (b: boolean) => void;
+  setModalExpand: (b: boolean) => void;
+}
+
+const NFTPage: React.FC<NFTPageProps> = ({
   setExp,
   NFT,
   setModalExpand,
@@ -26,7 +31,6 @@ const NFTPage: React.FC<any> = ({
 }) => {
   const bgGradientOwner = { background: gradient(NFT.ownerData.name) };
   const bgGradientCreator = { background: gradient(NFT.creatorData.name) };
-  //const bgGradient = user ? { background: gradient(user.name) } : {};
 
   const fiatPrice = (Number(NFT.price) / 1000000000000000000) * 0.008;
 
@@ -62,17 +66,7 @@ const NFTPage: React.FC<any> = ({
         <div className={style.Text}>
           <div className={style.Top}>
             <h1 className={style.Title}>{NFT.name}</h1>
-            <div className={style.TopInfos}>
-              <div className={style.Views}>
-                <Eye className={style.EyeSVG} />0
-              </div>
-              <div className={style.Like}>
-                <Like className={style.LikeSVG} />
-              </div>
-              <div className={style.Share}>
-                <Share className={style.ShareSVG} />
-              </div>
-            </div>
+            <div className={style.TopInfos}></div>
           </div>
           <div className={style.Line} />
           <div className={style.Hide}>

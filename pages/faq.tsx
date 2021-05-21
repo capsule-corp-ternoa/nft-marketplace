@@ -1,16 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import AlphaBanner from 'components/base/AlphaBanner';
 import MainHeader from 'components/base/MainHeader';
 import TernoaWallet from 'components/base/TernoaWallet';
 import NotAvailableModal from 'components/base/NotAvailable';
 import FAQ from 'components/pages/FAQ';
-
+import cookies from 'next-cookies';
 import { getUser } from 'actions/user';
+import { UserType } from 'interfaces';
+import { NextPageContext } from 'next';
 
-const FAQPage: React.FC<any> = ({ user }) => {
+export interface FAQProps {
+  user: UserType;
+}
+
+const FAQPage: React.FC<FAQProps> = ({ user }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
+  const [walletUser, setWalletUser] = useState(user);
+
+  useEffect(() => {
+    async function callBack() {
+      try {
+        let res = await getUser(window.walletId);
+        setWalletUser(res);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    if (window.isRNApp && window.walletId) callBack();
+  }, []);
 
   return (
     <>
@@ -23,9 +42,9 @@ const FAQPage: React.FC<any> = ({ user }) => {
       {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
       {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
       <AlphaBanner />
-      <MainHeader user={user} setModalExpand={setModalExpand} />
+      <MainHeader user={walletUser} setModalExpand={setModalExpand} />
       <FAQ
-        user={user}
+        user={walletUser}
         setModalExpand={setModalExpand}
         setNotAvailable={setNotAvailable}
       />
@@ -33,8 +52,16 @@ const FAQPage: React.FC<any> = ({ user }) => {
   );
 };
 
-export async function getServerSideProps() {
-  const user = await getUser();
+export async function getServerSideProps(ctx: NextPageContext) {
+  let user = null;
+  try {
+    const token = cookies(ctx).token;
+    if (token) {
+      user = await getUser(token);
+    }
+  } catch (error) {
+    console.error(error);
+  }
 
   return {
     props: { user },

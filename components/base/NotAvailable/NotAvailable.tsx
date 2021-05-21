@@ -1,9 +1,12 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from 'react';
 import style from './NotAvailable.module.scss';
 import Close from 'components/assets/close';
 
-const NotAvailable: React.FC<any> = ({ setNotAvailable }) => (
+export interface NotAvailableProps {
+  setNotAvailable: (b: boolean) => void;
+}
+
+const NotAvailable: React.FC<NotAvailableProps> = ({ setNotAvailable }) => (
   <div id="ternoaWallet" className={style.Background}>
     <div className={style.Container}>
       <Close onClick={() => setNotAvailable(false)} className={style.Close} />

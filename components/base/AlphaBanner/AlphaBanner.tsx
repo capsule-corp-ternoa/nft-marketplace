@@ -1,15 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
-//import { useTranslation } from 'react-i18next';
 import style from './AlphaBanner.module.scss';
 
 const AlphaBanner: React.FC = () => {
-  //const { i18n, t } = useTranslation();
-
-  /*
-  const changeLang = (lang: string) => {
-    i18n.changeLanguage(lang);
-  };*/
   return (
     <div className={style.Banner}>
       <p className={style.Text}>

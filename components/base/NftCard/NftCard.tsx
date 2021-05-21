@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import style from './NftCard.module.scss';
-import Heart from 'components/assets/heart';
 import Creator from '../Creator';
 import Router from 'next/router';
 import { useMediaQuery } from 'react-responsive';
@@ -15,7 +14,10 @@ export interface NftCardProps {
   isDragging?: boolean;
 }
 
-function manageRouting(e: any, id: any) {
+function manageRouting(
+  e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+  id: string
+) {
   e.stopPropagation();
   Router.push(`/${id}`);
 }
@@ -80,7 +82,10 @@ const NftCard: React.FC<NftCardProps> = ({ item, mode, isDragging }) => {
       onMouseOut={() => !isMobile && setIsHovering(false)}
     >
       {returnType()}
-      {item.cryptedMedia?.url !== item.media?.url && !isHovering && (
+      {item.serieId !== "0" && item.itemTotal && (
+        <span className={style.QtyLabel}>{item.itemTotal}</span>
+      )}
+      {item.cryptedMedia?.url !== item.media?.url && (
         <span className={style.SecretLabel}>S</span>
       )}
       <div
@@ -91,17 +96,11 @@ const NftCard: React.FC<NftCardProps> = ({ item, mode, isDragging }) => {
         }
       />
       <div className={isHovering ? `${style.Container}` : style.Hide}>
-        <div
-          className={
-            isHovering ? `${style.Favorite} ${style.FadeSimple}` : style.Hide
-          }
-        >
-          <Heart className={style.HeartSVG} />
-        </div>
+        <div></div>
 
         <div className={style.Infos}>
           <div
-            onClick={(e) => manageRouting(e, item.creatorData?.walletId)}
+            onClick={(e) => manageRouting(e, item.creatorData.walletId)}
             className={style.Auth}
           >
             {item.creatorData && (

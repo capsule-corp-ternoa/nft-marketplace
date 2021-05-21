@@ -5,8 +5,23 @@ import Close from 'components/assets/close';
 import Wallet from 'components/assets/wallet';
 
 import { computeCaps } from 'utils/strings';
+import { NftType } from 'interfaces';
 
-const Modal: React.FC<any> = ({ setExp, exp, setNotAvailable, type, NFT }) => {
+export interface ModalProps {
+  NFT: NftType;
+  type: string | null;
+  exp: number;
+  setExp: (n: number) => void;
+  setModalExpand: (b: boolean) => void;
+}
+
+const Modal: React.FC<ModalProps> = ({
+  setExp,
+  exp,
+  setModalExpand,
+  type,
+  NFT,
+}) => {
   function returnType() {
     if (!type) return null;
     if (type!.substr(0, 5) === 'image') {
@@ -66,7 +81,7 @@ const Modal: React.FC<any> = ({ setExp, exp, setNotAvailable, type, NFT }) => {
             </div>
 
             <div className={style.Buttons}>
-              <div className={style.Buy} onClick={() => setNotAvailable(true)}>
+              <div className={style.Buy} onClick={() => setModalExpand(true)}>
                 Proceed to payment
               </div>
               <div onClick={() => setExp(0)} className={style.Cancel}>

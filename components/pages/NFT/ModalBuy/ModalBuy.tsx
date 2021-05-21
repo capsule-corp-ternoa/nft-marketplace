@@ -7,6 +7,7 @@ import randomstring from 'randomstring';
 import io from 'socket.io-client';
 import Link from 'next/link';
 import CheckMark from 'components/assets/checkmark';
+
 export interface ModalBuyProps {
   setModalExpand: (b: boolean) => void;
   id: string;

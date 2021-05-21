@@ -42,7 +42,7 @@ const ModalMint: React.FC<ModalProps> = ({
       if (isRN) {
         const data = { session, walletId, price, links, fileHash };
         setTimeout(function () {
-          window.ReactNativeWebView.postMessage(JSON.stringify({action:'MINT', data }));
+          window.ReactNativeWebView.postMessage(JSON.stringify({ action: 'MINT', data }));
         }, 2000);
       } else {
         setShowQR(true);
@@ -53,10 +53,16 @@ const ModalMint: React.FC<ModalProps> = ({
     socket.on('MINTING_NFT', (data) => {
       console.log(data), setModalCreate(false);
       socket.emit('MINTING_NFT_RECEIVED')
+      setModalCreate(false);
+    });
+    socket.on('disconnect', () => {
+      setModalCreate(false);
     });
 
     return () => {
-      socket.close();
+      if (socket && socket.connected) {
+        socket.close();
+      }
     };
   }, []);
 
@@ -76,12 +82,12 @@ const ModalMint: React.FC<ModalProps> = ({
               />
             </div>
           ) : (
-            <div className={style.Loading}>
-              <span className={style.Dot}></span>
-              <span className={style.Dot}></span>
-              <span className={style.Dot}></span>
-            </div>
-          )}
+              <div className={style.Loading}>
+                <span className={style.Dot}></span>
+                <span className={style.Dot}></span>
+                <span className={style.Dot}></span>
+              </div>
+            )}
         </>
       );
     } else {
@@ -96,15 +102,15 @@ const ModalMint: React.FC<ModalProps> = ({
                 Upload completed <CheckMark className={style.CheckMark} />
               </div>
             ) : (
-              <div className={style.Waiting}>
-                <div className={style.Mess}>Minting NFT...</div>
-                <div className={style.Loading}>
-                  <span className={style.Dot}></span>
-                  <span className={style.Dot}></span>
-                  <span className={style.Dot}></span>
+                <div className={style.Waiting}>
+                  <div className={style.Mess}>Minting NFT...</div>
+                  <div className={style.Loading}>
+                    <span className={style.Dot}></span>
+                    <span className={style.Dot}></span>
+                    <span className={style.Dot}></span>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
           </div>
         </>
       );

@@ -82,7 +82,7 @@ const NftCard: React.FC<NftCardProps> = ({ item, mode, isDragging }) => {
       onMouseOut={() => !isMobile && setIsHovering(false)}
     >
       {returnType()}
-      {item.serieId !== "0" && item.itemTotal && (
+      {item.seriesId !== 0 && item.itemTotal && (
         <span className={style.QtyLabel}>{item.itemTotal}</span>
       )}
       {item.cryptedMedia?.url !== item.media?.url && (

@@ -45,6 +45,9 @@ const ModalBuy: React.FC<ModalBuyProps> = ({ setModalExpand, id }) => {
         return false;
       }
     });
+    socket.on('disconnect', () => {
+      setModalExpand(false);
+    });
     return function cleanup() {
       socket.close();
     };

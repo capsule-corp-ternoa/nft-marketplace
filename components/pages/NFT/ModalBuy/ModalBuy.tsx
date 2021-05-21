@@ -18,6 +18,7 @@ const ModalBuy: React.FC<ModalBuyProps> = ({ setModalExpand, id }) => {
   const [showQR, setShowQR] = useState(false);
   const [success, setSuccess] = useState(false);
   const [isRN, setIsRN] = useState(false);
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     setIsRN(window.isRNApp);
@@ -29,8 +30,9 @@ const ModalBuy: React.FC<ModalBuyProps> = ({ setModalExpand, id }) => {
     socket.on('CONNECTION_SUCCESS', () => {
       if (window.isRNApp) {
         const data = { session, nft_id: id };
+        setLoading(true)
         setTimeout(function () {
-          window.ReactNativeWebView.postMessage(JSON.stringify({action:'BUY', data }));
+          window.ReactNativeWebView.postMessage(JSON.stringify({ action: 'BUY', data }));
         }, 2000);
       } else {
         setShowQR(true);
@@ -39,11 +41,15 @@ const ModalBuy: React.FC<ModalBuyProps> = ({ setModalExpand, id }) => {
 
     socket.on('CONNECTION_FAILURE', (data) => setError(data.msg));
     socket.on('NFT_BUY', (data) => {
+      setLoading(false)
+      console.log('NFT_BUY:' + data.success);
       if (data.success) setSuccess(true);
       else {
         setError('Something went wrong. Please try again.');
-        return false;
       }
+      setTimeout(() => {
+        setModalExpand(false);
+      }, 2000)
     });
     socket.on('disconnect', () => {
       setModalExpand(false);
@@ -71,13 +77,14 @@ const ModalBuy: React.FC<ModalBuyProps> = ({ setModalExpand, id }) => {
         <>
           <div className={style.Text}>
             {isRN
-              ? 'Trasaction in progress...'
+              ? 'Transaction in progress...'
               : 'Flash the QR Code on your mobile wallet to buy this NFT'}
           </div>
           <div className={style.QR}>
-            {showQR ? (
+            {showQR &&
               <QRCode data={{ session, nft_id: id }} action={'BUY'} />
-            ) : (
+            }
+            {loading && (
               <div className={style.Loading}>
                 <span className={style.Dot}></span>
                 <span className={style.Dot}></span>

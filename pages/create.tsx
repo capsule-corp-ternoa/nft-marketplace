@@ -135,7 +135,7 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
         }
       );
 
-      const previewLink = (await resUpload.json()).url;
+      const { url: previewLink, mediaType } = await resUpload.json();
 
       let cryptPromises = [];
       for (let i = 0; i < quantity; i++) {
@@ -161,7 +161,7 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
               fileHash: result.fileHash,
               keyPath: result.keyPath,
               media: previewLink,
-              mediaType: secretNFT.type,
+              mediaType,
               cryptedMedia: result.file,
               cryptedMediaType: secretNFT.type,
               itemTotal: quantity + '',

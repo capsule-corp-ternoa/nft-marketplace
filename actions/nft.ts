@@ -10,7 +10,6 @@ export const getNFTS = async () => {
   const seriesShown: any = {};
 
   data.forEach((nft) => {
-    console.log(nft.serieId);
     if (nft.serieId === '0') {
       displayNFTs.push(nft);
     } else {
@@ -37,7 +36,6 @@ export const getProfileNFTS = async (id: string) => {
   const seriesShown: any = {};
 
   data.forEach((nft) => {
-    console.log(nft.serieId);
     if (nft.serieId === '0') {
       displayNFTs.push(nft);
     } else {

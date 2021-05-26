@@ -17,18 +17,20 @@ export interface ProfileProps {
   setNotAvailable: (b: boolean) => void;
   user: UserType;
   creators: UserType[];
-  NFTS: NftType[];
+  ownedNFTS: NftType[];
+  createdNFTS: NftType[];
 }
 
 const Profile: React.FC<ProfileProps> = ({
   user,
-  NFTS,
+  ownedNFTS,
+  createdNFTS,
   creators,
   setModalExpand,
   setNotAvailable,
 }) => {
   const [isFiltered, setIsFiltered] = useState(false);
-  const [scope, setScope] = useState('My NFTs on sale');
+  const [scope, setScope] = useState('My NFTs');
   const [expand, setExpand] = useState(false);
   const [banner, setBanner] = useState(
     user.banner ??
@@ -45,7 +47,10 @@ const Profile: React.FC<ProfileProps> = ({
   }
 
   function returnNFTs() {
-    return NFTS.map((item: NftType) => (
+    let displayNFTs: NftType[] = [];
+    if (scope === 'My NFTs') displayNFTs = ownedNFTS;
+    else if (scope === 'My creations') displayNFTs = createdNFTS;
+    return displayNFTs.map((item: NftType) => (
       <div key={item.id} className={style.NFTShell}>
         <NFTCard mode="grid" item={item} />
       </div>
@@ -156,6 +161,8 @@ const Profile: React.FC<ProfileProps> = ({
           setScope={setScope}
           setExpand={setExpand}
           setNotAvailable={setNotAvailable}
+          ownedAmount={ownedNFTS.length}
+          createdAmount={createdNFTS.length}
         />
         {returnCategory()}
       </div>

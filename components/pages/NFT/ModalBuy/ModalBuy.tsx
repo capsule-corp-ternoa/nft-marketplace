@@ -45,10 +45,10 @@ const ModalBuy: React.FC<ModalBuyProps> = ({ setModalExpand, id }) => {
       setLoading(false)
       console.log('NFT_BUY:' + data.success);
       if (data.success) setSuccess(true);
-      socket.on('NFT_BUY_RECEIVED');
       else {
         setError('Something went wrong. Please try again.');
       }
+      socket.emit('NFT_BUY_RECEIVED');
       setTimeout(() => {
         setModalExpand(false);
       }, 2000)

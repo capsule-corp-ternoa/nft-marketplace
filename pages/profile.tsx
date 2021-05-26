@@ -9,16 +9,17 @@ import NotAvailableModal from 'components/base/NotAvailable';
 import cookies from 'next-cookies';
 
 import { getUser } from 'actions/user';
-import { getNFTS } from 'actions/nft';
+import { getProfileNFTS, getCreatorNFTS } from 'actions/nft';
 import { NftType, UserType } from 'interfaces';
 import { NextPageContext } from 'next';
 
 export interface ProfilePageProps {
   user: UserType;
-  data: NftType[];
+  created: NftType[];
+  owned: NftType[];
 }
 
-const ProfilePage: React.FC<ProfilePageProps> = ({ user, data }) => {
+const ProfilePage: React.FC<ProfilePageProps> = ({ user, created, owned }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
   const [walletUser, setWalletUser] = useState(user);
@@ -49,7 +50,8 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, data }) => {
       <MainHeader user={walletUser} setModalExpand={setModalExpand} />
       <Profile
         user={user}
-        NFTS={data}
+        createdNFTS={created}
+        ownedNFTS={owned}
         creators={Creators}
         setModalExpand={setModalExpand}
         setNotAvailable={setNotAvailable}
@@ -60,10 +62,17 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ user, data }) => {
 
 export async function getServerSideProps(ctx: NextPageContext) {
   let user = null;
+  let created: NftType[] = [];
+  let owned: NftType[] = [];
   try {
     const token = cookies(ctx).token;
     if (token) {
       user = await getUser(token);
+      created = await getCreatorNFTS(token).catch(() => []);
+      created = created.filter((item: NftType) => item.listed === 1);
+
+      owned = await getProfileNFTS(token).catch(() => []);
+      owned = owned.filter((item: NftType) => item.listed === 1);
     }
   } catch (error) {
     console.error(error);
@@ -78,12 +87,8 @@ export async function getServerSideProps(ctx: NextPageContext) {
     };
   }
 
-  let data = await getNFTS().catch(() => []);
-
-  data = data.filter((item: NftType) => item.listed === 1);
-
   return {
-    props: { user, data },
+    props: { user, created, owned },
   };
 }
 

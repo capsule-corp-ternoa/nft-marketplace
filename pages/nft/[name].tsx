@@ -62,7 +62,7 @@ const NftPage: React.FC<NFTPageProps> = ({ user, NFT }) => {
         <meta property="og:image" content={NFT.media.url} />
       </Head>
       {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
-      {exp === 2 && (
+      {(exp === 2 || exp === 1) && (
         <ModalShowcase
           NFT={NFT}
           setExp={setExp}

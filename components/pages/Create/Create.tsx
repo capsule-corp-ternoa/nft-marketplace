@@ -25,7 +25,6 @@ export interface CreateProps {
   setSecretNFT: (f: File) => void;
   select: string;
   setSelect: (s: string) => void;
-  uploadNFT: () => Promise<string[]>;
   processFile: () => Promise<void>;
   setError: (s: string) => void;
   setProcessed: (b: boolean) => void;

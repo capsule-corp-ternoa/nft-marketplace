@@ -17,6 +17,8 @@ export interface SidebarProps {
   setNotAvailable: (b: boolean) => void;
   scope: string;
   user: UserType;
+  ownedAmount: number;
+  createdAmount: number;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({
@@ -25,6 +27,8 @@ const Sidebar: React.FC<SidebarProps> = ({
   setScope,
   setExpand,
   setNotAvailable,
+  ownedAmount,
+  createdAmount,
 }) => {
   const bgGradient = user ? { background: gradient(user.name) } : {};
 
@@ -92,21 +96,12 @@ const Sidebar: React.FC<SidebarProps> = ({
       <div className={style.Sections}>
         <div className={style.Section}>
           <div
-            onClick={() => setScope('My NFTs on sale')}
-            className={returnActiveTitle('My NFTs on sale')}
+            onClick={() => setScope('My NFTs')}
+            className={returnActiveTitle('My NFTs')}
           >
-            On sale
+            My NFTs
           </div>
-          <div className={returnActiveNumber('My NFTs on sale')}>12</div>
-        </div>
-        <div className={style.Section}>
-          <div
-            onClick={() => setScope('My Collectibles')}
-            className={returnActiveTitle('My Collectibles')}
-          >
-            Collectibles
-          </div>
-          <div className={returnActiveNumber('My Collectibles')}>45</div>
+          <div className={returnActiveNumber('My NFTs')}>{ownedAmount}</div>
         </div>
         <div className={style.Section}>
           <div
@@ -115,34 +110,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           >
             Created
           </div>
-          <div className={returnActiveNumber('My creations')}>4</div>
-        </div>
-        <div className={style.Section}>
-          <div
-            onClick={() => setScope('Likes')}
-            className={returnActiveTitle('Likes')}
-          >
-            Likes
-          </div>
-          <div className={returnActiveNumber('Likes')}>103</div>
-        </div>
-        <div className={style.Section}>
-          <div
-            onClick={() => setScope('Followers')}
-            className={returnActiveTitle('Followers')}
-          >
-            Followers
-          </div>
-          <div className={returnActiveNumber('Followers')}>349</div>
-        </div>
-        <div className={style.Section}>
-          <div
-            onClick={() => setScope('Followings')}
-            className={returnActiveTitle('Followings')}
-          >
-            Followings
-          </div>
-          <div className={returnActiveNumber('Followings')}>38</div>
+          <div className={returnActiveNumber('My creations')}>{createdAmount}</div>
         </div>
         <div className={style.Disconnect} onClick={() => setNotAvailable(true)}>
           <PowerOff className={style.PowerOff} />

@@ -74,6 +74,8 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
       if (!secretNFT) {
         throw new Error();
       }
+      setOutput([]);
+      setError('');
       if (select === 'Blur' && secretNFT.type.substr(0, 5) === 'image') {
         const processFile = new File([secretNFT], 'NFT', {
           type: secretNFT.type,
@@ -133,7 +135,7 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
         }
       );
 
-      const previewLink = (await resUpload.json()).url;
+      const { url: previewLink, mediaType } = await resUpload.json();
 
       let cryptPromises = [];
       for (let i = 0; i < quantity; i++) {
@@ -159,7 +161,7 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
               fileHash: result.fileHash,
               keyPath: result.keyPath,
               media: previewLink,
-              mediaType: secretNFT.type,
+              mediaType,
               cryptedMedia: result.file,
               cryptedMediaType: secretNFT.type,
               itemTotal: quantity + '',
@@ -175,6 +177,7 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
           links: JSONURLS,
           fileHash: cryptJSONs[0].fileHash,
         });
+        setProcessed(false);
       } catch (err) {
         console.error(err);
       }
@@ -221,7 +224,6 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
         setNFTData={setNFTData}
         select={select}
         setSelect={setSelect}
-        uploadNFT={uploadNFT}
         processFile={processFile}
         setError={setError}
         setProcessed={setProcessed}

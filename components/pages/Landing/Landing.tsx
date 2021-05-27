@@ -20,6 +20,7 @@ export interface LandingProps {
   NFTSET1: NftType[];
   NFTSET2: NftType[];
   NFTCreators: NftType[];
+  series: { [serieId: string]: number };
 }
 
 const Landing: React.FC<LandingProps> = ({
@@ -30,6 +31,7 @@ const Landing: React.FC<LandingProps> = ({
   NFTSET1,
   NFTSET2,
   NFTCreators,
+  series,
 }) => {
   const [walletUser, setWalletUser] = useState(user);
   useEffect(() => {
@@ -46,9 +48,9 @@ const Landing: React.FC<LandingProps> = ({
   return (
     <div className={style.Container}>
       <Hero users={users} />
-      <Showcase category="Most popular" NFTs={NFTSET1} />
-      <Showcase category="Best sellers" NFTs={NFTSET2} />
-      <ArtCreators NFTs={NFTCreators} creators={users} />
+      <Showcase category="Most popular" NFTs={NFTSET1} series={series} />
+      <Showcase category="Best sellers" NFTs={NFTSET2} series={series} />
+      <ArtCreators NFTs={NFTCreators} creators={users} series={series} />
       <Link href="/explore">
         <a className={style.Button}>See more</a>
       </Link>

@@ -13,9 +13,14 @@ export interface ArtCreatorsProps {
   creators: UserType[];
   NFTs: NftType[];
   category?: string;
+  series: { [serieId: string]: number };
 }
 
-const ArtCreators: React.FC<ArtCreatorsProps> = ({ creators, NFTs }) => {
+const ArtCreators: React.FC<ArtCreatorsProps> = ({
+  creators,
+  NFTs,
+  series,
+}) => {
   const [isFiltered, setIsFiltered] = useState(false);
 
   function returnCreators() {
@@ -31,7 +36,7 @@ const ArtCreators: React.FC<ArtCreatorsProps> = ({ creators, NFTs }) => {
   function returnNFTs() {
     return NFTs.map((item) => (
       <div key={item.id} className={style.NFTShell}>
-        <NFTCard mode="show" item={item} />
+        <NFTCard mode="show" item={item} serieCount={series[item.serieId]} />
       </div>
     ));
   }

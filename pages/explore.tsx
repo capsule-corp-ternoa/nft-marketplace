@@ -17,9 +17,10 @@ import { NextPageContext } from 'next';
 export interface ExplorePage {
   user: UserType;
   data: NftType[];
+  series: { [serieId: string]: number };
 }
 
-const ExplorePage: React.FC<ExplorePage> = ({ user, data }) => {
+const ExplorePage: React.FC<ExplorePage> = ({ user, data, series }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
   const [walletUser, setWalletUser] = useState(user);
@@ -49,7 +50,7 @@ const ExplorePage: React.FC<ExplorePage> = ({ user, data }) => {
       {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
       <AlphaBanner />
       <MainHeader user={walletUser} setModalExpand={setModalExpand} />
-      <Explore NFTS={data} />
+      <Explore NFTS={data} series={series} />
       <Footer setNotAvailable={setNotAvailable} />
       <FloatingHeader user={walletUser} setModalExpand={setModalExpand} />
     </>
@@ -66,12 +67,10 @@ export async function getServerSideProps(ctx: NextPageContext) {
   } catch (error) {
     console.error(error);
   }
-  let data = await getNFTS().catch(() => []);
-
-  data = data.filter((item: NftType) => item.listed === 1);
+  let [data, series] = await getNFTS().catch(() => []);
 
   return {
-    props: { user, data },
+    props: { user, data, series },
   };
 }
 

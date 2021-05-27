@@ -16,12 +16,14 @@ export interface PublicProfileProps {
   user: UserType;
   profile: UserType;
   data: NftType[];
+  series: { [serieId: string]: number };
 }
 
 const PublicProfilePage: React.FC<PublicProfileProps> = ({
   user,
   data,
   profile,
+  series,
 }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
@@ -58,6 +60,7 @@ const PublicProfilePage: React.FC<PublicProfileProps> = ({
         user={walletUser}
         profile={profile}
         NFTS={data}
+        series={series}
         setModalExpand={setModalExpand}
         setNotAvailable={setNotAvailable}
       />
@@ -76,11 +79,10 @@ export async function getServerSideProps(ctx: NextPageContext) {
       console.error(error);
     }
     const profile = await getProfile(ctx.query.name as string);
-    let data = await getProfileNFTS(ctx.query.name as string);
-    data = data.filter((item: NftType) => item.listed === 1);
+    let [data, series] = await getProfileNFTS(ctx.query.name as string);
 
     return {
-      props: { user, profile, data },
+      props: { user, profile, data, series },
     };
   } catch {
     return {

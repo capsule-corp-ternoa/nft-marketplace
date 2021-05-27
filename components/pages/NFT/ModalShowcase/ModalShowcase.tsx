@@ -1,4 +1,5 @@
 import React from 'react';
+import ClickAwayListener from 'react-click-away-listener';
 import style from './ModalShowcase.module.scss';
 
 import Close from 'components/assets/close';
@@ -47,7 +48,9 @@ const Modal: React.FC<ModalProps> = ({
         <div className={style.Modal}>
           <Close onClick={() => setExp(0)} className={style.Close} />
           <div className={style.ModalBG}>
-            <div className={style.NFT}>{returnType()}</div>
+            <ClickAwayListener onClickAway={() => setExp(0)}>
+              <div className={style.NFT}>{returnType()}</div>
+            </ClickAwayListener>
           </div>
         </div>
       ) : (

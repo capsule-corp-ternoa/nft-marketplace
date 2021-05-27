@@ -10,6 +10,7 @@ import { computeCaps } from 'utils/strings';
 
 export interface NftCardProps {
   item: NftType;
+  serieCount?: number;
   mode: string;
   isDragging?: boolean;
 }
@@ -22,7 +23,12 @@ function manageRouting(
   Router.push(`/${id}`);
 }
 
-const NftCard: React.FC<NftCardProps> = ({ item, mode, isDragging }) => {
+const NftCard: React.FC<NftCardProps> = ({
+  item,
+  mode,
+  isDragging,
+  serieCount,
+}) => {
   const [isHovering, setIsHovering] = useState(false);
   const [type, setType] = useState<string | null>(null);
 
@@ -82,9 +88,11 @@ const NftCard: React.FC<NftCardProps> = ({ item, mode, isDragging }) => {
       onMouseOut={() => !isMobile && setIsHovering(false)}
     >
       {returnType()}
-      {item.serieId !== "0" && item.itemTotal && (
-        <span className={style.QtyLabel}>{item.itemTotal}</span>
-      )}
+      {item.serieId !== '0' &&
+        item.itemTotal &&
+        (!serieCount || (serieCount && serieCount > 1)) && (
+          <span className={style.QtyLabel}>{serieCount ?? item.itemTotal}</span>
+        )}
       {item.cryptedMedia?.url !== item.media?.url && (
         <span className={style.SecretLabel}>S</span>
       )}

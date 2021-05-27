@@ -45,10 +45,11 @@ const responsive = {
 
 export interface ShowcaseProps {
   NFTs: NftType[];
+  series: { [serieId: string]: number };
   category: string;
 }
 
-const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category }) => {
+const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category, series }) => {
   const [isFiltered, setIsFiltered] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
 
@@ -64,7 +65,12 @@ const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category }) => {
   function returnNFTs(key: string = 'show') {
     return NFTs.map((item) => (
       <div key={item.id} className={style.NFTShell}>
-        <NFTCard mode={key} isDragging={isDragging} item={item} />
+        <NFTCard
+          mode={key}
+          isDragging={isDragging}
+          item={item}
+          serieCount={series[item.serieId]}
+        />
       </div>
     ));
   }

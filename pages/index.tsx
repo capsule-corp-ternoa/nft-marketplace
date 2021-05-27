@@ -20,6 +20,7 @@ export interface LandingProps {
   NFTSET1: NftType[];
   NFTSET2: NftType[];
   NFTCreators: NftType[];
+  series: { [serieId: string]: number };
 }
 
 const LandingPage: React.FC<LandingProps> = ({
@@ -28,6 +29,7 @@ const LandingPage: React.FC<LandingProps> = ({
   NFTSET1,
   NFTSET2,
   NFTCreators,
+  series,
 }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
@@ -66,6 +68,7 @@ const LandingPage: React.FC<LandingProps> = ({
         NFTSET1={NFTSET1}
         NFTSET2={NFTSET2}
         NFTCreators={NFTCreators}
+        series={series}
       />
     </>
   );
@@ -84,11 +87,9 @@ export async function getServerSideProps(ctx: NextPageContext) {
     console.error(error);
   }
 
-  let data = await getNFTS().catch(() => []);
+  let [data, series] = await getNFTS().catch(() => []);
 
   users = arrayShuffle(users);
-
-  data = data.filter((item: NftType) => item.listed === 1);
 
   let NFTSET1 = arrayShuffle(data.slice(0, 8));
   let NFTSET2 = arrayShuffle(data.slice(9, 17));
@@ -96,7 +97,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
   let NFTCreators = arrayShuffle(data.slice(18, 21));
 
   return {
-    props: { user, users, NFTSET1, NFTSET2, NFTCreators },
+    props: { user, users, NFTSET1, NFTSET2, NFTCreators, series },
   };
 }
 

@@ -5,22 +5,26 @@ export const getNFTS = async () => {
   let data: NftType[] = await res.json();
   data = data.filter((item) => item.creatorData && item.ownerData);
   data = data.filter((item) => item.media);
+  data = data.filter((item) => item.listed === 1);
 
   const displayNFTs: NftType[] = [];
-  const seriesShown: any = {};
+  const seriesCount: any = {};
 
+  // count listed NFTs for each series
   data.forEach((nft) => {
     if (nft.serieId === '0') {
       displayNFTs.push(nft);
     } else {
-      if (!seriesShown[nft.serieId]) {
+      if (!seriesCount[nft.serieId]) {
         displayNFTs.push(nft);
-        seriesShown[nft.serieId] = true;
+        seriesCount[nft.serieId] = 1;
+      } else {
+        seriesCount[nft.serieId]++;
       }
     }
   });
 
-  return displayNFTs;
+  return [displayNFTs, seriesCount];
 };
 
 export const getProfileNFTS = async (id: string) => {
@@ -31,22 +35,26 @@ export const getProfileNFTS = async (id: string) => {
   let data: NftType[] = await res.json();
   data = data.filter((item) => item.creatorData && item.ownerData);
   data = data.filter((item) => item.media);
+  data = data.filter((item) => item.listed === 1);
 
   const displayNFTs: NftType[] = [];
-  const seriesShown: any = {};
+  const seriesCount: any = {};
 
+  // count listed NFTs for each series
   data.forEach((nft) => {
     if (nft.serieId === '0') {
       displayNFTs.push(nft);
     } else {
-      if (!seriesShown[nft.serieId]) {
+      if (!seriesCount[nft.serieId]) {
         displayNFTs.push(nft);
-        seriesShown[nft.serieId] = true;
+        seriesCount[nft.serieId] = 1;
+      } else {
+        seriesCount[nft.serieId]++;
       }
     }
   });
 
-  return displayNFTs;
+  return [displayNFTs, seriesCount];
 };
 
 export const getCreatorNFTS = async (id: string) => {
@@ -57,22 +65,26 @@ export const getCreatorNFTS = async (id: string) => {
   let data: NftType[] = await res.json();
   data = data.filter((item) => item.creatorData && item.ownerData);
   data = data.filter((item) => item.media);
+  data = data.filter((item) => item.listed === 1);
 
   const displayNFTs: NftType[] = [];
-  const seriesShown: any = {};
+  const seriesCount: any = {};
 
+  // count listed NFTs for each series
   data.forEach((nft) => {
     if (nft.serieId === '0') {
       displayNFTs.push(nft);
     } else {
-      if (!seriesShown[nft.serieId]) {
+      if (!seriesCount[nft.serieId]) {
         displayNFTs.push(nft);
-        seriesShown[nft.serieId] = true;
+        seriesCount[nft.serieId] = 1;
+      } else {
+        seriesCount[nft.serieId]++;
       }
     }
   });
 
-  return displayNFTs;
+  return [displayNFTs, seriesCount];
 };
 
 export const getNFT = async (id: string) => {

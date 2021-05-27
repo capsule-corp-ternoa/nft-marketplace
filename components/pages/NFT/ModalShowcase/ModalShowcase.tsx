@@ -55,43 +55,45 @@ const Modal: React.FC<ModalProps> = ({
         </div>
       ) : (
         <div className={style.ModalCheckout}>
-          <div className={style.Container}>
-            <div className={style.Top}>
-              <Close onClick={() => setExp(0)} className={style.Close2} />
-              <div className={style.Title}>
-                <Wallet className={style.WalletSVG} />
-                Checkout
-              </div>
-            </div>
-
-            <div className={style.Section}>
-              <div className={style.Insight}>You are about to purchase :</div>
-              <div className={style.Infos}>{NFT.name}</div>
-            </div>
-
-            <div className={style.PricingContainer}>
-              <div className={style.SB}>
-                <div className={style.PriceNumber}>
-                  {computeCaps(Number(NFT.price))}
+          <ClickAwayListener onClickAway={() => setExp(0)}>
+            <div className={style.Container}>
+              <div className={style.Top}>
+                <Close onClick={() => setExp(0)} className={style.Close2} />
+                <div className={style.Title}>
+                  <Wallet className={style.WalletSVG} />
+                  Checkout
                 </div>
-                <div className={style.PriceCaps}>CAPS</div>
               </div>
-              <div className={style.Line} />
-              <div className={style.SB}>
-                <div className={style.SBLight}>Your balance</div>
-                <div className={style.SBLight}>0 CAPS</div>
-              </div>
-            </div>
 
-            <div className={style.Buttons}>
-              <div className={style.Buy} onClick={() => setModalExpand(true)}>
-                Proceed to payment
+              <div className={style.Section}>
+                <div className={style.Insight}>You are about to purchase :</div>
+                <div className={style.Infos}>{NFT.name}</div>
               </div>
-              <div onClick={() => setExp(0)} className={style.Cancel}>
-                Cancel
+
+              <div className={style.PricingContainer}>
+                <div className={style.SB}>
+                  <div className={style.PriceNumber}>
+                    {computeCaps(Number(NFT.price))}
+                  </div>
+                  <div className={style.PriceCaps}>CAPS</div>
+                </div>
+                <div className={style.Line} />
+                <div className={style.SB}>
+                  <div className={style.SBLight}>Your balance</div>
+                  <div className={style.SBLight}>0 CAPS</div>
+                </div>
+              </div>
+
+              <div className={style.Buttons}>
+                <div className={style.Buy} onClick={() => setModalExpand(true)}>
+                  Proceed to payment
+                </div>
+                <div onClick={() => setExp(0)} className={style.Cancel}>
+                  Cancel
+                </div>
               </div>
             </div>
-          </div>
+          </ClickAwayListener>
         </div>
       )}
     </>

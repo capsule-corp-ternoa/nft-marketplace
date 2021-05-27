@@ -53,7 +53,7 @@ const NftPage: React.FC<NFTPageProps> = ({ user, NFT }) => {
   }, []);
 
   useEffect(() => {
-    if (exp === 1) {
+    if (exp === 1 || exp === 2) {
       // we are showing a modal;
       document.body.classList.add('model-open');
     } else {

@@ -2,6 +2,12 @@ body {
   padding: 0px;
   margin: 0px;
   box-sizing: border-box;
+
+  // The text are more bolder in Safari. To fix this, we are using the following style.
+  // https://stackoverflow.com/questions/9450706/safari-font-weight-issue-text-too-bold
+  // Original issue: https://capsule-corp.atlassian.net/browse/TO-121
+  // More info: https://developer.mozilla.org/en-US/docs/Web/CSS/font-smooth
+  -webkit-font-smoothing: antialiased;
 }
 
 @font-face {

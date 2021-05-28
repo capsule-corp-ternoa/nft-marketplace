@@ -70,6 +70,8 @@ const PublicProfilePage: React.FC<PublicProfileProps> = ({
 export async function getServerSideProps(ctx: NextPageContext) {
   try {
     let user = null;
+    let data: NftType[] = [];
+    let series = {};
     try {
       const token = cookies(ctx).token;
       if (token) {
@@ -79,7 +81,9 @@ export async function getServerSideProps(ctx: NextPageContext) {
       console.error(error);
     }
     const profile = await getProfile(ctx.query.name as string);
-    let [data, series] = await getProfileNFTS(ctx.query.name as string);
+    [data, series] = await getProfileNFTS(ctx.query.name as string).catch(
+      () => [[], {}]
+    );
 
     return {
       props: { user, profile, data, series },

@@ -83,7 +83,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
       created = await getCreatorNFTS(token).catch(() => []);
       created = created.filter((item: NftType) => item.listed === 1);
 
-      [owned, ownedSeries] = await getProfileNFTS(token).catch(() => []);
+      [owned, ownedSeries] = await getProfileNFTS(token).catch(() => [[], {}]);
       owned = owned.filter((item: NftType) => item.listed === 1);
     }
   } catch (error) {

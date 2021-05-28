@@ -87,7 +87,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
     console.error(error);
   }
 
-  let [data, series] = await getNFTS().catch(() => []);
+  let [data, series] = await getNFTS().catch(() => [[], {}]);
 
   users = arrayShuffle(users);
 

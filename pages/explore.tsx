@@ -67,7 +67,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
   } catch (error) {
     console.error(error);
   }
-  let [data, series] = await getNFTS().catch(() => []);
+  let [data, series] = await getNFTS().catch(() => [[], {}]);
 
   return {
     props: { user, data, series },

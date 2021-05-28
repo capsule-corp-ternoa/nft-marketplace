@@ -232,6 +232,14 @@
   }
 }
 
+.Disabled {
+  cursor: default;
+  background-color: lighten($primary, 35%);
+  &:hover {
+    background-color: lighten($primary, 35%);
+  }
+}
+
 .Fees {
   color: #b1b1b1;
   font-size: 11px;

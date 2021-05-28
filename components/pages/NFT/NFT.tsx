@@ -82,7 +82,14 @@ const NFTPage: React.FC<NFTPageProps> = ({
           <p className={style.Description}>{NFT.description}</p>
           <div className={style.Buy}>
             <div className={style.BuyLeft}>
-              <div onClick={() => setExp(2)} className={style.Button}>
+              <div
+                onClick={() => NFT.listed && setExp(2)}
+                className={
+                  NFT.listed
+                    ? style.Button
+                    : `${style.Button} ${style.Disabled}`
+                }
+              >
                 Buy
               </div>
             </div>

@@ -5,7 +5,14 @@ export const getUser = async (token: string) => {
 
   if (!res.ok) throw new Error();
 
-  const data = await res.json();
+  const capsResponse = await fetch(
+    `${process.env.NEXT_PUBLIC_NODE_API}/api/users/${token}/caps`
+  );
+
+  if (!capsResponse.ok) throw new Error();
+  const capsData = await capsResponse.json();
+
+  const data = { ...(await res.json()), ...capsData };
 
   return data;
 };
@@ -17,9 +24,27 @@ export const getProfile = async (id: string) => {
 
   if (!res.ok) throw new Error();
 
-  const data = await res.json();
+  const capsResponse = await fetch(
+    `${process.env.NEXT_PUBLIC_NODE_API}/api/users/${id}/caps`
+  );
+
+  if (!capsResponse.ok) throw new Error();
+  const capsData = await capsResponse.json();
+
+  const data = { ...(await res.json()), ...capsData };
 
   return data;
+};
+
+export const getAccountBalance = async (id: string) => {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_NODE_API}/api/users/${id}/caps`
+  );
+
+  if (!res.ok) throw new Error();
+
+  const data = await res.json();
+  return data.capsAmout;
 };
 
 export const getUsers = async () => {

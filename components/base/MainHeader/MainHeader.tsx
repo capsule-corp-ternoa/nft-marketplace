@@ -6,7 +6,7 @@ import Creator from '../Creator';
 import CopyPaste from 'components/assets/copypaste';
 
 import style from './MainHeader.module.scss';
-import { middleEllipsis } from 'utils/strings';
+import { computeCaps, middleEllipsis } from 'utils/strings';
 import gradient from 'random-gradient';
 
 import { UserType } from 'interfaces/index';
@@ -62,7 +62,11 @@ const MainHeader: React.FC<HeaderProps> = ({ setModalExpand, user }) => {
                   className={style.Profile}
                 >
                   <div className={style.Caps}>
-                    <span className={style.NumberCaps}>0</span>
+                    <span className={style.NumberCaps}>
+                      {user && user.capsAmount
+                        ? computeCaps(Number(user.capsAmount))
+                        : 0}
+                    </span>
                     CAPS
                   </div>
                   <div className={style.ProfileImageContainer}>

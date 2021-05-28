@@ -6,7 +6,7 @@ import CopyPaste from 'components/assets/copypaste';
 import Edit from 'components/assets/edit';
 
 import PowerOff from 'components/assets/poweroff';
-import { middleEllipsis } from 'utils/strings';
+import { computeCaps, middleEllipsis } from 'utils/strings';
 import gradient from 'random-gradient';
 
 import { UserType } from 'interfaces';
@@ -85,7 +85,9 @@ const Sidebar: React.FC<SidebarProps> = ({
 
         <div className={style.Separator} />
         <div className={style.Caps}>
-          <span className={style.CapsData}>0 CAPS</span>
+          <span className={style.CapsData}>
+            {user.capsAmount ? computeCaps(Number(user.capsAmount)) : 0} CAPS
+          </span>
           <div className={style.Burger} onClick={() => setExpand(true)}>
             <span className={style.Line} />
             <span className={style.Line} />
@@ -110,7 +112,9 @@ const Sidebar: React.FC<SidebarProps> = ({
           >
             Created
           </div>
-          <div className={returnActiveNumber('My creations')}>{createdAmount}</div>
+          <div className={returnActiveNumber('My creations')}>
+            {createdAmount}
+          </div>
         </div>
         <div className={style.Disconnect} onClick={() => setNotAvailable(true)}>
           <PowerOff className={style.PowerOff} />

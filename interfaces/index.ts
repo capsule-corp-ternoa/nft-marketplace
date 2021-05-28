@@ -10,6 +10,7 @@ export type UserType = {
   walletId: string;
   picture?: string;
   twitter?: string;
+  capsAmount?: string;
 };
 
 export type NftType = {

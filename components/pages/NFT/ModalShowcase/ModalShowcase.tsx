@@ -5,7 +5,7 @@ import Close from 'components/assets/close';
 import Wallet from 'components/assets/wallet';
 
 import { computeCaps } from 'utils/strings';
-import { NftType } from 'interfaces';
+import { NftType, UserType } from 'interfaces';
 
 export interface ModalProps {
   NFT: NftType;
@@ -13,6 +13,7 @@ export interface ModalProps {
   exp: number;
   setExp: (n: number) => void;
   setModalExpand: (b: boolean) => void;
+  user: UserType;
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -21,6 +22,7 @@ const Modal: React.FC<ModalProps> = ({
   setModalExpand,
   type,
   NFT,
+  user,
 }) => {
   function returnType() {
     if (!type) return null;
@@ -76,7 +78,12 @@ const Modal: React.FC<ModalProps> = ({
               <div className={style.Line} />
               <div className={style.SB}>
                 <div className={style.SBLight}>Your balance</div>
-                <div className={style.SBLight}>0 CAPS</div>
+                <div className={style.SBLight}>
+                  {user && user.capsAmount
+                    ? computeCaps(Number(user.capsAmount))
+                    : 0}{' '}
+                  CAPS
+                </div>
               </div>
             </div>
 

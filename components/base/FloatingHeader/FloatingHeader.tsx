@@ -5,7 +5,7 @@ import style from './FloatingHeader.module.scss';
 import Creator from 'components/base/Creator';
 import CopyPaste from 'components/assets/copypaste';
 
-import { middleEllipsis } from 'utils/strings';
+import { computeCaps, middleEllipsis } from 'utils/strings';
 import gradient from 'random-gradient';
 
 import { UserType } from 'interfaces/index';
@@ -96,7 +96,8 @@ const FloatingHeader: React.FC<FloatingHeaderProps> = ({
                     : style.NumberCaps
                 }
               >
-                0 caps
+                {user.capsAmount ? computeCaps(Number(user.capsAmount)) : 0}{' '}
+                caps
               </span>
               CAPS
             </div>

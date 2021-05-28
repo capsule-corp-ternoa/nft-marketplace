@@ -69,6 +69,7 @@ const NftPage: React.FC<NFTPageProps> = ({ user, NFT }) => {
           exp={exp}
           setModalExpand={() => setExp(3)}
           type={type}
+          user={user}
         />
       )}
       {exp === 3 && <ModalBuy setModalExpand={() => setExp(0)} id={NFT.id} />}

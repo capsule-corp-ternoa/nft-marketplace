@@ -80,11 +80,9 @@ export async function getServerSideProps(ctx: NextPageContext) {
     const token = cookies(ctx).token;
     if (token) {
       user = await getUser(token);
-      created = await getCreatorNFTS(token).catch(() => []);
-      created = created.filter((item: NftType) => item.listed === 1);
+      [created, createdSeries] = await getCreatorNFTS(token).catch(() => []);
 
-      [owned, ownedSeries] = await getProfileNFTS(token).catch(() => [[], {}]);
-      owned = owned.filter((item: NftType) => item.listed === 1);
+      [owned, ownedSeries] = await getProfileNFTS(token, false).catch(() => [[], {}]);
     }
   } catch (error) {
     console.error(error);

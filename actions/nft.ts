@@ -27,7 +27,10 @@ export const getNFTS = async () => {
   return [displayNFTs, seriesCount];
 };
 
-export const getProfileNFTS = async (id: string) => {
+export const getProfileNFTS = async (
+  id: string,
+  filterListed: boolean = true
+) => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_NODE_API}/api/NFTs/owner/${id}`
   );
@@ -35,7 +38,7 @@ export const getProfileNFTS = async (id: string) => {
   let data: NftType[] = await res.json();
   data = data.filter((item) => item.creatorData && item.ownerData);
   data = data.filter((item) => item.media);
-  data = data.filter((item) => item.listed === 1);
+  if (filterListed) data = data.filter((item) => item.listed === 1);
 
   const displayNFTs: NftType[] = [];
   const seriesCount: any = {};
@@ -65,7 +68,6 @@ export const getCreatorNFTS = async (id: string) => {
   let data: NftType[] = await res.json();
   data = data.filter((item) => item.creatorData && item.ownerData);
   data = data.filter((item) => item.media);
-  data = data.filter((item) => item.listed === 1);
 
   const displayNFTs: NftType[] = [];
   const seriesCount: any = {};

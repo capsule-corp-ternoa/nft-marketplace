@@ -10,6 +10,7 @@ import gradient from 'random-gradient';
 
 import { UserType } from 'interfaces/index';
 
+import { onModelClose, onModelOpen } from '../../../utils/model-helpers';
 export interface FloatingHeaderProps {
   user: UserType;
   setModalExpand: (b: boolean) => void;
@@ -118,7 +119,13 @@ const FloatingHeader: React.FC<FloatingHeaderProps> = ({
             </div>
           </div>
         ) : (
-          <div className={style.Connect} onClick={() => setModalExpand(true)}>
+          <div
+            className={style.Connect}
+            onClick={() => {
+              onModelOpen();
+              setModalExpand(true);
+            }}
+          >
             Connect Wallet
           </div>
         )}

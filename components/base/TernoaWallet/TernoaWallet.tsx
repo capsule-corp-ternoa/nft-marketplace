@@ -6,6 +6,7 @@ import QRCode from 'components/base/QRCode';
 import randomstring from 'randomstring';
 import io from 'socket.io-client';
 import Cookies from 'js-cookie';
+import { onModelClose } from 'utils/model-helpers';
 
 export interface TernoaWalletProps {
   setModalExpand: (b: boolean) => void;
@@ -26,13 +27,13 @@ const TernoaWallet: React.FC<TernoaWalletProps> = ({ setModalExpand }) => {
       setShowQR(true);
     });
     socket.on('connect_error', (e) => {
-      console.error('connection error socket', e)
+      console.error('connection error socket', e);
     });
     socket.on('disconnect', (data) => console.log('deco', data));
 
     socket.on('CONNECTION_FAILURE', (data) => setError(data.msg));
     socket.on('RECEIVE_WALLET_ID', (data) => {
-      console.log('SEND_WALLET_ID',data);      
+      console.log('SEND_WALLET_ID', data);
       Cookies.set('token', data.walletId, {
         sameSite: 'strict',
         expires: 1,
@@ -49,7 +50,13 @@ const TernoaWallet: React.FC<TernoaWalletProps> = ({ setModalExpand }) => {
   return (
     <div id="ternoaWallet" className={style.Background}>
       <div className={style.Container}>
-        <Close onClick={() => setModalExpand(false)} className={style.Close} />
+        <Close
+          onClick={() => {
+            onModelClose();
+            setModalExpand(false);
+          }}
+          className={style.Close}
+        />
         <div className={style.Title}>Wallet connect</div>
         <div className={style.Text}>
           To authenticate, scan this QR Code from your Ternoa Wallet mobile

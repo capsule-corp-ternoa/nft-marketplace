@@ -14,6 +14,8 @@ import { getNFT } from 'actions/nft';
 import { NftType, UserType } from 'interfaces';
 import { NextPageContext } from 'next';
 
+import { onModelClose, onModelOpen } from '../../utils/model-helpers';
+
 export interface NFTPageProps {
   user: UserType;
   NFT: NftType;
@@ -55,9 +57,9 @@ const NftPage: React.FC<NFTPageProps> = ({ user, NFT }) => {
   useEffect(() => {
     if (exp === 1 || exp === 2) {
       // we are showing a modal;
-      document.body.classList.add('model-open');
+      onModelOpen();
     } else {
-      document.body.classList.remove('model-open');
+      onModelClose();
     }
   }, [exp]);
 

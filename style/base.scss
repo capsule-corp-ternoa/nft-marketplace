@@ -6,6 +6,7 @@ body {
   &.model-open {
     overflow: hidden;
   }
+  -webkit-font-smoothing :antialiased;
 }
 
 @font-face {

@@ -10,7 +10,7 @@ import gradient from 'random-gradient';
 
 import { UserType } from 'interfaces/index';
 
-import { onModelClose, onModelOpen } from '../../../utils/model-helpers';
+import { onModelOpen } from '../../../utils/model-helpers';
 export interface FloatingHeaderProps {
   user: UserType;
   setModalExpand: (b: boolean) => void;

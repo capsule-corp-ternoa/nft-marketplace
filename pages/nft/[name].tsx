@@ -52,6 +52,15 @@ const NftPage: React.FC<NFTPageProps> = ({ user, NFT }) => {
     callBack();
   }, []);
 
+  useEffect(() => {
+    if (exp === 1 || exp === 2) {
+      // we are showing a modal;
+      document.body.classList.add('model-open');
+    } else {
+      document.body.classList.remove('model-open');
+    }
+  }, [exp]);
+
   return (
     <>
       <Head>
@@ -62,7 +71,7 @@ const NftPage: React.FC<NFTPageProps> = ({ user, NFT }) => {
         <meta property="og:image" content={NFT.media.url} />
       </Head>
       {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
-      {(exp === 2 || exp === 1) && (
+      {[1, 2].indexOf(exp) !== -1 && (
         <ModalShowcase
           NFT={NFT}
           setExp={setExp}

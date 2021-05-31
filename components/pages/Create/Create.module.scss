@@ -332,7 +332,7 @@
 }
 
 .Link {
-  font-size: 11px;
+  font-size: 13px;
   font-family: "Airbnb Cereal App Medium";
   color: #686464;
   margin-left: 24px;
@@ -350,8 +350,8 @@
   color: white;
   font-family: "Airbnb Cereal App Bold";
   font-size: 13px;
-  align-self: flex-end;
-  margin-top: 120px;
+  align-self: center;
+  margin-top: 56px;
   transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
 
   &:hover {

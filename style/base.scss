@@ -2,6 +2,11 @@ body {
   padding: 0px;
   margin: 0px;
   box-sizing: border-box;
+
+  &.model-open {
+    overflow: hidden;
+  }
+  -webkit-font-smoothing :antialiased;
 }
 
 @font-face {

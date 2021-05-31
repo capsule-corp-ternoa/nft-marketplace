@@ -33,11 +33,13 @@ const ModalMint: React.FC<ModalProps> = ({
 
   useEffect(() => {
     setIsRN(window.isRNApp);
+    console.log('socket connect on session',session);
     const socket = io(
       `${process.env.NEXT_PUBLIC_SOCKETIO_URL}/socket/createNft`,
       {
         query: { session },
         transports: ['websocket'],
+        forceNew: true
       }
     );
 

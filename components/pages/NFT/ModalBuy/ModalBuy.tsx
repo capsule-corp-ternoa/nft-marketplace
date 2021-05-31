@@ -23,9 +23,11 @@ const ModalBuy: React.FC<ModalBuyProps> = ({ setModalExpand, id }) => {
 
   useEffect(() => {
     setIsRN(window.isRNApp);
+    console.log('socket connect on session',session);
     const socket = io(`${process.env.NEXT_PUBLIC_SOCKETIO_URL}/socket/buyNft`, {
       query: { session },
       transports: ['websocket'],
+      forceNew: true
     });
 
     socket.on('CONNECTION_SUCCESS', () => {

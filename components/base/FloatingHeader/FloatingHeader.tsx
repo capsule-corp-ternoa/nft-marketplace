@@ -124,6 +124,7 @@ const FloatingHeader: React.FC<FloatingHeaderProps> = ({
             onClick={() => {
               onModelOpen();
               setModalExpand(true);
+              setIsExpanded(false);
             }}
           >
             Connect Wallet

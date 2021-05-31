@@ -42,22 +42,24 @@
 
 .InputContainer {
   display: flex;
-  position: relative;
   width: 550px;
   z-index: 2;
   align-self: center;
+    background: #1b1b1b;
+  border: 1px solid #0c0b0b;
+  border-radius: 40px;
 }
 .Input {
-  background: #1b1b1b;
-  border: 1px solid #0c0b0b;
-  box-sizing: border-box;
+  padding: 0;
+  border:none;
+  background: inherit;
   border-radius: 40px;
   outline: none;
-  width: 100%;
-  padding: 20px 40px;
   color: white;
   font-family: 'Airbnb Cereal App Book';
   font-size: 18px;
+  padding: 0px 4px 0px 24px;
+  width: 100%;
 }
 
 .Button {
@@ -68,13 +70,11 @@
   color: white;
   padding: 19px 50px;
   border-radius: 40px;
-  position: absolute;
-  right: 4px;
-  top: 4px;
   cursor: pointer;
   color: white;
   font-family: 'Airbnb Cereal App Bold';
   font-size: 14px;
+  margin: 4px;
 }
 
 .SocialMedias {
@@ -154,8 +154,6 @@
   }
 
   .Input {
-    width: 100%;
-    padding: 18px 36px;
     font-size: 16px;
   }
 
@@ -210,8 +208,6 @@
   }
 
   .Input {
-    width: 100%;
-    padding: 18px 36px;
     font-size: 16px;
   }
 
@@ -252,9 +248,8 @@
   }
 
   .Input {
-    width: 100%;
-    padding: 12px 24px;
     font-size: 16px;
+    padding-left: 16px;
   }
 
   .Button {

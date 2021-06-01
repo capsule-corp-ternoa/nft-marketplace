@@ -80,6 +80,11 @@ a {
   left: 40px;
   background-color: rgb(18, 18, 18);
   font-size: 12px;
+
+  @media(max-width: 730px) {
+    bottom: 2px;
+    left: 8%;
+  }
 }
 .cookiesLink {
   margin-left: 8px;

@@ -75,11 +75,17 @@ const ModalMint: React.FC<ModalProps> = ({
     setIsRN(window.isRNApp);
   }, []);
   useEffect(() => {
+    console.log('showQR', showQR);
     if (showQR) {
       handleMintSocketProcess()
     }
-  }, [showQR] );
+  }, [showQR]);
 
+  useEffect(() => {
+    if (output.length > 0) {
+      setShowQR(true);
+    }
+  }, [output])
   function returnState() {
     if (output.length > 0) {
       return (

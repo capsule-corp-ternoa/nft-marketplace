@@ -4,9 +4,9 @@ import style from './TernoaWallet.module.scss';
 import Close from 'components/assets/close';
 import QRCode from 'components/base/QRCode';
 import randomstring from 'randomstring';
-import io from 'socket.io-client';
 import Cookies from 'js-cookie';
 import { onModelClose } from 'utils/model-helpers';
+import { connect as connectIo } from 'utils/socket/socket.helper';
 
 export interface TernoaWalletProps {
   setModalExpand: (b: boolean) => void;
@@ -18,20 +18,20 @@ const TernoaWallet: React.FC<TernoaWalletProps> = ({ setModalExpand }) => {
   const [showQR, setShowQR] = useState(false);
 
   useEffect(() => {
-    console.log('socket connect on session',session);
-    const socket = io(`${process.env.NEXT_PUBLIC_SOCKETIO_URL}/socket/login`, {
-      query: { session },
-      transports: ['websocket'],
-      forceNew: true
-    });
+    console.log('socket connect on session', session);
+    const socket = connectIo(`/socket/login`,{ session });
 
     socket.on('CONNECTION_SUCCESS', () => {
       setShowQR(true);
     });
     socket.on('connect_error', (e) => {
       console.error('connection error socket', e);
+      setModalExpand(false);
     });
-    socket.on('disconnect', (data) => console.log('deco', data));
+    socket.on('disconnect', (data) => {
+      console.log('deco', data);
+      setModalExpand(false);
+    });
 
     socket.on('CONNECTION_FAILURE', (data) => setError(data.msg));
     socket.on('RECEIVE_WALLET_ID', (data) => {
@@ -41,6 +41,7 @@ const TernoaWallet: React.FC<TernoaWalletProps> = ({ setModalExpand }) => {
         expires: 1,
       });
       socket.emit('RECEIVED_WALLET_ID', data);
+      socket.close();
       window.location.reload();
     });
 
@@ -68,12 +69,12 @@ const TernoaWallet: React.FC<TernoaWalletProps> = ({ setModalExpand }) => {
           {showQR ? (
             <QRCode data={{ session }} action={'LOGIN'} />
           ) : (
-            <div className={style.Loading}>
-              <span className={style.Dot}></span>
-              <span className={style.Dot}></span>
-              <span className={style.Dot}></span>
-            </div>
-          )}
+              <div className={style.Loading}>
+                <span className={style.Dot}></span>
+                <span className={style.Dot}></span>
+                <span className={style.Dot}></span>
+              </div>
+            )}
         </div>
         {error && <div className={style.Error}>{error}</div>}
       </div>

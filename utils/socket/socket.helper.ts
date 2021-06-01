@@ -6,11 +6,14 @@ export function connect(endPoint: string, query: any, options: any = null, timeo
         forceNew: true,
         ...options,
     });
-    setTimeout(() => {
+    const disconnectTimeout = setTimeout(() => {
         // autodisconnect after timeout if still open
         if (socket?.connected) {
             socket.close();
         }
     }, timeout);
+    socket.on('disconnect', () => {
+        clearTimeout(disconnectTimeout);
+    })
     return socket;
 }

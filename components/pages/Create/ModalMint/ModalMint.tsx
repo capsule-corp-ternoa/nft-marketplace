@@ -31,8 +31,7 @@ const ModalMint: React.FC<ModalProps> = ({
   const router = useRouter();
   const { walletId, price, links, fileHash } = QRData;
 
-  useEffect(() => {
-    setIsRN(window.isRNApp);
+  const handleMintSocketProcess = () => {
     console.log('socket connect on session', session);
     const socket = connectIo(`/socket/createNft`, { session }, undefined, 5 * 60 * 1000);
 
@@ -71,8 +70,22 @@ const ModalMint: React.FC<ModalProps> = ({
         socket.close();
       }
     };
+  }
+  useEffect(() => {
+    setIsRN(window.isRNApp);
   }, []);
+  useEffect(() => {
+    console.log('showQR', showQR);
+    if (showQR) {
+      handleMintSocketProcess()
+    }
+  }, [showQR]);
 
+  useEffect(() => {
+    if (output.length > 0) {
+      setShowQR(true);
+    }
+  }, [output])
   function returnState() {
     if (output.length > 0) {
       return (

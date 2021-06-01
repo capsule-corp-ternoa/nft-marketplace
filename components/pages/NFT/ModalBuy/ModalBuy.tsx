@@ -4,7 +4,7 @@ import style from './ModalBuy.module.scss';
 import Close from 'components/assets/close';
 import QRCode from 'components/base/QRCode';
 import randomstring from 'randomstring';
-import io from 'socket.io-client';
+import { connect as connectIo } from 'utils/socket/socket.helper';
 import Link from 'next/link';
 import CheckMark from 'components/assets/checkmark';
 
@@ -24,10 +24,10 @@ const ModalBuy: React.FC<ModalBuyProps> = ({ setModalExpand, id }) => {
   useEffect(() => {
     setIsRN(window.isRNApp);
     console.log('socket connect on session',session);
-    const socket = io(`${process.env.NEXT_PUBLIC_SOCKETIO_URL}/socket/buyNft`, {
-      query: { session },
-      transports: ['websocket'],
-      forceNew: true
+    const socket = connectIo(`/socket/buyNft`, { session });
+    socket.on('connect_error', (e) => {
+      console.error('connection error socket', e);
+      setModalExpand(false);
     });
 
     socket.on('CONNECTION_SUCCESS', () => {
@@ -51,6 +51,7 @@ const ModalBuy: React.FC<ModalBuyProps> = ({ setModalExpand, id }) => {
         setError('Something went wrong. Please try again.');
       }
       socket.emit('NFT_BUY_RECEIVED');
+      socket.close();
       setTimeout(() => {
         setModalExpand(false);
       }, 2000)

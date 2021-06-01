@@ -3,10 +3,10 @@ import React, { useState, useEffect } from 'react';
 import style from './ModalMint.module.scss';
 import Close from 'components/assets/close';
 import randomstring from 'randomstring';
-import io from 'socket.io-client';
 import QRCode from 'components/base/QRCode';
 import CheckMark from 'components/assets/checkmark';
 import { useRouter } from 'next/router'
+import { connect as connectIo } from 'utils/socket/socket.helper';
 
 export interface ModalProps {
   setModalCreate: (b: boolean) => void;
@@ -33,15 +33,8 @@ const ModalMint: React.FC<ModalProps> = ({
 
   useEffect(() => {
     setIsRN(window.isRNApp);
-    console.log('socket connect on session',session);
-    const socket = io(
-      `${process.env.NEXT_PUBLIC_SOCKETIO_URL}/socket/createNft`,
-      {
-        query: { session },
-        transports: ['websocket'],
-        forceNew: true
-      }
-    );
+    console.log('socket connect on session', session);
+    const socket = connectIo(`/socket/createNft`, { session }, undefined, 5 * 60 * 1000);
 
     socket.on('CONNECTION_SUCCESS', () => {
       if (isRN) {
@@ -53,11 +46,16 @@ const ModalMint: React.FC<ModalProps> = ({
         setShowQR(true);
       }
     });
+    socket.on('connect_error', (e) => {
+      console.error('connection error socket', e);
+      setModalCreate(false);
+    });
 
     socket.on('CONNECTION_FAILURE', (data) => setError(data.msg));
     socket.on('MINTING_NFT', ({ success }) => {
       console.log('MINTING_NFT:' + success);
       socket.emit('MINTING_NFT_RECEIVED')
+      socket.close();
       setMintResponse(success)
       setTimeout(() => {
         setModalCreate(false);

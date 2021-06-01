@@ -12,7 +12,7 @@ export const getUser = async (token: string) => {
 
   console.log('capsResponse', capsResponse.ok);
   let capsData = null
-  if (!capsResponse.ok) {
+  if (capsResponse.ok) {
     capsData = await capsResponse.json();
   }
 

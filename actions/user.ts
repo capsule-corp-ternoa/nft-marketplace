@@ -2,19 +2,22 @@ export const getUser = async (token: string) => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_NODE_API}/api/users/${token}`
   );
+  console.log('res', res.ok);
 
   if (!res.ok) throw new Error();
-
+  const userData = await res.json();
   const capsResponse = await fetch(
     `${process.env.NEXT_PUBLIC_NODE_API}/api/users/${token}/caps`
   );
 
-  if (!capsResponse.ok) return await res.json();
-  const capsData = await capsResponse.json();
+  console.log('capsResponse', capsResponse.ok);
+  let capsData = null
+  if (!capsResponse.ok) {
+    capsData = await capsResponse.json();
+  }
 
-  const data = { ...(await res.json()), ...capsData };
 
-  return data;
+  return { ...userData, ...capsData };
 };
 
 export const getProfile = async (id: string) => {

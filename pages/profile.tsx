@@ -80,7 +80,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
     const token = cookies(ctx).token;
     if (token) {
       user = await getUser(token);
-      [created, createdSeries] = await getCreatorNFTS(token).catch(() => []);
+      [created, createdSeries] = await getCreatorNFTS(token).catch(() => [[], {}]);
 
       [owned, ownedSeries] = await getProfileNFTS(token, false).catch(() => [[], {}]);
     }

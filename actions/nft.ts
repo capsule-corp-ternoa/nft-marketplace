@@ -35,6 +35,8 @@ export const getProfileNFTS = async (
     `${process.env.NEXT_PUBLIC_NODE_API}/api/NFTs/owner/${id}`
   );
 
+  if (!res.ok) throw new Error('error fetching owned NFTs');
+
   let data: NftType[] = await res.json();
   data = data.filter((item) => item.creatorData && item.ownerData);
   data = data.filter((item) => item.media);
@@ -64,6 +66,8 @@ export const getCreatorNFTS = async (id: string) => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_NODE_API}/api/NFTs/creator/${id}`
   );
+
+  if (!res.ok) throw new Error('error fetching created NFTs');
 
   let data: NftType[] = await res.json();
   data = data.filter((item) => item.creatorData && item.ownerData);

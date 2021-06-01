@@ -70,7 +70,7 @@ const Footer: React.FC<FooterProps> = ({ setNotAvailable }) => {
             Privacy
           </a>
         </div>
-        <div className={style.Languages}></div>
+        {/* <div className={style.Languages}></div> */}
       </div>
     </div>
   );

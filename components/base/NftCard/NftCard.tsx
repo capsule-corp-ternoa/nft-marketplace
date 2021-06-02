@@ -90,9 +90,9 @@ const NftCard: React.FC<NftCardProps> = ({
       {returnType()}
       {item.serieId !== '0' &&
         item.itemTotal &&
-        (!serieCount || (serieCount && serieCount > 1)) && (
+        (!serieCount || (serieCount && serieCount > 1)) ? (
           <span className={style.QtyLabel}>{serieCount ?? item.itemTotal}</span>
-        )}
+        ) : (<span className={style.QtyLabel}>{1}</span>)}
       {item.cryptedMedia?.url !== item.media?.url && (
         <span className={style.SecretLabel}>S</span>
       )}

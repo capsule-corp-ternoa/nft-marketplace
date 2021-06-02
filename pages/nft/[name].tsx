@@ -15,13 +15,15 @@ import { NftType, UserType } from 'interfaces';
 import { NextPageContext } from 'next';
 
 import { onModelClose, onModelOpen } from '../../utils/model-helpers';
+import { getCapsValue } from 'actions/caps';
 
 export interface NFTPageProps {
   user: UserType;
   NFT: NftType;
+  capsValue: number;
 }
 
-const NftPage: React.FC<NFTPageProps> = ({ user, NFT }) => {
+const NftPage: React.FC<NFTPageProps> = ({ user, NFT, capsValue }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [exp, setExp] = useState(0);
   const [notAvailable, setNotAvailable] = useState(false);
@@ -95,6 +97,7 @@ const NftPage: React.FC<NFTPageProps> = ({ user, NFT }) => {
         setNotAvailable={setNotAvailable}
         user={walletUser}
         type={type}
+        capsValue={capsValue}
       />
     </>
   );
@@ -113,8 +116,16 @@ export async function getServerSideProps(ctx: NextPageContext) {
     }
     let NFT = await getNFT(ctx.query.name as string);
 
+    let capsValue = 0;
+
+    try {
+      capsValue = Number(await getCapsValue());
+    } catch (error) {
+      console.error(error);
+    }
+
     return {
-      props: { user, NFT },
+      props: { user, NFT, capsValue },
     };
   } catch {
     return {

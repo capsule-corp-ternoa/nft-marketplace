@@ -98,7 +98,6 @@ const FloatingHeader: React.FC<FloatingHeaderProps> = ({
                 }
               >
                 {user.capsAmount ? computeCaps(Number(user.capsAmount)) : 0}{' '}
-                caps
               </span>
               CAPS
             </div>

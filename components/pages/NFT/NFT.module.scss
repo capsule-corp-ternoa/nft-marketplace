@@ -232,6 +232,23 @@
   }
 }
 
+.QuantityContainer {
+  padding: 10px 30px;
+}
+
+.QuantityLabel {
+  font-size: 16px;
+  font-family: "Airbnb Cereal App Light";
+  color: grey;
+  margin-top: 10px;
+}
+
+.Quantity {
+  font-size: 16px;
+  font-family: "Airbnb Cereal App Bold";
+  text-align: center;
+}
+
 .Disabled {
   cursor: default;
   background-color: lighten($primary, 35%);

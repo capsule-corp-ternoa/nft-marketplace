@@ -153,11 +153,6 @@ const FloatingHeader: React.FC<FloatingHeaderProps> = ({
                 </span>
               </div>
             </div>
-            <Link href="/test-author">
-              <a className={style.Section}>
-                <div className={style.SectionTitle}>Profile</div>
-              </a>
-            </Link>
             <Link href="/profile">
               <a className={style.Section}>
                 <div className={style.SectionTitle}> My Account</div>

@@ -6,6 +6,9 @@ import style from './FloatingMenu.module.scss';
 import PowerOff from 'components/assets/poweroff';
 import Close from 'components/assets/close';
 
+import Cookies from "js-cookie";
+import { useRouter } from "next/router";
+
 export interface FloatingMenuProps {
   setScope: (s: string) => void;
   setExpand: (b: boolean) => void;
@@ -17,6 +20,8 @@ const FloatingMenu: React.FC<FloatingMenuProps> = ({
   setScope,
   setExpand,
 }) => {
+  const router = useRouter();
+
   function returnActiveTitle(name: string) {
     if (scope === name) {
       return `${style.SectionTitle} ${style.SectionTitleActive}`;
@@ -29,6 +34,12 @@ const FloatingMenu: React.FC<FloatingMenuProps> = ({
     if (scope === name)
       return `${style.SectionNumber} ${style.SectionNumberActive}`;
     else return style.SectionNumber;
+  }
+
+  function disconnect() {
+    setExpand(false);
+    Cookies.remove('token');
+    router.push('/');
   }
 
   return (
@@ -61,7 +72,7 @@ const FloatingMenu: React.FC<FloatingMenuProps> = ({
           </div>
           <div className={returnActiveNumber('My creations')}>4</div>
         </div>
-        <div onClick={() => setExpand(false)} className={style.Logoff}>
+        <div onClick={disconnect} className={style.Logoff}>
           <div className={style.SectionTitle}>Disconnect</div>
           <PowerOff className={style.PowerOff} />
         </div>

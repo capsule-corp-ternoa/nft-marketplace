@@ -78,8 +78,6 @@ const NftCard: React.FC<NftCardProps> = ({
 
   const isMobile = useMediaQuery({ query: '(max-device-width: 720px)' });
 
-  console.log('item:', item);
-
   return (
     <div
       onClick={() => !isDragging && Router.push(`/nft/${item.id}`)}

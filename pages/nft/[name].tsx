@@ -11,11 +11,11 @@ import cookies from 'next-cookies';
 
 import { getUser } from 'actions/user';
 import { getNFT } from 'actions/nft';
+import { getCapsValue } from 'actions/caps';
 import { NftType, UserType } from 'interfaces';
 import { NextPageContext } from 'next';
 
 import { onModelClose, onModelOpen } from '../../utils/model-helpers';
-import { getCapsValue } from 'actions/caps';
 
 export interface NFTPageProps {
   user: UserType;

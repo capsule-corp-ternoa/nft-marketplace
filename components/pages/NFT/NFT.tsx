@@ -95,12 +95,18 @@ const NFTPage: React.FC<NFTPageProps> = ({
                 Buy
               </div>
             </div>
-            <div className={style.BuyRight}>
-              <div className={style.Price}>
-                {computeCaps(Number(NFT.price))} CAPS
+            {NFT.listed === 1 && (
+              <div className={style.BuyRight}>
+                <div className={style.Price}>
+                  {computeCaps(Number(NFT.price))} CAPS
+                </div>
+                {fiatPrice > 0 && (
+                  <span className={style.FiatPrice}>
+                    {fiatPrice.toFixed(4)}$
+                  </span>
+                )}
               </div>
-              {fiatPrice > 0 && <span className={style.FiatPrice}>{fiatPrice.toFixed(4)}$</span>}
-            </div>
+            )}
           </div>
           <div className={style.HistoryTop}>
             <div className={style.HistoryTitle}>History</div>

@@ -2,7 +2,6 @@ export const getUser = async (token: string) => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_NODE_API}/api/users/${token}`
   );
-  console.log('res', res.ok);
 
   if (!res.ok) throw new Error();
   const userData = await res.json();
@@ -10,12 +9,10 @@ export const getUser = async (token: string) => {
     `${process.env.NEXT_PUBLIC_NODE_API}/api/users/${token}/caps`
   );
 
-  console.log('capsResponse', capsResponse.ok);
-  let capsData = null
+  let capsData = null;
   if (capsResponse.ok) {
     capsData = await capsResponse.json();
   }
-
 
   return { ...userData, ...capsData };
 };

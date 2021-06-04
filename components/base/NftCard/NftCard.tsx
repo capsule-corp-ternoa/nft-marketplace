@@ -88,11 +88,17 @@ const NftCard: React.FC<NftCardProps> = ({
       onMouseOut={() => !isMobile && setIsHovering(false)}
     >
       {returnType()}
-      {item.serieId !== '0' &&
+      {item.serieId !== '0' ? (
         item.itemTotal &&
-        (!serieCount || (serieCount && serieCount > 1)) ? (
-          <span className={style.QtyLabel}>{serieCount ?? item.itemTotal}</span>
-        ) : (<span className={style.QtyLabel}>{1}</span>)}
+        serieCount &&
+        serieCount > 1 && (
+          <span
+            className={style.QtyLabel}
+          >{`${serieCount}/${item.itemTotal}`}</span>
+        )
+      ) : (
+        <span className={style.QtyLabel}>1/1</span>
+      )}
       {item.cryptedMedia?.url !== item.media?.url && (
         <span className={style.SecretLabel}>S</span>
       )}

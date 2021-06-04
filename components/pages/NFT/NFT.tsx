@@ -19,6 +19,7 @@ export interface NFTPageProps {
   setExp: (n: number) => void;
   setNotAvailable: (b: boolean) => void;
   setModalExpand: (b: boolean) => void;
+  capsValue: number;
 }
 
 const NFTPage: React.FC<NFTPageProps> = ({
@@ -28,11 +29,12 @@ const NFTPage: React.FC<NFTPageProps> = ({
   setNotAvailable,
   user,
   type,
+  capsValue,
 }) => {
   const bgGradientOwner = { background: gradient(NFT.ownerData.name) };
   const bgGradientCreator = { background: gradient(NFT.creatorData.name) };
 
-  const fiatPrice = (Number(NFT.price) / 1000000000000000000) * 0.008;
+  const fiatPrice = (Number(NFT.price) / 1000000000000000000) * capsValue;
 
   function returnType() {
     if (!type) return null;
@@ -93,12 +95,22 @@ const NFTPage: React.FC<NFTPageProps> = ({
                 Buy
               </div>
             </div>
-            <div className={style.BuyRight}>
-              <div className={style.Price}>
-                {computeCaps(Number(NFT.price))} CAPS
+            {NFT.listed === 1 && (
+              <div className={style.BuyRight}>
+                <div className={style.Price}>
+                  {computeCaps(Number(NFT.price))} CAPS
+                </div>
+                {fiatPrice > 0 && (
+                  <span className={style.FiatPrice}>
+                    {fiatPrice.toFixed(4)}$
+                  </span>
+                )}
               </div>
-              <span className={style.FiatPrice}>{fiatPrice}$</span>
-            </div>
+            )}
+          </div>
+          <div className={style.Quantity}>
+            <div className={style.QuantityLabel}>Total Quantity</div>
+            <div className={style.QuantityCount}>{NFT.itemTotal}</div>
           </div>
           <div className={style.HistoryTop}>
             <div className={style.HistoryTitle}>History</div>

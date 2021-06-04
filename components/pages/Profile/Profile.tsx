@@ -172,7 +172,6 @@ const Profile: React.FC<ProfileProps> = ({
           scope={scope}
           setScope={setScope}
           setExpand={setExpand}
-          setNotAvailable={setNotAvailable}
           ownedAmount={ownedNFTS.length}
           createdAmount={createdNFTS.length}
         />

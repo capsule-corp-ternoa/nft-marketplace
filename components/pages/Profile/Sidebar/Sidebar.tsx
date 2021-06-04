@@ -8,13 +8,14 @@ import Edit from 'components/assets/edit';
 import PowerOff from 'components/assets/poweroff';
 import { computeCaps, middleEllipsis } from 'utils/strings';
 import gradient from 'random-gradient';
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/router';
 
 import { UserType } from 'interfaces';
 
 export interface SidebarProps {
   setScope: (s: string) => void;
   setExpand: (b: boolean) => void;
-  setNotAvailable: (b: boolean) => void;
   scope: string;
   user: UserType;
   ownedAmount: number;
@@ -26,10 +27,10 @@ const Sidebar: React.FC<SidebarProps> = ({
   scope,
   setScope,
   setExpand,
-  setNotAvailable,
   ownedAmount,
   createdAmount,
 }) => {
+  const router = useRouter();
   const bgGradient = user ? { background: gradient(user.name) } : {};
 
   function returnActiveTitle(name: string) {
@@ -44,6 +45,11 @@ const Sidebar: React.FC<SidebarProps> = ({
     if (scope === name)
       return `${style.SectionNumber} ${style.SectionNumberActive}`;
     else return style.SectionNumber;
+  }
+
+  function disconnect() {
+    Cookies.remove('token');
+    router.push('/');
   }
 
   return (
@@ -116,7 +122,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             {createdAmount}
           </div>
         </div>
-        <div className={style.Disconnect} onClick={() => setNotAvailable(true)}>
+        <div className={style.Disconnect} onClick={disconnect}>
           <PowerOff className={style.PowerOff} />
           Disconnect
         </div>

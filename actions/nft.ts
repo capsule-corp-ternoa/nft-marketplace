@@ -50,11 +50,12 @@ export const getProfileNFTS = async (
     if (nft.serieId === '0') {
       displayNFTs.push(nft);
     } else {
-      if (!seriesCount[nft.serieId]) {
+      if (typeof seriesCount[nft.serieId] === 'undefined') {
         displayNFTs.push(nft);
-        seriesCount[nft.serieId] = 1;
+        if (nft.listed === 1) seriesCount[nft.serieId] = 1;
+        else seriesCount[nft.serieId] = 0;
       } else {
-        seriesCount[nft.serieId]++;
+        if (nft.listed === 1) seriesCount[nft.serieId]++;
       }
     }
   });
@@ -81,11 +82,12 @@ export const getCreatorNFTS = async (id: string) => {
     if (nft.serieId === '0') {
       displayNFTs.push(nft);
     } else {
-      if (!seriesCount[nft.serieId]) {
+      if (typeof seriesCount[nft.serieId] === 'undefined') {
         displayNFTs.push(nft);
-        seriesCount[nft.serieId] = 1;
+        if (nft.listed === 1) seriesCount[nft.serieId] = 1;
+        else seriesCount[nft.serieId] = 0;
       } else {
-        seriesCount[nft.serieId]++;
+        if (nft.listed === 1) seriesCount[nft.serieId]++;
       }
     }
   });

@@ -130,7 +130,7 @@ const Create: React.FC<CreateProps> = ({
               <Eye className={style.EyeSVG} />
               NFT Preview
             </span>
-            <div className={style.Label}>Coming Soon</div>
+            {/* <div className={style.Label}>Coming Soon</div> */}
           </div>
           <div className={style.Data}>
             <div className={style.Left}>

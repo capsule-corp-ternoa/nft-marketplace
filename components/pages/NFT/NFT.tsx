@@ -108,13 +108,9 @@ const NFTPage: React.FC<NFTPageProps> = ({
               </div>
             )}
           </div>
-          <div className={style.Buy}>
-            <div className={style.QuantityContainer}>
-              <div className={style.QuantityLabel}>Quantity</div>
-              <div className={style.Quantity}>
-                {NFT.itemId}/{NFT.itemTotal}
-              </div>
-            </div>
+          <div className={style.Quantity}>
+            <div className={style.QuantityLabel}>Total Quantity</div>
+            <div className={style.QuantityCount}>{NFT.itemTotal}</div>
           </div>
           <div className={style.HistoryTop}>
             <div className={style.HistoryTitle}>History</div>

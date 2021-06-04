@@ -89,13 +89,9 @@ const NftCard: React.FC<NftCardProps> = ({
     >
       {returnType()}
       {item.serieId !== '0' ? (
-        item.itemTotal &&
-        serieCount &&
-        serieCount > 1 && (
-          <span
-            className={style.QtyLabel}
-          >{`${serieCount}/${item.itemTotal}`}</span>
-        )
+        <span className={style.QtyLabel}>{`${
+          typeof serieCount !== 'undefined' ? serieCount : 1
+        }/${typeof item.itemTotal !== 'undefined' ? item.itemTotal : 1}`}</span>
       ) : (
         <span className={style.QtyLabel}>1/1</span>
       )}

@@ -17,8 +17,9 @@ import { NextPageContext } from 'next';
 export interface LandingProps {
   user: UserType;
   users: UserType[];
-  NFTSET1: NftType[];
-  NFTSET2: NftType[];
+  popularNfts: NftType[];
+  bestSellingNfts: NftType[];
+  betaNfts: NftType[];
   NFTCreators: NftType[];
   series: { [serieId: string]: number };
 }
@@ -26,8 +27,9 @@ export interface LandingProps {
 const LandingPage: React.FC<LandingProps> = ({
   user,
   users,
-  NFTSET1,
-  NFTSET2,
+  popularNfts,
+  bestSellingNfts,
+  betaNfts,
   NFTCreators,
   series,
 }) => {
@@ -65,8 +67,9 @@ const LandingPage: React.FC<LandingProps> = ({
         setNotAvailable={setNotAvailable}
         user={user}
         users={users}
-        NFTSET1={NFTSET1}
-        NFTSET2={NFTSET2}
+        popularNfts={popularNfts}
+        bestSellingNfts={bestSellingNfts}
+        betaNfts={betaNfts}
         NFTCreators={NFTCreators}
         series={series}
       />
@@ -91,13 +94,31 @@ export async function getServerSideProps(ctx: NextPageContext) {
 
   users = arrayShuffle(users);
 
-  let NFTSET1 = arrayShuffle(data.slice(0, 8));
-  let NFTSET2 = arrayShuffle(data.slice(9, 17));
+  let betaNfts: NftType[] = [];
+  let regularNfts: NftType[] = [];
 
-  let NFTCreators = arrayShuffle(data.slice(18, 21));
+  data.forEach((nft: NftType) => {
+    if (nft.price === '2000000000000000000') betaNfts.push(nft);
+    else regularNfts.push(nft);
+  });
+
+  betaNfts = arrayShuffle(betaNfts).slice(0, 8);
+
+  let popularNfts = arrayShuffle(regularNfts.slice(0, 8));
+  let bestSellingNfts = arrayShuffle(regularNfts.slice(9, 17));
+
+  let NFTCreators = arrayShuffle(regularNfts.slice(18, 21));
 
   return {
-    props: { user, users, NFTSET1, NFTSET2, NFTCreators, series },
+    props: {
+      user,
+      users,
+      popularNfts,
+      bestSellingNfts,
+      NFTCreators,
+      betaNfts,
+      series,
+    },
   };
 }
 

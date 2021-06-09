@@ -96,15 +96,21 @@ export async function getServerSideProps(ctx: NextPageContext) {
   users = arrayShuffle(users);
 
   // category code for beta testers NFTs
-  const BETA_CODE = "001";
+  const BETA_CODE = '001';
 
   let [regularNfts, regularSeries] = await getNFTS().catch(() => [[], {}]);
 
   // filter out beta nfts from regular nfts
-  regularNfts = regularNfts.filter((nft: NftType) => !nft.categories.includes(BETA_CODE));
+  regularNfts = regularNfts.filter(
+    (nft: NftType) =>
+      !nft.categories || (nft.categories && !nft.categories.includes(BETA_CODE))
+  );
 
   // get nfts with beta category from api
-  let [betaNfts, betaSeries] = await getCategoryNFTs(BETA_CODE).catch(() => [[], {}]);
+  let [betaNfts, betaSeries] = await getCategoryNFTs(BETA_CODE).catch(() => [
+    [],
+    {},
+  ]);
   betaNfts = arrayShuffle(betaNfts).slice(0, 8);
 
   let popularNfts = arrayShuffle(regularNfts.slice(0, 8));
@@ -121,7 +127,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
       NFTCreators,
       betaNfts,
       series: regularSeries,
-      betaSeries
+      betaSeries,
     },
   };
 }

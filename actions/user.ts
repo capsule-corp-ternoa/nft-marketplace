@@ -5,13 +5,17 @@ export const getUser = async (token: string) => {
 
   if (!res.ok) throw new Error();
   const userData = await res.json();
-  const capsResponse = await fetch(
-    `${process.env.NEXT_PUBLIC_NODE_API}/api/users/${token}/caps`
-  );
 
-  let capsData = null;
-  if (capsResponse.ok) {
-    capsData = await capsResponse.json();
+  let capsData = { capsAmount: '0' };
+  try {
+    const capsResponse = await fetch(
+      `${process.env.NEXT_PUBLIC_NODE_API}/api/users/${token}/caps`
+    );
+    if (capsResponse.ok) {
+      capsData = await capsResponse.json();
+    }
+  } catch (error) {
+    console.error(error);
   }
 
   return { ...userData, ...capsData };

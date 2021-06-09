@@ -20,6 +20,7 @@ export interface LandingProps {
   popularNfts: NftType[];
   bestSellingNfts: NftType[];
   betaNfts: NftType[];
+  betaSeries: { [serieId: string]: number };
   NFTCreators: NftType[];
   series: { [serieId: string]: number };
 }
@@ -32,6 +33,7 @@ const Landing: React.FC<LandingProps> = ({
   popularNfts,
   bestSellingNfts,
   betaNfts,
+  betaSeries,
   NFTCreators,
   series,
 }) => {
@@ -50,7 +52,7 @@ const Landing: React.FC<LandingProps> = ({
   return (
     <div className={style.Container}>
       <Hero users={users} />
-      <Showcase category="Beta Testers" NFTs={betaNfts} series={series} />
+      <Showcase category="Beta Testers" NFTs={betaNfts} series={betaSeries} />
       <Showcase category="Most popular" NFTs={popularNfts} series={series} />
       <Showcase category="Best sellers" NFTs={bestSellingNfts} series={series} />
       <ArtCreators NFTs={NFTCreators} creators={users} series={series} />

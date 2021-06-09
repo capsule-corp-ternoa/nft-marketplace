@@ -10,7 +10,7 @@ import arrayShuffle from 'array-shuffle';
 import cookies from 'next-cookies';
 
 import { getUser, getUsers } from 'actions/user';
-import { getNFTS } from 'actions/nft';
+import { getCategoryNFTs, getNFTS } from 'actions/nft';
 import { NftType, UserType } from 'interfaces';
 import { NextPageContext } from 'next';
 
@@ -22,6 +22,7 @@ export interface LandingProps {
   betaNfts: NftType[];
   NFTCreators: NftType[];
   series: { [serieId: string]: number };
+  betaSeries: { [serieId: string]: number };
 }
 
 const LandingPage: React.FC<LandingProps> = ({
@@ -30,6 +31,7 @@ const LandingPage: React.FC<LandingProps> = ({
   popularNfts,
   bestSellingNfts,
   betaNfts,
+  betaSeries,
   NFTCreators,
   series,
 }) => {
@@ -70,6 +72,7 @@ const LandingPage: React.FC<LandingProps> = ({
         popularNfts={popularNfts}
         bestSellingNfts={bestSellingNfts}
         betaNfts={betaNfts}
+        betaSeries={betaSeries}
         NFTCreators={NFTCreators}
         series={series}
       />
@@ -90,18 +93,18 @@ export async function getServerSideProps(ctx: NextPageContext) {
     console.error(error);
   }
 
-  let [data, series] = await getNFTS().catch(() => [[], {}]);
-
   users = arrayShuffle(users);
 
-  let betaNfts: NftType[] = [];
-  let regularNfts: NftType[] = [];
+  // category code for beta testers NFTs
+  const BETA_CODE = "001";
 
-  data.forEach((nft: NftType) => {
-    if (nft.price === '2000000000000000000') betaNfts.push(nft);
-    else regularNfts.push(nft);
-  });
+  let [regularNfts, regularSeries] = await getNFTS().catch(() => [[], {}]);
 
+  // filter out beta nfts from regular nfts
+  regularNfts = regularNfts.filter((nft: NftType) => !nft.categories.includes(BETA_CODE));
+
+  // get nfts with beta category from api
+  let [betaNfts, betaSeries] = await getCategoryNFTs(BETA_CODE).catch(() => [[], {}]);
   betaNfts = arrayShuffle(betaNfts).slice(0, 8);
 
   let popularNfts = arrayShuffle(regularNfts.slice(0, 8));
@@ -117,7 +120,8 @@ export async function getServerSideProps(ctx: NextPageContext) {
       bestSellingNfts,
       NFTCreators,
       betaNfts,
-      series,
+      series: regularSeries,
+      betaSeries
     },
   };
 }

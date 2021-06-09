@@ -15,7 +15,7 @@ export const getUser = async (token: string) => {
       capsData = await capsResponse.json();
     }
   } catch (error) {
-    console.error(error);
+    console.error('Couldnt get this users caps balance');
   }
 
   return { ...userData, ...capsData };

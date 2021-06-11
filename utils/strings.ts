@@ -1,11 +1,14 @@
-function toFixed(num:number, fixed:number) {
-  var re = new RegExp('^-?\\d+(?:.\\d{0,' + (fixed || -1) + '})?');
-  return num.toString().match(re)[0];
+function toFixed(num: Number, fixed: number) {
+  if (!num) {
+    return null;
+  }
+  const re = new RegExp('^-?\\d+(?:.\\d{0,' + (fixed || -1) + '})?');
+  return (<any>num).toString().match(re)[0];
 }
 
 export function computeCaps(n: number, decimals: number = 4) {
   if (typeof n !== 'number') {
-    return n.toString();
+    return (<any>n).toString();
   }
   n = n / 1000000000000000000;
   if (n < 1e4) {

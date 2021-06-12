@@ -37,6 +37,7 @@ const NFTPage: React.FC<NFTPageProps> = ({
   const bgGradientCreator = { background: gradient(NFT.creatorData.name) };
 
   const fiatPrice = (Number(NFT.price) / 1000000000000000000) * capsValue;
+  const userCanBuy = user ? user.capsAmount && (Number(user.capsAmount) >= Number(NFT.price)) : true
 
   function returnType() {
     if (!type) return null;
@@ -104,9 +105,9 @@ const NFTPage: React.FC<NFTPageProps> = ({
                 </div>
               )}
               <div
-                onClick={() => NFT.listed && setExp(2)}
+                onClick={() => NFT.listed && userCanBuy && setExp(2)}
                 className={
-                  NFT.listed
+                  NFT.listed && userCanBuy
                     ? style.Button
                     : `${style.Button} ${style.Disabled}`
                 }

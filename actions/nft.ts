@@ -137,3 +137,14 @@ export const getNFT = async (id: string) => {
 
   return data;
 };
+
+export const getTotalOnSaleCountNFT = async (serieId: string) => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/NFTs/onSaleSeriesNFTsCount/${serieId}`);
+
+  if (!res.ok) throw new Error();
+
+  let data: number = await res.json();
+  if (!data) throw new Error();
+
+  return data;
+};

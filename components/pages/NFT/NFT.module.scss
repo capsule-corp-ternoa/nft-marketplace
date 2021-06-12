@@ -232,32 +232,15 @@
   }
 }
 
-.QuantityContainer {
-  padding: 10px 30px;
-}
-
-.Quantity {
-  display: flex;
-  align-items: center;
-  margin-top: 24px;
-}
-
 .QuantityLabel {
-  font-size: 16px;
-  font-family: 'Airbnb Cereal App Light';
-  color: grey;
-  width: 170px;
-  margin-right: 42px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
+  font-size: 12px;
+  line-height: 16px;
+  font-family: 'Airbnb Cereal App Bold';
+  margin-bottom: 4px;
 }
 
 .QuantityCount {
-  font-size: 16px;
-  font-family: 'Airbnb Cereal App Bold';
-  text-align: center;
+  color: $primary;
 }
 
 .Disabled {
@@ -458,10 +441,6 @@
     height: 55px;
   }
 
-  .QuantityLabel {
-    font-size: 14px;
-    width: 130px;
-  }
 }
 
 @media (max-width: 1000px) {
@@ -577,6 +556,7 @@
     align-items: center;
     justify-content: center;
     order: 1;
+    margin-top:0px;
   }
 
   .Collection {
@@ -596,14 +576,6 @@
     margin: 0px 10px;
   }
 
-  .Quantity {
-    flex-direction: column;
-  }
-
-  .QuantityLabel {
-    margin-right: 0px;
-    margin-bottom: 3px;
-  }
 }
 
 @media (max-width: 720px) {

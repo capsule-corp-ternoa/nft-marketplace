@@ -95,6 +95,38 @@ export const getCreatorNFTS = async (id: string) => {
   return [displayNFTs, seriesCount];
 };
 
+export const getCategoryNFTs = async (code: string) => {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_NODE_API}/api/NFTs/category/${code}`
+  );
+
+  if (!res.ok) throw new Error('error fetching category NFTs');
+
+  let data: NftType[] = await res.json();
+  data = data.filter(
+    (item) => item.creatorData && item.ownerData && item.media && item.listed
+  );
+
+  const displayNFTs: NftType[] = [];
+  const seriesCount: any = {};
+
+  // count listed NFTs for each series
+  data.forEach((nft) => {
+    if (nft.serieId === '0') {
+      displayNFTs.push(nft);
+    } else {
+      if (!seriesCount[nft.serieId]) {
+        displayNFTs.push(nft);
+        seriesCount[nft.serieId] = 1;
+      } else {
+        seriesCount[nft.serieId]++;
+      }
+    }
+  });
+
+  return [displayNFTs, seriesCount];
+};
+
 export const getNFT = async (id: string) => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/NFTs/${id}`);
 
@@ -102,6 +134,17 @@ export const getNFT = async (id: string) => {
 
   let data: NftType = await res.json();
   if (!data.creatorData || !data.ownerData || !data.media) throw new Error();
+
+  return data;
+};
+
+export const getTotalOnSaleCountNFT = async (serieId: string) => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/NFTs/onSaleSeriesNFTsCount/${serieId}`);
+
+  if (!res.ok) throw new Error();
+
+  let data: number = await res.json();
+  if (!data) throw new Error();
 
   return data;
 };

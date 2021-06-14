@@ -53,7 +53,7 @@ const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category, series }) => {
   const [isFiltered, setIsFiltered] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
 
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
 
   const isMobile = useMediaQuery({ query: '(max-width: 720px)' });
 
@@ -61,7 +61,6 @@ const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category, series }) => {
     responsive: {},
     children: <></>,
   });
-
   function returnNFTs(key: string = 'show') {
     return NFTs.map((item) => (
       <div key={item.id} className={style.NFTShell}>
@@ -77,79 +76,81 @@ const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category, series }) => {
 
   return (
     <>
-      <div className={style.Showcase}>
-        <div className={style.Top}>
-          <div className={style.Infos}>
-            <h3 className={style.Title}>{category}</h3>
-            <div className={`${style.Toggle} ${style.Hide}`}>
-              <label>
-                <Switch
-                  checked={isFiltered}
-                  onChange={() => setIsFiltered(!isFiltered)}
-                  offColor="#000000"
-                  onColor="#7417ea"
-                  uncheckedIcon={false}
-                  checkedIcon={false}
-                  width={46}
-                  handleDiameter={23}
-                  className={style.SwitchShell}
-                />
-              </label>
-              <span className={style.Label}>Certified only</span>
-            </div>
-          </div>
-          {!isMobile && (
-            <div className={style.Nav}>
-              <div
-                onClick={() => {
-                  carousel?.previous(1);
-                }}
-                className={style.NavButton}
-              >
-                <ArrowLeft className={style.ArrowSVG} />
-              </div>
-
-              <div
-                onClick={() => {
-                  carousel?.next(1);
-                }}
-                className={style.NavButton}
-              >
-                <ArrowRight className={style.ArrowSVG} />
+      { NFTs?.length > 0 &&
+        <div className={style.Showcase}>
+          <div className={style.Top}>
+            <div className={style.Infos}>
+              <h3 className={style.Title}>{category}</h3>
+              <div className={`${style.Toggle} ${style.Hide}`}>
+                <label>
+                  <Switch
+                    checked={isFiltered}
+                    onChange={() => setIsFiltered(!isFiltered)}
+                    offColor="#000000"
+                    onColor="#7417ea"
+                    uncheckedIcon={false}
+                    checkedIcon={false}
+                    width={46}
+                    handleDiameter={23}
+                    className={style.SwitchShell}
+                  />
+                </label>
+                <span className={style.Label}>Certified only</span>
               </div>
             </div>
-          )}
-        </div>
-        <div className={style.Wrapper}>
-          <div
-            className={style.NFTContainer}
-            onMouseDown={() => setIsDragging(false)}
-            onMouseMove={() => setIsDragging(true)}
-            onTouchStart={() => setIsDragging(false)}
-            onTouchMove={() => setIsDragging(true)}
-          >
-            {isMobile ? (
-              <>{returnNFTs('show')}</>
-            ) : (
-              <>
-                <Carousel
-                  ref={(el) => {
-                    carousel = el;
+            {!isMobile && (
+              <div className={style.Nav}>
+                <div
+                  onClick={() => {
+                    carousel?.previous(1);
                   }}
-                  responsive={responsive}
-                  infinite
-                  ssr={false}
-                  arrows={false}
-                  className={style.CarouselContainer}
-                  swipeable={true}
+                  className={style.NavButton}
                 >
-                  {returnNFTs('Carousel')}
-                </Carousel>
-              </>
+                  <ArrowLeft className={style.ArrowSVG} />
+                </div>
+
+                <div
+                  onClick={() => {
+                    carousel?.next(1);
+                  }}
+                  className={style.NavButton}
+                >
+                  <ArrowRight className={style.ArrowSVG} />
+                </div>
+              </div>
             )}
           </div>
+          <div className={style.Wrapper}>
+            <div
+              className={style.NFTContainer}
+              onMouseDown={() => setIsDragging(false)}
+              onMouseMove={() => setIsDragging(true)}
+              onTouchStart={() => setIsDragging(false)}
+              onTouchMove={() => setIsDragging(true)}
+            >
+              {isMobile ? (
+                <>{returnNFTs('show')}</>
+              ) : (
+                  <>
+                    <Carousel
+                      ref={(el) => {
+                        carousel = el;
+                      }}
+                      responsive={responsive}
+                      infinite
+                      ssr={false}
+                      arrows={false}
+                      className={style.CarouselContainer}
+                      swipeable={true}
+                    >
+                      {returnNFTs('Carousel')}
+                    </Carousel>
+                  </>
+                )}
+            </div>
+          </div>
         </div>
-      </div>
+      }
     </>
   );
 };

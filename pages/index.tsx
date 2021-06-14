@@ -10,26 +10,32 @@ import arrayShuffle from 'array-shuffle';
 import cookies from 'next-cookies';
 
 import { getUser, getUsers } from 'actions/user';
-import { getNFTS } from 'actions/nft';
+import { getCategoryNFTs, getNFTS } from 'actions/nft';
 import { NftType, UserType } from 'interfaces';
 import { NextPageContext } from 'next';
 
 export interface LandingProps {
   user: UserType;
   users: UserType[];
-  NFTSET1: NftType[];
-  NFTSET2: NftType[];
+  popularNfts: NftType[];
+  bestSellingNfts: NftType[];
+  betaNfts: NftType[];
   NFTCreators: NftType[];
   series: { [serieId: string]: number };
+  betaSeries: { [serieId: string]: number };
+  totalCountNFT: number;
 }
 
 const LandingPage: React.FC<LandingProps> = ({
   user,
   users,
-  NFTSET1,
-  NFTSET2,
+  popularNfts,
+  bestSellingNfts,
+  betaNfts,
+  betaSeries,
   NFTCreators,
   series,
+  totalCountNFT,
 }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
@@ -65,10 +71,13 @@ const LandingPage: React.FC<LandingProps> = ({
         setNotAvailable={setNotAvailable}
         user={user}
         users={users}
-        NFTSET1={NFTSET1}
-        NFTSET2={NFTSET2}
+        popularNfts={popularNfts}
+        bestSellingNfts={bestSellingNfts}
+        betaNfts={betaNfts}
+        betaSeries={betaSeries}
         NFTCreators={NFTCreators}
         series={series}
+        totalCountNFT={totalCountNFT}
       />
     </>
   );
@@ -87,17 +96,43 @@ export async function getServerSideProps(ctx: NextPageContext) {
     console.error(error);
   }
 
-  let [data, series] = await getNFTS().catch(() => [[], {}]);
-
   users = arrayShuffle(users);
 
-  let NFTSET1 = arrayShuffle(data.slice(0, 8));
-  let NFTSET2 = arrayShuffle(data.slice(9, 17));
+  // category code for beta testers NFTs
+  const BETA_CODE = '001';
 
-  let NFTCreators = arrayShuffle(data.slice(18, 21));
+  let [regularNfts, regularSeries] = await getNFTS().catch(() => [[], {}]);
 
+  // filter out beta nfts from regular nfts
+  regularNfts = regularNfts.filter(
+    (nft: NftType) =>
+      !nft.categories || (nft.categories && !nft.categories.includes(BETA_CODE))
+  );
+
+  // get nfts with beta category from api
+  let [betaNfts, betaSeries] = await getCategoryNFTs(BETA_CODE).catch(() => [
+    [],
+    {},
+  ]);
+  betaNfts = arrayShuffle(betaNfts).slice(0, 8);
+
+  let popularNfts = arrayShuffle(regularNfts.slice(0, 8));
+  let bestSellingNfts = arrayShuffle(regularNfts.slice(9, 17));
+
+  let NFTCreators = arrayShuffle(regularNfts.slice(18, 21));
+  let totalCountNFT = regularNfts.length + betaNfts.length;
   return {
-    props: { user, users, NFTSET1, NFTSET2, NFTCreators, series },
+    props: {
+      user,
+      users,
+      popularNfts,
+      bestSellingNfts,
+      NFTCreators,
+      betaNfts,
+      series: regularSeries,
+      betaSeries,
+      totalCountNFT,
+    },
   };
 }
 

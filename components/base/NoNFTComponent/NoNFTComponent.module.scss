@@ -1,0 +1,33 @@
+@import "style/colors.scss";
+
+
+.SoldOutWrapper {
+  display: flex;
+  justify-content: center;
+  padding: 70px 0px;
+}
+
+.SoldOutContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+  
+.SoldOutImage {
+  width: 40%;
+}
+.SoldOutTitle {
+  font-family: "Airbnb Cereal App Bold";
+  color: $primary;
+  text-align: center;
+  font-size: 16px;
+  margin-top: 20px;
+}
+
+.SoldOutLabel {
+  font-family: "Airbnb Cereal App Light";
+  text-align: center;
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+  

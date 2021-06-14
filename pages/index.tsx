@@ -23,6 +23,7 @@ export interface LandingProps {
   NFTCreators: NftType[];
   series: { [serieId: string]: number };
   betaSeries: { [serieId: string]: number };
+  totalCountNFT: number;
 }
 
 const LandingPage: React.FC<LandingProps> = ({
@@ -34,6 +35,7 @@ const LandingPage: React.FC<LandingProps> = ({
   betaSeries,
   NFTCreators,
   series,
+  totalCountNFT,
 }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
@@ -75,6 +77,7 @@ const LandingPage: React.FC<LandingProps> = ({
         betaSeries={betaSeries}
         NFTCreators={NFTCreators}
         series={series}
+        totalCountNFT={totalCountNFT}
       />
     </>
   );
@@ -117,7 +120,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
   let bestSellingNfts = arrayShuffle(regularNfts.slice(9, 17));
 
   let NFTCreators = arrayShuffle(regularNfts.slice(18, 21));
-
+  let totalCountNFT = regularNfts.length + betaNfts.length;
   return {
     props: {
       user,
@@ -128,6 +131,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
       betaNfts,
       series: regularSeries,
       betaSeries,
+      totalCountNFT,
     },
   };
 }

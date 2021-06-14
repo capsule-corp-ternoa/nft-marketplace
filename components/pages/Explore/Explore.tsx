@@ -2,6 +2,7 @@ import React from 'react';
 import style from './Explore.module.scss';
 
 import NFTCard from 'components/base/NftCard';
+import NoNFTComponent from 'components/base/NoNFTComponent';
 
 import { NftType } from 'interfaces/index';
 
@@ -63,7 +64,13 @@ const Explore: React.FC<ExploreProps> = ({ NFTS, series }) => {
             </span>
           </div>
         </div>
-        <div className={style.NFTWrapper}>{returnNFTs()}</div>
+        {NFTS.length === 0 ?
+          <NoNFTComponent/>
+        :
+          <div className={style.NFTWrapper}>
+            {returnNFTs()}
+          </div>
+        }
         <div className={style.Hide}>Load more...</div>
       </div>
     </>

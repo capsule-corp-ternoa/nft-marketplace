@@ -2,7 +2,7 @@ import React from 'react';
 import style from './Explore.module.scss';
 
 import NFTCard from 'components/base/NftCard';
-import NoNFTImage from 'components/assets/NoNFTImage';
+import NoNFTComponent from 'components/base/NoNFTComponent';
 
 import { NftType } from 'interfaces/index';
 
@@ -18,23 +18,6 @@ const Explore: React.FC<ExploreProps> = ({ NFTS, series }) => {
         <NFTCard mode="grid" item={item} serieCount={series[item.serieId]} />
       </div>
     ));
-  }
-
-  function returnNoNFT() {
-    return (
-      <div className={style.SoldOutContainer}>
-        <NoNFTImage className={style.SoldOutImage}/>
-        <div className={style.SoldOutTitle}>
-          All NFTs are sold !
-        </div>
-        <div className={style.SoldOutLabel}>
-          Come later to discover new NFTs.
-        </div>
-        <div className={style.SoldOutLabel}>
-          Thanks !
-        </div>
-      </div>
-    )
   }
 
   return (
@@ -81,13 +64,13 @@ const Explore: React.FC<ExploreProps> = ({ NFTS, series }) => {
             </span>
           </div>
         </div>
-        <div className={style.NFTWrapper}>
-          {NFTS.length === 0 ?
-            returnNFTs()
-            :
-            returnNoNFT()
-          }
-        </div>
+        {NFTS.length === 0 ?
+          <NoNFTComponent/>
+        :
+          <div className={style.NFTWrapper}>
+            {returnNFTs()}
+          </div>
+        }
         <div className={style.Hide}>Load more...</div>
       </div>
     </>

@@ -5,6 +5,7 @@ import Hero from './Hero';
 import ArtCreators from './ArtCreators';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
+import NoNFTComponent from 'components/base/NoNFTComponent';
 import { UserType, NftType } from 'interfaces/index';
 import dynamic from 'next/dynamic';
 import { getUser } from 'actions/user';
@@ -23,6 +24,7 @@ export interface LandingProps {
   betaSeries: { [serieId: string]: number };
   NFTCreators: NftType[];
   series: { [serieId: string]: number };
+  totalCountNFT: number;
 }
 
 const Landing: React.FC<LandingProps> = ({
@@ -36,6 +38,7 @@ const Landing: React.FC<LandingProps> = ({
   betaSeries,
   NFTCreators,
   series,
+  totalCountNFT,
 }) => {
   const [walletUser, setWalletUser] = useState(user);
   useEffect(() => {
@@ -52,6 +55,7 @@ const Landing: React.FC<LandingProps> = ({
   return (
     <div className={style.Container}>
       <Hero users={users} />
+      {totalCountNFT === 0 && <NoNFTComponent/>}
       <Showcase category="Beta Testers" NFTs={betaNfts} series={betaSeries} />
       <Showcase category="Most popular" NFTs={popularNfts} series={series} />
       <Showcase category="Best sellers" NFTs={bestSellingNfts} series={series} />

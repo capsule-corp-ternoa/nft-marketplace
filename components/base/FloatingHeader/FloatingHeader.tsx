@@ -5,7 +5,7 @@ import style from './FloatingHeader.module.scss';
 import Creator from 'components/base/Creator';
 import CopyPaste from 'components/assets/copypaste';
 
-import { computeCaps, middleEllipsis } from 'utils/strings';
+import { computeCaps, computeTiime, middleEllipsis } from 'utils/strings';
 import gradient from 'random-gradient';
 
 import { UserType } from 'interfaces/index';
@@ -90,16 +90,30 @@ const FloatingHeader: React.FC<FloatingHeaderProps> = ({
                   : style.Caps
               }
             >
-              <span
-                className={
-                  fullProfile
-                    ? `${style.NumberCaps} ${style.ProfileSelect}`
-                    : style.NumberCaps
-                }
-              >
-                {user.capsAmount ? computeCaps(Number(user.capsAmount)) : 0}{' '}
+              <span>
+                <span
+                  className={
+                    fullProfile
+                      ? `${style.NumberCaps} ${style.ProfileSelect}`
+                      : style.NumberCaps
+                  }
+                >
+                  {user.capsAmount ? computeCaps(Number(user.capsAmount)) : 0}{' '}
+                </span>
+                CAPS
               </span>
-              CAPS
+              <span>
+                <span
+                  className={
+                    fullProfile
+                      ? `${style.NumberCaps} ${style.ProfileSelect}`
+                      : style.NumberCaps
+                  }
+                >
+                  {user.tiimeAmount ? computeTiime(Number(user.tiimeAmount)) : 0}{' '}
+                </span>
+                TIIME
+              </span>
             </div>
             <div className={style.ProfileImageContainer}>
               {user.picture ? (

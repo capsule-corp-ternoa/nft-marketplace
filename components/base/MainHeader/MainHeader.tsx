@@ -6,7 +6,7 @@ import Creator from '../Creator';
 import CopyPaste from 'components/assets/copypaste';
 
 import style from './MainHeader.module.scss';
-import { computeCaps, middleEllipsis } from 'utils/strings';
+import { computeCaps, computeTiime, middleEllipsis } from 'utils/strings';
 import gradient from 'random-gradient';
 
 import { UserType } from 'interfaces/index';
@@ -69,6 +69,15 @@ const MainHeader: React.FC<HeaderProps> = ({ setModalExpand, user }) => {
                     </span>
                     CAPS
                   </div>
+                  <div className={style.Caps}>
+                    <span className={style.NumberCaps}>
+                      {user && user.tiimeAmount
+                        ? computeTiime(Number(user.tiimeAmount))
+                        : 0}
+                    </span>
+                    TIIME
+                  </div>
+                  
                   <div className={style.ProfileImageContainer}>
                     {user.picture ? (
                       <img

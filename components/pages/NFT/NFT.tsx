@@ -10,7 +10,7 @@ import Scale from 'components/assets/scale';
 import Check from 'components/assets/check';
 import gradient from 'random-gradient';
 
-import { computeCaps } from 'utils/strings';
+import { computeCaps, computeTiime } from 'utils/strings';
 import { UserType, NftType } from 'interfaces';
 
 export interface NFTPageProps {
@@ -38,7 +38,9 @@ const NFTPage: React.FC<NFTPageProps> = ({
   const bgGradientCreator = { background: gradient(NFT.creatorData.name) };
 
   const fiatPrice = (Number(NFT.price) / 1000000000000000000) * capsValue;
-  const userCanBuy = user ? user.capsAmount && (Number(user.capsAmount) >= Number(NFT.price)) : true
+  const userCanBuyCaps = user ? user.capsAmount && NFT.price && NFT.price !== "" && (Number(user.capsAmount) >= Number(NFT.price)) : true
+  const userCanBuyTiime = user ? user.tiimeAmount && NFT.priceTiime && NFT.priceTiime !== "" && (Number(user.tiimeAmount) >= Number(NFT.priceTiime)) : true
+  const userCanBuy = userCanBuyCaps || userCanBuyTiime
 
   return (
     <div className={style.Container}>
@@ -105,7 +107,15 @@ const NFTPage: React.FC<NFTPageProps> = ({
             {NFT.listed === 1 && (
               <div className={style.BuyRight}>
                 <div className={style.Price}>
-                  {computeCaps(Number(NFT.price))} CAPS
+                  {NFT.price && Number(NFT.price)>0 &&
+                    `${computeCaps(Number(NFT.price))} CAPS`
+                  }
+                  {NFT.price && Number(NFT.price)>0 && NFT.priceTiime && Number(NFT.priceTiime) && 
+                    ` / `
+                  }
+                  {NFT.priceTiime && Number(NFT.priceTiime)>0 && 
+                    `${computeTiime(Number(NFT.priceTiime))} TIIME`
+                  }
                 </div>
                 {fiatPrice > 0 && (
                   <span className={style.FiatPrice}>

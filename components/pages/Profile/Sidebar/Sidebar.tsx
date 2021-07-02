@@ -6,7 +6,7 @@ import CopyPaste from 'components/assets/copypaste';
 import Edit from 'components/assets/edit';
 
 import PowerOff from 'components/assets/poweroff';
-import { computeCaps, middleEllipsis } from 'utils/strings';
+import { computeCaps, computeTiime, middleEllipsis } from 'utils/strings';
 import gradient from 'random-gradient';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
@@ -93,6 +93,9 @@ const Sidebar: React.FC<SidebarProps> = ({
         <div className={style.Caps}>
           <span className={style.CapsData}>
             {user.capsAmount ? computeCaps(Number(user.capsAmount)) : 0} CAPS
+          </span>
+          <span className={style.CapsData}>
+            {user.tiimeAmount ? computeTiime(Number(user.tiimeAmount)) : 0} TIIME
           </span>
           <div className={style.Burger} onClick={() => setExpand(true)}>
             <span className={style.Line} />

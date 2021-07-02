@@ -11,6 +11,7 @@ export type UserType = {
   picture?: string;
   twitter?: string;
   capsAmount?: string;
+  tiimeAmount?: string;
 };
 
 export type NftType = {
@@ -21,6 +22,7 @@ export type NftType = {
   timeStampList?: string;
   uri?: string;
   price: string;
+  priceTiime: string;
   name?: string;
   description?: string;
   media: { url: string };

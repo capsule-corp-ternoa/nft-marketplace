@@ -7,7 +7,7 @@ import Media from '../Media';
 
 import { NftType } from 'interfaces/index';
 
-import { computeCaps } from 'utils/strings';
+import { computeCaps, computeTiime } from 'utils/strings';
 
 export interface NftCardProps {
   item: NftType;
@@ -125,11 +125,17 @@ const NftCard: React.FC<NftCardProps> = ({
               isHovering ? `${style.Button} ${style.FadeLong}` : style.Button
             }
           >
-            {item.price && (
-              <div className={style.Price}>
-                {computeCaps(Number(item.price))} CAPS
-              </div>
-            )}
+            <div className={style.Price}>
+              {item.price && Number(item.price)>0 &&
+                `${computeCaps(Number(item.price))} CAPS`
+              }
+              {item.price && Number(item.price)>0 && item.priceTiime && Number(item.priceTiime) && 
+                ` / `
+              }
+              {item.priceTiime && Number(item.priceTiime)>0 && 
+                `${computeTiime(Number(item.priceTiime))} TIIME`
+              }
+            </div>
             <div className={style.ButtonText}>Buy</div>
           </div>
         </div>

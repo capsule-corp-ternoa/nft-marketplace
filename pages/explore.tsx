@@ -10,7 +10,7 @@ import FloatingHeader from 'components/base/FloatingHeader';
 import cookies from 'next-cookies';
 
 import { getUser } from 'actions/user';
-import { getNFTS } from 'actions/nft';
+import { getCategoryNFTs } from 'actions/nft';
 import { NftType, UserType } from 'interfaces';
 import { NextPageContext } from 'next';
 
@@ -67,7 +67,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
   } catch (error) {
     console.error(error);
   }
-  let [data, series] = await getNFTS().catch(() => [[], {}]);
+  let [data, series] = await getCategoryNFTs().catch(() => [[], {}]);
 
   return {
     props: { user, data, series },

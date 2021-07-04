@@ -1,6 +1,6 @@
 import { NftType } from 'interfaces/index';
 
-/*export const getNFTS = async () => {
+export const getNFTS = async () => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/NFTs`);
   let data: NftType[] = await res.json();
   data = data.filter((item) => item.creatorData && item.ownerData);
@@ -25,7 +25,7 @@ import { NftType } from 'interfaces/index';
   });
 
   return [displayNFTs, seriesCount];
-};*/
+};
 
 export const getProfileNFTS = async (
   id: string,

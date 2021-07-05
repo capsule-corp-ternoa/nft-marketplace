@@ -72,8 +72,8 @@ export function middleEllipsis(s: string, n: number = 10): string {
 }
 
 export function envStringToCondition(left: number){
-  if (process.env.NFT_FILTER_OPERATOR === undefined) return true
-  if (process.env.NFT_FILTER_RIGHT_OPERAND === undefined) return true
+  if (process.env.NFT_FILTER_OPERATOR === undefined || process.env.NFT_FILTER_OPERATOR === "" ) return true
+  if (process.env.NFT_FILTER_RIGHT_OPERAND === undefined || process.env.NFT_FILTER_RIGHT_OPERAND === "") return true
   if (left===null || left===undefined || isNaN(left)) return true
   let right = Number(process.env.NFT_FILTER_RIGHT_OPERAND)
   switch(process.env.NFT_FILTER_OPERATOR){

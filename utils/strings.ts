@@ -76,6 +76,7 @@ export function envStringToCondition(left: number){
   if (process.env.NFT_FILTER_RIGHT_OPERAND === undefined || process.env.NFT_FILTER_RIGHT_OPERAND === "") return true
   if (left===null || left===undefined || isNaN(left)) return true
   let right = Number(process.env.NFT_FILTER_RIGHT_OPERAND)
+  if (right===null || right===undefined || isNaN(right)) return true
   switch(process.env.NFT_FILTER_OPERATOR){
     case "==":
       return (left == right)

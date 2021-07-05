@@ -1,4 +1,5 @@
 import { NftType } from 'interfaces/index';
+import { envStringToCondition } from '../utils/strings'
 
 export const getNFTS = async () => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/NFTs`);
@@ -6,6 +7,7 @@ export const getNFTS = async () => {
   data = data.filter((item) => item.creatorData && item.ownerData);
   data = data.filter((item) => item.media);
   data = data.filter((item) => item.listed === 1);
+  data = data.filter((item) => envStringToCondition(Number(item.id)));
 
   const displayNFTs: NftType[] = [];
   const seriesCount: any = {};
@@ -40,6 +42,7 @@ export const getProfileNFTS = async (
   let data: NftType[] = await res.json();
   data = data.filter((item) => item.creatorData && item.ownerData);
   data = data.filter((item) => item.media);
+  data = data.filter((item) => envStringToCondition(Number(item.id)));
   if (filterListed) data = data.filter((item) => item.listed === 1);
 
   const displayNFTs: NftType[] = [];
@@ -73,6 +76,8 @@ export const getCreatorNFTS = async (id: string) => {
   let data: NftType[] = await res.json();
   data = data.filter((item) => item.creatorData && item.ownerData);
   data = data.filter((item) => item.media);
+  data = data.filter((item) => envStringToCondition(Number(item.id)));
+
 
   const displayNFTs: NftType[] = [];
   const seriesCount: any = {};
@@ -105,7 +110,7 @@ export const getCategoryNFTs = async (codes?: string | string[]) => {
 
   let data: NftType[] = await res.json();
   data = data.filter(
-    (item) => item.creatorData && item.ownerData && item.media && item.listed
+    (item) => item.creatorData && item.ownerData && item.media && item.listed && envStringToCondition(Number(item.id))
   );
 
   const displayNFTs: NftType[] = [];

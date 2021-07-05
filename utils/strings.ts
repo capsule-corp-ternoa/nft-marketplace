@@ -70,3 +70,32 @@ export function middleEllipsis(s: string, n: number = 10): string {
   const end = s.slice(-(n / 2 - 2));
   return start + '...' + end;
 }
+
+export function envStringToCondition(left: number){
+  if (process.env.NFT_FILTER_OPERATOR === undefined) return true
+  if (process.env.NFT_FILTER_RIGHT_OPERAND === undefined) return true
+  if (left===null || left===undefined || isNaN(left)) return true
+  let right = Number(process.env.NFT_FILTER_RIGHT_OPERAND)
+  switch(process.env.NFT_FILTER_OPERATOR){
+    case "==":
+      return (left == right)
+    case "===":
+      return (left === right)
+    case "!=":
+      return (left != right)
+    case "!==":
+      return (left !== right)
+    case ">":
+      return (left > right)
+    case ">=":
+      return (left >= right)
+    case "<":
+      return (left < right)
+    case "<=":
+      return (left <= right)
+    case undefined:
+      return true;
+    default:
+      return true;
+  }
+}

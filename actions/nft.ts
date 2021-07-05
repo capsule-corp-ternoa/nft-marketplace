@@ -105,7 +105,7 @@ export const getCategoryNFTs = async (codes?: string | string[]) => {
 
   let data: NftType[] = await res.json();
   data = data.filter(
-    (item) => item.creatorData && item.ownerData && item.media && item.listed //&& Number(item.id)>=300
+    (item) => item.creatorData && item.ownerData && item.media && item.listed
   );
 
   const displayNFTs: NftType[] = [];

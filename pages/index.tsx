@@ -10,7 +10,7 @@ import arrayShuffle from 'array-shuffle';
 import cookies from 'next-cookies';
 
 import { getUser, getUsers } from 'actions/user';
-import { getCategoryNFTs, getNFTS } from 'actions/nft';
+import { getCategoryNFTs } from 'actions/nft';
 import { NftType, UserType } from 'interfaces';
 import { NextPageContext } from 'next';
 
@@ -101,13 +101,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
   // category code for beta testers NFTs
   const BETA_CODE = '001';
 
-  let [regularNfts, regularSeries] = await getNFTS().catch(() => [[], {}]);
-
-  // filter out beta nfts from regular nfts
-  regularNfts = regularNfts.filter(
-    (nft: NftType) =>
-      !nft.categories || (nft.categories && !nft.categories.includes(BETA_CODE))
-  );
+  let [regularNfts, regularSeries] = await getCategoryNFTs().catch(() => [[], {}]);
 
   // get nfts with beta category from api
   let [betaNfts, betaSeries] = await getCategoryNFTs(BETA_CODE).catch(() => [

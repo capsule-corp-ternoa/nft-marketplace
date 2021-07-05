@@ -7,7 +7,7 @@ import CopyPaste from 'components/assets/copypaste';
 import WalletSVG from 'components/assets/wallet';
 import Badge from 'components/assets/badge';
 
-import { computeCaps, middleEllipsis } from 'utils/strings';
+import { computeCaps, computeTiime, middleEllipsis } from 'utils/strings';
 import { UserType } from 'interfaces';
 
 export interface WalletProps {
@@ -53,6 +53,9 @@ const Wallet: React.FC<WalletProps> = ({
         <div className={style.Separator} />
         <div className={style.Caps}>
           {user.capsAmount ? computeCaps(Number(user.capsAmount)) : 0} CAPS
+        </div>
+        <div className={style.Tiime}>
+          {user.tiimeAmount ? computeTiime(Number(user.tiimeAmount)) : 0} TIIME
         </div>
         <div className={style.Button} onClick={() => setNotAvailable(true)}>
           Buy CAPS

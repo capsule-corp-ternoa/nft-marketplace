@@ -32,5 +32,12 @@ export type NftType = {
   serieId: string;
   itemTotal: string;
   itemId: string;
-  categories: string[];
+  categories: CategoryType[];
 };
+
+export type CategoryType = {
+  _id: string;
+  code: string;
+  name: string;
+  description?: string;
+}

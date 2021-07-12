@@ -2,7 +2,7 @@
 import { Handler } from '@netlify/functions'
 import fetch from "node-fetch"
 
-export const timer = (ms: number) => new Promise(res => setTimeout(res, ms));
+const timer = (ms: number) => new Promise(res => setTimeout(res, ms));
 
 const handler: Handler = async (event) => {
   try {

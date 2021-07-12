@@ -3,6 +3,10 @@
   publish = "out"
   functions = "functions"
 
+[[headers]]
+  for = "/"
+    [headers.values]
+    Access-Control-Allow-Origin = ""
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"

@@ -3,6 +3,7 @@ import style from './NftCard.module.scss';
 import Creator from '../Creator';
 import Router from 'next/router';
 import { useMediaQuery } from 'react-responsive';
+import Image from '../Image';
 
 import { NftType } from 'interfaces/index';
 
@@ -60,7 +61,14 @@ const NftCard: React.FC<NftCardProps> = ({
     if (!type) return null;
     if (type!.substr(0, 5) === 'image') {
       return (
-        <img
+        // <img
+        //   src={item.media!.url}
+        //   alt="imgnft"
+        //   className={
+        //     isHovering ? `${style.NFTIMG} ${style.ImgScaling}` : style.NFTIMG
+        //   }
+        // />
+        <Image
           src={item.media!.url}
           alt="imgnft"
           className={

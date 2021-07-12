@@ -9,6 +9,7 @@
     "export": "next build && next export"
   },
   "dependencies": {
+    "@netlify/functions": "^0.7.2",
     "@polkadot/util-crypto": "^6.2.1",
     "array-shuffle": "^2.0.0",
     "asmcrypto-lite": "^1.1.0",

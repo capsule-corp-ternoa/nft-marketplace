@@ -8,7 +8,7 @@ export interface ImageProps {
 
 const loader = '/loader.svg'
 const timer = (ms:number) => new Promise(res => setTimeout(res, ms));
-const defaultFallback = "https://pbs.twimg.com/profile_images/1359141080852291588/iogH0Xik_400x400.jpg"
+const defaultFallback = ""
 const totalRetries = 5
 
 const Image: React.FC<ImageProps & Record<string,any>> = ({ 
@@ -50,10 +50,12 @@ const Image: React.FC<ImageProps & Record<string,any>> = ({
   }, [fetchStatusOk])
   return (
     <>
-      <img 
-        src={imgSrc}
-        {...rest}
-      />
+      {imgSrc!==fallbackSrc &&
+        <img 
+          src={imgSrc}
+          {...rest}
+        />
+      }
     </>
   )
 };

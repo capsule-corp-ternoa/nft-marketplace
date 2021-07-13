@@ -5,6 +5,8 @@ import style from './ModalShowcase.module.scss';
 import Close from 'components/assets/close';
 import Wallet from 'components/assets/wallet';
 
+import Image from 'components/base/Image';
+
 import { computeCaps, computeTiime } from 'utils/strings';
 import { NftType, UserType } from 'interfaces';
 
@@ -29,7 +31,7 @@ const Modal: React.FC<ModalProps> = ({
     if (!type) return null;
     if (type!.substr(0, 5) === 'image') {
       return (
-        <img
+        <Image
           className={style.NFTIMG}
           draggable="false"
           src={NFT.media.url}

@@ -1,12 +1,12 @@
 export const getUser = async (token: string) => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_NODE_API}/api/users/${token}`
+    `${process.env.NEXT_PUBLIC_NODE_API}/api/mp/users/${token}`
   );
 
   if (!res.ok) throw new Error();
   const userData = await res.json();
   const capsResponse = await fetch(
-    `${process.env.NEXT_PUBLIC_NODE_API}/api/users/${token}/caps`
+    `${process.env.NEXT_PUBLIC_NODE_API}/api/mp/users/${token}/caps`
   );
 
   let capsData = null;
@@ -19,7 +19,7 @@ export const getUser = async (token: string) => {
 
 export const getProfile = async (id: string) => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_NODE_API}/api/users/${id}`
+    `${process.env.NEXT_PUBLIC_NODE_API}/api/mp/users/${id}`
   );
 
   if (!res.ok) throw new Error();
@@ -29,7 +29,7 @@ export const getProfile = async (id: string) => {
 
 export const getAccountBalance = async (id: string) => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_NODE_API}/api/users/${id}/caps`
+    `${process.env.NEXT_PUBLIC_NODE_API}/api/mp/users/${id}/caps`
   );
 
   if (!res.ok) throw new Error();
@@ -39,7 +39,7 @@ export const getAccountBalance = async (id: string) => {
 };
 
 export const getUsers = async () => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/users`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/mp/users`);
 
   if (!res.ok) throw new Error();
 

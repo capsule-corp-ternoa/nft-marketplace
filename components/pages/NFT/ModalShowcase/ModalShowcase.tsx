@@ -5,6 +5,8 @@ import style from './ModalShowcase.module.scss';
 import Close from 'components/assets/close';
 import Wallet from 'components/assets/wallet';
 
+import Image from 'components/base/Image';
+
 import { computeCaps, computeTiime } from 'utils/strings';
 import { NftType, UserType } from 'interfaces';
 

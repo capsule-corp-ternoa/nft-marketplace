@@ -25,7 +25,7 @@ const Image: React.FC<ImageProps & Record<string,any>> = ({
     if (retries === totalRetries) setImgSrc(fallbackSrc)
     if (retries > 0){
         console.log(`Fetch retry triggered for url (${url}) - retries remaining:`, retries - 1)
-        timer(delay)
+        await timer(delay)
         return await fetchRetry(url, retries - 1)
     }else{
         return res

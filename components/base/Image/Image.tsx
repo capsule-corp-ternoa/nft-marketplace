@@ -18,7 +18,7 @@ const Image: React.FC<ImageProps & Record<string,any>> = ({
 }) => {
   const [imgSrc, setImgSrc] = useState(loader)
   const [fetchStatusOk, setFetchStatusOk] = useState<boolean | null>(null)
-  const fetchRetry = async (url:string, retries:number = totalRetries, delay:number = 0):Promise<Response> => {
+  const fetchRetry = async (url:string, retries:number = totalRetries, delay:number = 5000):Promise<Response> => {
     const res = await fetch(url)
     if (res && res.status === 200) return res
     // set image src to fallback on firt failed fetch

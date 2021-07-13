@@ -43,10 +43,10 @@ const Image: React.FC<ImageProps & Record<string,any>> = ({
     checkSrcAvailable()
   }, [])
   useEffect(()=>{
-    if (fetchStatusOk) setImgSrc(src)
-    // }else{
-    //   if (fetchStatusOk !== null && fetchStatusOk===false) setImgSrc(fallbackSrc)
-    // }
+    if (fetchStatusOk) 
+      setImgSrc(src)
+    // else if(fetchStatusOk !== null && fetchStatusOk===false)
+    //   setImgSrc(fallbackSrc)
   }, [fetchStatusOk])
   return (
     <>

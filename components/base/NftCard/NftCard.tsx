@@ -61,13 +61,6 @@ const NftCard: React.FC<NftCardProps> = ({
     if (!type) return null;
     if (type!.substr(0, 5) === 'image') {
       return (
-        // <img
-        //   src={item.media!.url}
-        //   alt="imgnft"
-        //   className={
-        //     isHovering ? `${style.NFTIMG} ${style.ImgScaling}` : style.NFTIMG
-        //   }
-        // />
         <Image
           src={item.media!.url}
           alt="imgnft"

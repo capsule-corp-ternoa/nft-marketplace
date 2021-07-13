@@ -3,6 +3,7 @@ import Link from 'next/link';
 import style from './NFT.module.scss';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
+import Image from 'components/base/Image';
 
 import Scale from 'components/assets/scale';
 
@@ -43,7 +44,7 @@ const NFTPage: React.FC<NFTPageProps> = ({
     if (!type) return null;
     if (type!.substr(0, 5) === 'image') {
       return (
-        <img
+        <Image
           className={style.NFTIMG}
           draggable="false"
           src={NFT.media.url}

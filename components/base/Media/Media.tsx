@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
-export interface ImageProps {
+export interface MediaProps {
   src: string;
+  type: string | null;
   fallbackSrc?: string;
   retries?: number;
 }
@@ -11,13 +12,15 @@ const timer = (ms:number) => new Promise(res => setTimeout(res, ms));
 const defaultFallback = ""
 const totalRetries = 5
 
-const Image: React.FC<ImageProps & Record<string,any>> = ({ 
+const Media: React.FC<MediaProps & Record<string,any>> = ({ 
   src, 
+  type,
   fallbackSrc=defaultFallback,
   ...rest 
 }) => {
   const [imgSrc, setImgSrc] = useState(loader)
   const [fetchStatusOk, setFetchStatusOk] = useState<boolean | null>(null)
+  const mediaType = type?.substr(0, 5)
   const fetchRetry = async (url:string, retries:number = totalRetries, delay:number = 5000):Promise<Response> => {
     const res = await fetch(url)
     if (res && res.status === 200) return res
@@ -50,14 +53,22 @@ const Image: React.FC<ImageProps & Record<string,any>> = ({
   }, [fetchStatusOk])
   return (
     <>
-      {imgSrc!==fallbackSrc &&
-        <img 
-          src={imgSrc}
-          {...rest}
-        />
+      {type !== null &&
+        imgSrc!==fallbackSrc && //to remove when we have fb image
+          (imgSrc === fallbackSrc || imgSrc === loader || mediaType === 'image') ?
+            <img 
+              src={imgSrc}
+              {...rest}
+            />
+          :
+            mediaType === 'video' &&
+              <video playsInline autoPlay muted loop {...rest}>
+                <source id="outputVideo" src={imgSrc} type="video/mp4" />
+              </video>
+        
       }
     </>
   )
 };
 
-export default Image;
+export default Media;

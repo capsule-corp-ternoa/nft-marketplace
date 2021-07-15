@@ -21,8 +21,8 @@ const Media: React.FC<MediaProps & Record<string,any>> = ({
   const [mediaSrc, setMediaSrc] = useState(loader)
   const [fetchStatusOk, setFetchStatusOk] = useState<boolean | null>(null)
   const mediaType = type?.substr(0, 5)
-  const fetchRetry = async (url:string, retries:number = totalRetries, delay:number = 5000):Promise<Response> => {
-    const res = await fetch(url)
+  const fetchRetry = async (url:string, retries:number = totalRetries, delay:number = 5000):Promise<Response | void> => {
+    const res = await fetch(url).catch(()=>{})
     if (res && res.status === 200) return res
     // set image src to fallback on firt failed fetch
     if (retries === totalRetries) setMediaSrc(fallbackSrc)
@@ -37,7 +37,7 @@ const Media: React.FC<MediaProps & Record<string,any>> = ({
   const checkSrcAvailable = async () => {
     try{
       const res = await fetchRetry(src)
-      setFetchStatusOk(res.status === 200)
+      setFetchStatusOk(res?.status === 200)
     }catch(err){
       console.log(err)
     }

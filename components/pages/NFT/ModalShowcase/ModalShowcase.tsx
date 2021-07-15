@@ -6,7 +6,7 @@ import Close from 'components/assets/close';
 import Wallet from 'components/assets/wallet';
 
 import { computeCaps } from 'utils/strings';
-import Image from 'components/base/Image';
+import Media from 'components/base/Media';
 
 import { NftType, UserType } from 'interfaces';
 
@@ -27,25 +27,6 @@ const Modal: React.FC<ModalProps> = ({
   NFT,
   user,
 }) => {
-  function returnType() {
-    if (!type) return null;
-    if (type!.substr(0, 5) === 'image') {
-      return (
-        <Image
-          className={style.NFTIMG}
-          draggable="false"
-          src={NFT.media.url}
-          alt="imgnft"
-        />
-      );
-    } else if (type!.substr(0, 5) === 'video')
-      return (
-        <video autoPlay muted loop playsInline className={style.NFTIMG}>
-          <source id="outputVideo" src={NFT.media.url} type="video/mp4" />
-        </video>
-      );
-  }
-
   return (
     <>
       {exp === 1 ? (
@@ -53,7 +34,15 @@ const Modal: React.FC<ModalProps> = ({
           <Close onClick={() => setExp(0)} className={style.Close} />
           <div className={style.ModalBG}>
             <ClickAwayListener onClickAway={() => setExp(0)}>
-              <div className={style.NFT}>{returnType()}</div>
+              <div className={style.NFT}>
+                <Media
+                  src={NFT.media.url}
+                  type={type}
+                  alt="imgnft"
+                  draggable="false"
+                  className={style.NFTIMG}
+                />
+              </div>
             </ClickAwayListener>
           </div>
         </div>

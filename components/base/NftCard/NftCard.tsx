@@ -3,7 +3,7 @@ import style from './NftCard.module.scss';
 import Creator from '../Creator';
 import Router from 'next/router';
 import { useMediaQuery } from 'react-responsive';
-import Image from '../Image';
+import Media from '../Media';
 
 import { NftType } from 'interfaces/index';
 
@@ -57,26 +57,6 @@ const NftCard: React.FC<NftCardProps> = ({
     }
   }
 
-  function returnType() {
-    if (!type) return null;
-    if (type!.substr(0, 5) === 'image') {
-      return (
-        <Image
-          src={item.media!.url}
-          alt="imgnft"
-          className={
-            isHovering ? `${style.NFTIMG} ${style.ImgScaling}` : style.NFTIMG
-          }
-        />
-      );
-    } else if (type!.substr(0, 5) === 'video')
-      return (
-        <video playsInline autoPlay muted loop className={style.NFTIMG}>
-          <source id="outputVideo" src={item.media!.url} type="video/mp4" />
-        </video>
-      );
-  }
-
   const isMobile = useMediaQuery({ query: '(max-device-width: 720px)' });
 
   return (
@@ -88,7 +68,15 @@ const NftCard: React.FC<NftCardProps> = ({
       onMouseOver={() => !isMobile && setIsHovering(true)}
       onMouseOut={() => !isMobile && setIsHovering(false)}
     >
-      {returnType()}
+      <Media
+        src={item.media!.url}
+        type={type}
+        alt="imgnft"
+        draggable="false"
+        className={
+          `${style.NFTIMG} ${(type?.substr(0, 5) === 'image' && isHovering) ? style.ImgScaling : ""}`
+        }
+      />
       {item.serieId !== '0' ? (
         <span className={style.QtyLabel}>{`${
           typeof serieCount !== 'undefined' ? serieCount : 1

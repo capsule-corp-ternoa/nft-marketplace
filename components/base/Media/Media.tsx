@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
-export interface ImageProps {
+export interface MediaProps {
   src: string;
+  type: string | null;
   fallbackSrc?: string;
   retries?: number;
 }
@@ -11,18 +12,20 @@ const timer = (ms:number) => new Promise(res => setTimeout(res, ms));
 const defaultFallback = ""
 const totalRetries = 5
 
-const Image: React.FC<ImageProps & Record<string,any>> = ({ 
+const Media: React.FC<MediaProps & Record<string,any>> = ({ 
   src, 
+  type,
   fallbackSrc=defaultFallback,
   ...rest 
 }) => {
-  const [imgSrc, setImgSrc] = useState(loader)
+  const [mediaSrc, setMediaSrc] = useState(loader)
   const [fetchStatusOk, setFetchStatusOk] = useState<boolean | null>(null)
+  const mediaType = type?.substr(0, 5)
   const fetchRetry = async (url:string, retries:number = totalRetries, delay:number = 5000):Promise<Response> => {
     const res = await fetch(url)
     if (res && res.status === 200) return res
     // set image src to fallback on firt failed fetch
-    if (retries === totalRetries) setImgSrc(fallbackSrc)
+    if (retries === totalRetries) setMediaSrc(fallbackSrc)
     if (retries > 0){
         console.log(`Fetch retry triggered for url (${url}) - retries remaining:`, retries - 1)
         await timer(delay)
@@ -44,20 +47,28 @@ const Image: React.FC<ImageProps & Record<string,any>> = ({
   }, [])
   useEffect(()=>{
     if (fetchStatusOk) 
-      setImgSrc(src)
+      setMediaSrc(src)
     // else if(fetchStatusOk !== null && fetchStatusOk===false)
-    //   setImgSrc(fallbackSrc)
+    //   setMediaSrc(fallbackSrc)
   }, [fetchStatusOk])
   return (
     <>
-      {imgSrc!==fallbackSrc &&
-        <img 
-          src={imgSrc}
-          {...rest}
-        />
+      {type !== null &&
+        mediaSrc!==fallbackSrc && //to remove when we have fb image
+          (mediaSrc === fallbackSrc || mediaSrc === loader || mediaType === 'image') ?
+            <img 
+              src={mediaSrc}
+              {...rest}
+            />
+          :
+            mediaType === 'video' &&
+              <video playsInline autoPlay muted loop {...rest}>
+                <source id="outputVideo" src={mediaSrc} type="video/mp4" />
+              </video>
+        
       }
     </>
   )
 };
 
-export default Image;
+export default Media;

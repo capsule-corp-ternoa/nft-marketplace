@@ -37,7 +37,7 @@ const Media: React.FC<MediaProps & Record<string,any>> = ({
   const checkSrcAvailable = async () => {
     try{
       const res = await fetchRetry(src)
-      setFetchStatusOk(res?.status === 200)
+      if (res) setFetchStatusOk((res as Response).status === 200)
     }catch(err){
       console.log(err)
     }

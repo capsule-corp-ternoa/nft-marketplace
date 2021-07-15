@@ -18,14 +18,14 @@ const Media: React.FC<MediaProps & Record<string,any>> = ({
   fallbackSrc=defaultFallback,
   ...rest 
 }) => {
-  const [imgSrc, setImgSrc] = useState(loader)
+  const [mediaSrc, setMediaSrc] = useState(loader)
   const [fetchStatusOk, setFetchStatusOk] = useState<boolean | null>(null)
   const mediaType = type?.substr(0, 5)
   const fetchRetry = async (url:string, retries:number = totalRetries, delay:number = 5000):Promise<Response> => {
     const res = await fetch(url)
     if (res && res.status === 200) return res
     // set image src to fallback on firt failed fetch
-    if (retries === totalRetries) setImgSrc(fallbackSrc)
+    if (retries === totalRetries) setMediaSrc(fallbackSrc)
     if (retries > 0){
         console.log(`Fetch retry triggered for url (${url}) - retries remaining:`, retries - 1)
         await timer(delay)
@@ -47,23 +47,23 @@ const Media: React.FC<MediaProps & Record<string,any>> = ({
   }, [])
   useEffect(()=>{
     if (fetchStatusOk) 
-      setImgSrc(src)
+      setMediaSrc(src)
     // else if(fetchStatusOk !== null && fetchStatusOk===false)
-    //   setImgSrc(fallbackSrc)
+    //   setMediaSrc(fallbackSrc)
   }, [fetchStatusOk])
   return (
     <>
       {type !== null &&
-        imgSrc!==fallbackSrc && //to remove when we have fb image
-          (imgSrc === fallbackSrc || imgSrc === loader || mediaType === 'image') ?
+        mediaSrc!==fallbackSrc && //to remove when we have fb image
+          (mediaSrc === fallbackSrc || mediaSrc === loader || mediaType === 'image') ?
             <img 
-              src={imgSrc}
+              src={mediaSrc}
               {...rest}
             />
           :
             mediaType === 'video' &&
               <video playsInline autoPlay muted loop {...rest}>
-                <source id="outputVideo" src={imgSrc} type="video/mp4" />
+                <source id="outputVideo" src={mediaSrc} type="video/mp4" />
               </video>
         
       }

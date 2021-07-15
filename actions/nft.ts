@@ -2,7 +2,7 @@ import { NftType } from 'interfaces/index';
 import { envStringToCondition } from '../utils/strings'
 
 export const getNFTS = async () => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/NFTs`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/mp/NFTs`);
   let data: NftType[] = await res.json();
   data = data.filter((item) => item.creatorData && item.ownerData);
   data = data.filter((item) => item.media);
@@ -34,7 +34,7 @@ export const getProfileNFTS = async (
   filterListed: boolean = true
 ) => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_NODE_API}/api/NFTs/owner/${id}`
+    `${process.env.NEXT_PUBLIC_NODE_API}/api/mp/NFTs/owner/${id}`
   );
 
   if (!res.ok) throw new Error('error fetching owned NFTs');
@@ -68,7 +68,7 @@ export const getProfileNFTS = async (
 
 export const getCreatorNFTS = async (id: string) => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_NODE_API}/api/NFTs/creator/${id}`
+    `${process.env.NEXT_PUBLIC_NODE_API}/api/mp/NFTs/creator/${id}`
   );
 
   if (!res.ok) throw new Error('error fetching created NFTs');
@@ -103,7 +103,7 @@ export const getCreatorNFTS = async (id: string) => {
 export const getCategoryNFTs = async (codes?: string | string[]) => {
   const queryString = !codes ? "" : (typeof codes==='string' ? `?codes=${codes}` : `?codes=${codes.join("&codes=")}`)
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_NODE_API}/api/NFTs/category/${queryString}`
+    `${process.env.NEXT_PUBLIC_NODE_API}/api/mp/NFTs/category/${queryString}`
   );
 
   if (!res.ok) throw new Error('error fetching NFTs');
@@ -134,7 +134,7 @@ export const getCategoryNFTs = async (codes?: string | string[]) => {
 };
 
 export const getNFT = async (id: string) => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/NFTs/${id}`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/mp/NFTs/${id}`);
 
   if (!res.ok) throw new Error();
 
@@ -145,7 +145,7 @@ export const getNFT = async (id: string) => {
 };
 
 export const getTotalOnSaleCountNFT = async (serieId: string) => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/NFTs/onSaleSeriesNFTsCount/${serieId}`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/mp/NFTs/onSaleSeriesNFTsCount/${serieId}`);
   if (!res.ok) throw new Error();
   let data: number = await res.json();
   if (typeof data !== "number") throw new Error();

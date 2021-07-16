@@ -13,12 +13,20 @@ export interface FloatingMenuProps {
   setScope: (s: string) => void;
   setExpand: (b: boolean) => void;
   scope: string;
+  ownedAmount: number;
+  createdAmount: number;
+  listedOwnedAmount: number;
+  unlistedOwnedAmount: number;
 }
 
 const FloatingMenu: React.FC<FloatingMenuProps> = ({
   scope,
   setScope,
   setExpand,
+  ownedAmount,
+  createdAmount,
+  listedOwnedAmount,
+  unlistedOwnedAmount,
 }) => {
   const router = useRouter();
 
@@ -58,7 +66,9 @@ const FloatingMenu: React.FC<FloatingMenuProps> = ({
           >
             My NFTs
           </div>
-          <div className={returnActiveNumber('My NFTs')}>12</div>
+          <div className={returnActiveNumber('My NFTs')}>
+            {ownedAmount}
+          </div>
         </div>
         <div className={style.Section}>
           <div
@@ -70,7 +80,37 @@ const FloatingMenu: React.FC<FloatingMenuProps> = ({
           >
             Created
           </div>
-          <div className={returnActiveNumber('My creations')}>4</div>
+          <div className={returnActiveNumber('My creations')}>
+            {createdAmount}
+          </div>
+        </div>
+        <div className={style.Section}>
+          <div
+            onClick={() => {
+              setScope('My listed NFTs')
+              setExpand(false)
+            }}
+            className={returnActiveTitle('My listed NFTs')}
+          >
+            Listed
+          </div>
+          <div className={returnActiveNumber('My listed NFTs')}>
+            {listedOwnedAmount}
+          </div>
+        </div>
+        <div className={style.Section}>
+          <div
+            onClick={() => {
+              setScope('My unlisted NFTs')
+              setExpand(false)
+            }}
+            className={returnActiveTitle('My unlisted NFTs')}
+          >
+            Unlisted
+          </div>
+          <div className={returnActiveNumber('My unlisted NFTs')}>
+            {unlistedOwnedAmount}
+          </div>
         </div>
         <div onClick={disconnect} className={style.Logoff}>
           <div className={style.SectionTitle}>Disconnect</div>

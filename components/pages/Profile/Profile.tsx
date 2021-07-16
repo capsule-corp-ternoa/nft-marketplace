@@ -40,6 +40,8 @@ const Profile: React.FC<ProfileProps> = ({
     user.banner ??
       'https://images.unsplash.com/photo-1579546929518-9e396f3cc809?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2250&q=80'
   );
+  const listedOwnedNFTS = ownedNFTS.filter(x=>x.listed===1)
+  const unlistedOwnedNFTS = ownedNFTS.filter(x=>x.listed===0)
   const [, setSearchValue] = useState('' as string);
 
   const updateKeywordSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,17 +54,33 @@ const Profile: React.FC<ProfileProps> = ({
 
   function returnNFTs() {
     let displayNFTs: NftType[] = [];
-    if (scope === 'My NFTs') displayNFTs = ownedNFTS;
-    else if (scope === 'My creations') displayNFTs = createdNFTS;
+    switch(scope){
+      case 'My NFTs':
+        displayNFTs = ownedNFTS;
+        break;
+      case 'My creations':
+        displayNFTs = createdNFTS;
+        break;
+      case 'My listed NFTs':
+        displayNFTs = listedOwnedNFTS;
+        break;
+      case 'My unlisted NFTs':
+        displayNFTs = unlistedOwnedNFTS;
+        break;
+      default:
+        displayNFTs = createdNFTS;
+        break;
+    }
+    console.log()
     return displayNFTs.map((item: NftType) => (
       <div key={item.id} className={style.NFTShell}>
         <NFTCard
           mode="grid"
           item={item}
           serieCount={
-            scope == 'My NFTs'
-              ? ownedSeries[item.serieId]
-              : createdSeries[item.serieId]
+            scope == 'My creations'
+              ? createdSeries[item.serieId]
+              : ownedSeries[item.serieId]
           }
         />
       </div>
@@ -174,13 +192,23 @@ const Profile: React.FC<ProfileProps> = ({
           setExpand={setExpand}
           ownedAmount={ownedNFTS.length}
           createdAmount={createdNFTS.length}
+          listedOwnedAmount={listedOwnedNFTS.length}
+          unlistedOwnedAmount={unlistedOwnedNFTS.length}
         />
         {returnCategory()}
       </div>
       <FloatingHeader user={user} setModalExpand={setModalExpand} />
       <Footer setNotAvailable={setNotAvailable} />
       {expand && (
-        <FloatingMenu setScope={setScope} scope={scope} setExpand={setExpand} />
+        <FloatingMenu 
+          setScope={setScope} 
+          scope={scope} 
+          setExpand={setExpand} 
+          ownedAmount={ownedNFTS.length}
+          createdAmount={createdNFTS.length}
+          listedOwnedAmount={listedOwnedNFTS.length}
+          unlistedOwnedAmount={unlistedOwnedNFTS.length}
+        />
       )}
     </div>
   );

@@ -82,7 +82,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
       user = await getUser(token);
       [created, createdSeries] = await getCreatorNFTS(token).catch(() => [[], {}]);
 
-      [owned, ownedSeries] = await getProfileNFTS(token, false).catch(() => [[], {}]);
+      [owned, ownedSeries] = await getProfileNFTS(token).catch(() => [[], {}]);
     }
   } catch (error) {
     console.error(error);

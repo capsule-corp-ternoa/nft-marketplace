@@ -20,6 +20,8 @@ export interface SidebarProps {
   user: UserType;
   ownedAmount: number;
   createdAmount: number;
+  listedOwnedAmount: number;
+  unlistedOwnedAmount: number;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({
@@ -29,6 +31,8 @@ const Sidebar: React.FC<SidebarProps> = ({
   setExpand,
   ownedAmount,
   createdAmount,
+  listedOwnedAmount,
+  unlistedOwnedAmount,
 }) => {
   const router = useRouter();
   const bgGradient = user ? { background: gradient(user.name) } : {};
@@ -123,6 +127,28 @@ const Sidebar: React.FC<SidebarProps> = ({
           </div>
           <div className={returnActiveNumber('My creations')}>
             {createdAmount}
+          </div>
+        </div>
+        <div className={style.Section}>
+          <div
+            onClick={() => setScope('My listed NFTs')}
+            className={returnActiveTitle('My listed NFTs')}
+          >
+            Listed
+          </div>
+          <div className={returnActiveNumber('My listed NFTs')}>
+            {listedOwnedAmount}
+          </div>
+        </div>
+        <div className={style.Section}>
+          <div
+            onClick={() => setScope('My unlisted NFTs')}
+            className={returnActiveTitle('My unlisted NFTs')}
+          >
+            Unlisted
+          </div>
+          <div className={returnActiveNumber('My unlisted NFTs')}>
+            {unlistedOwnedAmount}
           </div>
         </div>
         <div className={style.Disconnect} onClick={disconnect}>

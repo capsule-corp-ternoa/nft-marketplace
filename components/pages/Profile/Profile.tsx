@@ -71,7 +71,6 @@ const Profile: React.FC<ProfileProps> = ({
         displayNFTs = createdNFTS;
         break;
     }
-    console.log()
     return displayNFTs.map((item: NftType) => (
       <div key={item.id} className={style.NFTShell}>
         <NFTCard

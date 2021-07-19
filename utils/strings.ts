@@ -6,6 +6,21 @@ function toFixed(num: Number, fixed: number) {
   return (<any>num).toString().match(re)[0];
 }
 
+export function validateEmail(mail: string){
+  const mailRegEx = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/
+  return mail.match(mailRegEx)
+}
+
+export function validateTwitter(twitterName: string){
+  const twitterNameRegEx = /^@[a-zA-Z0-9_]/
+  return twitterName.match(twitterNameRegEx)
+}
+
+export function validateUrl(url: string){
+  const urlRegEx = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/
+  return url.match(urlRegEx)
+}
+
 export function computeCaps(n: number, decimals: number = 4) {
   if (typeof n !== 'number') {
     return (<any>n).toString();

@@ -47,3 +47,17 @@ export const getUsers = async () => {
 
   return data.docs;
 };
+
+export const patchUser = async (user: any) => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/mp/users/patch`,{
+    body: JSON.stringify(user),
+    headers: {
+    'Content-Type' : 'application/json'
+    },
+    method: 'PATCH'
+  });
+
+  if (!res.ok) throw new Error();
+  const userData = await res.json();
+  return userData;
+};

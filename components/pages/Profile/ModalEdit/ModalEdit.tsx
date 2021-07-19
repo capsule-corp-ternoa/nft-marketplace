@@ -24,9 +24,7 @@ const ModalEdit: React.FC<ModalEditProps> = ({ setModalExpand, data }) => {
   useEffect(() => {
     setIsRN(window.isRNApp);
     console.log('socket connect on session',session);
-
-    const socket = connectIo(`/socket/buyNft`, { session });
-
+    const socket = connectIo(`/socket/updateProfile`, { session });
     socket.on('connect_error', (e) => {
       console.error('connection error socket', e);
       setModalExpand(false);

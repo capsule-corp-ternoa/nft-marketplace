@@ -15,7 +15,6 @@ const Edit: React.FC<EditProps> = ({ user, setBanner }) => {
   const bgGradient = user ? { background: gradient(user.name) } : {};
   const [data, setData] = useState({
     walletId: user.walletId,
-    _id: user._id,
     name: user.name,
     customUrl: user.customUrl,
     bio: user.bio,

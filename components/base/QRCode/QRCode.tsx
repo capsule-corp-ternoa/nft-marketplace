@@ -21,7 +21,7 @@ const Code: React.FC<CodeProps> = ({ data, action }) => {
       value={JSON.stringify({ action, data })}
       includeMargin={false}
       renderAs={'svg'}
-      size={(data && data.links && data.links.length > 5) ? 400 : 200}
+      size={(data && data.links && data.links.length > 5) || action==="UPDATE_PROFILE" ? 400 : 200}
       className={style.QRCode}
     />
   );

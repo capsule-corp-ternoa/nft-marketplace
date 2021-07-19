@@ -3,6 +3,7 @@ import style from './Edit.module.scss';
 import Badge from 'components/assets/badge';
 import gradient from 'random-gradient';
 import { UserType } from 'interfaces';
+import { patchUser } from 'actions/user';
 
 export interface EditProps {
   user: UserType;
@@ -17,6 +18,21 @@ const Edit: React.FC<EditProps> = ({ user, setNotAvailable, setBanner }) => {
   function manageSetBanner(x: string) {
     setBanner(x);
     setData({ ...data, banner: x });
+  }
+
+  async function reviewCertification(){
+    var userData = JSON.parse(JSON.stringify(user))
+    console.log("here", userData)
+    var body = {
+      "reviewCertification": true,
+        "_id": userData._id
+    }
+    try {
+      let res = await patchUser(body);
+      console.log("get user", res)
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (
@@ -119,7 +135,7 @@ const Edit: React.FC<EditProps> = ({ user, setNotAvailable, setBanner }) => {
             </div>
           </label>
 
-          <div className={style.Certification}>
+          <div className={style.Certification} onClick={() => reviewCertification()}>
             <Badge className={style.Badge} />
             Want to be certified ? Make a request
           </div>

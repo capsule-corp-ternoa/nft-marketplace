@@ -2,14 +2,16 @@ export type UserType = {
   _id: string;
   name: string;
   banner?: string;
-  description?: string;
+  bio?: string;
   verified: boolean;
   nbFollowers: number;
   nbFollowing: number;
   views: number;
   walletId: string;
   picture?: string;
-  twitter?: string;
+  twitterName?: string;
+  customUrl?: string;
+  personalUrl?: string;
   capsAmount?: string;
   tiimeAmount?: string;
 };

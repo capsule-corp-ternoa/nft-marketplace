@@ -39,13 +39,13 @@ const Infos: React.FC<InfosProps> = ({ user }) => {
         <div className={style.ContainerInner}>
           <div className={style.Left}>
             <h1 className={style.Name}>{user.name}</h1>
-            {user.twitter && (
+            {user.twitterName && (
               <a href="https://twitter.com/ternoa_" className={style.Twitter}>
                 <Twitter onClick={() => true} className={style.TwitterSVG} />@
-                {user.twitter}
+                {user.twitterName}
               </a>
             )}
-            <div className={style.Description}>{user.description}</div>
+            <div className={style.Description}>{user.bio}</div>
           </div>
           <div className={style.Right}>
             <div className={style.Top}>

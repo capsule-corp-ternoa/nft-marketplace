@@ -31,7 +31,6 @@ export const getNFTS = async () => {
 
 export const getProfileNFTS = async (
   id: string,
-  filterListed: boolean = true
 ) => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_NODE_API}/api/mp/NFTs/owner/${id}`
@@ -43,7 +42,6 @@ export const getProfileNFTS = async (
   data = data.filter((item) => item.creatorData && item.ownerData);
   data = data.filter((item) => item.media);
   data = data.filter((item) => envStringToCondition(Number(item.id)));
-  if (filterListed) data = data.filter((item) => item.listed === 1);
 
   const displayNFTs: NftType[] = [];
   const seriesCount: any = {};

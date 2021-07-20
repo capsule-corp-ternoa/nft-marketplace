@@ -34,7 +34,7 @@ const ModalEdit: React.FC<ModalEditProps> = ({ setModalExpand, data }) => {
       if (window.isRNApp) {
         setLoading(true)
         setTimeout(function () {
-          window.ReactNativeWebView.postMessage(JSON.stringify({ action: 'UPDATE_PROFILE', data }));
+          window.ReactNativeWebView.postMessage(JSON.stringify({ action: 'UPDATE_PROFILE', data: {...data, session} }));
         }, 2000);
       } else {
         setShowQR(true);
@@ -87,7 +87,7 @@ const ModalEdit: React.FC<ModalEditProps> = ({ setModalExpand, data }) => {
           </div>
           <div className={style.QR}>
             {showQR &&
-              <QRCode data={data} action={'UPDATE_PROFILE'} />
+              <QRCode data={{...data, session}} action={'UPDATE_PROFILE'} />
             }
             {loading && (
               <div className={style.Loading}>

@@ -13,7 +13,16 @@ export interface EditProps {
 
 const Edit: React.FC<EditProps> = ({ user, setBanner }) => {
   const bgGradient = user ? { background: gradient(user.name) } : {};
-  const [data, setData] = useState(user);
+  const [data, setData] = useState({
+    walletId: user.walletId,
+    name: user.name,
+    customUrl: user.customUrl,
+    bio: user.bio,
+    personalUrl: user.personalUrl,
+    twitterName: user.twitterName,
+    picture: user.picture,
+    banner: user.banner
+  });
   const [modalEditOpen, setModalEditOpen] = useState(false)
   const isDataValid = (
     data && 

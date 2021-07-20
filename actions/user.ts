@@ -48,14 +48,9 @@ export const getUsers = async () => {
   return data.docs;
 };
 
-export const patchUser = async (user: any) => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/mp/users/patch`,{
-    body: JSON.stringify(user),
-    headers: {
-    'Content-Type' : 'application/json'
-    },
+export const reviewRequested = async (walletId: any) => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/mp/users/reviewRequested/${walletId}`,{
     method: 'PATCH'
-    
   });
 
   if (!res.ok) throw new Error();

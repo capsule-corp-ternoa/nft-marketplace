@@ -9,34 +9,34 @@ export interface EditProps {
   user: UserType;
   setNotAvailable: (b: boolean) => void;
   setBanner: (s: string) => void;
+  setSuccessPopup: (b: boolean) => void;
 }
 
-const Edit: React.FC<EditProps> = ({ user, setNotAvailable, setBanner }) => {
+const Edit: React.FC<EditProps> = ({ user, setNotAvailable, setSuccessPopup, setBanner }) => {
   const bgGradient = user ? { background: gradient(user.name) } : {};
   const [data, setData] = useState(user);
-
   function manageSetBanner(x: string) {
     setBanner(x);
     setData({ ...data, banner: x });
   }
 
-  async function reviewCertification(){
+  async function reviewRequested(){
     var userData = JSON.parse(JSON.stringify(user))
-    console.log("here", userData)
     var body = {
-      "reviewCertification": true,
+      "reviewRequested": true,
         "_id": userData._id
     }
     try {
       let res = await patchUser(body);
-      console.log("get user", res)
+      if(res) setSuccessPopup(true)
     } catch (error) {
       console.error(error);
     }
   }
 
   return (
-    <div className={style.EditContainer}>
+    <>
+      <div className={style.EditContainer}>
       <label htmlFor="uploadBanner" className={style.EditButton}>
         Edit banner
         <div className={style.HiddenShell}>
@@ -135,13 +135,14 @@ const Edit: React.FC<EditProps> = ({ user, setNotAvailable, setBanner }) => {
             </div>
           </label>
 
-          <div className={style.Certification} onClick={() => reviewCertification()}>
-            <Badge className={style.Badge} />
+          <div className={style.Certification} onClick={() => reviewRequested()}>
+            <Badge className={style.Badge}  />
             Want to be certified ? Make a request
           </div>
         </div>
       </div>
     </div>
+    </>
   );
 };
 

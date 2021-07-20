@@ -6,6 +6,7 @@ import TernoaWallet from 'components/base/TernoaWallet';
 import Profile from 'components/pages/Profile';
 import Creators from 'utils/mocks/mockCreators';
 import NotAvailableModal from 'components/base/NotAvailable';
+import SuccessPopup from 'components/base/SuccessPopup';
 import cookies from 'next-cookies';
 
 import { getUser } from 'actions/user';
@@ -30,6 +31,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
 }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
+  const [successPopup, setSuccessPopup] = useState(false);
   const [walletUser, setWalletUser] = useState(user);
 
   useEffect(() => {
@@ -54,6 +56,8 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
       </Head>
       {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
       {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
+      {successPopup && <SuccessPopup setSuccessPopup={setSuccessPopup} />}
+
       <AlphaBanner />
       <MainHeader user={walletUser} setModalExpand={setModalExpand} />
       <Profile
@@ -63,6 +67,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
         creators={Creators}
         setModalExpand={setModalExpand}
         setNotAvailable={setNotAvailable}
+        setSuccessPopup={setSuccessPopup}
         ownedSeries={ownedSeries}
         createdSeries={createdSeries}
       />

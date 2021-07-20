@@ -55,6 +55,7 @@ export const patchUser = async (user: any) => {
     'Content-Type' : 'application/json'
     },
     method: 'PATCH'
+    
   });
 
   if (!res.ok) throw new Error();

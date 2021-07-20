@@ -5,6 +5,7 @@ import gradient from 'random-gradient';
 import { UserType } from 'interfaces';
 import { validateTwitter, validateUrl } from 'utils/strings';
 import ModalEdit from '../ModalEdit/ModalEdit';
+import { reviewRequested } from 'actions/user';
 
 export interface EditProps {
   user: UserType;
@@ -22,7 +23,9 @@ const Edit: React.FC<EditProps> = ({ user, setBanner }) => {
     personalUrl: user.personalUrl,
     twitterName: user.twitterName,
     picture: user.picture,
-    banner: user.banner
+    banner: user.banner,
+    reviewRequested: user.reviewRequested,
+    verified: user.verified
   });
   const [modalEditOpen, setModalEditOpen] = useState(false)
   const isDataValid = (
@@ -69,6 +72,18 @@ const Edit: React.FC<EditProps> = ({ user, setBanner }) => {
       }
     }catch(err){
       console.log(err)
+    }
+  }
+
+  async function reviewRequest() {
+    try {
+      let res = await reviewRequested(user.walletId);
+      if (res) {
+        setSuccessPopup(true)
+        setData({...data, reviewRequested: res.reviewRequested})
+      }
+    } catch (error) {
+      console.error(error);
     }
   }
   return (
@@ -177,10 +192,23 @@ const Edit: React.FC<EditProps> = ({ user, setBanner }) => {
               </div>
             </label>
 
+            {data.verified ? (
             <div className={style.Certification}>
               <Badge className={style.Badge} />
-              Want to be certified ? Make a request
+              Verified
             </div>
+            ): data.reviewRequested && !data.verified ? (
+              <div className={style.Certification}>
+              <Badge className={style.Badge} />
+              Pending review
+              </div>
+            ):(
+              <div className={style.Certification} onClick={() => reviewRequest()}>
+              <Badge className={style.Badge} />
+              Want to be certified ? Make a request
+              </div>
+            )}
+
           </div>
         </div>
       </div>

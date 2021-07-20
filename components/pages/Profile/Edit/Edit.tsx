@@ -5,13 +5,15 @@ import gradient from 'random-gradient';
 import { UserType } from 'interfaces';
 import { validateTwitter, validateUrl } from 'utils/strings';
 import ModalEdit from '../ModalEdit/ModalEdit';
+import { patchUser } from 'actions/user';
 
 export interface EditProps {
   user: UserType;
   setBanner: (s: string) => void;
+  setSuccessPopup: (b: boolean) => void;
 }
 
-const Edit: React.FC<EditProps> = ({ user, setBanner }) => {
+const Edit: React.FC<EditProps> = ({ user, setBanner, setSuccessPopup }) => {
   const bgGradient = user ? { background: gradient(user.name) } : {};
   const [data, setData] = useState({
     walletId: user.walletId,
@@ -25,15 +27,15 @@ const Edit: React.FC<EditProps> = ({ user, setBanner }) => {
   });
   const [modalEditOpen, setModalEditOpen] = useState(false)
   const isDataValid = (
-    data && 
+    data &&
     data.name &&
-    data.name.length>0 &&
-    (!data.customUrl || data.customUrl==="" || validateUrl(data.customUrl)) &&
-    (!data.personalUrl || data.personalUrl==="" || validateUrl(data.personalUrl)) &&
-    (!data.twitterName || data.twitterName==="" || validateTwitter(data.twitterName))
+    data.name.length > 0 &&
+    (!data.customUrl || data.customUrl === "" || validateUrl(data.customUrl)) &&
+    (!data.personalUrl || data.personalUrl === "" || validateUrl(data.personalUrl)) &&
+    (!data.twitterName || data.twitterName === "" || validateTwitter(data.twitterName))
   )
   const handleChange = (value: any, field: string) => {
-    setData({...data, [field]: value})
+    setData({ ...data, [field]: value })
   }
   const manageSetBanner = (x: string) => {
     setBanner(x);
@@ -51,23 +53,37 @@ const Edit: React.FC<EditProps> = ({ user, setBanner }) => {
     let { url } = await resUpload.json();
     if (url) {
       return url
-    }else{
+    } else {
       throw new Error("Error while saving media")
     }
   }
   const handleUpdate = async () => {
-    try{
-      if (isDataValid){
+    try {
+      if (isDataValid) {
         //save picture and banner to pinata before sending api if exist and different
-        let updateData = {...data}
-        if (data.banner?.substr(0, 4)==="blob") updateData.banner = await fileToUrl(data.banner, 'banner')
-        if (data.picture?.substr(0, 4)==="blob") updateData.picture = await fileToUrl(data.picture, 'picture')
+        let updateData = { ...data }
+        if (data.banner?.substr(0, 4) === "blob") updateData.banner = await fileToUrl(data.banner, 'banner')
+        if (data.picture?.substr(0, 4) === "blob") updateData.picture = await fileToUrl(data.picture, 'picture')
         setData(updateData)
         //show update modal
         setModalEditOpen(true)
       }
-    }catch(err){
+    } catch (err) {
       console.log(err)
+    }
+  }
+
+  async function reviewRequested() {
+    var userData = JSON.parse(JSON.stringify(user))
+    var body = {
+      "reviewRequested": true,
+      "_id": userData._id
+    }
+    try {
+      let res = await patchUser(body);
+      if (res) setSuccessPopup(true)
+    } catch (error) {
+      console.error(error);
     }
   }
   return (
@@ -95,7 +111,7 @@ const Edit: React.FC<EditProps> = ({ user, setBanner }) => {
             <input
               placeholder="Enter your display name"
               type="text"
-              className={`${style.Input} ${data.name==="" ? style.InputError : ""}`}
+              className={`${style.Input} ${data.name === "" ? style.InputError : ""}`}
               value={data.name || ''}
               onChange={(e) => handleChange(e.target.value, "name")}
             />
@@ -133,9 +149,9 @@ const Edit: React.FC<EditProps> = ({ user, setBanner }) => {
               Verify your Twitter account in order to get the verification badge
             </div>
             <h4 className={style.Subtitle}>Personal website or portfolio</h4>
-            <input 
-              placeholder="https://" 
-              type="text" 
+            <input
+              placeholder="https://"
+              type="text"
               className={`${style.Input} ${data.personalUrl && !validateUrl(data.personalUrl) ? style.InputError : ""}`}
               value={data.personalUrl || ''}
               onChange={(e) => handleChange(e.target.value, "personalUrl")}
@@ -176,16 +192,16 @@ const Edit: React.FC<EditProps> = ({ user, setBanner }) => {
               </div>
             </label>
 
-            <div className={style.Certification}>
+            <div className={style.Certification} onClick={() => reviewRequested()}>
               <Badge className={style.Badge} />
               Want to be certified ? Make a request
             </div>
           </div>
         </div>
       </div>
-      {modalEditOpen && 
-        <ModalEdit 
-          setModalExpand={setModalEditOpen} 
+      {modalEditOpen &&
+        <ModalEdit
+          setModalExpand={setModalEditOpen}
           data={data}
         />
       }

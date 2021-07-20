@@ -9,6 +9,7 @@ import ModalEdit from '../ModalEdit/ModalEdit';
 export interface EditProps {
   user: UserType;
   setBanner: (s: string) => void;
+  setSuccessPopup: (b: boolean) => void;
 }
 
 const Edit: React.FC<EditProps> = ({ user, setBanner }) => {

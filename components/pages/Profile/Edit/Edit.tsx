@@ -120,7 +120,7 @@ const Edit: React.FC<EditProps> = ({ user, setBanner }) => {
               <h4 className={style.Subtitle}>Twitter username</h4>
               {data.twitterName && data.twitterName.length>2 &&
                 <div className={style.ClaimTwitter}>
-                  {!data.twitterVerified ?
+                  {!user.twitterVerified ?
                     <a href={`${process.env.NEXT_PUBLIC_NODE_API}/api/mp/users/verifyTwitter/${data.walletId}`}>
                       Verify your account ({data.twitterName})
                     </a>

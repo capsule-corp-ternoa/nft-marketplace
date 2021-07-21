@@ -10,6 +10,7 @@ export type UserType = {
   walletId: string;
   picture?: string;
   twitterName?: string;
+  twitterVerified?: boolean;
   customUrl?: string;
   personalUrl?: string;
   capsAmount?: string;

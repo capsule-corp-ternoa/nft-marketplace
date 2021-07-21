@@ -109,9 +109,20 @@ const Edit: React.FC<EditProps> = ({ user, setBanner }) => {
 
             <div className={style.TopInput}>
               <h4 className={style.Subtitle}>Twitter username</h4>
-              <div className={style.ClaimTwitter}>
-                Verify your twitter account
-              </div>
+              {data.twitterName && data.twitterName.length>2 &&
+                <div className={style.ClaimTwitter}>
+                  {!data.twitterVerified ?
+                    <a href={`${process.env.NEXT_PUBLIC_NODE_API}/api/mp/users/verifyTwitter/${data.walletId}`}>
+                      Verify your account ({data.twitterName})
+                    </a>
+                  :
+                    <div className={style.TwitterVerified}>
+                      <span>{"Verified"}</span>
+                      <Badge className={style.BadgeTwitter} />
+                    </div>
+                  }
+                </div>
+              }
             </div>
             <input
               placeholder="@username"

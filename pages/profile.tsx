@@ -57,7 +57,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
       <AlphaBanner />
       <MainHeader user={walletUser} setModalExpand={setModalExpand} />
       <Profile
-        user={user}
+        user={walletUser}
         createdNFTS={created}
         ownedNFTS={owned}
         creators={Creators}

@@ -41,7 +41,7 @@ const Infos: React.FC<InfosProps> = ({ user }) => {
             <h1 className={style.Name}>{user.name}</h1>
             {user.twitterName && (
               <a href="https://twitter.com/ternoa_" className={style.Twitter}>
-                <Twitter onClick={() => true} className={style.TwitterSVG} />@
+                <Twitter onClick={() => true} className={style.TwitterSVG} />
                 {user.twitterName}
               </a>
             )}

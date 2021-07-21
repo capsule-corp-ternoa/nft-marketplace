@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router'
 import Link from 'next/link';
 import style from './Profile.module.scss';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
 import NFTCard from 'components/base/NftCard';
 import Creator from 'components/base/Creator';
-
+import TwitterErrorModal from './TwitterErrorModal';
 import Sidebar from './Sidebar';
 import FloatingMenu from './FloatingMenu';
 import Edit from './Edit';
@@ -33,9 +34,11 @@ const Profile: React.FC<ProfileProps> = ({
   ownedSeries,
   createdSeries,
 }) => {
+  const router = useRouter()
   const [isFiltered, setIsFiltered] = useState(false);
-  const [scope, setScope] = useState('My NFTs');
+  const [scope, setScope] = useState(router.query?.scope === 'edit' ? 'edit' : 'My NFTs');
   const [expand, setExpand] = useState(false);
+  const [twitterErrorModal, setTwitterErrorModal] = useState(false)
   const [banner, setBanner] = useState(
     user.banner ??
       'https://images.unsplash.com/photo-1579546929518-9e396f3cc809?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2250&q=80'
@@ -47,6 +50,13 @@ const Profile: React.FC<ProfileProps> = ({
   const updateKeywordSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.currentTarget.value);
   };
+
+  useEffect(() => {
+    if (router.query?.twitterValidated === "false"){
+      setTwitterErrorModal(true)
+      router.query = {}
+    }
+  }, [router.query]);
 
   function returnTitle() {
     return scope;
@@ -208,6 +218,11 @@ const Profile: React.FC<ProfileProps> = ({
           unlistedOwnedAmount={unlistedOwnedNFTS.length}
         />
       )}
+      {twitterErrorModal && 
+        <TwitterErrorModal
+          setModalExpand={setTwitterErrorModal}
+        />
+      }
     </div>
   );
 };

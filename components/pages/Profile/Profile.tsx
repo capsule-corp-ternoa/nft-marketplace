@@ -16,6 +16,7 @@ import { NftType, UserType } from 'interfaces';
 export interface ProfileProps {
   setModalExpand: (b: boolean) => void;
   setNotAvailable: (b: boolean) => void;
+  setSuccessPopup: (b: boolean) => void;
   user: UserType;
   creators: UserType[];
   ownedNFTS: NftType[];
@@ -31,6 +32,7 @@ const Profile: React.FC<ProfileProps> = ({
   creators,
   setModalExpand,
   setNotAvailable,
+  setSuccessPopup,
   ownedSeries,
   createdSeries,
 }) => {
@@ -138,6 +140,7 @@ const Profile: React.FC<ProfileProps> = ({
         <Edit
           user={user}
           setBanner={setBanner}
+          setSuccessPopup={setSuccessPopup}
         />
       );
     } else {

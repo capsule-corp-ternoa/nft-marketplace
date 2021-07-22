@@ -14,6 +14,7 @@ export type UserType = {
   personalUrl?: string;
   capsAmount?: string;
   tiimeAmount?: string;
+  reviewRequested?:boolean
 };
 
 export type NftType = {

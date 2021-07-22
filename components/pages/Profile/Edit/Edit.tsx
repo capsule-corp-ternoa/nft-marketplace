@@ -198,7 +198,7 @@ const Edit: React.FC<EditProps> = ({ user, setBanner }) => {
                 Certified
               </div>
             : 
-              data.reviewRequested && !data.verified ?
+              data.reviewRequested ?
                 <div className={style.Certification}>
                   <Badge className={style.Badge} />
                   Certification review pending 

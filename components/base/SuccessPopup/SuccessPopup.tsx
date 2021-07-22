@@ -13,7 +13,7 @@ const SuccessPopup: React.FC<SuccessPopupProps> = ({ setSuccessPopup }) => (
       <Close onClick={() => setSuccessPopup(false)} className={style.Close} />
       <div className={style.Title}>Review requested</div>
       <div className={style.Text}>
-        Your profie is under review. After review it will be certified.
+        Your profile is under review. After review it will be certified.
       </div>
       <div onClick={() => setSuccessPopup(false)} className={style.Button}>
         Continue

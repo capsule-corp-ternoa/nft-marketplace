@@ -192,23 +192,23 @@ const Edit: React.FC<EditProps> = ({ user, setBanner }) => {
               </div>
             </label>
 
-            {data.verified ? (
-            <div className={style.Certification}>
-              <Badge className={style.Badge} />
-              Verified
-            </div>
-            ): data.reviewRequested && !data.verified ? (
+            {data.verified ?
               <div className={style.Certification}>
-              <Badge className={style.Badge} />
-              Pending review
+                <Badge className={style.Badge} />
+                Certified
               </div>
-            ):(
-              <div className={style.Certification} onClick={() => reviewRequest()}>
-              <Badge className={style.Badge} />
-              Want to be certified ? Make a request
-              </div>
-            )}
-
+            : 
+              data.reviewRequested && !data.verified ?
+                <div className={style.Certification}>
+                  <Badge className={style.Badge} />
+                  Certification review pending 
+                </div>
+              :
+                <div className={style.Certification} onClick={() => reviewRequest()}>
+                  <Badge className={style.Badge} />
+                  Want to be certified ? Make a request
+                </div>
+            }
           </div>
         </div>
       </div>

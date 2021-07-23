@@ -74,11 +74,6 @@ const Profile: React.FC<ProfileProps> = ({
         <NFTCard
           mode="grid"
           item={item}
-          /*serieCount={
-            scope == 'My creations'
-              ? createdSeries[item.serieId]
-              : ownedSeries[item.serieId]
-          }*/
         />
       </div>
     ));

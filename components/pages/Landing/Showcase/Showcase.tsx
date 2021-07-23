@@ -45,11 +45,10 @@ const responsive = {
 
 export interface ShowcaseProps {
   NFTs: NftType[];
-  series: { [serieId: string]: number };
   category: string;
 }
 
-const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category, series }) => {
+const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category }) => {
   const [isFiltered, setIsFiltered] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
 
@@ -68,7 +67,6 @@ const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category, series }) => {
           mode={key}
           isDragging={isDragging}
           item={item}
-          serieCount={series[item.serieId]}
         />
       </div>
     ));

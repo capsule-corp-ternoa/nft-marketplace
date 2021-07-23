@@ -11,7 +11,6 @@ import { computeCaps, computeTiime } from 'utils/strings';
 
 export interface NftCardProps {
   item: NftType;
-  serieCount?: number;
   mode: string;
   isDragging?: boolean;
 }
@@ -28,7 +27,6 @@ const NftCard: React.FC<NftCardProps> = ({
   item,
   mode,
   isDragging,
-  serieCount,
 }) => {
   const [isHovering, setIsHovering] = useState(false);
   const [type, setType] = useState<string | null>(null);
@@ -79,8 +77,8 @@ const NftCard: React.FC<NftCardProps> = ({
       />
       {item.serieId !== '0' ? (
         <span className={style.QtyLabel}>{`${
-          typeof serieCount !== 'undefined' ? serieCount : 1
-        }/${typeof item.itemTotal !== 'undefined' ? item.itemTotal : 1}`}</span>
+          typeof item.totalListedNft !== 'undefined' ? item.totalListedNft : 1
+        }/${typeof item.totalNft !== 'undefined' ? item.totalNft : 1}`}</span>
       ) : (
         <span className={style.QtyLabel}>1/1</span>
       )}

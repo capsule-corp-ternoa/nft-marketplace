@@ -20,8 +20,6 @@ export interface ProfileProps {
   creators: UserType[];
   ownedNFTS: NftType[];
   createdNFTS: NftType[];
-  ownedSeries: { [serieId: string]: number };
-  createdSeries: { [serieId: string]: number };
 }
 
 const Profile: React.FC<ProfileProps> = ({
@@ -32,8 +30,6 @@ const Profile: React.FC<ProfileProps> = ({
   setModalExpand,
   setNotAvailable,
   setSuccessPopup,
-  ownedSeries,
-  createdSeries,
 }) => {
   const [isFiltered, setIsFiltered] = useState(false);
   const [scope, setScope] = useState('My NFTs');
@@ -78,11 +74,11 @@ const Profile: React.FC<ProfileProps> = ({
         <NFTCard
           mode="grid"
           item={item}
-          serieCount={
+          /*serieCount={
             scope == 'My creations'
               ? createdSeries[item.serieId]
               : ownedSeries[item.serieId]
-          }
+          }*/
         />
       </div>
     ));

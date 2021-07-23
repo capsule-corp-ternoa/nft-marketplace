@@ -18,16 +18,12 @@ export interface ProfilePageProps {
   user: UserType;
   created: NftType[];
   owned: NftType[];
-  ownedSeries: { [serieId: string]: number };
-  createdSeries: { [serieId: string]: number };
 }
 
 const ProfilePage: React.FC<ProfilePageProps> = ({
   user,
   created,
   owned,
-  ownedSeries,
-  createdSeries,
 }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
@@ -68,8 +64,6 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
         setModalExpand={setModalExpand}
         setNotAvailable={setNotAvailable}
         setSuccessPopup={setSuccessPopup}
-        ownedSeries={ownedSeries}
-        createdSeries={createdSeries}
       />
     </>
   );
@@ -79,15 +73,12 @@ export async function getServerSideProps(ctx: NextPageContext) {
   let user = null;
   let created: NftType[] = [];
   let owned: NftType[] = [];
-  let createdSeries = {};
-  let ownedSeries = {};
   try {
     const token = cookies(ctx).token;
     if (token) {
       user = await getUser(token);
-      [created, createdSeries] = await getCreatorNFTS(token).catch(() => [[], {}]);
-
-      [owned, ownedSeries] = await getProfileNFTS(token).catch(() => [[], {}]);
+      created = await getCreatorNFTS(token).catch(() => []);
+      owned = await getProfileNFTS(token).catch(() => []);
     }
   } catch (error) {
     console.error(error);
@@ -103,7 +94,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
   }
 
   return {
-    props: { user, created, owned, ownedSeries, createdSeries },
+    props: { user, created, owned },
   };
 }
 

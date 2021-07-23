@@ -56,6 +56,12 @@ const Create: React.FC<CreateProps> = ({
     setIsRN(window.isRNApp);
   });
 
+  const validateQuantity = (value: number, limit: number) => {
+    return (value && value > 0 && value <= limit)
+  }
+
+  const isDataValid = name && description && validateQuantity(quantity, 10) && select !== 'Select NFT Option'
+
   function onChange(
     e:
       | React.ChangeEvent<HTMLInputElement>
@@ -130,7 +136,6 @@ const Create: React.FC<CreateProps> = ({
               <Eye className={style.EyeSVG} />
               NFT Preview
             </span>
-            {/* <div className={style.Label}>Coming Soon</div> */}
           </div>
           <div className={style.Data}>
             <div className={style.Left}>
@@ -248,7 +253,7 @@ const Create: React.FC<CreateProps> = ({
                   value={quantity}
                   onChange={onChange}
                   placeholder="1"
-                  className={style.Input}
+                  className={`${style.Input} ${quantity && !validateQuantity(quantity, 10) ? style.InputError : ""}`}
                 />
               </div>
 
@@ -318,7 +323,10 @@ const Create: React.FC<CreateProps> = ({
             </div>
           </div>
           {!isRN && (
-            <div className={style.Create} onClick={() => uploadFiles()}>
+            <div 
+              className={`${style.Create} ${!isDataValid ? style.CreateDisabled : ""}`}
+              onClick={() => isDataValid && uploadFiles()}
+            >
               Create NFT
             </div>
           )}

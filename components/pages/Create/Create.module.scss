@@ -124,6 +124,10 @@
   color: #c1c1c1;
 }
 
+.InputError {
+  border: 1px solid #ff5555;
+}
+
 .Textarea {
   font-size: 15px;
   width: 100%;
@@ -359,6 +363,11 @@
     color: white;
     background-color: black;
   }
+}
+
+.CreateDisabled {
+  pointer-events: none;
+  opacity: 0.4;
 }
 
 .SelectContainer {

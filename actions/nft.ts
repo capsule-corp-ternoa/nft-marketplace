@@ -3,7 +3,7 @@ import { envStringToCondition } from '../utils/strings'
 
 const filterNFTs = (data: NftType[], onlyListed:boolean=false) => {
   return data.filter((item) => {
-    let isOk = item.creatorData && item.ownerData && item.media && item.listed && envStringToCondition(Number(item.id))
+    let isOk = item.creatorData && item.ownerData && item.media && envStringToCondition(Number(item.id))
     if (onlyListed) isOk = isOk && item.listed === 1
     return isOk
   })

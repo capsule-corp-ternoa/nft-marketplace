@@ -21,7 +21,6 @@ export interface NFTPageProps {
   setNotAvailable: (b: boolean) => void;
   setModalExpand: (b: boolean) => void;
   capsValue: number;
-  totalOnSaleCount: number;
 }
 
 const NFTPage: React.FC<NFTPageProps> = ({
@@ -32,7 +31,6 @@ const NFTPage: React.FC<NFTPageProps> = ({
   user,
   type,
   capsValue,
-  totalOnSaleCount,
 }) => {
   const bgGradientOwner = { background: gradient(NFT.ownerData.name) };
   const bgGradientCreator = { background: gradient(NFT.creatorData.name) };
@@ -80,9 +78,9 @@ const NFTPage: React.FC<NFTPageProps> = ({
                 <div className={style.QuantityLabel}>
                   {`Available : `}
                   <span className={style.QuantityCount}>
-                    {typeof totalOnSaleCount !== 'undefined' ? totalOnSaleCount : 1}
+                    {typeof NFT.totalListedNft !== 'undefined' ? NFT.totalListedNft : 1}
                   </span>
-                  {` of ${typeof NFT.itemTotal !== 'undefined' ? NFT.itemTotal : 1}`}
+                  {` of ${typeof NFT.totalNft !== 'undefined' ? NFT.totalNft : 1}`}
                 </div>
               ) : (
                 <div className={style.QuantityLabel}>

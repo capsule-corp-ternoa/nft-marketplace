@@ -21,8 +21,6 @@ export interface LandingProps {
   bestSellingNfts: NftType[];
   betaNfts: NftType[];
   NFTCreators: NftType[];
-  series: { [serieId: string]: number };
-  betaSeries: { [serieId: string]: number };
   totalCountNFT: number;
 }
 
@@ -32,9 +30,7 @@ const LandingPage: React.FC<LandingProps> = ({
   popularNfts,
   bestSellingNfts,
   betaNfts,
-  betaSeries,
   NFTCreators,
-  series,
   totalCountNFT,
 }) => {
   const [modalExpand, setModalExpand] = useState(false);
@@ -74,9 +70,7 @@ const LandingPage: React.FC<LandingProps> = ({
         popularNfts={popularNfts}
         bestSellingNfts={bestSellingNfts}
         betaNfts={betaNfts}
-        betaSeries={betaSeries}
         NFTCreators={NFTCreators}
-        series={series}
         totalCountNFT={totalCountNFT}
       />
     </>
@@ -101,13 +95,10 @@ export async function getServerSideProps(ctx: NextPageContext) {
   // category code for beta testers NFTs
   const BETA_CODE = '001';
 
-  let [regularNfts, regularSeries] = await getCategoryNFTs().catch(() => [[], {}]);
+  let regularNfts = await getCategoryNFTs().catch(() => []);
 
   // get nfts with beta category from api
-  let [betaNfts, betaSeries] = await getCategoryNFTs(BETA_CODE).catch(() => [
-    [],
-    {},
-  ]);
+  let betaNfts = await getCategoryNFTs(BETA_CODE).catch(() => []);
   betaNfts = arrayShuffle(betaNfts).slice(0, 8);
 
   let popularNfts = arrayShuffle(regularNfts.slice(0, 8));
@@ -123,8 +114,6 @@ export async function getServerSideProps(ctx: NextPageContext) {
       bestSellingNfts,
       NFTCreators,
       betaNfts,
-      series: regularSeries,
-      betaSeries,
       totalCountNFT,
     },
   };

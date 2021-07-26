@@ -1,18 +1,13 @@
 import { NftType } from 'interfaces/index';
 import { envStringToCondition } from '../utils/strings'
 
-const filterNFTs = (data: NftType[], onlyListed:boolean=false) => {
-  return data.filter((item) => {
-    let isOk = item.creatorData && item.ownerData && item.media && envStringToCondition(Number(item.id))
-    if (onlyListed) isOk = isOk && item.listed === 1
-    return isOk
-  })
-}
+const filterNFTs = (data: NftType[]) => data.filter((item) => item.creatorData && item.ownerData && item.media && envStringToCondition(Number(item.id)))
+
 
 export const getNFTS = async () => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/mp/NFTs`);
   let data: NftType[] = await res.json();
-  data = filterNFTs(data, true)
+  data = filterNFTs(data)
   return data;
 };
 
@@ -39,13 +34,13 @@ export const getCreatorNFTS = async (id: string) => {
 };
 
 export const getCategoryNFTs = async (codes?: string | string[]) => {
-  const queryString = !codes ? "" : (typeof codes==='string' ? `?codes=${codes}` : `?codes=${codes.join("&codes=")}`)
+  const queryString = !codes ? "" : (typeof codes==='string' ? `&codes=${codes}` : `&codes=${codes.join("&codes=")}`)
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_NODE_API}/api/mp/NFTs/category/${queryString}`
+    `${process.env.NEXT_PUBLIC_NODE_API}/api/mp/NFTs/category/?listed=1${queryString}`
   );
   if (!res.ok) throw new Error('error fetching NFTs');
   let data: NftType[] = await res.json();
-  data = filterNFTs(data, true)
+  data = filterNFTs(data)
   return data
 };
 

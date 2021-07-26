@@ -16,7 +16,7 @@
     "eslint": "^7.24.0",
     "i18next": "^19.9.2",
     "i18next-browser-languagedetector": "^6.1.0",
-    "jimp": "^0.16.1",
+    "jimp": "^0.9.8",
     "js-cookie": "^2.2.1",
     "jszip": "^3.6.0",
     "next": "10.2.0",

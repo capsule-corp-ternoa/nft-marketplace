@@ -13,7 +13,6 @@ export interface PublicProfileProps {
   setModalExpand: (b: boolean) => void;
   NFTS: NftType[];
   profile: UserType;
-  series: { [serieId: string]: number };
 }
 
 const PublicProfile: React.FC<PublicProfileProps> = ({
@@ -22,12 +21,11 @@ const PublicProfile: React.FC<PublicProfileProps> = ({
   NFTS,
   setModalExpand,
   setNotAvailable,
-  series,
 }) => {
   function returnNFTs() {
     return NFTS.map((item: NftType) => (
       <div key={item.id} className={style.NFTShell}>
-        <NFTCard mode="profile" item={item} serieCount={series[item.serieId]} />
+        <NFTCard mode="profile" item={item} />
       </div>
     ));
   }

@@ -8,14 +8,13 @@ import { NftType } from 'interfaces/index';
 
 export interface ExploreProps {
   NFTS: NftType[];
-  series: { [serieId: string]: number };
 }
 
-const Explore: React.FC<ExploreProps> = ({ NFTS, series }) => {
+const Explore: React.FC<ExploreProps> = ({ NFTS }) => {
   function returnNFTs() {
     return NFTS.map((item) => (
       <div key={item.id} className={style.NFTShell}>
-        <NFTCard mode="grid" item={item} serieCount={series[item.serieId]} />
+        <NFTCard mode="grid" item={item} />
       </div>
     ));
   }

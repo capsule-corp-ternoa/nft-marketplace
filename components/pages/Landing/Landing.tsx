@@ -21,9 +21,7 @@ export interface LandingProps {
   popularNfts: NftType[];
   bestSellingNfts: NftType[];
   betaNfts: NftType[];
-  betaSeries: { [serieId: string]: number };
   NFTCreators: NftType[];
-  series: { [serieId: string]: number };
   totalCountNFT: number;
 }
 
@@ -35,9 +33,7 @@ const Landing: React.FC<LandingProps> = ({
   popularNfts,
   bestSellingNfts,
   betaNfts,
-  betaSeries,
   NFTCreators,
-  series,
   totalCountNFT,
 }) => {
   const [walletUser, setWalletUser] = useState(user);
@@ -56,10 +52,10 @@ const Landing: React.FC<LandingProps> = ({
     <div className={style.Container}>
       <Hero users={users} />
       {totalCountNFT === 0 && <NoNFTComponent/>}
-      <Showcase category="Beta Testers" NFTs={betaNfts} series={betaSeries} />
-      <Showcase category="Most popular" NFTs={popularNfts} series={series} />
-      <Showcase category="Best sellers" NFTs={bestSellingNfts} series={series} />
-      <ArtCreators NFTs={NFTCreators} creators={users} series={series} />
+      <Showcase category="Beta Testers" NFTs={betaNfts}/>
+      <Showcase category="Most popular" NFTs={popularNfts}/>
+      <Showcase category="Best sellers" NFTs={bestSellingNfts}/>
+      <ArtCreators NFTs={NFTCreators} creators={users}/>
       <Link href="/explore">
         <a className={style.Button}>See more</a>
       </Link>

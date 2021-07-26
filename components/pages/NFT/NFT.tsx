@@ -41,7 +41,7 @@ const NFTPage: React.FC<NFTPageProps> = ({
   const userCanBuy = userCanBuyCaps || userCanBuyTiime
 
   return (
-    <div className={style.Container} onClick={()=> console.log(NFT)}>
+    <div className={style.Container}>
       <div className={style.Wrapper}>
         <div className={style.NFT}>
           <Media

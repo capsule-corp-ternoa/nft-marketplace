@@ -41,7 +41,7 @@ const NFTPage: React.FC<NFTPageProps> = ({
   const userCanBuy = userCanBuyCaps || userCanBuyTiime
 
   return (
-    <div className={style.Container}>
+    <div className={style.Container} onClick={()=> console.log(NFT)}>
       <div className={style.Wrapper}>
         <div className={style.NFT}>
           <Media
@@ -74,23 +74,13 @@ const NFTPage: React.FC<NFTPageProps> = ({
           <p className={style.Description}>{NFT.description}</p>
           <div className={style.Buy}>
             <div className={style.BuyLeft}>
-              {NFT.serieId !== '0' ? (
-                <div className={style.QuantityLabel}>
-                  {`Available : `}
-                  <span className={style.QuantityCount}>
-                    {typeof NFT.totalListedNft !== 'undefined' ? NFT.totalListedNft : 1}
-                  </span>
-                  {` of ${typeof NFT.totalNft !== 'undefined' ? NFT.totalNft : 1}`}
-                </div>
-              ) : (
-                <div className={style.QuantityLabel}>
-                  {`Available : `}
-                  <span className={style.QuantityCount}>
-                    1
-                  </span>
-                  {` of 1`}
-                </div>
-              )}
+              <div className={style.QuantityLabel}>
+                {`Available : `}
+                <span className={style.QuantityCount}>
+                  {typeof NFT.totalListedNft !== 'undefined' ? NFT.totalListedNft : 1}
+                </span>
+                {` of ${typeof NFT.totalNft !== 'undefined' ? NFT.totalNft : 1}`}
+              </div>
               <div
                 onClick={() => NFT.listed && userCanBuy && setExp(2)}
                 className={

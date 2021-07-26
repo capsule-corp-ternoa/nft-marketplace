@@ -75,13 +75,9 @@ const NftCard: React.FC<NftCardProps> = ({
           `${style.NFTIMG} ${(type?.substr(0, 5) === 'image' && isHovering) ? style.ImgScaling : ""}`
         }
       />
-      {item.serieId !== '0' ? (
-        <span className={style.QtyLabel}>{`${
-          typeof item.totalListedNft !== 'undefined' ? item.totalListedNft : 1
-        }/${typeof item.totalNft !== 'undefined' ? item.totalNft : 1}`}</span>
-      ) : (
-        <span className={style.QtyLabel}>1/1</span>
-      )}
+      <span className={style.QtyLabel}>
+        {`${typeof item.totalListedNft !== 'undefined' ? item.totalListedNft : 1}/${typeof item.totalNft !== 'undefined' ? item.totalNft : 1}`}
+      </span>
       {item.cryptedMedia?.url !== item.media?.url && (
         <span className={style.SecretLabel}>S</span>
       )}

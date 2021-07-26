@@ -38,8 +38,8 @@ const Create: React.FC<CreateProps> = ({
   setNFT,
   secretNFT,
   setSecretNFT,
-  NFTData,
-  setNFTData,
+  NFTData: initalValue,
+  setNFTData: setNftDataToParent,
   user,
   select,
   setSelect,
@@ -49,11 +49,12 @@ const Create: React.FC<CreateProps> = ({
 }) => {
   const [exp, setExp] = useState(false);
   const [isRN, setIsRN] = useState(false);
-
-  const { name, description, quantity } = NFTData;
+  const [nftData, setNFTData] = useState({} as NFTProps)
+  const { name, description, quantity } = nftData;
 
   useEffect(() => {
     setIsRN(window.isRNApp);
+    setNFTData(initalValue)
   });
 
   const validateQuantity = (value: number, limit: number) => {
@@ -67,7 +68,9 @@ const Create: React.FC<CreateProps> = ({
       | React.ChangeEvent<HTMLInputElement>
       | React.ChangeEvent<HTMLTextAreaElement>
   ) {
-    setNFTData({ ...NFTData, [e.target.name]: e.target.value });
+    const nextNftData = { ...nftData, [e.target.name]: e.target.value }
+    setNFTData(nextNftData);
+    setNftDataToParent(nextNftData);
   }
 
   function returnType(NFTarg: File) {

@@ -121,7 +121,6 @@ const Profile: React.FC<ProfileProps> = ({
         <Edit
           user={user}
           setBanner={setBanner}
-          setNotAvailable={setNotAvailable}
           setSuccessPopup={setSuccessPopup}
         />
       );

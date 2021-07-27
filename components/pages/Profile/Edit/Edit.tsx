@@ -13,7 +13,7 @@ export interface EditProps {
   setSuccessPopup: (b: boolean) => void;
 }
 
-const Edit: React.FC<EditProps> = ({ user, setBanner }) => {
+const Edit: React.FC<EditProps> = ({ user, setBanner, setSuccessPopup }) => {
   const bgGradient = user ? { background: gradient(user.name) } : {};
   const [data, setData] = useState({
     walletId: user.walletId,

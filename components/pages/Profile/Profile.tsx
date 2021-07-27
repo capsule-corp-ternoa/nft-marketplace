@@ -62,7 +62,7 @@ const Profile: React.FC<ProfileProps> = ({
       case 'My listed NFTs':
         displayNFTs = listedOwnedNFTS;
         break;
-      case 'My unlisted NFTs':
+      case 'My NFTs not for sale':
         displayNFTs = unlistedOwnedNFTS;
         break;
       default:

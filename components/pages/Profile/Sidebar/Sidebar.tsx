@@ -131,23 +131,23 @@ const Sidebar: React.FC<SidebarProps> = ({
         </div>
         <div className={style.Section}>
           <div
-            onClick={() => setScope('My listed NFTs')}
-            className={returnActiveTitle('My listed NFTs')}
+            onClick={() => setScope('My NFTs on sale')}
+            className={returnActiveTitle('My NFTs on sale')}
           >
-            Listed
+            On sale
           </div>
-          <div className={returnActiveNumber('My listed NFTs')}>
+          <div className={returnActiveNumber('My NFTs on sale')}>
             {listedOwnedAmount}
           </div>
         </div>
         <div className={style.Section}>
           <div
-            onClick={() => setScope('My unlisted NFTs')}
-            className={returnActiveTitle('My unlisted NFTs')}
+            onClick={() => setScope('My NFTs not for sale')}
+            className={returnActiveTitle('My NFTs not for sale')}
           >
-            Unlisted
+            Not on sale
           </div>
-          <div className={returnActiveNumber('My unlisted NFTs')}>
+          <div className={returnActiveNumber('My NFTs not for sale')}>
             {unlistedOwnedAmount}
           </div>
         </div>

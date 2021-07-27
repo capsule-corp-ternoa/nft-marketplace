@@ -87,28 +87,28 @@ const FloatingMenu: React.FC<FloatingMenuProps> = ({
         <div className={style.Section}>
           <div
             onClick={() => {
-              setScope('My listed NFTs')
+              setScope('My NFTs on sale')
               setExpand(false)
             }}
-            className={returnActiveTitle('My listed NFTs')}
+            className={returnActiveTitle('My NFTs on sale')}
           >
-            Listed
+            On sale
           </div>
-          <div className={returnActiveNumber('My listed NFTs')}>
+          <div className={returnActiveNumber('My NFTs on sale')}>
             {listedOwnedAmount}
           </div>
         </div>
         <div className={style.Section}>
           <div
             onClick={() => {
-              setScope('My unlisted NFTs')
+              setScope('My NFTs not for sale')
               setExpand(false)
             }}
-            className={returnActiveTitle('My unlisted NFTs')}
+            className={returnActiveTitle('My NFTs not for sale')}
           >
-            Unlisted
+            Not on sale
           </div>
-          <div className={returnActiveNumber('My unlisted NFTs')}>
+          <div className={returnActiveNumber('My NFTs not for sale')}>
             {unlistedOwnedAmount}
           </div>
         </div>

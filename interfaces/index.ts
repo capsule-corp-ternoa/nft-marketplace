@@ -46,3 +46,9 @@ export type CategoryType = {
   name: string;
   description?: string;
 }
+
+/*export type FollowType = {
+  _id: string;
+  followed: UserType;
+  follower: UserType;
+}*/

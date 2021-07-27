@@ -13,11 +13,13 @@ export interface PublicProfileProps {
   setModalExpand: (b: boolean) => void;
   NFTS: NftType[];
   profile: UserType;
+  setProfile: Function
 }
 
 const PublicProfile: React.FC<PublicProfileProps> = ({
   user,
   profile,
+  setProfile,
   NFTS,
   setModalExpand,
   setNotAvailable,
@@ -39,7 +41,7 @@ const PublicProfile: React.FC<PublicProfileProps> = ({
           alt="banner"
         />
       </div>
-      <Infos user={profile} />
+      <Infos profile={profile} setProfile={setProfile} user={user} />
       <div className={style.NFTWrapper}>{returnNFTs()}</div>
       <FloatingHeader user={user} setModalExpand={setModalExpand} />
       <Footer setNotAvailable={setNotAvailable} />

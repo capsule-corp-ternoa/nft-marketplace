@@ -3,6 +3,7 @@ import Link from 'next/link';
 import style from './NFT.module.scss';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
+import Media from 'components/base/Media';
 
 import Scale from 'components/assets/scale';
 
@@ -39,31 +40,17 @@ const NFTPage: React.FC<NFTPageProps> = ({
   const fiatPrice = (Number(NFT.price) / 1000000000000000000) * capsValue;
   const userCanBuy = user ? user.capsAmount && (Number(user.capsAmount) >= Number(NFT.price)) : true
 
-  function returnType() {
-    if (!type) return null;
-    if (type!.substr(0, 5) === 'image') {
-      return (
-        <img
-          className={style.NFTIMG}
-          draggable="false"
-          src={NFT.media.url}
-          alt="imgnft"
-        />
-      );
-    }
-    if (type!.substr(0, 5) === 'video')
-      return (
-        <video autoPlay muted loop playsInline className={style.NFTIMG}>
-          <source id="outputVideo" src={NFT.media.url} type="video/mp4" />
-        </video>
-      );
-  }
-
   return (
     <div className={style.Container}>
       <div className={style.Wrapper}>
         <div className={style.NFT}>
-          {returnType()}
+          <Media
+            src={NFT.media.url}
+            type={type}
+            alt="imgnft"
+            draggable="false"
+            className={style.NFTIMG}
+          />
           <div onClick={() => setExp(1)} className={style.Scale}>
             <Scale className={style.ScaleSVG} />
           </div>

@@ -10,23 +10,33 @@ import Sidebar from './Sidebar';
 import FloatingMenu from './FloatingMenu';
 import Edit from './Edit';
 import Switch from 'react-switch';
-import { NftType, UserType } from 'interfaces';
+import { NftType, UserType, FollowType } from 'interfaces';
+import { follow, unfollow, isUserFollowing } from 'actions/follower';
 
 export interface ProfileProps {
   setModalExpand: (b: boolean) => void;
   setNotAvailable: (b: boolean) => void;
   setSuccessPopup: (b: boolean) => void;
   user: UserType;
-  creators: UserType[];
   ownedNFTS: NftType[];
+  setOwnedNFTS: Function;
   createdNFTS: NftType[];
+  setCreatedNFTS: Function;
+  followers: FollowType[];
+  setFollowers: Function;
+  following: FollowType[];
+  setFollowing: Function;
+
 }
 
 const Profile: React.FC<ProfileProps> = ({
   user,
   ownedNFTS,
   createdNFTS,
-  creators,
+  followers,
+  following,
+  setFollowers,
+  setFollowing,
   setModalExpand,
   setNotAvailable,
   setSuccessPopup,
@@ -45,6 +55,26 @@ const Profile: React.FC<ProfileProps> = ({
   const updateKeywordSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.currentTarget.value);
   };
+
+  const handleFollowUnfollowFollowers = async (profileWalletId: string, isUnfollow:boolean=false) => {
+    try {
+      let res = !isUnfollow ? await follow(profileWalletId, user.walletId) : await unfollow(profileWalletId, user.walletId);
+      if (res) {
+        setFollowers({...followers, ...res as UserType})
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  const isUserFollowingItem = async (walletIdFollowed: string, walletIdFollower:string) => {
+    try{
+      let data = await isUserFollowing(walletIdFollowed, walletIdFollower)
+      return data.isFollowing
+    }catch(err){
+      console.error(err)
+    }
+  }
 
   function returnTitle() {
     return scope;
@@ -66,7 +96,7 @@ const Profile: React.FC<ProfileProps> = ({
         displayNFTs = unlistedOwnedNFTS;
         break;
       default:
-        displayNFTs = createdNFTS;
+        displayNFTs = ownedNFTS;
         break;
     }
     return displayNFTs.map((item: NftType) => (
@@ -80,7 +110,7 @@ const Profile: React.FC<ProfileProps> = ({
   }
 
   function returnCategory() {
-    if (scope === 'Followings' || scope === 'Followers') {
+    if (scope === 'Following' || scope === 'Followers') {
       return (
         <div className={style.NFTs}>
           <div className={style.Top}>
@@ -112,7 +142,7 @@ const Profile: React.FC<ProfileProps> = ({
               </div>
             </div>
           </div>
-          <div className={style.FollowsContainer}>{returnCreators()}</div>
+          <div className={style.FollowsContainer}>{returnFollowers()}</div>
         </div>
       );
     }
@@ -134,36 +164,37 @@ const Profile: React.FC<ProfileProps> = ({
     }
   }
 
-  function returnCreators() {
-    return creators.map((item: UserType) => (
-      <div key={item._id} className={style.CreatorShell}>
-        <Link href={`/${item.name}`}>
-          <a>
-            <Creator user={item} size="small" showTooltip={false} />
-          </a>
-        </Link>
-
-        <div className={style.CreatorInfos}>
+  function returnFollowers() {
+    let creators = followers.map((item: FollowType) => item.follower)
+    let promises = creators.map(async (item: UserType) => {
+      let isFollowing = (await isUserFollowingItem(item.walletId, user.walletId))
+      return (
+        <div key={item._id} className={style.CreatorShell}>
           <Link href={`/${item.name}`}>
             <a>
-              <h2 className={style.CreatorName}>{item.name}</h2>
+              <Creator user={item} size="small" showTooltip={false} />
             </a>
           </Link>
-          <span className={style.CreatorFollowers}>
-            {item.nbFollowers} followers
-          </span>
-          <div
-            onClick={(e) => {
-              e.stopPropagation();
-              setNotAvailable(true);
-            }}
-            className={style.Unfollow}
-          >
-            Unfollow
+          <div className={style.CreatorInfos}>
+            <Link href={`/${item.name}`}>
+              <a>
+                <h2 className={style.CreatorName}>{item.name}</h2>
+              </a>
+            </Link>
+            <span className={style.CreatorFollowers}>
+              {item.nbFollowers} followers
+            </span>
+            {scope !== 'Followers' && <div
+              onClick={() => handleFollowUnfollowFollowers(item.walletId, isFollowing)}
+              className={style.Unfollow}
+            >
+              {isFollowing ? "Unfollow" : "Follow"}
+            </div>}
           </div>
         </div>
-      </div>
-    ));
+      )
+    })
+    Promise.all(promises).then(data => data)
   }
 
   return (
@@ -186,6 +217,8 @@ const Profile: React.FC<ProfileProps> = ({
           createdAmount={createdNFTS.length}
           listedOwnedAmount={listedOwnedNFTS.length}
           unlistedOwnedAmount={unlistedOwnedNFTS.length}
+          followersAmount={followers.length}
+          followingAmount={following.length}
         />
         {returnCategory()}
       </div>
@@ -200,6 +233,8 @@ const Profile: React.FC<ProfileProps> = ({
           createdAmount={createdNFTS.length}
           listedOwnedAmount={listedOwnedNFTS.length}
           unlistedOwnedAmount={unlistedOwnedNFTS.length}
+          followersAmount={followers.length}
+          followingAmount={following.length}
         />
       )}
     </div>

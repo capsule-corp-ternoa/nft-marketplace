@@ -47,8 +47,8 @@ export type CategoryType = {
   description?: string;
 }
 
-/*export type FollowType = {
+export type FollowType = {
   _id: string;
   followed: UserType;
   follower: UserType;
-}*/
+}

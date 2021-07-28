@@ -1,16 +1,16 @@
-import { UserType } from "interfaces";
+import { UserType, FollowType } from "interfaces";
 
 export const getFollowers = async (walletId: string) => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/mp/follow/followers/${walletId}`);
     if (!res.ok) throw new Error();
-    let data: UserType[] = await res.json();
+    let data: FollowType[] = await res.json();
     return data;
 };
 
 export const getFollowed = async (walletId: string) => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/mp/follow/followed/${walletId}`);
     if (!res.ok) throw new Error();
-    let data: UserType[] = await res.json();
+    let data: FollowType[] = await res.json();
     return data;
 };
 

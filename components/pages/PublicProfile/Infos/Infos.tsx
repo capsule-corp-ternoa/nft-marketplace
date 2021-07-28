@@ -68,7 +68,7 @@ const Infos: React.FC<InfosProps> = ({ profile, setProfile, user }) => {
                 className={style.AvatarIMG}
               />
             ) : (
-              <div style={bgGradient} className={style.AvatarIMG} onClick={() => console.log(isUserFollowingProfile)}>
+              <div style={bgGradient} className={style.AvatarIMG}>
                 <div className={style.CreatorLetter}>{profile.name.charAt(0)}</div>
               </div>
             )}

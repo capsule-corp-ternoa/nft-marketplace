@@ -11,15 +11,15 @@ import cookies from 'next-cookies';
 import { getUser } from 'actions/user';
 import { getProfileNFTS, getCreatorNFTS } from 'actions/nft';
 import { getFollowers, getFollowed } from 'actions/follower';
-import { NftType, UserType, FollowType } from 'interfaces';
+import { NftType, UserType } from 'interfaces';
 import { NextPageContext } from 'next';
 
 export interface ProfilePageProps {
   user: UserType;
   created: NftType[];
   owned: NftType[];
-  followers: FollowType[];
-  following: FollowType[];
+  followers: UserType[];
+  followed: UserType[];
 }
 
 const ProfilePage: React.FC<ProfilePageProps> = ({
@@ -27,7 +27,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
   created,
   owned,
   followers,
-  following,
+  followed,
 }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
@@ -36,7 +36,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
   const [createdNft, setCreatedNft] = useState(created)
   const [ownedNft, setOwnedNft] = useState(owned)
   const [followersUsers, setFollowersUsers] = useState(followers)
-  const [followingUsers, setFollowingUsers] = useState(following)
+  const [followedUsers, setFollowedUsers] = useState(followed)
 
   useEffect(() => {
     async function callBack() {
@@ -72,8 +72,8 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
         setOwnedNFTS={setOwnedNft}
         followers={followersUsers}
         setFollowers={setFollowersUsers}
-        following={followingUsers}
-        setFollowing={setFollowingUsers}
+        followed={followedUsers}
+        setFollowed={setFollowedUsers}
         setModalExpand={setModalExpand}
         setNotAvailable={setNotAvailable}
         setSuccessPopup={setSuccessPopup}
@@ -86,8 +86,8 @@ export async function getServerSideProps(ctx: NextPageContext) {
   let user = null;
   let created: NftType[] = [];
   let owned: NftType[] = [];
-  let followers: FollowType[] = [];
-  let following: FollowType[] = [];
+  let followers: UserType[] = [];
+  let followed: UserType[] = [];
 
   try {
     const token = cookies(ctx).token;
@@ -96,7 +96,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
       created = await getCreatorNFTS(token).catch(() => []);
       owned = await getProfileNFTS(token).catch(() => []);
       followers = await getFollowers(token).catch(() => []);
-      following = await getFollowed(token).catch(() => []);
+      followed = await getFollowed(token).catch(() => []);
     }
   } catch (error) {
     console.error(error);
@@ -112,7 +112,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
   }
 
   return {
-    props: { user, created, owned, followers, following },
+    props: { user, created, owned, followers, followed },
   };
 }
 

@@ -52,6 +52,7 @@
 
 .NFTs {
   display: flex;
+  width: 100%;
   flex-direction: column;
   padding: 40px 24px;
   box-sizing: border-box;
@@ -205,7 +206,7 @@
   }
 
   .Wrapper {
-    width: auto;
+    width: 95%;
     margin-left: 5%;
   }
 

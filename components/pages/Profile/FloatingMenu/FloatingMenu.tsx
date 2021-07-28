@@ -18,7 +18,7 @@ export interface FloatingMenuProps {
   listedOwnedAmount: number;
   unlistedOwnedAmount: number;
   followersAmount: number;
-  followingAmount: number;
+  followedAmount: number;
 }
 
 const FloatingMenu: React.FC<FloatingMenuProps> = ({
@@ -30,7 +30,7 @@ const FloatingMenu: React.FC<FloatingMenuProps> = ({
   listedOwnedAmount,
   unlistedOwnedAmount,
   followersAmount,
-  followingAmount,
+  followedAmount,
 }) => {
   const router = useRouter();
 
@@ -133,15 +133,15 @@ const FloatingMenu: React.FC<FloatingMenuProps> = ({
         <div className={style.Section}>
           <div
             onClick={() => {
-              setScope('Following')
+              setScope('Followed')
               setExpand(false)
             }}
-            className={returnActiveTitle('Following')}
+            className={returnActiveTitle('Followed')}
           >
-            Following
+            Followed
           </div>
-          <div className={returnActiveNumber('Following')}>
-            {followingAmount}
+          <div className={returnActiveNumber('Followed')}>
+            {followedAmount}
           </div>
         </div>
         <div onClick={disconnect} className={style.Logoff}>

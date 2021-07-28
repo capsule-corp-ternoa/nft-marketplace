@@ -23,7 +23,7 @@ export interface SidebarProps {
   listedOwnedAmount: number;
   unlistedOwnedAmount: number;
   followersAmount: number;
-  followingAmount: number;
+  followedAmount: number;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({
@@ -36,7 +36,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   listedOwnedAmount,
   unlistedOwnedAmount,
   followersAmount,
-  followingAmount
+  followedAmount
 }) => {
   const router = useRouter();
   const bgGradient = user ? { background: gradient(user.name) } : {};
@@ -168,13 +168,13 @@ const Sidebar: React.FC<SidebarProps> = ({
         </div>
         <div className={style.Section}>
           <div
-            onClick={() => setScope('Following')}
-            className={returnActiveTitle('Following')}
+            onClick={() => setScope('Followed')}
+            className={returnActiveTitle('Followed')}
           >
-            Following
+            Followed
           </div>
-          <div className={returnActiveNumber('Following')}>
-            {followingAmount}
+          <div className={returnActiveNumber('Followed')}>
+            {followedAmount}
           </div>
         </div>
         <div className={style.Disconnect} onClick={disconnect}>

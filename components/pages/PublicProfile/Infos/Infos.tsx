@@ -13,7 +13,7 @@ import { follow, unfollow, isUserFollowing } from 'actions/follower';
 
 export interface InfosProps {
   profile: UserType;
-  setProfile: Function;
+  setProfile: (u: UserType) => void;
   user: UserType;
 }
 

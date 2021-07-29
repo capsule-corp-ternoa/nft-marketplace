@@ -15,6 +15,7 @@ export interface FloatingMenuProps {
   scope: string;
   ownedAmount: number;
   createdAmount: number;
+  likedAmount: number;
   listedOwnedAmount: number;
   unlistedOwnedAmount: number;
   followersAmount: number;
@@ -27,6 +28,7 @@ const FloatingMenu: React.FC<FloatingMenuProps> = ({
   setExpand,
   ownedAmount,
   createdAmount,
+  likedAmount,
   listedOwnedAmount,
   unlistedOwnedAmount,
   followersAmount,
@@ -86,6 +88,20 @@ const FloatingMenu: React.FC<FloatingMenuProps> = ({
           </div>
           <div className={returnActiveNumber('My creations')}>
             {createdAmount}
+          </div>
+        </div>
+        <div className={style.Section}>
+          <div
+            onClick={() => {
+              setScope('Liked')
+              setExpand(false)
+            }}
+            className={returnActiveTitle('Liked')}
+          >
+            Liked
+          </div>
+          <div className={returnActiveNumber('Liked')}>
+            {likedAmount}
           </div>
         </div>
         <div className={style.Section}>

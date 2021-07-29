@@ -57,6 +57,7 @@ const PublicProfilePage: React.FC<PublicProfileProps> = ({
       <MainHeader user={walletUser} setModalExpand={setModalExpand} />
       <PublicProfile
         user={walletUser}
+        setUser={setWalletUser}
         profile={viewProfile}
         setProfile={setViewProfile}
         NFTS={data}

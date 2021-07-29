@@ -18,21 +18,27 @@ export interface ProfileProps {
   setNotAvailable: (b: boolean) => void;
   setSuccessPopup: (b: boolean) => void;
   user: UserType;
+  setUser: (u: UserType) => void;
   ownedNFTS: NftType[];
-  setOwnedNFTS: Function;
+  setOwnedNFTS: (nfts: NftType[]) => void;
   createdNFTS: NftType[];
-  setCreatedNFTS: Function;
+  setCreatedNFTS: (nfts: NftType[]) => void;
+  likedNfts: NftType[];
+  setLikedNfts: (nfts: NftType[]) => void;
   followers: UserType[];
-  setFollowers: Function;
+  setFollowers: (nfts: UserType[]) => void;
   followed: UserType[];
-  setFollowed: Function;
+  setFollowed: (nfts: UserType[]) => void;
 
 }
 
 const Profile: React.FC<ProfileProps> = ({
   user,
+  setUser,
   ownedNFTS,
   createdNFTS,
+  likedNfts,
+  setLikedNfts,
   followers,
   followed,
   setFollowers,
@@ -71,7 +77,7 @@ const Profile: React.FC<ProfileProps> = ({
         }else{
           setFollowed(
             followed.findIndex(x => x.walletId === res.walletId) !== -1 ? 
-            followed.map(x=>x.walletId === res.walletId ? res : x) 
+              followed.map(x=>x.walletId === res.walletId ? res : x) 
             : 
               [...followed, res]
           )
@@ -95,6 +101,9 @@ const Profile: React.FC<ProfileProps> = ({
       case 'My creations':
         displayNFTs = createdNFTS;
         break;
+      case 'Liked':
+        displayNFTs = likedNfts;
+        break;
       case 'My NFTs on sale':
         displayNFTs = listedOwnedNFTS;
         break;
@@ -110,6 +119,10 @@ const Profile: React.FC<ProfileProps> = ({
         <NFTCard
           mode="grid"
           item={item}
+          user={user}
+          setUser={setUser}
+          likedNfts={likedNfts}
+          setLikedNfts={setLikedNfts}
         />
       </div>
     ));
@@ -230,6 +243,7 @@ const Profile: React.FC<ProfileProps> = ({
           setExpand={setExpand}
           ownedAmount={ownedNFTS.length}
           createdAmount={createdNFTS.length}
+          likedAmount={likedNfts.length}
           listedOwnedAmount={listedOwnedNFTS.length}
           unlistedOwnedAmount={unlistedOwnedNFTS.length}
           followersAmount={followers.length}
@@ -246,6 +260,7 @@ const Profile: React.FC<ProfileProps> = ({
           setExpand={setExpand} 
           ownedAmount={ownedNFTS.length}
           createdAmount={createdNFTS.length}
+          likedAmount={likedNfts.length}
           listedOwnedAmount={listedOwnedNFTS.length}
           unlistedOwnedAmount={unlistedOwnedNFTS.length}
           followersAmount={followers.length}

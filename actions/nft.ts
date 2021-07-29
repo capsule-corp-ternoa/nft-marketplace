@@ -1,7 +1,7 @@
 import { NftType } from 'interfaces/index';
 import { envStringToCondition } from '../utils/strings'
 
-const filterNFTs = (data: NftType[]) => data.filter((item) => item.creatorData && item.ownerData && item.media && envStringToCondition(Number(item.id)))
+export const filterNFTs = (data: NftType[]) => data.filter((item) => item.creatorData && item.ownerData && item.media && envStringToCondition(Number(item.id)))
 
 
 export const getNFTS = async () => {
@@ -51,4 +51,3 @@ export const getNFT = async (id: string) => {
   if (!data.creatorData || !data.ownerData || !data.media) throw new Error();
   return data;
 };
-

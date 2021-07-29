@@ -20,6 +20,7 @@ export interface SidebarProps {
   user: UserType;
   ownedAmount: number;
   createdAmount: number;
+  likedAmount: number;
   listedOwnedAmount: number;
   unlistedOwnedAmount: number;
   followersAmount: number;
@@ -33,6 +34,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   setExpand,
   ownedAmount,
   createdAmount,
+  likedAmount,
   listedOwnedAmount,
   unlistedOwnedAmount,
   followersAmount,
@@ -131,6 +133,17 @@ const Sidebar: React.FC<SidebarProps> = ({
           </div>
           <div className={returnActiveNumber('My creations')}>
             {createdAmount}
+          </div>
+        </div>
+        <div className={style.Section}>
+          <div
+            onClick={() => setScope('Liked')}
+            className={returnActiveTitle('Liked')}
+          >
+            Liked
+          </div>
+          <div className={returnActiveNumber('Liked')}>
+            {likedAmount}
           </div>
         </div>
         <div className={style.Section}>

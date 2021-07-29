@@ -11,6 +11,7 @@ import cookies from 'next-cookies';
 import { getUser } from 'actions/user';
 import { getProfileNFTS, getCreatorNFTS } from 'actions/nft';
 import { getFollowers, getFollowed } from 'actions/follower';
+import { getLikedNFTs } from 'actions/user';
 import { NftType, UserType } from 'interfaces';
 import { NextPageContext } from 'next';
 
@@ -18,6 +19,7 @@ export interface ProfilePageProps {
   user: UserType;
   created: NftType[];
   owned: NftType[];
+  liked: NftType[];
   followers: UserType[];
   followed: UserType[];
 }
@@ -26,6 +28,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
   user,
   created,
   owned,
+  liked,
   followers,
   followed,
 }) => {
@@ -33,8 +36,9 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
   const [notAvailable, setNotAvailable] = useState(false);
   const [successPopup, setSuccessPopup] = useState(false);
   const [walletUser, setWalletUser] = useState(user);
-  const [createdNft, setCreatedNft] = useState(created)
-  const [ownedNft, setOwnedNft] = useState(owned)
+  const [createdNfts, setCreatedNfts] = useState(created)
+  const [ownedNfts, setOwnedNfts] = useState(owned)
+  const [likedNfts, setLikedNfts] = useState(liked)
   const [followersUsers, setFollowersUsers] = useState(followers)
   const [followedUsers, setFollowedUsers] = useState(followed)
 
@@ -65,11 +69,14 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
       <AlphaBanner />
       <MainHeader user={walletUser} setModalExpand={setModalExpand} />
       <Profile
-        user={user}
-        createdNFTS={createdNft}
-        setCreatedNFTS={setCreatedNft}
-        ownedNFTS={ownedNft}
-        setOwnedNFTS={setOwnedNft}
+        user={walletUser}
+        setUser={setWalletUser}
+        createdNFTS={createdNfts}
+        setCreatedNFTS={setCreatedNfts}
+        ownedNFTS={ownedNfts}
+        setOwnedNFTS={setOwnedNfts}
+        likedNfts={likedNfts}
+        setLikedNfts={setLikedNfts}
         followers={followersUsers}
         setFollowers={setFollowersUsers}
         followed={followedUsers}
@@ -86,6 +93,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
   let user = null;
   let created: NftType[] = [];
   let owned: NftType[] = [];
+  let liked: NftType[] = [];
   let followers: UserType[] = [];
   let followed: UserType[] = [];
 
@@ -95,6 +103,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
       user = await getUser(token);
       created = await getCreatorNFTS(token).catch(() => []);
       owned = await getProfileNFTS(token).catch(() => []);
+      liked = await getLikedNFTs(token).catch(() => [])
       followers = await getFollowers(token).catch(() => []);
       followed = await getFollowed(token).catch(() => []);
     }
@@ -112,7 +121,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
   }
 
   return {
-    props: { user, created, owned, followers, followed },
+    props: { user, created, owned, liked, followers, followed },
   };
 }
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Link from 'next/link';
 import style from './NFT.module.scss';
 import Footer from 'components/base/Footer';
@@ -6,16 +6,21 @@ import FloatingHeader from 'components/base/FloatingHeader';
 import Media from 'components/base/Media';
 
 import Scale from 'components/assets/scale';
+import Share from 'components/assets/share';
+import Like from 'components/assets/heart';
+import Eye from 'components/assets/eye';
 
 import Check from 'components/assets/check';
 import gradient from 'random-gradient';
 
 import { computeCaps, computeTiime } from 'utils/strings';
 import { UserType, NftType } from 'interfaces';
+import { likeNFT, unlikeNFT } from 'actions/user';
 
 export interface NFTPageProps {
   NFT: NftType;
   user: UserType;
+  setUser: (u: UserType) => void;
   type: string | null;
   setExp: (n: number) => void;
   setNotAvailable: (b: boolean) => void;
@@ -29,9 +34,11 @@ const NFTPage: React.FC<NFTPageProps> = ({
   setModalExpand,
   setNotAvailable,
   user,
+  setUser,
   type,
   capsValue,
 }) => {
+  const [likeLoading, setLikeLoading] = useState(false)
   const bgGradientOwner = { background: gradient(NFT.ownerData.name) };
   const bgGradientCreator = { background: gradient(NFT.creatorData.name) };
 
@@ -39,6 +46,24 @@ const NFTPage: React.FC<NFTPageProps> = ({
   const userCanBuyCaps = user ? user.capsAmount && NFT.price && NFT.price !== "" && (Number(user.capsAmount) >= Number(NFT.price)) : true
   const userCanBuyTiime = user ? user.tiimeAmount && NFT.priceTiime && NFT.priceTiime !== "" && (Number(user.tiimeAmount) >= Number(NFT.priceTiime)) : true
   const userCanBuy = userCanBuyCaps || userCanBuyTiime
+
+  const handleLikeDislike = async () => {
+    try{
+      let res = null
+      if (!likeLoading && user){
+        setLikeLoading(true)
+        if (!user?.likedNFTs?.includes(NFT.id)){
+          res = await likeNFT(user.walletId, NFT.id)
+        }else{
+          res = await unlikeNFT(user.walletId, NFT.id)
+        }
+      }
+      if (res !== null) setUser({...user, ...res})
+      setLikeLoading(false)
+    }catch(err){
+      console.error(err)
+    }
+  }
 
   return (
     <div className={style.Container}>
@@ -58,7 +83,20 @@ const NFTPage: React.FC<NFTPageProps> = ({
         <div className={style.Text}>
           <div className={style.Top}>
             <h1 className={style.Title}>{NFT.name}</h1>
-            <div className={style.TopInfos}></div>
+            <div className={style.TopInfos}>
+              <div className={style.Views}>
+                <Eye className={style.EyeSVG} />0
+              </div>
+              <div 
+                className={`${style.Like} ${user?.likedNFTs?.includes(NFT.id) ? style.Liked : ""} ${likeLoading ? style.DisabledLike : ""}`}
+                onClick={() => handleLikeDislike()}
+              >
+                <Like className={style.LikeSVG} />
+              </div>
+              <div className={style.Share}>
+                <Share className={style.ShareSVG} />
+              </div>
+            </div>
           </div>
           <div className={style.Line} />
           <div className={style.Hide}>

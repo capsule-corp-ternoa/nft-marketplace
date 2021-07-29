@@ -96,6 +96,7 @@ const NftPage: React.FC<NFTPageProps> = ({ user, NFT, capsValue }) => {
         setModalExpand={setModalExpand}
         setNotAvailable={setNotAvailable}
         user={walletUser}
+        setUser={setWalletUser}
         type={type}
         capsValue={capsValue}
       />

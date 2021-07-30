@@ -16,6 +16,7 @@ import gradient from 'random-gradient';
 import { computeCaps, computeTiime } from 'utils/strings';
 import { UserType, NftType } from 'interfaces';
 import { likeNFT, unlikeNFT } from 'actions/user';
+import ModalShare from 'components/base/ModalShare';
 
 export interface NFTPageProps {
   NFT: NftType;
@@ -39,6 +40,7 @@ const NFTPage: React.FC<NFTPageProps> = ({
   capsValue,
 }) => {
   const [likeLoading, setLikeLoading] = useState(false)
+  const [modalShareOpen, setModalShareOpen] = useState(false)
   const bgGradientOwner = { background: gradient(NFT.ownerData.name) };
   const bgGradientCreator = { background: gradient(NFT.creatorData.name) };
 
@@ -46,7 +48,10 @@ const NFTPage: React.FC<NFTPageProps> = ({
   const userCanBuyCaps = user ? user.capsAmount && NFT.price && NFT.price !== "" && (Number(user.capsAmount) >= Number(NFT.price)) : true
   const userCanBuyTiime = user ? user.tiimeAmount && NFT.priceTiime && NFT.priceTiime !== "" && (Number(user.tiimeAmount) >= Number(NFT.priceTiime)) : true
   const userCanBuy = userCanBuyCaps || userCanBuyTiime
-
+  const shareSubject = "Check out this Secret NFT"
+  const shareText = `Check out ${NFT.name ? NFT.name : "this nft"} on secret-nft.com`
+  const shareUrl = window?.location?.href || `https://www.secret-nft.com/nft/${NFT.id}`
+  
   const handleLikeDislike = async () => {
     try{
       let res = null
@@ -60,6 +65,22 @@ const NFTPage: React.FC<NFTPageProps> = ({
       }
       if (res !== null) setUser({...user, ...res})
       setLikeLoading(false)
+    }catch(err){
+      console.error(err)
+    }
+  }
+
+  const handleShare = async () => {
+    try{
+      if (window && window.isRNApp && navigator){
+        await navigator.share({
+          title: shareSubject,
+          text: shareText,
+          url: shareUrl
+        })
+      }else{
+        setModalShareOpen(true)
+      }
     }catch(err){
       console.error(err)
     }
@@ -88,12 +109,12 @@ const NFTPage: React.FC<NFTPageProps> = ({
                 <Eye className={style.EyeSVG} />0
               </div>
               <div 
-                className={`${style.Like} ${user?.likedNFTs?.includes(NFT.id) ? style.Liked : ""} ${likeLoading ? style.DisabledLike : ""}`}
+                className={`${style.Like} ${user?.likedNFTs?.includes(NFT.id) ? style.Liked : ""} ${(likeLoading || !user) ? style.DisabledLike : ""}`}
                 onClick={() => handleLikeDislike()}
               >
                 <Like className={style.LikeSVG} />
               </div>
-              <div className={style.Share}>
+              <div className={style.Share} onClick={() => handleShare()}>
                 <Share className={style.ShareSVG} />
               </div>
             </div>
@@ -205,6 +226,13 @@ const NFTPage: React.FC<NFTPageProps> = ({
       </div>
       <Footer setNotAvailable={setNotAvailable} />
       <FloatingHeader user={user} setModalExpand={setModalExpand} />
+      {modalShareOpen && <ModalShare
+        setModalExpand={setModalShareOpen}
+        title={"Share this NFT with your friends"}
+        subject={shareSubject}
+        text={shareText}
+        url={shareUrl}
+      />}
     </div>
   );
 };

@@ -79,7 +79,7 @@ const Infos: React.FC<InfosProps> = ({ profile, setProfile, user }) => {
           <div className={style.Left}>
             <h1 className={style.Name}>{profile.name}</h1>
             {profile.twitterName && (
-              <a href={"https://twitter.com/"+profile.twitterName.substring(1)} className={style.Twitter}>
+              <a href={"https://twitter.com/"+profile.twitterName.substring(1)} target="_blank" className={style.Twitter}>
                 <Twitter onClick={() => true} className={style.TwitterSVG} />@
                 {profile.twitterName}
               </a>

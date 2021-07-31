@@ -86,7 +86,7 @@ const Hero: React.FC<HeroProps> = ({ users }) => {
 
               <a
                 className={style.Button}
-                href="https://docs.google.com/forms/d/1LJYmtMUDKn8Enw5u1Ui0c0TKpvDd6uf7vRGgu3qL1jQ/viewform?edit_requested=true"
+                href="https://t.me/joinchat/haiw0G_RU0w1OTc0"
                 target="blank"
               >
                 Submit your creations

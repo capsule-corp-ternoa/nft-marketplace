@@ -72,31 +72,38 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
 export async function getServerSideProps(ctx: NextPageContext) {
   let user = null, created: NftType[] = [], owned: NftType[] = [];
   const token = cookies(ctx).token;
-  try{
-    [user, created, owned] = await Promise.all([
-      token ? getUser(token) : null,
-      token ? getCreatorNFTS(token) : [],
-      token ? getProfileNFTS(token) : [],
-    ]).catch(e => {
-      throw new Error(e);
-    });
+  const promises = [];
+  if (token) {
+    promises.push(new Promise<void>((success) => {
+      getUser(token).then(_user => {
+        user = _user
+        success();
+      }).catch(success);
+    }));
+    promises.push(new Promise<void>((success) => {
+      getCreatorNFTS(token).then(_nfts => {
+        created = _nfts
+        success();
+      }).catch(success);
+    }));
+    promises.push(new Promise<void>((success) => {
+      getProfileNFTS(token).then(_nfts => {
+        owned = _nfts
+        success();
+      }).catch(success);
+    }));
   }
-  catch(e){
-    console.error('Error on profile function:' + e);
-  }
-  finally{
-    if (!user) {
-      return {
-        redirect: {
-          permanent: false,
-          destination: '/',
-        },
-      };
-    }
+  if (!user) {
     return {
-      props: { user, created, owned },
+      redirect: {
+        permanent: false,
+        destination: '/',
+      },
     };
   }
+  return {
+    props: { user, created, owned },
+  };
 }
 
 export default ProfilePage;

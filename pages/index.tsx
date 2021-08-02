@@ -81,19 +81,18 @@ export async function getServerSideProps(ctx: NextPageContext) {
   const token = cookies(ctx).token;
   // category code for beta testers NFTs
   const BETA_CODE = '001';
-  let [users, user, regularNfts, betaNfts] = await Promise.all([
+  let [users = [], user = null, regularNfts = [], betaNfts = []] = await Promise.all([
     getUsers(), token ? getUser(token) : null, getCategoryNFTs(), getCategoryNFTs(BETA_CODE)
-  ]);
-
+  ]).catch(e => {
+    console.error('Error retrieving data:' + e);
+    return [[], null, [], []]
+  });
   users = arrayShuffle(users);
-
-  betaNfts = arrayShuffle(betaNfts).slice(0, 8);
-
-  let popularNfts = arrayShuffle(regularNfts.slice(0, 8));
-  let bestSellingNfts = arrayShuffle(regularNfts.slice(9, 17));
-
-  let NFTCreators = arrayShuffle(regularNfts.slice(18, 21));
-  let totalCountNFT = regularNfts.length + betaNfts.length;
+  betaNfts = arrayShuffle(betaNfts || []).slice(0, 8);
+  let popularNfts = arrayShuffle((regularNfts || []).slice(0, 8));
+  let bestSellingNfts = arrayShuffle((regularNfts || []).slice(9, 17));
+  let NFTCreators = arrayShuffle((regularNfts || []).slice(18, 21));
+  let totalCountNFT = (regularNfts || []).length + (betaNfts || []).length;
   return {
     props: {
       user,

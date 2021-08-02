@@ -66,22 +66,25 @@ const PublicProfilePage: React.FC<PublicProfileProps> = ({
 };
 export async function getServerSideProps(ctx: NextPageContext) {
   try {
-    let user = null;
-    let data: NftType[] = [];
-    try {
-      const token = cookies(ctx).token;
-      if (token) {
-        user = await getUser(token);
-      }
-    } catch (error) {
-      console.error(error);
+    const token = cookies(ctx).token;
+    let user: UserType | null = null, profile: UserType | null = null, data: NftType[] = []
+    try{
+      [user, profile, data] = await Promise.all([
+        token ? getUser(token) : Promise.resolve(null),
+        getProfile(ctx.query.name as string),
+        getProfileNFTS(ctx.query.name as string).catch(() => [])
+      ]).catch(e => {
+        throw new Error(e);
+      });
     }
-    const profile = await getProfile(ctx.query.name as string);
-    data = await getProfileNFTS(ctx.query.name as string).catch(() => []);
-
-    return {
-      props: { user, profile, data },
-    };
+    catch(e) {
+      console.error('Error on profile function:' + e);
+    }
+    finally {
+      return {
+        props: { user, profile, data },
+      };
+    }
   } catch {
     return {
       redirect: {

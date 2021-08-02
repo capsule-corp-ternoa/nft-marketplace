@@ -171,7 +171,7 @@ const NftCard: React.FC<NftCardProps> = ({
               </div>
             )}
           </div>
-          {(item.price && Number(item.price)>0) || (item.priceTiime && Number(item.priceTiime)) &&
+          {((item.price && Number(item.price)>0) || (item.priceTiime && Number(item.priceTiime))) &&
             <div className={isHovering ? `${style.Button} ${style.FadeLong}` : style.Button}>
               <div className={style.Price}>
                 {item.price && Number(item.price)>0 &&

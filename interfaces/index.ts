@@ -6,7 +6,7 @@ export type UserType = {
   verified: boolean;
   nbFollowers: number;
   nbFollowing: number;
-  views: number;
+  viewsCount?: number;
   walletId: string;
   picture?: string;
   twitterName?: string;
@@ -39,6 +39,7 @@ export type NftType = {
   totalNft?: number;
   itemId: string;
   categories: CategoryType[];
+  viewsCount?: number;
 };
 
 export type CategoryType = {

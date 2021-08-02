@@ -19,9 +19,9 @@ export const getUser = async (token: string) => {
   return { ...userData, ...capsData };
 };
 
-export const getProfile = async (id: string) => {
+export const getProfile = async (id: string, walletId: string | null) => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_NODE_API}/api/mp/users/${id}`
+    `${process.env.NEXT_PUBLIC_NODE_API}/api/mp/users/${id}?incViews=${true}&walletIdViewer=${walletId}`
   );
 
   if (!res.ok) throw new Error();

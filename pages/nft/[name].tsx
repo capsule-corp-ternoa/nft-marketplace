@@ -107,15 +107,15 @@ const NftPage: React.FC<NFTPageProps> = ({ user, NFT, capsValue }) => {
 export async function getServerSideProps(ctx: NextPageContext) {
   try {
     let user = null;
+    const token = cookies(ctx).token;
     try {
-      const token = cookies(ctx).token;
       if (token) {
         user = await getUser(token);
       }
     } catch (error) {
       console.error(error);
     }
-    let NFT = await getNFT(ctx.query.name as string);
+    let NFT = await getNFT(ctx.query.name as string, true, token ? token : null);
 
     let capsValue = 0;
 

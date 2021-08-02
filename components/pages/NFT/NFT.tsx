@@ -50,7 +50,7 @@ const NFTPage: React.FC<NFTPageProps> = ({
   const userCanBuy = userCanBuyCaps || userCanBuyTiime
   const shareSubject = "Check out this Secret NFT"
   const shareText = `Check out ${NFT.name ? NFT.name : "this nft"} on secret-nft.com`
-  const shareUrl = window?.location?.href || `https://www.secret-nft.com/nft/${NFT.id}`
+  const shareUrl = (typeof window!=="undefined" && window.location?.href) || `https://www.secret-nft.com/nft/${NFT.id}`
   
   const handleLikeDislike = async () => {
     try{
@@ -106,7 +106,7 @@ const NFTPage: React.FC<NFTPageProps> = ({
             <h1 className={style.Title}>{NFT.name}</h1>
             <div className={style.TopInfos}>
               <div className={style.Views}>
-                <Eye className={style.EyeSVG} />0
+                <Eye className={style.EyeSVG} />{NFT.viewsCount}
               </div>
               <div 
                 className={`${style.Like} ${user?.likedNFTs?.includes(NFT.id) ? style.Liked : ""} ${(likeLoading || !user) ? style.DisabledLike : ""}`}

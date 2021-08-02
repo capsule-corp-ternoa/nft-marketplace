@@ -71,15 +71,15 @@ export async function getServerSideProps(ctx: NextPageContext) {
   try {
     let user = null;
     let data: NftType[] = [];
+    const token = cookies(ctx).token;
     try {
-      const token = cookies(ctx).token;
       if (token) {
         user = await getUser(token);
       }
     } catch (error) {
       console.error(error);
     }
-    const profile = await getProfile(ctx.query.name as string);
+    const profile = await getProfile(ctx.query.name as string, token ? token : null);
     data = await getProfileNFTS(ctx.query.name as string).catch(() => []);
 
     return {

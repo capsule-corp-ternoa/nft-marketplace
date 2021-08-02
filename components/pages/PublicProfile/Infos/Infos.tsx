@@ -108,7 +108,7 @@ const Infos: React.FC<InfosProps> = ({ profile, setProfile, user }) => {
               <span className={style.Separator}>·</span>
               <span className={style.Bold}>{profile.nbFollowing}</span>following
               <span className={style.Separator}>·</span>
-              <span className={style.Bold}>{profile.views}</span>views
+              <span className={style.Bold}>{profile.viewsCount}</span>views
             </div>
           </div>
         </div>

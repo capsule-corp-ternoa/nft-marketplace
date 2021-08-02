@@ -105,30 +105,31 @@ const NftPage: React.FC<NFTPageProps> = ({ user, NFT, capsValue }) => {
 };
 
 export async function getServerSideProps(ctx: NextPageContext) {
-  try {
-    let user = null;
-    const token = cookies(ctx).token;
-    try {
-      if (token) {
-        user = await getUser(token);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-    let NFT = await getNFT(ctx.query.name as string, true, token ? token : null);
-
-    let capsValue = 0;
-
-    try {
-      capsValue = Number(await getCapsValue());
-    } catch (error) {
-      console.error(error);
-    }
-
-    return {
-      props: { user, NFT, capsValue },
-    };
-  } catch {
+  const token = cookies(ctx).token;
+  let user: UserType | null = null, NFT: NftType | null = null, capsValue: number = 0
+  const promises = [];
+  if (token) {
+    promises.push(new Promise<void>((success) => {
+      getUser(token).then(_user => {
+        user = _user
+        success();
+      }).catch(success);
+    }));
+  }
+  promises.push(new Promise<void>((success) => {
+    getNFT(ctx.query.name as string, true, token ? token : null).then(_nft => {
+      NFT = _nft
+      success();
+    }).catch(success);
+  }));
+  promises.push(new Promise<void>((success) => {
+    getCapsValue().then(_value => {
+      capsValue = _value
+      success();
+    }).catch(success);
+  }));
+  await Promise.all(promises);
+  if (!user) {
     return {
       redirect: {
         permanent: false,
@@ -136,6 +137,9 @@ export async function getServerSideProps(ctx: NextPageContext) {
       },
     };
   }
+  return {
+    props: { user, NFT, capsValue },
+  };
 }
 
 export default NftPage;

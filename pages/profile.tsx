@@ -90,27 +90,47 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
 };
 
 export async function getServerSideProps(ctx: NextPageContext) {
-  let user = null;
-  let created: NftType[] = [];
-  let owned: NftType[] = [];
-  let liked: NftType[] = [];
-  let followers: UserType[] = [];
-  let followed: UserType[] = [];
-
-  try {
-    const token = cookies(ctx).token;
-    if (token) {
-      user = await getUser(token);
-      created = await getCreatorNFTS(token).catch(() => []);
-      owned = await getProfileNFTS(token).catch(() => []);
-      liked = await getLikedNFTs(token).catch(() => [])
-      followers = await getFollowers(token).catch(() => []);
-      followed = await getFollowed(token).catch(() => []);
-    }
-  } catch (error) {
-    console.error(error);
+  let user = null, created: NftType[] = [], owned: NftType[] = [], liked: NftType[] = [], followers: UserType[] = [], followed: UserType[] = [];
+  const token = cookies(ctx).token;
+  const promises = [];
+  if (token) {
+    promises.push(new Promise<void>((success) => {
+      getUser(token).then(_user => {
+        user = _user
+        success();
+      }).catch(success);
+    }));
+    promises.push(new Promise<void>((success) => {
+      getCreatorNFTS(token).then(_nfts => {
+        created = _nfts
+        success();
+      }).catch(success);
+    }));
+    promises.push(new Promise<void>((success) => {
+      getProfileNFTS(token).then(_nfts => {
+        owned = _nfts
+        success();
+      }).catch(success);
+    }));
+    promises.push(new Promise<void>((success) => {
+      getLikedNFTs(token).then(_nfts => {
+        liked = _nfts
+        success();
+      }).catch(success);
+    }));
+    promises.push(new Promise<void>((success) => {
+      getFollowers(token).then(_users => {
+        followers = _users
+        success();
+      }).catch(success);
+    }));
+    promises.push(new Promise<void>((success) => {
+      getFollowed(token).then(_users => {
+        followed = _users
+        success();
+      }).catch(success);
+    }));
   }
-
   if (!user) {
     return {
       redirect: {
@@ -119,7 +139,6 @@ export async function getServerSideProps(ctx: NextPageContext) {
       },
     };
   }
-
   return {
     props: { user, created, owned, liked, followers, followed },
   };

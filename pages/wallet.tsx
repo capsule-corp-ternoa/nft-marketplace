@@ -56,15 +56,8 @@ const WalletPage: React.FC<WalletPageProps> = ({ user }) => {
 
 export async function getServerSideProps(ctx: NextPageContext) {
   let user = null;
-  try {
-    const token = cookies(ctx).token;
-    if (token) {
-      user = await getUser(token);
-    }
-  } catch (error) {
-    console.error(error);
-  }
-
+  const token = cookies(ctx).token;
+  if (token) user = await getUser(token).catch(() => null);
   if (!user) {
     return {
       redirect: {

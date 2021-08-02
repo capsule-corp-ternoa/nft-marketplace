@@ -65,24 +65,31 @@ const PublicProfilePage: React.FC<PublicProfileProps> = ({
   );
 };
 export async function getServerSideProps(ctx: NextPageContext) {
-  try {
-    let user = null;
-    let data: NftType[] = [];
-    try {
-      const token = cookies(ctx).token;
-      if (token) {
-        user = await getUser(token);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-    const profile = await getProfile(ctx.query.name as string);
-    data = await getProfileNFTS(ctx.query.name as string).catch(() => []);
-
-    return {
-      props: { user, profile, data },
-    };
-  } catch {
+  const token = cookies(ctx).token;
+  let user: UserType | null = null, profile: UserType | null = null, data: NftType[] = []
+  const promises = [];
+  if (token) {
+    promises.push(new Promise<void>((success) => {
+      getUser(token).then(_user => {
+        user = _user
+        success();
+      }).catch(success);
+    }));
+  }
+  promises.push(new Promise<void>((success) => {
+    getProfile(ctx.query.name as string).then(_profile => {
+      profile = _profile
+      success();
+    }).catch(success);
+  }));
+  promises.push(new Promise<void>((success) => {
+    getProfileNFTS(ctx.query.name as string).then(_nfts => {
+      data = _nfts
+      success();
+    }).catch(success);
+  }));
+  await Promise.all(promises)
+  if (!user) {
     return {
       redirect: {
         permanent: false,
@@ -90,6 +97,9 @@ export async function getServerSideProps(ctx: NextPageContext) {
       },
     };
   }
+  return {
+    props: { user, profile, data },
+  };
 }
 
 export default PublicProfilePage;

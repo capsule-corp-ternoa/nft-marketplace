@@ -93,6 +93,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
       }).catch(success);
     }));
   }
+  await Promise.all(promises);
   if (!user) {
     return {
       redirect: {

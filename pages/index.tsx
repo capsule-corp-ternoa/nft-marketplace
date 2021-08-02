@@ -81,10 +81,13 @@ export async function getServerSideProps(ctx: NextPageContext) {
   const token = cookies(ctx).token;
   // category code for beta testers NFTs
   const BETA_CODE = '001';
-  let users: any[] = [], user = null, regularNfts: any[] = [], betaNfts: any[] = [];
+  let users: UserType[] = [], user: UserType | null = null, regularNfts: NftType[] = [], betaNfts: NftType[] = []
   try {
-    [users = [], user = null, regularNfts = [], betaNfts = []] = await Promise.all([
-      getUsers(), token ? getUser(token) : Promise.resolve(null), getCategoryNFTs(), getCategoryNFTs(BETA_CODE)
+    [users, user, regularNfts, betaNfts] = await Promise.all([
+      getUsers(), 
+      token ? getUser(token) : Promise.resolve(null), 
+      getCategoryNFTs(), 
+      getCategoryNFTs(BETA_CODE)
     ]).catch(e => {
       throw new Error(e);
     });

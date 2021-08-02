@@ -57,20 +57,24 @@ const ExplorePage: React.FC<ExplorePage> = ({ user, data }) => {
 };
 
 export async function getServerSideProps(ctx: NextPageContext) {
-  let user = null;
-  try {
-    const token = cookies(ctx).token;
-    if (token) {
-      user = await getUser(token);
-    }
-  } catch (error) {
-    console.error(error);
+  const token = cookies(ctx).token;
+  let user: UserType | null = null, data : NftType[] = [];
+  try{
+    [user, data] = await Promise.all([
+      token ? getUser(token) : null,
+      getCategoryNFTs()
+    ]).catch(e => {
+      throw new Error(e);
+    });
   }
-  let data = await getCategoryNFTs().catch(() => []);
-
-  return {
-    props: { user, data },
-  };
+  catch(e){
+    console.error('Error on export function:' + e);
+  }
+  finally{
+    return {
+      props: { user, data },
+    };
+  }
 }
 
 export default ExplorePage;

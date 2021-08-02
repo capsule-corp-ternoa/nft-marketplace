@@ -82,7 +82,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
   // category code for beta testers NFTs
   const BETA_CODE = '001';
   let [users = [], user = null, regularNfts = [], betaNfts = []] = await Promise.all([
-    getUsers(), token ? getUser(token) : null, getCategoryNFTs(), getCategoryNFTs(BETA_CODE)
+    getUsers(), token ? getUser(token) : Promise.resolve(null), getCategoryNFTs(), getCategoryNFTs(BETA_CODE)
   ]).catch(e => {
     console.error('Error retrieving data:' + e);
     return [[], null, [], []]

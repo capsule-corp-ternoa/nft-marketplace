@@ -113,7 +113,7 @@
   padding: 12px 10px;
   cursor: pointer;
   margin: 0px 10px;
-  @media (hover: hover){
+  @media (min-width: 768px){
     &:hover {
       background-color: $primary;
       .LikeSVG {

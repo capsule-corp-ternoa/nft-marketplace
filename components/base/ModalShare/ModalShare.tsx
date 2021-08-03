@@ -29,7 +29,7 @@ export interface ModalWalletProps {
 }
 
 
-const ModalWallets: React.FC<ModalWalletProps> = ({ setModalExpand, title, subject, text, url }) => (
+const ModalShare: React.FC<ModalWalletProps> = ({ setModalExpand, title, subject, text, url }) => (
   <div id="modalWallet" className={style.Background}>
     <div className={style.Container}>
       <Close onClick={() => setModalExpand(false)} className={style.Close} />
@@ -98,4 +98,4 @@ const ModalWallets: React.FC<ModalWalletProps> = ({ setModalExpand, title, subje
   </div>
 );
 
-export default ModalWallets;
+export default ModalShare;

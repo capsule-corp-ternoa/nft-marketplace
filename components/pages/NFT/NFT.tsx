@@ -52,7 +52,7 @@ const NFTPage: React.FC<NFTPageProps> = ({
   const shareText = `Check out ${NFT.name ? NFT.name : "this nft"} on secret-nft.com`
   const shareUrl = (typeof window!=="undefined" && window.location?.href) || `https://www.secret-nft.com/nft/${NFT.id}`
   
-  const handleLikeDislike = async () => {
+  const handleLikeDislike = async (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     try{
       let res = null
       if (!likeLoading && user){
@@ -65,6 +65,7 @@ const NFTPage: React.FC<NFTPageProps> = ({
       }
       if (res !== null) setUser({...user, ...res})
       setLikeLoading(false)
+      e.currentTarget.blur()
     }catch(err){
       console.error(err)
     }
@@ -72,15 +73,17 @@ const NFTPage: React.FC<NFTPageProps> = ({
 
   const handleShare = async () => {
     try{
-      if (window && window.isRNApp && navigator){
-        await navigator.share({
-          title: shareSubject,
-          text: shareText,
-          url: shareUrl
-        })
-      }else{
-        setModalShareOpen(true)
-      }
+      // TODO : Make share with native
+      // if (window && window.isRNApp && navigator){
+      //   await navigator.share({
+      //     title: shareSubject,
+      //     text: shareText,
+      //     url: shareUrl
+      //   })
+      // }else{
+      //   setModalShareOpen(true)
+      // }
+      setModalShareOpen(true)
     }catch(err){
       console.error(err)
     }
@@ -110,7 +113,7 @@ const NFTPage: React.FC<NFTPageProps> = ({
               </div>
               <div 
                 className={`${style.Like} ${user?.likedNFTs?.includes(NFT.id) ? style.Liked : ""} ${(likeLoading || !user) ? style.DisabledLike : ""}`}
-                onClick={() => handleLikeDislike()}
+                onClick={(e) => handleLikeDislike(e)}
               >
                 <Like className={style.LikeSVG} />
               </div>

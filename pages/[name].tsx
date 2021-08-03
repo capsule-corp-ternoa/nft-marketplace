@@ -26,6 +26,7 @@ const PublicProfilePage: React.FC<PublicProfileProps> = ({
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
   const [walletUser, setWalletUser] = useState(user);
+  const [viewProfile, setViewProfile] = useState(profile);
 
   useEffect(() => {
     async function callBack() {
@@ -42,11 +43,11 @@ const PublicProfilePage: React.FC<PublicProfileProps> = ({
   return (
     <>
       <Head>
-        <title>SecretNFT - {profile.name}</title>
+        <title>SecretNFT - {viewProfile.name}</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta
           name="description"
-          content={`Ternoart - ${profile.name} profile page.`}
+          content={`Ternoart - ${viewProfile.name} profile page.`}
         />
         <meta name="og:image" content="ternoa-social-banner.jpg" />
       </Head>
@@ -56,7 +57,9 @@ const PublicProfilePage: React.FC<PublicProfileProps> = ({
       <MainHeader user={walletUser} setModalExpand={setModalExpand} />
       <PublicProfile
         user={walletUser}
-        profile={profile}
+        setUser={setWalletUser}
+        profile={viewProfile}
+        setProfile={setViewProfile}
         NFTS={data}
         setModalExpand={setModalExpand}
         setNotAvailable={setNotAvailable}
@@ -77,7 +80,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
     }));
   }
   promises.push(new Promise<void>((success) => {
-    getProfile(ctx.query.name as string).then(_profile => {
+    getProfile(ctx.query.name as string, token ? token : null).then(_profile => {
       profile = _profile
       success();
     }).catch(success);
@@ -89,7 +92,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
     }).catch(success);
   }));
   await Promise.all(promises)
-  if (!user) {
+  if (!profile) {
     return {
       redirect: {
         permanent: false,

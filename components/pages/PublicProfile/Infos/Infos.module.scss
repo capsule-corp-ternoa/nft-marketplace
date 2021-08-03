@@ -154,10 +154,15 @@
   }
 }
 
+.ButtonDisabled {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
 .Bottom {
   display: flex;
   align-items: center;
-  font-family: "Airbnb Cereal App Light";
+  font-family: "Airbnb Cereal App Book";
   font-size: 16px;
   line-height: 20px;
   margin-top: 10px;
@@ -173,10 +178,6 @@
   font-family: "Airbnb Cereal App Bold";
   margin-right: 4px;
   margin-top: 0.5px;
-}
-
-.Hide {
-  display: none;
 }
 
 @media (max-width: 1300px) {

@@ -15,8 +15,11 @@ export interface FloatingMenuProps {
   scope: string;
   ownedAmount: number;
   createdAmount: number;
+  likedAmount: number;
   listedOwnedAmount: number;
   unlistedOwnedAmount: number;
+  followersAmount: number;
+  followedAmount: number;
 }
 
 const FloatingMenu: React.FC<FloatingMenuProps> = ({
@@ -25,8 +28,11 @@ const FloatingMenu: React.FC<FloatingMenuProps> = ({
   setExpand,
   ownedAmount,
   createdAmount,
+  likedAmount,
   listedOwnedAmount,
   unlistedOwnedAmount,
+  followersAmount,
+  followedAmount,
 }) => {
   const router = useRouter();
 
@@ -87,29 +93,71 @@ const FloatingMenu: React.FC<FloatingMenuProps> = ({
         <div className={style.Section}>
           <div
             onClick={() => {
-              setScope('My listed NFTs')
+              setScope('Liked')
               setExpand(false)
             }}
-            className={returnActiveTitle('My listed NFTs')}
+            className={returnActiveTitle('Liked')}
           >
-            Listed
+            Liked
           </div>
-          <div className={returnActiveNumber('My listed NFTs')}>
+          <div className={returnActiveNumber('Liked')}>
+            {likedAmount}
+          </div>
+        </div>
+        <div className={style.Section}>
+          <div
+            onClick={() => {
+              setScope('My NFTs on sale')
+              setExpand(false)
+            }}
+            className={returnActiveTitle('My NFTs on sale')}
+          >
+            On sale
+          </div>
+          <div className={returnActiveNumber('My NFTs on sale')}>
             {listedOwnedAmount}
           </div>
         </div>
         <div className={style.Section}>
           <div
             onClick={() => {
-              setScope('My unlisted NFTs')
+              setScope('My NFTs not for sale')
               setExpand(false)
             }}
-            className={returnActiveTitle('My unlisted NFTs')}
+            className={returnActiveTitle('My NFTs not for sale')}
           >
-            Unlisted
+            Not on sale
           </div>
-          <div className={returnActiveNumber('My unlisted NFTs')}>
+          <div className={returnActiveNumber('My NFTs not for sale')}>
             {unlistedOwnedAmount}
+          </div>
+        </div>
+        <div className={style.Section}>
+          <div
+            onClick={() => {
+              setScope('Followers')
+              setExpand(false)
+            }}
+            className={returnActiveTitle('Followers')}
+          >
+            Followers
+          </div>
+          <div className={returnActiveNumber('Followers')}>
+            {followersAmount}
+          </div>
+        </div>
+        <div className={style.Section}>
+          <div
+            onClick={() => {
+              setScope('Followed')
+              setExpand(false)
+            }}
+            className={returnActiveTitle('Followed')}
+          >
+            Followed
+          </div>
+          <div className={returnActiveNumber('Followed')}>
+            {followedAmount}
           </div>
         </div>
         <div onClick={disconnect} className={style.Logoff}>

@@ -96,6 +96,7 @@ const NftPage: React.FC<NFTPageProps> = ({ user, NFT, capsValue }) => {
         setModalExpand={setModalExpand}
         setNotAvailable={setNotAvailable}
         user={walletUser}
+        setUser={setWalletUser}
         type={type}
         capsValue={capsValue}
       />
@@ -116,7 +117,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
     }));
   }
   promises.push(new Promise<void>((success) => {
-    getNFT(ctx.query.name as string).then(_nft => {
+    getNFT(ctx.query.name as string, true, token ? token : null).then(_nft => {
       NFT = _nft
       success();
     }).catch(success);
@@ -128,7 +129,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
     }).catch(success);
   }));
   await Promise.all(promises);
-  if (!user) {
+  if (!NFT) {
     return {
       redirect: {
         permanent: false,

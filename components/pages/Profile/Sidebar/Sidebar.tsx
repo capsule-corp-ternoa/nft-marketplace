@@ -20,8 +20,11 @@ export interface SidebarProps {
   user: UserType;
   ownedAmount: number;
   createdAmount: number;
+  likedAmount: number;
   listedOwnedAmount: number;
   unlistedOwnedAmount: number;
+  followersAmount: number;
+  followedAmount: number;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({
@@ -31,8 +34,11 @@ const Sidebar: React.FC<SidebarProps> = ({
   setExpand,
   ownedAmount,
   createdAmount,
+  likedAmount,
   listedOwnedAmount,
   unlistedOwnedAmount,
+  followersAmount,
+  followedAmount
 }) => {
   const router = useRouter();
   const bgGradient = user ? { background: gradient(user.name) } : {};
@@ -131,24 +137,57 @@ const Sidebar: React.FC<SidebarProps> = ({
         </div>
         <div className={style.Section}>
           <div
-            onClick={() => setScope('My listed NFTs')}
-            className={returnActiveTitle('My listed NFTs')}
+            onClick={() => setScope('Liked')}
+            className={returnActiveTitle('Liked')}
           >
-            Listed
+            Liked
           </div>
-          <div className={returnActiveNumber('My listed NFTs')}>
+          <div className={returnActiveNumber('Liked')}>
+            {likedAmount}
+          </div>
+        </div>
+        <div className={style.Section}>
+          <div
+            onClick={() => setScope('My NFTs on sale')}
+            className={returnActiveTitle('My NFTs on sale')}
+          >
+            On sale
+          </div>
+          <div className={returnActiveNumber('My NFTs on sale')}>
             {listedOwnedAmount}
           </div>
         </div>
         <div className={style.Section}>
           <div
-            onClick={() => setScope('My unlisted NFTs')}
-            className={returnActiveTitle('My unlisted NFTs')}
+            onClick={() => setScope('My NFTs not for sale')}
+            className={returnActiveTitle('My NFTs not for sale')}
           >
-            Unlisted
+            Not on sale
           </div>
-          <div className={returnActiveNumber('My unlisted NFTs')}>
+          <div className={returnActiveNumber('My NFTs not for sale')}>
             {unlistedOwnedAmount}
+          </div>
+        </div>
+        <div className={style.Section}>
+          <div
+            onClick={() => setScope('Followers')}
+            className={returnActiveTitle('Followers')}
+          >
+            Followers
+          </div>
+          <div className={returnActiveNumber('Followers')}>
+            {followersAmount}
+          </div>
+        </div>
+        <div className={style.Section}>
+          <div
+            onClick={() => setScope('Followed')}
+            className={returnActiveTitle('Followed')}
+          >
+            Followed
+          </div>
+          <div className={returnActiveNumber('Followed')}>
+            {followedAmount}
           </div>
         </div>
         <div className={style.Disconnect} onClick={disconnect}>

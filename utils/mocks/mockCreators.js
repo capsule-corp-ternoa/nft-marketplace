@@ -6,7 +6,7 @@ const creators = [
     description: 'fdsfsdfqf',
     nbFollowers: 0,
     nbFollowing: 0,
-    views: 0,
+    viewsCount: 0,
     walletId: 'fhsfqhjdfhkqjsfhdkj',
   },
   {
@@ -16,7 +16,7 @@ const creators = [
     description: 'fdsfsdfqf',
     nbFollowers: 0,
     nbFollowing: 0,
-    views: 0,
+    viewsCount: 0,
     walletId: 'fhsfqhjdfhkqjsfhdkj',
   },
   {
@@ -26,7 +26,7 @@ const creators = [
     description: 'fdsfsdfqf',
     nbFollowers: 0,
     nbFollowing: 0,
-    views: 0,
+    viewsCount: 0,
     walletId: 'fhsfqhjdfhkqjsfhdkj',
   },
   {
@@ -36,7 +36,7 @@ const creators = [
     description: 'fdsfsdfqf',
     nbFollowers: 0,
     nbFollowing: 0,
-    views: 0,
+    viewsCount: 0,
     walletId: 'fhsfqhjdfhkqjsfhdkj',
   },
   {
@@ -46,7 +46,7 @@ const creators = [
     description: 'fdsfsdfqf',
     nbFollowers: 0,
     nbFollowing: 0,
-    views: 0,
+    viewsCount: 0,
     walletId: 'fhsfqhjdfhkqjsfhdkj',
   },
   {
@@ -56,7 +56,7 @@ const creators = [
     description: 'fdsfsdfqf',
     nbFollowers: 0,
     nbFollowing: 0,
-    views: 0,
+    viewsCount: 0,
     walletId: 'fhsfqhjdfhkqjsfhdkj',
   },
   {
@@ -66,7 +66,7 @@ const creators = [
     description: 'fdsfsdfqf',
     nbFollowers: 0,
     nbFollowing: 0,
-    views: 0,
+    viewsCount: 0,
     walletId: 'fhsfqhjdfhkqjsfhdkj',
   },
   {
@@ -76,7 +76,7 @@ const creators = [
     description: 'fdsfsdfqf',
     nbFollowers: 0,
     nbFollowing: 0,
-    views: 0,
+    viewsCount: 0,
     walletId: 'fhsfqhjdfhkqjsfhdkj',
   },
   {
@@ -86,7 +86,7 @@ const creators = [
     description: 'fdsfsdfqf',
     nbFollowers: 0,
     nbFollowing: 0,
-    views: 0,
+    viewsCount: 0,
     walletId: 'fhsfqhjdfhkqjsfhdkj',
   },
   {
@@ -96,7 +96,7 @@ const creators = [
     description: 'fdsfsdfqf',
     nbFollowers: 0,
     nbFollowing: 0,
-    views: 0,
+    viewsCount: 0,
     walletId: 'fhsfqhjdfhkqjsfhdkj',
   },
   {
@@ -106,7 +106,7 @@ const creators = [
     description: 'fdsfsdfqf',
     nbFollowers: 0,
     nbFollowing: 0,
-    views: 0,
+    viewsCount: 0,
     walletId: 'fhsfqhjdfhkqjsfhdkj',
   },
   {
@@ -116,7 +116,7 @@ const creators = [
     description: 'fdsfsdfqf',
     nbFollowers: 0,
     nbFollowing: 0,
-    views: 0,
+    viewsCount: 0,
     walletId: 'fhsfqhjdfhkqjsfhdkj',
   },
 ];

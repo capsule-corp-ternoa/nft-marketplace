@@ -49,7 +49,7 @@ const ExplorePage: React.FC<ExplorePage> = ({ user, data }) => {
       {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
       <AlphaBanner />
       <MainHeader user={walletUser} setModalExpand={setModalExpand} />
-      <Explore NFTS={data} />
+      <Explore NFTS={data} user={walletUser} setUser={setWalletUser} />
       <Footer setNotAvailable={setNotAvailable} />
       <FloatingHeader user={walletUser} setModalExpand={setModalExpand} />
     </>

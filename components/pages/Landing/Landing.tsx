@@ -52,10 +52,10 @@ const Landing: React.FC<LandingProps> = ({
     <div className={style.Container}>
       <Hero users={users} />
       {totalCountNFT === 0 && <NoNFTComponent/>}
-      <Showcase category="Beta Testers" NFTs={betaNfts}/>
-      <Showcase category="Most popular" NFTs={popularNfts}/>
-      <Showcase category="Best sellers" NFTs={bestSellingNfts}/>
-      <ArtCreators NFTs={NFTCreators} creators={users}/>
+      <Showcase category="Beta Testers" NFTs={betaNfts} user={walletUser} setUser={setWalletUser}/>
+      <Showcase category="Most popular" NFTs={popularNfts} user={walletUser} setUser={setWalletUser} />
+      <Showcase category="Best sellers" NFTs={bestSellingNfts} user={walletUser} setUser={setWalletUser}/>
+      <ArtCreators NFTs={NFTCreators} creators={users} user={walletUser} setUser={setWalletUser}/>
       <Link href="/explore">
         <a className={style.Button}>See more</a>
       </Link>

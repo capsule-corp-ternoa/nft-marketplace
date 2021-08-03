@@ -9,15 +9,19 @@ import { NftType, UserType } from 'interfaces';
 
 export interface PublicProfileProps {
   user: UserType;
+  setUser?: (u: UserType) => void;
   setNotAvailable: (b: boolean) => void;
   setModalExpand: (b: boolean) => void;
   NFTS: NftType[];
   profile: UserType;
+  setProfile: (u: UserType) => void;
 }
 
 const PublicProfile: React.FC<PublicProfileProps> = ({
   user,
+  setUser,
   profile,
+  setProfile,
   NFTS,
   setModalExpand,
   setNotAvailable,
@@ -25,7 +29,12 @@ const PublicProfile: React.FC<PublicProfileProps> = ({
   function returnNFTs() {
     return NFTS.map((item: NftType) => (
       <div key={item.id} className={style.NFTShell}>
-        <NFTCard mode="profile" item={item} />
+        <NFTCard 
+          mode="profile" 
+          item={item}
+          user={user}
+          setUser={setUser}
+        />
       </div>
     ));
   }
@@ -39,7 +48,7 @@ const PublicProfile: React.FC<PublicProfileProps> = ({
           alt="banner"
         />
       </div>
-      <Infos user={profile} />
+      <Infos profile={profile} setProfile={setProfile} user={user} />
       <div className={style.NFTWrapper}>{returnNFTs()}</div>
       <FloatingHeader user={user} setModalExpand={setModalExpand} />
       <Footer setNotAvailable={setNotAvailable} />

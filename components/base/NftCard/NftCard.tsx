@@ -117,7 +117,7 @@ const NftCard: React.FC<NftCardProps> = ({
         }
       />
       <span className={style.QtyLabel}>
-        {`${typeof item.totalListedNft !== 'undefined' ? item.totalListedNft : 1}/${typeof item.totalNft !== 'undefined' ? item.totalNft : 1}`}
+        {`${typeof item.totalListedNft !== 'undefined' ? item.totalListedNft : 1}`}
       </span>
       {item.cryptedMedia?.url !== item.media?.url && !isHovering && (
         <span className={style.SecretLabel}>S</span>

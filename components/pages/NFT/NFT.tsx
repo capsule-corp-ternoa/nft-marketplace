@@ -140,7 +140,6 @@ const NFTPage: React.FC<NFTPageProps> = ({
                 <span className={style.QuantityCount}>
                   {typeof NFT.totalListedNft !== 'undefined' ? NFT.totalListedNft : 1}
                 </span>
-                {` of ${typeof NFT.totalNft !== 'undefined' ? NFT.totalNft : 1}`}
               </div>
               <div
                 onClick={() => NFT.listed && userCanBuy && setExp(2)}

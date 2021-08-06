@@ -108,11 +108,31 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: $primary;
+  border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 50%;
   padding: 12px 10px;
   cursor: pointer;
   margin: 0px 10px;
+  @media (min-width: 768px){
+    &:hover {
+      background-color: $primary;
+      .LikeSVG {
+        fill: white;
+      }
+    }
+  }
+}
+
+.DisabledLike {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.Liked {
+  background-color: $primary;
+  .LikeSVG {
+    fill: white;
+  }
 }
 
 .Share {
@@ -123,6 +143,12 @@
   border-radius: 50%;
   padding: 10px;
   cursor: pointer;
+  &:hover {
+    background-color: $primary;
+    .ShareSVG {
+      fill: white;
+    }
+  }
 }
 .ShareSVG {
   width: 14px;
@@ -264,6 +290,7 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
+  align-self: center;
 }
 
 .Price {

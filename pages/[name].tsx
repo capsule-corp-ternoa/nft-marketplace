@@ -16,18 +16,17 @@ export interface PublicProfileProps {
   user: UserType;
   profile: UserType;
   data: NftType[];
-  series: { [serieId: string]: number };
 }
 
 const PublicProfilePage: React.FC<PublicProfileProps> = ({
   user,
   data,
   profile,
-  series,
 }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
   const [walletUser, setWalletUser] = useState(user);
+  const [viewProfile, setViewProfile] = useState(profile);
 
   useEffect(() => {
     async function callBack() {
@@ -44,11 +43,11 @@ const PublicProfilePage: React.FC<PublicProfileProps> = ({
   return (
     <>
       <Head>
-        <title>SecretNFT - {profile.name}</title>
+        <title>SecretNFT - {viewProfile.name}</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta
           name="description"
-          content={`Ternoart - ${profile.name} profile page.`}
+          content={`Ternoart - ${viewProfile.name} profile page.`}
         />
         <meta name="og:image" content="ternoa-social-banner.jpg" />
       </Head>
@@ -58,9 +57,10 @@ const PublicProfilePage: React.FC<PublicProfileProps> = ({
       <MainHeader user={walletUser} setModalExpand={setModalExpand} />
       <PublicProfile
         user={walletUser}
-        profile={profile}
+        setUser={setWalletUser}
+        profile={viewProfile}
+        setProfile={setViewProfile}
         NFTS={data}
-        series={series}
         setModalExpand={setModalExpand}
         setNotAvailable={setNotAvailable}
       />
@@ -68,27 +68,31 @@ const PublicProfilePage: React.FC<PublicProfileProps> = ({
   );
 };
 export async function getServerSideProps(ctx: NextPageContext) {
-  try {
-    let user = null;
-    let data: NftType[] = [];
-    let series = {};
-    try {
-      const token = cookies(ctx).token;
-      if (token) {
-        user = await getUser(token);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-    const profile = await getProfile(ctx.query.name as string);
-    [data, series] = await getProfileNFTS(ctx.query.name as string).catch(
-      () => [[], {}]
-    );
-
-    return {
-      props: { user, profile, data, series },
-    };
-  } catch {
+  const token = cookies(ctx).token;
+  let user: UserType | null = null, profile: UserType | null = null, data: NftType[] = []
+  const promises = [];
+  if (token) {
+    promises.push(new Promise<void>((success) => {
+      getUser(token).then(_user => {
+        user = _user
+        success();
+      }).catch(success);
+    }));
+  }
+  promises.push(new Promise<void>((success) => {
+    getProfile(ctx.query.name as string, token ? token : null).then(_profile => {
+      profile = _profile
+      success();
+    }).catch(success);
+  }));
+  promises.push(new Promise<void>((success) => {
+    getProfileNFTS(ctx.query.name as string).then(_nfts => {
+      data = _nfts
+      success();
+    }).catch(success);
+  }));
+  await Promise.all(promises)
+  if (!profile) {
     return {
       redirect: {
         permanent: false,
@@ -96,6 +100,9 @@ export async function getServerSideProps(ctx: NextPageContext) {
       },
     };
   }
+  return {
+    props: { user, profile, data },
+  };
 }
 
 export default PublicProfilePage;

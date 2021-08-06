@@ -38,8 +38,8 @@ const Create: React.FC<CreateProps> = ({
   setNFT,
   secretNFT,
   setSecretNFT,
-  NFTData,
-  setNFTData,
+  NFTData: initalValue,
+  setNFTData: setNftDataToParent,
   user,
   select,
   setSelect,
@@ -49,19 +49,28 @@ const Create: React.FC<CreateProps> = ({
 }) => {
   const [exp, setExp] = useState(false);
   const [isRN, setIsRN] = useState(false);
-
-  const { name, description, quantity } = NFTData;
+  const [nftData, setNFTData] = useState({} as NFTProps)
+  const { name, description, quantity } = nftData;
 
   useEffect(() => {
     setIsRN(window.isRNApp);
+    setNFTData(initalValue)
   });
+
+  const validateQuantity = (value: number, limit: number) => {
+    return (value && value > 0 && value <= limit)
+  }
+
+  const isDataValid = name && description && validateQuantity(quantity, 10) && select !== 'Select NFT Option'
 
   function onChange(
     e:
       | React.ChangeEvent<HTMLInputElement>
       | React.ChangeEvent<HTMLTextAreaElement>
   ) {
-    setNFTData({ ...NFTData, [e.target.name]: e.target.value });
+    const nextNftData = { ...nftData, [e.target.name]: e.target.value }
+    setNFTData(nextNftData);
+    setNftDataToParent(nextNftData);
   }
 
   function returnType(NFTarg: File) {
@@ -130,7 +139,6 @@ const Create: React.FC<CreateProps> = ({
               <Eye className={style.EyeSVG} />
               NFT Preview
             </span>
-            {/* <div className={style.Label}>Coming Soon</div> */}
           </div>
           <div className={style.Data}>
             <div className={style.Left}>
@@ -248,7 +256,7 @@ const Create: React.FC<CreateProps> = ({
                   value={quantity}
                   onChange={onChange}
                   placeholder="1"
-                  className={style.Input}
+                  className={`${style.Input} ${quantity && !validateQuantity(quantity, 10) ? style.InputError : ""}`}
                 />
               </div>
 
@@ -318,7 +326,10 @@ const Create: React.FC<CreateProps> = ({
             </div>
           </div>
           {!isRN && (
-            <div className={style.Create} onClick={() => uploadFiles()}>
+            <div 
+              className={`${style.Create} ${!isDataValid ? style.CreateDisabled : ""}`}
+              onClick={() => isDataValid && uploadFiles()}
+            >
               Create NFT
             </div>
           )}

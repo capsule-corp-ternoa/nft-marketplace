@@ -10,7 +10,7 @@ import arrayShuffle from 'array-shuffle';
 import cookies from 'next-cookies';
 
 import { getUser, getUsers } from 'actions/user';
-import { getCategoryNFTs, getNFTS } from 'actions/nft';
+import { getCategoryNFTs } from 'actions/nft';
 import { NftType, UserType } from 'interfaces';
 import { NextPageContext } from 'next';
 
@@ -21,8 +21,6 @@ export interface LandingProps {
   bestSellingNfts: NftType[];
   betaNfts: NftType[];
   NFTCreators: NftType[];
-  series: { [serieId: string]: number };
-  betaSeries: { [serieId: string]: number };
   totalCountNFT: number;
 }
 
@@ -32,9 +30,7 @@ const LandingPage: React.FC<LandingProps> = ({
   popularNfts,
   bestSellingNfts,
   betaNfts,
-  betaSeries,
   NFTCreators,
-  series,
   totalCountNFT,
 }) => {
   const [modalExpand, setModalExpand] = useState(false);
@@ -74,53 +70,51 @@ const LandingPage: React.FC<LandingProps> = ({
         popularNfts={popularNfts}
         bestSellingNfts={bestSellingNfts}
         betaNfts={betaNfts}
-        betaSeries={betaSeries}
         NFTCreators={NFTCreators}
-        series={series}
         totalCountNFT={totalCountNFT}
       />
     </>
   );
 };
-
 export async function getServerSideProps(ctx: NextPageContext) {
-  let user = null;
-  let users = await getUsers().catch(() => []);
-
-  try {
-    const token = cookies(ctx).token;
-    if (token) {
-      user = await getUser(token);
-    }
-  } catch (error) {
-    console.error(error);
-  }
-
-  users = arrayShuffle(users);
-
+  const token = cookies(ctx).token;
   // category code for beta testers NFTs
   const BETA_CODE = '001';
-
-  let [regularNfts, regularSeries] = await getNFTS().catch(() => [[], {}]);
-
-  // filter out beta nfts from regular nfts
-  regularNfts = regularNfts.filter(
-    (nft: NftType) =>
-      !nft.categories || (nft.categories && !nft.categories.includes(BETA_CODE))
-  );
-
-  // get nfts with beta category from api
-  let [betaNfts, betaSeries] = await getCategoryNFTs(BETA_CODE).catch(() => [
-    [],
-    {},
-  ]);
-  betaNfts = arrayShuffle(betaNfts).slice(0, 8);
-
-  let popularNfts = arrayShuffle(regularNfts.slice(0, 8));
-  let bestSellingNfts = arrayShuffle(regularNfts.slice(9, 17));
-
-  let NFTCreators = arrayShuffle(regularNfts.slice(18, 21));
-  let totalCountNFT = regularNfts.length + betaNfts.length;
+  let users: UserType[] = [], user: UserType | null = null, regularNfts: NftType[] = [], betaNfts: NftType[] = [];
+  const promises = [];
+  promises.push(new Promise<void>((success) => {
+    getUsers().then(_users => {
+      users = _users
+      success();
+    }).catch(success);
+  }));
+  if (token) {
+    promises.push(new Promise<void>((success) => {
+      getUser(token).then(_user => {
+        user = _user
+        success();
+      }).catch(success);
+    }));
+  }
+  promises.push(new Promise<void>((success) => {
+    getCategoryNFTs().then(_regularNfts => {
+      regularNfts = _regularNfts
+      success();
+    }).catch(success);
+  }));
+  promises.push(new Promise<void>((success) => {
+    getCategoryNFTs(BETA_CODE).then(_betaNfts => {
+      betaNfts = _betaNfts
+      success();
+    }).catch(success);
+  }));
+  await Promise.all(promises);
+  users = arrayShuffle(users);
+  betaNfts = arrayShuffle(betaNfts || []).slice(0, 8);
+  let popularNfts = arrayShuffle((regularNfts || []).slice(0, 8));
+  let bestSellingNfts = arrayShuffle((regularNfts || []).slice(9, 17));
+  let NFTCreators = arrayShuffle((regularNfts || []).slice(18, 21));
+  let totalCountNFT = (regularNfts || []).length + (betaNfts || []).length;
   return {
     props: {
       user,
@@ -129,11 +123,9 @@ export async function getServerSideProps(ctx: NextPageContext) {
       bestSellingNfts,
       NFTCreators,
       betaNfts,
-      series: regularSeries,
-      betaSeries,
       totalCountNFT,
     },
-  };
+  }
 }
 
 export default LandingPage;

@@ -5,9 +5,9 @@ import style from './ModalShowcase.module.scss';
 import Close from 'components/assets/close';
 import Wallet from 'components/assets/wallet';
 
-import { computeCaps } from 'utils/strings';
 import Media from 'components/base/Media';
 
+import { computeCaps, computeTiime } from 'utils/strings';
 import { NftType, UserType } from 'interfaces';
 
 export interface ModalProps {
@@ -64,20 +64,39 @@ const Modal: React.FC<ModalProps> = ({
               </div>
 
               <div className={style.PricingContainer}>
-                <div className={style.SB}>
-                  <div className={style.PriceNumber}>
-                    {computeCaps(Number(NFT.price))}
+                
+                {NFT.price && Number(NFT.price)>0 &&
+                  <div className={style.SB}>
+                    <div className={style.PriceNumber}>
+                      {computeCaps(Number(NFT.price))}
+                    </div>
+                    <div className={style.PriceCaps}>CAPS</div>
                   </div>
-                  <div className={style.PriceCaps}>CAPS</div>
-                </div>
+                }
+                {NFT.price && Number(NFT.price)>0 && NFT.priceTiime && Number(NFT.priceTiime)>0 && 
+                  <div className={style.OrLabel}>
+                    OR
+                  </div>
+                }
+                {NFT.priceTiime && Number(NFT.priceTiime)>0 &&
+                  <div className={style.SB}>
+                    <div className={style.PriceNumber}>
+                      {computeTiime(Number(NFT.priceTiime))}
+                    </div>
+                    <div className={style.PriceCaps}>TIIME</div>
+                  </div>
+                }
+                
+                
                 <div className={style.Line} />
                 <div className={style.SB}>
                   <div className={style.SBLight}>Your balance</div>
                   <div className={style.SBLight}>
-                    {user && user.capsAmount
-                      ? computeCaps(Number(user.capsAmount))
-                      : 0}{' '}
-                    CAPS
+                    {`
+                      ${user && user.capsAmount ? computeCaps(Number(user.capsAmount)) : 0} CAPS
+                      |
+                      ${user && user.tiimeAmount ? computeCaps(Number(user.tiimeAmount)) : 0} TIIME
+                    `}
                   </div>
                 </div>
               </div>

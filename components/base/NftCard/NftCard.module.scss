@@ -104,23 +104,37 @@
 }
 
 .Favorite {
-  background-color: $primary;
+  background-color: white;
   align-self: flex-end;
   margin-right: 16px;
-  margin-top: 16px;
-  padding: 8px 16px;
+  margin-top: 15px;
+  padding: 8px 6px;
   z-index: 4;
-  border-radius: 20px;
-  font-family: "Airbnb Cereal App Medium";
-  font-size: 20px;
-  color: white;
+  border: 1px solid white;
+  border-radius: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.3);
+  &:hover {
+    background-color: $primary;
+    border: 1px solid $primary;
+  }
 }
+
 .HeartSVG {
   width: 18px;
+  fill: white;
+}
+
+.Favorited {
+  background-color: $primary;
+  border: 1px solid $primary;
+}
+
+.Disabled {
+  opacity: 0.7;
 }
 
 .Infos {
@@ -303,8 +317,7 @@
   }
 
   .Favorite {
-    padding: 6px 12px;
-    font-size: 16px;
+    padding: 7px 6px;
     top: 12px;
     right: 12px;
   }

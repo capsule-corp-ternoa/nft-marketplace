@@ -10,7 +10,7 @@ import NotAvailableModal from 'components/base/NotAvailable';
 import cookies from 'next-cookies';
 
 import { getUser } from 'actions/user';
-import { getNFT, getTotalOnSaleCountNFT } from 'actions/nft';
+import { getNFT } from 'actions/nft';
 import { getCapsValue } from 'actions/caps';
 import { NftType, UserType } from 'interfaces';
 import { NextPageContext } from 'next';
@@ -21,10 +21,9 @@ export interface NFTPageProps {
   user: UserType;
   NFT: NftType;
   capsValue: number;
-  totalOnSaleCount: number;
 }
 
-const NftPage: React.FC<NFTPageProps> = ({ user, NFT, capsValue, totalOnSaleCount }) => {
+const NftPage: React.FC<NFTPageProps> = ({ user, NFT, capsValue }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [exp, setExp] = useState(0);
   const [notAvailable, setNotAvailable] = useState(false);
@@ -97,48 +96,40 @@ const NftPage: React.FC<NFTPageProps> = ({ user, NFT, capsValue, totalOnSaleCoun
         setModalExpand={setModalExpand}
         setNotAvailable={setNotAvailable}
         user={walletUser}
+        setUser={setWalletUser}
         type={type}
         capsValue={capsValue}
-        totalOnSaleCount={totalOnSaleCount}
       />
     </>
   );
 };
 
 export async function getServerSideProps(ctx: NextPageContext) {
-  try {
-    let user = null;
-    try {
-      const token = cookies(ctx).token;
-      if (token) {
-        user = await getUser(token);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-    let NFT = await getNFT(ctx.query.name as string);
-
-    let capsValue = 0;
-
-    try {
-      capsValue = Number(await getCapsValue());
-    } catch (error) {
-      console.error(error);
-    }
-
-    let totalOnSaleCount = 0 
-    try{
-      if (NFT && NFT.serieId && NFT.serieId!=="0"){
-        totalOnSaleCount = await getTotalOnSaleCountNFT(NFT.serieId);
-      }
-    }catch(error){
-      console.error(error);
-    }
-
-    return {
-      props: { user, NFT, capsValue, totalOnSaleCount },
-    };
-  } catch {
+  const token = cookies(ctx).token;
+  let user: UserType | null = null, NFT: NftType | null = null, capsValue: number = 0
+  const promises = [];
+  if (token) {
+    promises.push(new Promise<void>((success) => {
+      getUser(token).then(_user => {
+        user = _user
+        success();
+      }).catch(success);
+    }));
+  }
+  promises.push(new Promise<void>((success) => {
+    getNFT(ctx.query.name as string, true, token ? token : null).then(_nft => {
+      NFT = _nft
+      success();
+    }).catch(success);
+  }));
+  promises.push(new Promise<void>((success) => {
+    getCapsValue().then(_value => {
+      capsValue = _value
+      success();
+    }).catch(success);
+  }));
+  await Promise.all(promises);
+  if (!NFT) {
     return {
       redirect: {
         permanent: false,
@@ -146,6 +137,9 @@ export async function getServerSideProps(ctx: NextPageContext) {
       },
     };
   }
+  return {
+    props: { user, NFT, capsValue },
+  };
 }
 
 export default NftPage;

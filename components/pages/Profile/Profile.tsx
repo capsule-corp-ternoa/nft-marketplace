@@ -11,27 +11,41 @@ import FloatingMenu from './FloatingMenu';
 import Edit from './Edit';
 import Switch from 'react-switch';
 import { NftType, UserType } from 'interfaces';
+import { follow, unfollow } from 'actions/follower';
 
 export interface ProfileProps {
   setModalExpand: (b: boolean) => void;
   setNotAvailable: (b: boolean) => void;
+  setSuccessPopup: (b: boolean) => void;
   user: UserType;
-  creators: UserType[];
+  setUser: (u: UserType) => void;
   ownedNFTS: NftType[];
+  setOwnedNFTS: (nfts: NftType[]) => void;
   createdNFTS: NftType[];
-  ownedSeries: { [serieId: string]: number };
-  createdSeries: { [serieId: string]: number };
+  setCreatedNFTS: (nfts: NftType[]) => void;
+  likedNfts: NftType[];
+  setLikedNfts: (nfts: NftType[]) => void;
+  followers: UserType[];
+  setFollowers: (nfts: UserType[]) => void;
+  followed: UserType[];
+  setFollowed: (nfts: UserType[]) => void;
+
 }
 
 const Profile: React.FC<ProfileProps> = ({
   user,
+  setUser,
   ownedNFTS,
   createdNFTS,
-  creators,
+  likedNfts,
+  setLikedNfts,
+  followers,
+  followed,
+  setFollowers,
+  setFollowed,
   setModalExpand,
   setNotAvailable,
-  ownedSeries,
-  createdSeries,
+  setSuccessPopup,
 }) => {
   const [isFiltered, setIsFiltered] = useState(false);
   const [scope, setScope] = useState('My NFTs');
@@ -40,11 +54,39 @@ const Profile: React.FC<ProfileProps> = ({
     user.banner ??
       'https://images.unsplash.com/photo-1579546929518-9e396f3cc809?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2250&q=80'
   );
+  const listedOwnedNFTS = ownedNFTS.filter(x=>x.listed===1)
+  const unlistedOwnedNFTS = ownedNFTS.filter(x=>x.listed===0)
   const [, setSearchValue] = useState('' as string);
 
   const updateKeywordSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.currentTarget.value);
   };
+
+  const handleFollow = async (profileWalletId: string, isUnfollow:boolean=false) => {
+    try {
+      let res = !isUnfollow ? await follow(profileWalletId, user.walletId) : await unfollow(profileWalletId, user.walletId);
+      if (res) {
+        setFollowers(
+          followers.findIndex(x => x.walletId === res.walletId) !== -1 ? 
+            followers.map(x=>x.walletId === res.walletId ? res : x) 
+          : 
+            [...followers, res]
+        )
+        if (isUnfollow){
+          setFollowed(followed.filter(x => x.walletId !== res.walletId))
+        }else{
+          setFollowed(
+            followed.findIndex(x => x.walletId === res.walletId) !== -1 ? 
+              followed.map(x=>x.walletId === res.walletId ? res : x) 
+            : 
+              [...followed, res]
+          )
+        }
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
   function returnTitle() {
     return scope;
@@ -52,25 +94,42 @@ const Profile: React.FC<ProfileProps> = ({
 
   function returnNFTs() {
     let displayNFTs: NftType[] = [];
-    if (scope === 'My NFTs') displayNFTs = ownedNFTS;
-    else if (scope === 'My creations') displayNFTs = createdNFTS;
+    switch(scope){
+      case 'My NFTs':
+        displayNFTs = ownedNFTS;
+        break;
+      case 'My creations':
+        displayNFTs = createdNFTS;
+        break;
+      case 'Liked':
+        displayNFTs = likedNfts;
+        break;
+      case 'My NFTs on sale':
+        displayNFTs = listedOwnedNFTS;
+        break;
+      case 'My NFTs not for sale':
+        displayNFTs = unlistedOwnedNFTS;
+        break;
+      default:
+        displayNFTs = ownedNFTS;
+        break;
+    }
     return displayNFTs.map((item: NftType) => (
       <div key={item.id} className={style.NFTShell}>
         <NFTCard
           mode="grid"
           item={item}
-          serieCount={
-            scope == 'My NFTs'
-              ? ownedSeries[item.serieId]
-              : createdSeries[item.serieId]
-          }
+          user={user}
+          setUser={setUser}
+          likedNfts={likedNfts}
+          setLikedNfts={setLikedNfts}
         />
       </div>
     ));
   }
 
   function returnCategory() {
-    if (scope === 'Followings' || scope === 'Followers') {
+    if (scope === 'Followed' || scope === 'Followers') {
       return (
         <div className={style.NFTs}>
           <div className={style.Top}>
@@ -84,7 +143,7 @@ const Profile: React.FC<ProfileProps> = ({
                   placeholder="Search"
                 />
               </div>
-              <div className={`${style.Toggle} ${style.Hidden}`}>
+              <div className={style.Toggle}>
                 <label>
                   <Switch
                     checked={isFiltered}
@@ -102,7 +161,7 @@ const Profile: React.FC<ProfileProps> = ({
               </div>
             </div>
           </div>
-          <div className={style.FollowsContainer}>{returnCreators()}</div>
+          <div className={style.FollowsContainer}>{returnFollowers()}</div>
         </div>
       );
     }
@@ -111,7 +170,7 @@ const Profile: React.FC<ProfileProps> = ({
         <Edit
           user={user}
           setBanner={setBanner}
-          setNotAvailable={setNotAvailable}
+          setSuccessPopup={setSuccessPopup}
         />
       );
     } else {
@@ -124,36 +183,46 @@ const Profile: React.FC<ProfileProps> = ({
     }
   }
 
-  function returnCreators() {
-    return creators.map((item: UserType) => (
-      <div key={item._id} className={style.CreatorShell}>
-        <Link href={`/${item.name}`}>
-          <a>
-            <Creator user={item} size="small" showTooltip={false} />
-          </a>
-        </Link>
-
-        <div className={style.CreatorInfos}>
+  function returnFollowers() {
+    let creators = scope==="Followers" ? followers : followed
+    creators = !isFiltered ? creators : creators.filter(x => x.verified)
+    return creators.map((item: UserType) => {
+      const followBack = scope==="Followers" && followed.findIndex(x => x.walletId === item.walletId) !== -1 ? true : false
+      return (
+        <div key={item._id} className={style.CreatorShell}>
           <Link href={`/${item.name}`}>
             <a>
-              <h2 className={style.CreatorName}>{item.name}</h2>
+              <Creator user={item} size="small" showTooltip={false} />
             </a>
           </Link>
-          <span className={style.CreatorFollowers}>
-            {item.nbFollowers} followers
-          </span>
-          <div
-            onClick={(e) => {
-              e.stopPropagation();
-              setNotAvailable(true);
-            }}
-            className={style.Unfollow}
-          >
-            Unfollow
+          <div className={style.CreatorInfos}>
+            <Link href={`/${item.name}`}>
+              <a>
+                <h2 className={style.CreatorName}>{item.name}</h2>
+              </a>
+            </Link>
+            <span className={style.CreatorFollowers}>
+              {item.nbFollowers} followers
+            </span>
+            {scope === 'Followers' ? 
+              <div
+                onClick={() => handleFollow(item.walletId, followBack)}
+                className={style.Unfollow}
+              >
+                {followBack ? "Unfollow" : "Follow"}
+              </div>
+            :
+              <div
+                onClick={() => handleFollow(item.walletId, true)}
+                className={style.Unfollow}
+              >
+                Unfollow
+              </div>
+            }
           </div>
         </div>
-      </div>
-    ));
+      )
+    })
   }
 
   return (
@@ -174,13 +243,29 @@ const Profile: React.FC<ProfileProps> = ({
           setExpand={setExpand}
           ownedAmount={ownedNFTS.length}
           createdAmount={createdNFTS.length}
+          likedAmount={likedNfts.length}
+          listedOwnedAmount={listedOwnedNFTS.length}
+          unlistedOwnedAmount={unlistedOwnedNFTS.length}
+          followersAmount={followers.length}
+          followedAmount={followed.length}
         />
         {returnCategory()}
       </div>
       <FloatingHeader user={user} setModalExpand={setModalExpand} />
       <Footer setNotAvailable={setNotAvailable} />
       {expand && (
-        <FloatingMenu setScope={setScope} scope={scope} setExpand={setExpand} />
+        <FloatingMenu 
+          setScope={setScope} 
+          scope={scope} 
+          setExpand={setExpand} 
+          ownedAmount={ownedNFTS.length}
+          createdAmount={createdNFTS.length}
+          likedAmount={likedNfts.length}
+          listedOwnedAmount={listedOwnedNFTS.length}
+          unlistedOwnedAmount={unlistedOwnedNFTS.length}
+          followersAmount={followers.length}
+          followedAmount={followed.length}
+        />
       )}
     </div>
   );

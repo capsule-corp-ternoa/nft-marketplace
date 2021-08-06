@@ -33,7 +33,7 @@ const Footer: React.FC<FooterProps> = ({ setNotAvailable }) => {
           <a href="https://t.me/ternoa" target="_blank">
             <Telegram onClick={() => true} className={style.SVGMedia} />
           </a>
-          <a href="https://twitter.com/ternoa_">
+          <a href="https://twitter.com/SecretNFT_">
             <Twitter onClick={() => true} className={style.SVGMediaTwitter} />
           </a>
           <a href="https://www.linkedin.com/company/50607388/" target="_blank">

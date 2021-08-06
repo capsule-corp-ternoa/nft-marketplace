@@ -6,7 +6,7 @@ import Creator from '../Creator';
 import CopyPaste from 'components/assets/copypaste';
 
 import style from './MainHeader.module.scss';
-import { computeCaps, middleEllipsis } from 'utils/strings';
+import { computeCaps, computeTiime, middleEllipsis } from 'utils/strings';
 import gradient from 'random-gradient';
 
 import { UserType } from 'interfaces/index';
@@ -20,11 +20,10 @@ const MainHeader: React.FC<HeaderProps> = ({ setModalExpand, user }) => {
   const [, setSearchValue] = useState('' as string);
   const [isExpanded, setIsExpanded] = useState(false);
   const bgGradient = user ? { background: gradient(user.name) } : {};
-
+  const isNftCreationEnabled = process.env.NEXT_PUBLIC_IS_NFT_CREATION_ENABLED===undefined ? true : process.env.NEXT_PUBLIC_IS_NFT_CREATION_ENABLED === 'true'
   const updateKeywordSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.currentTarget.value);
   };
-
   return (
     <div className={style.Header}>
       <div className={style.HeaderContainer}>
@@ -54,9 +53,9 @@ const MainHeader: React.FC<HeaderProps> = ({ setModalExpand, user }) => {
           <div className={style.Wallet}>
             {user ? (
               <div className={style.Regular}>
-                <Link href="/create">
+                {isNftCreationEnabled && <Link href="/create">
                   <a className={style.Create}>Create NFT</a>
-                </Link>
+                </Link>}
                 <div
                   onClick={() => setIsExpanded(!isExpanded)}
                   className={style.Profile}
@@ -69,6 +68,15 @@ const MainHeader: React.FC<HeaderProps> = ({ setModalExpand, user }) => {
                     </span>
                     CAPS
                   </div>
+                  <div className={style.Caps}>
+                    <span className={style.NumberCaps}>
+                      {user && user.tiimeAmount
+                        ? computeTiime(Number(user.tiimeAmount))
+                        : 0}
+                    </span>
+                    TIIME
+                  </div>
+                  
                   <div className={style.ProfileImageContainer}>
                     {user.picture ? (
                       <img
@@ -88,9 +96,9 @@ const MainHeader: React.FC<HeaderProps> = ({ setModalExpand, user }) => {
               </div>
             ) : (
               <div className={style.Regular}>
-                <Link href="/create">
+                {isNftCreationEnabled && <Link href="/create">
                   <a className={style.Create}>Create NFT</a>
-                </Link>
+                </Link>}
                 <div
                   onClick={() => setModalExpand(true)}
                   className={style.Connect}

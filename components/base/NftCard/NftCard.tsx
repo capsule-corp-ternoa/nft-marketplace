@@ -4,16 +4,20 @@ import Creator from '../Creator';
 import Router from 'next/router';
 import { useMediaQuery } from 'react-responsive';
 import Media from '../Media';
-
-import { NftType } from 'interfaces/index';
-
-import { computeCaps } from 'utils/strings';
+import Heart from 'components/assets/heart';
+import { NftType, UserType } from 'interfaces/index';
+import { computeCaps, computeTiime } from 'utils/strings';
+import { likeNFT, unlikeNFT } from 'actions/user';
+import { getNFT } from 'actions/nft';
 
 export interface NftCardProps {
   item: NftType;
-  serieCount?: number;
   mode: string;
   isDragging?: boolean;
+  user?: UserType;
+  setUser?: (u: UserType) => void
+  likedNfts?: NftType[]
+  setLikedNfts?: (nfts: NftType[]) => void
 }
 
 function manageRouting(
@@ -28,11 +32,15 @@ const NftCard: React.FC<NftCardProps> = ({
   item,
   mode,
   isDragging,
-  serieCount,
+  user,
+  setUser,
+  likedNfts,
+  setLikedNfts,
 }) => {
   const [isHovering, setIsHovering] = useState(false);
   const [type, setType] = useState<string | null>(null);
-
+  const [likeLoading, setLikeLoading] = useState(false)
+  const isLiked = !user ? undefined : user.likedNFTs?.includes(item.id)
   useEffect(() => {
     async function callBack() {
       try {
@@ -59,6 +67,37 @@ const NftCard: React.FC<NftCardProps> = ({
 
   const isMobile = useMediaQuery({ query: '(max-device-width: 720px)' });
 
+  const handleLikeDislike = async (nftId: string) => {
+    try{
+      let res = null
+      if (!likeLoading && isLiked !== undefined && user){
+        setLikeLoading(true)
+        if (!isLiked){
+          res = await likeNFT(user.walletId, nftId)
+        }else{
+          res = await unlikeNFT(user.walletId, nftId)
+        }
+      }
+      if (res !== null && setUser){
+        setUser({...user, ...res})
+        if (likedNfts && setLikedNfts){
+          if (isLiked){
+            setLikedNfts(
+              likedNfts.filter(x => x.id !== nftId)
+            )
+          }else{
+            let newlyLikedNFT = await getNFT(nftId)
+            if (newlyLikedNFT) setLikedNfts([...likedNfts, newlyLikedNFT])
+          }
+        }
+      }
+      setLikeLoading(false)
+    }catch(err){
+      setLikeLoading(false)
+      console.error(err)
+    }
+  }
+
   return (
     <div
       onClick={() => !isDragging && Router.push(`/nft/${item.id}`)}
@@ -77,14 +116,10 @@ const NftCard: React.FC<NftCardProps> = ({
           `${style.NFTIMG} ${(type?.substr(0, 5) === 'image' && isHovering) ? style.ImgScaling : ""}`
         }
       />
-      {item.serieId !== '0' ? (
-        <span className={style.QtyLabel}>{`${
-          typeof serieCount !== 'undefined' ? serieCount : 1
-        }/${typeof item.itemTotal !== 'undefined' ? item.itemTotal : 1}`}</span>
-      ) : (
-        <span className={style.QtyLabel}>1/1</span>
-      )}
-      {item.cryptedMedia?.url !== item.media?.url && (
+      <span className={style.QtyLabel}>
+        {`${typeof item.totalListedNft !== 'undefined' ? item.totalListedNft : 1}`}
+      </span>
+      {item.cryptedMedia?.url !== item.media?.url && !isHovering && (
         <span className={style.SecretLabel}>S</span>
       )}
       <div
@@ -95,8 +130,24 @@ const NftCard: React.FC<NftCardProps> = ({
         }
       />
       <div className={isHovering ? `${style.Container}` : style.Hide}>
-        <div></div>
-
+        {isLiked!==undefined ? 
+          <div 
+            className={
+              isHovering ? 
+                `${style.Favorite} 
+                 ${style.FadeSimple} 
+                 ${isLiked ? style.Favorited : ""} 
+                 ${likeLoading ? style.Disabled : ""}`
+              : 
+                style.Hide
+            }
+            onClick={(e) => {e.stopPropagation(); handleLikeDislike(item.id);}}
+          >
+            <Heart className={style.HeartSVG} />
+          </div>
+        :
+            <div></div>
+        }
         <div className={style.Infos}>
           <div
             onClick={(e) => manageRouting(e, item.creatorData.walletId)}
@@ -120,19 +171,23 @@ const NftCard: React.FC<NftCardProps> = ({
               </div>
             )}
           </div>
-          <div
-            className={
-              isHovering ? `${style.Button} ${style.FadeLong}` : style.Button
-            }
-          >
-            {item.price && (
+          {((item.price && Number(item.price)>0) || (item.priceTiime && Number(item.priceTiime))) &&
+            <div className={isHovering ? `${style.Button} ${style.FadeLong}` : style.Button}>
               <div className={style.Price}>
-                {computeCaps(Number(item.price))} CAPS
+                {item.price && Number(item.price)>0 &&
+                  `${computeCaps(Number(item.price))} CAPS`
+                }
+                {item.price && Number(item.price)>0 && item.priceTiime && Number(item.priceTiime) && 
+                  ` / `
+                }
+                {item.priceTiime && Number(item.priceTiime)>0 && 
+                  `${computeTiime(Number(item.priceTiime))} TIIME`
+                }
               </div>
-            )}
-            <div className={style.ButtonText}>Buy</div>
-          </div>
-        </div>
+              <div className={style.ButtonText}>Buy</div>
+            </div>
+          }
+      </div>
       </div>
     </div>
   );

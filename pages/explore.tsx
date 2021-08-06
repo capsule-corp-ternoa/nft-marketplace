@@ -10,17 +10,16 @@ import FloatingHeader from 'components/base/FloatingHeader';
 import cookies from 'next-cookies';
 
 import { getUser } from 'actions/user';
-import { getNFTS } from 'actions/nft';
+import { getCategoryNFTs } from 'actions/nft';
 import { NftType, UserType } from 'interfaces';
 import { NextPageContext } from 'next';
 
 export interface ExplorePage {
   user: UserType;
   data: NftType[];
-  series: { [serieId: string]: number };
 }
 
-const ExplorePage: React.FC<ExplorePage> = ({ user, data, series }) => {
+const ExplorePage: React.FC<ExplorePage> = ({ user, data }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
   const [walletUser, setWalletUser] = useState(user);
@@ -50,7 +49,7 @@ const ExplorePage: React.FC<ExplorePage> = ({ user, data, series }) => {
       {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
       <AlphaBanner />
       <MainHeader user={walletUser} setModalExpand={setModalExpand} />
-      <Explore NFTS={data} series={series} />
+      <Explore NFTS={data} user={walletUser} setUser={setWalletUser} />
       <Footer setNotAvailable={setNotAvailable} />
       <FloatingHeader user={walletUser} setModalExpand={setModalExpand} />
     </>
@@ -58,19 +57,26 @@ const ExplorePage: React.FC<ExplorePage> = ({ user, data, series }) => {
 };
 
 export async function getServerSideProps(ctx: NextPageContext) {
-  let user = null;
-  try {
-    const token = cookies(ctx).token;
-    if (token) {
-      user = await getUser(token);
-    }
-  } catch (error) {
-    console.error(error);
+  const token = cookies(ctx).token;
+  let user: UserType | null = null, data : NftType[] = [];
+  const promises = [];
+  if (token) {
+    promises.push(new Promise<void>((success) => {
+      getUser(token).then(_user => {
+        user = _user
+        success();
+      }).catch(success);
+    }));
   }
-  let [data, series] = await getNFTS().catch(() => [[], {}]);
-
+  promises.push(new Promise<void>((success) => {
+    getCategoryNFTs().then(_nfts => {
+      data = _nfts
+      success();
+    }).catch(success);
+  }));
+  await Promise.all(promises);
   return {
-    props: { user, data, series },
+    props: { user, data },
   };
 }
 

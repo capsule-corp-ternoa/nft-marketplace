@@ -2,15 +2,20 @@ export type UserType = {
   _id: string;
   name: string;
   banner?: string;
-  description?: string;
+  bio?: string;
   verified: boolean;
   nbFollowers: number;
   nbFollowing: number;
-  views: number;
+  viewsCount?: number;
   walletId: string;
   picture?: string;
-  twitter?: string;
+  twitterName?: string;
+  customUrl?: string;
+  personalUrl?: string;
   capsAmount?: string;
+  tiimeAmount?: string;
+  reviewRequested?:boolean
+  likedNFTs?: String[];
 };
 
 export type NftType = {
@@ -21,6 +26,7 @@ export type NftType = {
   timeStampList?: string;
   uri?: string;
   price: string;
+  priceTiime: string;
   name?: string;
   description?: string;
   media: { url: string };
@@ -29,6 +35,22 @@ export type NftType = {
   creatorData: UserType;
   serieId: string;
   itemTotal: string;
+  totalListedNft?: number;
+  totalNft?: number;
   itemId: string;
-  categories: string[];
+  categories: CategoryType[];
+  viewsCount?: number;
 };
+
+export type CategoryType = {
+  _id: string;
+  code: string;
+  name: string;
+  description?: string;
+}
+
+export type FollowType = {
+  _id: string;
+  followed: UserType;
+  follower: UserType;
+}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Switch from 'react-switch';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
@@ -10,7 +10,7 @@ import NFTCard from 'components/base/NftCard';
 import ArrowLeft from 'components/assets/arrowLeft';
 import ArrowRight from 'components/assets/arrowRight';
 
-import { NftType } from 'interfaces/index';
+import { NftType, UserType } from 'interfaces/index';
 
 const responsive = {
   desktop: {
@@ -45,15 +45,14 @@ const responsive = {
 
 export interface ShowcaseProps {
   NFTs: NftType[];
-  series: { [serieId: string]: number };
   category: string;
+  user?: UserType;
+  setUser?: (u: UserType) => void
 }
 
-const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category, series }) => {
+const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category, user, setUser }) => {
   const [isFiltered, setIsFiltered] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
-
-  useEffect(() => { }, []);
 
   const isMobile = useMediaQuery({ query: '(max-width: 720px)' });
 
@@ -68,7 +67,8 @@ const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category, series }) => {
           mode={key}
           isDragging={isDragging}
           item={item}
-          serieCount={series[item.serieId]}
+          user={user}
+          setUser={setUser}
         />
       </div>
     ));

@@ -128,7 +128,7 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  padding: 0px 18px;
+  padding: 0px 10px;
   box-sizing: border-box;
 }
 
@@ -139,6 +139,8 @@
   color: white;
   font-family: 'Airbnb Cereal App Medium';
   margin-top: 12px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .Burger {
@@ -224,7 +226,7 @@
   }
 
   .Infos {
-    padding: 24px 18px;
+    padding: 24px 14px;
   }
 
   .Avatar {
@@ -311,6 +313,7 @@
 
   .Infos {
     margin-right: 24px;
+    padding:24px 10px;
   }
 }
 
@@ -332,10 +335,12 @@
   }
 
   .CapsData {
-    padding: 10px 24px;
+    padding: 10px 10px;
     border-radius: 25px;
     background: #1b1b1b;
     margin-top: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
   }
 
   .Burger {

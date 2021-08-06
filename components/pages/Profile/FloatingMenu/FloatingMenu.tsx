@@ -13,12 +13,26 @@ export interface FloatingMenuProps {
   setScope: (s: string) => void;
   setExpand: (b: boolean) => void;
   scope: string;
+  ownedAmount: number;
+  createdAmount: number;
+  likedAmount: number;
+  listedOwnedAmount: number;
+  unlistedOwnedAmount: number;
+  followersAmount: number;
+  followedAmount: number;
 }
 
 const FloatingMenu: React.FC<FloatingMenuProps> = ({
   scope,
   setScope,
   setExpand,
+  ownedAmount,
+  createdAmount,
+  likedAmount,
+  listedOwnedAmount,
+  unlistedOwnedAmount,
+  followersAmount,
+  followedAmount,
 }) => {
   const router = useRouter();
 
@@ -58,7 +72,9 @@ const FloatingMenu: React.FC<FloatingMenuProps> = ({
           >
             My NFTs
           </div>
-          <div className={returnActiveNumber('My NFTs')}>12</div>
+          <div className={returnActiveNumber('My NFTs')}>
+            {ownedAmount}
+          </div>
         </div>
         <div className={style.Section}>
           <div
@@ -70,7 +86,79 @@ const FloatingMenu: React.FC<FloatingMenuProps> = ({
           >
             Created
           </div>
-          <div className={returnActiveNumber('My creations')}>4</div>
+          <div className={returnActiveNumber('My creations')}>
+            {createdAmount}
+          </div>
+        </div>
+        <div className={style.Section}>
+          <div
+            onClick={() => {
+              setScope('Liked')
+              setExpand(false)
+            }}
+            className={returnActiveTitle('Liked')}
+          >
+            Liked
+          </div>
+          <div className={returnActiveNumber('Liked')}>
+            {likedAmount}
+          </div>
+        </div>
+        <div className={style.Section}>
+          <div
+            onClick={() => {
+              setScope('My NFTs on sale')
+              setExpand(false)
+            }}
+            className={returnActiveTitle('My NFTs on sale')}
+          >
+            On sale
+          </div>
+          <div className={returnActiveNumber('My NFTs on sale')}>
+            {listedOwnedAmount}
+          </div>
+        </div>
+        <div className={style.Section}>
+          <div
+            onClick={() => {
+              setScope('My NFTs not for sale')
+              setExpand(false)
+            }}
+            className={returnActiveTitle('My NFTs not for sale')}
+          >
+            Not on sale
+          </div>
+          <div className={returnActiveNumber('My NFTs not for sale')}>
+            {unlistedOwnedAmount}
+          </div>
+        </div>
+        <div className={style.Section}>
+          <div
+            onClick={() => {
+              setScope('Followers')
+              setExpand(false)
+            }}
+            className={returnActiveTitle('Followers')}
+          >
+            Followers
+          </div>
+          <div className={returnActiveNumber('Followers')}>
+            {followersAmount}
+          </div>
+        </div>
+        <div className={style.Section}>
+          <div
+            onClick={() => {
+              setScope('Followed')
+              setExpand(false)
+            }}
+            className={returnActiveTitle('Followed')}
+          >
+            Followed
+          </div>
+          <div className={returnActiveNumber('Followed')}>
+            {followedAmount}
+          </div>
         </div>
         <div onClick={disconnect} className={style.Logoff}>
           <div className={style.SectionTitle}>Disconnect</div>

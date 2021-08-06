@@ -4,18 +4,25 @@ import style from './Explore.module.scss';
 import NFTCard from 'components/base/NftCard';
 import NoNFTComponent from 'components/base/NoNFTComponent';
 
-import { NftType } from 'interfaces/index';
+import { NftType, UserType } from 'interfaces/index';
 
 export interface ExploreProps {
   NFTS: NftType[];
-  series: { [serieId: string]: number };
+  user?: UserType;
+  setUser?: (u: UserType) => void;
 }
 
-const Explore: React.FC<ExploreProps> = ({ NFTS, series }) => {
+const Explore: React.FC<ExploreProps> = ({ NFTS, user, setUser }) => {
+
   function returnNFTs() {
     return NFTS.map((item) => (
       <div key={item.id} className={style.NFTShell}>
-        <NFTCard mode="grid" item={item} serieCount={series[item.serieId]} />
+        <NFTCard 
+          mode="grid" 
+          item={item}
+          user={user}
+          setUser={setUser}
+        />
       </div>
     ));
   }

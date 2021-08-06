@@ -7,6 +7,7 @@ import Create from 'components/pages/Create';
 import ModalMint from 'components/pages/Create/ModalMint';
 import NotAvailableModal from 'components/base/NotAvailable';
 import cookies from 'next-cookies';
+import Router from 'next/router';
 
 import { getUser } from 'actions/user';
 import { UserType } from 'interfaces';
@@ -30,9 +31,9 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
   const [modalCreate, setModalCreate] = useState(false);
   const [select, setSelect] = useState('Select NFT Option');
   const [processed, setProcessed] = useState(false);
-  //
   const [error, setError] = useState('');
   const [output, setOutput] = useState<string[]>([]);
+  const isNftCreationEnabled = process.env.NEXT_PUBLIC_IS_NFT_CREATION_ENABLED===undefined ? true : process.env.NEXT_PUBLIC_IS_NFT_CREATION_ENABLED === 'true'
 
   const [NFTData, setNFTData] = React.useState<NFTProps>({
     name: '',
@@ -52,6 +53,12 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
     }
     if (window.isRNApp && window.walletId) callBack();
   }, []);
+
+  useEffect(() => {
+    if (!isNftCreationEnabled){
+      Router.push("/")
+    }
+  }, [isNftCreationEnabled])
 
   const [NFT, setNFT] = useState<File | null>(null);
   const [secretNFT, setSecretNFT] = useState<File | null>(null);
@@ -211,38 +218,33 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
       )}
       <AlphaBanner />
       <MainHeader user={walletUser} setModalExpand={setModalExpand} />
-      <Create
-        setModalExpand={setModalExpand}
-        setNotAvailable={setNotAvailable}
-        setModalCreate={setModalCreate}
-        user={walletUser}
-        NFT={NFT}
-        setNFT={setNFT}
-        secretNFT={secretNFT}
-        setSecretNFT={setSecretNFT}
-        NFTData={NFTData}
-        setNFTData={setNFTData}
-        select={select}
-        setSelect={setSelect}
-        processFile={processFile}
-        setError={setError}
-        setProcessed={setProcessed}
-      />
+      {isNftCreationEnabled && 
+        <Create
+          setModalExpand={setModalExpand}
+          setNotAvailable={setNotAvailable}
+          setModalCreate={setModalCreate}
+          user={walletUser}
+          NFT={NFT}
+          setNFT={setNFT}
+          secretNFT={secretNFT}
+          setSecretNFT={setSecretNFT}
+          NFTData={NFTData}
+          setNFTData={setNFTData}
+          select={select}
+          setSelect={setSelect}
+          processFile={processFile}
+          setError={setError}
+          setProcessed={setProcessed}
+        />
+      }
     </>
   );
 };
 
 export async function getServerSideProps(ctx: NextPageContext) {
   let user = null;
-  try {
-    const token = cookies(ctx).token;
-    if (token) {
-      user = await getUser(token);
-    }
-  } catch (error) {
-    console.error(error);
-  }
-
+  const token = cookies(ctx).token;
+  if (token) user = await getUser(token).catch(() => null);
   return {
     props: { user },
   };

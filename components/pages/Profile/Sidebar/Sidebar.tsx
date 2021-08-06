@@ -6,7 +6,7 @@ import CopyPaste from 'components/assets/copypaste';
 import Edit from 'components/assets/edit';
 
 import PowerOff from 'components/assets/poweroff';
-import { computeCaps, middleEllipsis } from 'utils/strings';
+import { computeCaps, computeTiime, middleEllipsis } from 'utils/strings';
 import gradient from 'random-gradient';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
@@ -20,6 +20,11 @@ export interface SidebarProps {
   user: UserType;
   ownedAmount: number;
   createdAmount: number;
+  likedAmount: number;
+  listedOwnedAmount: number;
+  unlistedOwnedAmount: number;
+  followersAmount: number;
+  followedAmount: number;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({
@@ -29,6 +34,11 @@ const Sidebar: React.FC<SidebarProps> = ({
   setExpand,
   ownedAmount,
   createdAmount,
+  likedAmount,
+  listedOwnedAmount,
+  unlistedOwnedAmount,
+  followersAmount,
+  followedAmount
 }) => {
   const router = useRouter();
   const bgGradient = user ? { background: gradient(user.name) } : {};
@@ -94,6 +104,9 @@ const Sidebar: React.FC<SidebarProps> = ({
           <span className={style.CapsData}>
             {user.capsAmount ? computeCaps(Number(user.capsAmount)) : 0} CAPS
           </span>
+          <span className={style.CapsData}>
+            {user.tiimeAmount ? computeTiime(Number(user.tiimeAmount)) : 0} TIIME
+          </span>
           <div className={style.Burger} onClick={() => setExpand(true)}>
             <span className={style.Line} />
             <span className={style.Line} />
@@ -120,6 +133,61 @@ const Sidebar: React.FC<SidebarProps> = ({
           </div>
           <div className={returnActiveNumber('My creations')}>
             {createdAmount}
+          </div>
+        </div>
+        <div className={style.Section}>
+          <div
+            onClick={() => setScope('Liked')}
+            className={returnActiveTitle('Liked')}
+          >
+            Liked
+          </div>
+          <div className={returnActiveNumber('Liked')}>
+            {likedAmount}
+          </div>
+        </div>
+        <div className={style.Section}>
+          <div
+            onClick={() => setScope('My NFTs on sale')}
+            className={returnActiveTitle('My NFTs on sale')}
+          >
+            On sale
+          </div>
+          <div className={returnActiveNumber('My NFTs on sale')}>
+            {listedOwnedAmount}
+          </div>
+        </div>
+        <div className={style.Section}>
+          <div
+            onClick={() => setScope('My NFTs not for sale')}
+            className={returnActiveTitle('My NFTs not for sale')}
+          >
+            Not on sale
+          </div>
+          <div className={returnActiveNumber('My NFTs not for sale')}>
+            {unlistedOwnedAmount}
+          </div>
+        </div>
+        <div className={style.Section}>
+          <div
+            onClick={() => setScope('Followers')}
+            className={returnActiveTitle('Followers')}
+          >
+            Followers
+          </div>
+          <div className={returnActiveNumber('Followers')}>
+            {followersAmount}
+          </div>
+        </div>
+        <div className={style.Section}>
+          <div
+            onClick={() => setScope('Followed')}
+            className={returnActiveTitle('Followed')}
+          >
+            Followed
+          </div>
+          <div className={returnActiveNumber('Followed')}>
+            {followedAmount}
           </div>
         </div>
         <div className={style.Disconnect} onClick={disconnect}>

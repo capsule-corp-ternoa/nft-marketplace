@@ -130,6 +130,7 @@ const Profile: React.FC<ProfileProps> = ({
           setUser={setUser}
           likedNfts={likedNfts}
           setLikedNfts={setLikedNfts}
+          scope={scope}
         />
       </div>
     ));

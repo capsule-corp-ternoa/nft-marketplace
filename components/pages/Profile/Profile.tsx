@@ -58,6 +58,13 @@ const Profile: React.FC<ProfileProps> = ({
   const unlistedOwnedNFTS = ownedNFTS.filter(x=>x.listed===0)
   const [, setSearchValue] = useState('' as string);
 
+  const ownedAmount=ownedNFTS.reduce((acc, cur) => acc + Number(cur.totalNft), 0)
+  const createdAmount=createdNFTS.reduce((acc, cur) => acc + Number(cur.totalMinted), 0)
+  const listedOwnedAmount=listedOwnedNFTS.reduce((acc, cur) => acc + Number(cur.totalListedNft), 0)
+  const unlistedOwnedAmount=unlistedOwnedNFTS.reduce((acc, cur) => acc + (Number(cur.totalNft) - Number(cur.totalListedNft)), 0)
+
+  
+
   const updateKeywordSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.currentTarget.value);
   };
@@ -123,6 +130,7 @@ const Profile: React.FC<ProfileProps> = ({
           setUser={setUser}
           likedNfts={likedNfts}
           setLikedNfts={setLikedNfts}
+          scope={scope}
         />
       </div>
     ));
@@ -241,11 +249,11 @@ const Profile: React.FC<ProfileProps> = ({
           scope={scope}
           setScope={setScope}
           setExpand={setExpand}
-          ownedAmount={ownedNFTS.length}
-          createdAmount={createdNFTS.length}
+          ownedAmount={ownedAmount}
+          createdAmount={createdAmount}
+          listedOwnedAmount={listedOwnedAmount}
+          unlistedOwnedAmount={unlistedOwnedAmount}
           likedAmount={likedNfts.length}
-          listedOwnedAmount={listedOwnedNFTS.length}
-          unlistedOwnedAmount={unlistedOwnedNFTS.length}
           followersAmount={followers.length}
           followedAmount={followed.length}
         />
@@ -257,12 +265,12 @@ const Profile: React.FC<ProfileProps> = ({
         <FloatingMenu 
           setScope={setScope} 
           scope={scope} 
-          setExpand={setExpand} 
-          ownedAmount={ownedNFTS.length}
-          createdAmount={createdNFTS.length}
+          setExpand={setExpand}
+          ownedAmount={ownedAmount}
+          createdAmount={createdAmount}
+          listedOwnedAmount={listedOwnedAmount}
+          unlistedOwnedAmount={unlistedOwnedAmount}
           likedAmount={likedNfts.length}
-          listedOwnedAmount={listedOwnedNFTS.length}
-          unlistedOwnedAmount={unlistedOwnedNFTS.length}
           followersAmount={followers.length}
           followedAmount={followed.length}
         />

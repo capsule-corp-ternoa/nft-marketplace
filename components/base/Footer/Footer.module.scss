@@ -239,7 +239,7 @@
     z-index: 1;
   }
   .InputContainer {
-    width: 230px;
+    width: 340px;
     align-self: center;
   }
 
@@ -248,7 +248,7 @@
   }
 
   .Input {
-    font-size: 16px;
+    font-size: 14px;
     padding-left: 16px;
   }
 
@@ -287,5 +287,11 @@
   .Text {
     font-size: 10px;
     line-height: 10px;
+  }
+}
+
+@media (max-width: 340px) {
+  .InputContainer {
+    width: 250px;
   }
 }

@@ -71,7 +71,7 @@
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  margin: 100px 16px;
+  margin: 100px 16px 80px;
   position: relative;
   border-radius: 64px;
   border: 2px solid $primary;
@@ -308,7 +308,7 @@
   }
 
   .Content {
-    margin: 100px 16px;
+    margin: 100px 16px 30px;
   }
 
   .Left {
@@ -397,8 +397,8 @@
 
   .Content {
     flex-direction: column;
-    margin: 100px 0px;
-    margin-bottom: 0px;
+    margin: 100px 0px 0px;
+    //margin-bottom: 0px;
     border: none;
   }
 

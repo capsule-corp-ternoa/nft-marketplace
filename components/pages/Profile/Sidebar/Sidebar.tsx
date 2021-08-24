@@ -104,7 +104,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           <span className={style.CapsData}>
             {user.capsAmount ? computeCaps(Number(user.capsAmount)) : 0} CAPS
           </span>
-          <span className={style.CapsData}>
+          <span className={style.CapsData} style={{display: "none"}}>
             {user.tiimeAmount ? computeTiime(Number(user.tiimeAmount)) : 0} TIIME
           </span>
           <div className={style.Burger} onClick={() => setExpand(true)}>

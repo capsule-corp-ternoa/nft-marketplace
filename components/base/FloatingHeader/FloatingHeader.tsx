@@ -102,7 +102,7 @@ const FloatingHeader: React.FC<FloatingHeaderProps> = ({
                 </span>
                 CAPS
               </span>
-              <span>
+              <span style={{display: "none"}}>
                 <span
                   className={
                     fullProfile

@@ -68,7 +68,7 @@ const MainHeader: React.FC<HeaderProps> = ({ setModalExpand, user }) => {
                     </span>
                     CAPS
                   </div>
-                  <div className={style.Caps}>
+                  <div className={style.Caps} style={{display: "none"}}>
                     <span className={style.NumberCaps}>
                       {user && user.tiimeAmount
                         ? computeTiime(Number(user.tiimeAmount))

@@ -28,7 +28,8 @@ const Infos: React.FC<InfosProps> = ({ profile, setProfile, user }) => {
         setFollowLoading(true)
         let res = !isUnfollow ? await follow(profile.walletId, user.walletId) : await unfollow(profile.walletId, user.walletId);
         if (res) {
-          setProfile(res)
+          let views = profile.viewsCount
+          setProfile({...res, viewsCount:views})
           getIsUserFollowingProfile()
         }
         setFollowLoading(false)

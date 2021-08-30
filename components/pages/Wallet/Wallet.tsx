@@ -54,12 +54,12 @@ const Wallet: React.FC<WalletProps> = ({
         <div className={style.Caps}>
           {user.capsAmount ? computeCaps(Number(user.capsAmount)) : 0} CAPS
         </div>
-        <div className={style.Tiime}>
+        <div className={style.Tiime} style={{display: "none"}}>
           {user.tiimeAmount ? computeTiime(Number(user.tiimeAmount)) : 0} TIIME
         </div>
-        <div className={style.Button} onClick={() => setNotAvailable(true)}>
+        <a className={style.Button} href="https://www.ternoa.com/" target="_blank">
           Buy CAPS
-        </div>
+        </a>
       </div>
       <Footer setNotAvailable={setNotAvailable} />
       <FloatingHeader user={user} setModalExpand={setModalExpand} />

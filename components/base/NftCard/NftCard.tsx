@@ -42,7 +42,7 @@ const NftCard: React.FC<NftCardProps> = ({
   const [isHovering, setIsHovering] = useState(false);
   const [type, setType] = useState<string | null>(null);
   const [likeLoading, setLikeLoading] = useState(false)
-  const isLiked = !user ? undefined : user.likedNFTs?.includes(item.id)
+  const isLiked = !user ? undefined : (item.serieId === "0" ? user.likedNFTs?.map(x => x.nftId).includes(item.id) : user.likedNFTs?.map(x => x.serieId).includes(item.serieId))
   const displayQuantity = () => {
     if (!scope) return `${typeof item.totalListedNft !== 'undefined' ? item.totalListedNft : 1}`
     switch(scope){

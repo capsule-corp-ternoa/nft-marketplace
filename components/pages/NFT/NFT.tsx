@@ -51,13 +51,14 @@ const NFTPage: React.FC<NFTPageProps> = ({
   const shareSubject = "Check out this Secret NFT"
   const shareText = `Check out ${NFT.name ? NFT.name : "this nft"} on secret-nft.com`
   const shareUrl = (typeof window!=="undefined" && window.location?.href) || `https://www.secret-nft.com/nft/${NFT.id}`
+  const isLiked = !user ? undefined : (NFT.serieId === "0" ? user.likedNFTs?.map(x => x.nftId).includes(NFT.id) : user.likedNFTs?.map(x => x.serieId).includes(NFT.serieId))
   
   const handleLikeDislike = async () => {
     try{
       let res = null
       if (!likeLoading && user){
         setLikeLoading(true)
-        if (!user?.likedNFTs?.includes(NFT.id)){
+        if (!isLiked){
           res = await likeNFT(user.walletId, NFT.id)
         }else{
           res = await unlikeNFT(user.walletId, NFT.id)
@@ -111,7 +112,7 @@ const NFTPage: React.FC<NFTPageProps> = ({
                 <Eye className={style.EyeSVG} />{NFT.viewsCount}
               </div>
               <div 
-                className={`${style.Like} ${user?.likedNFTs?.includes(NFT.id) ? style.Liked : ""} ${(likeLoading || !user) ? style.DisabledLike : ""}`}
+                className={`${style.Like} ${isLiked ? style.Liked : ""} ${(likeLoading || !user) ? style.DisabledLike : ""}`}
                 onClick={() => handleLikeDislike()}
               >
                 <Like className={style.LikeSVG} />

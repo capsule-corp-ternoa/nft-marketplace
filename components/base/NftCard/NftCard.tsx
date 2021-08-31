@@ -47,13 +47,13 @@ const NftCard: React.FC<NftCardProps> = ({
     if (!scope) return `${typeof item.totalListedNft !== 'undefined' ? item.totalListedNft : 1}`
     switch(scope){
       case 'My NFTs':
-        return `${typeof item.totalNft !== 'undefined' ? item.totalNft : 1}`
+        return `${typeof item.totalNft !== 'undefined' ? item.serieData?.filter(x=>x.owner===user?.walletId).length : 1}`
       case 'My creations':
-        return `${typeof item.totalMinted !== 'undefined' ? item.totalMinted : 1}`
+        return `${typeof item.totalNft !== 'undefined' ? item.totalNft : 1}`
       case 'My NFTs on sale':
-        return `${typeof item.totalListedNft !== 'undefined' ? item.totalListedNft : 1}`
+        return `${typeof item.totalListedNft !== 'undefined' ? item.serieData?.filter(x=>x.owner===user?.walletId && x.listed===1).length : 1}`
       case 'My NFTs not for sale':
-        return `${(typeof item.totalListedNft !== 'undefined' && typeof item.totalNft !== 'undefined') ? (item.totalNft - item.totalListedNft) : 1}`
+        return `${(typeof item.totalListedNft !== 'undefined' && typeof item.totalNft !== 'undefined') ? item.serieData?.filter(x=>x.owner===user?.walletId && x.listed===0).length : 1}`
       default:
         return `${typeof item.totalListedNft !== 'undefined' ? item.totalListedNft : 1}`
     }

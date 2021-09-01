@@ -58,7 +58,7 @@ const Profile: React.FC<ProfileProps> = ({
   const unlistedOwnedNFTS = ownedNFTS.filter(x=>x.listed===0)
   const [, setSearchValue] = useState('' as string);
 
-  const ownedAmount=ownedNFTS.reduce((acc, cur) => acc + Number(!cur.serieData?.filter(x => x.owner === user.walletId).length), 0)
+  const ownedAmount=ownedNFTS.reduce((acc, cur) => acc + Number(cur.serieData?.filter(x => x.owner === user.walletId).length), 0)
   const createdAmount=createdNFTS.reduce((acc, cur) => acc + Number(cur.totalNft), 0)
   const listedOwnedAmount=listedOwnedNFTS.reduce((acc, cur) => acc + Number(cur.serieData?.filter(x => x.owner === user.walletId && x.listed===1).length), 0)
   const unlistedOwnedAmount=unlistedOwnedNFTS.reduce((acc, cur) => acc + Number(cur.serieData?.filter(x => x.owner === user.walletId && x.listed===0).length), 0)

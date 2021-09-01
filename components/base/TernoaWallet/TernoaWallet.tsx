@@ -37,7 +37,7 @@ const TernoaWallet: React.FC<TernoaWalletProps> = ({ setModalExpand }) => {
     socket.on('RECEIVE_WALLET_ID', (data) => {
       console.log('SEND_WALLET_ID', data);
       Cookies.set('token', data.walletId, {
-        sameSite: 'strict',
+        //sameSite: 'strict',
         expires: 1,
       });
       socket.emit('RECEIVED_WALLET_ID', data);

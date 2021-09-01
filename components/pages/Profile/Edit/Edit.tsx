@@ -22,6 +22,7 @@ const Edit: React.FC<EditProps> = ({ user, setBanner, setSuccessPopup }) => {
     bio: user.bio,
     personalUrl: user.personalUrl,
     twitterName: user.twitterName,
+    twitterVerified: user.twitterVerified,
     picture: user.picture,
     banner: user.banner,
     reviewRequested: user.reviewRequested,
@@ -135,7 +136,17 @@ const Edit: React.FC<EditProps> = ({ user, setBanner, setSuccessPopup }) => {
             <div className={style.TopInput}>
               <h4 className={style.Subtitle}>Twitter username</h4>
               <div className={style.ClaimTwitter}>
-                Verify your twitter account
+                {data.twitterVerified ?
+                  <div className={style.TwitterVerified}>
+                    <span>{"Verified"}</span>
+                    <Badge className={style.BadgeTwitter} />
+                  </div>
+                :
+                  user.twitterName && user.twitterName.length>2 && !user.twitterVerified &&
+                    <a href={`${process.env.NEXT_PUBLIC_NODE_API}/api/mp/users/verifyTwitter/${data.walletId}`}>
+                      Verify your account ({user.twitterName})
+                    </a>
+                }
               </div>
             </div>
             <input
@@ -145,9 +156,11 @@ const Edit: React.FC<EditProps> = ({ user, setBanner, setSuccessPopup }) => {
               value={data.twitterName || ''}
               onChange={(e) => handleChange(e.target.value, "twitterName")}
             />
-            <div className={style.TwitterInsight}>
-              Verify your Twitter account in order to get the verification badge
-            </div>
+            {!data.twitterVerified && 
+              <div className={style.TwitterInsight}>
+                Verify your Twitter account in order to get the verification badge
+              </div>
+            }
             <h4 className={style.Subtitle}>Personal website or portfolio</h4>
             <input 
               placeholder="https://" 

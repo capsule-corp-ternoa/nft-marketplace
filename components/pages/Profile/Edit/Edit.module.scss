@@ -123,7 +123,16 @@
   color: $primary;
   font-family: "Airbnb Cereal App Book";
   margin-bottom: 8px;
-  cursor: pointer;
+}
+
+.TwitterVerified{
+  display: flex;
+  align-items: center;
+}
+
+.BadgeTwitter {
+  width: 20px;
+  padding-left: 5px;
 }
 
 .TwitterInsight {

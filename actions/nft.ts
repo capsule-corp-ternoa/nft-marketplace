@@ -5,7 +5,7 @@ export const filterNFTs = (data: NftType[]) => data.filter((item) => item.creato
 
 
 export const getNFTS = async () => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/mp/NFTs`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/V2mp/NFTs`);
   let data: NftType[] = await res.json();
   data = filterNFTs(data)
   return data;
@@ -15,7 +15,7 @@ export const getProfileNFTS = async (
   id: string,
 ) => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_NODE_API}/api/mp/NFTs/owner/${id}`
+    `${process.env.NEXT_PUBLIC_NODE_API}/api/V2/mp/NFTs/owner/${id}`
   );
   if (!res.ok) throw new Error('error fetching owned NFTs');
   let data: NftType[] = await res.json();
@@ -25,7 +25,7 @@ export const getProfileNFTS = async (
 
 export const getCreatorNFTS = async (id: string) => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_NODE_API}/api/mp/NFTs/creator/${id}`
+    `${process.env.NEXT_PUBLIC_NODE_API}/api/V2/mp/NFTs/creator/${id}`
   );
   if (!res.ok) throw new Error('error fetching created NFTs');
   let data: NftType[] = await res.json();
@@ -36,7 +36,7 @@ export const getCreatorNFTS = async (id: string) => {
 export const getCategoryNFTs = async (codes?: string | string[]) => {
   const queryString = !codes ? "" : (typeof codes==='string' ? `&codes=${codes}` : `&codes=${codes.join("&codes=")}`)
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_NODE_API}/api/mp/NFTs/category/?listed=1${queryString}`
+    `${process.env.NEXT_PUBLIC_NODE_API}/api/V2/mp/NFTs/category/?listed=1${queryString}`
   );
   if (!res.ok) throw new Error('error fetching NFTs');
   let data: NftType[] = await res.json();
@@ -45,7 +45,7 @@ export const getCategoryNFTs = async (codes?: string | string[]) => {
 };
 
 export const getNFT = async (id: string, incViews: boolean = false, viewerWalletId: string | null = null) => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/mp/NFTs/${id}?incViews=${incViews}&viewerWalletId=${viewerWalletId}`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/V2/mp/NFTs/${id}?incViews=${incViews}&viewerWalletId=${viewerWalletId}`);
   if (!res.ok) throw new Error();
   let data: NftType = await res.json();
   if (!data.creatorData || !data.ownerData || !data.media) throw new Error();

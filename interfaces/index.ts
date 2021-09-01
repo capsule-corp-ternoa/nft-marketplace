@@ -35,9 +35,9 @@ export type NftType = {
   creatorData: UserType;
   serieId: string;
   itemTotal: string;
+  serieData?: NftType[];
   totalListedNft?: number;
   totalNft?: number;
-  totalMinted?: number;
   itemId: string;
   categories: CategoryType[];
   viewsCount?: number;

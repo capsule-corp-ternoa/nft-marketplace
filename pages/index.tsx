@@ -37,7 +37,9 @@ const LandingPage: React.FC<LandingProps> = ({
   const [notAvailable, setNotAvailable] = useState(false);
 
   useEffect(() => {
-    if (window.isRNApp && window.walletId && !Cookies.get('token')) Cookies.set('token', window.walletId, { expires: 1 });
+    if (window.isRNApp && window.walletId && (!Cookies.get('token') || Cookies.get('token')!==window.walletId)){
+      Cookies.set('token', window.walletId, { expires: 1 });
+    }
   }, []);
 
   return (

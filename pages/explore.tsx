@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Head from 'next/head';
 import AlphaBanner from 'components/base/AlphaBanner';
 import MainHeader from 'components/base/MainHeader';
@@ -24,18 +24,6 @@ const ExplorePage: React.FC<ExplorePage> = ({ user, data }) => {
   const [notAvailable, setNotAvailable] = useState(false);
   const [walletUser, setWalletUser] = useState(user);
 
-  useEffect(() => {
-    async function callBack() {
-      try {
-        let res = await getUser(window.walletId);
-        setWalletUser(res);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    if (window.isRNApp && window.walletId) callBack();
-  }, []);
-
   return (
     <>
       <Head>
@@ -57,7 +45,7 @@ const ExplorePage: React.FC<ExplorePage> = ({ user, data }) => {
 };
 
 export async function getServerSideProps(ctx: NextPageContext) {
-  const token = cookies(ctx).token;
+  const token = cookies(ctx).token || ctx.query.walletId as string;
   let user: UserType | null = null, data : NftType[] = [];
   const promises = [];
   if (token) {

@@ -33,6 +33,18 @@ const NftPage: React.FC<NFTPageProps> = ({ user, NFT, capsValue }) => {
   useEffect(() => {
     async function callBack() {
       try {
+        let res = await getUser(window.walletId);
+        setWalletUser(res);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    if (window.isRNApp && window.walletId) callBack();
+  }, []);
+  
+  useEffect(() => {
+    async function callBack() {
+      try {
         let res = await fetch(NFT.media!.url, { method: 'HEAD' });
         setType(res.headers.get('Content-Type'));
         return res;

@@ -64,7 +64,7 @@ const LandingPage: React.FC<LandingProps> = ({
 };
 export async function getServerSideProps(ctx: NextPageContext) {
   const token = cookies(ctx).token || ctx.query.walletId as string || localStorage.getItem('token');
-  if (token && !cookies(ctx).token) localStorage.setItem('token', token)
+  //if (token && !cookies(ctx).token) 
 
   // category code for beta testers NFTs
   const BETA_CODE = '001';

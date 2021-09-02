@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Head from 'next/head';
 import AlphaBanner from 'components/base/AlphaBanner';
 import MainHeader from 'components/base/MainHeader';
@@ -27,18 +27,6 @@ const PublicProfilePage: React.FC<PublicProfileProps> = ({
   const [notAvailable, setNotAvailable] = useState(false);
   const [walletUser, setWalletUser] = useState(user);
   const [viewProfile, setViewProfile] = useState(profile);
-
-  useEffect(() => {
-    async function callBack() {
-      try {
-        let res = await getUser(window.walletId);
-        setWalletUser(res);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    if (window.isRNApp && window.walletId) callBack();
-  }, []);
 
   return (
     <>

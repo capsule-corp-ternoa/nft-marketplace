@@ -40,19 +40,6 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
     description: '',
     quantity: 1,
   });
-  const [walletUser, setWalletUser] = useState(user);
-
-  useEffect(() => {
-    async function callBack() {
-      try {
-        let res = await getUser(window.walletId);
-        setWalletUser(res);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    if (window.isRNApp && window.walletId) callBack();
-  }, []);
 
   useEffect(() => {
     if (!isNftCreationEnabled){
@@ -217,13 +204,13 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
         />
       )}
       <AlphaBanner />
-      <MainHeader user={walletUser} setModalExpand={setModalExpand} />
+      <MainHeader user={user} setModalExpand={setModalExpand} />
       {isNftCreationEnabled && 
         <Create
           setModalExpand={setModalExpand}
           setNotAvailable={setNotAvailable}
           setModalCreate={setModalCreate}
-          user={walletUser}
+          user={user}
           NFT={NFT}
           setNFT={setNFT}
           secretNFT={secretNFT}
@@ -243,7 +230,7 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
 
 export async function getServerSideProps(ctx: NextPageContext) {
   let user = null;
-  const token = cookies(ctx).token || ctx.query.walletId as string;
+  const token = cookies(ctx).token;
   if (token) user = await getUser(token).catch(() => null);
   return {
     props: { user },

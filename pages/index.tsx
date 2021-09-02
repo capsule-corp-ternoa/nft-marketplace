@@ -38,6 +38,7 @@ const LandingPage: React.FC<LandingProps> = ({
 
   useEffect(() => {
     if (window.isRNApp && window.walletId && (!Cookies.get('token') || Cookies.get('token')!==window.walletId)){
+      Cookies.remove('token')
       Cookies.set('token', window.walletId, { expires: 1 });
     }
   }, []);
@@ -70,7 +71,7 @@ const LandingPage: React.FC<LandingProps> = ({
   );
 };
 export async function getServerSideProps(ctx: NextPageContext) {
-  const token = cookies(ctx).token || ctx.query.walletId as string;
+  const token = ctx.query.walletId as string || cookies(ctx).token;
   // category code for beta testers NFTs
   const BETA_CODE = '001';
   let users: UserType[] = [], user: UserType | null = null, regularNfts: NftType[] = [], betaNfts: NftType[] = [];

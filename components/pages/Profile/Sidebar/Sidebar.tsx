@@ -1,5 +1,4 @@
-import React from 'react';
-
+import React, { useEffect, useState } from 'react';
 import style from './Sidebar.module.scss';
 import Badge from 'components/assets/badge';
 import CopyPaste from 'components/assets/copypaste';
@@ -42,6 +41,11 @@ const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   const router = useRouter();
   const bgGradient = user ? { background: gradient(user.name) } : {};
+  const [isRn, setIsRn] = useState(false)
+  
+  useEffect(() => {
+    setIsRn(window.isRNApp);
+  }, []);
 
   function returnActiveTitle(name: string) {
     if (scope === name) {
@@ -58,7 +62,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   }
 
   function disconnect() {
-    if (!window.isRNApp){
+    if (!isRn){
       Cookies.remove('token');
       router.push('/');
     }
@@ -192,7 +196,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             {followedAmount}
           </div>
         </div>
-        {!window.isRNApp && 
+        {!isRn && 
           <div className={style.Disconnect} onClick={disconnect}>
             <PowerOff className={style.PowerOff} />
             Disconnect

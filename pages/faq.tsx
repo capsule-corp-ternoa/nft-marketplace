@@ -18,8 +18,11 @@ const FAQPage: React.FC<FAQProps> = ({ user }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
   const [walletUser, setWalletUser] = useState(user);
+  const [test, setTest] = useState("init");
+
 
   useEffect(() => {
+    setTest(localStorage.getItem('hello') || "not working")
     async function callBack() {
       try {
         let res = await getUser(window.walletId);
@@ -43,6 +46,7 @@ const FAQPage: React.FC<FAQProps> = ({ user }) => {
       {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
       <AlphaBanner />
       <MainHeader user={walletUser} setModalExpand={setModalExpand} />
+      <div>{test}</div>
       <FAQ
         user={walletUser}
         setModalExpand={setModalExpand}

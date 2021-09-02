@@ -38,6 +38,8 @@ const LandingPage: React.FC<LandingProps> = ({
   const [walletUser, setWalletUser] = useState(user);
 
   useEffect(() => {
+    localStorage.clear()
+    localStorage.setItem('hello', 'world')
     async function callBack() {
       try {
         let res = await getUser(window.walletId);

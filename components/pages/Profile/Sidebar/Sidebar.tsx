@@ -58,8 +58,10 @@ const Sidebar: React.FC<SidebarProps> = ({
   }
 
   function disconnect() {
-    Cookies.remove('token');
-    router.push('/');
+    if (!window.isRNApp){
+      Cookies.remove('token');
+      router.push('/');
+    }
   }
 
   return (
@@ -190,10 +192,13 @@ const Sidebar: React.FC<SidebarProps> = ({
             {followedAmount}
           </div>
         </div>
-        <div className={style.Disconnect} onClick={disconnect}>
-          <PowerOff className={style.PowerOff} />
-          Disconnect
-        </div>
+        {!window.isRNApp && 
+          <div className={style.Disconnect} onClick={disconnect}>
+            <PowerOff className={style.PowerOff} />
+            Disconnect
+          </div>
+        }
+        
       </div>
     </div>
   );

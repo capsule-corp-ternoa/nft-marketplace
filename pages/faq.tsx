@@ -17,20 +17,6 @@ export interface FAQProps {
 const FAQPage: React.FC<FAQProps> = ({ user }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
-  //const [walletUser, setWalletUser] = useState(user);
-
-
-  /*useEffect(() => {
-    async function callBack() {
-      try {
-        let res = await getUser(window.walletId);
-        setWalletUser(res);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    //if (window.isRNApp && window.walletId) callBack();
-  }, []);*/
 
   return (
     <>
@@ -55,7 +41,7 @@ const FAQPage: React.FC<FAQProps> = ({ user }) => {
 
 export async function getServerSideProps(ctx: NextPageContext) {
   let user = null;
-  const token = cookies(ctx).token || ctx.query.walletId as string;
+  const token = cookies(ctx).token;
   if (token) user = await getUser(token).catch(() => null);
   return {
     props: { user },

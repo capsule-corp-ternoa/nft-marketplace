@@ -35,18 +35,8 @@ const LandingPage: React.FC<LandingProps> = ({
 }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
-  //const [walletUser, setWalletUser] = useState(user);
 
   useEffect(() => {
-    /*async function callBack() {
-      try {
-        let res = await getUser(window.walletId);
-        setWalletUser(res);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    if (window.isRNApp && window.walletId) callBack();*/
     if (window.isRNApp && window.walletId && !Cookies.get('token')) Cookies.set('token', window.walletId, { expires: 1 });
   }, []);
 

@@ -36,7 +36,7 @@ const LandingPage: React.FC<LandingProps> = ({
 }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
-
+  const test = Cookies.get('token')
   return (
     <>
       <Head>
@@ -50,6 +50,7 @@ const LandingPage: React.FC<LandingProps> = ({
       {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
       <AlphaBanner />
       <MainHeader user={user} setModalExpand={setModalExpand} />
+      <div>{test}</div>
       <Landing
         setModalExpand={setModalExpand}
         setNotAvailable={setNotAvailable}
@@ -67,6 +68,7 @@ const LandingPage: React.FC<LandingProps> = ({
 export async function getServerSideProps(ctx: NextPageContext) {
   const token = cookies(ctx).token || ctx.query.walletId as string;
   if (token && !cookies(ctx).token) Cookies.set('token', token, { expires: 1 })
+
   // category code for beta testers NFTs
   const BETA_CODE = '001';
   let users: UserType[] = [], user: UserType | null = null, regularNfts: NftType[] = [], betaNfts: NftType[] = [];

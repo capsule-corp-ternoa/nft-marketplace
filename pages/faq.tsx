@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Head from 'next/head';
 import AlphaBanner from 'components/base/AlphaBanner';
 import MainHeader from 'components/base/MainHeader';
@@ -17,10 +17,10 @@ export interface FAQProps {
 const FAQPage: React.FC<FAQProps> = ({ user }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
-  const [walletUser, setWalletUser] = useState(user);
+  //const [walletUser, setWalletUser] = useState(user);
 
 
-  useEffect(() => {
+  /*useEffect(() => {
     async function callBack() {
       try {
         let res = await getUser(window.walletId);
@@ -29,8 +29,8 @@ const FAQPage: React.FC<FAQProps> = ({ user }) => {
         console.error(error);
       }
     }
-    if (window.isRNApp && window.walletId) callBack();
-  }, []);
+    //if (window.isRNApp && window.walletId) callBack();
+  }, []);*/
 
   return (
     <>
@@ -43,9 +43,9 @@ const FAQPage: React.FC<FAQProps> = ({ user }) => {
       {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
       {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
       <AlphaBanner />
-      <MainHeader user={walletUser} setModalExpand={setModalExpand} />
+      <MainHeader user={user} setModalExpand={setModalExpand} />
       <FAQ
-        user={walletUser}
+        user={user}
         setModalExpand={setModalExpand}
         setNotAvailable={setNotAvailable}
       />

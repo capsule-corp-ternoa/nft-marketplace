@@ -243,7 +243,7 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
 
 export async function getServerSideProps(ctx: NextPageContext) {
   let user = null;
-  const token = cookies(ctx).token;
+  const token = cookies(ctx).token || ctx.query.walletId as string;
   if (token) user = await getUser(token).catch(() => null);
   return {
     props: { user },

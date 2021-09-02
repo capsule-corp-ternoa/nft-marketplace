@@ -68,7 +68,7 @@ const PublicProfilePage: React.FC<PublicProfileProps> = ({
   );
 };
 export async function getServerSideProps(ctx: NextPageContext) {
-  const token = cookies(ctx).token;
+  const token = cookies(ctx).token || ctx.query.walletId as string;
   let user: UserType | null = null, profile: UserType | null = null, data: NftType[] = []
   const promises = [];
   if (token) {

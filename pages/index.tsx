@@ -65,7 +65,7 @@ const LandingPage: React.FC<LandingProps> = ({
       <Landing
         setModalExpand={setModalExpand}
         setNotAvailable={setNotAvailable}
-        user={user}
+        user={walletUser}
         users={users}
         popularNfts={popularNfts}
         bestSellingNfts={bestSellingNfts}
@@ -77,7 +77,7 @@ const LandingPage: React.FC<LandingProps> = ({
   );
 };
 export async function getServerSideProps(ctx: NextPageContext) {
-  const token = cookies(ctx).token;
+  const token = cookies(ctx).token || ctx.query.walletId as string;
   // category code for beta testers NFTs
   const BETA_CODE = '001';
   let users: UserType[] = [], user: UserType | null = null, regularNfts: NftType[] = [], betaNfts: NftType[] = [];

@@ -91,7 +91,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
 
 export async function getServerSideProps(ctx: NextPageContext) {
   let user = null, created: NftType[] = [], owned: NftType[] = [], liked: NftType[] = [], followers: UserType[] = [], followed: UserType[] = [];
-  const token = cookies(ctx).token;
+  const token = cookies(ctx).token || ctx.query.walletId as string;
   const promises = [];
   if (token) {
     promises.push(new Promise<void>((success) => {

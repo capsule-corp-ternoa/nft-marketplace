@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import AlphaBanner from 'components/base/AlphaBanner';
 import MainHeader from 'components/base/MainHeader';
@@ -41,6 +41,18 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
   const [likedNfts, setLikedNfts] = useState(liked)
   const [followersUsers, setFollowersUsers] = useState(followers)
   const [followedUsers, setFollowedUsers] = useState(followed)
+
+  useEffect(() => {
+    async function callBack() {
+      try {
+        let res = await getUser(window.walletId);
+        setWalletUser(res);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    if (window.isRNApp && window.walletId) callBack();
+  }, []);
 
   return (
     <>

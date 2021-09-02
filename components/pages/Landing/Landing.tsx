@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import style from './Landing.module.scss';
 import Hero from './Hero';
@@ -8,7 +8,6 @@ import FloatingHeader from 'components/base/FloatingHeader';
 import NoNFTComponent from 'components/base/NoNFTComponent';
 import { UserType, NftType } from 'interfaces/index';
 import dynamic from 'next/dynamic';
-import { getUser } from 'actions/user';
 const Showcase = dynamic(() => import('./Showcase'), {
   ssr: false,
 });
@@ -37,17 +36,6 @@ const Landing: React.FC<LandingProps> = ({
   totalCountNFT,
 }) => {
   const [walletUser, setWalletUser] = useState(user);
-  useEffect(() => {
-    async function callBack() {
-      try {
-        let res = await getUser(window.walletId);
-        setWalletUser(res);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    if (window.isRNApp && window.walletId) callBack();
-  }, []);
   return (
     <div className={style.Container}>
       <Hero users={users} />

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Head from 'next/head';
 import AlphaBanner from 'components/base/AlphaBanner';
 import MainHeader from 'components/base/MainHeader';
@@ -35,19 +35,6 @@ const LandingPage: React.FC<LandingProps> = ({
 }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
-  const [walletUser, setWalletUser] = useState(user);
-
-  useEffect(() => {
-    async function callBack() {
-      try {
-        let res = await getUser(window.walletId);
-        setWalletUser(res);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    if (window.isRNApp && window.walletId) callBack();
-  }, []);
 
   return (
     <>
@@ -61,7 +48,7 @@ const LandingPage: React.FC<LandingProps> = ({
       {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
       {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
       <AlphaBanner />
-      <MainHeader user={walletUser} setModalExpand={setModalExpand} />
+      <MainHeader user={user} setModalExpand={setModalExpand} />
       <Landing
         setModalExpand={setModalExpand}
         setNotAvailable={setNotAvailable}
@@ -77,7 +64,7 @@ const LandingPage: React.FC<LandingProps> = ({
   );
 };
 export async function getServerSideProps(ctx: NextPageContext) {
-  const token = cookies(ctx).token;
+  const token = cookies(ctx).token || ctx.query.walletId as string;
   // category code for beta testers NFTs
   const BETA_CODE = '001';
   let users: UserType[] = [], user: UserType | null = null, regularNfts: NftType[] = [], betaNfts: NftType[] = [];

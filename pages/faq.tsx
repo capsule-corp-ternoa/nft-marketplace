@@ -29,7 +29,7 @@ const FAQPage: React.FC<FAQProps> = ({ user }) => {
         console.error(error);
       }
     }
-    if (window.isRNApp && window.walletId) callBack();
+    //if (window.isRNApp && window.walletId) callBack();
   }, []);
 
   return (

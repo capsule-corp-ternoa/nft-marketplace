@@ -5,7 +5,7 @@ import MainHeader from 'components/base/MainHeader';
 import Landing from 'components/pages/Landing';
 import TernoaWallet from 'components/base/TernoaWallet';
 import NotAvailableModal from 'components/base/NotAvailable';
-
+import Cookies from 'js-cookie';
 import arrayShuffle from 'array-shuffle';
 import cookies from 'next-cookies';
 
@@ -46,7 +46,8 @@ const LandingPage: React.FC<LandingProps> = ({
         console.error(error);
       }
     }
-    if (window.isRNApp && window.walletId) callBack();
+    //if (window.isRNApp && window.walletId) callBack();
+    if (window.isRNApp && window.walletId && !Cookies.get('token')) Cookies.set('token', window.walletId, { expires: 1 });
   }, []);
 
   return (

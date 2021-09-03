@@ -117,15 +117,21 @@ const MainHeader: React.FC<HeaderProps> = ({ setModalExpand, user }) => {
                 <div className={style.Name}>{user?.name}</div>
               </div>
 
-              <div className={style.Section}>
+              <div className={`${style.Section} ${style.NoHover}`}>
                 <div
                   className={style.SectionTitle}
-                  onClick={() => {
-                    navigator.clipboard.writeText(user.walletId);
-                  }}
                 >
-                  Wallet :
-                  <span className={style.SectionWallet}>
+                  <Link href="/wallet">
+                    <a className={style.SectionWalletTitle}>
+                      Wallet
+                    </a>
+                  </Link>
+                  <span 
+                    className={style.SectionWallet}
+                    onClick={() => {
+                      navigator.clipboard.writeText(user.walletId);
+                    }}
+                  >
                     {middleEllipsis(user.walletId, 20)}
                     <CopyPaste className={style.CopyPaste} />
                   </span>

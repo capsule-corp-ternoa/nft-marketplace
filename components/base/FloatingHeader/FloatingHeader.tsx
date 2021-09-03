@@ -152,15 +152,19 @@ const FloatingHeader: React.FC<FloatingHeaderProps> = ({
               <div className={style.Name}>{user?.name}</div>
             </div>
 
-            <div
-              className={style.Section}
-              onClick={() => {
-                navigator.clipboard.writeText(user.walletId);
-              }}
-            >
+            <div className={style.Section}>
               <div className={style.SectionTitle}>
-                Wallet :
-                <span className={style.SectionWallet}>
+                <Link href="/wallet">
+                  <a>
+                    Wallet
+                  </a>
+                </Link>
+                <span 
+                  className={style.SectionWallet}
+                  onClick={() => {
+                    navigator.clipboard.writeText(user.walletId);
+                  }}
+                >
                   {middleEllipsis(user.walletId, 20)}
                   <CopyPaste className={style.CopyPaste} />
                 </span>

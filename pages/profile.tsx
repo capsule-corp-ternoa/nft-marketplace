@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Head from 'next/head';
 import AlphaBanner from 'components/base/AlphaBanner';
 import MainHeader from 'components/base/MainHeader';
@@ -42,18 +42,6 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
   const [followersUsers, setFollowersUsers] = useState(followers)
   const [followedUsers, setFollowedUsers] = useState(followed)
 
-  useEffect(() => {
-    async function callBack() {
-      try {
-        let res = await getUser(window.walletId);
-        setWalletUser(res);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    if (window.isRNApp && window.walletId) callBack();
-  }, []);
-
   return (
     <>
       <Head>
@@ -90,8 +78,8 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
 };
 
 export async function getServerSideProps(ctx: NextPageContext) {
-  let user = null, created: NftType[] = [], owned: NftType[] = [], liked: NftType[] = [], followers: UserType[] = [], followed: UserType[] = [];
   const token = cookies(ctx).token;
+  let user = null, created: NftType[] = [], owned: NftType[] = [], liked: NftType[] = [], followers: UserType[] = [], followed: UserType[] = [];
   const promises = [];
   if (token) {
     promises.push(new Promise<void>((success) => {

@@ -14,7 +14,7 @@
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  padding: 100px 24px;
+  padding: 60px 24px;
 }
 
 .Title {
@@ -42,7 +42,7 @@
 @media (max-width: 950px) {
   .Wrapper {
     width: 100%;
-    padding: 80px 40px;
+    padding: 40px 40px;
   }
 
   .Title {

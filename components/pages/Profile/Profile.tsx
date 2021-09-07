@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router'
 import Link from 'next/link';
 import style from './Profile.module.scss';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
 import NFTCard from 'components/base/NftCard';
 import Creator from 'components/base/Creator';
-
+import TwitterErrorModal from './TwitterErrorModal';
 import Sidebar from './Sidebar';
 import FloatingMenu from './FloatingMenu';
 import Edit from './Edit';
@@ -47,9 +48,11 @@ const Profile: React.FC<ProfileProps> = ({
   setNotAvailable,
   setSuccessPopup,
 }) => {
+  const router = useRouter()
   const [isFiltered, setIsFiltered] = useState(false);
-  const [scope, setScope] = useState('My NFTs');
+  const [scope, setScope] = useState(router.query?.scope === 'edit' ? 'edit' : 'My NFTs');
   const [expand, setExpand] = useState(false);
+  const [twitterErrorModal, setTwitterErrorModal] = useState(false)
   const [banner, setBanner] = useState(
     user.banner ??
       'https://images.unsplash.com/photo-1579546929518-9e396f3cc809?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2250&q=80'
@@ -57,6 +60,11 @@ const Profile: React.FC<ProfileProps> = ({
   const listedOwnedNFTS = ownedNFTS.filter(x=>x.listed===1)
   const unlistedOwnedNFTS = ownedNFTS.filter(x=>x.listed===0)
   const [, setSearchValue] = useState('' as string);
+
+  const ownedAmount=ownedNFTS.reduce((acc, cur) => acc + Number(cur.serieData?.filter(x => x.owner === user.walletId).length), 0)
+  const createdAmount=createdNFTS.reduce((acc, cur) => acc + Number(cur.totalNft), 0)
+  const listedOwnedAmount=listedOwnedNFTS.reduce((acc, cur) => acc + Number(cur.serieData?.filter(x => x.owner === user.walletId && x.listed===1).length), 0)
+  const unlistedOwnedAmount=unlistedOwnedNFTS.reduce((acc, cur) => acc + Number(cur.serieData?.filter(x => x.owner === user.walletId && x.listed===0).length), 0)
 
   const updateKeywordSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.currentTarget.value);
@@ -87,6 +95,13 @@ const Profile: React.FC<ProfileProps> = ({
       console.error(err);
     }
   }
+
+  useEffect(() => {
+    if (router.query?.twitterValidated === "false"){
+      setTwitterErrorModal(true)
+      router.query = {}
+    }
+  }, [router.query]);
 
   function returnTitle() {
     return scope;
@@ -123,6 +138,7 @@ const Profile: React.FC<ProfileProps> = ({
           setUser={setUser}
           likedNfts={likedNfts}
           setLikedNfts={setLikedNfts}
+          scope={scope}
         />
       </div>
     ));
@@ -241,11 +257,11 @@ const Profile: React.FC<ProfileProps> = ({
           scope={scope}
           setScope={setScope}
           setExpand={setExpand}
-          ownedAmount={ownedNFTS.length}
-          createdAmount={createdNFTS.length}
+          ownedAmount={ownedAmount}
+          createdAmount={createdAmount}
+          listedOwnedAmount={listedOwnedAmount}
+          unlistedOwnedAmount={unlistedOwnedAmount}
           likedAmount={likedNfts.length}
-          listedOwnedAmount={listedOwnedNFTS.length}
-          unlistedOwnedAmount={unlistedOwnedNFTS.length}
           followersAmount={followers.length}
           followedAmount={followed.length}
         />
@@ -257,16 +273,21 @@ const Profile: React.FC<ProfileProps> = ({
         <FloatingMenu 
           setScope={setScope} 
           scope={scope} 
-          setExpand={setExpand} 
-          ownedAmount={ownedNFTS.length}
-          createdAmount={createdNFTS.length}
+          setExpand={setExpand}
+          ownedAmount={ownedAmount}
+          createdAmount={createdAmount}
+          listedOwnedAmount={listedOwnedAmount}
+          unlistedOwnedAmount={unlistedOwnedAmount}
           likedAmount={likedNfts.length}
-          listedOwnedAmount={listedOwnedNFTS.length}
-          unlistedOwnedAmount={unlistedOwnedNFTS.length}
           followersAmount={followers.length}
           followedAmount={followed.length}
         />
       )}
+      {twitterErrorModal && 
+        <TwitterErrorModal
+          setModalExpand={setTwitterErrorModal}
+        />
+      }
     </div>
   );
 };

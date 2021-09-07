@@ -2,7 +2,7 @@ import React from 'react';
 import style from './Wallet.module.scss';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
-
+import gradient from 'random-gradient';
 import CopyPaste from 'components/assets/copypaste';
 import WalletSVG from 'components/assets/wallet';
 import Badge from 'components/assets/badge';
@@ -21,6 +21,9 @@ const Wallet: React.FC<WalletProps> = ({
   setModalExpand,
   setNotAvailable,
 }) => {
+  const bgGradient = {
+    background: user.name ? gradient(user.name) : gradient('ternoa'),
+  };
   return (
     <div className={style.Container}>
       <div className={style.Head}>
@@ -30,11 +33,19 @@ const Wallet: React.FC<WalletProps> = ({
       <div className={style.Wallet}>
         <div className={style.AvatarShell}>
           <div className={style.Avatar}>
-            <img
-              className={style.AvatarIMG}
-              draggable="false"
-              src={user.picture}
-            />
+            {user.picture ? (
+              <img
+                className={style.AvatarIMG}
+                draggable="false"
+                src={user.picture}
+              />
+            ) : (
+              <div style={bgGradient} className={style.AvatarIMG}>
+                <div className={style.AvatarLetter}>
+                  {user.name.charAt(0)}
+                </div>
+              </div>
+            )}
             {user.verified && <Badge className={style.Badge} />}
           </div>
         </div>
@@ -54,12 +65,12 @@ const Wallet: React.FC<WalletProps> = ({
         <div className={style.Caps}>
           {user.capsAmount ? computeCaps(Number(user.capsAmount)) : 0} CAPS
         </div>
-        <div className={style.Tiime}>
+        <div className={style.Tiime} style={{display: "none"}}>
           {user.tiimeAmount ? computeTiime(Number(user.tiimeAmount)) : 0} TIIME
         </div>
-        <div className={style.Button} onClick={() => setNotAvailable(true)}>
+        <a className={style.Button} href="https://www.ternoa.com/" target="_blank">
           Buy CAPS
-        </div>
+        </a>
       </div>
       <Footer setNotAvailable={setNotAvailable} />
       <FloatingHeader user={user} setModalExpand={setModalExpand} />

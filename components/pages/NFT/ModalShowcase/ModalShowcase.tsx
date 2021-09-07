@@ -92,11 +92,12 @@ const Modal: React.FC<ModalProps> = ({
                 <div className={style.SB}>
                   <div className={style.SBLight}>Your balance</div>
                   <div className={style.SBLight}>
-                    {`
+                    {user && user.capsAmount ? computeCaps(Number(user.capsAmount)) : 0} CAPS
+                    {/*`
                       ${user && user.capsAmount ? computeCaps(Number(user.capsAmount)) : 0} CAPS
                       |
                       ${user && user.tiimeAmount ? computeCaps(Number(user.tiimeAmount)) : 0} TIIME
-                    `}
+                    `*/}
                   </div>
                 </div>
               </div>

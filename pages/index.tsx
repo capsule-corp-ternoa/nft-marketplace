@@ -5,7 +5,7 @@ import MainHeader from 'components/base/MainHeader';
 import Landing from 'components/pages/Landing';
 import TernoaWallet from 'components/base/TernoaWallet';
 import NotAvailableModal from 'components/base/NotAvailable';
-
+import Cookies from 'js-cookie';
 import arrayShuffle from 'array-shuffle';
 import cookies from 'next-cookies';
 
@@ -35,18 +35,12 @@ const LandingPage: React.FC<LandingProps> = ({
 }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
-  const [walletUser, setWalletUser] = useState(user);
 
   useEffect(() => {
-    async function callBack() {
-      try {
-        let res = await getUser(window.walletId);
-        setWalletUser(res);
-      } catch (error) {
-        console.error(error);
-      }
+    if (window.isRNApp && window.walletId && (!Cookies.get('token') || Cookies.get('token')!==window.walletId)){
+      Cookies.remove('token')
+      Cookies.set('token', window.walletId, { expires: 1 });
     }
-    if (window.isRNApp && window.walletId) callBack();
   }, []);
 
   return (
@@ -61,7 +55,7 @@ const LandingPage: React.FC<LandingProps> = ({
       {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
       {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
       <AlphaBanner />
-      <MainHeader user={walletUser} setModalExpand={setModalExpand} />
+      <MainHeader user={user} setModalExpand={setModalExpand} />
       <Landing
         setModalExpand={setModalExpand}
         setNotAvailable={setNotAvailable}
@@ -77,7 +71,7 @@ const LandingPage: React.FC<LandingProps> = ({
   );
 };
 export async function getServerSideProps(ctx: NextPageContext) {
-  const token = cookies(ctx).token;
+  const token = ctx.query.walletId as string || cookies(ctx).token;
   // category code for beta testers NFTs
   const BETA_CODE = '001';
   let users: UserType[] = [], user: UserType | null = null, regularNfts: NftType[] = [], betaNfts: NftType[] = [];

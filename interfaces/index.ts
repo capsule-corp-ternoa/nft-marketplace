@@ -10,12 +10,13 @@ export type UserType = {
   walletId: string;
   picture?: string;
   twitterName?: string;
+  twitterVerified?: boolean;
   customUrl?: string;
   personalUrl?: string;
   capsAmount?: string;
   tiimeAmount?: string;
   reviewRequested?:boolean
-  likedNFTs?: String[];
+  likedNFTs?: { serieId: string, nftId: string }[];
 };
 
 export type NftType = {
@@ -35,6 +36,7 @@ export type NftType = {
   creatorData: UserType;
   serieId: string;
   itemTotal: string;
+  serieData?: NftType[];
   totalListedNft?: number;
   totalNft?: number;
   itemId: string;

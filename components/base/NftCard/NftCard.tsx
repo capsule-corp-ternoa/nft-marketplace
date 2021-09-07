@@ -18,6 +18,7 @@ export interface NftCardProps {
   setUser?: (u: UserType) => void
   likedNfts?: NftType[]
   setLikedNfts?: (nfts: NftType[]) => void
+  scope?: string
 }
 
 function manageRouting(
@@ -36,11 +37,27 @@ const NftCard: React.FC<NftCardProps> = ({
   setUser,
   likedNfts,
   setLikedNfts,
+  scope,
 }) => {
   const [isHovering, setIsHovering] = useState(false);
   const [type, setType] = useState<string | null>(null);
   const [likeLoading, setLikeLoading] = useState(false)
-  const isLiked = !user ? undefined : user.likedNFTs?.includes(item.id)
+  const isLiked = !user ? undefined : (item.serieId === "0" ? user.likedNFTs?.map(x => x.nftId).includes(item.id) : user.likedNFTs?.map(x => x.serieId).includes(item.serieId))
+  const displayQuantity = () => {
+    if (!scope) return `${typeof item.totalListedNft !== 'undefined' ? item.totalListedNft : 1}`
+    switch(scope){
+      case 'My NFTs':
+        return `${typeof item.totalNft !== 'undefined' ? item.serieData?.filter(x=>x.owner===user?.walletId).length : 1}`
+      case 'My creations':
+        return `${typeof item.totalNft !== 'undefined' ? item.totalNft : 1}`
+      case 'My NFTs on sale':
+        return `${typeof item.totalListedNft !== 'undefined' ? item.serieData?.filter(x=>x.owner===user?.walletId && x.listed===1).length : 1}`
+      case 'My NFTs not for sale':
+        return `${(typeof item.totalListedNft !== 'undefined' && typeof item.totalNft !== 'undefined') ? item.serieData?.filter(x=>x.owner===user?.walletId && x.listed===0).length : 1}`
+      default:
+        return `${typeof item.totalListedNft !== 'undefined' ? item.totalListedNft : 1}`
+    }
+  }
   useEffect(() => {
     async function callBack() {
       try {
@@ -116,9 +133,9 @@ const NftCard: React.FC<NftCardProps> = ({
           `${style.NFTIMG} ${(type?.substr(0, 5) === 'image' && isHovering) ? style.ImgScaling : ""}`
         }
       />
-      <span className={style.QtyLabel}>
-        {`${typeof item.totalListedNft !== 'undefined' ? item.totalListedNft : 1}`}
-      </span>
+      {Number(displayQuantity()) > 1 && <span className={style.QtyLabel}>
+        {displayQuantity()}
+      </span>}
       {item.cryptedMedia?.url !== item.media?.url && !isHovering && (
         <span className={style.SecretLabel}>S</span>
       )}

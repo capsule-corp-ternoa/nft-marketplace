@@ -17,6 +17,7 @@ import { computeCaps, computeTiime } from 'utils/strings';
 import { UserType, NftType } from 'interfaces';
 import { likeNFT, unlikeNFT } from 'actions/user';
 import ModalShare from 'components/base/ModalShare';
+import Details from './Details';
 
 export interface NFTPageProps {
   NFT: NftType;
@@ -43,7 +44,6 @@ const NFTPage: React.FC<NFTPageProps> = ({
   const [modalShareOpen, setModalShareOpen] = useState(false)
   const bgGradientOwner = { background: gradient(NFT.ownerData.name) };
   const bgGradientCreator = { background: gradient(NFT.creatorData.name) };
-
   const fiatPrice = (Number(NFT.price) / 1000000000000000000) * capsValue;
   const userCanBuyCaps = user ? user.capsAmount && NFT.price && NFT.price !== "" && (Number(user.capsAmount) >= Number(NFT.price)) : true
   //const userCanBuyTiime = user ? user.tiimeAmount && NFT.priceTiime && NFT.priceTiime !== "" && (Number(user.tiimeAmount) >= Number(NFT.priceTiime)) : true
@@ -52,7 +52,6 @@ const NFTPage: React.FC<NFTPageProps> = ({
   const shareText = `Check out ${NFT.name ? NFT.name : "this nft"} on secret-nft.com`
   const shareUrl = (typeof window!=="undefined" && window.location?.href) || `https://www.secret-nft.com/nft/${NFT.id}`
   const isLiked = !user ? undefined : (NFT.serieId === "0" ? user.likedNFTs?.map(x => x.nftId).includes(NFT.id) : user.likedNFTs?.map(x => x.serieId).includes(NFT.serieId))
-  
   const handleLikeDislike = async () => {
     try{
       let res = null
@@ -223,6 +222,7 @@ const NFTPage: React.FC<NFTPageProps> = ({
                 </div>
               </a>
             </Link>
+      <Details NFT={NFT} user={user}/>
           </div>
         </div>
       </div>

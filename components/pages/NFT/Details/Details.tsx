@@ -121,9 +121,9 @@ const Details: React.FC<DetailsProps> = ({ NFT }) => {
               </div>
             </div>
           )}
+          {history && 'history'}
+          {bid && 'bid'}
         </div>
-        {history && 'history'}
-        {bid && 'bid'}
       </div>
     </div>
   );

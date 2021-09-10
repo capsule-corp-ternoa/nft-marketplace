@@ -222,8 +222,8 @@ const NFTPage: React.FC<NFTPageProps> = ({
                 </div>
               </a>
             </Link> */}
-      <Details NFT={NFT} user={user}/>
           </div>
+      <Details NFT={NFT} user={user}/>
         </div>
       </div>
       <Footer setNotAvailable={setNotAvailable} />

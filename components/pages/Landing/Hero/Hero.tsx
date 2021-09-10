@@ -3,7 +3,7 @@ import style from './Hero.module.scss';
 import Link from 'next/link';
 
 import Creator from 'components/base/Creator';
-import Ternoart from 'components/assets/ternoart';
+//import Ternoart from 'components/assets/ternoart';
 
 import SoundOn from 'components/assets/SoundOn';
 import SoundOff from 'components/assets/SoundOff';
@@ -64,7 +64,7 @@ const Hero: React.FC<HeroProps> = ({ users }) => {
             </span>
           </div>
 
-          <div className={style.Content}>
+          {/*<div className={style.Content}>
             <div className={style.Left}>
               <div className={style.Label}>
                 Hello Alpha tester
@@ -117,7 +117,7 @@ const Hero: React.FC<HeroProps> = ({ users }) => {
                 </div>
               </div>
             </div>
-          </div>
+          </div>*/}
         </div>
         <div className={style.Creators}>
           <h3 className={style.CreatorsTitle}>Creators</h3>

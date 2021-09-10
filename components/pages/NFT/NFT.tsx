@@ -173,12 +173,12 @@ const NFTPage: React.FC<NFTPageProps> = ({
               </div>
             )}
           </div>
-          <div className={style.HistoryTop}>
+          {/* <div className={style.HistoryTop}>
             <div className={style.HistoryTitle}>History</div>
             <div className={style.HistoryLine} />
-          </div>
+          </div> */}
           <div className={style.History}>
-            <Link href={`/${NFT.ownerData.walletId}`}>
+            {/* <Link href={`/${NFT.ownerData.walletId}`}>
               <a className={style.HistoryItem}>
                 <Check className={style.Check} />
                 <div className={style.HistoryAvatar}>
@@ -221,7 +221,7 @@ const NFTPage: React.FC<NFTPageProps> = ({
                   </div>
                 </div>
               </a>
-            </Link>
+            </Link> */}
       <Details NFT={NFT} user={user}/>
           </div>
         </div>

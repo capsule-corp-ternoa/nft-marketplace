@@ -74,8 +74,8 @@ export async function getServerSideProps(ctx: NextPageContext) {
     }).catch(success);
   }));
   promises.push(new Promise<void>((success) => {
-    getProfileNFTS(ctx.query.name as string).then(_nfts => {
-      data = _nfts
+    getProfileNFTS(ctx.query.name as string).then(result => {
+      data = result.nodes
       success();
     }).catch(success);
   }));

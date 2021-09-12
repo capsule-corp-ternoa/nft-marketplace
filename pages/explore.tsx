@@ -57,8 +57,8 @@ export async function getServerSideProps(ctx: NextPageContext) {
     }));
   }
   promises.push(new Promise<void>((success) => {
-    getCategoryNFTs().then(_nfts => {
-      data = _nfts
+    getCategoryNFTs().then(result => {
+      data = result.nodes
       success();
     }).catch(success);
   }));

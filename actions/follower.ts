@@ -1,14 +1,14 @@
 import { UserType, FollowType } from "interfaces";
 
 export const getFollowers = async (walletId: string) => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/mp/follow/followers/${walletId}`);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/follow/followers/${walletId}`);
     if (!res.ok) throw new Error();
     let data: FollowType[] = await res.json();
     return data.map(x => x.follower);
 };
 
 export const getFollowed = async (walletId: string) => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/mp/follow/followed/${walletId}`);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/follow/followed/${walletId}`);
     if (!res.ok) throw new Error();
     let data: FollowType[] = await res.json();
     let followed = data.map(x => x.followed)
@@ -17,7 +17,7 @@ export const getFollowed = async (walletId: string) => {
 
 export const follow = async (walletIdFollowed: string, walletIdFollower: string) => {
     const queryString = `?walletIdFollowed=${walletIdFollowed}&walletIdFollower=${walletIdFollower}`
-    const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/mp/follow/follow/${queryString}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/follow/follow/${queryString}`, {
         method: 'POST',
     });
     if (!res.ok) throw new Error();
@@ -27,7 +27,7 @@ export const follow = async (walletIdFollowed: string, walletIdFollower: string)
 
 export const unfollow = async (walletIdFollowed: string, walletIdFollower: string) => {
     const queryString = `?walletIdFollowed=${walletIdFollowed}&walletIdFollower=${walletIdFollower}`
-    const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/mp/follow/unfollow/${queryString}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/follow/unfollow/${queryString}`, {
         method: 'POST',
     });
     if (!res.ok) throw new Error();
@@ -37,7 +37,7 @@ export const unfollow = async (walletIdFollowed: string, walletIdFollower: strin
 
 export const isUserFollowing = async (walletIdFollowed: string, walletIdFollower: string) => {
     const queryString = `?walletIdFollowed=${walletIdFollowed}&walletIdFollower=${walletIdFollower}`
-    const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/mp/follow/isUserFollowing/${queryString}`);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/follow/isUserFollowing/${queryString}`);
     if (!res.ok) throw new Error();
     let data: {isFollowing: boolean} = await res.json();
     return data;

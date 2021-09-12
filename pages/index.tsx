@@ -91,14 +91,14 @@ export async function getServerSideProps(ctx: NextPageContext) {
     }));
   }
   promises.push(new Promise<void>((success) => {
-    getCategoryNFTs().then(_regularNfts => {
-      regularNfts = _regularNfts
+    getCategoryNFTs().then(result => {
+      regularNfts = result.nodes
       success();
     }).catch(success);
   }));
   promises.push(new Promise<void>((success) => {
-    getCategoryNFTs(BETA_CODE).then(_betaNfts => {
-      betaNfts = _betaNfts
+    getCategoryNFTs(BETA_CODE).then(result => {
+      betaNfts = result.nodes
       success();
     }).catch(success);
   }));

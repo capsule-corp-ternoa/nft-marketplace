@@ -106,8 +106,8 @@ export async function getServerSideProps(ctx: NextPageContext) {
   users = arrayShuffle(users);
   betaNfts = arrayShuffle(betaNfts || []).slice(0, 8);
   let popularNfts = arrayShuffle((regularNfts || []).slice(0, 8));
-  let bestSellingNfts = arrayShuffle((regularNfts || []).slice(9, 17));
-  let NFTCreators = arrayShuffle((regularNfts || []).slice(18, 21));
+  let bestSellingNfts = arrayShuffle((regularNfts || []).slice(8, 16));
+  let NFTCreators = arrayShuffle((regularNfts || []).slice(16, 24));
   let totalCountNFT = (regularNfts || []).length + (betaNfts || []).length;
   return {
     props: {

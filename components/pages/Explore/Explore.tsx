@@ -10,9 +10,11 @@ export interface ExploreProps {
   NFTS: NftType[];
   user?: UserType;
   setUser?: (u: UserType) => void;
+  loadMore: () => void;
+  hasNextPage: boolean;
 }
 
-const Explore: React.FC<ExploreProps> = ({ NFTS, user, setUser }) => {
+const Explore: React.FC<ExploreProps> = ({ NFTS, user, setUser, loadMore, hasNextPage }) => {
 
   function returnNFTs() {
     return NFTS.map((item) => (
@@ -78,12 +80,13 @@ const Explore: React.FC<ExploreProps> = ({ NFTS, user, setUser }) => {
             {returnNFTs()}
           </div>
         }
-        <div 
+        {hasNextPage && <div 
+          onClick={()=> loadMore()}
           className={style.Button}
           
         >
           Load more...
-        </div>
+        </div>}
       </div>
     </>
   );

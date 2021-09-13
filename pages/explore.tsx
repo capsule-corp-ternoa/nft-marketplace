@@ -17,12 +17,29 @@ import { NextPageContext } from 'next';
 export interface ExplorePage {
   user: UserType;
   data: NftType[];
+  dataHasNextPage: boolean;
 }
 
-const ExplorePage: React.FC<ExplorePage> = ({ user, data }) => {
+const ExplorePage: React.FC<ExplorePage> = ({ user, data, dataHasNextPage }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
   const [walletUser, setWalletUser] = useState(user);
+  const [dataNfts, setDataNfts] = useState(data);
+  const [dataNftsHasNextPage, setDataNftsHasNextPage] = useState(dataHasNextPage)
+  const [currentPage, setCurrentPage] = useState(1)
+
+  const loadMoreNfts = async () => {
+    try{
+      if (dataNftsHasNextPage){
+        let result = await getCategoryNFTs(undefined,(currentPage+1).toString())
+        setCurrentPage(currentPage+1)
+        setDataNftsHasNextPage(result.pageInfo?.hasNextPage || false)
+        setDataNfts([...dataNfts, ...result.nodes])
+      }
+    }catch(err){
+      console.log(err)
+    }
+  }
 
   return (
     <>
@@ -37,7 +54,7 @@ const ExplorePage: React.FC<ExplorePage> = ({ user, data }) => {
       {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
       <AlphaBanner />
       <MainHeader user={walletUser} setModalExpand={setModalExpand} />
-      <Explore NFTS={data} user={walletUser} setUser={setWalletUser} />
+      <Explore NFTS={dataNfts} user={walletUser} setUser={setWalletUser} loadMore={loadMoreNfts} hasNextPage={dataNftsHasNextPage}/>
       <Footer setNotAvailable={setNotAvailable} />
       <FloatingHeader user={walletUser} setModalExpand={setModalExpand} />
     </>
@@ -46,7 +63,7 @@ const ExplorePage: React.FC<ExplorePage> = ({ user, data }) => {
 
 export async function getServerSideProps(ctx: NextPageContext) {
   const token = cookies(ctx).token;
-  let user: UserType | null = null, data : NftType[] = [];
+  let user: UserType | null = null, data : NftType[] = [], dataHasNextPage: boolean=false;
   const promises = [];
   if (token) {
     promises.push(new Promise<void>((success) => {
@@ -58,13 +75,15 @@ export async function getServerSideProps(ctx: NextPageContext) {
   }
   promises.push(new Promise<void>((success) => {
     getCategoryNFTs().then(result => {
+      console.log(result)
       data = result.nodes
+      dataHasNextPage = result.pageInfo?.hasNextPage || false
       success();
     }).catch(success);
   }));
   await Promise.all(promises);
   return {
-    props: { user, data },
+    props: { user, data, dataHasNextPage },
   };
 }
 

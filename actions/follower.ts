@@ -1,18 +1,20 @@
 import { UserType, FollowType } from "interfaces";
+import { DEFAULT_LIMIT_PAGINATION } from "./nft";
 
-export const getFollowers = async (walletId: string) => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/follow/followers/${walletId}`);
+export const getFollowers = async (walletId: string, page: string="1", limit: string=DEFAULT_LIMIT_PAGINATION) => {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/follow/followers/${walletId}?page=${page}&limit=${limit}`);
     if (!res.ok) throw new Error();
-    let data: FollowType[] = await res.json();
-    return data.map(x => x.follower);
+    let result = await res.json();
+    result.docs = result.docs.map((x: FollowType) => x.follower)
+    return result;
 };
 
-export const getFollowed = async (walletId: string) => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/follow/followed/${walletId}`);
+export const getFollowed = async (walletId: string, page: string="1", limit: string=DEFAULT_LIMIT_PAGINATION) => {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/follow/followed/${walletId}?page=${page}&limit=${limit}`);
     if (!res.ok) throw new Error();
-    let data: FollowType[] = await res.json();
-    let followed = data.map(x => x.followed)
-    return followed;
+    let result = await res.json();
+    result.docs = result.docs.map((x: FollowType) => x.followed)
+    return result;
 };
 
 export const follow = async (walletIdFollowed: string, walletIdFollower: string) => {

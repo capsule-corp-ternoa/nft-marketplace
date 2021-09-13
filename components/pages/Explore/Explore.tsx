@@ -78,7 +78,12 @@ const Explore: React.FC<ExploreProps> = ({ NFTS, user, setUser }) => {
             {returnNFTs()}
           </div>
         }
-        <div className={style.Hide}>Load more...</div>
+        <div 
+          className={style.Button}
+          
+        >
+          Load more...
+        </div>
       </div>
     </>
   );

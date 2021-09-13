@@ -1,5 +1,5 @@
 import { PaginationType, NftType } from 'interfaces/index';
-import { filterNFTs } from "./nft";
+import { filterNFTs, DEFAULT_LIMIT_PAGINATION } from "./nft";
 
 export const getUser = async (token: string) => {
   const res = await fetch(
@@ -79,8 +79,8 @@ export const unlikeNFT = async (walletId: string, nftId: string) => {
   return user
 }
 
-export const getLikedNFTs = async (walletId: string) => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/users/${walletId}/liked`)
+export const getLikedNFTs = async (walletId: string, page: string="1", limit: string=DEFAULT_LIMIT_PAGINATION) => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/users/${walletId}/liked?page=${page}&limit=${limit}`)
   if (!res.ok) throw new Error();
   let result: PaginationType<NftType> = (await res.json()).distinctSerieNfts;
   result.nodes = filterNFTs(result.nodes)

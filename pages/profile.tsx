@@ -107,14 +107,14 @@ export async function getServerSideProps(ctx: NextPageContext) {
       }).catch(success);
     }));
     promises.push(new Promise<void>((success) => {
-      getFollowers(token).then(_users => {
-        followers = _users
+      getFollowers(token).then(result => {
+        followers = result.docs
         success();
       }).catch(success);
     }));
     promises.push(new Promise<void>((success) => {
-      getFollowed(token).then(_users => {
-        followed = _users
+      getFollowed(token).then(result => {
+        followed = result.docs
         success();
       }).catch(success);
     }));

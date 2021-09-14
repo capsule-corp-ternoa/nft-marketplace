@@ -4,15 +4,11 @@ import style from './NFT.module.scss';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
 import Media from 'components/base/Media';
-
 import Scale from 'components/assets/scale';
 import Share from 'components/assets/share';
 import Like from 'components/assets/heart';
 import Eye from 'components/assets/eye';
-
-import Check from 'components/assets/check';
 import gradient from 'random-gradient';
-
 import { computeCaps, computeTiime } from 'utils/strings';
 import { UserType, NftType } from 'interfaces';
 import { likeNFT, unlikeNFT } from 'actions/user';

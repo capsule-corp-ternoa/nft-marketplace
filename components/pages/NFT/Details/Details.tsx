@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { UserType, NftType } from 'interfaces';
 import gradient from 'random-gradient';
 import style from './Details.module.scss';
+import { computeCaps, computeTiime } from 'utils/strings';
 import Link from 'next/link';
 
 export interface DetailsProps {
@@ -15,6 +16,12 @@ const Details: React.FC<DetailsProps> = ({ NFT }) => {
   const [history, setHistory] = useState(false);
   const [bid, setBid] = useState(false);
   const bgGradientOwner = { background: gradient(NFT.ownerData.name) };
+  //const bgGradientCreator = { background: gradient(NFT.creatorData.name) };
+  const NFTprice = NFT.serieData?.map((n) => n);
+  //const NFTMinPrice = Math.min(...NFTprice);
+  const formatedDate = NFT.timestampList?.toLocaleString();
+
+  console.log(NFT);
 
   const handleInfo = () => {
     setInfo(true);
@@ -90,6 +97,8 @@ const Details: React.FC<DetailsProps> = ({ NFT }) => {
             </div>
           )}
           {owners && (
+            <>
+            {/* {NFT.serieData?.map((owner, index) => ( */}
             <div className={style.owners}>
               <Link href={`/${NFT.ownerData.walletId}`}>
                 <a className={style.owner}>
@@ -111,7 +120,10 @@ const Details: React.FC<DetailsProps> = ({ NFT }) => {
                       {NFT.ownerData.name}
                     </div>
                     <div className={style.ownerDatasSales}>
-                      <small>12/12 on sale for 100 CAPS each</small>
+                      <small>
+                        {NFT.totalListedNft}/{NFT.totalNft} on sale
+                        {/* for{' '}{computeCaps(Number(NFTMinPrice))} CAPS each */}
+                      </small>
                     </div>
                   </div>
                 </a>
@@ -120,9 +132,63 @@ const Details: React.FC<DetailsProps> = ({ NFT }) => {
                 <div className={style.buyButton}>Buy</div>
               </div>
             </div>
+            {/* ))} */}
+            </>
           )}
-          {history && 'history'}
-          {bid && 'bid'}
+          {history && (
+            <div className={style.owners}>
+              <Link href={`/${NFT.ownerData.walletId}`}>
+                <a className={style.owner}>
+                  <div className={style.ownerProfile}>
+                    {NFT.ownerData.picture ? (
+                      <img
+                        src={NFT.ownerData.picture}
+                        className={style.ownerProfileIMG}
+                      />
+                    ) : (
+                      <div
+                        className={style.ownerProfileIMG}
+                        style={bgGradientOwner}
+                      />
+                    )}
+                  </div>
+                  <div className={style.ownerDatas}>
+                    <div className={style.historyEvent}>Owner</div>
+                    <div className={style.historyDatas}>
+                      <small>
+                        by <span>{NFT.ownerData.name}</span> {formatedDate}
+                      </small>
+                    </div>
+                  </div>
+                </a>
+              </Link>
+
+              {/* <Link href={`/${NFT.creatorData.walletId}`}>
+                <a className={style.HistoryItem}>
+                  <div className={style.ownerProfileIMG}>
+                    {NFT.creatorData.picture ? (
+                      <img
+                        src={NFT.creatorData.picture}
+                        className={style.HistoryIMG}
+                      />
+                    ) : (
+                      <div
+                        className={style.HistoryIMG}
+                        style={bgGradientCreator}
+                      />
+                    )}
+                  </div>
+                  <div className={style.HistoryUser}>
+                    <div className={style.HistoryRole}>Creator</div>
+                    <div className={style.HistoryName}>
+                      {NFT.creatorData.name}
+                    </div>
+                  </div>
+                </a>
+              </Link> */}
+            </div>
+          )}
+          {/* {bid && 'bid'} */}
         </div>
       </div>
     </div>

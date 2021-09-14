@@ -85,7 +85,7 @@
 .ownerProfileIMG {
   width: 100%;
   height: 100%;
-  border-radius: 5px;
+  border-radius: 50%;
   position: absolute;
   //background-image: linear-gradient(0deg, #7417ea, #7417ea), #202e76;
   opacity: 0.5;
@@ -124,6 +124,20 @@
     background-color: black;
   }
 }
+.historyEvent {
+  font-family: 'Airbnb Cereal App Bold';
+  font-size: 18px;
+  line-height: 26px;
+}
+.historyDatas {
+  font-size: 12px;
+  font-family: 'Airbnb Cereal App Medium';
+  color: #686464;
+}
+.historyDatas span {
+  color: Black;
+  font-weight: bold;
+}
 @media (max-width: 1300px) {
 }
 @media (max-width: 1000px) {
@@ -141,6 +155,10 @@
   .detailsMenuActiveItem {
     padding: 10px;
     font-size: 16px;
+  }
+  .ownerProfile {
+    width: 40px;
+    height: 40px;
   }
   .detailsInfos {
     padding: 20px 10px;

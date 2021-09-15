@@ -9,8 +9,9 @@ interface CodeProps {
     links?: string[];
     nft_id?: string;
     fileHash?: string;
-    price?: Number;
+    price?: number;
     walletId?: string;
+    quantity?: number;
   };
   action: string;
 }

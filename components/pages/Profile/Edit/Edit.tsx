@@ -143,7 +143,7 @@ const Edit: React.FC<EditProps> = ({ user, setBanner, setSuccessPopup }) => {
                   </div>
                 :
                   user.twitterName && user.twitterName.length>2 && !user.twitterVerified &&
-                    <a href={`${process.env.NEXT_PUBLIC_NODE_API}/api/mp/users/verifyTwitter/${data.walletId}`}>
+                    <a href={`${process.env.NEXT_PUBLIC_NODE_API}/api/users/verifyTwitter/${data.walletId}`}>
                       Verify your account ({user.twitterName})
                     </a>
                 }

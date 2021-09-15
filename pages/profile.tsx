@@ -89,32 +89,32 @@ export async function getServerSideProps(ctx: NextPageContext) {
       }).catch(success);
     }));
     promises.push(new Promise<void>((success) => {
-      getCreatorNFTS(token).then(_nfts => {
-        created = _nfts
+      getCreatorNFTS(token).then(result => {
+        created = result.nodes
         success();
       }).catch(success);
     }));
     promises.push(new Promise<void>((success) => {
-      getProfileNFTS(token).then(_nfts => {
-        owned = _nfts
+      getProfileNFTS(token).then(result => {
+        owned = result.nodes
         success();
       }).catch(success);
     }));
     promises.push(new Promise<void>((success) => {
-      getLikedNFTs(token).then(_nfts => {
-        liked = _nfts
+      getLikedNFTs(token).then(result => {
+        liked = result.nodes
         success();
       }).catch(success);
     }));
     promises.push(new Promise<void>((success) => {
-      getFollowers(token).then(_users => {
-        followers = _users
+      getFollowers(token).then(result => {
+        followers = result.docs
         success();
       }).catch(success);
     }));
     promises.push(new Promise<void>((success) => {
-      getFollowed(token).then(_users => {
-        followed = _users
+      getFollowed(token).then(result => {
+        followed = result.docs
         success();
       }).catch(success);
     }));

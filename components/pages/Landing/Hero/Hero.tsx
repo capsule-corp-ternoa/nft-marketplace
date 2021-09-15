@@ -3,7 +3,7 @@ import style from './Hero.module.scss';
 import Link from 'next/link';
 
 import Creator from 'components/base/Creator';
-import Ternoart from 'components/assets/ternoart';
+//import Ternoart from 'components/assets/ternoart';
 
 import SoundOn from 'components/assets/SoundOn';
 import SoundOff from 'components/assets/SoundOff';
@@ -64,7 +64,7 @@ const Hero: React.FC<HeroProps> = ({ users }) => {
             </span>
           </div>
 
-          <div className={style.Content}>
+          {/*<div className={style.Content}>
             <div className={style.Left}>
               <div className={style.Label}>
                 Hello Alpha tester
@@ -78,9 +78,9 @@ const Hero: React.FC<HeroProps> = ({ users }) => {
                   <div className={style.Bold}>Try SecretNFT</div>
                 </div>
                 <p className={style.Description}>
-                  We invit you to try “SecretNFT” our NFTs marketplace in alpha
+                  We invite you to try the “SecretNFT”, our NFTs marketplace in alpha
                   version on Ternoa Chain. Help us discover bugs, give feedbacks
-                  to improve our products and <span>earn NFTs in return</span> !
+                  to improve the product and the experience. <span>You earn NFTs in return</span> ! 🙂
                 </p>
               </div>
 
@@ -117,7 +117,7 @@ const Hero: React.FC<HeroProps> = ({ users }) => {
                 </div>
               </div>
             </div>
-          </div>
+          </div>*/}
         </div>
         <div className={style.Creators}>
           <h3 className={style.CreatorsTitle}>Creators</h3>

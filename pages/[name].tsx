@@ -8,8 +8,7 @@ import NotAvailableModal from 'components/base/NotAvailable';
 import cookies from 'next-cookies';
 
 import { getUser, getProfile } from 'actions/user';
-import { getProfileNFTS } from 'actions/nft';
-import { getCategoryNFTs } from 'actions/nft';
+import { getCreatorNFTS } from 'actions/nft';
 import { NftType, UserType } from 'interfaces';
 import { NextPageContext } from 'next';
 
@@ -40,8 +39,8 @@ const PublicProfilePage: React.FC<PublicProfileProps> = ({
     setIsLoading(true);
     try {
       if (dataNftsHasNextPage) {
-        let result = await getCategoryNFTs(
-          undefined,
+        let result = await getCreatorNFTS (
+          walletUser.walletId,
           (currentPage + 1).toString()
         );
         setCurrentPage(currentPage + 1);
@@ -103,28 +102,20 @@ export async function getServerSideProps(ctx: NextPageContext) {
       })
     );
   }
-  promises.push(
-    new Promise<void>((success) => {
-      getProfile(ctx.query.name as string, token ? token : null)
-        .then((_profile) => {
-          profile = _profile;
-          success();
-        })
-        .catch(success);
-    })
-  );
-  promises.push(
-    new Promise<void>((success) => {
-      getProfileNFTS(ctx.query.name as string)
-        .then((result) => {
-          data = result.nodes;
-          dataHasNextPage = result.pageInfo?.hasNextPage || false;
-          success();
-        })
-        .catch(success);
-    })
-  );
-  await Promise.all(promises);
+  promises.push(new Promise<void>((success) => {
+    getProfile(ctx.query.name as string, token ? token : null).then(_profile => {
+      profile = _profile
+      success();
+    }).catch(success);
+  }));
+  promises.push(new Promise<void>((success) => {
+    getCreatorNFTS(ctx.query.name as string).then(result => {
+      data = result.nodes
+      dataHasNextPage = result.pageInfo?.hasNextPage || false;
+      success();
+    }).catch(success);
+  }));
+  await Promise.all(promises)
   if (!profile) {
     return {
       redirect: {

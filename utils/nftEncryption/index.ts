@@ -21,7 +21,7 @@ export const getFilehash = async (file: File) => {
 const cryptFilePgp = async (file: File, publicPGP: string) => {
   const arrayBuffer = await file.arrayBuffer()
   const buffer = Buffer.from(arrayBuffer);
-  const base64Content = buffer.toString("utf8");
+  const base64Content = buffer.toString("base64");
   console.log('cryptFilePgp // base64Content before crypt', base64Content);
   const message = await openpgp.Message.fromText(base64Content)
   const publicKey = await openpgp.readKey({ armoredKey: publicPGP })

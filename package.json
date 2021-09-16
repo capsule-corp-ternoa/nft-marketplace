@@ -21,6 +21,7 @@
     "i18next-browser-languagedetector": "^6.1.0",
     "jimp": "^0.9.8",
     "js-cookie": "^2.2.1",
+    "json-stringify-safe": "^5.0.1",
     "jszip": "^3.6.0",
     "mime-types": "^2.1.32",
     "next": "10.2.0",

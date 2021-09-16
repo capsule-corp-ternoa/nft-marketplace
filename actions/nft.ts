@@ -13,8 +13,8 @@ export const getNFTS = async (page: string="1", limit: string=DEFAULT_LIMIT_PAGI
   return result;
 };
 
-export const getProfileNFTS = async (id: string, page: string="1", limit: string=DEFAULT_LIMIT_PAGINATION) => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/NFTs/owner/${id}?page=${page}&limit=${limit}`);
+export const getProfileNFTS = async (id: string, listed? :number,  page: string="1", limit: string=DEFAULT_LIMIT_PAGINATION) => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/NFTs/owner/${id}?page=${page}&limit=${limit}${listed ? `&listed=${listed}` : ""}`);
   if (!res.ok) throw new Error('error fetching owned NFTs');
   let result: PaginationType<NftType> = (await res.json()).distinctSerieNfts;
   result.nodes = filterNFTs(result.nodes)

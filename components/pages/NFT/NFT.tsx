@@ -29,6 +29,9 @@ export interface NFTPageProps {
   capsValue: number;
 }
 
+
+
+
 const NFTPage: React.FC<NFTPageProps> = ({
   setExp,
   NFT,
@@ -53,6 +56,8 @@ const NFTPage: React.FC<NFTPageProps> = ({
   const shareUrl = (typeof window!=="undefined" && window.location?.href) || `https://www.secret-nft.com/nft/${NFT.id}`
   const isLiked = !user ? undefined : (NFT.serieId === "0" ? user.likedNFTs?.map(x => x.nftId).includes(NFT.id) : user.likedNFTs?.map(x => x.serieId).includes(NFT.serieId))
   
+
+  console.log(NFT);
   const handleLikeDislike = async () => {
     try{
       let res = null

@@ -58,7 +58,12 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
 
   useEffect(() => {
     if (processed) {
-      initMintingNFT();
+      try{
+        initMintingNFT();
+      }catch(err){
+        console.log(err)
+        setError(err as string);
+      }
     }
   }, [processed]);
 
@@ -101,11 +106,17 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
     }
   }
 
-  async function initMintingNFT(){
-    if (!user) setError('Please login to create an NFT.');
-    if (!secretNFT || !name || !description || (!NFT && !(select === 'Select NFT Option' || select === 'None')) || !(quantity && quantity > 0 && quantity <= 10)) throw new Error('Elements are undefined');
+  function initMintingNFT(){
+    if (!user) throw new Error('Please login to create an NFT.')
+    if (!secretNFT || 
+        !name || 
+        !description || 
+        (!NFT && !(select === 'Select NFT Option' || select === 'None')) || 
+        !(quantity && quantity > 0 && quantity <= 10)) 
+        throw new Error('Elements are undefined');
     setQRData({
       ...QRData,
+      quantity,
     });
   }
 

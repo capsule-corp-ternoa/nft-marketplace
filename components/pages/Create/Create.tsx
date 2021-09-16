@@ -327,8 +327,8 @@ const Create: React.FC<CreateProps> = ({
           </div>
           {!isRN && (
             <div 
-              className={`${style.Create} ${!isDataValid ? style.CreateDisabled : ""}`}
-              onClick={() => isDataValid && uploadFiles()}
+              className={`${style.Create} ${!(isDataValid && user) ? style.CreateDisabled : ""}`}
+              onClick={() => isDataValid && user && uploadFiles()}
             >
               Create NFT
             </div>

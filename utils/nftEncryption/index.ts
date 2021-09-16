@@ -20,26 +20,28 @@ export const getFilehash = async (file: File) => {
 
 const cryptFilePgp = async (file: File, publicPGP: string) => {
   const buffer = Buffer.from(await fileToArrayBuffer(file))
+  console.log('buffer before crypt', buffer.toString());
   const message = await openpgp.Message.fromText(buffer.toString())
   const publicKey = await openpgp.readKey({ armoredKey: publicPGP })
   const encrypted = await openpgp.encrypt({
     message,
     publicKeys: publicKey
   })
+  console.log('encrypted', encrypted);
   return encrypted
 }
 
 export const cryptAndUploadNFT = async (secretNFT: File, secretNFTType: string, publicPGP: string) => {
   return new Promise(async (resolve, reject) => {
-    try{
+    try {
       //NFT Data
       const nftData = new FormData()
       const encryptedSecretNft = await cryptFilePgp(secretNFT, publicPGP)
-      const nftFile = new Blob([encryptedSecretNft], {type: secretNFTType});
+      const nftFile = new Blob([encryptedSecretNft], { type: secretNFTType });
       nftData.append('file', nftFile)
       //PGP Data
       const pgpData = new FormData()
-      const pgpFile = new Blob([publicPGP], {type: 'text/plain'});
+      const pgpFile = new Blob([publicPGP], { type: 'text/plain' });
       pgpData.append('file', pgpFile)
       const [encryptedUploadReponse, pgpUploadRemonse] = await Promise.all([
         fetch(
@@ -56,9 +58,9 @@ export const cryptAndUploadNFT = async (secretNFT: File, secretNFTType: string, 
             body: pgpData,
           }
         ),
-      ]) 
+      ])
       resolve([encryptedUploadReponse, pgpUploadRemonse])
-    }catch(err){
+    } catch (err) {
       reject(err)
     }
   })

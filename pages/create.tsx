@@ -142,14 +142,14 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
         return cryptAndUploadNFT(secretNFT, cryptedMediaType as string, publicPGPs[i] as string)
       })
       const cryptResults = await Promise.all(cryptPromises);
-      const cryptNFTsJSONs = cryptResults.map((r: any) => r[0].json());
-      const publicPGPsIPFS = cryptResults.map((r: any) => r[1].json());
+      const cryptNFTsJSONs = await Promise.all(cryptResults.map((r: any) => r[0].json()));
+      const publicPGPsIPFS = await Promise.all(cryptResults.map((r: any) => r[1].json()));
       const results = cryptNFTsJSONs.map((result, i) => {
         const data = {
           seriesId: (seriesId ? seriesId : 0),
           name,
           description,
-          publicPGPHash: publicPGPsIPFS[i],
+          publicPGP: publicPGPsIPFS[i].url,
           media: {
             url: previewLink,
             mediaType: mediaType

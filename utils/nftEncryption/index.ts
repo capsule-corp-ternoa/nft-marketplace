@@ -1,5 +1,4 @@
 import crypto from 'crypto'
-import fileToArrayBuffer from 'file-to-array-buffer';
 import gen from 'random-seed'
 import * as openpgp from 'openpgp'
 
@@ -12,16 +11,19 @@ export const generateSeriesId = (fileHash: string) => {
 
 export const getFilehash = async (file: File) => {
   const hash = crypto.createHash('sha256');
-  const buffer = Buffer.from(await fileToArrayBuffer(file))
+  const arrayBuffer = await file.arrayBuffer()
+  const buffer = Buffer.from(arrayBuffer)
   hash.update(buffer)
   const fileHash = hash.digest('hex');
   return fileHash;
 }
 
 const cryptFilePgp = async (file: File, publicPGP: string) => {
-  const buffer = Buffer.from(await fileToArrayBuffer(file))
-  console.log('buffer before crypt', buffer.toString());
-  const message = await openpgp.Message.fromText(buffer.toString())
+  const arrayBuffer = await file.arrayBuffer()
+  const buffer = Buffer.from(arrayBuffer);
+  const base64Content = buffer.toString("base64");
+  console.log('cryptFilePgp // base64Content before crypt', base64Content);
+  const message = await openpgp.Message.fromText(base64Content)
   const publicKey = await openpgp.readKey({ armoredKey: publicPGP })
   const encrypted = await openpgp.encrypt({
     message,

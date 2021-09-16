@@ -118,6 +118,8 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
       ...QRData,
       quantity,
     });
+    setOutput([quantity.toString()]);
+    setProcessed(false);
   }
 
   async function uploadNFT(publicPGPs: string[]) {
@@ -170,8 +172,6 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
       });
       const JSONPromises = await Promise.all(results);
       const JSONURLS = await Promise.all(JSONPromises.map((r) => r.json()));
-      setOutput(JSONURLS);
-      setProcessed(false);
       return {nftUrls: JSONURLS as string[], seriesId:(seriesId ? seriesId : 0)};
     } catch (err) {
       setError('Please try again.');

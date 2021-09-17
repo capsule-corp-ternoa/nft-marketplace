@@ -91,7 +91,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
     }));
   }
   promises.push(new Promise<void>((success) => {
-    getCategoryNFTs().then(result => {
+    getCategoryNFTs(undefined, "1", "19").then(result => {
       regularNfts = result.nodes
       success();
     }).catch(success);
@@ -107,7 +107,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
   betaNfts = arrayShuffle(betaNfts || []).slice(0, 8);
   let popularNfts = arrayShuffle((regularNfts || []).slice(0, 8));
   let bestSellingNfts = arrayShuffle((regularNfts || []).slice(8, 16));
-  let NFTCreators = arrayShuffle((regularNfts || []).slice(16, 24));
+  let NFTCreators = arrayShuffle((regularNfts || []).slice(16, 19));
   let totalCountNFT = (regularNfts || []).length + (betaNfts || []).length;
   return {
     props: {

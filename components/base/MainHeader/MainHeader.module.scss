@@ -35,7 +35,7 @@
   padding: 12px 24px;
   outline: none;
   font-family: "Airbnb Cereal App Book";
-  visibility: hidden;
+  display: none;
 }
 
 .Infos {
@@ -299,7 +299,7 @@
 
 @media (max-width: 1300px) {
   .Links {
-    display: none;
+    margin-right: 24px;
   }
 
   .HeaderContainer {
@@ -319,6 +319,10 @@
 }
 
 @media (max-width: 1000px) {
+  .Links {
+    display: none;
+  }
+
   .SearchBar,
   .Infos {
     display: none;

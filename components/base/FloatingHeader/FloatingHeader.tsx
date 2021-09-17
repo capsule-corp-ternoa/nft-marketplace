@@ -176,7 +176,7 @@ const FloatingHeader: React.FC<FloatingHeaderProps> = ({
               </a>
             </Link>
           </div>
-          <Link href="/5FnhujHhfXdD9Ahkn2Aw7T71GnoRr4yU42Ne5Sxc2RmmhAnm">
+          <Link href={`/${user.walletId}`}>
             <a className={style.CapsSection}>
               <div className={style.SectionTitle}>My artist profile</div>
             </a>

@@ -335,7 +335,6 @@ const Create: React.FC<CreateProps> = ({
           )}
         </div>
       </div>
-
       <Footer setNotAvailable={setNotAvailable} />
       <FloatingHeader user={user} setModalExpand={setModalExpand} />
     </div>

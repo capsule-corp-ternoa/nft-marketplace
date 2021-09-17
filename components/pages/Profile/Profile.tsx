@@ -258,7 +258,6 @@ const Profile: React.FC<ProfileProps> = ({
                   />
                 </label>
                 <span className={style.Label}>Certified only</span>
-                <button onClick={()=>console.log(followBacks)}>azeazeazeaze</button>
               </div>
             </div>
           </div>

@@ -1,28 +1,23 @@
 @import 'style/colors.scss';
 
 .detailsMain {
-  border: 1.5px solid #e0e0e0;
-  box-sizing: border-box;
-  border-radius: 28px;
-  width: 100%;
+  margin: 15px 24px;
 }
 .detailsMenu {
   display: flex;
   align-items: center;
-  margin: 15px 15px 0 15px;
-  background: #e0e0e0;
-  border-radius: 8px;
 }
 .detailsMenuItem {
   cursor: pointer;
-  margin: 2px;
-  padding: 6px 20px;
+  padding: 16px 40px;
+  margin: 0 10px;
   font-family: 'Airbnb Cereal App Bold';
   font-style: normal;
   font-weight: bold;
   font-size: 16px;
   border: none;
-  background: transparent;
+  background: rgba(247, 247, 247, 0.6);
+  border-radius: 64px;
   &:hover {
     color: #7417ea;
   }
@@ -33,24 +28,22 @@
 }
 .detailsMenuActiveItem {
   cursor: pointer;
-  margin: 2px;
-  padding: 6px 20px;
+  padding: 16px 40px;
+  margin: 0 10px;
   font-family: 'Airbnb Cereal App Bold';
   font-style: normal;
   font-weight: bold;
   font-size: 16px;
   border: none;
-  color: #7417ea;
-  background: #ffffff;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 6px;
+  color: #ffffff;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
+  background: #1b1b1b;
+  border-radius: 50px;
 }
 .detailsContent {
-  padding: 15px;
+  padding: 15px 0;
 }
-.detailsInfos {
-  padding: 40px 10px;
-}
+
 .infoDatas {
   padding: 5px 20px;
 }
@@ -70,16 +63,31 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background: #f7f7f7;
+  opacity: 0.9;
+  border-radius: 12px;
 }
 .owner {
   display: flex;
   align-items: center;
   margin: 15px 0;
 }
+.ownerBadge {
+  color: #7417ea;
+  font-family: 'Airbnb Cereal App Bold';
+  font-style: normal;
+  font-weight: bold;
+  font-size: 13px;
+  line-height: 13px;
+  padding: 10px 15px;
+  margin: 0 20px;
+  background: rgba(116, 23, 234, 0.1);
+  border-radius: 64px;
+}
 .ownerProfile {
   width: 55px;
   height: 55px;
-  margin: 0px 10px;
+  margin: 0 10px;
   position: relative;
 }
 .ownerProfileIMG {
@@ -87,38 +95,39 @@
   height: 100%;
   border-radius: 50%;
   position: absolute;
-  //background-image: linear-gradient(0deg, #7417ea, #7417ea), #202e76;
   opacity: 0.5;
   z-index: 1;
   object-fit: cover;
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.25);
 }
 .ownerDatas {
   display: flex;
-  align-items: flex-start;
-  flex-direction: column;
+  align-items: center;
   justify-content: center;
 }
 .ownerDatasName {
-  font-size: 18px;
-  line-height: 26px;
+  font-size: 16px;
+  line-height: 21px;
   font-family: 'Airbnb Cereal App Bold';
   color: black;
 }
 .ownerDatasSales {
-  font-size: 12px;
-  line-height: 16px;
+  font-size: 16px;
+  line-height: 21px;
   font-family: 'Airbnb Cereal App Bold';
-  color: #686464;
+  color: black;
+  padding-left: 80px;
 }
 .buyButton {
   color: white;
   background-color: $primary;
-  border-radius: 28px;
-  padding: 8px 20px;
+  padding: 8px 55px;
+  margin: 20px;
   font-size: 12px;
   font-family: 'Airbnb Cereal App Medium';
   cursor: pointer;
   transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  border-radius: 1000px;
   &:hover {
     color: white;
     background-color: black;
@@ -139,26 +148,103 @@
   font-weight: bold;
 }
 @media (max-width: 1300px) {
+  .detailsMain {
+    margin: 15px 60px;
+  }
 }
 @media (max-width: 1000px) {
+  .detailsMain {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .ownerDatasSales {
+    padding-left: 25px;
+  }
 }
 @media (max-width: 840px) {
-}
-@media (max-width: 576px) {
+  .detailsMain {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+  }
   .detailsMenu {
-    justify-content: space-between;
+    justify-content: center;
+    padding: 0px;
+  }
+  .detailsContent {
+    justify-content: center;
+    padding: 15px 0px;
+  }
+  .ownerDatas {
+    flex-direction: column;
+    justify-content: start;
+  align-items: flex-start;
+
+  }
+  .ownerDatasSales {
+    padding-left: 0px;
+    font-family: 'Airbnb Cereal App light';
+  }
+}
+@media (max-width: 720px) {
+  .detailsMain {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .detailsMenu {
+    padding: 15px 24px;
+    overflow-x: scroll;
+  }
+  .detailsContent {
+    padding: 15px;
   }
   .detailsMenuItem {
-    padding: 10px;
+    margin: 0 3px;
+  }
+  .buyButton {
+    padding: 8px 30px;
+  }
+}
+@media (max-width: 576px) {
+
+  .detailsMenu {
+    justify-content: start;
+    overflow-x: scroll;
+    padding: 15px 0;
+  }
+  .detailsMenuItem {
+    padding: 8px 18px;
+    margin: 0 3px;
     font-size: 16px;
   }
   .detailsMenuActiveItem {
-    padding: 10px;
+    padding: 8px 18px;
+    margin: 0 3px;
     font-size: 16px;
+  }
+  .detailsContent {
+    padding: 15px 0;
   }
   .ownerProfile {
     width: 40px;
     height: 40px;
+  }
+  .ownerBadge {
+    display: none;
+  }
+  .ownerDatasName {
+    font-size: 12px;
+    line-height: 12px;
+  }
+  .ownerDatasSales {
+    font-size: 12px;
+    line-height: 12px;
+  }
+  .buyButton {
+    padding: 8px 20px;
+    margin: 10px;
   }
   .detailsInfos {
     padding: 20px 10px;
@@ -166,4 +252,5 @@
   .infoDatas {
     padding: 5px 10px;
   }
+  
 }

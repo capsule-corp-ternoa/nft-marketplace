@@ -7,6 +7,17 @@
   flex-direction: column;
 }
 
+.MainWrapper {
+  display: flex;
+  flex-direction: column;
+  width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 60px 0;
+}
+
 .Wrapper {
   display: flex;
   width: 1200px;
@@ -14,7 +25,7 @@
   margin-right: auto;
   justify-content: center;
   box-sizing: border-box;
-  padding: 120px 24px;
+  padding: 60px 0;
 }
 
 .NFT {
@@ -387,9 +398,13 @@
 }
 
 @media (max-width: 1300px) {
+  .MainWrapper {
+    width: 980px;
+    padding: 40px 0;
+  }
   .Wrapper {
     width: 980px;
-    padding: 90px 24px;
+    padding: 50px 0px;
   }
 
   .NFT {
@@ -472,16 +487,20 @@
 }
 
 @media (max-width: 1000px) {
+  .MainWrapper {
+    width: 100%;
+    padding: 30px 24px;
+  }
   .Wrapper {
     width: 100%;
-    padding: 70px 24px;
+    padding: 50px 24px;
   }
 }
 
 @media (max-width: 840px) {
   .Wrapper {
     width: 90%;
-    padding: 40px 24px;
+    padding: 0px 24px;
     flex-direction: column;
     align-items: center;
     justify-content: center;

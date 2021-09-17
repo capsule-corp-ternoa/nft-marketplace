@@ -47,6 +47,9 @@ const FloatingHeader: React.FC<FloatingHeaderProps> = ({
             />
           </div>
           <div className={style.Links}>
+            <Link href="/create">
+              <a className={style.Link}>Create</a>
+            </Link>
             <Link href="/explore">
               <a className={style.Link}>Explore</a>
             </Link>

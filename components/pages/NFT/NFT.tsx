@@ -29,6 +29,9 @@ export interface NFTPageProps {
   capsValue: number;
 }
 
+
+
+
 const NFTPage: React.FC<NFTPageProps> = ({
   setExp,
   NFT,

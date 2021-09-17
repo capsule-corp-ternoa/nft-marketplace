@@ -13,8 +13,8 @@ export const getNFTS = async (page: string="1", limit: string=DEFAULT_LIMIT_PAGI
   return result;
 };
 
-export const getProfileNFTS = async (id: string, page: string="1", limit: string=DEFAULT_LIMIT_PAGINATION) => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/NFTs/owner/${id}?page=${page}&limit=${limit}`);
+export const getProfileNFTS = async (id: string, listed? :number,  page: string="1", limit: string=DEFAULT_LIMIT_PAGINATION) => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/NFTs/owner/${id}?page=${page}&limit=${limit}${listed ? `&listed=${listed}` : ""}`);
   if (!res.ok) throw new Error('error fetching owned NFTs');
   let result: PaginationType<NftType> = (await res.json()).distinctSerieNfts;
   result.nodes = filterNFTs(result.nodes)
@@ -48,4 +48,18 @@ export const getNFT = async (id: string, incViews: boolean = false, viewerWallet
   let data: NftType = await res.json();
   if (!data.creatorData || !data.ownerData || !data.media) throw new Error();
   return data;
+};
+
+export const getUserNFTsStat = async (id: string): Promise<{
+  countOwned: number, 
+  countOwnedListed: number, 
+  countOwnedUnlisted: number, 
+  countCreated: number, 
+  countFollowers: number, 
+  countFollowed: number
+ }> => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/NFTs/stat/${id}`);
+  if (!res.ok) throw new Error('error fetching user NFTs stat');
+  let result = await res.json()
+  return result;
 };

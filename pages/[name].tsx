@@ -16,17 +16,41 @@ export interface PublicProfileProps {
   user: UserType;
   profile: UserType;
   data: NftType[];
+  dataHasNextPage: boolean;
 }
 
 const PublicProfilePage: React.FC<PublicProfileProps> = ({
   user,
   data,
   profile,
+  dataHasNextPage,
 }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
   const [walletUser, setWalletUser] = useState(user);
   const [viewProfile, setViewProfile] = useState(profile);
+  const [dataNfts, setDataNfts] = useState(data);
+  const [dataNftsHasNextPage, setDataNftsHasNextPage] = useState(dataHasNextPage);
+  const [isLoading, setIsLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const loadMoreNfts = async () => {
+    setIsLoading(true);
+    try {
+      if (dataNftsHasNextPage) {
+        let result = await getCreatorNFTS (
+          walletUser.walletId,
+          (currentPage + 1).toString()
+        );
+        setCurrentPage(currentPage + 1);
+        setDataNftsHasNextPage(result.pageInfo?.hasNextPage || false);
+        setDataNfts([...dataNfts, ...result.nodes]);
+        setIsLoading(false);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <>
@@ -48,24 +72,34 @@ const PublicProfilePage: React.FC<PublicProfileProps> = ({
         setUser={setWalletUser}
         profile={viewProfile}
         setProfile={setViewProfile}
-        NFTS={data}
+        NFTS={dataNfts}
         setModalExpand={setModalExpand}
         setNotAvailable={setNotAvailable}
+        loadMore={loadMoreNfts}
+        hasNextPage={dataNftsHasNextPage}
+        loading={isLoading}
       />
     </>
   );
 };
 export async function getServerSideProps(ctx: NextPageContext) {
   const token = cookies(ctx).token;
-  let user: UserType | null = null, profile: UserType | null = null, data: NftType[] = []
+  let user: UserType | null = null,
+    profile: UserType | null = null,
+    data: NftType[] = [],
+    dataHasNextPage: boolean = false;
   const promises = [];
   if (token) {
-    promises.push(new Promise<void>((success) => {
-      getUser(token).then(_user => {
-        user = _user
-        success();
-      }).catch(success);
-    }));
+    promises.push(
+      new Promise<void>((success) => {
+        getUser(token)
+          .then((_user) => {
+            user = _user;
+            success();
+          })
+          .catch(success);
+      })
+    );
   }
   promises.push(new Promise<void>((success) => {
     getProfile(ctx.query.name as string, token ? token : null).then(_profile => {
@@ -76,6 +110,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
   promises.push(new Promise<void>((success) => {
     getCreatorNFTS(ctx.query.name as string).then(result => {
       data = result.nodes
+      dataHasNextPage = result.pageInfo?.hasNextPage || false;
       success();
     }).catch(success);
   }));
@@ -89,7 +124,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
     };
   }
   return {
-    props: { user, profile, data },
+    props: { user, profile, data, dataHasNextPage },
   };
 }
 

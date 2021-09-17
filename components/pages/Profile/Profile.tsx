@@ -12,7 +12,8 @@ import FloatingMenu from './FloatingMenu';
 import Edit from './Edit';
 import Switch from 'react-switch';
 import { NftType, UserType } from 'interfaces';
-import { follow, unfollow } from 'actions/follower';
+import { follow, unfollow, isUserFollowing } from 'actions/follower';
+import { getUserNFTsStat } from 'actions/nft';
 
 export interface ProfileProps {
   setModalExpand: (b: boolean) => void;
@@ -20,53 +21,59 @@ export interface ProfileProps {
   setSuccessPopup: (b: boolean) => void;
   user: UserType;
   setUser: (u: UserType) => void;
+  loading: boolean;
+  //Owned
   ownedNFTS: NftType[];
-  setOwnedNFTS: (nfts: NftType[]) => void;
   loadMoreOwnedNfts: () => void;
   ownedNftsHasNextPage: boolean;
+  //Owned listed
   ownedNftsListed: NftType[];
-  // setOwnedNftsListed: (nfts: NftType[]) => void;
   ownedNftsListedHasNextPage: boolean;
   loadMoreOwnedListedNfts: () => void;
+  //Owned not listed
   ownedNftsUnlisted: NftType[];
-  // setOwnedNftsUnlisted: (nfts: NftType[]) => void;
   ownedNftsUnlistedHasNextPage: boolean;
   loadMoreOwnedUnlistedNfts: () => void;
+  //created
   createdNFTS: NftType[];
-  setCreatedNFTS: (nfts: NftType[]) => void;
   loadMoreCreatedNfts: () => void;
   createdNftsHasNextPage: boolean;
+  //liked
   likedNfts: NftType[];
   setLikedNfts: (nfts: NftType[]) => void;
   likedNftsHasNextPage: boolean;
   loadMoreLikedNfts: () => void;
+  //followers
   followers: UserType[];
   setFollowers: (nfts: UserType[]) => void;
-  followed: UserType[];
-  setFollowed: (nfts: UserType[]) => void;
-  loading: boolean;
   followersUsersHasNextPage: boolean;
   loadMoreFollowers: () => void;
+  //followed
+  followed: UserType[];
+  setFollowed: (nfts: UserType[]) => void;
   followedUsersHasNextPage: boolean;
   loadMoreFollowed: () => void;
 }
 
 const Profile: React.FC<ProfileProps> = ({
+  setModalExpand,
+  setNotAvailable,
+  setSuccessPopup,
   user,
   setUser,
+  loading,
   ownedNFTS,
   loadMoreOwnedNfts,
   ownedNftsHasNextPage,
   ownedNftsListed,
-  // setOwnedNftsListed,
   ownedNftsListedHasNextPage,
   loadMoreOwnedListedNfts,
   ownedNftsUnlisted,
-  // setOwnedNftsUnlisted,
   ownedNftsUnlistedHasNextPage,
   loadMoreOwnedUnlistedNfts,
   createdNFTS,
   createdNftsHasNextPage,
+  loadMoreCreatedNfts,
   likedNfts,
   setLikedNfts,
   likedNftsHasNextPage,
@@ -77,13 +84,7 @@ const Profile: React.FC<ProfileProps> = ({
   followed,
   followedUsersHasNextPage,
   loadMoreFollowed,
-  setFollowers,
   setFollowed,
-  setModalExpand,
-  setNotAvailable,
-  setSuccessPopup,
-  loadMoreCreatedNfts,
-  loading,
 }) => {
   const router = useRouter();
   const [isFiltered, setIsFiltered] = useState(false);
@@ -96,40 +97,49 @@ const Profile: React.FC<ProfileProps> = ({
     user.banner ??
       'https://images.unsplash.com/photo-1579546929518-9e396f3cc809?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2250&q=80'
   );
-  // const listedOwnedNFTS = ownedNFTS.filter((x) => x.listed === 1);
-  // const unlistedOwnedNFTS = ownedNFTS.filter((x) => x.listed === 0);
   const [, setSearchValue] = useState('' as string);
-  const ownedAmount = ownedNFTS.reduce(
-    (acc, cur) =>
-      acc +
-      Number(cur.serieData?.filter((x) => x.owner === user.walletId).length),
-    0
-  );
-  const createdAmount = createdNFTS.reduce(
-    (acc, cur) => acc + Number(cur.totalNft),
-    0
-  );
-  const listedOwnedAmount = ownedNftsListed.reduce(
-    (acc, cur) =>
-      acc +
-      Number(
-        cur.serieData?.filter(
-          (x) => x.owner === user.walletId && x.listed === 1
-        ).length
-      ),
-    0
-  );
-  const unlistedOwnedAmount = ownedNftsUnlisted.reduce(
-    (acc, cur) =>
-      acc +
-      Number(
-        cur.serieData?.filter(
-          (x) => x.owner === user.walletId && x.listed === 0
-        ).length
-      ),
-    0
-  );
-  console.log(ownedNftsUnlisted);
+  const [followBacks, setFollowBacks] = useState(Array(followers.length).fill(false))
+
+  const [countOwned, setCountOwned] = useState(0)
+  const [countOwnedListed, setCountOwnedListed] = useState(0)
+  const [countOwnedUnlisted, setCountOwnedUnlisted] = useState(0)
+  const [countCreated, setCountOwnedCreated] = useState(0)
+  const [countFollowers, setCountFollowers] = useState(0)
+  const [countFollowed, setCountFollowed] = useState(0)
+
+  const setCounts = async () => {
+    try{
+      if (user){
+        let userStat = await getUserNFTsStat(user.walletId)
+        userStat.countOwned && setCountOwned(userStat.countOwned)
+        userStat.countOwnedListed && setCountOwnedListed(userStat.countOwnedListed)
+        userStat.countOwnedUnlisted && setCountOwnedUnlisted(userStat.countOwnedUnlisted)
+        userStat.countCreated && setCountOwnedCreated(userStat.countCreated)
+        userStat.countFollowers && setCountFollowers(userStat.countFollowers)
+        userStat.countFollowed && setCountFollowed(userStat.countFollowed)
+      }
+    }catch(err){
+      console.log(err)
+    }
+  }
+
+  const getFollowBacks = async () => {
+    try{
+      const followBacksTemp = [...followBacks]
+      const promises = [] as Promise<{ isFollowing: boolean }>[]
+      followers.forEach((x)=>{
+        promises.push(isUserFollowing(x.walletId, user.walletId))
+      })
+      const results = await Promise.all(promises)
+      results.forEach((res,i)=>{
+        followBacksTemp[i] = res.isFollowing
+      })
+      setFollowBacks(followBacksTemp)
+    }catch(err){
+      console.log(err)
+    }
+  }
+  
   const updateKeywordSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.currentTarget.value);
   };
@@ -143,20 +153,18 @@ const Profile: React.FC<ProfileProps> = ({
         ? await follow(profileWalletId, user.walletId)
         : await unfollow(profileWalletId, user.walletId);
       if (res) {
-        setFollowers(
-          followers.findIndex((x) => x.walletId === res.walletId) !== -1
-            ? followers.map((x) => (x.walletId === res.walletId ? res : x))
-            : [...followers, res]
-        );
         if (isUnfollow) {
           setFollowed(followed.filter((x) => x.walletId !== res.walletId));
+          setCountFollowed(countFollowed-1)
         } else {
           setFollowed(
             followed.findIndex((x) => x.walletId === res.walletId) !== -1
               ? followed.map((x) => (x.walletId === res.walletId ? res : x))
               : [...followed, res]
           );
+          setCountFollowed(countFollowed+1)
         }
+        await getFollowBacks()
       }
     } catch (err) {
       console.error(err);
@@ -169,6 +177,15 @@ const Profile: React.FC<ProfileProps> = ({
       router.query = {};
     }
   }, [router.query]);
+
+  
+  useEffect(() => {
+    setCounts()
+  }, []);
+
+  useEffect(() => {
+    getFollowBacks()
+  }, [followers]);
 
   function returnTitle() {
     return scope;
@@ -241,11 +258,11 @@ const Profile: React.FC<ProfileProps> = ({
                   />
                 </label>
                 <span className={style.Label}>Certified only</span>
+                <button onClick={()=>console.log(followBacks)}>azeazeazeaze</button>
               </div>
             </div>
           </div>
           <div className={style.FollowsContainer}>{returnFollowers()}</div>
-         
             {scope === 'Followers' && (
               <>
                 {followersUsersHasNextPage && (
@@ -398,15 +415,10 @@ const Profile: React.FC<ProfileProps> = ({
     }
   }
 
-  function returnFollowers() {
+  const returnFollowers = () => {
     let creators = scope === 'Followers' ? followers : followed;
     creators = !isFiltered ? creators : creators.filter((x) => x.verified);
-    return creators.map((item: UserType) => {
-      const followBack =
-        scope === 'Followers' &&
-        followed.findIndex((x) => x.walletId === item.walletId) !== -1
-          ? true
-          : false;
+    return creators.map((item: UserType, i: number) => {
       return (
         <div key={item._id} className={style.CreatorShell}>
           <Link href={`/${item.name}`}>
@@ -425,10 +437,10 @@ const Profile: React.FC<ProfileProps> = ({
             </span>
             {scope === 'Followers' ? (
               <div
-                onClick={() => handleFollow(item.walletId, followBack)}
+                onClick={() => handleFollow(item.walletId, followBacks[i])}
                 className={style.Unfollow}
               >
-                {followBack ? 'Unfollow' : 'Follow'}
+                {followBacks[i] ? 'Unfollow' : 'Follow'}
               </div>
             ) : (
               <div
@@ -460,13 +472,13 @@ const Profile: React.FC<ProfileProps> = ({
           scope={scope}
           setScope={setScope}
           setExpand={setExpand}
-          ownedAmount={ownedAmount}
-          createdAmount={createdAmount}
-          listedOwnedAmount={listedOwnedAmount}
-          unlistedOwnedAmount={unlistedOwnedAmount}
-          likedAmount={likedNfts.length}
-          followersAmount={followers.length}
-          followedAmount={followed.length}
+          ownedAmount={countOwned}
+          createdAmount={countCreated}
+          listedOwnedAmount={countOwnedListed}
+          unlistedOwnedAmount={countOwnedUnlisted}
+          likedAmount={user.likedNFTs?.length || 0}
+          followersAmount={countFollowers}
+          followedAmount={countFollowed}
         />
         {returnCategory()}
       </div>
@@ -477,13 +489,13 @@ const Profile: React.FC<ProfileProps> = ({
           setScope={setScope}
           scope={scope}
           setExpand={setExpand}
-          ownedAmount={ownedAmount}
-          createdAmount={createdAmount}
-          listedOwnedAmount={listedOwnedAmount}
-          unlistedOwnedAmount={unlistedOwnedAmount}
-          likedAmount={likedNfts.length}
-          followersAmount={followers.length}
-          followedAmount={followed.length}
+          ownedAmount={countOwned}
+          createdAmount={countCreated}
+          listedOwnedAmount={countOwnedListed}
+          unlistedOwnedAmount={countOwnedUnlisted}
+          likedAmount={user.likedNFTs?.length || 0}
+          followersAmount={countFollowers}
+          followedAmount={countFollowed}
         />
       )}
       {twitterErrorModal && (

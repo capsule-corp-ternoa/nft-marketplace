@@ -49,3 +49,17 @@ export const getNFT = async (id: string, incViews: boolean = false, viewerWallet
   if (!data.creatorData || !data.ownerData || !data.media) throw new Error();
   return data;
 };
+
+export const getUserNFTsStat = async (id: string): Promise<{
+  countOwned: number, 
+  countOwnedListed: number, 
+  countOwnedUnlisted: number, 
+  countCreated: number, 
+  countFollowers: number, 
+  countFollowed: number
+ }> => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/NFTs/stat/${id}`);
+  if (!res.ok) throw new Error('error fetching user NFTs stat');
+  let result = await res.json()
+  return result;
+};

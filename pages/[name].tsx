@@ -30,8 +30,7 @@ const PublicProfilePage: React.FC<PublicProfileProps> = ({
   const [walletUser, setWalletUser] = useState(user);
   const [viewProfile, setViewProfile] = useState(profile);
   const [dataNfts, setDataNfts] = useState(data);
-  const [dataNftsHasNextPage, setDataNftsHasNextPage] =
-    useState(dataHasNextPage);
+  const [dataNftsHasNextPage, setDataNftsHasNextPage] = useState(dataHasNextPage);
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
 

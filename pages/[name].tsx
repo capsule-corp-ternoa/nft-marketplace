@@ -8,7 +8,7 @@ import NotAvailableModal from 'components/base/NotAvailable';
 import cookies from 'next-cookies';
 
 import { getUser, getProfile } from 'actions/user';
-import { getProfileNFTS } from 'actions/nft';
+import { getCreatorNFTS } from 'actions/nft';
 import { NftType, UserType } from 'interfaces';
 import { NextPageContext } from 'next';
 
@@ -74,8 +74,8 @@ export async function getServerSideProps(ctx: NextPageContext) {
     }).catch(success);
   }));
   promises.push(new Promise<void>((success) => {
-    getProfileNFTS(ctx.query.name as string).then(_nfts => {
-      data = _nfts
+    getCreatorNFTS(ctx.query.name as string).then(result => {
+      data = result.nodes
       success();
     }).catch(success);
   }));

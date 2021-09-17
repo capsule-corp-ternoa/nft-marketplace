@@ -56,3 +56,12 @@ export type FollowType = {
   followed: UserType;
   follower: UserType;
 }
+
+export type PaginationType<DataType> = {
+  totalCount: number;
+  pageInfo?: {
+    hasNextPage: boolean;
+    hasPreviousPage: boolean;
+  };
+  nodes: DataType[]
+}

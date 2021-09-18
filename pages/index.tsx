@@ -58,7 +58,7 @@ const LandingPage: React.FC<LandingProps> = ({
   return (
     <>
       <Head>
-        <title>SecretNFT - Welcome</title>
+        <title>{process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : "SecretNFT"} - Welcome</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta name="description" content="SecretNFT Marketplace, by Ternoa." />
         <meta name="og:image" content="ternoa-social-banner.jpg" />

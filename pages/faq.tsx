@@ -22,7 +22,7 @@ const FAQPage: React.FC<FAQProps> = ({ user }) => {
   return (
     <>
       <Head>
-        <title>SecretNFT - FAQ</title>
+        <title>{process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : "SecretNFT"} - FAQ</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta name="description" content="FAQ page of SecretNFT, by Ternoa." />
         <meta name="og:image" content="ternoa-social-banner.jpg" />

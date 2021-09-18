@@ -22,6 +22,10 @@ export interface ProfileProps {
   user: UserType;
   setUser: (u: UserType) => void;
   loading: boolean;
+  isFiltered: boolean;
+  setIsFiltered:(b: boolean) => void;
+  searchValue: string;
+  setSearchValue:(s: string)=>void;
   //Owned
   ownedNFTS: NftType[];
   loadMoreOwnedNfts: () => void;
@@ -45,14 +49,13 @@ export interface ProfileProps {
   loadMoreLikedNfts: () => void;
   //followers
   followers: UserType[];
-  setFollowers: (nfts: UserType[]) => void;
   followersUsersHasNextPage: boolean;
-  loadMoreFollowers: () => void;
+  loadMoreFollowers: (forceLoad?: boolean)=>void;
   //followed
   followed: UserType[];
-  setFollowed: (nfts: UserType[]) => void;
+  setFollowed: (users: UserType[]) => void;
   followedUsersHasNextPage: boolean;
-  loadMoreFollowed: () => void;
+  loadMoreFollowed: (forceLoad?: boolean)=>void;
 }
 
 const Profile: React.FC<ProfileProps> = ({
@@ -62,6 +65,10 @@ const Profile: React.FC<ProfileProps> = ({
   user,
   setUser,
   loading,
+  isFiltered,
+  setIsFiltered,
+  searchValue,
+  setSearchValue,
   ownedNFTS,
   loadMoreOwnedNfts,
   ownedNftsHasNextPage,
@@ -87,7 +94,6 @@ const Profile: React.FC<ProfileProps> = ({
   setFollowed,
 }) => {
   const router = useRouter();
-  const [isFiltered, setIsFiltered] = useState(false);
   const [scope, setScope] = useState(
     router.query?.scope === 'edit' ? 'edit' : 'My NFTs'
   );
@@ -97,9 +103,7 @@ const Profile: React.FC<ProfileProps> = ({
     user.banner ??
       'https://images.unsplash.com/photo-1579546929518-9e396f3cc809?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2250&q=80'
   );
-  const [, setSearchValue] = useState('' as string);
   const [followBacks, setFollowBacks] = useState(Array(followers.length).fill(false))
-
   const [countOwned, setCountOwned] = useState(0)
   const [countOwnedListed, setCountOwnedListed] = useState(0)
   const [countOwnedUnlisted, setCountOwnedUnlisted] = useState(0)
@@ -186,6 +190,16 @@ const Profile: React.FC<ProfileProps> = ({
   useEffect(() => {
     getFollowBacks()
   }, [followers]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      loadMoreFollowers(true)
+      loadMoreFollowed(true)
+    }, 1500)
+
+    return () => clearTimeout(timer)
+  }, [searchValue, isFiltered])
+
 
   function returnTitle() {
     return scope;
@@ -415,8 +429,7 @@ const Profile: React.FC<ProfileProps> = ({
   }
 
   const returnFollowers = () => {
-    let creators = scope === 'Followers' ? followers : followed;
-    creators = !isFiltered ? creators : creators.filter((x) => x.verified);
+    const creators = scope === 'Followers' ? followers : followed;
     return creators.map((item: UserType, i: number) => {
       return (
         <div key={item._id} className={style.CreatorShell}>

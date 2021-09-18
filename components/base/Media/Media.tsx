@@ -48,8 +48,6 @@ const Media: React.FC<MediaProps & Record<string,any>> = ({
   useEffect(()=>{
     if (fetchStatusOk) 
       setMediaSrc(src)
-    // else if(fetchStatusOk !== null && fetchStatusOk===false)
-    //   setMediaSrc(fallbackSrc)
   }, [fetchStatusOk])
   return (
     <>

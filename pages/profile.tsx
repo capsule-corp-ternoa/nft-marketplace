@@ -55,6 +55,8 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
   const [successPopup, setSuccessPopup] = useState(false);
   const [walletUser, setWalletUser] = useState(user);
   const [isLoading, setIsLoading] = useState(false);
+  const [isFiltered, setIsFiltered] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
   //Created NFTs
   const [createdNfts, setCreatedNfts] = useState(created);
   const [createdNftsHasNextPage, setCreatedNftsHasNextPage] = useState(createdHasNextPage);
@@ -172,34 +174,50 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
       console.log(err);
     }
   };
-  const loadMoreFollowers = async () => {
+  const loadMoreFollowers = async (forceLoad: boolean=false) => {
     setIsLoading(true);
     try {
-      if (followersUsersHasNextPage) {
+      if (followersUsersHasNextPage || forceLoad) {
+        let pageToLoad = !forceLoad ? followersCurrentPage : 0 
         let result = await getFollowers(
           walletUser.walletId,
-          (followersCurrentPage + 1).toString()
+          (pageToLoad + 1).toString(),
+          undefined,
+          searchValue,
+          isFiltered ? "true" : undefined
         );
-        setFollowersCurrentPage(followersCurrentPage + 1);
+        setFollowersCurrentPage(pageToLoad + 1);
         setFollowersUsersHasNextPage(result.hasNextPage || false);
-        setFollowersUsers([...followersUsers, ...result.docs]);
+        if (!forceLoad){
+          setFollowersUsers([...followersUsers, ...result.docs]);
+        }else{
+          setFollowersUsers([...result.docs]);
+        }
         setIsLoading(false);
       }
     } catch (err) {
       console.log(err);
     }
   };
-  const loadMoreFollowed = async () => {
+  const loadMoreFollowed = async (forceLoad: boolean=false) => {
     setIsLoading(true);
     try {
-      if (followedUsersHasNextPage) {
+      if (followedUsersHasNextPage || forceLoad) {
+        let pageToLoad = !forceLoad ? followedCurrentPage : 0 
         let result = await getFollowed(
           walletUser.walletId,
-          (followedCurrentPage + 1).toString()
+          (pageToLoad + 1).toString(),
+          undefined,
+          searchValue,
+          isFiltered ? "true" : undefined
         );
-        setFollowedCurrentPage(followedCurrentPage + 1);
+        setFollowedCurrentPage(pageToLoad + 1);
         setFollowedUsersHasNextPage(result.hasNextPage || false);
-        setFollowedUsers([...followedUsers, ...result.docs]);
+        if (!forceLoad){
+          setFollowedUsers([...followedUsers, ...result.docs]);
+        }else{
+          setFollowedUsers([...result.docs]);
+        }
         setIsLoading(false);
       }
     } catch (err) {
@@ -226,6 +244,10 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
         createdNFTS={createdNfts}
         createdNftsHasNextPage={createdNftsHasNextPage}
         loadMoreCreatedNfts={loadMoreCreatedNfts}
+        isFiltered={isFiltered}
+        setIsFiltered={setIsFiltered}
+        searchValue={searchValue}
+        setSearchValue={setSearchValue}
         ownedNFTS={ownedNfts}
         ownedNftsHasNextPage={ownedNftsHasNextPage}
         loadMoreOwnedNfts={loadMoreOwnedNfts}
@@ -240,7 +262,6 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
         loadMoreLikedNfts={loadMoreLikedNfts}
         setLikedNfts={setLikedNfts}
         followers={followersUsers}
-        setFollowers={setFollowersUsers}
         followersUsersHasNextPage={followersUsersHasNextPage}
         loadMoreFollowers={loadMoreFollowers}
         followed={followedUsers}

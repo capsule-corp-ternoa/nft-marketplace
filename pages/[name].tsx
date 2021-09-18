@@ -55,7 +55,7 @@ const PublicProfilePage: React.FC<PublicProfileProps> = ({
   return (
     <>
       <Head>
-        <title>SecretNFT - {viewProfile.name}</title>
+        <title>{process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : "SecretNFT"} - {viewProfile.name}</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta
           name="description"

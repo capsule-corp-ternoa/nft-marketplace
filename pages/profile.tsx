@@ -228,7 +228,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
   return (
     <>
       <Head>
-        <title>SecretNFT - My account</title>
+        <title>{process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : "SecretNFT"} - My account</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta name="description" content="Ternoa - Your profile." />
         <meta name="og:image" content="ternoa-social-banner.jpg" />

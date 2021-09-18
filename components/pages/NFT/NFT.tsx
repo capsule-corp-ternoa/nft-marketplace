@@ -52,8 +52,8 @@ const NFTPage: React.FC<NFTPageProps> = ({
   //const userCanBuyTiime = user ? user.tiimeAmount && NFT.priceTiime && NFT.priceTiime !== "" && (Number(user.tiimeAmount) >= Number(NFT.priceTiime)) : true
   const userCanBuy = userCanBuyCaps// || userCanBuyTiime
   const shareSubject = "Check out this Secret NFT"
-  const shareText = `Check out ${NFT.name ? NFT.name : "this nft"} on secret-nft.com`
-  const shareUrl = (typeof window!=="undefined" && window.location?.href) || `https://www.secret-nft.com/nft/${NFT.id}`
+  const shareText = `Check out ${NFT.name ? NFT.name : "this nft"} on ${process.env.NEXT_PUBLIC_APP_LINK ? process.env.NEXT_PUBLIC_APP_LINK : "secret-nft.com"}`
+  const shareUrl = (typeof window!=="undefined" && window.location?.href) || `https://www.${process.env.NEXT_PUBLIC_APP_LINK ? process.env.NEXT_PUBLIC_APP_LINK : "secret-nft.com"}/nft/${NFT.id}`
   const isLiked = !user ? undefined : (NFT.serieId === "0" ? user.likedNFTs?.map(x => x.nftId).includes(NFT.id) : user.likedNFTs?.map(x => x.serieId).includes(NFT.serieId))
   
   const handleLikeDislike = async () => {

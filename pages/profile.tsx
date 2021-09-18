@@ -13,6 +13,7 @@ import { getFollowers, getFollowed } from 'actions/follower';
 import { getLikedNFTs } from 'actions/user';
 import { NftType, UserType } from 'interfaces';
 import { NextPageContext } from 'next';
+import { decryptCookie } from 'utils/cookie';
 
 export interface ProfilePageProps {
   user: UserType;
@@ -278,7 +279,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
 };
 
 export async function getServerSideProps(ctx: NextPageContext) {
-  const token = cookies(ctx).token;
+  const token = cookies(ctx).token && decryptCookie(cookies(ctx).token as string);
   let user = null,
     created: NftType[] = [],
     createdHasNextPage: boolean = false,

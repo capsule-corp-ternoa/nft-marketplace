@@ -12,6 +12,7 @@ import { getUser } from 'actions/user';
 import { getCategoryNFTs } from 'actions/nft';
 import { NftType, UserType } from 'interfaces';
 import { NextPageContext } from 'next';
+import { decryptCookie } from 'utils/cookie';
 
 export interface ExplorePage {
   user: UserType;
@@ -80,7 +81,7 @@ const ExplorePage: React.FC<ExplorePage> = ({
 };
 
 export async function getServerSideProps(ctx: NextPageContext) {
-  const token = cookies(ctx).token;
+  const token = cookies(ctx).token && decryptCookie(cookies(ctx).token as string);
   let user: UserType | null = null,
     data: NftType[] = [],
     dataHasNextPage: boolean = false;

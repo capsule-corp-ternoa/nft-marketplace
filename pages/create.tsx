@@ -14,6 +14,7 @@ import { UserType } from 'interfaces';
 import { NextPageContext } from 'next';
 
 import { imgToBlur, imgToWatermark } from 'utils/imageProcessing/image';
+import { decryptCookie } from 'utils/cookie';
 
 export interface CreatePageProps {
   user: UserType;
@@ -230,7 +231,7 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
 
 export async function getServerSideProps(ctx: NextPageContext) {
   let user = null;
-  const token = cookies(ctx).token;
+  const token = cookies(ctx).token && decryptCookie(cookies(ctx).token as string);
   if (token) user = await getUser(token).catch(() => null);
   return {
     props: { user },

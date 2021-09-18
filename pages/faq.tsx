@@ -9,6 +9,7 @@ import cookies from 'next-cookies';
 import { getUser } from 'actions/user';
 import { UserType } from 'interfaces';
 import { NextPageContext } from 'next';
+import { decryptCookie } from 'utils/cookie';
 
 export interface FAQProps {
   user: UserType;
@@ -41,7 +42,7 @@ const FAQPage: React.FC<FAQProps> = ({ user }) => {
 
 export async function getServerSideProps(ctx: NextPageContext) {
   let user = null;
-  const token = cookies(ctx).token;
+  const token = cookies(ctx).token && decryptCookie(cookies(ctx).token as string);
   if (token) user = await getUser(token).catch(() => null);
   return {
     props: { user },

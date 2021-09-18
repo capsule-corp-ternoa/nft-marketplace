@@ -11,6 +11,7 @@ import { getUser, getProfile } from 'actions/user';
 import { getCreatorNFTS } from 'actions/nft';
 import { NftType, UserType } from 'interfaces';
 import { NextPageContext } from 'next';
+import { decryptCookie } from 'utils/cookie';
 
 export interface PublicProfileProps {
   user: UserType;
@@ -83,7 +84,7 @@ const PublicProfilePage: React.FC<PublicProfileProps> = ({
   );
 };
 export async function getServerSideProps(ctx: NextPageContext) {
-  const token = cookies(ctx).token;
+  const token = cookies(ctx).token && decryptCookie(cookies(ctx).token as string);
   let user: UserType | null = null,
     profile: UserType | null = null,
     data: NftType[] = [],

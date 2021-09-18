@@ -13,6 +13,7 @@ import { getUser, getUsers } from 'actions/user';
 import { getCategoryNFTs } from 'actions/nft';
 import { NftType, UserType } from 'interfaces';
 import { NextPageContext } from 'next';
+import { encryptCookie, decryptCookie } from 'utils/cookie';
 
 export interface LandingProps {
   user: UserType;
@@ -35,13 +36,24 @@ const LandingPage: React.FC<LandingProps> = ({
 }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
+  const [walletUser, setWalletUser] = useState<UserType | null>(user);
 
   useEffect(() => {
-    if (window.isRNApp && window.walletId && (!Cookies.get('token') || Cookies.get('token')!==window.walletId)){
+    const params = new URLSearchParams(window.location.search);
+    if (window.isRNApp && window.walletId && (!Cookies.get('token') || decryptCookie(Cookies.get('token') as string)!==window.walletId)){
+      if (params.get('walletId') && params.get('walletId')!==window.walletId){
+        resetUser()
+      }
       Cookies.remove('token')
-      Cookies.set('token', window.walletId, { expires: 1 });
+      Cookies.set('token', encryptCookie(window.walletId), { expires: 1 });
     }
+    if (!window.isRNApp && params.get('walletId')) setWalletUser(null)
   }, []);
+
+  const resetUser = async () => {
+    const user = await getUser(window.walletId)
+    setWalletUser(user)
+  }
 
   return (
     <>
@@ -55,11 +67,11 @@ const LandingPage: React.FC<LandingProps> = ({
       {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
       {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
       <AlphaBanner />
-      <MainHeader user={user} setModalExpand={setModalExpand} />
+      <MainHeader user={walletUser as UserType} setModalExpand={setModalExpand} />
       <Landing
         setModalExpand={setModalExpand}
         setNotAvailable={setNotAvailable}
-        user={user}
+        user={walletUser as UserType}
         users={users}
         popularNfts={popularNfts}
         bestSellingNfts={bestSellingNfts}
@@ -71,7 +83,7 @@ const LandingPage: React.FC<LandingProps> = ({
   );
 };
 export async function getServerSideProps(ctx: NextPageContext) {
-  const token = ctx.query.walletId as string || cookies(ctx).token;
+  const token = ctx.query.walletId as string || (cookies(ctx).token && decryptCookie(cookies(ctx).token as string));
   // category code for beta testers NFTs
   const BETA_CODE = '001';
   let users: UserType[] = [], user: UserType | null = null, regularNfts: NftType[] = [], betaNfts: NftType[] = [];

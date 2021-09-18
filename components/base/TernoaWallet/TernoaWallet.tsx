@@ -7,6 +7,7 @@ import randomstring from 'randomstring';
 import Cookies from 'js-cookie';
 import { onModelClose } from 'utils/model-helpers';
 import { connect as connectIo } from 'utils/socket/socket.helper';
+import { encryptCookie } from 'utils/cookie';
 
 export interface TernoaWalletProps {
   setModalExpand: (b: boolean) => void;
@@ -36,7 +37,8 @@ const TernoaWallet: React.FC<TernoaWalletProps> = ({ setModalExpand }) => {
     socket.on('CONNECTION_FAILURE', (data) => setError(data.msg));
     socket.on('RECEIVE_WALLET_ID', (data) => {
       console.log('SEND_WALLET_ID', data);
-      Cookies.set('token', data.walletId, {
+      const walletId = data.walletId as string
+      Cookies.set('token', encryptCookie(walletId), {
         //sameSite: 'strict',
         expires: 1,
       });

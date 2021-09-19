@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 8080",
     "type-check": "tsc",
     "export": "next build && next export"
   },

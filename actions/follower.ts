@@ -1,11 +1,11 @@
-import { UserType } from "interfaces";
+import { CustomResponse, UserType } from "interfaces";
 import { DEFAULT_LIMIT_PAGINATION } from "./nft";
 
 export const getFollowers = async (walletId: string, page: string="1", limit: string=DEFAULT_LIMIT_PAGINATION, searchText?: string, certifiedOnly?: string) => {
     const query = `${searchText ? `&nameOrAddressSearch=${searchText}`: ""}${certifiedOnly ? `&certifiedOnly=${certifiedOnly}` : ""}`
     const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/follow/followers/${walletId}?page=${page}&limit=${limit}${query}`);
     if (!res.ok) throw new Error();
-    let result = await res.json();
+    let result = await res.json() as CustomResponse<UserType>;
     return result;
 };
 
@@ -13,7 +13,7 @@ export const getFollowed = async (walletId: string, page: string="1", limit: str
     const query = `${searchText ? `&nameOrAddressSearch=${searchText}`: ""}${certifiedOnly ? `&certifiedOnly=${certifiedOnly}` : ""}`
     const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/follow/followed/${walletId}?page=${page}&limit=${limit}${query}`);
     if (!res.ok) throw new Error();
-    let result = await res.json();
+    let result = await res.json() as CustomResponse<UserType>;
     return result;
 };
 

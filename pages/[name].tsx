@@ -44,8 +44,8 @@ const PublicProfilePage: React.FC<PublicProfileProps> = ({
           (currentPage + 1).toString()
         );
         setCurrentPage(currentPage + 1);
-        setDataNftsHasNextPage(result.pageInfo?.hasNextPage || false);
-        setDataNfts([...dataNfts, ...result.nodes]);
+        setDataNftsHasNextPage(result.hasNextPage || false);
+        setDataNfts([...dataNfts, ...result.data]);
         setIsLoading(false);
       }
     } catch (err) {
@@ -110,8 +110,8 @@ export async function getServerSideProps(ctx: NextPageContext) {
   }));
   promises.push(new Promise<void>((success) => {
     getCreatorNFTS(ctx.query.name as string).then(result => {
-      data = result.nodes
-      dataHasNextPage = result.pageInfo?.hasNextPage || false;
+      data = result.data
+      dataHasNextPage = result.hasNextPage || false;
       success();
     }).catch(success);
   }));

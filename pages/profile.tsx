@@ -8,7 +8,7 @@ import NotAvailableModal from 'components/base/NotAvailable';
 import SuccessPopup from 'components/base/SuccessPopup';
 import cookies from 'next-cookies';
 import { getUser } from 'actions/user';
-import { getProfileNFTS, getCreatorNFTS } from 'actions/nft';
+import { getOwnedNFTS, getCreatorNFTS } from 'actions/nft';
 import { getFollowers, getFollowed } from 'actions/follower';
 import { getLikedNFTs } from 'actions/user';
 import { NftType, UserType } from 'interfaces';
@@ -108,8 +108,9 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
     setIsLoading(true);
     try {
       if (ownedNftsHasNextPage) {
-        let result = await getProfileNFTS(
+        let result = await getOwnedNFTS(
           walletUser.walletId,
+          false,
           undefined,
           (ownedCurrentPage + 1).toString()
         );
@@ -126,8 +127,9 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
     setIsLoading(true);
     try {
       if (ownedNftsListedHasNextPage) {
-        let result = await getProfileNFTS(
+        let result = await getOwnedNFTS(
           walletUser.walletId,
+          true,
           1,
           (ownedNftsListedCurrentPage + 1).toString()
         );
@@ -144,8 +146,9 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
     setIsLoading(true);
     try {
       if (ownedNftsUnlistedHasNextPage) {
-        let result = await getProfileNFTS(
+        let result = await getOwnedNFTS(
           walletUser.walletId,
+          false,
           0,
           (ownedNftsUnlistedCurrentPage + 1).toString()
         );
@@ -320,9 +323,8 @@ export async function getServerSideProps(ctx: NextPageContext) {
     );
     promises.push(
       new Promise<void>((success) => {
-        getProfileNFTS(token)
+        getOwnedNFTS(token, true)
           .then((result) => {
-
             owned = result.data;
             ownedHasNextPage = result.hasNextPage || false;
             success();
@@ -332,7 +334,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
     );
     promises.push(
       new Promise<void>((success) => {
-        getProfileNFTS(token, 1)
+        getOwnedNFTS(token, true, 1)
           .then((result) => {
             ownedListed = result.data;
             ownedListedHasNextPage = result.hasNextPage || false;
@@ -343,7 +345,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
     );
     promises.push(
       new Promise<void>((success) => {
-        getProfileNFTS(token, 0)
+        getOwnedNFTS(token, false, 0)
           .then((result) => {
             ownedUnlisted = result.data;
             ownedUnlistedHasNextPage = result.hasNextPage || false;

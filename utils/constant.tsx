@@ -1,0 +1,1 @@
+export const MARKETPLACE_ID = process.env.NEXT_PUBLIC_MARKETPLACE_ID || "0"

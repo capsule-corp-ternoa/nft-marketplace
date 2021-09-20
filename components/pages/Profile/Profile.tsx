@@ -114,7 +114,7 @@ const Profile: React.FC<ProfileProps> = ({
   const setCounts = async () => {
     try{
       if (user){
-        let userStat = await getUserNFTsStat(user.walletId)
+        let userStat = await getUserNFTsStat(user.walletId, true)
         userStat.countOwned && setCountOwned(userStat.countOwned)
         userStat.countOwnedListed && setCountOwnedListed(userStat.countOwnedListed)
         userStat.countOwnedUnlisted && setCountOwnedUnlisted(userStat.countOwnedUnlisted)
@@ -288,7 +288,7 @@ const Profile: React.FC<ProfileProps> = ({
                         Load more
                       </div>
                     ) : (
-                      <div className={style.disabledButton}>Loading...</div>
+                      <div className={style.DisabledButton}>Loading...</div>
                     )}
                   </>
                 )}

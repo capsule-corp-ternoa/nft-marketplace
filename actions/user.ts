@@ -51,6 +51,15 @@ export const getUsers = async () => {
   return response;
 };
 
+export const getUsersByWalletIds = async (walletIds: string[]) => {
+  if (walletIds.length === 0) return []
+  const query = `?walletIds=${walletIds.join("&walletIds=")}`
+  const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/users/getUsers${query}`);
+  if (!res.ok) throw new Error();
+  const response: UserType[] = await res.json();
+  return response;
+};
+
 export const reviewRequested = async (walletId: string) => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/users/reviewRequested/${walletId}`,{
     method: 'PATCH'

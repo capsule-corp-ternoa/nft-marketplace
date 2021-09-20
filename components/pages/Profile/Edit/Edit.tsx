@@ -6,6 +6,7 @@ import { UserType } from 'interfaces';
 import { validateTwitter, validateUrl } from 'utils/strings';
 import ModalEdit from '../ModalEdit/ModalEdit';
 import { reviewRequested } from 'actions/user';
+import { uploadIPFS } from 'utils/nftEncryption';
 
 export interface EditProps {
   user: UserType;
@@ -45,15 +46,10 @@ const Edit: React.FC<EditProps> = ({ user, setBanner, setSuccessPopup }) => {
     handleChange(x, "banner")
   }
   const fileToUrl = async (x: string, name: string) => {
-    let fd = new FormData();
     let blob = await (await fetch(x)).blob();
     let file = new File([blob], name)
-    fd.append('file', file);
-    let resUpload = await fetch(`${process.env.NEXT_PUBLIC_SDK_URL}/api/uploadIM`, {
-      method: 'POST',
-      body: fd
-    })
-    let { url } = await resUpload.json();
+    let resUpload = await uploadIPFS(file)
+    let { url } = resUpload;
     if (url) {
       return url
     }else{

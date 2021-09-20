@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useEffect, useState } from 'react';
+import router from 'next/router';
 import style from './ModalEdit.module.scss';
 import Close from 'components/assets/close';
 import QRCode from 'components/base/QRCode';
@@ -54,6 +55,7 @@ const ModalEdit: React.FC<ModalEditProps> = ({ setModalExpand, data }) => {
       socket.close();
       setTimeout(() => {
         setModalExpand(false);
+        router.push("/profile?scope=edit")
       }, 2000)
     });
     socket.on('disconnect', () => {

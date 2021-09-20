@@ -1,28 +1,29 @@
 import React from 'react';
 import style from './Explore.module.scss';
-
 import NFTCard from 'components/base/NftCard';
 import NoNFTComponent from 'components/base/NoNFTComponent';
-
 import { NftType, UserType } from 'interfaces/index';
-
 export interface ExploreProps {
   NFTS: NftType[];
   user?: UserType;
   setUser?: (u: UserType) => void;
+  loadMore: () => void;
+  hasNextPage: boolean;
+  loading: boolean;
 }
 
-const Explore: React.FC<ExploreProps> = ({ NFTS, user, setUser }) => {
-
+const Explore: React.FC<ExploreProps> = ({
+  NFTS,
+  user,
+  setUser,
+  loadMore,
+  hasNextPage,
+  loading,
+}) => {
   function returnNFTs() {
     return NFTS.map((item) => (
       <div key={item.id} className={style.NFTShell}>
-        <NFTCard 
-          mode="grid" 
-          item={item}
-          user={user}
-          setUser={setUser}
-        />
+        <NFTCard mode="grid" item={item} user={user} setUser={setUser} />
       </div>
     ));
   }
@@ -71,14 +72,24 @@ const Explore: React.FC<ExploreProps> = ({ NFTS, user, setUser }) => {
             </span>
           </div>
         </div>
-        {NFTS.length === 0 ?
-          <NoNFTComponent/>
-        :
-          <div className={style.NFTWrapper}>
-            {returnNFTs()}
-          </div>
-        }
-        <div className={style.Hide}>Load more...</div>
+        {NFTS.length === 0 ? (
+          <NoNFTComponent />
+        ) : (
+          <div className={style.NFTWrapper}>{returnNFTs()}</div>
+        )}
+        {hasNextPage && (
+          <>
+            {!loading ? (
+              <div onClick={() => loadMore()} className={style.Button}>
+                Load more
+              </div>
+            ) : (
+              <div className={style.disabledButton}>
+                Loading...
+              </div>
+            )}
+          </>
+        )}
       </div>
     </>
   );

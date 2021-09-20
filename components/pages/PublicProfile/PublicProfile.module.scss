@@ -1,3 +1,5 @@
+@import "style/colors.scss";
+
 .Container {
   width: 100%;
   box-sizing: border-box;
@@ -27,7 +29,7 @@
   flex-wrap: wrap;
   justify-content: center;
   box-sizing: border-box;
-  padding: 60px 0px;
+  padding: 60px 0 0 0;
 }
 
 .NFTShell {
@@ -36,22 +38,83 @@
   margin-left: 12px;
 }
 
+.Button {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  align-items: center;
+  border: 2px solid $primary;
+  color: $primary;
+  border-radius: 30px;
+  padding: 14px 64px;
+  font-size: 16px;
+  font-family: "Airbnb Cereal App Medium";
+  margin-top: 80px;
+  margin-bottom: 200px;
+  cursor: pointer;
+  transition: all 0.3s ease-out;
+
+  &:hover {
+    background-color: $primary;
+    color: white;
+  }
+}
+.disabledButton {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  align-items: center;
+  border: 2px solid #e0e0e0;
+  color: #e0e0e0;
+  border-radius: 30px;
+  padding: 14px 64px;
+  font-size: 16px;
+  font-family: "Airbnb Cereal App Medium";
+  margin-top: 80px;
+  margin-bottom: 200px;
+  cursor: auto;
+  transition: all 0.3s ease-out;
+}
+
 @media (max-width: 1300px) {
   .NFTWrapper {
     width: 900px;
-    padding: 50px 0px;
+    padding: 50px 0px 0px 0px;
   }
 
   .Banner {
     height: 220px;
+  }
+  .Button {
+    padding: 12px 58px;
+    font-size: 14px;
+    margin-top: 80px;
+    margin-bottom: 100px;
+
+    &:hover {
+      background-color: $primary;
+      color: white;
+    }
+  }
+  .disabledButton {
+    padding: 12px 58px;
+    font-size: 14px;
+    margin-top: 80px;
+    margin-bottom: 100px;
   }
 }
 
 @media (max-width: 950px) {
   .NFTWrapper {
     width: 100%;
-    padding: 50px 4px;
+    padding: 50px 4px 0 4px;
     justify-content: center;
+  }
+  .Button {
+    margin-bottom: 150px;
+  }
+  .disabledButton {
+    margin-bottom: 150px;
   }
 
   .NFTShell {

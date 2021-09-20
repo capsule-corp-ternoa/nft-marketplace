@@ -14,6 +14,7 @@ import { UserType } from 'interfaces';
 import { NextPageContext } from 'next';
 
 import { imgToBlur, imgToWatermark } from 'utils/imageProcessing/image';
+import { decryptCookie } from 'utils/cookie';
 
 export interface CreatePageProps {
   user: UserType;
@@ -186,7 +187,7 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
   return (
     <>
       <Head>
-        <title>SecretNFT - Create your NFT</title>
+        <title>{process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : "SecretNFT"} - Create your NFT</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta name="description" content="SecretNFT Marketplace, by Ternoa." />
         <meta name="og:image" content="ternoa-social-banner.jpg" />
@@ -230,7 +231,7 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
 
 export async function getServerSideProps(ctx: NextPageContext) {
   let user = null;
-  const token = cookies(ctx).token;
+  const token = cookies(ctx).token && decryptCookie(cookies(ctx).token as string);
   if (token) user = await getUser(token).catch(() => null);
   return {
     props: { user },

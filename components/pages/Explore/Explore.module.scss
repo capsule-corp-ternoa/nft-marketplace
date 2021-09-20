@@ -84,7 +84,19 @@
     color: white;
   }
 }
-
+.disabledButton {
+  align-items: center;
+  border: 2px solid #e0e0e0;
+  color: #e0e0e0;
+  border-radius: 30px;
+  padding: 14px 64px;
+  font-size: 16px;
+  font-family: "Airbnb Cereal App Medium";
+  margin-top: 80px;
+  margin-bottom: 120px;
+  cursor: auto;
+  transition: all 0.3s ease-out;
+}
 .Hide {
   display: none;
 }
@@ -116,6 +128,12 @@
       background-color: $primary;
       color: white;
     }
+  }
+  .disabledButton {
+    padding: 12px 58px;
+    font-size: 14px;
+    margin-top: 80px;
+    margin-bottom: 100px;
   }
 }
 

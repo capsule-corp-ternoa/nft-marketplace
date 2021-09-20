@@ -1,4 +1,4 @@
-@import "style/colors.scss";
+@import 'style/colors.scss';
 
 .Container {
   width: 100%;
@@ -30,7 +30,7 @@
   background: #ffffff;
   padding: 12px 24px;
   cursor: pointer;
-  font-family: "Airbnb Cereal App Medium";
+  font-family: 'Airbnb Cereal App Medium';
 }
 
 .BannerIMG {
@@ -61,7 +61,7 @@
 .NFTTitle {
   font-size: 40px;
   line-height: 52px;
-  font-family: "Airbnb Cereal App Bold";
+  font-family: 'Airbnb Cereal App Bold';
   margin: 0px;
   padding-left: 20px;
 }
@@ -75,6 +75,48 @@
   padding: 32px 0px;
   padding-left: 20px;
   width: 100%;
+}
+
+.Button {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+  margin-bottom: 80px;
+  width: 25%;
+  //align-items: center;
+  border: 2px solid $primary;
+  color: $primary;
+  border-radius: 30px;
+  padding: 15px;
+  font-size: 16px;
+  font-family: 'Airbnb Cereal App Medium';
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease-out;
+
+  &:hover {
+    background-color: $primary;
+    color: white;
+  }
+}
+.disabledButton {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+  margin-bottom: 80px;
+  width: 25%;
+  //align-items: center;
+  border: 2px solid #e0e0e0;
+  color: #e0e0e0;
+  border-radius: 30px;
+  padding: 15px;
+  font-size: 16px;
+  font-family: 'Airbnb Cereal App Medium';
+  text-align: center;
+  cursor: auto;
+  transition: all 0.3s ease-out;
 }
 
 .FollowsContainer {
@@ -115,7 +157,7 @@
 }
 
 .Label {
-  font-family: "Airbnb Cereal App Medium";
+  font-family: 'Airbnb Cereal App Medium';
   color: #686464;
   font-size: 14px;
   line-height: 18px;
@@ -135,7 +177,7 @@
   padding: 10px 24px;
   margin-left: 40px;
   outline: none;
-  font-family: "Airbnb Cereal App Light";
+  font-family: 'Airbnb Cereal App Light';
 }
 
 .SearchContainer {
@@ -164,13 +206,13 @@
 .CreatorName {
   margin: 0px;
   margin-bottom: 3px;
-  font-family: "Airbnb Cereal App Medium";
+  font-family: 'Airbnb Cereal App Medium';
   font-style: normal;
   font-size: 14px;
 }
 
 .CreatorFollowers {
-  font-family: "Airbnb Cereal App Book";
+  font-family: 'Airbnb Cereal App Book';
   font-style: normal;
   font-size: 12px;
   display: flex;
@@ -186,7 +228,7 @@
   align-items: center;
   border: 1px solid $primary;
   color: $primary;
-  font-family: "Airbnb Cereal App Bold";
+  font-family: 'Airbnb Cereal App Bold';
   border-radius: 25px;
   padding: 6px 16px;
   transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
@@ -276,6 +318,17 @@
     font-size: 32px;
     line-height: 42px;
     text-align: center;
+  }
+
+  .Button {
+    margin-bottom: 20px;
+    width: 50%;
+    padding: 15px;
+  }
+  .disabledButton {
+    margin-bottom: 20px;
+    width: 50%;
+    padding: 15px;
   }
 
   .Input {

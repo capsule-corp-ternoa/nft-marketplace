@@ -26,14 +26,12 @@ const cryptFilePgp = async (file: File, publicPGP: string) => {
   const arrayBuffer = await file.arrayBuffer()
   const buffer = Buffer.from(arrayBuffer);
   const content = buffer.toString("base64");
-  console.log('cryptFilePgp // content before crypt', content);
   const message = await openpgp.Message.fromText(content)
   const publicKey = await openpgp.readKey({ armoredKey: publicPGP })
   const encrypted = await openpgp.encrypt({
     message,
     publicKeys: publicKey
   })
-  console.log('encrypted', encrypted);
   return encrypted
 }
 
@@ -43,7 +41,7 @@ export const cryptAndUploadNFT = async (secretNFT: File, secretNFTType: string, 
       //NFT Data
       const encryptedSecretNft = await cryptFilePgp(secretNFT, publicPGP)
       const nftBlob = new Blob([encryptedSecretNft], { type: secretNFTType });
-      const nftFile = new File([nftBlob], "ecrypted nft");
+      const nftFile = new File([nftBlob], "encrypted nft");
       //PGP Data
       const pgpBlob = new Blob([publicPGP], { type: 'text/plain' });
       const pgpFile = new File([pgpBlob], "pgp public key");
@@ -62,7 +60,6 @@ export const uploadIPFS = async(file: File) => {
   try{
     const mediaType = mime.lookup(file.name);
     const result = await ipfsApi.addFile(file);
-    console.log('uploadIPFS success', result, file.name)
     if (result && result.Hash) {
       return {
         url: `${ipfsGatewayUri}/${result.Hash}`,

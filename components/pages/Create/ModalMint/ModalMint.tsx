@@ -57,13 +57,11 @@ const ModalMint: React.FC<ModalProps> = ({
 
     socket.on('CONNECTION_FAILURE', (data) => setError(data.msg));
     socket.on('PGPS_READY', async ({ publicPgpKeys }) => {
-      console.log('PGPS_READY:' + publicPgpKeys);
       socket.emit('PGPS_READY_RECEIVED')
       const { nftUrls, seriesId } = await uploadNFT(publicPgpKeys)
       socket.emit('RUN_NFT_MINT', {nftUrls, seriesId})
     });
     socket.on('MINTING_NFT', ({ success }) => {
-      console.log('MINTING_NFT:' + success);
       socket.emit('MINTING_NFT_RECEIVED')
       socket.close();
       setMintResponse(success)

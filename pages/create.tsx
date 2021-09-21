@@ -133,8 +133,8 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
         return cryptAndUploadNFT(secretNFT, cryptedMediaType as string, publicPGPs[i] as string)
       })
       const cryptResults = await Promise.all(cryptPromises);
-      const cryptNFTsJSONs = await Promise.all(cryptResults.map((r: any) => r[0].json()));
-      const publicPGPsIPFS = await Promise.all(cryptResults.map((r: any) => r[1].json()));
+      const cryptNFTsJSONs = cryptResults.map((r: any) => r[0]);
+      const publicPGPsIPFS = cryptResults.map((r: any) => r[1]);
       const results = cryptNFTsJSONs.map((result, i) => {
         const data = {
           seriesId: (seriesId ? seriesId : 0),
@@ -154,12 +154,12 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
         const finalFile = new File([finalBlob], "final json")
         return uploadIPFS(finalFile);
       });
-      const JSONURLS = (await Promise.all(results)).map(x => x.url);
-      return {nftUrls: JSONURLS as string[], seriesId:(seriesId ? seriesId : 0)};
+      const JSONURLS = (await Promise.all(results));
+      return {nftUrls: JSONURLS as any[], seriesId:(seriesId ? seriesId : 0)};
     } catch (err) {
       setError('Please try again.');
       console.log(err);
-      return {nftUrls: [] as string[], seriesId:0};
+      return {nftUrls: [] as any[], seriesId:0};
     }
   }
 

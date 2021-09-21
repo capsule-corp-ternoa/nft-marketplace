@@ -40,34 +40,41 @@ const Details: React.FC<DetailsProps> = ({ NFT }) => {
   //   setBid(true)
   // }
 
-  const ownerDatas = ({ index }) => (
-    <div className={style.owners} key={NFT.serieData[index]?.id}>
-      <Link href={`/${NFT.ownerData.walletId}`}>
-        <a className={style.owner}>
-          <div className={style.ownerBadge}>Owner</div>
-          <div className={style.ownerProfile}>
-            <div className={style.ownerProfileIMG} style={bgGradientOwner} />
-          </div>
-          <div className={style.ownerDatas}>
-            <div className={style.ownerDatasName}>
-              {middleEllipsis(NFT.serieData[index]?.owner, 15)}
+  const ownerDatas = ({ index }: { index: number }) => {
+    const NFTRow = NFT.serieData? NFT.serieData[index] : null
+    const NFTRowId = NFTRow ? NFTRow.id : null;
+    const NFTRowOwner = NFTRow ? NFTRow.owner : "";
+    const NFTRowPrice = NFTRow ? NFTRow.price : "";
+    
+    return (
+      <div className={style.owners} key={NFTRowId}>
+        <Link href={`/${NFT.ownerData.walletId}`}>
+          <a className={style.owner}>
+            <div className={style.ownerBadge}>Owner</div>
+            <div className={style.ownerProfile}>
+              <div className={style.ownerProfileIMG} style={bgGradientOwner} />
             </div>
-            <div className={style.ownerDatasSales}>
-              <span style={{ color: 'red' }}>
-                {' '}
-                {NFT.totalListedNft}/{NFT.totalNft}{' '}
-              </span>
-              on sale for {computeCaps(Number(NFT.serieData[index]?.price))}{' '}
-              CAPS each
+            <div className={style.ownerDatas}>
+              <div className={style.ownerDatasName}>
+                {middleEllipsis(NFTRowOwner, 15)}
+              </div>
+              <div className={style.ownerDatasSales}>
+                <span style={{ color: 'red' }}>
+                  {' '}
+                  {NFT.totalListedNft}/{NFT.totalNft}{' '}
+                </span>
+                on sale for {computeCaps(Number(NFTRowPrice))}{' '}
+                CAPS each
+              </div>
             </div>
-          </div>
-        </a>
-      </Link>
-      <div>
-        <div className={style.buyButton}>Buy</div>
+          </a>
+        </Link>
+        <div>
+          <div className={style.buyButton}>Buy</div>
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   return (
     <div className={style.detailsMain}>
@@ -145,15 +152,13 @@ const Details: React.FC<DetailsProps> = ({ NFT }) => {
             </div>
           )}
           {owners && (
-            <div
-              className={style.ownersContainers}
-            >
+            <div className={style.ownersContainers}>
               <AutoSizer>
                 {({ width, height }) => (
                   <List
                     width={width}
                     height={height}
-                    itemCount={NFT.serieData?.length}
+                    itemCount={NFT.serieData ? NFT.serieData.length : 0}
                     itemSize={75}
                   >
                     {ownerDatas}

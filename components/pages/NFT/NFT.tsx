@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Link from 'next/link';
+// import Link from 'next/link';
 import style from './NFT.module.scss';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
@@ -8,7 +8,6 @@ import Scale from 'components/assets/scale';
 import Share from 'components/assets/share';
 import Like from 'components/assets/heart';
 import Eye from 'components/assets/eye';
-import gradient from 'random-gradient';
 import { computeCaps, computeTiime } from 'utils/strings';
 import { UserType, NftType } from 'interfaces';
 import { likeNFT, unlikeNFT } from 'actions/user';
@@ -36,13 +35,9 @@ const NFTPage: React.FC<NFTPageProps> = ({
   user,
   setUser,
   type,
-  capsValue,
 }) => {
   const [likeLoading, setLikeLoading] = useState(false);
   const [modalShareOpen, setModalShareOpen] = useState(false);
-  const bgGradientOwner = { background: gradient(NFT.ownerData.name) };
-  const bgGradientCreator = { background: gradient(NFT.creatorData.name) };
-  const fiatPrice = (Number(NFT.price) / 1000000000000000000) * capsValue;
   const userCanBuyCaps = user
     ? user.capsAmount &&
       NFT.price &&

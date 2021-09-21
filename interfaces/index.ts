@@ -24,7 +24,7 @@ export type NftType = {
   owner: string;
   creator: string;
   listed: number;
-  timeStampList?: string;
+  timestampList?: string;
   uri?: string;
   price: string;
   priceTiime: string;

@@ -28,6 +28,8 @@ const Explore: React.FC<ExploreProps> = ({
     ));
   }
 
+  console.log(NFTS)
+
   return (
     <>
       <div id="explore" className={style.Wrapper}>

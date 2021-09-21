@@ -61,7 +61,7 @@ const Create: React.FC<CreateProps> = ({
     return (value && value > 0 && value <= limit)
   }
 
-  const isDataValid = name && description && validateQuantity(quantity, 10) && select !== 'Select NFT Option'
+  const isDataValid = name && description && validateQuantity(quantity, 10) && secretNFT && (select !== 'Secret' || NFT) && select !== 'Select NFT Option'
 
   function onChange(
     e:
@@ -195,7 +195,7 @@ const Create: React.FC<CreateProps> = ({
                     }
                   >
                     <div className={NFT ? style.Hidden : style.NFTSNull}>
-                      <div className={style.Label}>Coming soon</div>
+                      {/*<div className={style.Label}>Coming soon</div>*/}
                       <Upload className={style.UploadSVG2} />
                       <div className={style.NFTSTips}>
                         Click to select your file that will hide your NFT for
@@ -335,7 +335,6 @@ const Create: React.FC<CreateProps> = ({
           )}
         </div>
       </div>
-
       <Footer setNotAvailable={setNotAvailable} />
       <FloatingHeader user={user} setModalExpand={setModalExpand} />
     </div>

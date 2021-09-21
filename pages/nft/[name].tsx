@@ -16,6 +16,7 @@ import { NftType, UserType } from 'interfaces';
 import { NextPageContext } from 'next';
 
 import { onModelClose, onModelOpen } from '../../utils/model-helpers';
+import { decryptCookie } from 'utils/cookie';
 
 export interface NFTPageProps {
   user: UserType;
@@ -56,7 +57,7 @@ const NftPage: React.FC<NFTPageProps> = ({ user, NFT, capsValue }) => {
   return (
     <>
       <Head>
-        <title>{NFT.name} - SecretNFT</title>
+        <title>{NFT.name} - {process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : "SecretNFT"}</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta name="description" content={NFT.description} />
         <meta name="og:image" content={NFT.media.url} />
@@ -93,7 +94,7 @@ const NftPage: React.FC<NFTPageProps> = ({ user, NFT, capsValue }) => {
 };
 
 export async function getServerSideProps(ctx: NextPageContext) {
-  const token = cookies(ctx).token;
+  const token = cookies(ctx).token && decryptCookie(cookies(ctx).token as string);
   let user: UserType | null = null, NFT: NftType | null = null, capsValue: number = 0
   const promises = [];
   if (token) {

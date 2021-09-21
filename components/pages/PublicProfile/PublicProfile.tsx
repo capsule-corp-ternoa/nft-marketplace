@@ -10,11 +10,14 @@ import { NftType, UserType } from 'interfaces';
 export interface PublicProfileProps {
   user: UserType;
   setUser?: (u: UserType) => void;
-  setNotAvailable: (b: boolean) => void;
-  setModalExpand: (b: boolean) => void;
-  NFTS: NftType[];
   profile: UserType;
   setProfile: (u: UserType) => void;
+  NFTS: NftType[];
+  setNotAvailable: (b: boolean) => void;
+  setModalExpand: (b: boolean) => void;
+  loadMore: () => void;
+  hasNextPage: boolean;
+  loading: boolean;
 }
 
 const PublicProfile: React.FC<PublicProfileProps> = ({
@@ -25,16 +28,14 @@ const PublicProfile: React.FC<PublicProfileProps> = ({
   NFTS,
   setModalExpand,
   setNotAvailable,
+  loadMore,
+  hasNextPage,
+  loading,
 }) => {
   function returnNFTs() {
     return NFTS.map((item: NftType) => (
       <div key={item.id} className={style.NFTShell}>
-        <NFTCard 
-          mode="profile" 
-          item={item}
-          user={user}
-          setUser={setUser}
-        />
+        <NFTCard mode="profile" item={item} user={user} setUser={setUser} />
       </div>
     ));
   }
@@ -49,7 +50,18 @@ const PublicProfile: React.FC<PublicProfileProps> = ({
         />
       </div>
       <Infos profile={profile} setProfile={setProfile} user={user} />
-      <div className={style.NFTWrapper}>{returnNFTs()}</div>
+        <div className={style.NFTWrapper}>{returnNFTs()}</div>
+        {hasNextPage && (
+          <>
+            {!loading ? (
+              <div onClick={() => loadMore()} className={style.Button}>
+                Load more
+              </div>
+            ) : (
+              <div className={style.disabledButton}>Loading...</div>
+            )}
+          </>
+        )}
       <FloatingHeader user={user} setModalExpand={setModalExpand} />
       <Footer setNotAvailable={setNotAvailable} />
     </div>

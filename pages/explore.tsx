@@ -12,6 +12,7 @@ import { getUser } from 'actions/user';
 import { getCategoryNFTs } from 'actions/nft';
 import { NftType, UserType } from 'interfaces';
 import { NextPageContext } from 'next';
+import { decryptCookie } from 'utils/cookie';
 
 export interface ExplorePage {
   user: UserType;
@@ -43,8 +44,8 @@ const ExplorePage: React.FC<ExplorePage> = ({
           (currentPage + 1).toString()
         );
         setCurrentPage(currentPage + 1);
-        setDataNftsHasNextPage(result.pageInfo?.hasNextPage || false);
-        setDataNfts([...dataNfts, ...result.nodes]);
+        setDataNftsHasNextPage(result.hasNextPage || false);
+        setDataNfts([...dataNfts, ...result.data]);
         setIsLoading(false)
       }
     } catch (err) {
@@ -55,7 +56,7 @@ const ExplorePage: React.FC<ExplorePage> = ({
   return (
     <>
       <Head>
-        <title>SecretNFT - Explore</title>
+        <title>{process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : "SecretNFT"} - Explore</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta name="description" content="SecretNFT Marketplace, by Ternoa." />
         <meta name="og:image" content="ternoa-social-banner.jpg" />
@@ -80,7 +81,7 @@ const ExplorePage: React.FC<ExplorePage> = ({
 };
 
 export async function getServerSideProps(ctx: NextPageContext) {
-  const token = cookies(ctx).token;
+  const token = cookies(ctx).token && decryptCookie(cookies(ctx).token as string);
   let user: UserType | null = null,
     data: NftType[] = [],
     dataHasNextPage: boolean = false;
@@ -101,8 +102,8 @@ export async function getServerSideProps(ctx: NextPageContext) {
     new Promise<void>((success) => {
       getCategoryNFTs()
         .then((result) => {
-          data = result.nodes;
-          dataHasNextPage = result.pageInfo?.hasNextPage || false;
+          data = result.data;
+          dataHasNextPage = result.hasNextPage || false;
           success();
         })
         .catch(success);

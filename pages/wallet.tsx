@@ -10,6 +10,7 @@ import cookies from 'next-cookies';
 import { getUser } from 'actions/user';
 import { UserType } from 'interfaces';
 import { NextPageContext } from 'next';
+import { decryptCookie } from 'utils/cookie';
 
 export interface WalletPageProps {
   user: UserType;
@@ -23,7 +24,7 @@ const WalletPage: React.FC<WalletPageProps> = ({ user }) => {
   return (
     <>
       <Head>
-        <title>SecretNFT - Wallet</title>
+        <title>{process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : "SecretNFT"} - Wallet</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta name="description" content="Ternoa Wallet" />
         <meta name="og:image" content="ternoa-social-banner.jpg" />
@@ -43,7 +44,7 @@ const WalletPage: React.FC<WalletPageProps> = ({ user }) => {
 
 export async function getServerSideProps(ctx: NextPageContext) {
   let user = null;
-  const token = cookies(ctx).token;
+  const token = cookies(ctx).token && decryptCookie(cookies(ctx).token as string);
   if (token) user = await getUser(token).catch(() => null);
   if (!user) {
     return {

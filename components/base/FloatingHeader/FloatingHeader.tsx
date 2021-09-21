@@ -47,6 +47,9 @@ const FloatingHeader: React.FC<FloatingHeaderProps> = ({
             />
           </div>
           <div className={style.Links}>
+            <Link href="/create">
+              <a className={style.Link}>Create</a>
+            </Link>
             <Link href="/explore">
               <a className={style.Link}>Explore</a>
             </Link>
@@ -176,7 +179,7 @@ const FloatingHeader: React.FC<FloatingHeaderProps> = ({
               </a>
             </Link>
           </div>
-          <Link href="/5FnhujHhfXdD9Ahkn2Aw7T71GnoRr4yU42Ne5Sxc2RmmhAnm">
+          <Link href={`/${user.walletId}`}>
             <a className={style.CapsSection}>
               <div className={style.SectionTitle}>My artist profile</div>
             </a>

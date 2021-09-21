@@ -199,20 +199,24 @@ const Details: React.FC<DetailsProps> = ({ NFT }) => {
                   {NFT.creatorData.name}
                 </div>
               </div>
-              <div className={style.infoDatas}>
-                <small className={style.infoDatasTitle}>Contract Address</small>
-                <div className={style.infoDatasContent}>
-                  0x1dDB2C0897daF18632662E71fdD2dbDC0eB3a9Ec
+              <div className={style.infoDatasWrapper}>
+                <div className={style.infoDatas}>
+                  <small className={style.infoDatasTitle}>
+                    Contract Address
+                  </small>
+                  <div className={style.infoDatasContent}>
+                    0x1dDB2C0897daF18632662E71fdD2dbDC0eB3a9Ec
+                  </div>
                 </div>
-              </div>
-              <div className={style.infoDatas}>
-                <small className={style.infoDatasTitle}>Token ID</small>
-                <div className={style.infoDatasContent}>100300039566</div>
-              </div>
-              <div className={style.infoDatas}>
-                <small className={style.infoDatasTitle}>Size</small>
-                <div className={style.infoDatasContent}>
-                  1024 x 1024 px.IMAGE(427KB)
+                <div className={style.infoDatas}>
+                  <small className={style.infoDatasTitle}>Token ID</small>
+                  <div className={style.infoDatasContent}>100300039566</div>
+                </div>
+                <div className={style.infoDatas}>
+                  <small className={style.infoDatasTitle}>Size</small>
+                  <div className={style.infoDatasContent}>
+                    1024 x 1024 px.IMAGE(427KB)
+                  </div>
                 </div>
               </div>
             </div>
@@ -273,44 +277,6 @@ const Details: React.FC<DetailsProps> = ({ NFT }) => {
                       <div className={style.ownerDatas}>
                         <div className={style.ownerDatasName}>
                           {middleEllipsis(owner.owner, 15)}
-                        </div>
-                        <div className={style.ownerDatasSales}>
-                          <span style={{ color: 'red' }}>
-                            {' '}
-                            {NFT.totalListedNft}/{NFT.totalNft}{' '}
-                          </span>
-                          on sale for {computeCaps(Number(owner.price))} CAPS
-                          each
-                        </div>
-                      </div>
-                    </a>
-                  </Link>
-                  <div>
-                    <div className={style.buyButton}>Buy</div>
-                  </div>
-                </div>
-              ))}
-              {randomOwners.map((owner, index) => (
-                <div className={style.owners} key={index}>
-                  <Link href={`/${NFT.ownerData.walletId}`}>
-                    <a className={style.owner}>
-                      <div className={style.ownerBadge}>Owner</div>
-                      <div className={style.ownerProfile}>
-                        {/* {owner?.picture ? (
-                          <img
-                            src={NFT.ownerData.picture}
-                            className={style.ownerProfileIMG}
-                          />
-                        ) : ( */}
-                        <div
-                          className={style.ownerProfileIMG}
-                          style={bgGradientOwner}
-                        />
-                        {/* )} */}
-                      </div>
-                      <div className={style.ownerDatas}>
-                        <div className={style.ownerDatasName}>
-                          {owner.owner}
                         </div>
                         <div className={style.ownerDatasSales}>
                           <span style={{ color: 'red' }}>

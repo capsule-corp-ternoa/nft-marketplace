@@ -14,7 +14,7 @@ import { UserType } from 'interfaces';
 import { NextPageContext } from 'next';
 import { imgToBlur, imgToWatermark } from 'utils/imageProcessing/image';
 import { decryptCookie } from 'utils/cookie';
-import {getFilehash, generateSeriesId, cryptAndUploadNFT} from '../utils/nftEncryption'
+import {getFilehash, generateSeriesId, cryptAndUploadNFT, uploadIPFS} from '../utils/nftEncryption'
 
 export interface CreatePageProps {
   user: UserType;
@@ -125,16 +125,7 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
   async function uploadNFT(publicPGPs: string[]) {
     try {
       if (!secretNFT) throw new Error();
-      const data = new FormData();
-      NFT ? data.append('file', NFT) : data.append('file', secretNFT);
-      const resUpload = await fetch(
-        `${process.env.NEXT_PUBLIC_SDK_URL}/api/uploadIM`,
-        {
-          method: 'POST',
-          body: data,
-        }
-      );
-      const { url: previewLink, mediaType } = await resUpload.json();
+      const { url: previewLink, mediaType } = await uploadIPFS(NFT ? NFT : secretNFT);
       const fileHash = await getFilehash(secretNFT)
       const seriesId = generateSeriesId(fileHash)
       const cryptedMediaType = mime.lookup(secretNFT.name)
@@ -159,19 +150,11 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
             cryptedMediaType: cryptedMediaType,
           },
         }
-        const finalData = new FormData()
-        const finalFile = new Blob([JSON.stringify(data)], {type:'application/json'})
-        finalData.append('file', finalFile)
-        return fetch(
-          `${process.env.NEXT_PUBLIC_SDK_URL}/api/uploadIM`,
-          {
-            method: 'POST',
-            body: finalData
-          }
-        );
+        const finalBlob = new Blob([JSON.stringify(data)], {type:'application/json'})
+        const finalFile = new File([finalBlob], "final json")
+        return uploadIPFS(finalFile);
       });
-      const JSONPromises = await Promise.all(results);
-      const JSONURLS = await Promise.all(JSONPromises.map((r) => r.json()));
+      const JSONURLS = (await Promise.all(results)).map(x => x.url);
       return {nftUrls: JSONURLS as string[], seriesId:(seriesId ? seriesId : 0)};
     } catch (err) {
       setError('Please try again.');

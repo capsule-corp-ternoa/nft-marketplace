@@ -1,7 +1,11 @@
 import crypto from 'crypto'
 import gen from 'random-seed'
 import * as openpgp from 'openpgp'
+import mime from 'mime-types'
+import TernoaIpfsApi from './ipfs.helper'
+import { ipfsGatewayUri } from './ipfs.const';
 
+const ipfsApi = new TernoaIpfsApi();
 
 export const generateSeriesId = (fileHash: string) => {
   const serieGen = gen.create(fileHash)
@@ -37,33 +41,38 @@ export const cryptAndUploadNFT = async (secretNFT: File, secretNFTType: string, 
   return new Promise(async (resolve, reject) => {
     try {
       //NFT Data
-      const nftData = new FormData()
       const encryptedSecretNft = await cryptFilePgp(secretNFT, publicPGP)
-      const nftFile = new Blob([encryptedSecretNft], { type: secretNFTType });
-      nftData.append('file', nftFile)
+      const nftBlob = new Blob([encryptedSecretNft], { type: secretNFTType });
+      const nftFile = new File([nftBlob], "ecrypted nft");
       //PGP Data
-      const pgpData = new FormData()
-      const pgpFile = new Blob([publicPGP], { type: 'text/plain' });
-      pgpData.append('file', pgpFile)
+      const pgpBlob = new Blob([publicPGP], { type: 'text/plain' });
+      const pgpFile = new File([pgpBlob], "pgp public key");
       const [encryptedUploadReponse, pgpUploadRemonse] = await Promise.all([
-        fetch(
-          `${process.env.NEXT_PUBLIC_SDK_URL}/api/uploadIM`,
-          {
-            method: 'POST',
-            body: nftData,
-          }
-        ),
-        fetch(
-          `${process.env.NEXT_PUBLIC_SDK_URL}/api/uploadIM`,
-          {
-            method: 'POST',
-            body: pgpData,
-          }
-        ),
+        uploadIPFS(nftFile),
+        uploadIPFS(pgpFile)
       ])
       resolve([encryptedUploadReponse, pgpUploadRemonse])
     } catch (err) {
       reject(err)
     }
   })
+}
+
+export const uploadIPFS = async(file: File) => {
+  try{
+    const mediaType = mime.lookup(file.name);
+    const result = await ipfsApi.addFile(file);
+    console.log('uploadIPFS success', result, file.name)
+    if (result && result.Hash) {
+      return {
+        url: `${ipfsGatewayUri}/${result.Hash}`,
+        mediaType
+      };
+    } else {
+      throw new Error('Hash not retrieved from IPFS');
+    }
+
+  }catch(err){
+    throw err
+  }
 }

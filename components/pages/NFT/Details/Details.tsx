@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { FixedSizeList as List } from 'react-window';
+import AutoSizer from 'react-virtualized-auto-sizer';
 import { UserType, NftType } from 'interfaces';
 import gradient from 'random-gradient';
 import style from './Details.module.scss';
@@ -13,24 +15,23 @@ export interface DetailsProps {
 }
 
 const Details: React.FC<DetailsProps> = ({ NFT }) => {
+  console.log(NFT);
   const [info, setInfo] = useState(true);
   const [owners, setOwners] = useState(false);
   const [history, setHistory] = useState(false);
   const [bid, setBid] = useState(false);
+  // const [serieData, setSerieData] = useState([NFT.serieData])
   const bgGradientOwner = { background: gradient(NFT.ownerData.name) };
   //const bgGradientCreator = { background: gradient(NFT.creatorData.name) };
   const formatedDate = NFT.timestampList?.toLocaleString();
   const handleInfo = () => {
-    setInfo(true);
-    setOwners(false), setHistory(false), setBid(false);
+    setInfo(true), setOwners(false), setHistory(false), setBid(false);
   };
   const handleOwners = () => {
-    setInfo(false);
-    setOwners(true), setHistory(false), setBid(false);
+    setInfo(false), setOwners(true), setHistory(false), setBid(false);
   };
   const handHistory = () => {
-    setInfo(false);
-    setOwners(false), setHistory(true), setBid(false);
+    setInfo(false), setOwners(false), setHistory(true), setBid(false);
   };
   // const handleBid = () => {
   //   setInfo(false)
@@ -39,114 +40,34 @@ const Details: React.FC<DetailsProps> = ({ NFT }) => {
   //   setBid(true)
   // }
 
-  console.log(NFT);
-  const randomOwners = [
-    {
-      owner: 'Mickael Canu',
-      price: 1000,
-    },
-    {
-      owner: 'Clément Tequi',
-      price: 1000,
-    },
-    {
-      owner: 'Eliott Teissonniere',
-      price: 1000,
-    },
-    {
-      owner: 'Martin Oliviero',
-      price: 1000,
-    },
-    {
-      owner: 'Nicolas Duchemin',
-      price: 1000,
-    },
-    {
-      owner: 'Sachié Takahashi',
-      price: 1000,
-    },
-    {
-      owner: 'Yannick Bensaq',
-      price: 1000,
-    },
-    {
-      owner: 'Jérémy Trouche',
-      price: 1000,
-    },
-    {
-      owner: 'Johan Martinez',
-      price: 1000,
-    },
-    {
-      owner: 'Fabien Canno',
-      price: 1000,
-    },
-    {
-      owner: 'Guillaume Gabriel',
-      price: 1000,
-    },
-    {
-      owner: 'Margaux Stancil',
-      price: 1000,
-    },
-    {
-      owner: 'Mohsan Riaz',
-      price: 1000,
-    },
-
-    {
-      owner: 'Clément Levet',
-      price: 1000,
-    },
-    {
-      owner: 'Christelle Coutant',
-      price: 1000,
-    },
-    {
-      owner: 'Ian Alavarado',
-      price: 1000,
-    },
-    {
-      owner: 'Romain Millon',
-      price: 1000,
-    },
-    {
-      owner: 'Valentin Peersman',
-      price: 1000,
-    },
-    {
-      owner: 'Xavier Ramires',
-      price: 1000,
-    },
-    {
-      owner: 'Ali Osman Adsız',
-      price: 1000,
-    },
-    {
-      owner: 'Owen Simonin​ (Hasheur)',
-      price: 3000,
-    },
-    {
-      owner: 'Kyle Chasse',
-      price: 3000,
-    },
-    {
-      owner: 'Dr Deeban Ratneswaran',
-      price: 3000,
-    },
-    {
-      owner: 'Dominique Pon',
-      price: 3000,
-    },
-    {
-      owner: 'Valeria Kholostenko',
-      price: 3000,
-    },
-    {
-      owner: 'Sam',
-      price: 3000,
-    },
-  ];
+  const ownerDatas = ({ index }) => (
+    <div className={style.owners} key={NFT.serieData[index]?.id}>
+      <Link href={`/${NFT.ownerData.walletId}`}>
+        <a className={style.owner}>
+          <div className={style.ownerBadge}>Owner</div>
+          <div className={style.ownerProfile}>
+            <div className={style.ownerProfileIMG} style={bgGradientOwner} />
+          </div>
+          <div className={style.ownerDatas}>
+            <div className={style.ownerDatasName}>
+              {middleEllipsis(NFT.serieData[index]?.owner, 15)}
+            </div>
+            <div className={style.ownerDatasSales}>
+              <span style={{ color: 'red' }}>
+                {' '}
+                {NFT.totalListedNft}/{NFT.totalNft}{' '}
+              </span>
+              on sale for {computeCaps(Number(NFT.serieData[index]?.price))}{' '}
+              CAPS each
+            </div>
+          </div>
+        </a>
+      </Link>
+      <div>
+        <div className={style.buyButton}>Buy</div>
+      </div>
+    </div>
+  );
 
   return (
     <div className={style.detailsMain}>
@@ -184,19 +105,21 @@ const Details: React.FC<DetailsProps> = ({ NFT }) => {
         <div className={style.detailsContent}>
           {info && (
             <div className={style.detailsInfos}>
-              <div className={style.creatorBadge}>Creator</div>
-              <div className={style.TopInfosCreator}>
-                <div className={style.TopInfosCreatorPicture}>
-                  <img
-                    src={NFT.creatorData.picture}
-                    className={style.TopInfosCreatorPictureIMG}
-                  />
-                  {NFT.creatorData.verified && (
-                    <Badge className={style.TopInfosCreatorCertifiedBadge} />
-                  )}
-                </div>
-                <div className={style.TopInfosCreatorName}>
-                  {NFT.creatorData.name}
+              <div className={style.creatorWrapper}>
+                <div className={style.creatorBadge}>Creator</div>
+                <div className={style.TopInfosCreator}>
+                  <div className={style.TopInfosCreatorPicture}>
+                    <img
+                      src={NFT.creatorData.picture}
+                      className={style.TopInfosCreatorPictureIMG}
+                    />
+                    {NFT.creatorData.verified && (
+                      <Badge className={style.TopInfosCreatorCertifiedBadge} />
+                    )}
+                  </div>
+                  <div className={style.TopInfosCreatorName}>
+                    {NFT.creatorData.name}
+                  </div>
                 </div>
               </div>
               <div className={style.infoDatasWrapper}>
@@ -222,6 +145,25 @@ const Details: React.FC<DetailsProps> = ({ NFT }) => {
             </div>
           )}
           {owners && (
+            <div
+              className={style.ownersContainers}
+            >
+              <AutoSizer>
+                {({ width, height }) => (
+                  <List
+                    width={width}
+                    height={height}
+                    itemCount={NFT.serieData?.length}
+                    itemSize={75}
+                  >
+                    {ownerDatas}
+                  </List>
+                )}
+              </AutoSizer>
+            </div>
+          )}
+
+          {/* {owners && (
             <div className={style.ownersContainers}>
               <div className={style.owners}>
                 <Link href={`/${NFT.ownerData.walletId}`}>
@@ -246,7 +188,6 @@ const Details: React.FC<DetailsProps> = ({ NFT }) => {
                       </div>
                       <div className={style.ownerDatasSales}>
                         {NFT.totalListedNft}/{NFT.totalNft} on sale for{' '}
-                        {/* Achtung ce n'est pas le bon montant !!*/}
                         {computeCaps(Number(NFT.price))} CAPS each
                       </div>
                     </div>
@@ -262,17 +203,10 @@ const Details: React.FC<DetailsProps> = ({ NFT }) => {
                     <a className={style.owner}>
                       <div className={style.ownerBadge}>Owner</div>
                       <div className={style.ownerProfile}>
-                        {/* {owner?.picture ? (
-                          <img
-                            src={NFT.ownerData.picture}
-                            className={style.ownerProfileIMG}
-                          />
-                        ) : ( */}
                         <div
                           className={style.ownerProfileIMG}
                           style={bgGradientOwner}
                         />
-                        {/* )} */}
                       </div>
                       <div className={style.ownerDatas}>
                         <div className={style.ownerDatasName}>
@@ -295,7 +229,7 @@ const Details: React.FC<DetailsProps> = ({ NFT }) => {
                 </div>
               ))}
             </div>
-          )}
+          )} */}
           {history && (
             <div className={style.owners}>
               <Link href={`/${NFT.ownerData.walletId}`}>
@@ -323,30 +257,6 @@ const Details: React.FC<DetailsProps> = ({ NFT }) => {
                   </div>
                 </a>
               </Link>
-
-              {/* <Link href={`/${NFT.creatorData.walletId}`}>
-                <a className={style.HistoryItem}>
-                  <div className={style.ownerProfileIMG}>
-                    {NFT.creatorData.picture ? (
-                      <img
-                        src={NFT.creatorData.picture}
-                        className={style.HistoryIMG}
-                      />
-                    ) : (
-                      <div
-                        className={style.HistoryIMG}
-                        style={bgGradientCreator}
-                      />
-                    )}
-                  </div>
-                  <div className={style.HistoryUser}>
-                    <div className={style.HistoryRole}>Creator</div>
-                    <div className={style.HistoryName}>
-                      {NFT.creatorData.name}
-                    </div>
-                  </div>
-                </a>
-              </Link> */}
             </div>
           )}
           {/* {bid && 'bid'} */}

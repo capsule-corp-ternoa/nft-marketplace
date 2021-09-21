@@ -33,6 +33,8 @@
     "react-responsive": "^8.2.0",
     "react-share": "^4.4.0",
     "react-switch": "^6.0.0",
+    "react-virtualized-auto-sizer": "^1.0.6",
+    "react-window": "^1.8.6",
     "sass": "^1.39.0",
     "sass-loader": "^12.1.0",
     "skynet-js": "^3.0.2",
@@ -52,6 +54,8 @@
     "@types/react": "^17.0.2",
     "@types/react-dom": "^17.0.3",
     "@types/react-responsive": "^8.0.2",
+    "@types/react-virtualized-auto-sizer": "^1.0.1",
+    "@types/react-window": "^1.8.5",
     "@types/uuid": "^8.3.0",
     "typescript": "4.0",
     "webpack-node-externals": "^3.0.0"

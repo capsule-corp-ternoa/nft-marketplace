@@ -13,6 +13,8 @@ import { computeCaps, computeTiime } from 'utils/strings';
 import { UserType, NftType } from 'interfaces';
 import { likeNFT, unlikeNFT } from 'actions/user';
 import ModalShare from 'components/base/ModalShare';
+import NoNFTImage from '../../assets/NoNFTImage';
+import Badge from 'components/assets/badge';
 import Details from './Details';
 
 export interface NFTPageProps {
@@ -115,7 +117,20 @@ const NFTPage: React.FC<NFTPageProps> = ({
           </div>
           <div className={style.Text}>
             <div className={style.Top}>
-              <h1 className={style.Title}>{NFT.name}</h1>
+              <div className={style.TopInfosCreator}>
+                <div className={style.TopInfosCreatorPicture}>
+                  <img
+                    src={NFT.creatorData.picture}
+                    className={style.TopInfosCreatorPictureIMG}
+                  />
+                  {NFT.creatorData.verified && (
+                    <Badge className={style.TopInfosCreatorCertifiedBadge} />
+                  )}
+                </div>
+                <div className={style.TopInfosCreatorName}>
+                  {NFT.creatorData.name}
+                </div>
+              </div>
               <div className={style.TopInfos}>
                 <div className={style.Views}>
                   <Eye className={style.EyeSVG} />
@@ -145,8 +160,43 @@ const NFTPage: React.FC<NFTPageProps> = ({
                 </div>
               </div>
             </div>
+            <h1 className={style.Title}>{NFT.name}</h1>
             <p className={style.Description}>{NFT.description}</p>
             <div className={style.Buy}>
+              <div
+                onClick={() => NFT.listed && userCanBuy && setExp(2)}
+                className={
+                  NFT.listed && userCanBuy
+                    ? style.Button
+                    : `${style.Button} ${style.Disabled}`
+                }
+              >
+                Buy for{' '}
+                {NFT.listed === 1 && (
+                  <>
+                    {NFT.price &&
+                      Number(NFT.price) > 0 &&
+                      `${computeCaps(Number(NFT.price))} CAPS`}
+                    {NFT.price &&
+                      Number(NFT.price) > 0 &&
+                      NFT.priceTiime &&
+                      Number(NFT.priceTiime) &&
+                      ` / `}
+                    {NFT.priceTiime &&
+                      Number(NFT.priceTiime) > 0 &&
+                      `${computeTiime(Number(NFT.priceTiime))} TIIME`}
+                  </>
+                )}
+              </div>
+            </div>
+            <div className={style.Available}>
+              <div className={style.AvailbleText}>
+                <NoNFTImage className={style.AvailbleCards} />
+                14 of 15 Available
+              </div>
+              <div className={style.AvailableBackLine} />
+            </div>
+            {/* <div className={style.Buy}>
               <div className={style.BuyLeft}>
                 <div className={style.QuantityLabel}>
                   {`Available : `}
@@ -189,13 +239,14 @@ const NFTPage: React.FC<NFTPageProps> = ({
                   )}
                 </div>
               )}
-            </div>
+            </div> */}
             {/* <div className={style.HistoryTop}>
             <div className={style.HistoryTitle}>History</div>
             <div className={style.HistoryLine} />
-          </div> */}
+          </div>
             <div className={style.History}>
-              {/* <Link href={`/${NFT.ownerData.walletId}`}>
+              
+               <Link href={`/${NFT.ownerData.walletId}`}>
               <a className={style.HistoryItem}>
                 <Check className={style.Check} />
                 <div className={style.HistoryAvatar}>
@@ -238,8 +289,8 @@ const NFTPage: React.FC<NFTPageProps> = ({
                   </div>
                 </div>
               </a>
-            </Link> */}
-            </div>
+            </Link> 
+            </div>*/}
           </div>
         </div>
         <div>

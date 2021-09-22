@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 // import Link from 'next/link';
 import style from './NFT.module.scss';
 import Footer from 'components/base/Footer';
@@ -15,9 +15,11 @@ import ModalShare from 'components/base/ModalShare';
 import NoNFTImage from '../../assets/NoNFTImage';
 import Badge from 'components/assets/badge';
 import Details from './Details';
+import { MARKETPLACE_ID } from 'utils/constant';
 
 export interface NFTPageProps {
   NFT: NftType;
+  setNftToBuy: (NFT: NftType) => void;
   user: UserType;
   setUser: (u: UserType) => void;
   type: string | null;
@@ -27,12 +29,10 @@ export interface NFTPageProps {
   capsValue: number;
 }
 
-
-
-
 const NFTPage: React.FC<NFTPageProps> = ({
   setExp,
   NFT,
+  setNftToBuy,
   setModalExpand,
   setNotAvailable,
   user,
@@ -41,14 +41,6 @@ const NFTPage: React.FC<NFTPageProps> = ({
 }) => {
   const [likeLoading, setLikeLoading] = useState(false);
   const [modalShareOpen, setModalShareOpen] = useState(false);
-  const userCanBuyCaps = user
-    ? user.capsAmount &&
-      NFT.price &&
-      NFT.price !== '' &&
-      Number(user.capsAmount) >= Number(NFT.price)
-    : true;
-  //const userCanBuyTiime = user ? user.tiimeAmount && NFT.priceTiime && NFT.priceTiime !== "" && (Number(user.tiimeAmount) >= Number(NFT.priceTiime)) : true
-  const userCanBuy = userCanBuyCaps; // || userCanBuyTiime
   const shareSubject = 'Check out this Secret NFT';
   const shareText = `Check out ${NFT.name ? NFT.name : "this nft"} on ${process.env.NEXT_PUBLIC_APP_LINK ? process.env.NEXT_PUBLIC_APP_LINK : "secret-nft.com"}`
   const shareUrl = (typeof window!=="undefined" && window.location?.href) || `https://www.${process.env.NEXT_PUBLIC_APP_LINK ? process.env.NEXT_PUBLIC_APP_LINK : "secret-nft.com"}/nft/${NFT.id}`
@@ -57,6 +49,20 @@ const NFTPage: React.FC<NFTPageProps> = ({
     : NFT.serieId === '0'
     ? user.likedNFTs?.map((x) => x.nftId).includes(NFT.id)
     : user.likedNFTs?.map((x) => x.serieId).includes(NFT.serieId);
+  const numberListedOnThisMarketplace = !NFT.serieData ? 0 : NFT.serieData.reduce((prev, current) => prev + (current?.listed===1 && current.marketplaceId===MARKETPLACE_ID ? 1 : 0), 0)
+  const smallestPriceRow = !NFT.serieData ? NFT : NFT.serieData.sort((a,b)=> b.listed - a.listed || Number(a.price) - Number(b.price) || Number(a.priceTiime) - Number(b.priceTiime))[0]
+  const userCanBuyCaps = user
+    ? user.capsAmount &&
+      smallestPriceRow.price &&
+      smallestPriceRow.price !== '' &&
+      Number(user.capsAmount) >= Number(smallestPriceRow.price)
+    : true;
+  //const userCanBuyTiime = user ? user.tiimeAmount && smallestPriceRow.priceTiime && smallestPriceRow.priceTiime !== "" && (Number(smallestPriceRow.tiimeAmount) >= Number(smallestPriceRow.priceTiime)) : true
+  const userCanBuy = userCanBuyCaps && user.walletId !== smallestPriceRow.owner; // || userCanBuyTiime
+
+  useEffect(()=>{
+    setNftToBuy(smallestPriceRow)
+  }, [smallestPriceRow])
 
   const handleLikeDislike = async () => {
     try {
@@ -159,27 +165,27 @@ const NFTPage: React.FC<NFTPageProps> = ({
             <p className={style.Description}>{NFT.description}</p>
             <div className={style.Buy}>
               <div
-                onClick={() => NFT.listed && userCanBuy && setExp(2)}
+                onClick={() => smallestPriceRow.listed && userCanBuy && setNftToBuy(smallestPriceRow) && setExp(2)}
                 className={
-                  NFT.listed && userCanBuy
+                  smallestPriceRow.listed && userCanBuy
                     ? style.Button
                     : `${style.Button} ${style.Disabled}`
                 }
               >
                 Buy for{' '}
-                {NFT.listed === 1 && (
+                {smallestPriceRow && (
                   <>
-                    {NFT.price &&
-                      Number(NFT.price) > 0 &&
-                      `${computeCaps(Number(NFT.price))} CAPS`}
-                    {NFT.price &&
-                      Number(NFT.price) > 0 &&
-                      NFT.priceTiime &&
-                      Number(NFT.priceTiime) &&
+                    {smallestPriceRow.price &&
+                      Number(smallestPriceRow.price) > 0 &&
+                      `${computeCaps(Number(smallestPriceRow.price))} CAPS`}
+                    {smallestPriceRow.price &&
+                      Number(smallestPriceRow.price) > 0 &&
+                      smallestPriceRow.priceTiime &&
+                      Number(smallestPriceRow.priceTiime) &&
                       ` / `}
-                    {NFT.priceTiime &&
-                      Number(NFT.priceTiime) > 0 &&
-                      `${computeTiime(Number(NFT.priceTiime))} TIIME`}
+                    {smallestPriceRow.priceTiime &&
+                      Number(smallestPriceRow.priceTiime) > 0 &&
+                      `${computeTiime(Number(smallestPriceRow.priceTiime))} TIIME`}
                   </>
                 )}
               </div>
@@ -187,7 +193,7 @@ const NFTPage: React.FC<NFTPageProps> = ({
             <div className={style.Available}>
               <div className={style.AvailbleText}>
                 <NoNFTImage className={style.AvailbleCards} />
-                14 of 15 Available
+                {`${numberListedOnThisMarketplace} of ${NFT.serieData ? NFT.serieData.length : 0}`} Available
               </div>
               <div className={style.AvailableBackLine} />
             </div>
@@ -289,7 +295,7 @@ const NFTPage: React.FC<NFTPageProps> = ({
           </div>
         </div>
         <div>
-          <Details NFT={NFT} user={user} />
+          <Details NFT={NFT} user={user} setNftToBuy={setNftToBuy} setExp={setExp}/>
         </div>
       </div>
       <Footer setNotAvailable={setNotAvailable} />

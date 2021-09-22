@@ -27,9 +27,6 @@ const Explore: React.FC<ExploreProps> = ({
       </div>
     ));
   }
-
-  console.log(NFTS)
-
   return (
     <>
       <div id="explore" className={style.Wrapper}>

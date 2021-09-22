@@ -113,7 +113,7 @@
   font-style: normal;
 }
 .infoDatasContent {
-  overflow-x: scroll;
+  word-break: break-word;
   font-family: 'Airbnb Cereal App Bold';
   font-style: normal;
   font-weight: bold;
@@ -123,7 +123,6 @@
 .ownersContainers {
   height: 29vh;
   width:auto;
-  overflow-y: scroll;
 }
 .owners {
   display: flex;
@@ -157,6 +156,9 @@
   height: 55px;
   margin: 0 10px;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .ownerProfileIMG {
   width: 100%;
@@ -201,6 +203,12 @@
     background-color: black;
   }
 }
+
+.disabled {
+  pointer-events: none;
+  background-color: lighten($primary, 35%);
+}
+
 .historyEvent {
   font-family: 'Airbnb Cereal App Bold';
   font-size: 18px;
@@ -231,7 +239,6 @@
     justify-content: start;
     flex-wrap: wrap;
     width: 70%;
-    // text-align:center;
   }
 }
 @media (max-width: 1000px) {
@@ -294,7 +301,6 @@
   }
   .detailsMenu {
     padding: 15px 24px;
-    overflow-x: scroll;
   }
   .detailsContent {
     padding: 15px;
@@ -310,6 +316,7 @@
   .detailsMenu {
     justify-content: start;
     padding: 15px 0;
+    overflow-x: scroll;
   }
   .detailsMenuItem {
     padding: 8px 18px;

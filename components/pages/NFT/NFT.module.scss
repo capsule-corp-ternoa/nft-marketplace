@@ -7,6 +7,17 @@
   flex-direction: column;
 }
 
+.MainWrapper {
+  display: flex;
+  flex-direction: column;
+  width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 60px 0;
+}
+
 .Wrapper {
   display: flex;
   width: 1200px;
@@ -14,7 +25,7 @@
   margin-right: auto;
   justify-content: center;
   box-sizing: border-box;
-  padding: 120px 24px;
+  padding: 60px 0;
 }
 
 .NFT {
@@ -71,11 +82,42 @@
   justify-content: space-between;
   width: 100%;
 }
+.TopInfosCreator {
+  display: flex;
+  align-items: center;
+}
+.TopInfosCreatorPicture {
+  width: 45px;
+  height: 45px;
+  position: relative;
+}
+.TopInfosCreatorPictureIMG {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  position: absolute;
+  z-index: 1;
+  object-fit: cover;
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.25);
+}
+
+.TopInfosCreatorName {
+  display: flex;
+  flex-direction: column;
+  font-family: 'Airbnb Cereal App Bold';
+  font-size: 20px;
+  margin-left: 10px;
+}
+.ownerTwitterUsername {
+  font-size: 14px;
+  font-family: 'Airbnb Cereal App Book';
+  color: black;
+}
 
 .Title {
   font-family: 'Airbnb Cereal App Bold';
-  font-size: 40px;
-  line-height: 48px;
+  font-size: 64px;
+  line-height: 83px;
   margin: 0px;
   max-width: 400px;
 }
@@ -113,7 +155,7 @@
   padding: 12px 10px;
   cursor: pointer;
   margin: 0px 10px;
-  @media (min-width: 768px){
+  @media (min-width: 768px) {
     &:hover {
       background-color: $primary;
       .LikeSVG {
@@ -162,7 +204,7 @@
 
 .Line {
   width: 100%;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid transparent;
   margin: 12px 0px;
 }
 
@@ -199,24 +241,6 @@
   font-size: 15px;
 }
 
-.Collection {
-  display: flex;
-  flex-direction: column;
-  margin-right: 24px;
-}
-
-.TopCol {
-  font-size: 12px;
-  line-height: 16px;
-  font-family: 'Airbnb Cereal App Bold';
-  color: #b1b1b1;
-}
-.BotCol {
-  font-size: 12px;
-  line-height: 16px;
-  font-family: 'Airbnb Cereal App Bold';
-}
-
 .Description {
   margin: 52px 0px;
   font-size: 16px;
@@ -228,16 +252,36 @@
 
 .Buy {
   display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
+  margin-top: 60px;
+  justify-content: center;
 }
 
-.BuyLeft {
+.Available {
   display: flex;
-  flex-direction: column;
-  margin-right: 40px;
   justify-content: center;
+  position: relative;
+  margin: 25px 0;
   align-items: center;
+}
+.AvailbleText {
+  color: #b1b1b1;
+  background-color: white;
+  border: solid 1px white;
+  font-size: 16px;
+  padding: 0 10px;
+  font-family: 'Airbnb Cereal App book';
+  display: flex;
+}
+.AvailbleCards {
+  width: 15px;
+  margin-right: 5px;
+}
+.AvailableBackLine {
+  width: 50%;
+  margin: 10px 0;
+  border-bottom: solid 1px #b1b1b1;
+  position: absolute;
+  z-index: -1;
 }
 
 .Button {
@@ -247,7 +291,8 @@
   color: white;
   background-color: $primary;
   border-radius: 28px;
-  padding: 12px 72px;
+  padding: 12px;
+  width: 50%;
   font-size: 16px;
   font-family: 'Airbnb Cereal App Medium';
   cursor: pointer;
@@ -259,17 +304,6 @@
   }
 }
 
-.QuantityLabel {
-  font-size: 12px;
-  line-height: 16px;
-  font-family: 'Airbnb Cereal App Bold';
-  margin-bottom: 4px;
-}
-
-.QuantityCount {
-  color: $primary;
-}
-
 .Disabled {
   cursor: default;
   background-color: lighten($primary, 35%);
@@ -278,118 +312,18 @@
   }
 }
 
-.Fees {
-  color: #b1b1b1;
-  font-size: 11px;
-  align-self: center;
-  font-family: 'Airbnb Cereal App Book';
-  margin-top: 6px;
-}
-
-.BuyRight {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  align-self: center;
-}
-
-.Price {
-  font-size: 24px;
-  line-height: 31px;
-  font-family: 'Airbnb Cereal App Bold';
-  text-transform: uppercase;
-}
-
-.FiatPrice {
-  color: #b1b1b1;
-  font-family: 'Airbnb Cereal App Book';
-  font-size: 18px;
-}
-
-.HistoryTop {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  margin-top: 52px;
-}
-
-.HistoryTitle {
-  font-size: 18px;
-  line-height: 23px;
-  font-family: 'Airbnb Cereal App Bold';
-  margin-right: 24px;
-}
-
-.HistoryLine {
-  width: 100%;
-  border-top: 1px solid black;
-}
-
-.History {
-  margin-top: 32px;
-}
-
-.HistoryItem {
-  display: flex;
-  align-items: center;
-  margin-bottom: 12px;
-}
-
-.Check {
-  width: 16px;
-  fill: black;
-}
-
-.HistoryAvatar {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  margin: 0px 12px;
-  position: relative;
-}
-.HistoryIMG {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  position: absolute;
-  z-index: 1;
-  object-fit: cover;
-}
-
-.HistoryUser {
-  display: flex;
-  align-items: flex-start;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.HistoryRole {
-  font-size: 12px;
-  line-height: 16px;
-  font-family: 'Airbnb Cereal App Bold';
-  color: $primary;
-}
-
-.HistoryName {
-  font-size: 14px;
-  line-height: 16px;
-  font-family: 'Airbnb Cereal App Bold';
-  color: black;
-}
-
-.HistoryPast {
-  opacity: 0.3;
-}
-
 .Hide {
   display: none;
 }
 
 @media (max-width: 1300px) {
+  .MainWrapper {
+    width: 980px;
+    padding: 40px 0;
+  }
   .Wrapper {
     width: 980px;
-    padding: 90px 24px;
+    padding: 50px 0px;
   }
 
   .NFT {
@@ -449,39 +383,31 @@
     font-size: 14px;
     line-height: 24px;
   }
-
+  .AvailableBackLine {
+    width: 75%;
+  }
   .Button {
-    padding: 10px 52px;
+    padding: 10px;
+    width: 75%;
     font-size: 16px;
   }
-
-  .Fees {
-    font-size: 10px;
-  }
-
-  .Price {
-    font-size: 20px;
-    line-height: 24px;
-  }
-
-  .HistoryAvatar {
-    width: 55px;
-    height: 55px;
-  }
-
 }
 
 @media (max-width: 1000px) {
+  .MainWrapper {
+    width: 100%;
+    padding: 30px 24px;
+  }
   .Wrapper {
     width: 100%;
-    padding: 70px 24px;
+    padding: 50px 24px;
   }
 }
 
 @media (max-width: 840px) {
   .Wrapper {
     width: 90%;
-    padding: 40px 24px;
+    padding: 0px 24px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -492,10 +418,6 @@
     margin-bottom: 52px;
   }
 
-  .Buy {
-    align-self: center;
-  }
-
   .Text {
     width: 90%;
   }
@@ -504,14 +426,19 @@
     flex-direction: column;
   }
 
+  .TopInfosCreator {
+    margin-bottom: 20px;
+  }
+
   .Title {
     font-family: 'Airbnb Cereal App Bold';
     font-size: 34px;
     line-height: 38px;
     margin: 0px;
-    margin-bottom: 30px;
     max-width: auto;
     text-align: center;
+    margin-right: auto;
+    margin-left: auto;
   }
 
   .Line {
@@ -529,68 +456,16 @@
   }
 
   .Button {
-    padding: 14px 90px;
+    width: 50%;
     font-size: 16px;
   }
 
-  .Fees {
-    font-size: 11px;
-  }
-
-  .Price {
-    font-size: 22px;
-    line-height: 24px;
-  }
-
-  .Infos {
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 12px;
-  }
-
-  .HistoryTop {
-    width: 75%;
-    margin-top: 52px;
-    align-self: center;
-    flex-direction: column;
-  }
-
-  .HistoryLine {
-    margin-top: 16px;
-  }
-
-  .History {
-    margin-top: 32px;
-    align-self: center;
-  }
-
-  .HistoryTitle {
-    margin-right: 0px;
+  .AvailableBackLine {
+    width: 50%;
   }
 
   .Buy {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-top: 12px;
-  }
-
-  .BuyLeft {
-    margin-top: 16px;
-    margin-right: 0px;
-    order: 2;
-  }
-  .BuyRight {
-    align-items: center;
-    justify-content: center;
-    order: 1;
-    margin-top:0px;
-  }
-
-  .Collection {
-    align-items: center;
-    justify-content: center;
-    margin-right: 0px;
+    margin-top: 30px;
   }
 
   .Tags {
@@ -603,7 +478,6 @@
   .Tag {
     margin: 0px 10px;
   }
-
 }
 
 @media (max-width: 720px) {
@@ -612,5 +486,14 @@
   }
   .Text {
     width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .Button {
+    width: 85%;
+  }
+  .AvailableBackLine {
+    width: 85%;
   }
 }

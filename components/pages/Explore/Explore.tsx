@@ -27,7 +27,6 @@ const Explore: React.FC<ExploreProps> = ({
       </div>
     ));
   }
-
   return (
     <>
       <div id="explore" className={style.Wrapper}>

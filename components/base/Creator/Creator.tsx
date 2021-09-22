@@ -30,12 +30,14 @@ const Creator: React.FC<CreatorProps> = ({
     if (size === 'card') return style.CreatorsItemCard;
     if (size === 'small') return style.CreatorsItemSmall;
     if (size === 'xsmall') return style.CreatorsItemXSmall;
+    if (size === 'fullwidth') return style.CreatorsItemFullwidth;
     return style.CreatorsItem;
   }
 
   function manageBadgeClass() {
     if (size === 'card') return style.CreatorsBadgeSM;
     if (size === 'xsmall') return style.CreatorsBadgeXSM;
+    if (size === 'fullwidth') return style.CreatorsBadgeXSM;
     return style.CreatorsBadge;
   }
 

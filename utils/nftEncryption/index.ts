@@ -26,10 +26,12 @@ const cryptFilePgp = async (file: File, publicPGP: string) => {
   const arrayBuffer = await file.arrayBuffer()
   const buffer = Buffer.from(arrayBuffer);
   const content = buffer.toString("base64");
+  // @ts-ignore
   const message = await openpgp.Message.fromText(content)
   const publicKey = await openpgp.readKey({ armoredKey: publicPGP })
   const encrypted = await openpgp.encrypt({
     message,
+    // @ts-ignore
     publicKeys: publicKey
   })
   return encrypted
@@ -40,6 +42,7 @@ export const cryptAndUploadNFT = async (secretNFT: File, secretNFTType: string, 
     try {
       //NFT Data
       const encryptedSecretNft = await cryptFilePgp(secretNFT, publicPGP)
+      // @ts-ignore
       const nftBlob = new Blob([encryptedSecretNft], { type: secretNFTType });
       const nftFile = new File([nftBlob], "encrypted nft");
       //PGP Data

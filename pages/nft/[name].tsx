@@ -65,9 +65,9 @@ const NftPage: React.FC<NFTPageProps> = ({ user, NFT, capsValue }) => {
         <meta property="og:image" content={NFT.media.url} />
       </Head>
       {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
-      {[1, 2].indexOf(exp) !== -1 && (
+      {(exp===1 || exp===2) && (
         <ModalShowcase
-          NFT={nftToBuy}
+          NFT={exp === 1 ? NFT : nftToBuy}
           setExp={setExp}
           exp={exp}
           setModalExpand={() => setExp(3)}

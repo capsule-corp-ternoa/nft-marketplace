@@ -31,7 +31,7 @@ const Details: React.FC<DetailsProps> = ({
   const [serieDataCount, setSerieDataCount] = useState({} as any);
   const bgGradient = { background: gradient(NFT.ownerData.name) };
   const serieData = NFT?.serieData ? NFT.serieData : [];
-  console.log(NFT);
+
   useEffect(() => {
     const serieDataGroupedArray = [] as NftType[];
     const ownerNftsCountObject = {} as any;
@@ -130,9 +130,10 @@ const Details: React.FC<DetailsProps> = ({
       ? user.capsAmount &&
         NFTRowPrice &&
         NFTRowPrice !== '' &&
-        Number(user.capsAmount) >= Number(NFTRowPrice)
+        Number(user.capsAmount) >= Number(NFTRowPrice) &&
+        user.walletId !== NFTRowOwner
       : true;
-    const userCanBuy = userCanBuyCaps && user.walletId !== NFTRowOwner;
+    const userCanBuy = userCanBuyCaps;
     return (
       <div
         className={styleDetails.owners}

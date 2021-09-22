@@ -7,7 +7,6 @@ import styleDetails from './Details.module.scss';
 import { computeCaps } from 'utils/strings';
 import Link from 'next/link';
 import { middleEllipsis } from '../../../../utils/strings';
-import Badge from 'components/assets/badge';
 import { getUsersByWalletIds } from 'actions/user';
 import Creator from 'components/base/Creator';
 import { MARKETPLACE_ID } from 'utils/constant';
@@ -19,32 +18,35 @@ export interface DetailsProps {
   setExp: (n: number) => void;
 }
 
-const Details: React.FC<DetailsProps> = ({ NFT, user, setNftToBuy, setExp }) => {
+const Details: React.FC<DetailsProps> = ({
+  NFT,
+  user,
+  setNftToBuy,
+  setExp,
+}) => {
   const [currentTab, setCurrentTab] = useState('info');
-  const [usersData, setUsersData] = useState({} as any)
-  const [serieDataGrouped, setSerieDataGrouped] = useState([] as NftType[])
-  const [ownerNftsCount, setOwnerNftsCount] = useState({} as any)
-  const [serieDataCount, setSerieDataCount] = useState({} as any)
-  const bgGradientOwner = { background: gradient(NFT.ownerData.name) };
-  //const bgGradientCreator = { background: gradient(NFT.creatorData.name) };
-  const formatedDate = NFT.timestampList?.toLocaleString();
-  const serieData = NFT?.serieData ? NFT.serieData : []
-
-  useEffect(()=>{
-    const serieDataGroupedArray = [] as NftType[]
-    const ownerNftsCountObject = {} as any
-    const serieDataCountObject = {} as any
+  const [usersData, setUsersData] = useState({} as any);
+  const [serieDataGrouped, setSerieDataGrouped] = useState([] as NftType[]);
+  const [ownerNftsCount, setOwnerNftsCount] = useState({} as any);
+  const [serieDataCount, setSerieDataCount] = useState({} as any);
+  const bgGradient = { background: gradient(NFT.ownerData.name) };
+  const serieData = NFT?.serieData ? NFT.serieData : [];
+  console.log(NFT);
+  useEffect(() => {
+    const serieDataGroupedArray = [] as NftType[];
+    const ownerNftsCountObject = {} as any;
+    const serieDataCountObject = {} as any;
     serieData.forEach((x) => {
       // Count owned by owner
-      if (!ownerNftsCountObject[x.owner]){
-        ownerNftsCountObject[x.owner] = 1 
-      }else{
-        ownerNftsCountObject[x.owner] += 1
+      if (!ownerNftsCountObject[x.owner]) {
+        ownerNftsCountObject[x.owner] = 1;
+      } else {
+        ownerNftsCountObject[x.owner] += 1;
       }
       // Compute rows to display && count number of listed / unlisted for each row
-      const key = `${x.owner}-${x.listed}-${x.price}-${x.marketplaceId}`
-      if (!serieDataCountObject[key]){
-        serieDataCountObject[key] = 1
+      const key = `${x.owner}-${x.listed}-${x.price}-${x.marketplaceId}`;
+      if (!serieDataCountObject[key]) {
+        serieDataCountObject[key] = 1;
         serieDataGroupedArray.push({
           id: x.id,
           listed: x.listed,
@@ -52,114 +54,140 @@ const Details: React.FC<DetailsProps> = ({ NFT, user, setNftToBuy, setExp }) => 
           owner: x.owner,
           price: x.price,
           priceTiime: x.priceTiime,
-        } as NftType)
-      }else{
-        serieDataCountObject[key] += 1
+        } as NftType);
+      } else {
+        serieDataCountObject[key] += 1;
       }
     });
-    setSerieDataGrouped(serieDataGroupedArray)
-    setOwnerNftsCount(ownerNftsCountObject)
-    setSerieDataCount(serieDataCountObject)
-  }, [serieData])
+    setSerieDataGrouped(serieDataGroupedArray);
+    setOwnerNftsCount(ownerNftsCountObject);
+    setSerieDataCount(serieDataCountObject);
+  }, [serieData]);
 
   const handleCustomBuy = (NFT: NftType) => {
-    setNftToBuy(NFT)
-    setExp(2)
-  }
-
-  const switchTab = (tab: string) => {
-    setCurrentTab(tab)
+    setNftToBuy(NFT);
+    setExp(2);
   };
 
-  const onRowRendered = ({ overscanStartIndex, overscanStopIndex }: ListOnItemsRenderedProps) => {
-    let ownersToLoad = []
-    if (serieDataGrouped.length>0){
-      for (let i = overscanStartIndex; i<=overscanStopIndex; i++){
-        if (serieDataGrouped[i] && !usersData[serieDataGrouped[i].owner]){
-          ownersToLoad.push(serieDataGrouped[i].owner)
+  const switchTab = (tab: string) => {
+    setCurrentTab(tab);
+  };
+
+  const onRowRendered = ({
+    overscanStartIndex,
+    overscanStopIndex,
+  }: ListOnItemsRenderedProps) => {
+    let ownersToLoad = [];
+    if (serieDataGrouped.length > 0) {
+      for (let i = overscanStartIndex; i <= overscanStopIndex; i++) {
+        if (serieDataGrouped[i] && !usersData[serieDataGrouped[i].owner]) {
+          ownersToLoad.push(serieDataGrouped[i].owner);
         }
       }
-      if (ownersToLoad.length > 0){
-        loadDisplayedUsers(ownersToLoad)
+      if (ownersToLoad.length > 0) {
+        loadDisplayedUsers(ownersToLoad);
       }
     }
-  }
+  };
 
   const loadDisplayedUsers = async (walletIds: string[]) => {
-    try{
-      let users = await getUsersByWalletIds(walletIds)
-      let usersObject = {} as any
-      if (users && users.length>0){
-        users.forEach(u => {
-          usersObject[u.walletId] = u
-        })
-        setUsersData({...usersData, ...usersObject})
+    try {
+      let users = await getUsersByWalletIds(walletIds);
+      let usersObject = {} as any;
+      if (users && users.length > 0) {
+        users.forEach((u) => {
+          usersObject[u.walletId] = u;
+        });
+        setUsersData({ ...usersData, ...usersObject });
       }
-    }catch(err){
-      console.log(err)
+    } catch (err) {
+      console.log(err);
     }
-  }
+  };
 
-  const ownerData = ({ index, style }: { index: number, style: React.CSSProperties | undefined }) => {
-    const NFTRow = (serieDataGrouped && serieDataGrouped.length>0) ? serieDataGrouped[index] : null
+  const ownerData = ({
+    index,
+    style,
+  }: {
+    index: number;
+    style: React.CSSProperties | undefined;
+  }) => {
+    const GUTTER_SIZE = 5;
+    const NFTRow =
+      serieDataGrouped && serieDataGrouped.length > 0
+        ? serieDataGrouped[index]
+        : null;
     const NFTRowId = NFTRow ? NFTRow.id : null;
-    const NFTRowOwner = NFTRow ? NFTRow.owner : "";
-    const NFTRowPrice = NFTRow ? NFTRow.price : "";
-    const NFTRowListed = NFTRow ? NFTRow.listed : "";
-    const NFTRowMarketplaceId = NFTRow ? NFTRow.marketplaceId : "";
-    const ownerData = (usersData[NFTRowOwner] ? usersData[NFTRowOwner] : null) as UserType
-    const key = `${NFTRowOwner}-${NFTRowListed}-${NFTRowPrice}-${NFTRowMarketplaceId}`
-    const userCanBuyCaps = user ? 
-      user.capsAmount &&
-      NFTRowPrice &&
-      NFTRowPrice !== '' &&
-      Number(user.capsAmount) >= Number(NFTRowPrice)
-    : true;
+    const NFTRowOwner = NFTRow ? NFTRow.owner : '';
+    const NFTRowPrice = NFTRow ? NFTRow.price : '';
+    const NFTRowListed = NFTRow ? NFTRow.listed : '';
+    const NFTRowMarketplaceId = NFTRow ? NFTRow.marketplaceId : '';
+    const ownerData = (
+      usersData[NFTRowOwner] ? usersData[NFTRowOwner] : null
+    ) as UserType;
+    const key = `${NFTRowOwner}-${NFTRowListed}-${NFTRowPrice}-${NFTRowMarketplaceId}`;
+    const userCanBuyCaps = user
+      ? user.capsAmount &&
+        NFTRowPrice &&
+        NFTRowPrice !== '' &&
+        Number(user.capsAmount) >= Number(NFTRowPrice)
+      : true;
     const userCanBuy = userCanBuyCaps && user.walletId !== NFTRowOwner;
-    return ( 
-      <div className={styleDetails.owners} key={NFTRowId} style={style}>
+    return (
+      <div
+        className={styleDetails.owners}
+        key={NFTRowId}
+        style={{ ...style, height: (style?.height as any) - GUTTER_SIZE }}
+      >
         <Link href={`/${NFT.ownerData.walletId}`}>
           <a className={styleDetails.owner}>
             <div className={styleDetails.ownerBadge}>Owner</div>
             <div className={styleDetails.ownerProfile}>
-              {(ownerData?.picture || ownerData?.name) ?
+              {ownerData?.picture || ownerData?.name ? (
                 <Creator
                   className={styleDetails.ownerProfileIMG}
-                  size={"fullwidth"}
+                  size={'fullwidth'}
                   user={ownerData}
+                  showTooltip={false}
                 />
-              :
-                <div className={styleDetails.ownerProfileIMG} style={bgGradientOwner} />
-              }
+              ) : (
+                <div
+                  className={styleDetails.ownerProfileIMG}
+                  style={bgGradient}
+                />
+              )}
             </div>
             <div className={styleDetails.ownerDatas}>
               <div className={styleDetails.ownerDatasName}>
-                {ownerData?.name ? 
-                  ownerData.name
-                :
-                  middleEllipsis(NFTRowOwner, 15)
-                }
-                <span className={styleDetails.ownerTwitterUsername} style={{display: "inline-block"}}>
-                  {ownerData.twitterName ? ownerData.twitterName : "@Leouarzz"}
+                <div>
+                  {ownerData?.name
+                    ? ownerData.name
+                    : middleEllipsis(NFTRowOwner, 15)}
+                </div>
+                <span className={styleDetails.ownerTwitterUsername}>
+                  {ownerData?.twitterName ? ownerData.twitterName : null}
                 </span>
               </div>
               <div className={styleDetails.ownerDatasSales}>
-                {NFTRowListed===0 ? 
-                  `${serieDataCount[key]} edition${serieDataCount[key]>1 ? "s":""} not for sale`
-                :
-                  (NFTRowListed===1 && NFTRowMarketplaceId===MARKETPLACE_ID) ? 
-                    `${serieDataCount[key]}/${ownerNftsCount[NFTRowOwner]} on sale for ${computeCaps(Number(NFTRowPrice))} CAPS each`
-                  :
-                    `${serieDataCount[key]}/${ownerNftsCount[NFTRowOwner]} on sale on other marketplace(s)`
-                }
+                {NFTRowListed === 0
+                  ? `${serieDataCount[key]} edition${
+                      serieDataCount[key] > 1 ? 's' : ''
+                    } not for sale`
+                  : NFTRowListed === 1 && NFTRowMarketplaceId === MARKETPLACE_ID
+                  ? `${serieDataCount[key]}/${
+                      ownerNftsCount[NFTRowOwner]
+                    } on sale for ${computeCaps(Number(NFTRowPrice))} CAPS each`
+                  : `${serieDataCount[key]}/${ownerNftsCount[NFTRowOwner]} on sale on other marketplace(s)`}
               </div>
             </div>
           </a>
         </Link>
         <div>
-          <div 
-            className={`${styleDetails.buyButton} ${!userCanBuy && styleDetails.disabled}`}
-            onClick={()=>userCanBuy && NFTRow && handleCustomBuy(NFTRow)}
+          <div
+            className={`${styleDetails.buyButton} ${
+              !userCanBuy && styleDetails.disabled
+            }`}
+            onClick={() => userCanBuy && NFTRow && handleCustomBuy(NFTRow)}
           >
             Buy
           </div>
@@ -172,25 +200,41 @@ const Details: React.FC<DetailsProps> = ({ NFT, user, setNftToBuy, setExp }) => 
     <div className={styleDetails.detailsMain}>
       <div className={styleDetails.detailsMenu}>
         <button
-          className={currentTab==="info" ? styleDetails.detailsMenuActiveItem : styleDetails.detailsMenuItem}
+          className={
+            currentTab === 'info'
+              ? styleDetails.detailsMenuActiveItem
+              : styleDetails.detailsMenuItem
+          }
           onClick={() => switchTab('info')}
         >
           Infos
         </button>
         <button
-          className={currentTab==="owners" ? styleDetails.detailsMenuActiveItem : styleDetails.detailsMenuItem}
+          className={
+            currentTab === 'owners'
+              ? styleDetails.detailsMenuActiveItem
+              : styleDetails.detailsMenuItem
+          }
           onClick={() => switchTab('owners')}
         >
           Owners
         </button>
         <button
-          className={currentTab==="history" ? styleDetails.detailsMenuActiveItem : styleDetails.detailsMenuItem}
+          className={
+            currentTab === 'history'
+              ? styleDetails.detailsMenuActiveItem
+              : styleDetails.detailsMenuItem
+          }
           onClick={() => switchTab('history')}
         >
           History
         </button>
         <button
-          className={currentTab==="bid" ? styleDetails.detailsMenuActiveItem : styleDetails.detailsMenuItem}
+          className={
+            currentTab === 'bid'
+              ? styleDetails.detailsMenuActiveItem
+              : styleDetails.detailsMenuItem
+          }
           onClick={() => switchTab('bid')}
           disabled={true}
         >
@@ -199,22 +243,33 @@ const Details: React.FC<DetailsProps> = ({ NFT, user, setNftToBuy, setExp }) => 
       </div>
       <div>
         <div className={styleDetails.detailsContent}>
-          {currentTab==="info" && (
+          {currentTab === 'info' && (
             <div className={styleDetails.detailsInfos}>
               <div className={styleDetails.creatorWrapper}>
                 <div className={styleDetails.creatorBadge}>Creator</div>
                 <div className={styleDetails.TopInfosCreator}>
                   <div className={styleDetails.TopInfosCreatorPicture}>
-                    <img
-                      src={NFT.creatorData.picture}
-                      className={styleDetails.TopInfosCreatorPictureIMG}
-                    />
-                    {NFT.creatorData.verified && (
-                      <Badge className={styleDetails.TopInfosCreatorCertifiedBadge} />
+                    {NFT.creatorData?.picture || NFT.creatorData?.name ? (
+                      <Creator
+                        className={styleDetails.TopInfosCreatorPictureIMG}
+                        size={'fullwidth'}
+                        user={NFT.creatorData}
+                        showTooltip={false}
+                      />
+                    ) : (
+                      <div
+                        className={styleDetails.TopInfosCreatorPictureIMG}
+                        style={bgGradient}
+                      />
                     )}
                   </div>
                   <div className={styleDetails.TopInfosCreatorName}>
-                    {NFT.creatorData.name}
+                    <div>{NFT.creatorData.name}</div>
+                    <span className={styleDetails.ownerTwitterUsername}>
+                      {NFT.creatorData?.twitterName
+                        ? NFT.creatorData.twitterName
+                        : null}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -228,8 +283,12 @@ const Details: React.FC<DetailsProps> = ({ NFT, user, setNftToBuy, setExp }) => 
                   </div>
                 </div>
                 <div className={styleDetails.infoDatas}>
-                  <small className={styleDetails.infoDatasTitle}>Token ID</small>
-                  <div className={styleDetails.infoDatasContent}>100300039566</div>
+                  <small className={styleDetails.infoDatasTitle}>
+                    Token ID
+                  </small>
+                  <div className={styleDetails.infoDatasContent}>
+                    100300039566
+                  </div>
                 </div>
                 <div className={styleDetails.infoDatas}>
                   <small className={styleDetails.infoDatasTitle}>Size</small>
@@ -240,7 +299,7 @@ const Details: React.FC<DetailsProps> = ({ NFT, user, setNftToBuy, setExp }) => 
               </div>
             </div>
           )}
-          {currentTab==="owners" && (
+          {currentTab === 'owners' && (
             <div className={styleDetails.ownersContainers}>
               <AutoSizer>
                 {({ width, height }) => (
@@ -257,105 +316,63 @@ const Details: React.FC<DetailsProps> = ({ NFT, user, setNftToBuy, setExp }) => 
               </AutoSizer>
             </div>
           )}
-
-          {/* {owners && (
-            <div className={style.ownersContainers}>
-              <div className={style.owners}>
-                <Link href={`/${NFT.ownerData.walletId}`}>
-                  <a className={style.owner}>
-                    <div className={style.ownerBadge}>Owner</div>
-                    <div className={style.ownerProfile}>
-                      {NFT.ownerData.picture ? (
-                        <img
-                          src={NFT.ownerData.picture}
-                          className={style.ownerProfileIMG}
-                        />
-                      ) : (
-                        <div
-                          className={style.ownerProfileIMG}
-                          style={bgGradientOwner}
-                        />
-                      )}
-                    </div>
-                    <div className={style.ownerDatas}>
-                      <div className={style.ownerDatasName}>
-                        {NFT.ownerData.name}
-                      </div>
-                      <div className={style.ownerDatasSales}>
-                        {NFT.totalListedNft}/{NFT.totalNft} on sale for{' '}
-                        {computeCaps(Number(NFT.price))} CAPS each
-                      </div>
-                    </div>
-                  </a>
-                </Link>
-                <div>
-                  <div className={style.buyButton}>Buy</div>
-                </div>
-              </div>
-              {NFT.serieData?.map((owner) => (
-                <div className={style.owners} key={owner.id}>
-                  <Link href={`/${NFT.ownerData.walletId}`}>
-                    <a className={style.owner}>
-                      <div className={style.ownerBadge}>Owner</div>
-                      <div className={style.ownerProfile}>
-                        <div
-                          className={style.ownerProfileIMG}
-                          style={bgGradientOwner}
-                        />
-                      </div>
-                      <div className={style.ownerDatas}>
-                        <div className={style.ownerDatasName}>
-                          {middleEllipsis(owner.owner, 15)}
-                        </div>
-                        <div className={style.ownerDatasSales}>
-                          <span style={{ color: 'red' }}>
-                            {' '}
-                            {NFT.totalListedNft}/{NFT.totalNft}{' '}
-                          </span>
-                          on sale for {computeCaps(Number(owner.price))} CAPS
-                          each
-                        </div>
-                      </div>
-                    </a>
-                  </Link>
-                  <div>
-                    <div className={style.buyButton}>Buy</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )} */}
-          {currentTab==="history" && (
-            <div className={styleDetails.owners}>
-              <Link href={`/${NFT.ownerData.walletId}`}>
-                <a className={styleDetails.owner}>
-                  <div className={styleDetails.ownerProfile}>
-                    {NFT.ownerData.picture ? (
-                      <img
-                        src={NFT.ownerData.picture}
+          {currentTab === 'history' && (
+            <>
+              <div className={styleDetails.History}>
+                <div className={styleDetails.HistoryLeftBlock}>
+                  <div className={styleDetails.HistoryPicture}>
+                    {NFT.ownerData?.picture || NFT.ownerData?.name ? (
+                      <Creator
+                        className={styleDetails.HistoryPictureIMG}
+                        size={'fullwidth'}
+                        user={NFT.ownerData}
+                        showTooltip={false}
                       />
                     ) : (
                       <div
-                        className={styleDetails.ownerProfileIMG}
-                        style={bgGradientOwner}
+                        className={styleDetails.HistoryPictureIMG}
+                        style={bgGradient}
                       />
                     )}
                   </div>
-                  <div className={styleDetails.ownerDatas}>
-                    <div className={styleDetails.historyEvent}>Owner</div>
-                    <div className={styleDetails.historyDatas}>
-                      <small>
-                        by <span>{NFT.ownerData.name}</span> {formatedDate}
-                      </small>
-                    </div>
+                  <div className={styleDetails.HistoryName}>
+                    <div>{NFT.ownerData.name}</div>
                   </div>
-                </a>
-              </Link>
-            </div>
+                  <div className={styleDetails.ownerBadge}>Owner</div>
+                </div>
+                <div className={styleDetails.TernoaChainButton}>
+                  View transaction on Ternoa Chain
+                </div>
+              </div>
+              <div className={styleDetails.History}>
+                <div className={styleDetails.HistoryLeftBlock}>
+                  <div className={styleDetails.HistoryPicture}>
+                    {NFT.creatorData?.picture || NFT.creatorData?.name ? (
+                      <Creator
+                        className={styleDetails.HistoryPictureIMG}
+                        size={'fullwidth'}
+                        user={NFT.creatorData}
+                        showTooltip={false}
+                      />
+                    ) : (
+                      <div
+                        className={styleDetails.HistoryPictureIMG}
+                        style={bgGradient}
+                      />
+                    )}
+                  </div>
+                  <div className={styleDetails.HistoryName}>
+                    <div>{NFT.creatorData.name}</div>
+                  </div>
+                  <div className={styleDetails.ownerBadge}>Creator</div>
+                </div>
+              <div className={styleDetails.TernoaChainButton}>
+                  View transaction on Ternoa Chain
+                </div>
+              </div>
+            </>
           )}
-          {currentTab==="bid" && 
-            <div></div>
-          }
+          {currentTab === 'bid' && <div></div>}
         </div>
       </div>
     </div>

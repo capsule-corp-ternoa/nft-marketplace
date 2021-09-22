@@ -50,7 +50,6 @@
   align-items: center;
   background: #f7f7f7;
   margin: 10px 0;
-  padding: 15px 0;
   opacity: 0.9;
   border-radius: 12px;
 }
@@ -60,19 +59,19 @@
 }
 .infoDatasWrapper {
   display: flex;
-  width: 80%;
+  width: 75%;
   flex-wrap: nowrap;
 }
 .infoDatas {
-  padding: 5px 20px;
+  padding: 5px 10px;
 }
 .TopInfosCreator {
   display: flex;
   align-items: center;
 }
 .TopInfosCreatorPicture {
-  width: 45px;
-  height: 45px;
+  width: 50px;
+  height: 50px;
   position: relative;
 }
 .TopInfosCreatorPictureIMG {
@@ -136,7 +135,6 @@
 .owner {
   display: flex;
   align-items: center;
-  margin: 15px 0;
   width: 70%;
 }
 .ownerBadge {
@@ -154,7 +152,7 @@
 .ownerProfile {
   width: 55px;
   height: 55px;
-  margin: 0 10px;
+  margin: 10px;
   position: relative;
   display: flex;
   align-items: center;
@@ -165,7 +163,6 @@
   height: 100%;
   border-radius: 50%;
   position: absolute;
-  opacity: 0.5;
   z-index: 1;
   object-fit: cover;
   box-shadow: 0 3px 3px rgba(0, 0, 0, 0.25);
@@ -180,6 +177,11 @@
   font-size: 16px;
   line-height: 21px;
   font-family: 'Airbnb Cereal App Bold';
+  color: black;
+}
+.ownerTwitterUsername{
+  font-size: 14px;
+  font-family: 'Airbnb Cereal App Book';
   color: black;
 }
 .ownerDatasSales {
@@ -203,42 +205,66 @@
     background-color: black;
   }
 }
-
 .disabled {
   pointer-events: none;
   background-color: lighten($primary, 35%);
 }
 
-.historyEvent {
-  font-family: 'Airbnb Cereal App Bold';
-  font-size: 18px;
-  line-height: 26px;
+.History{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f7f7f7;
+  margin: 10px 0;
+  padding: 10px;
+  opacity: 0.9;
+  border-radius: 12px;
 }
-.historyDatas {
+.HistoryLeftBlock{
+  display: flex;
+  align-items: center;
+}
+
+.HistoryPicture {
+  width: 50px;
+  height: 50px;
+  position: relative;
+}
+.HistoryPictureIMG {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  position: absolute;
+  z-index: 1;
+  object-fit: cover;
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.25);
+}
+.HistoryName{
+  font-family: 'Airbnb Cereal App Bold';
+  font-size: 16px;
+  margin-left: 10px;
+}
+
+.TernoaChainButton{
+  color: $primary;
+  padding: 10px 50px;
+  margin: 10px;
   font-size: 12px;
   font-family: 'Airbnb Cereal App Medium';
-  color: #686464;
-}
-.historyDatas span {
-  color: Black;
-  font-weight: bold;
+  cursor: default;
+  opacity: 0.5;
+  border : solid 1px $primary;
+  border-radius: 50px;
+
 }
 @media (max-width: 1300px) {
   .detailsMain {
     margin: 15px 60px;
   }
-  .detailsInfos {
-    justify-content: space-between;
-    align-items: center;
-    margin: 10px 0;
-    padding: 15px 0;
-    opacity: 0.9;
-    border-radius: 12px;
-  }
   .infoDatasWrapper {
     justify-content: start;
     flex-wrap: wrap;
-    width: 70%;
+    width: 60%;
   }
 }
 @media (max-width: 1000px) {
@@ -255,6 +281,13 @@
   .ownerDatasSales {
     font-family: 'Airbnb Cereal App light';
   }
+  .ownerDatasName {
+   display: flex;
+  }
+  .ownerTwitterUsername{
+    margin-left: 5px;
+  }
+  
 }
 @media (max-width: 840px) {
   .detailsMain {
@@ -291,6 +324,9 @@
     width: 80%;
     flex-direction: column;
     text-align: center;
+  }
+  .ownerTwitterUsername{
+    display: none;
   }
 }
 @media (max-width: 720px) {

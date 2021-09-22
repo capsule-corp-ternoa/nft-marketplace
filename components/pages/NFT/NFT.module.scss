@@ -101,18 +101,17 @@
   box-shadow: 0 3px 3px rgba(0, 0, 0, 0.25);
 }
 
-.TopInfosCreatorCertifiedBadge {
-  position: absolute;
-  width: 17px;
-  bottom: 0px;
-  right: 0px;
-  z-index: 10;
-}
 .TopInfosCreatorName {
+  display: flex;
+  flex-direction: column;
   font-family: 'Airbnb Cereal App Bold';
   font-size: 20px;
-  line-height: 26px;
   margin-left: 10px;
+}
+.ownerTwitterUsername {
+  font-size: 14px;
+  font-family: 'Airbnb Cereal App Book';
+  color: black;
 }
 
 .Title {
@@ -242,24 +241,6 @@
   font-size: 15px;
 }
 
-.Collection {
-  display: flex;
-  flex-direction: column;
-  margin-right: 24px;
-}
-
-.TopCol {
-  font-size: 12px;
-  line-height: 16px;
-  font-family: 'Airbnb Cereal App Bold';
-  color: #b1b1b1;
-}
-.BotCol {
-  font-size: 12px;
-  line-height: 16px;
-  font-family: 'Airbnb Cereal App Bold';
-}
-
 .Description {
   margin: 52px 0px;
   font-size: 16px;
@@ -289,9 +270,9 @@
   font-size: 16px;
   padding: 0 10px;
   font-family: 'Airbnb Cereal App book';
-  display:flex;
+  display: flex;
 }
-.AvailbleCards{
+.AvailbleCards {
   width: 15px;
   margin-right: 5px;
 }
@@ -323,119 +304,12 @@
   }
 }
 
-.QuantityLabel {
-  font-size: 12px;
-  line-height: 16px;
-  font-family: 'Airbnb Cereal App Bold';
-  margin-bottom: 4px;
-}
-
-.QuantityCount {
-  color: $primary;
-}
-
 .Disabled {
   cursor: default;
   background-color: lighten($primary, 35%);
   &:hover {
     background-color: lighten($primary, 35%);
   }
-}
-
-.Fees {
-  color: #b1b1b1;
-  font-size: 11px;
-  align-self: center;
-  font-family: 'Airbnb Cereal App Book';
-  margin-top: 6px;
-}
-
-.Price {
-  font-size: 24px;
-  line-height: 31px;
-  font-family: 'Airbnb Cereal App Bold';
-  text-transform: uppercase;
-}
-
-.FiatPrice {
-  color: #b1b1b1;
-  font-family: 'Airbnb Cereal App Book';
-  font-size: 18px;
-}
-
-.HistoryTop {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  margin-top: 52px;
-}
-
-.HistoryTitle {
-  font-size: 18px;
-  line-height: 23px;
-  font-family: 'Airbnb Cereal App Bold';
-  margin-right: 24px;
-}
-
-.HistoryLine {
-  width: 100%;
-  border-top: 1px solid black;
-}
-
-.History {
-  margin-top: 32px;
-}
-
-.HistoryItem {
-  display: flex;
-  align-items: center;
-  margin-bottom: 12px;
-}
-
-.Check {
-  width: 16px;
-  fill: black;
-}
-
-.HistoryAvatar {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  margin: 0px 12px;
-  position: relative;
-}
-.HistoryIMG {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  position: absolute;
-  z-index: 1;
-  object-fit: cover;
-}
-
-.HistoryUser {
-  display: flex;
-  align-items: flex-start;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.HistoryRole {
-  font-size: 12px;
-  line-height: 16px;
-  font-family: 'Airbnb Cereal App Bold';
-  color: $primary;
-}
-
-.HistoryName {
-  font-size: 14px;
-  line-height: 16px;
-  font-family: 'Airbnb Cereal App Bold';
-  color: black;
-}
-
-.HistoryPast {
-  opacity: 0.3;
 }
 
 .Hide {
@@ -517,20 +391,6 @@
     width: 75%;
     font-size: 16px;
   }
-
-  .Fees {
-    font-size: 10px;
-  }
-
-  .Price {
-    font-size: 20px;
-    line-height: 24px;
-  }
-
-  .HistoryAvatar {
-    width: 55px;
-    height: 55px;
-  }
 }
 
 @media (max-width: 1000px) {
@@ -595,7 +455,6 @@
     text-align: justify;
   }
 
-  
   .Button {
     width: 50%;
     font-size: 16px;
@@ -605,49 +464,8 @@
     width: 50%;
   }
 
-  .Fees {
-    font-size: 11px;
-  }
-
-  .Price {
-    font-size: 22px;
-    line-height: 24px;
-  }
-
-  .Infos {
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 12px;
-  }
-
-  .HistoryTop {
-    width: 75%;
-    margin-top: 52px;
-    align-self: center;
-    flex-direction: column;
-  }
-
-  .HistoryLine {
-    margin-top: 16px;
-  }
-
-  .History {
-    margin-top: 32px;
-    align-self: center;
-  }
-
-  .HistoryTitle {
-    margin-right: 0px;
-  }
-
   .Buy {
     margin-top: 30px;
-  }
-
-  .Collection {
-    align-items: center;
-    justify-content: center;
-    margin-right: 0px;
   }
 
   .Tags {

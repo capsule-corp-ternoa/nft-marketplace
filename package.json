@@ -27,7 +27,7 @@
     "next": "10.2.0",
     "next-cookies": "^2.0.3",
     "nprogress": "^0.2.0",
-    "openpgp": "^5.0.0-1",
+    "openpgp": "5.0.0-1",
     "qrcode.react": "^1.0.1",
     "random-gradient": "0.0.2",
     "random-seed": "^0.3.0",

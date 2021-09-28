@@ -1,41 +1,73 @@
-# SecretNFT by Ternoa
+# Secret NFT
 
-This is a really simple project that shows the usage of Next.js with TypeScript.
+"SecretNFT" is a NFTs marketplace for digital creators. Discover Tokenized Digital Art. Artists issue authenticated single edition digital artworks. These are certified on the Ternoa blockchain to prevent forgery. Each artwork is authentically created by an artist in the network, and tokenized as a collectible digital item that you can own, display and trade.
 
-## Deploy your own
+Visit [SecretNFT](https://www.secret-nft.com/)
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example):
+## Summary
+- [Installation](#Installation)
+- [Usage](#Usage)
+- [Information](#Information)
+- [Environment variables](#Environment-variables)
+- [White Label](#White-label)
+- [Contributing](#Contributing)
+- [License](#License)
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-typescript&project-name=with-typescript&repository-name=with-typescript)
-
-## How to use it?
-
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init) or [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) to bootstrap the example:
-
+## Installation
+Using NPM
 ```bash
-npx create-next-app --example with-typescript with-typescript-app
-# or
-yarn create next-app --example with-typescript with-typescript-app
+  git clone https://github.com/capsule-corp-ternoa/nft-marketplace.git
+  cd nft-marketplace
+  npm install
 ```
 
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+## Usage
+You need to set up environnent variables to target the correct API.
+You can find at more information on the Environment variables section.
 
-## Notes
-
-This example shows how to integrate the TypeScript type system into Next.js. Since TypeScript is supported out of the box with Next.js, all we have to do is to install TypeScript.
-
+To run in development
+```bash
+npm run dev
 ```
-npm install --save-dev typescript
-```
-
-To enable TypeScript's features, we install the type declarations for React and Node.
-
-```
-npm install --save-dev @types/react @types/react-dom @types/node
+To build the project
+```bash
+npm run build
 ```
 
-When we run `next dev` the next time, Next.js will start looking for any `.ts` or `.tsx` files in our project and builds it. It even automatically creates a `tsconfig.json` file for our project with the recommended settings.
+## Information
+Secret NFT's code rely most on its api to get the data for its users and nfts. Don't hesitate to have a look on it on our organisation [github](https://github.com/capsule-corp-ternoa.)
 
-Next.js has built-in TypeScript declarations, so we'll get autocompletion for Next.js' modules straight away.
+## Environment variables
+To run this project, you will need to add the following environment variables to your .env file
 
-A `type-check` script is also added to `package.json`, which runs TypeScript's `tsc` CLI in `noEmit` mode to run type-checking separately. You can then include this, for example, in your `test` scripts.
+| VARIABLE | VALUE | USAGE |
+| :---|---|--- |
+| NEXT_PUBLIC_NODE_API | https://your-api-deployed.com | URL of the api |
+| NEXT_PUBLIC_SOCKETIO_URL | https://your-api-deployed.com | URL of the api that handles socket, for now it's the same |
+| NEXT_PUBLIC_IS_NFT_CREATION_ENABLED | true or false | Enable or disable the creation of NFT |
+| NEXT_PUBLIC_SECRET_COOKIE | AStrongPassword101 | Secure the cookie on the app |
+| NEXT_PUBLIC_SENTRY_DSN | https://projectId@sentry.io/x | The url to your sentry project if you want to monitor activity |
+| SENTRY_AUTH_TOKEN | xxxxxxxxxxxxxx | Your auth token if you use Sentry |
+| SENTRY_ENV | development or production or ... | Allow to separate monitoring on environment |
+
+## White Label
+To run your own marketplace, get in touch with us to get approved.
+Once it's done and you have your Marketplace Identifier you can add these env variables to overrides the default app value.
+| VARIABLE | VALUE | USAGE |
+| :---|---|--- |
+| NEXT_PUBLIC_MARKETPLACE_ID | 0 | Value of the given marketplace id |
+| NEXT_PUBLIC_APP_LINK | https://my-marketplace.com | URL to your app |
+| NEXT_PUBLIC_APP_NAME| My Marketplace | Name of your app |
+| NEXT_PUBLIC_APP_LOGO_PATH | /logo.png or /logo.svg or https://images.com/my-logo | path (from public folder) or url to your logo |
+| NEXT_PUBLIC_TELEGRAM_LINK | https://t.me/ternoa | Your Telegram link |
+| NEXT_PUBLIC_TWITTER_LINK | https://twitter.com/SecretNFT_ | Your Twitter link |
+| NEXT_PUBLIC_LINKEDIN_LINK | https://www.linkedin.com/company/ternoa/ | Your LinkedIn link|
+| NEXT_PUBLIC_INSTAGRAM_LINK | https://www.instagram.com/ternoa_/ | Your Instagram link |
+| NEXT_PUBLIC_GITHUB_LINK | https://github.com/capsule-corp-ternoa | Your Github link|
+| NEXT_PUBLIC_YOUTUBE_LINK | https://www.youtube.com/channel/UCUYvbtRE5HoWPz7z88V7Khw | Your Youtube link|
+
+## Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+## License
+[MIT ?](https://choosealicense.com/licenses/mit/)

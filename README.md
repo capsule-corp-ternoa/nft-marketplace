@@ -64,7 +64,7 @@ Once it's done and you have your Marketplace Identifier you can add these env va
 | NEXT_PUBLIC_LINKEDIN_LINK | https://www.linkedin.com/company/ternoa/ | Your LinkedIn link|
 | NEXT_PUBLIC_INSTAGRAM_LINK | https://www.instagram.com/ternoa_/ | Your Instagram link |
 | NEXT_PUBLIC_GITHUB_LINK | https://github.com/capsule-corp-ternoa | Your Github link|
-| NEXT_PUBLIC_YOUTUBE_LINK | https://www.youtube.com/channel/UCUYvbtRE5HoWPz7z88V7Khw | Your Youtube link|
+| NEXT_PUBLIC_YOUTUBE_LINK | https://www.youtube.com/channel/... | Your Youtube link|
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.

@@ -52,7 +52,7 @@ To run this project, you will need to add the following environment variables to
 
 ## White Label
 To run your own marketplace, get in touch with us to get approved.
-Once it's done and you have your Marketplace Identifier you can add these env variables to overrides the default app value.
+Once it's done and you have your Marketplace Identifier you can add these env variables to overrides the default app values.
 | VARIABLE | VALUE | USAGE |
 | :---|---|--- |
 | NEXT_PUBLIC_MARKETPLACE_ID | 0 | Value of the given marketplace id |

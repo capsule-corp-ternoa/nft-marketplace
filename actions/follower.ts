@@ -44,3 +44,17 @@ export const isUserFollowing = async (walletIdFollowed: string, walletIdFollower
     let data: {isFollowing: boolean} = await res.json();
     return data;
 };
+
+export const getFollowersCount = async (walletId: string) => {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/follow/countFollowers/${walletId}`);
+    if (!res.ok) throw new Error();
+    let result = await res.json() as number;
+    return result;
+};
+
+export const getFollowedCount = async (walletId: string) => {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/follow/countFollowed/${walletId}`);
+    if (!res.ok) throw new Error();
+    let result = await res.json() as number;
+    return result;
+};

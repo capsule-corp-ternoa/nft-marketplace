@@ -4,8 +4,6 @@ export type UserType = {
   banner?: string;
   bio?: string;
   verified: boolean;
-  nbFollowers: number;
-  nbFollowing: number;
   viewsCount?: number;
   walletId: string;
   picture?: string;

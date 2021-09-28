@@ -43,11 +43,8 @@ export const getAccountBalance = async (id: string) => {
 
 export const getUsers = async () => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/users`);
-
   if (!res.ok) throw new Error();
-
   const response: CustomResponse<UserType> = await res.json();
-
   return response;
 };
 
@@ -70,8 +67,8 @@ export const reviewRequested = async (walletId: string) => {
   return userData;
 };
 
-export const likeNFT = async (walletId: string, nftId: string) => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/users/like/?walletId=${walletId}&nftId=${nftId}`, {
+export const likeNFT = async (walletId: string, nftId: string, serieId: string) => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/users/like/?walletId=${walletId}&nftId=${nftId}&serieId=${serieId}`, {
     method: 'POST'
   })
   if (!res.ok) throw new Error();
@@ -79,8 +76,8 @@ export const likeNFT = async (walletId: string, nftId: string) => {
   return user
 }
 
-export const unlikeNFT = async (walletId: string, nftId: string) => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/users/unlike/?walletId=${walletId}&nftId=${nftId}`, {
+export const unlikeNFT = async (walletId: string, nftId: string, serieId: string) => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/users/unlike/?walletId=${walletId}&nftId=${nftId}&serieId=${serieId}`, {
     method: 'POST'
   })
   if (!res.ok) throw new Error();

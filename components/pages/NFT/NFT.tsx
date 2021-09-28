@@ -98,9 +98,9 @@ const NFTPage: React.FC<NFTPageProps> = ({
       if (!likeLoading && user) {
         setLikeLoading(true);
         if (!isLiked) {
-          res = await likeNFT(user.walletId, NFT.id);
+          res = await likeNFT(user.walletId, NFT.id, NFT.serieId);
         } else {
-          res = await unlikeNFT(user.walletId, NFT.id);
+          res = await unlikeNFT(user.walletId, NFT.id, NFT.serieId);
         }
       }
       if (res !== null) setUser({ ...user, ...res });

@@ -93,15 +93,15 @@ const NftCard: React.FC<NftCardProps> = ({
 
   const isMobile = useMediaQuery({ query: '(max-device-width: 720px)' });
 
-  const handleLikeDislike = async (nftId: string) => {
+  const handleLikeDislike = async (nftId: string, serieId: string) => {
     try{
       let res = null
       if (!likeLoading && isLiked !== undefined && user){
         setLikeLoading(true)
         if (!isLiked){
-          res = await likeNFT(user.walletId, nftId)
+          res = await likeNFT(user.walletId, nftId, serieId)
         }else{
-          res = await unlikeNFT(user.walletId, nftId)
+          res = await unlikeNFT(user.walletId, nftId, serieId)
         }
       }
       if (res !== null && setUser){
@@ -167,7 +167,7 @@ const NftCard: React.FC<NftCardProps> = ({
               : 
                 style.Hide
             }
-            onClick={(e) => {e.stopPropagation(); handleLikeDislike(item.id);}}
+            onClick={(e) => {e.stopPropagation(); handleLikeDislike(item.id, item.serieId);}}
           >
             <Heart className={style.HeartSVG} />
           </div>

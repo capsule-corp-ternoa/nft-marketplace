@@ -12,7 +12,7 @@ import FloatingMenu from './FloatingMenu';
 import Edit from './Edit';
 import Switch from 'react-switch';
 import { NftType, UserType } from 'interfaces';
-import { follow, unfollow, isUserFollowing } from 'actions/follower';
+import { follow, unfollow, isUserFollowing, getFollowersCount } from 'actions/follower';
 import { getUserNFTsStat } from 'actions/nft';
 
 export interface ProfileProps {
@@ -110,17 +110,20 @@ const Profile: React.FC<ProfileProps> = ({
   const [countCreated, setCountOwnedCreated] = useState(0)
   const [countFollowers, setCountFollowers] = useState(0)
   const [countFollowed, setCountFollowed] = useState(0)
+  const [followersNbFollowers, setFollowersNbFollowers] = useState({} as any)
 
   const setCounts = async () => {
     try{
       if (user){
         let userStat = await getUserNFTsStat(user.walletId, true)
-        userStat.countOwned && setCountOwned(userStat.countOwned)
-        userStat.countOwnedListed && setCountOwnedListed(userStat.countOwnedListed)
-        userStat.countOwnedUnlisted && setCountOwnedUnlisted(userStat.countOwnedUnlisted)
-        userStat.countCreated && setCountOwnedCreated(userStat.countCreated)
-        userStat.countFollowers && setCountFollowers(userStat.countFollowers)
-        userStat.countFollowed && setCountFollowed(userStat.countFollowed)
+        if (userStat){
+          userStat.countOwned && setCountOwned(userStat.countOwned)
+          userStat.countOwnedListed && setCountOwnedListed(userStat.countOwnedListed)
+          userStat.countOwnedUnlisted && setCountOwnedUnlisted(userStat.countOwnedUnlisted)
+          userStat.countCreated && setCountOwnedCreated(userStat.countCreated)
+          userStat.countFollowers && setCountFollowers(userStat.countFollowers)
+          userStat.countFollowed && setCountFollowed(userStat.countFollowed)
+        }
       }
     }catch(err){
       console.log(err)
@@ -139,6 +142,23 @@ const Profile: React.FC<ProfileProps> = ({
         followBacksTemp[i] = res.isFollowing
       })
       setFollowBacks(followBacksTemp)
+    }catch(err){
+      console.log(err)
+    }
+  }
+
+  const initFollowerStat = async () => {
+    try{
+      const followersCountTemp = {...followersNbFollowers}
+      followers.forEach(async (x)=>{
+        const followersCount = await getFollowersCount(x.walletId)
+        followersCountTemp[x.walletId] = followersCount ? followersCount : 0
+      })
+      followed.forEach(async (x)=>{
+        const followersCount = await getFollowersCount(x.walletId)
+        followersCountTemp[x.walletId] = followersCount ? followersCount : 0
+      })
+      setFollowersNbFollowers(followersCountTemp)
     }catch(err){
       console.log(err)
     }
@@ -169,6 +189,12 @@ const Profile: React.FC<ProfileProps> = ({
           setCountFollowed(countFollowed+1)
         }
         await getFollowBacks()
+        if (res.walletId){
+          const newNbFollowers = await getFollowersCount(res.walletId)
+          const newFollowersNbFollowers = {...followersNbFollowers }
+          newFollowersNbFollowers[res.walletId] = !isNaN(newNbFollowers) ? newNbFollowers : 0
+          setFollowersNbFollowers(newFollowersNbFollowers)
+        }
       }
     } catch (err) {
       console.error(err);
@@ -181,10 +207,10 @@ const Profile: React.FC<ProfileProps> = ({
       router.query = {};
     }
   }, [router.query]);
-
   
   useEffect(() => {
     setCounts()
+    initFollowerStat()
   }, []);
 
   useEffect(() => {
@@ -445,7 +471,7 @@ const Profile: React.FC<ProfileProps> = ({
               </a>
             </Link>
             <span className={style.CreatorFollowers}>
-              {item.nbFollowers} followers
+              {followersNbFollowers[item.walletId] ? followersNbFollowers[item.walletId] : 0} followers
             </span>
             {scope === 'Followers' ? (
               <div

@@ -27,22 +27,22 @@ const Details: React.FC<DetailsProps> = ({
   const [currentTab, setCurrentTab] = useState('info');
   const [usersData, setUsersData] = useState({} as any);
   const [serieDataGrouped, setSerieDataGrouped] = useState([] as NftType[]);
-  const [ownerNftsCount, setOwnerNftsCount] = useState({} as any);
+  //const [ownerNftsCount, setOwnerNftsCount] = useState({} as any);
   const [serieDataCount, setSerieDataCount] = useState({} as any);
   const bgGradient = { background: gradient(NFT.ownerData.name) };
   const serieData = NFT?.serieData ? NFT.serieData : [];
 
   useEffect(() => {
     const serieDataGroupedArray = [] as NftType[];
-    const ownerNftsCountObject = {} as any;
+    //const ownerNftsCountObject = {} as any;
     const serieDataCountObject = {} as any;
     serieData.forEach((x) => {
-      // Count owned by owner
+      /*// Count owned by owner
       if (!ownerNftsCountObject[x.owner]) {
         ownerNftsCountObject[x.owner] = 1;
       } else {
         ownerNftsCountObject[x.owner] += 1;
-      }
+      }*/
       // Compute rows to display && count number of listed / unlisted for each row
       const key = `${x.owner}-${x.listed}-${x.price}-${x.marketplaceId}`;
       if (!serieDataCountObject[key]) {
@@ -60,7 +60,7 @@ const Details: React.FC<DetailsProps> = ({
       }
     });
     setSerieDataGrouped(serieDataGroupedArray);
-    setOwnerNftsCount(ownerNftsCountObject);
+    //setOwnerNftsCount(ownerNftsCountObject);
     setSerieDataCount(serieDataCountObject);
   }, [serieData]);
 
@@ -171,15 +171,16 @@ const Details: React.FC<DetailsProps> = ({
                 </span>
               </div>
               <div className={styleDetails.ownerDatasSales}>
-                {NFTRowListed === 0
-                  ? `${serieDataCount[key]} edition${
-                      serieDataCount[key] > 1 ? 's' : ''
-                    } not for sale`
-                  : NFTRowListed === 1 && NFTRowMarketplaceId === MARKETPLACE_ID
-                  ? `${serieDataCount[key]}/${
-                      ownerNftsCount[NFTRowOwner]
-                    } on sale for ${computeCaps(Number(NFTRowPrice))} CAPS ${serieDataCount[key] > 1 ? "each" : ""}`
-                  : `${serieDataCount[key]}/${ownerNftsCount[NFTRowOwner]} on sale on other marketplace(s)`}
+                {NFTRowListed === 0 ? 
+                  `${serieDataCount[key]} edition${serieDataCount[key] > 1 ? 's' : ''} not for sale`
+                : NFTRowListed === 1 && NFTRowMarketplaceId === MARKETPLACE_ID ? 
+                  `${serieDataCount[key]}${""/*/${ownerNftsCount[NFTRowOwner]}*/} on sale for ${computeCaps(Number(NFTRowPrice))} CAPS ${serieDataCount[key] > 1 ? 
+                      "each" 
+                    : 
+                      ""
+                    }`
+                  : 
+                    `${serieDataCount[key]}${""/*/${ownerNftsCount[NFTRowOwner]}*/} on sale on other marketplace(s)`}
               </div>
             </div>
           </a>

@@ -80,13 +80,13 @@ const NFTPage: React.FC<NFTPageProps> = ({
       )[0];
   const userCanBuyCaps = user
     ? user.capsAmount &&
+      smallestPriceRow.listed &&
       smallestPriceRow.price &&
       smallestPriceRow.price !== '' &&
       Number(user.capsAmount) >= Number(smallestPriceRow.price) &&
       user.walletId !== smallestPriceRow.owner
     : true;
-  //const userCanBuyTiime = user ? user.tiimeAmount && smallestPriceRow.priceTiime && smallestPriceRow.priceTiime !== "" && (Number(smallestPriceRow.tiimeAmount) >= Number(smallestPriceRow.priceTiime)) && user.walletId !== smallestPriceRow.owner : true
-  const userCanBuy = userCanBuyCaps; // || userCanBuyTiime
+  const userCanBuy = userCanBuyCaps;
 
   useEffect(() => {
     setNftToBuy(smallestPriceRow);

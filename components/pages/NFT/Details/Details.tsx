@@ -128,6 +128,7 @@ const Details: React.FC<DetailsProps> = ({
     const key = `${NFTRowOwner}-${NFTRowListed}-${NFTRowPrice}-${NFTRowMarketplaceId}`;
     const userCanBuyCaps = user
       ? user.capsAmount &&
+        NFTRowListed===1 &&
         NFTRowPrice &&
         NFTRowPrice !== '' &&
         Number(user.capsAmount) >= Number(NFTRowPrice) &&

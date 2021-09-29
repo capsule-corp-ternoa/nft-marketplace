@@ -43,7 +43,6 @@ To run this project, you will need to add the following environment variables to
 | VARIABLE | VALUE | USAGE |
 | :---|---|--- |
 | NEXT_PUBLIC_NODE_API | https://your-api-deployed.com | URL of the api |
-| NEXT_PUBLIC_SOCKETIO_URL | https://your-api-deployed.com | URL of the api that handles socket, for now it's the same |
 | NEXT_PUBLIC_IS_NFT_CREATION_ENABLED | true or false | Enable or disable the creation of NFT |
 | NEXT_PUBLIC_SECRET_COOKIE | AStrongPassword101 | Secure the cookie on the app |
 | NEXT_PUBLIC_SENTRY_DSN | https://projectId@sentry.io/x | The url to your sentry project if you want to monitor activity |

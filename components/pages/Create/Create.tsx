@@ -85,7 +85,7 @@ const Create: React.FC<CreateProps> = ({
       );
     else if (NFTarg!.type.substr(0, 5) === 'video')
       return (
-        <video autoPlay muted playsInline loop className={style.IMGBackground}>
+        <video autoPlay muted playsInline loop className={style.IMGBackground} key={NFTarg.name+NFTarg.lastModified}>
           <source
             id="outputVideo"
             src={URL.createObjectURL(NFTarg)}

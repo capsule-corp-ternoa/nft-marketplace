@@ -58,6 +58,7 @@ const ModalMint: React.FC<ModalProps> = ({
     socket.on('CONNECTION_FAILURE', (data) => setError(data.msg));
     socket.on('PGPS_READY', async ({ publicPgpKeys }) => {
       socket.emit('PGPS_READY_RECEIVED')
+      setShowQR(false)
       const { nftUrls, seriesId } = await uploadNFT(publicPgpKeys)
       socket.emit('RUN_NFT_MINT', {nftUrls, seriesId})
     });
@@ -84,7 +85,7 @@ const ModalMint: React.FC<ModalProps> = ({
     setIsRN(window.isRNApp);
   }, []);
   useEffect(() => {
-    console.log('showQR', showQR);
+    //console.log('showQR', showQR);
     if (showQR) {
       handleMintSocketProcess()
     }

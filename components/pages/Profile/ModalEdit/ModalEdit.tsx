@@ -55,8 +55,8 @@ const ModalEdit: React.FC<ModalEditProps> = ({ setModalExpand, data }) => {
       socket.close();
       setTimeout(() => {
         setModalExpand(false);
-        router.push("/profile?scope=edit")
-      }, 2000)
+        router.reload()
+      }, 1000)
     });
     socket.on('disconnect', () => {
       setModalExpand(false);

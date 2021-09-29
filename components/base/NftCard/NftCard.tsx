@@ -44,14 +44,12 @@ const NftCard: React.FC<NftCardProps> = ({
   const [type, setType] = useState<string | null>(null);
   const [likeLoading, setLikeLoading] = useState(false)
   const isLiked = !user ? undefined : (item.serieId === "0" ? user.likedNFTs?.map(x => x.nftId).includes(item.id) : user.likedNFTs?.map(x => x.serieId).includes(item.serieId))
-  const smallestPriceRow = !item.serieData
-  ? item
-  : item.serieData.filter(x=>x.marketplaceId === MARKETPLACE_ID).sort(
-      (a, b) =>
-        b.listed - a.listed ||
-        Number(a.price) - Number(b.price) ||
-        Number(a.priceTiime) - Number(b.priceTiime)
-    )[0];
+  const smallestPriceRow = !(item.serieData) ? item : item.serieData.filter(x=>x.marketplaceId === MARKETPLACE_ID).sort(
+    (a, b) =>
+      b.listed - a.listed ||
+      Number(a.price) - Number(b.price) ||
+      Number(a.priceTiime) - Number(b.priceTiime)
+  )[0];
   const displayQuantity = () => {
     if (!scope) return `${typeof item.totalListedNft !== 'undefined' ? item.totalListedNft : 1}`
     switch(scope){
@@ -197,7 +195,7 @@ const NftCard: React.FC<NftCardProps> = ({
               </div>
             )}
           </div>
-          {(smallestPriceRow.listed && ((smallestPriceRow.price && Number(smallestPriceRow.price)>0) || (smallestPriceRow.priceTiime && Number(smallestPriceRow.priceTiime)))) &&
+          {(smallestPriceRow && smallestPriceRow.listed && ((smallestPriceRow.price && Number(smallestPriceRow.price)>0) || (smallestPriceRow.priceTiime && Number(smallestPriceRow.priceTiime)))) &&
             <div className={isHovering ? `${style.Button} ${style.FadeLong}` : style.Button}>
               <div className={style.Price}>
                 {smallestPriceRow.price && Number(smallestPriceRow.price)>0 &&

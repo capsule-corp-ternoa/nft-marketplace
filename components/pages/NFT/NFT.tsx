@@ -209,6 +209,7 @@ const NFTPage: React.FC<NFTPageProps> = ({
             <div className={style.Buy}>
               <div
                 onClick={() =>
+                  smallestPriceRow && 
                   smallestPriceRow.listed &&
                   userCanBuy && 
                   handleBuy()

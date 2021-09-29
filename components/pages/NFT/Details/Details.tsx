@@ -177,7 +177,7 @@ const Details: React.FC<DetailsProps> = ({
                   : NFTRowListed === 1 && NFTRowMarketplaceId === MARKETPLACE_ID
                   ? `${serieDataCount[key]}/${
                       ownerNftsCount[NFTRowOwner]
-                    } on sale for ${computeCaps(Number(NFTRowPrice))} CAPS each`
+                    } on sale for ${computeCaps(Number(NFTRowPrice))} CAPS ${serieDataCount[key] > 1 ? "each" : ""}`
                   : `${serieDataCount[key]}/${ownerNftsCount[NFTRowOwner]} on sale on other marketplace(s)`}
               </div>
             </div>

@@ -49,11 +49,11 @@ export const getUsers = async () => {
 };
 
 export const getUsersByWalletIds = async (walletIds: string[]) => {
-  if (walletIds.length === 0) return []
+  if (walletIds.length === 0) return {totalCount:0, data:[]}
   const query = `?walletIds=${walletIds.join("&walletIds=")}`
   const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/users/getUsers${query}`);
   if (!res.ok) throw new Error();
-  const response: UserType[] = await res.json();
+  const response: CustomResponse<UserType> = await res.json();
   return response;
 };
 

@@ -94,8 +94,8 @@ const Details: React.FC<DetailsProps> = ({
     try {
       let users = await getUsersByWalletIds(walletIds);
       let usersObject = {} as any;
-      if (users && users.length > 0) {
-        users.forEach((u) => {
+      if (users && users.data.length > 0) {
+        users.data.forEach((u) => {
           usersObject[u.walletId] = u;
         });
         setUsersData({ ...usersData, ...usersObject });

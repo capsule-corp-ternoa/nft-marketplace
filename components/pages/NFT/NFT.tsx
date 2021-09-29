@@ -153,11 +153,11 @@ const NFTPage: React.FC<NFTPageProps> = ({
             <div className={style.Top}>
               <div className={style.TopInfosCreator}>
                 <div className={style.TopInfosCreatorPicture}>
-                  {NFT.ownerData?.picture || NFT.ownerData?.name ? (
+                  {NFT.creatorData?.picture || NFT.creatorData?.name ? (
                     <Creator
                       className={style.TopInfosCreatorPictureIMG}
                       size={'fullwidth'}
-                      user={NFT.ownerData}
+                      user={NFT.creatorData}
                     />
                   ) : (
                     <div
@@ -168,9 +168,9 @@ const NFTPage: React.FC<NFTPageProps> = ({
                 </div>
                 <div className={style.TopInfosCreatorName}>
                   {NFT.creatorData.name}
-                  <span className={style.ownerTwitterUsername}>
-                    {NFT.ownerData?.twitterName
-                      ? NFT.ownerData.twitterName
+                  <span className={style.creatorTwitterUsername}>
+                    {NFT.creatorData?.twitterName
+                      ? NFT.creatorData.twitterName
                       : null}
                   </span>
                 </div>

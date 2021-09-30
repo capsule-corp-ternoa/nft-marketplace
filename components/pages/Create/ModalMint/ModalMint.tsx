@@ -7,6 +7,7 @@ import QRCode from 'components/base/QRCode';
 import CheckMark from 'components/assets/checkmark';
 import { useRouter } from 'next/router'
 import { connect as connectIo } from 'utils/socket/socket.helper';
+import { SOCKET_URL } from 'utils/constant';
 
 export interface ModalProps {
   setModalCreate: (b: boolean) => void;
@@ -38,11 +39,11 @@ const ModalMint: React.FC<ModalProps> = ({
 
   const handleMintSocketProcess = () => {
     console.log('socket connect on session', session);
-    const socket = connectIo(`/socket/createNft`, { session }, undefined, 5 * 60 * 1000);
+    const socket = connectIo(`/socket/createNft`, { session, socketUrl: SOCKET_URL }, undefined, 5 * 60 * 1000);
 
     socket.on('CONNECTION_SUCCESS', () => {
       if (isRN) {
-        const data = { session, walletId, quantity};
+        const data = { session, socketUrl: SOCKET_URL, walletId, quantity};
         setTimeout(function () {
           window.ReactNativeWebView.postMessage(JSON.stringify({ action: 'MINT', data }));
         }, 2000);
@@ -109,7 +110,7 @@ const ModalMint: React.FC<ModalProps> = ({
               {showQR && (
                 <div className={style.QR}>
                   <QRCode
-                    data={{ session, walletId, quantity }}
+                    data={{ session, socketUrl: SOCKET_URL, walletId, quantity }}
                     action={'MINT'}
                   />
                 </div>

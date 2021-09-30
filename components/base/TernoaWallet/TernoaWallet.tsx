@@ -8,6 +8,7 @@ import Cookies from 'js-cookie';
 import { onModelClose } from 'utils/model-helpers';
 import { connect as connectIo } from 'utils/socket/socket.helper';
 import { encryptCookie } from 'utils/cookie';
+import { SOCKET_URL } from 'utils/constant'; 
 
 export interface TernoaWalletProps {
   setModalExpand: (b: boolean) => void;
@@ -20,7 +21,7 @@ const TernoaWallet: React.FC<TernoaWalletProps> = ({ setModalExpand }) => {
 
   useEffect(() => {
     console.log('socket connect on session', session);
-    const socket = connectIo(`/socket/login`,{ session });
+    const socket = connectIo(`/socket/login`,{ session, socketUrl: SOCKET_URL });
 
     socket.on('CONNECTION_SUCCESS', () => {
       setShowQR(true);
@@ -69,7 +70,7 @@ const TernoaWallet: React.FC<TernoaWalletProps> = ({ setModalExpand }) => {
         </div>
         <div className={style.QR}>
           {showQR ? (
-            <QRCode data={{ session }} action={'LOGIN'} />
+            <QRCode data={{ session, socketUrl: SOCKET_URL }} action={'LOGIN'} />
           ) : (
               <div className={style.Loading}>
                 <span className={style.Dot}></span>

@@ -137,7 +137,6 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
       const publicPGPsIPFS = cryptResults.map((r: any) => r[1]);
       const results = cryptNFTsJSONs.map((result, i) => {
         const data = {
-          seriesId: (seriesId ? seriesId : 0),
           name,
           description,
           publicPGP: publicPGPsIPFS[i].url,

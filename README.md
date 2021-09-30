@@ -35,7 +35,7 @@ npm run build
 ```
 
 ## Information
-Secret NFT's code rely most on its api to get the data for its users and nfts. Don't hesitate to have a look on it on our organisation [github](https://github.com/capsule-corp-ternoa.)
+Secret NFT's code relies on its api to get the data for its users and nfts. Don't hesitate to have a look on it on our organisation [github](https://github.com/capsule-corp-ternoa.)
 
 ## Environment variables
 To run this project, you will need to add the following environment variables to your .env file

@@ -126,15 +126,16 @@ const Details: React.FC<DetailsProps> = ({
       usersData[NFTRowOwner] ? usersData[NFTRowOwner] : null
     ) as UserType;
     const key = `${NFTRowOwner}-${NFTRowListed}-${NFTRowPrice}-${NFTRowMarketplaceId}`;
-    const userCanBuyCaps = user
-      ? user.capsAmount &&
-        NFTRowListed===1 &&
-        NFTRowPrice &&
-        NFTRowPrice !== '' &&
-        Number(user.capsAmount) >= Number(NFTRowPrice) &&
-        user.walletId !== NFTRowOwner
-      : true;
-    const userCanBuy = userCanBuyCaps;
+    const userCanBuy = user ? 
+      user.capsAmount &&
+      NFTRow &&
+      NFTRowListed===1 &&
+      NFTRowPrice &&
+      NFTRowPrice !== '' &&
+      Number(user.capsAmount) >= Number(NFTRowPrice) &&
+      user.walletId !== NFTRowOwner
+    : 
+      NFTRowListed===1 ;
     return (
       <div
         className={styleDetails.owners}
@@ -192,7 +193,7 @@ const Details: React.FC<DetailsProps> = ({
             }`}
             onClick={() => userCanBuy && NFTRow && handleCustomBuy(NFTRow)}
           >
-            Buy
+            {(user && user.walletId) !== NFTRowOwner ? "Buy" : "Owned"}
           </div>
         </div>
       </div>

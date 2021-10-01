@@ -83,7 +83,7 @@ const Explore: React.FC<ExploreProps> = ({
                 Load more
               </div>
             ) : (
-              <div className={style.disabledButton}>
+              <div className={style.DisabledButton}>
                 Loading...
               </div>
             )}

@@ -323,7 +323,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
     );
     promises.push(
       new Promise<void>((success) => {
-        getOwnedNFTS(token, true)
+        getOwnedNFTS(token, false)
           .then((result) => {
             owned = result.data;
             ownedHasNextPage = result.hasNextPage || false;

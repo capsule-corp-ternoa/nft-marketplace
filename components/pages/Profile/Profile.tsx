@@ -332,7 +332,7 @@ const Profile: React.FC<ProfileProps> = ({
                         Load more
                       </div>
                     ) : (
-                      <div className={style.disabledButton}>Loading...</div>
+                      <div className={style.DisabledButton}>Loading...</div>
                     )}
                   </>
                 )}
@@ -370,7 +370,7 @@ const Profile: React.FC<ProfileProps> = ({
                         Load more
                       </div>
                     ) : (
-                      <div className={style.disabledButton}>Loading...</div>
+                      <div className={style.DisabledButton}>Loading...</div>
                     )}
                   </>
                 )}
@@ -388,7 +388,7 @@ const Profile: React.FC<ProfileProps> = ({
                         Load more
                       </div>
                     ) : (
-                      <div className={style.disabledButton}>Loading...</div>
+                      <div className={style.DisabledButton}>Loading...</div>
                     )}
                   </>
                 )}
@@ -406,7 +406,7 @@ const Profile: React.FC<ProfileProps> = ({
                         Load more
                       </div>
                     ) : (
-                      <div className={style.disabledButton}>Loading...</div>
+                      <div className={style.DisabledButton}>Loading...</div>
                     )}
                   </>
                 )}
@@ -424,7 +424,7 @@ const Profile: React.FC<ProfileProps> = ({
                         Load more
                       </div>
                     ) : (
-                      <div className={style.disabledButton}>Loading...</div>
+                      <div className={style.DisabledButton}>Loading...</div>
                     )}
                   </>
                 )}
@@ -442,7 +442,7 @@ const Profile: React.FC<ProfileProps> = ({
                         Load more
                       </div>
                     ) : (
-                      <div className={style.disabledButton}>Loading...</div>
+                      <div className={style.DisabledButton}>Loading...</div>
                     )}
                   </>
                 )}

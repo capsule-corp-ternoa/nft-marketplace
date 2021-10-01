@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 import style from './FloatingHeader.module.scss';
@@ -23,7 +23,13 @@ const FloatingHeader: React.FC<FloatingHeaderProps> = ({
   const [, setSearchValue] = useState('' as string);
   const [isExpanded, setIsExpanded] = useState(false);
   const [fullProfile, setFullProfile] = useState(false);
+  const [isRN, setIsRN] = useState(false);
+
   const bgGradient = user ? { background: gradient(user.name) } : {};
+
+  useEffect(() => {
+    if (window) setIsRN(window.isRNApp);
+  });
 
   const updateKeywordSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.currentTarget.value);
@@ -47,9 +53,11 @@ const FloatingHeader: React.FC<FloatingHeaderProps> = ({
             />
           </div>
           <div className={style.Links}>
-            <Link href="/create">
-              <a className={style.Link}>Create</a>
-            </Link>
+            {!isRN && 
+              <Link href="/create">
+                <a className={style.Link}>Create</a>
+              </Link>
+            }
             <Link href="/explore">
               <a className={style.Link}>Explore</a>
             </Link>

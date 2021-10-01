@@ -58,7 +58,7 @@ const PublicProfile: React.FC<PublicProfileProps> = ({
                 Load more
               </div>
             ) : (
-              <div className={style.disabledButton}>Loading...</div>
+              <div className={style.DisabledButton}>Loading...</div>
             )}
           </>
         )}

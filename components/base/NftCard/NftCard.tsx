@@ -61,6 +61,8 @@ const NftCard: React.FC<NftCardProps> = ({
         return `${typeof item.totalListedNft !== 'undefined' ? item.serieData?.filter(x=>x.owner===user?.walletId && x.listed===1).length : 1}`
       case 'My NFTs not for sale':
         return `${(typeof item.totalListedNft !== 'undefined' && typeof item.totalNft !== 'undefined') ? item.serieData?.filter(x=>x.owner===user?.walletId && x.listed===0).length : 1}`
+      case 'Liked': 
+        return 0
       default:
         return `${typeof item.totalListedNft !== 'undefined' ? item.totalListedNft : 1}`
     }

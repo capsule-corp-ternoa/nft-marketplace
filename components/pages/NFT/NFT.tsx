@@ -70,23 +70,26 @@ const NFTPage: React.FC<NFTPageProps> = ({
             : 0),
         0
       );
-  const smallestPriceRow = !NFT.serieData
-    ? NFT
-    : NFT.serieData.filter(x=>x.marketplaceId === MARKETPLACE_ID).sort(
-        (a, b) =>
-          b.listed - a.listed ||
-          Number(a.price) - Number(b.price) ||
-          Number(a.priceTiime) - Number(b.priceTiime)
-      )[0];
-  const userCanBuyCaps = user
-    ? user.capsAmount &&
+  const smallestPriceRow = (!NFT.serieData || NFT.serieData.length<=1) ? 
+    NFT
+  : 
+    NFT.serieData.filter(x=>x.marketplaceId === MARKETPLACE_ID).sort(
+      (a, b) =>
+        (a.owner === b.owner ? 0 : (!user ? 0 : (a.owner===user.walletId ? 1 : (b.owner===user.walletId ? -1 : 0)))) || // take nft which i'm not owner first
+        b.listed - a.listed || //listed first
+        Number(a.price) - Number(b.price) || //lowest price first
+        Number(a.priceTiime) - Number(b.priceTiime) // lower pricetiime first
+    )[0];
+  const userCanBuy = user ? 
+      user.capsAmount &&
+      smallestPriceRow &&
       smallestPriceRow.listed &&
       smallestPriceRow.price &&
       smallestPriceRow.price !== '' &&
       Number(user.capsAmount) >= Number(smallestPriceRow.price) &&
       user.walletId !== smallestPriceRow.owner
-    : true;
-  const userCanBuy = userCanBuyCaps;
+    : 
+      smallestPriceRow ? smallestPriceRow.listed===1 : false;
 
   useEffect(() => {
     setNftToBuy(smallestPriceRow);
@@ -209,18 +212,17 @@ const NFTPage: React.FC<NFTPageProps> = ({
             <div className={style.Buy}>
               <div
                 onClick={() =>
-                  smallestPriceRow && 
-                  smallestPriceRow.listed &&
                   userCanBuy && 
                   handleBuy()
                 }
                 className={
-                  smallestPriceRow.listed && userCanBuy
-                    ? style.Button
-                    : `${style.Button} ${style.Disabled}`
+                  userCanBuy ? 
+                    style.Button
+                  : 
+                    `${style.Button} ${style.Disabled}`
                 }
               >
-                Buy for{' '}
+                Buy {`${smallestPriceRow && (smallestPriceRow.price || smallestPriceRow.priceTiime) ? "for " : ""}`}
                 {smallestPriceRow && (
                   <>
                     {smallestPriceRow.price &&

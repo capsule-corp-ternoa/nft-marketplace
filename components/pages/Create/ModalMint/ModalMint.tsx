@@ -69,8 +69,8 @@ const ModalMint: React.FC<ModalProps> = ({
       setMintResponse(success)
       setTimeout(() => {
         setModalCreate(false);
-        router.back()
-      }, 4000)
+        router.reload()
+      }, 1500)
     });
     socket.on('disconnect', () => {
       setModalCreate(false);
@@ -86,7 +86,6 @@ const ModalMint: React.FC<ModalProps> = ({
     setIsRN(window.isRNApp);
   }, []);
   useEffect(() => {
-    //console.log('showQR', showQR);
     if (showQR) {
       handleMintSocketProcess()
     }

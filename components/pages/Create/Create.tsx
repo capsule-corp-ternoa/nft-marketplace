@@ -48,12 +48,10 @@ const Create: React.FC<CreateProps> = ({
   setProcessed,
 }) => {
   const [exp, setExp] = useState(false);
-  const [isRN, setIsRN] = useState(false);
   const [nftData, setNFTData] = useState({} as NFTProps)
   const { name, description, quantity } = nftData;
 
   useEffect(() => {
-    setIsRN(window.isRNApp);
     setNFTData(initalValue)
   });
 
@@ -325,14 +323,12 @@ const Create: React.FC<CreateProps> = ({
               </div>
             </div>
           </div>
-          {!isRN && (
-            <div 
-              className={`${style.Create} ${!(isDataValid && user) ? style.CreateDisabled : ""}`}
-              onClick={() => isDataValid && user && uploadFiles()}
-            >
-              Create NFT
-            </div>
-          )}
+          <div 
+            className={`${style.Create} ${!(isDataValid && user) ? style.CreateDisabled : ""}`}
+            onClick={() => isDataValid && user && uploadFiles()}
+          >
+            Create NFT
+          </div>
         </div>
       </div>
       <Footer setNotAvailable={setNotAvailable} />

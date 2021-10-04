@@ -6,4 +6,4 @@
 
 Visit [SecretNFT](https://www.secret-nft.com/)
 
-Checkout out our [Gitbook](https://ternoa-2.gitbook.io/marketplace/)
+Checkout our [Gitbook](https://ternoa-2.gitbook.io/marketplace/)

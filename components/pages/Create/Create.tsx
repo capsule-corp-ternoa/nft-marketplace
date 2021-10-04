@@ -129,7 +129,6 @@ const Create: React.FC<CreateProps> = ({
   return (
     <div className={style.Container}>
       <div className={style.Wrapper}>
-        <div className={style.Label}>Coming Soon</div>
         <h2 className={style.Title}>Create NFT</h2>
         <div className={style.InnerContainer}>
           <div className={style.Top}>

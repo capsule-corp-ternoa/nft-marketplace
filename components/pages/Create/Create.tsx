@@ -20,9 +20,9 @@ export interface CreateProps {
   NFTData: NFTProps;
   setNFTData: (o: NFTProps) => void;
   NFT: File | null;
-  setNFT: (f: File) => void;
+  setNFT: (f: File | null) => void;
   secretNFT: File | null;
-  setSecretNFT: (f: File) => void;
+  setSecretNFT: (f: File | null) => void;
   select: string;
   setSelect: (s: string) => void;
   processFile: () => Promise<void>;
@@ -48,12 +48,10 @@ const Create: React.FC<CreateProps> = ({
   setProcessed,
 }) => {
   const [exp, setExp] = useState(false);
-  const [isRN, setIsRN] = useState(false);
   const [nftData, setNFTData] = useState({} as NFTProps)
   const { name, description, quantity } = nftData;
 
   useEffect(() => {
-    setIsRN(window.isRNApp);
     setNFTData(initalValue)
   });
 
@@ -85,7 +83,7 @@ const Create: React.FC<CreateProps> = ({
       );
     else if (NFTarg!.type.substr(0, 5) === 'video')
       return (
-        <video autoPlay muted playsInline loop className={style.IMGBackground}>
+        <video autoPlay muted playsInline loop className={style.IMGBackground} key={NFTarg.name+NFTarg.lastModified}>
           <source
             id="outputVideo"
             src={URL.createObjectURL(NFTarg)}
@@ -95,12 +93,29 @@ const Create: React.FC<CreateProps> = ({
       );
   }
 
+  const updateFile = (event: React.ChangeEvent<HTMLInputElement>, setFunction: (f: File | null) => void) => {
+    const { target } = event;
+    if (target && target.files && target.files[0] && target.files[0].size <= 31000000){
+        if (target.files[0]!.type.substr(0, 5) === 'video' && (select==="Blur" || select==="Protect")) setSelect('Select NFT Option')
+        setFunction(target.files[0]);
+    }else{
+      if (target && target.files && target.files[0] && target.files[0].size > 31000000){
+        setError('Max file size is 30mb.');
+        setModalCreate(true);
+      }
+      setFunction(null)
+      setSelect('Select NFT Option')
+    }
+  }
+
   function uploadFiles() {
     if (
       !name ||
       !description ||
       !quantity ||
       quantity > 10 ||
+      secretNFT === null ||
+      (select === 'Secret' && NFT ===null) ||
       select === 'Select NFT Option'
     ) {
       setError('Please fill the form entirely.');
@@ -127,11 +142,9 @@ const Create: React.FC<CreateProps> = ({
       return false;
     else return true;
   }
-
   return (
     <div className={style.Container}>
       <div className={style.Wrapper}>
-        <div className={style.Label}>Coming Soon</div>
         <h2 className={style.Title}>Create NFT</h2>
         <div className={style.InnerContainer}>
           <div className={style.Top}>
@@ -166,10 +179,7 @@ const Create: React.FC<CreateProps> = ({
                   <input
                     type="file"
                     id="uploadNFT"
-                    onChange={(event) => {
-                      const { target } = event;
-                      if (target && target.files) setSecretNFT(target.files[0]);
-                    }}
+                    onChange={(event) => updateFile(event, setSecretNFT)}
                     className={style.HiddenInput}
                     accept=".jpg, .jpeg, .png, .gif, .mp4"
                   />
@@ -210,10 +220,7 @@ const Create: React.FC<CreateProps> = ({
                       <input
                         type="file"
                         id="uploadSecretNFT"
-                        onChange={(event) => {
-                          const { target } = event;
-                          if (target && target.files) setNFT(target.files[0]);
-                        }}
+                        onChange={(event) => updateFile(event, setNFT)}
                         className={style.HiddenInput}
                         accept=".jpg, .jpeg, .png, .gif, .mp4"
                       />
@@ -325,14 +332,12 @@ const Create: React.FC<CreateProps> = ({
               </div>
             </div>
           </div>
-          {!isRN && (
-            <div 
-              className={`${style.Create} ${!isDataValid ? style.CreateDisabled : ""}`}
-              onClick={() => isDataValid && uploadFiles()}
-            >
-              Create NFT
-            </div>
-          )}
+          <div 
+            className={`${style.Create} ${!(isDataValid && user) ? style.CreateDisabled : ""}`}
+            onClick={() => isDataValid && user && uploadFiles()}
+          >
+            Create NFT
+          </div>
         </div>
       </div>
       <Footer setNotAvailable={setNotAvailable} />

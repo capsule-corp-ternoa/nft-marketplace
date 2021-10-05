@@ -8,7 +8,7 @@ import NotAvailableModal from 'components/base/NotAvailable';
 import SuccessPopup from 'components/base/SuccessPopup';
 import cookies from 'next-cookies';
 import { getUser } from 'actions/user';
-import { getProfileNFTS, getCreatorNFTS } from 'actions/nft';
+import { getOwnedNFTS, getCreatorNFTS } from 'actions/nft';
 import { getFollowers, getFollowed } from 'actions/follower';
 import { getLikedNFTs } from 'actions/user';
 import { NftType, UserType } from 'interfaces';
@@ -96,8 +96,8 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
           (createdCurrentPage + 1).toString()
         );
         setCreatedCurrentPage(createdCurrentPage + 1);
-        setCreatedNftsHasNextPage(result.pageInfo?.hasNextPage || false);
-        setCreatedNfts([...createdNfts, ...result.nodes]);
+        setCreatedNftsHasNextPage(result.hasNextPage || false);
+        setCreatedNfts([...createdNfts, ...result.data]);
         setIsLoading(false);
       }
     } catch (err) {
@@ -108,14 +108,15 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
     setIsLoading(true);
     try {
       if (ownedNftsHasNextPage) {
-        let result = await getProfileNFTS(
+        let result = await getOwnedNFTS(
           walletUser.walletId,
+          false,
           undefined,
           (ownedCurrentPage + 1).toString()
         );
         setOwnedCurrentPage(ownedCurrentPage + 1);
-        setOwnedNftsHasNextPage(result.pageInfo?.hasNextPage || false);
-        setOwnedNfts([...ownedNfts, ...result.nodes]);
+        setOwnedNftsHasNextPage(result.hasNextPage || false);
+        setOwnedNfts([...ownedNfts, ...result.data]);
         setIsLoading(false);
       }
     } catch (err) {
@@ -126,14 +127,15 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
     setIsLoading(true);
     try {
       if (ownedNftsListedHasNextPage) {
-        let result = await getProfileNFTS(
+        let result = await getOwnedNFTS(
           walletUser.walletId,
+          true,
           1,
           (ownedNftsListedCurrentPage + 1).toString()
         );
         setOwnedNftsListedCurrentPage(ownedNftsListedCurrentPage + 1);
-        setOwnedNftsListedHasNextPage(result.pageInfo?.hasNextPage || false);
-        setOwnedNftsListed([...ownedNftsListed, ...result.nodes]);
+        setOwnedNftsListedHasNextPage(result.hasNextPage || false);
+        setOwnedNftsListed([...ownedNftsListed, ...result.data]);
         setIsLoading(false);
       }
     } catch (err) {
@@ -144,14 +146,15 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
     setIsLoading(true);
     try {
       if (ownedNftsUnlistedHasNextPage) {
-        let result = await getProfileNFTS(
+        let result = await getOwnedNFTS(
           walletUser.walletId,
+          false,
           0,
           (ownedNftsUnlistedCurrentPage + 1).toString()
         );
         setOwnedNftsUnlistedCurrentPage(ownedNftsUnlistedCurrentPage + 1);
-        setOwnedNftsUnlistedHasNextPage(result.pageInfo?.hasNextPage || false);
-        setOwnedNftsUnlisted([...ownedNftsUnlisted, ...result.nodes]);
+        setOwnedNftsUnlistedHasNextPage(result.hasNextPage || false);
+        setOwnedNftsUnlisted([...ownedNftsUnlisted, ...result.data]);
         setIsLoading(false);
       }
     } catch (err) {
@@ -167,8 +170,8 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
           (likedCurrentPage + 1).toString()
         );
         setLikedCurrentPage(likedCurrentPage + 1);
-        setLikedNftsHasNextPage(result.pageInfo?.hasNextPage || false);
-        setLikedNfts([...likedNfts, ...result.nodes]);
+        setLikedNftsHasNextPage(result.hasNextPage || false);
+        setLikedNfts([...likedNfts, ...result.data]);
         setIsLoading(false);
       }
     } catch (err) {
@@ -190,9 +193,9 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
         setFollowersCurrentPage(pageToLoad + 1);
         setFollowersUsersHasNextPage(result.hasNextPage || false);
         if (!forceLoad){
-          setFollowersUsers([...followersUsers, ...result.docs]);
+          setFollowersUsers([...followersUsers, ...result.data]);
         }else{
-          setFollowersUsers([...result.docs]);
+          setFollowersUsers([...result.data]);
         }
         setIsLoading(false);
       }
@@ -215,9 +218,9 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
         setFollowedCurrentPage(pageToLoad + 1);
         setFollowedUsersHasNextPage(result.hasNextPage || false);
         if (!forceLoad){
-          setFollowedUsers([...followedUsers, ...result.docs]);
+          setFollowedUsers([...followedUsers, ...result.data]);
         }else{
-          setFollowedUsers([...result.docs]);
+          setFollowedUsers([...result.data]);
         }
         setIsLoading(false);
       }
@@ -311,8 +314,8 @@ export async function getServerSideProps(ctx: NextPageContext) {
       new Promise<void>((success) => {
         getCreatorNFTS(token)
           .then((result) => {
-            created = result.nodes;
-            createdHasNextPage = result.pageInfo?.hasNextPage || false;
+            created = result.data;
+            createdHasNextPage = result.hasNextPage || false;
             success();
           })
           .catch(success);
@@ -320,11 +323,10 @@ export async function getServerSideProps(ctx: NextPageContext) {
     );
     promises.push(
       new Promise<void>((success) => {
-        getProfileNFTS(token)
+        getOwnedNFTS(token, false)
           .then((result) => {
-
-            owned = result.nodes;
-            ownedHasNextPage = result.pageInfo?.hasNextPage || false;
+            owned = result.data;
+            ownedHasNextPage = result.hasNextPage || false;
             success();
           })
           .catch(success);
@@ -332,10 +334,10 @@ export async function getServerSideProps(ctx: NextPageContext) {
     );
     promises.push(
       new Promise<void>((success) => {
-        getProfileNFTS(token, 1)
+        getOwnedNFTS(token, true, 1)
           .then((result) => {
-            ownedListed = result.nodes;
-            ownedListedHasNextPage = result.pageInfo?.hasNextPage || false;
+            ownedListed = result.data;
+            ownedListedHasNextPage = result.hasNextPage || false;
             success();
           })
           .catch(success);
@@ -343,10 +345,10 @@ export async function getServerSideProps(ctx: NextPageContext) {
     );
     promises.push(
       new Promise<void>((success) => {
-        getProfileNFTS(token, 0)
+        getOwnedNFTS(token, false, 0)
           .then((result) => {
-            ownedUnlisted = result.nodes;
-            ownedUnlistedHasNextPage = result.pageInfo?.hasNextPage || false;
+            ownedUnlisted = result.data;
+            ownedUnlistedHasNextPage = result.hasNextPage || false;
             success();
           })
           .catch(success);
@@ -356,8 +358,8 @@ export async function getServerSideProps(ctx: NextPageContext) {
       new Promise<void>((success) => {
         getLikedNFTs(token)
           .then((result) => {
-            liked = result.nodes;
-            likedHasNextPage = result.pageInfo?.hasNextPage || false;
+            liked = result.data;
+            likedHasNextPage = result.hasNextPage || false;
             success();
           })
           .catch(success);
@@ -367,7 +369,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
       new Promise<void>((success) => {
         getFollowers(token)
           .then((result) => {
-            followers = result.docs;
+            followers = result.data;
             followersHasNextPage = result.hasNextPage || false;
             success();
           })
@@ -378,7 +380,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
       new Promise<void>((success) => {
         getFollowed(token)
           .then((result) => {
-            followed = result.docs;
+            followed = result.data;
             followedHasNextPage = result.hasNextPage || false;
             success();
           })

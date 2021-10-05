@@ -4,8 +4,6 @@ export type UserType = {
   banner?: string;
   bio?: string;
   verified: boolean;
-  nbFollowers: number;
-  nbFollowing: number;
   viewsCount?: number;
   walletId: string;
   picture?: string;
@@ -24,7 +22,7 @@ export type NftType = {
   owner: string;
   creator: string;
   listed: number;
-  timeStampList?: string;
+  timestampList?: string;
   uri?: string;
   price: string;
   priceTiime: string;
@@ -42,6 +40,7 @@ export type NftType = {
   itemId: string;
   categories: CategoryType[];
   viewsCount?: number;
+  marketplaceId?: string;
 };
 
 export type CategoryType = {
@@ -57,11 +56,9 @@ export type FollowType = {
   follower: UserType;
 }
 
-export type PaginationType<DataType> = {
-  totalCount: number;
-  pageInfo?: {
-    hasNextPage: boolean;
-    hasPreviousPage: boolean;
-  };
-  nodes: DataType[]
+export type CustomResponse<DataType> = {
+  totalCount?: number;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+  data: DataType[]
 }

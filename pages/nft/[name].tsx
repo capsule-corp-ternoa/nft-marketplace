@@ -27,6 +27,7 @@ export interface NFTPageProps {
 const NftPage: React.FC<NFTPageProps> = ({ user, NFT, capsValue }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [exp, setExp] = useState(0);
+  const [nftToBuy, setNftToBuy] = useState(NFT)
   const [notAvailable, setNotAvailable] = useState(false);
   const [type, setType] = useState<string | null>(null);
   const [walletUser, setWalletUser] = useState(user);
@@ -64,9 +65,9 @@ const NftPage: React.FC<NFTPageProps> = ({ user, NFT, capsValue }) => {
         <meta property="og:image" content={NFT.media.url} />
       </Head>
       {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
-      {[1, 2].indexOf(exp) !== -1 && (
+      {(exp===1 || exp===2) && (
         <ModalShowcase
-          NFT={NFT}
+          NFT={exp === 1 ? NFT : nftToBuy}
           setExp={setExp}
           exp={exp}
           setModalExpand={() => setExp(3)}
@@ -74,7 +75,7 @@ const NftPage: React.FC<NFTPageProps> = ({ user, NFT, capsValue }) => {
           user={walletUser}
         />
       )}
-      {exp === 3 && <ModalBuy setModalExpand={() => setExp(0)} id={NFT.id} />}
+      {exp === 3 && <ModalBuy setModalExpand={() => setExp(0)} id={nftToBuy.id} />}
       {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
 
       <AlphaBanner />
@@ -82,6 +83,7 @@ const NftPage: React.FC<NFTPageProps> = ({ user, NFT, capsValue }) => {
       <NFTPage
         NFT={NFT}
         setExp={setExp}
+        setNftToBuy={setNftToBuy}
         setModalExpand={setModalExpand}
         setNotAvailable={setNotAvailable}
         user={walletUser}

@@ -5,12 +5,14 @@ import QRCode from 'qrcode.react';
 
 interface CodeProps {
   data: {
-    session?: string;
+    session: string;
+    socketUrl: string;
     links?: string[];
     nft_id?: string;
     fileHash?: string;
-    price?: Number;
+    price?: number;
     walletId?: string;
+    quantity?: number;
   };
   action: string;
 }

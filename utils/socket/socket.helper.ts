@@ -1,6 +1,8 @@
 import io, { Socket } from 'socket.io-client';
+import { SOCKET_URL } from 'utils/constant';
+
 export function connect(endPoint: string, query: any, options: any = null, timeout: number = 1 * 60 * 1000): Socket {
-    const socket = io(`${process.env.NEXT_PUBLIC_SOCKETIO_URL}${endPoint}`, {
+    const socket = io(`${SOCKET_URL}${endPoint}`, {
         query,
         transports: ['websocket'],
         forceNew: true,

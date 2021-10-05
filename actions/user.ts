@@ -1,4 +1,4 @@
-import { PaginationType, NftType } from 'interfaces/index';
+import { CustomResponse, NftType, UserType } from 'interfaces/index';
 import { filterNFTs, DEFAULT_LIMIT_PAGINATION } from "./nft";
 
 export const getUser = async (token: string) => {
@@ -20,9 +20,9 @@ export const getUser = async (token: string) => {
   return { ...userData, ...capsData };
 };
 
-export const getProfile = async (id: string, walletId: string | null) => {
+export const getProfile = async (id: string, walletIdViewer: string | null) => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_NODE_API}/api/users/${id}?incViews=${true}&walletIdViewer=${walletId}`
+    `${process.env.NEXT_PUBLIC_NODE_API}/api/users/${id}?incViews=${true}&walletIdViewer=${walletIdViewer}`
   );
 
   if (!res.ok) throw new Error();
@@ -43,12 +43,18 @@ export const getAccountBalance = async (id: string) => {
 
 export const getUsers = async () => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/users`);
-
   if (!res.ok) throw new Error();
+  const response: CustomResponse<UserType> = await res.json();
+  return response;
+};
 
-  const data = await res.json();
-
-  return data.docs;
+export const getUsersByWalletIds = async (walletIds: string[]) => {
+  if (walletIds.length === 0) return {totalCount:0, data:[]}
+  const query = `?walletIds=${walletIds.join("&walletIds=")}`
+  const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/users/getUsers${query}`);
+  if (!res.ok) throw new Error();
+  const response: CustomResponse<UserType> = await res.json();
+  return response;
 };
 
 export const reviewRequested = async (walletId: string) => {
@@ -61,8 +67,8 @@ export const reviewRequested = async (walletId: string) => {
   return userData;
 };
 
-export const likeNFT = async (walletId: string, nftId: string) => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/users/like/?walletId=${walletId}&nftId=${nftId}`, {
+export const likeNFT = async (walletId: string, nftId: string, serieId: string) => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/users/like/?walletId=${walletId}&nftId=${nftId}&serieId=${serieId}`, {
     method: 'POST'
   })
   if (!res.ok) throw new Error();
@@ -70,8 +76,8 @@ export const likeNFT = async (walletId: string, nftId: string) => {
   return user
 }
 
-export const unlikeNFT = async (walletId: string, nftId: string) => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/users/unlike/?walletId=${walletId}&nftId=${nftId}`, {
+export const unlikeNFT = async (walletId: string, nftId: string, serieId: string) => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/users/unlike/?walletId=${walletId}&nftId=${nftId}&serieId=${serieId}`, {
     method: 'POST'
   })
   if (!res.ok) throw new Error();
@@ -82,7 +88,7 @@ export const unlikeNFT = async (walletId: string, nftId: string) => {
 export const getLikedNFTs = async (walletId: string, page: string="1", limit: string=DEFAULT_LIMIT_PAGINATION) => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_NODE_API}/api/users/${walletId}/liked?page=${page}&limit=${limit}`)
   if (!res.ok) throw new Error();
-  let result: PaginationType<NftType> = (await res.json()).nftEntities;
-  result.nodes = filterNFTs(result.nodes)
+  let result: CustomResponse<NftType> = await res.json();
+  result.data = filterNFTs(result.data)
   return result;
 }

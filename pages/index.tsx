@@ -89,28 +89,28 @@ export async function getServerSideProps(ctx: NextPageContext) {
   let users: UserType[] = [], user: UserType | null = null, regularNfts: NftType[] = [], betaNfts: NftType[] = [];
   const promises = [];
   promises.push(new Promise<void>((success) => {
-    getUsers().then(_users => {
-      users = _users
+    getUsers().then(result => {
+      users = result.data
       success();
     }).catch(success);
   }));
   if (token) {
     promises.push(new Promise<void>((success) => {
       getUser(token).then(_user => {
-        user = _user
+      user = _user
         success();
       }).catch(success);
     }));
   }
   promises.push(new Promise<void>((success) => {
     getCategoryNFTs(undefined, "1", "19").then(result => {
-      regularNfts = result.nodes
+      regularNfts = result.data
       success();
     }).catch(success);
   }));
   promises.push(new Promise<void>((success) => {
     getCategoryNFTs(BETA_CODE).then(result => {
-      betaNfts = result.nodes
+      betaNfts = result.data
       success();
     }).catch(success);
   }));

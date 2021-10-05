@@ -23,6 +23,7 @@ const FloatingHeader: React.FC<FloatingHeaderProps> = ({
   const [, setSearchValue] = useState('' as string);
   const [isExpanded, setIsExpanded] = useState(false);
   const [fullProfile, setFullProfile] = useState(false);
+
   const bgGradient = user ? { background: gradient(user.name) } : {};
 
   const updateKeywordSearch = (event: React.ChangeEvent<HTMLInputElement>) => {

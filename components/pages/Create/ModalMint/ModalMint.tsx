@@ -7,6 +7,7 @@ import QRCode from 'components/base/QRCode';
 import CheckMark from 'components/assets/checkmark';
 import { useRouter } from 'next/router'
 import { connect as connectIo } from 'utils/socket/socket.helper';
+import { SOCKET_URL } from 'utils/constant';
 
 export interface ModalProps {
   setModalCreate: (b: boolean) => void;
@@ -15,6 +16,10 @@ export interface ModalProps {
   setError: (s: string) => void;
   output: string[];
   QRData: any;
+  uploadNFT: (publicPGPs: string[]) => Promise<{
+    nftUrls: string[];
+    seriesId: number;
+  }>;
 }
 
 const ModalMint: React.FC<ModalProps> = ({
@@ -23,21 +28,22 @@ const ModalMint: React.FC<ModalProps> = ({
   setError,
   output,
   QRData,
+  uploadNFT,
 }) => {
   const [session] = useState(randomstring.generate());
   const [showQR, setShowQR] = useState(false);
   const [isRN, setIsRN] = useState(false);
   const [mintReponse, setMintResponse] = useState(null)
   const router = useRouter();
-  const { walletId, price, links, fileHash } = QRData;
+  const { walletId, quantity } = QRData;
 
   const handleMintSocketProcess = () => {
     console.log('socket connect on session', session);
-    const socket = connectIo(`/socket/createNft`, { session }, undefined, 5 * 60 * 1000);
+    const socket = connectIo(`/socket/createNft`, { session, socketUrl: SOCKET_URL }, undefined, 5 * 60 * 1000);
 
     socket.on('CONNECTION_SUCCESS', () => {
       if (isRN) {
-        const data = { session, walletId, price, links, fileHash };
+        const data = { session, socketUrl: SOCKET_URL, walletId, quantity};
         setTimeout(function () {
           window.ReactNativeWebView.postMessage(JSON.stringify({ action: 'MINT', data }));
         }, 2000);
@@ -51,15 +57,20 @@ const ModalMint: React.FC<ModalProps> = ({
     });
 
     socket.on('CONNECTION_FAILURE', (data) => setError(data.msg));
+    socket.on('PGPS_READY', async ({ publicPgpKeys }) => {
+      socket.emit('PGPS_READY_RECEIVED')
+      setShowQR(false)
+      const { nftUrls, seriesId } = await uploadNFT(publicPgpKeys)
+      socket.emit('RUN_NFT_MINT', {nftUrls, seriesId})
+    });
     socket.on('MINTING_NFT', ({ success }) => {
-      console.log('MINTING_NFT:' + success);
       socket.emit('MINTING_NFT_RECEIVED')
       socket.close();
       setMintResponse(success)
       setTimeout(() => {
         setModalCreate(false);
-        router.back()
-      }, 4000)
+        router.reload()
+      }, 1500)
     });
     socket.on('disconnect', () => {
       setModalCreate(false);
@@ -75,7 +86,6 @@ const ModalMint: React.FC<ModalProps> = ({
     setIsRN(window.isRNApp);
   }, []);
   useEffect(() => {
-    console.log('showQR', showQR);
     if (showQR) {
       handleMintSocketProcess()
     }
@@ -99,7 +109,7 @@ const ModalMint: React.FC<ModalProps> = ({
               {showQR && (
                 <div className={style.QR}>
                   <QRCode
-                    data={{ session, walletId, price, links, fileHash }}
+                    data={{ session, socketUrl: SOCKET_URL, walletId, quantity }}
                     action={'MINT'}
                   />
                 </div>

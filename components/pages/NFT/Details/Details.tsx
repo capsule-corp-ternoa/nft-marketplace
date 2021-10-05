@@ -133,9 +133,10 @@ const Details: React.FC<DetailsProps> = ({
       NFTRowPrice &&
       NFTRowPrice !== '' &&
       Number(user.capsAmount) >= Number(NFTRowPrice) &&
-      user.walletId !== NFTRowOwner
+      user.walletId !== NFTRowOwner &&
+      NFTRowMarketplaceId === MARKETPLACE_ID
     : 
-      NFTRowListed===1 ;
+      NFTRowListed===1 && NFTRowMarketplaceId === MARKETPLACE_ID ;
     return (
       <div
         className={styleDetails.owners}

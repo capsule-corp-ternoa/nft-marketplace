@@ -10,11 +10,12 @@
   },
   "dependencies": {
     "@polkadot/util-crypto": "^6.2.1",
+    "@sentry/nextjs": "^6.13.2",
     "array-shuffle": "^2.0.0",
     "asmcrypto-lite": "^1.1.0",
     "bufferutil": "^4.0.3",
-    "crypto-js": "^4.1.1",
     "crypto": "^1.0.1",
+    "crypto-js": "^4.1.1",
     "eslint": "^7.24.0",
     "file-to-array-buffer": "^1.0.0",
     "i18next": "^19.9.2",

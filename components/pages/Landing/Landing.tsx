@@ -19,7 +19,6 @@ export interface LandingProps {
   setNotAvailable: (b: boolean) => void;
   popularNfts: NftType[];
   bestSellingNfts: NftType[];
-  betaNfts: NftType[];
   NFTCreators: NftType[];
   totalCountNFT: number;
 }
@@ -31,7 +30,6 @@ const Landing: React.FC<LandingProps> = ({
   users,
   popularNfts,
   bestSellingNfts,
-  betaNfts,
   NFTCreators,
   totalCountNFT,
 }) => {
@@ -40,7 +38,6 @@ const Landing: React.FC<LandingProps> = ({
     <div className={style.Container}>
       <Hero users={users} />
       {totalCountNFT === 0 && <NoNFTComponent/>}
-      <Showcase category="Beta Testers" NFTs={betaNfts} user={walletUser} setUser={setWalletUser}/>
       <Showcase category="Most popular" NFTs={popularNfts} user={walletUser} setUser={setWalletUser} />
       <Showcase category="Best sellers" NFTs={bestSellingNfts} user={walletUser} setUser={setWalletUser}/>
       <ArtCreators NFTs={NFTCreators} creators={users} user={walletUser} setUser={setWalletUser}/>

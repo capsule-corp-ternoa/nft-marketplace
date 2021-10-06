@@ -20,7 +20,6 @@ export interface LandingProps {
   users: UserType[];
   popularNfts: NftType[];
   bestSellingNfts: NftType[];
-  betaNfts: NftType[];
   NFTCreators: NftType[];
   totalCountNFT: number;
 }
@@ -30,7 +29,6 @@ const LandingPage: React.FC<LandingProps> = ({
   users,
   popularNfts,
   bestSellingNfts,
-  betaNfts,
   NFTCreators,
   totalCountNFT,
 }) => {
@@ -75,7 +73,6 @@ const LandingPage: React.FC<LandingProps> = ({
         users={users}
         popularNfts={popularNfts}
         bestSellingNfts={bestSellingNfts}
-        betaNfts={betaNfts}
         NFTCreators={NFTCreators}
         totalCountNFT={totalCountNFT}
       />
@@ -84,9 +81,7 @@ const LandingPage: React.FC<LandingProps> = ({
 };
 export async function getServerSideProps(ctx: NextPageContext) {
   const token = ctx.query.walletId as string || (cookies(ctx).token && decryptCookie(cookies(ctx).token as string));
-  // category code for beta testers NFTs
-  const BETA_CODE = '001';
-  let users: UserType[] = [], user: UserType | null = null, regularNfts: NftType[] = [], betaNfts: NftType[] = [];
+  let users: UserType[] = [], user: UserType | null = null, regularNfts: NftType[] = [];
   const promises = [];
   promises.push(new Promise<void>((success) => {
     getUsers().then(result => {
@@ -108,19 +103,12 @@ export async function getServerSideProps(ctx: NextPageContext) {
       success();
     }).catch(success);
   }));
-  promises.push(new Promise<void>((success) => {
-    getCategoryNFTs(BETA_CODE).then(result => {
-      betaNfts = result.data
-      success();
-    }).catch(success);
-  }));
   await Promise.all(promises);
   users = arrayShuffle(users);
-  betaNfts = arrayShuffle(betaNfts || []).slice(0, 8);
   let popularNfts = arrayShuffle((regularNfts || []).slice(0, 8));
   let bestSellingNfts = arrayShuffle((regularNfts || []).slice(8, 16));
   let NFTCreators = arrayShuffle((regularNfts || []).slice(16, 19));
-  let totalCountNFT = (regularNfts || []).length + (betaNfts || []).length;
+  let totalCountNFT = (regularNfts || []).length;
   return {
     props: {
       user,
@@ -128,7 +116,6 @@ export async function getServerSideProps(ctx: NextPageContext) {
       popularNfts,
       bestSellingNfts,
       NFTCreators,
-      betaNfts,
       totalCountNFT,
     },
   }

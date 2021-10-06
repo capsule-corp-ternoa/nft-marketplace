@@ -50,7 +50,6 @@ const Hero: React.FC<HeroProps> = ({ users }) => {
               id="video"
             >
               <source
-                type="video/mp4"
                 data-reactid=".0.1.0.0.0"
                 src="ternoart.mp4"
               />

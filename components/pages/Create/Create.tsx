@@ -77,7 +77,8 @@ const Create: React.FC<CreateProps> = ({
   }
 
   function returnType(NFTarg: File) {
-    if (NFTarg!.type.substr(0, 5) === 'image')
+    console.log(NFTarg!.type)
+    if (NFTarg!.type.substr(0, 5) === 'image'){
       return (
         <img
           className={style.IMGBackground}
@@ -86,16 +87,16 @@ const Create: React.FC<CreateProps> = ({
           id="output"
         />
       );
-    else if (NFTarg!.type.substr(0, 5) === 'video')
+    } else if (NFTarg!.type.substr(0, 5) === 'video'){
       return (
         <video autoPlay muted playsInline loop className={style.IMGBackground} key={NFTarg.name+NFTarg.lastModified}>
           <source
             id="outputVideo"
             src={URL.createObjectURL(NFTarg)}
-            type="video/mp4"
           />
         </video>
       );
+    }
   }
 
   const updateFile = (event: React.ChangeEvent<HTMLInputElement>, setFunction: (f: File | null) => void) => {
@@ -174,7 +175,7 @@ const Create: React.FC<CreateProps> = ({
                     Click here to upload your file.
                   </div>
                   <div className={style.InsightLight}>
-                    JPEG, JPG, PNG, GIF, or MP4. Max 30mb.
+                    JPEG, JPG, PNG, GIF, MP4 or MOV. Max 30mb.
                   </div>
                 </div>
 
@@ -186,7 +187,7 @@ const Create: React.FC<CreateProps> = ({
                     id="uploadNFT"
                     onChange={(event) => updateFile(event, setSecretNFT)}
                     className={style.HiddenInput}
-                    accept=".jpg, .jpeg, .png, .gif, .mp4"
+                    accept=".jpg, .jpeg, .png, .gif, .mp4, .mov"
                   />
                 </div>
 
@@ -227,7 +228,7 @@ const Create: React.FC<CreateProps> = ({
                         id="uploadSecretNFT"
                         onChange={(event) => updateFile(event, setNFT)}
                         className={style.HiddenInput}
-                        accept=".jpg, .jpeg, .png, .gif, .mp4"
+                        accept=".jpg, .jpeg, .png, .gif, .mp4, .mov"
                       />
                     </div>
                   </label>

@@ -81,8 +81,6 @@ const LandingPage: React.FC<LandingProps> = ({
 };
 export async function getServerSideProps(ctx: NextPageContext) {
   const token = ctx.query.walletId as string || (cookies(ctx).token && decryptCookie(cookies(ctx).token as string));
-  // category code for beta testers NFTs
-  //const BETA_CODE = '001';
   let users: UserType[] = [], user: UserType | null = null, regularNfts: NftType[] = [];
   const promises = [];
   promises.push(new Promise<void>((success) => {

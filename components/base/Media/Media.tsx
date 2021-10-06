@@ -61,7 +61,7 @@ const Media: React.FC<MediaProps & Record<string,any>> = ({
           :
             mediaType === 'video' &&
               <video playsInline autoPlay muted loop {...rest}>
-                <source id="outputVideo" src={mediaSrc} type="video/mp4" />
+                <source id="outputVideo" src={mediaSrc} />
               </video>
         
       }

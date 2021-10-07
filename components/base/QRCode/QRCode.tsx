@@ -13,6 +13,7 @@ interface CodeProps {
     price?: number;
     walletId?: string;
     quantity?: number;
+    uploadSize?: number
   };
   action: string;
 }

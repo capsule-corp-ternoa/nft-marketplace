@@ -27,6 +27,7 @@ export interface NFTProps {
 }
 
 const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
+  const isNftCreationEnabled = process.env.NEXT_PUBLIC_IS_NFT_CREATION_ENABLED===undefined ? true : process.env.NEXT_PUBLIC_IS_NFT_CREATION_ENABLED === 'true'
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
   const [modalCreate, setModalCreate] = useState(false);
@@ -34,27 +35,25 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
   const [processed, setProcessed] = useState(false);
   const [error, setError] = useState('');
   const [output, setOutput] = useState<string[]>([]);
-  const isNftCreationEnabled = process.env.NEXT_PUBLIC_IS_NFT_CREATION_ENABLED===undefined ? true : process.env.NEXT_PUBLIC_IS_NFT_CREATION_ENABLED === 'true'
-
-  const [NFTData, setNFTData] = React.useState<NFTProps>({
+  const [NFT, setNFT] = useState<File | null>(null);
+  const [secretNFT, setSecretNFT] = useState<File | null>(null);
+  const [uploadSize, setUploadSize] = useState(0)
+  const [NFTData, setNFTData] = useState<NFTProps>({
     name: '',
     description: '',
     quantity: 1,
   });
-
-  useEffect(() => {
-    if (!isNftCreationEnabled){
-      Router.push("/")
-    }
-  }, [isNftCreationEnabled])
-
-  const [NFT, setNFT] = useState<File | null>(null);
-  const [secretNFT, setSecretNFT] = useState<File | null>(null);
   const { name, description, quantity } = NFTData;
   const [QRData, setQRData] = useState({
     walletId: user ? user.walletId : '',
     quantity: quantity,
   });
+  
+  useEffect(() => {
+    if (!isNftCreationEnabled){
+      Router.push("/")
+    }
+  }, [isNftCreationEnabled])
 
   useEffect(() => {
     if (processed) {
@@ -66,6 +65,14 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
       }
     }
   }, [processed]);
+
+  useEffect(() => {
+    if (secretNFT && quantity && Number(quantity) > 0){
+      const previewSize = NFT ? NFT.size : secretNFT.size
+      const secretsSize = secretNFT.size * Number(quantity)
+      setUploadSize(previewSize + secretsSize)
+    }
+  }, [quantity, NFT, secretNFT])
 
   async function processFile() {
     try {
@@ -122,20 +129,27 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
     setProcessed(false);
   }
 
-  async function uploadNFT(publicPGPs: string[]) {
+  async function uploadNFT(publicPGPs: string[], setProgressData?: Function) {
     try {
       if (!secretNFT) throw new Error();
-      const { url: previewLink, mediaType } = await uploadIPFS(NFT ? NFT : secretNFT);
+      const { url: previewLink, mediaType } = await uploadIPFS(NFT ? NFT : secretNFT, setProgressData, 0);
       const fileHash = await getFilehash(secretNFT)
       const seriesId = generateSeriesId(fileHash)
       const cryptedMediaType = mime.lookup(secretNFT.name)
+      //Parallel
       const cryptPromises = Array.from({ length: quantity }).map((_x,i) => {
-        return cryptAndUploadNFT(secretNFT, cryptedMediaType as string, publicPGPs[i] as string)
+        return cryptAndUploadNFT(secretNFT, cryptedMediaType as string, publicPGPs[i] as string, setProgressData, 1+i)
       })
       const cryptResults = await Promise.all(cryptPromises);
+      /* SEQUENTIAL
+      const cryptResults = [] as any
+      for (let i=0; i<quantity; i++){
+        const singleResult = await cryptAndUploadNFT(secretNFT, cryptedMediaType as string, publicPGPs[i] as string, setProgressData, 1+i)
+        cryptResults.push(singleResult)
+      }*/
       const cryptNFTsJSONs = cryptResults.map((r: any) => r[0]);
       const publicPGPsIPFS = cryptResults.map((r: any) => r[1]);
-      const results = cryptNFTsJSONs.map((result, i) => {
+      const results = cryptNFTsJSONs.map((result: any, i: number) => {
         const data = {
           name,
           description,
@@ -181,6 +195,7 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
           output={output}
           QRData={QRData}
           uploadNFT={uploadNFT}
+          uploadSize={uploadSize}
         />
       )}
       <AlphaBanner />

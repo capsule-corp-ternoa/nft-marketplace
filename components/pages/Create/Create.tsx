@@ -48,17 +48,13 @@ const Create: React.FC<CreateProps> = ({
   setProcessed,
 }) => {
   const [exp, setExp] = useState(false);
-  const [nftData, setNFTData] = useState({} as NFTProps)
+  const [nftData, setNFTData] = useState(initalValue)
   const [isRN, setIsRN] = useState(false)
   const { name, description, quantity } = nftData;
 
   useEffect(() => {
     setIsRN(window.isRNApp);
   }, []);
-
-  useEffect(() => {
-    setNFTData(initalValue)
-  });
 
   const validateQuantity = (value: number, limit: number) => {
     return (value && value > 0 && value <= limit)
@@ -77,7 +73,6 @@ const Create: React.FC<CreateProps> = ({
   }
 
   function returnType(NFTarg: File) {
-    console.log(NFTarg!.type)
     if (NFTarg!.type.substr(0, 5) === 'image'){
       return (
         <img

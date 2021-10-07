@@ -80,17 +80,18 @@ const ModalMint: React.FC<ModalProps> = ({
     });
 
     socket.on('CONNECTION_FAILURE', (data) => {
+      console.error('connection failure socket', data)
       setError(data.msg)
     });
     socket.on('PGPS_READY', async ({ publicPgpKeys }) => {
       socket.emit('PGPS_READY_RECEIVED')
       setShowQR(false)
-      //handle progress bar
       setShowProgress(true)
-      //start timer to calculate speed (v=d/t)
       setStartUploadTime(new Date())
       const { nftUrls, seriesId } = await uploadNFT(publicPgpKeys, setProgressData)
       socket.emit('RUN_NFT_MINT', {nftUrls, seriesId})
+      setShowProgress(false)
+      setProgressData([])
     });
     socket.on('MINTING_NFT', ({ success }) => {
       socket.emit('MINTING_NFT_RECEIVED')
@@ -169,10 +170,10 @@ const ModalMint: React.FC<ModalProps> = ({
           )}
           {(mintReponse === true) && <div className={style.Text}>
             Mint was added to the blockchain.
-            </div>}
+          </div>}
           {(mintReponse === false) && <div className={style.Text}>
             Mint was not added to the blockchain.
-            </div>}
+          </div>}
         </>
       );
     } else {

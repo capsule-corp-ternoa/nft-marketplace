@@ -1,6 +1,7 @@
 import { CustomResponse, NftType, UserType } from 'interfaces/index';
 import { filterNFTs } from "./nft";
 import { DEFAULT_LIMIT_PAGINATION, NODE_API_URL } from "../utils/constant";
+import Cookies from 'js-cookie';
 
 export const getUser = async (token: string) => {
   const res = await fetch(
@@ -59,31 +60,48 @@ export const getUsersByWalletIds = async (walletIds: string[]) => {
 };
 
 export const reviewRequested = async (walletId: string) => {
+  const cookie = Cookies.get("token")
+  if(cookie){
   const res = await fetch(`${NODE_API_URL}/api/users/reviewRequested/${walletId}`,{
-    method: 'PATCH'
+    method: 'PATCH',
+    body:JSON.stringify({cookie}),
   });
-
   if (!res.ok) throw new Error();
   const userData = await res.json();
   return userData;
+  }else{
+    throw new Error("Unvalid authentication");
+  }  
 };
 
 export const likeNFT = async (walletId: string, nftId: string, serieId: string) => {
+  const cookie = Cookies.get("token")
+  if(cookie){
   const res = await fetch(`${NODE_API_URL}/api/users/like/?walletId=${walletId}&nftId=${nftId}&serieId=${serieId}`, {
-    method: 'POST'
+    method: 'POST',
+    body:JSON.stringify({cookie}),
   })
   if (!res.ok) throw new Error();
   const user = await res.json()
   return user
+  }else{
+    throw new Error("Unvalid authentication");
+  }
 }
 
 export const unlikeNFT = async (walletId: string, nftId: string, serieId: string) => {
+  const cookie = Cookies.get("token")
+  if(cookie){
   const res = await fetch(`${NODE_API_URL}/api/users/unlike/?walletId=${walletId}&nftId=${nftId}&serieId=${serieId}`, {
-    method: 'POST'
+    method: 'POST',
+    body:JSON.stringify({cookie}),
   })
   if (!res.ok) throw new Error();
   const user = await res.json()
   return user
+  }else{
+    throw new Error("Unvalid authentication");
+  }
 }
 
 export const getLikedNFTs = async (walletId: string, page: string="1", limit: string=DEFAULT_LIMIT_PAGINATION) => {

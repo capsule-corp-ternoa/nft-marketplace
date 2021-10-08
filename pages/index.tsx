@@ -37,7 +37,6 @@ const LandingPage: React.FC<LandingProps> = ({
   const [walletUser, setWalletUser] = useState<UserType | null>(user);
 
   useEffect(() => {
-    Cookies.set('token', encryptCookie("5G44prPMx98H3VVd627UQmRywBgeHXiTgiCgGeHKX64ovic8"), { expires: 1 })
     const params = new URLSearchParams(window.location.search);
     if (window.isRNApp && window.walletId && (!Cookies.get('token') || decryptCookie(Cookies.get('token') as string)!==window.walletId)){
       if (params.get('walletId') && params.get('walletId')!==window.walletId){

@@ -143,7 +143,7 @@ const Details: React.FC<DetailsProps> = ({
         key={NFTRowId}
         style={{ ...style, height: (style?.height as any) - GUTTER_SIZE }}
       >
-        <Link href={`/${NFT.ownerData.walletId}`}>
+        <Link href={`/${NFTRowOwner}`}>
           <a className={styleDetails.owner}>
             <div className={styleDetails.ownerBadge}>Owner</div>
             <div className={styleDetails.ownerProfile}>

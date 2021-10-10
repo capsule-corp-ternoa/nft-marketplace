@@ -92,6 +92,22 @@ const ModalMint: React.FC<ModalProps> = ({
       socket.emit('RUN_NFT_MINT', {nftUrls, seriesId})
       setShowProgress(false)
       setProgressData([])
+      /*try{
+        await socketWaitForEvent(socket, 'RUN_NFT_MINT_ACK_FROM_WALLET')
+        //we got the event
+      }catch(err){
+        //The wallet timedout
+
+        //Show QR or post message to wallet
+        if (isRN) {
+          const data = { session, socketUrl: SOCKET_URL, walletId, quantity, uploadSize};
+          setTimeout(function () {
+            window.ReactNativeWebView.postMessage(JSON.stringify({ action: 'MINT', data }));
+          }, 2000);
+        } else {
+          setShowQR(true);
+        }
+      }*/
     });
     socket.on('MINTING_NFT', ({ success }) => {
       socket.emit('MINTING_NFT_RECEIVED')

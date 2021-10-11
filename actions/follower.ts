@@ -23,13 +23,13 @@ export const follow = async (walletIdFollowed: string, walletIdFollower: string)
     const cookie = Cookies.get("token")
     const queryString = `?walletIdFollowed=${walletIdFollowed}&walletIdFollower=${walletIdFollower}`
     if(cookie){
-    const res = await fetch(`${NODE_API_URL}/api/follow/follow/${queryString}`, {
-        method: 'POST',
-        body:JSON.stringify({cookie}),
-    });
-    if (!res.ok) throw new Error();
-    let data: UserType = await res.json();
-    return data
+        const res = await fetch(`${NODE_API_URL}/api/follow/follow/${queryString}`, {
+            method: 'POST',
+            body:JSON.stringify({cookie}),
+        });
+        if (!res.ok) throw new Error();
+        let data: UserType = await res.json();
+        return data
     }else{
         throw new Error("Unvalid authentication");
     }
@@ -39,13 +39,13 @@ export const unfollow = async (walletIdFollowed: string, walletIdFollower: strin
     const cookie = Cookies.get("token")
     const queryString = `?walletIdFollowed=${walletIdFollowed}&walletIdFollower=${walletIdFollower}`
     if(cookie){
-    const res = await fetch(`${NODE_API_URL}/api/follow/unfollow/${queryString}`, {
-        method: 'POST',
-        body:JSON.stringify({cookie}),
-    });
-    if (!res.ok) throw new Error();
-    let data: UserType = await res.json();
-    return data;
+        const res = await fetch(`${NODE_API_URL}/api/follow/unfollow/${queryString}`, {
+            method: 'POST',
+            body:JSON.stringify({cookie}),
+        });
+        if (!res.ok) throw new Error();
+        let data: UserType = await res.json();
+        return data;
     }else{
         throw new Error("Unvalid authentication");
     }

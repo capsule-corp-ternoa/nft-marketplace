@@ -62,13 +62,13 @@ export const getUsersByWalletIds = async (walletIds: string[]) => {
 export const reviewRequested = async (walletId: string) => {
   const cookie = Cookies.get("token")
   if(cookie){
-  const res = await fetch(`${NODE_API_URL}/api/users/reviewRequested/${walletId}`,{
-    method: 'PATCH',
-    body:JSON.stringify({cookie}),
-  });
-  if (!res.ok) throw new Error();
-  const userData = await res.json();
-  return userData;
+    const res = await fetch(`${NODE_API_URL}/api/users/reviewRequested/${walletId}`,{
+      method: 'PATCH',
+      body:JSON.stringify({cookie}),
+    });
+    if (!res.ok) throw new Error();
+    const userData = await res.json();
+    return userData;
   }else{
     throw new Error("Unvalid authentication");
   }  
@@ -77,13 +77,13 @@ export const reviewRequested = async (walletId: string) => {
 export const likeNFT = async (walletId: string, nftId: string, serieId: string) => {
   const cookie = Cookies.get("token")
   if(cookie){
-  const res = await fetch(`${NODE_API_URL}/api/users/like/?walletId=${walletId}&nftId=${nftId}&serieId=${serieId}`, {
-    method: 'POST',
-    body:JSON.stringify({cookie}),
-  })
-  if (!res.ok) throw new Error();
-  const user = await res.json()
-  return user
+    const res = await fetch(`${NODE_API_URL}/api/users/like/?walletId=${walletId}&nftId=${nftId}&serieId=${serieId}`, {
+      method: 'POST',
+      body:JSON.stringify({cookie}),
+    })
+    if (!res.ok) throw new Error();
+    const user = await res.json()
+    return user
   }else{
     throw new Error("Unvalid authentication");
   }
@@ -92,13 +92,13 @@ export const likeNFT = async (walletId: string, nftId: string, serieId: string) 
 export const unlikeNFT = async (walletId: string, nftId: string, serieId: string) => {
   const cookie = Cookies.get("token")
   if(cookie){
-  const res = await fetch(`${NODE_API_URL}/api/users/unlike/?walletId=${walletId}&nftId=${nftId}&serieId=${serieId}`, {
-    method: 'POST',
-    body:JSON.stringify({cookie}),
-  })
-  if (!res.ok) throw new Error();
-  const user = await res.json()
-  return user
+    const res = await fetch(`${NODE_API_URL}/api/users/unlike/?walletId=${walletId}&nftId=${nftId}&serieId=${serieId}`, {
+      method: 'POST',
+      body:JSON.stringify({cookie}),
+    })
+    if (!res.ok) throw new Error();
+    const user = await res.json()
+    return user
   }else{
     throw new Error("Unvalid authentication");
   }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import style from './Create.module.scss';
 import Footer from 'components/base/Footer';
@@ -49,12 +49,7 @@ const Create: React.FC<CreateProps> = ({
 }) => {
   const [exp, setExp] = useState(false);
   const [nftData, setNFTData] = useState(initalValue)
-  const [isRN, setIsRN] = useState(false)
   const { name, description, quantity } = nftData;
-
-  useEffect(() => {
-    setIsRN(window.isRNApp);
-  }, []);
 
   const validateQuantity = (value: number, limit: number) => {
     return (value && value > 0 && value <= limit)
@@ -333,14 +328,12 @@ const Create: React.FC<CreateProps> = ({
               </div>
             </div>
           </div>
-          {!isRN && 
-            <div 
-              className={`${style.Create} ${!(isDataValid && user) ? style.CreateDisabled : ""}`}
-              onClick={() => isDataValid && user && uploadFiles()}
-            >
-              Create NFT
-            </div>
-          }
+          <div 
+            className={`${style.Create} ${!(isDataValid && user) ? style.CreateDisabled : ""}`}
+            onClick={() => isDataValid && user && uploadFiles()}
+          >
+            Create NFT
+          </div>
         </div>
       </div>
       <Footer setNotAvailable={setNotAvailable} />

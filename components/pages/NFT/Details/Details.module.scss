@@ -347,6 +347,14 @@
   .buyButton {
     padding: 8px 30px;
   }
+  .HistoryLeftBlock{
+    width:100%;
+  }
+  .TernoaChainButton{
+    padding: 10px 15px;
+    text-align:center;
+  }
+  
 }
 @media (max-width: 576px) {
   .detailsMenu {
@@ -406,5 +414,13 @@
     text-align: center;
     padding: 10px;
     margin: 10px;
+  }
+  .HistoryPicture {
+    width: 40px;
+    height: 40px;
+  }
+  .TernoaChainButton{
+    padding: 5px 10px;
+    text-align:center;
   }
 }

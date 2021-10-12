@@ -1,6 +1,7 @@
 import { CustomResponse, UserType } from "interfaces";
 import { NODE_API_URL } from "utils/constant";
 import { DEFAULT_LIMIT_PAGINATION } from "../utils/constant";
+import Cookies from 'js-cookie';
 
 export const getFollowers = async (walletId: string, page: string="1", limit: string=DEFAULT_LIMIT_PAGINATION, searchText?: string, certifiedOnly?: string) => {
     const query = `${searchText ? `&nameOrAddressSearch=${searchText}`: ""}${certifiedOnly ? `&certifiedOnly=${certifiedOnly}` : ""}`
@@ -19,23 +20,35 @@ export const getFollowed = async (walletId: string, page: string="1", limit: str
 };
 
 export const follow = async (walletIdFollowed: string, walletIdFollower: string) => {
+    const cookie = Cookies.get("token")
     const queryString = `?walletIdFollowed=${walletIdFollowed}&walletIdFollower=${walletIdFollower}`
-    const res = await fetch(`${NODE_API_URL}/api/follow/follow/${queryString}`, {
-        method: 'POST',
-    });
-    if (!res.ok) throw new Error();
-    let data: UserType = await res.json();
-    return data;
+    if(cookie){
+        const res = await fetch(`${NODE_API_URL}/api/follow/follow/${queryString}`, {
+            method: 'POST',
+            body:JSON.stringify({cookie}),
+        });
+        if (!res.ok) throw new Error();
+        let data: UserType = await res.json();
+        return data
+    }else{
+        throw new Error("Unvalid authentication");
+    }
 };
 
 export const unfollow = async (walletIdFollowed: string, walletIdFollower: string) => {
+    const cookie = Cookies.get("token")
     const queryString = `?walletIdFollowed=${walletIdFollowed}&walletIdFollower=${walletIdFollower}`
-    const res = await fetch(`${NODE_API_URL}/api/follow/unfollow/${queryString}`, {
-        method: 'POST',
-    });
-    if (!res.ok) throw new Error();
-    let data: UserType = await res.json();
-    return data;
+    if(cookie){
+        const res = await fetch(`${NODE_API_URL}/api/follow/unfollow/${queryString}`, {
+            method: 'POST',
+            body:JSON.stringify({cookie}),
+        });
+        if (!res.ok) throw new Error();
+        let data: UserType = await res.json();
+        return data;
+    }else{
+        throw new Error("Unvalid authentication");
+    }
 };
 
 export const isUserFollowing = async (walletIdFollowed: string, walletIdFollower: string) => {

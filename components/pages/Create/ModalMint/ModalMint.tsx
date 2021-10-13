@@ -6,7 +6,7 @@ import randomstring from 'randomstring';
 import QRCode from 'components/base/QRCode';
 import CheckMark from 'components/assets/checkmark';
 import { useRouter } from 'next/router'
-import { connect as connectIo } from 'utils/socket/socket.helper';
+import { connect as connectIo, socketWaitForEvent } from 'utils/socket/socket.helper';
 import { SOCKET_URL } from 'utils/constant';
 import { Circle } from 'rc-progress';
 
@@ -39,11 +39,17 @@ const ModalMint: React.FC<ModalProps> = ({
   const [session] = useState(randomstring.generate());
   const { walletId, quantity } = QRData;
   const [showQR, setShowQR] = useState(false);
+  const [qrData] = useState({ session, socketUrl: SOCKET_URL, walletId, quantity, uploadSize})
+  const [qrAction, setQrAction] = useState('MINT')
+  const [qrRetry, setQrRetry] = useState(false)
+  const [runNFTMintData, setRunNFTMintData] = useState({})
   const [showProgress, setShowProgress] = useState(false);
   const [progressData, setProgressData] = useState([] as number[]);
   const [isRN, setIsRN] = useState(false);
   const [mintReponse, setMintResponse] = useState(null)
   const [startUploadTime, setStartUploadTime] = useState<any>(null)
+  const [alreadySentSocketTimeout, setAlreadySentSocketTimeout] = useState(false)
+  const [stateSocket, setStateSocket] = useState<any>(null)
   const router = useRouter();
   const progressQuantity = 1 + Number(quantity)
   const elapsedUploadTime = (startUploadTime && startUploadTime instanceof Date) ? (+new Date() - +startUploadTime) : 0
@@ -59,16 +65,16 @@ const ModalMint: React.FC<ModalProps> = ({
     return Math.ceil(percentage)
   }
   const speed = Math.floor((uploadSize*(generalPercentage()/100))/elapsedUploadTime)
-  //const remainingTime = Math.ceil(((elapsedUploadTime/generalPercentage())*(100-generalPercentage()))/1000)
+  const remainingTime = Math.ceil(((elapsedUploadTime/generalPercentage())*(100-generalPercentage())))
   const handleMintSocketProcess = () => {
     console.log('socket connect on session', session);
-    const socket = connectIo(`/socket/createNft`, { session, socketUrl: SOCKET_URL }, undefined, 5 * 60 * 1000);
-
+    const socket = connectIo(`/socket/createNft`, { session, socketUrl: SOCKET_URL }, undefined, 20 * 60 * 1000);
+    setStateSocket(socket)
     socket.on('CONNECTION_SUCCESS', () => {
       if (isRN) {
-        const data = { session, socketUrl: SOCKET_URL, walletId, quantity, uploadSize};
+        const data = qrData;
         setTimeout(function () {
-          window.ReactNativeWebView.postMessage(JSON.stringify({ action: 'MINT', data }));
+          window.ReactNativeWebView.postMessage(JSON.stringify({ action: qrAction, data }));
         }, 2000);
       } else {
         setShowQR(true);
@@ -89,26 +95,30 @@ const ModalMint: React.FC<ModalProps> = ({
       setShowProgress(true)
       setStartUploadTime(new Date())
       const { nftUrls, seriesId } = await uploadNFT(publicPgpKeys, setProgressData)
+      setRunNFTMintData({ nftUrls, seriesId })
       socket.emit('RUN_NFT_MINT', {nftUrls, seriesId})
       setShowProgress(false)
       setProgressData([])
-      /*try{
-        await socketWaitForEvent(socket, 'RUN_NFT_MINT_ACK_FROM_WALLET')
-        //we got the event
+      try{
+        await socketWaitForEvent(socket, 'RUN_NFT_MINT_RECEIVED')
+        // all ok
       }catch(err){
         //The wallet timedout
-
-        //Show QR or post message to wallet
+        setQrAction('MINT_RETRY')
+        setQrRetry(true)
         if (isRN) {
-          const data = { session, socketUrl: SOCKET_URL, walletId, quantity, uploadSize};
           setTimeout(function () {
-            window.ReactNativeWebView.postMessage(JSON.stringify({ action: 'MINT', data }));
+            window.ReactNativeWebView.postMessage(JSON.stringify({ action: qrAction, data: qrData }));
           }, 2000);
         } else {
           setShowQR(true);
         }
-      }*/
+      }
     });
+    socket.on('WALLET_READY', () =>{
+      socket.emit('RUN_NFT_MINT', runNFTMintData)
+      setShowQR(false)
+    })
     socket.on('MINTING_NFT', ({ success }) => {
       socket.emit('MINTING_NFT_RECEIVED')
       socket.close();
@@ -142,6 +152,12 @@ const ModalMint: React.FC<ModalProps> = ({
       setShowQR(true);
     }
   }, [output])
+  useEffect(() => {
+    if (!alreadySentSocketTimeout && speed && stateSocket && stateSocket.connected && elapsedUploadTime>5000){
+      stateSocket.emit('UPLOAD_REMAINING_TIME', { remainingTime })
+      setAlreadySentSocketTimeout(true)
+    }
+  }, [speed])
 
   function returnState() {
     if (output.length > 0) {
@@ -149,11 +165,16 @@ const ModalMint: React.FC<ModalProps> = ({
         <>
           { mintReponse === null && (
             <>
-              {showQR ? 
-                <div className={style.Text}>
-                  Flash this QR Code on your mobile wallet app to mint your NFT on the
-                  Ternoa blockchain.
-                </div>
+              {showQR ?
+                !qrRetry ?
+                  <div className={style.Text}>
+                    Flash this QR Code on your mobile wallet app to mint your NFT on the
+                    Ternoa blockchain.
+                  </div>
+                :
+                  <div className={style.Text}>
+                    Flash this QR Code on your mobile wallet app to finish the minting process.
+                  </div>
               : 
                 <div className={style.Text}>
                   Your media is being encrypted and uploaded. Please wait...
@@ -163,8 +184,8 @@ const ModalMint: React.FC<ModalProps> = ({
               {showQR && (
                 <div className={style.QR}>
                   <QRCode
-                    data={{ session, socketUrl: SOCKET_URL, walletId, quantity, uploadSize }}
-                    action={'MINT'}
+                    data={qrData}
+                    action={qrAction}
                   />
                 </div>
               )}

@@ -111,9 +111,8 @@ const Create: React.FC<CreateProps> = ({
       return;
     }
     if (target.files[0].size <= 31000000) {
-      //add check for gif to reset to 'Select NFT Option'
       if (
-        (target.files[0]!.type.substr(0, 5) === 'video' || target.files[0]!.type.substr(-3) === 'gif') &&
+        (target.files[0]!.type.substr(0, 5) === 'video' || target.files[0]!.type === 'image/gif') &&
         (select === 'Blur' || select === 'Protect')
       ) {
         setSelect('Select NFT Option');

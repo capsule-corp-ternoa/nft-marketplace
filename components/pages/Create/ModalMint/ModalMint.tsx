@@ -106,13 +106,13 @@ const ModalMint: React.FC<ModalProps> = ({
         //The wallet timedout
         setQrAction('MINT_RETRY')
         setQrRetry(true)
-        if (isRN) {
+        /*if (isRN) {
           setTimeout(function () {
             window.ReactNativeWebView.postMessage(JSON.stringify({ action: qrAction, data: qrData }));
           }, 2000);
         } else {
           setShowQR(true);
-        }
+        }*/
       }
     });
     socket.on('WALLET_READY', () =>{

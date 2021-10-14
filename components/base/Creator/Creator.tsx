@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import Link from 'next/link';
 import style from './Creator.module.scss';
 import Badge from 'components/assets/badge';
 
@@ -12,6 +12,7 @@ export interface CreatorProps {
   showTooltip?: boolean;
   size?: string;
   className?: string;
+  link?: string;
 }
 
 const Creator: React.FC<CreatorProps> = ({
@@ -19,6 +20,7 @@ const Creator: React.FC<CreatorProps> = ({
   showTooltip = true,
   size,
   className,
+  link,
 }) => {
   const [isHovering, setIsHovering] = useState(false);
 
@@ -45,49 +47,53 @@ const Creator: React.FC<CreatorProps> = ({
     <div
       className={className ? `${style.Creator} ${className}` : style.Creator}
     >
-      <div
-        className={
-          showTooltip && isHovering
-            ? `${style.Tooltip} ${style.Pop}`
-            : style.Hide
-        }
-      >
-        <div className={style.CreatorName}>{user.name}</div>
-      </div>
-      {user.name ? (
-        <div
-          className={manageClass()}
-          onFocus={() => false}
-          onBlur={() => false}
-          onMouseOver={() => setIsHovering(true)}
-          onMouseOut={() => setIsHovering(false)}
-          data-tip
-          data-for={showTooltip && `tooltip${user._id}`}
-        >
-          {user.verified && <Badge className={manageBadgeClass()} />}
-          {user.picture ? (
-            <img
-              className={style.CreatorsImage}
-              draggable="false"
-              src={user.picture}
-            />
-          ) : (
-            <div style={bgGradient} className={style.CreatorsImage}>
-              <div
-                className={
-                  size === 'xsmall'
-                    ? style.CreatorLetterSmall
-                    : style.CreatorLetter
-                }
-              >
-                {user.name.charAt(0)}
-              </div>
+      <Link href={link? `${link}`: `${null}`}>
+        <a>
+          <div
+            className={
+              showTooltip && isHovering
+                ? `${style.Tooltip} ${style.Pop}`
+                : style.Hide
+            }
+          >
+            <div className={style.CreatorName}>{user.name}</div>
+          </div>
+          {user.name ? (
+            <div
+              className={manageClass()}
+              onFocus={() => false}
+              onBlur={() => false}
+              onMouseOver={() => setIsHovering(true)}
+              onMouseOut={() => setIsHovering(false)}
+              data-tip
+              data-for={showTooltip && `tooltip${user._id}`}
+            >
+              {user.verified && <Badge className={manageBadgeClass()} />}
+              {user.picture ? (
+                <img
+                  className={style.CreatorsImage}
+                  draggable="false"
+                  src={user.picture}
+                />
+              ) : (
+                <div style={bgGradient} className={style.CreatorsImage}>
+                  <div
+                    className={
+                      size === 'xsmall'
+                        ? style.CreatorLetterSmall
+                        : style.CreatorLetter
+                    }
+                  >
+                    {user.name.charAt(0)}
+                  </div>
+                </div>
+              )}
             </div>
+          ) : (
+            ''
           )}
-        </div>
-      ) : (
-        ''
-      )}
+        </a>
+      </Link>
     </div>
   );
 };

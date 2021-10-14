@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Switch from 'react-switch';
-import Link from 'next/link';
 import style from './ArtCreators.module.scss';
 import Creator from 'components/base/Creator';
 import NFTCard from 'components/base/NftCard';
@@ -26,11 +25,9 @@ const ArtCreators: React.FC<ArtCreatorsProps> = ({
   const [isFiltered, setIsFiltered] = useState(false);
   function returnCreators() {
     return creators.slice(0, 9).map((item, index) => (
-      <Link key={index} href={`/${item.walletId}`}>
-        <a className={style.CreatorItem}>
-          <Creator user={item} size="small" />
-        </a>
-      </Link>
+     <div key={index} className={style.CreatorItem}>
+          <Creator user={item} size="small" link={`/${item.walletId}`}/>
+      </div>
     ));
   }
 

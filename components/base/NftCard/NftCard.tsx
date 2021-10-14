@@ -185,6 +185,7 @@ const NftCard: React.FC<NftCardProps> = ({
                 className={isHovering ? style.Slide : ''}
                 size="card"
                 showTooltip={false}
+                link={`/${item.creatorData.walletId}`}
               />
             )}
             {item.creatorData && (

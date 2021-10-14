@@ -19,3 +19,33 @@ export function connect(endPoint: string, query: any, options: any = null, timeo
     })
     return socket;
 }
+
+const SOCKET_WAIT_TIMEOUT = 10 * 1000;
+let timeoutId:any = null;
+function timeoutPromise(mainPromise: Promise<any>, timeout: number=SOCKET_WAIT_TIMEOUT) {
+    return Promise.race([
+      mainPromise,
+      new Promise((_resolve, reject) => {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+          console.log('socket timeout limit exceded')
+          reject();
+        }, timeout);
+      }),
+    ]);
+  }
+
+export const socketWaitForEvent = (socket: Socket, eventName: string, timeout = SOCKET_WAIT_TIMEOUT) => {
+    return timeoutPromise(
+      new Promise((resolve, reject) => {
+        if (socket && socket.connected) {
+          socket.once(eventName, (args) => {
+            resolve(args);
+          });
+        } else {
+          reject('Socket is not connected');
+        }
+      }),
+      timeout,
+    );
+  };

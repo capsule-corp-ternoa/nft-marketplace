@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import style from './Create.module.scss';
 import Footer from 'components/base/Footer';
@@ -48,37 +48,33 @@ const Create: React.FC<CreateProps> = ({
   setProcessed,
 }) => {
   const [exp, setExp] = useState(false);
-  const [nftData, setNFTData] = useState({} as NFTProps)
-  const [isRN, setIsRN] = useState(false)
+  const [nftData, setNFTData] = useState(initalValue);
   const { name, description, quantity } = nftData;
 
-  useEffect(() => {
-    setIsRN(window.isRNApp);
-  }, []);
-
-  useEffect(() => {
-    setNFTData(initalValue)
-  });
-
   const validateQuantity = (value: number, limit: number) => {
-    return (value && value > 0 && value <= limit)
-  }
+    return value && value > 0 && value <= limit;
+  };
 
-  const isDataValid = name && description && validateQuantity(quantity, 10) && secretNFT && (select !== 'Secret' || NFT) && select !== 'Select NFT Option'
+  const isDataValid =
+    name &&
+    description &&
+    validateQuantity(quantity, 10) &&
+    secretNFT &&
+    (select !== 'Secret' || NFT) &&
+    select !== 'Select NFT Option';
 
   function onChange(
     e:
       | React.ChangeEvent<HTMLInputElement>
       | React.ChangeEvent<HTMLTextAreaElement>
   ) {
-    const nextNftData = { ...nftData, [e.target.name]: e.target.value }
+    const nextNftData = { ...nftData, [e.target.name]: e.target.value };
     setNFTData(nextNftData);
     setNftDataToParent(nextNftData);
   }
 
   function returnType(NFTarg: File) {
-    console.log(NFTarg!.type)
-    if (NFTarg!.type.substr(0, 5) === 'image'){
+    if (NFTarg!.type.substr(0, 5) === 'image') {
       return (
         <img
           className={style.IMGBackground}
@@ -87,32 +83,48 @@ const Create: React.FC<CreateProps> = ({
           id="output"
         />
       );
-    } else if (NFTarg!.type.substr(0, 5) === 'video'){
+    } else if (NFTarg!.type.substr(0, 5) === 'video') {
       return (
-        <video autoPlay muted playsInline loop className={style.IMGBackground} key={NFTarg.name+NFTarg.lastModified}>
-          <source
-            id="outputVideo"
-            src={URL.createObjectURL(NFTarg)}
-          />
+        <video
+          autoPlay
+          muted
+          playsInline
+          loop
+          className={style.IMGBackground}
+          key={NFTarg.name + NFTarg.lastModified}
+        >
+          <source id="outputVideo" src={URL.createObjectURL(NFTarg)} />
         </video>
       );
     }
   }
 
-  const updateFile = (event: React.ChangeEvent<HTMLInputElement>, setFunction: (f: File | null) => void) => {
+  const updateFile = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    setFunction: (f: File | null) => void
+  ) => {
     const { target } = event;
-    if (target && target.files && target.files[0] && target.files[0].size <= 31000000){
-        if (target.files[0]!.type.substr(0, 5) === 'video' && (select==="Blur" || select==="Protect")) setSelect('Select NFT Option')
-        setFunction(target.files[0]);
-    }else{
-      if (target && target.files && target.files[0] && target.files[0].size > 31000000){
-        setError('Max file size is 30mb.');
-        setModalCreate(true);
-      }
-      setFunction(null)
-      setSelect('Select NFT Option')
+    let file = null;
+    if (!(target && target.files && target.files[0])) {
+      setFunction(file);
+      setSelect('Select NFT Option');
+      return;
     }
-  }
+    if (target.files[0].size <= 31000000) {
+      if (
+        (target.files[0]!.type.substr(0, 5) === 'video' || target.files[0]!.type === 'image/gif') &&
+        (select === 'Blur' || select === 'Protect')
+      ) {
+        setSelect('Select NFT Option');
+      }
+      file = target.files[0];
+    } else {
+      setError('Max file size is 30mb.');
+      setModalCreate(true);
+      setSelect('Select NFT Option');
+    }
+    setFunction(file);
+  };
 
   function uploadFiles() {
     if (
@@ -121,7 +133,7 @@ const Create: React.FC<CreateProps> = ({
       !quantity ||
       quantity > 10 ||
       secretNFT === null ||
-      (select === 'Secret' && NFT ===null) ||
+      (select === 'Secret' && NFT === null) ||
       select === 'Select NFT Option'
     ) {
       setError('Please fill the form entirely.');
@@ -269,7 +281,11 @@ const Create: React.FC<CreateProps> = ({
                   value={quantity}
                   onChange={onChange}
                   placeholder="1"
-                  className={`${style.Input} ${quantity && !validateQuantity(quantity, 10) ? style.InputError : ""}`}
+                  className={`${style.Input} ${
+                    quantity && !validateQuantity(quantity, 10)
+                      ? style.InputError
+                      : ''
+                  }`}
                 />
               </div>
 
@@ -338,14 +354,14 @@ const Create: React.FC<CreateProps> = ({
               </div>
             </div>
           </div>
-          {!isRN && 
-            <div 
-              className={`${style.Create} ${!(isDataValid && user) ? style.CreateDisabled : ""}`}
-              onClick={() => isDataValid && user && uploadFiles()}
-            >
-              Create NFT
-            </div>
-          }
+          <div
+            className={`${style.Create} ${
+              !(isDataValid && user) ? style.CreateDisabled : ''
+            }`}
+            onClick={() => isDataValid && user && uploadFiles()}
+          >
+            Create NFT
+          </div>
         </div>
       </div>
       <Footer setNotAvailable={setNotAvailable} />

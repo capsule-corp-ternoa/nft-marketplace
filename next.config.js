@@ -22,4 +22,4 @@ const SentryWebpackPluginOptions = {
   // https://github.com/getsentry/sentry-webpack-plugin#options.
 };
 
-module.exports = /*(process.env.NEXT_PUBLIC_SENTRY_DSN && process.env.SENTRY_AUTH_TOKEN) ? withSentryConfig(moduleExports, SentryWebpackPluginOptions) : */moduleExports;
+module.exports = ((process.env.NEXT_PUBLIC_SENTRY_DSN || process.env.SENTRY_DSN) && process.env.SENTRY_AUTH_TOKEN) ? withSentryConfig(moduleExports, SentryWebpackPluginOptions) : moduleExports;

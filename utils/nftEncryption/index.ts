@@ -35,7 +35,13 @@ const cryptFilePgp = async (file: File, publicPGP: string) => {
   return encrypted
 }
 
-export const cryptAndUploadNFT = async (secretNFT: File, secretNFTType: string, publicPGP: string) => {
+export const cryptAndUploadNFT = async (
+  secretNFT: File, 
+  secretNFTType: string, 
+  publicPGP: string, 
+  setProgressData?: Function,
+  progressIndex?:number
+) => {
   return new Promise(async (resolve, reject) => {
     try {
       //NFT Data
@@ -46,7 +52,7 @@ export const cryptAndUploadNFT = async (secretNFT: File, secretNFTType: string, 
       const pgpBlob = new Blob([publicPGP], { type: 'text/plain' });
       const pgpFile = new File([pgpBlob], "pgp public key");
       const [encryptedUploadReponse, pgpUploadRemonse] = await Promise.all([
-        uploadIPFS(nftFile),
+        uploadIPFS(nftFile, setProgressData, progressIndex),
         uploadIPFS(pgpFile)
       ])
       resolve([encryptedUploadReponse, pgpUploadRemonse])
@@ -56,13 +62,13 @@ export const cryptAndUploadNFT = async (secretNFT: File, secretNFTType: string, 
   })
 }
 
-export const uploadIPFS = async(file: File) => {
+export const uploadIPFS = async(file: File, setProgressData?: Function, progressIndex?:number) => {
   try{
     const mediaType = mime.lookup(file.name);
-    const result = await ipfsApi.addFile(file);
-    if (result && result.Hash) {
+    const result = await ipfsApi.addFile(file, setProgressData, progressIndex);
+    if (result && (result as any).Hash) {
       return {
-        url: `${ipfsGatewayUri}/${result.Hash}`,
+        url: `${ipfsGatewayUri}/${(result as any).Hash}`,
         mediaType
       };
     } else {

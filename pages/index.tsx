@@ -92,7 +92,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
   if (token) {
     promises.push(new Promise<void>((success) => {
       getUser(token).then(_user => {
-      user = _user
+        user = _user
         success();
       }).catch(success);
     }));

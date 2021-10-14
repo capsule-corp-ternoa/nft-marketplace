@@ -4,7 +4,6 @@ import style from './ModalMint.module.scss';
 import Close from 'components/assets/close';
 import randomstring from 'randomstring';
 import QRCode from 'components/base/QRCode';
-import CheckMark from 'components/assets/checkmark';
 import { useRouter } from 'next/router'
 import { connect as connectIo } from 'utils/socket/socket.helper';
 import { SOCKET_URL } from 'utils/constant';
@@ -141,11 +140,12 @@ const ModalMint: React.FC<ModalProps> = ({
   useEffect(() => {
     setIsRN(window.isRNApp);
   }, []);
+
   useEffect(() => {
-    if (showQR) {
-      handleMintSocketProcess()
+    if (output.length > 0) {
+      handleMintSocketProcess();
     }
-  }, [showQR]);
+  }, [output])
 
   useEffect(() => {
     if (!alreadySentSocketTimeout && speed && stateSocket && stateSocket.connected && elapsedUploadTime>5000){
@@ -155,84 +155,58 @@ const ModalMint: React.FC<ModalProps> = ({
   }, [speed])
 
   function returnState() {
-    if (output.length > 0) {
-      return (
-        <>
-          { mintReponse === null && (
-            <>
-              {showQR ?
-                !qrRetry ?
-                  <div className={style.Text}>
-                    Flash this QR Code on your mobile wallet app to mint your NFT on the
-                    Ternoa blockchain.
-                  </div>
-                :
-                  <div className={style.Text}>
-                    Flash this QR Code on your mobile wallet app to finish the minting process.
-                  </div>
-              : 
+    return (
+      <>
+        { mintReponse === null && (
+          <>
+            {showQR ?
+              !qrRetry ?
                 <div className={style.Text}>
-                  Your media is being encrypted and uploaded. Please wait...
+                  Flash this QR Code on your mobile wallet app to mint your NFT on the
+                  Ternoa blockchain.
                 </div>
-              }
-              
-              {showQR && (
-                <div className={style.QR}>
-                  <QRCode
-                    data={qrData}
-                    action={qrAction}
-                  />
+              :
+                <div className={style.Text}>
+                  Flash this QR Code on your mobile wallet app to finish the minting process.
                 </div>
-              )}
-              {(!showQR && !showProgress) && (
-                <div className={style.Loading}>
-                  <span className={style.Dot}></span>
-                  <span className={style.Dot}></span>
-                  <span className={style.Dot}></span>
-                </div>
-              )}
-              {(!showQR && showProgress) && (
-                <>
-                  <Circle percent={generalPercentage()} strokeWidth={3} strokeColor="#7417ea" className={style.ProgressBar}/>
-                  <div className={style.Text}>{`Progress : ${generalPercentage()}%`}</div>
-                  <div className={style.Text}>{`Speed : ${speed} kb/sec`}</div>
-                </>
-              )}
-            </>
-          )}
-          {(mintReponse === true) && <div className={style.Text}>
-            Mint was added to the blockchain.
-          </div>}
-          {(mintReponse === false) && <div className={style.Text}>
-            Mint was not added to the blockchain.
-          </div>}
-        </>
-      );
-    } else {
-      return (
-        <>
-          <div className={style.Text}>
-            Please wait while we are processing your files.
-          </div>
-          <div className={style.Status}>
-            {output.length > 0 ? (
-              <div className={style.Step}>
-                Upload completed <CheckMark className={style.CheckMark} />
+            : 
+              <div className={style.Text}>
+                Your media is being encrypted and uploaded. Please wait...
               </div>
-            ) : (
-                <div className={style.Waiting}>
-                  <div className={style.Mess}>Minting NFT...</div>
-                  <div className={style.Loading}>
-                    <span className={style.Dot}></span>
-                    <span className={style.Dot}></span>
-                    <span className={style.Dot}></span>
-                  </div>
-                </div>
-              )}
-          </div>
-        </>
-      );
-    }
+            }
+            
+            {showQR && (
+              <div className={style.QR}>
+                <QRCode
+                  data={qrData}
+                  action={qrAction}
+                />
+              </div>
+            )}
+            {(!showQR && !showProgress) && (
+              <div className={style.Loading}>
+                <span className={style.Dot}></span>
+                <span className={style.Dot}></span>
+                <span className={style.Dot}></span>
+              </div>
+            )}
+            {(!showQR && showProgress) && (
+              <>
+                <Circle percent={generalPercentage()} strokeWidth={3} strokeColor="#7417ea" className={style.ProgressBar}/>
+                <div className={style.Text}>{`Progress : ${generalPercentage()}%`}</div>
+                <div className={style.Text}>{`Speed : ${speed} kb/sec`}</div>
+              </>
+            )}
+          </>
+        )}
+        {(mintReponse === true) && <div className={style.Text}>
+          Mint was added to the blockchain.
+        </div>}
+        {(mintReponse === false) && <div className={style.Text}>
+          Mint was not added to the blockchain.
+        </div>}
+      </>
+    );
   }
   return (
     <div id="createModal" className={style.Background}>

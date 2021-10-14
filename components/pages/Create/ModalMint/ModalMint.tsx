@@ -6,7 +6,7 @@ import randomstring from 'randomstring';
 import QRCode from 'components/base/QRCode';
 import CheckMark from 'components/assets/checkmark';
 import { useRouter } from 'next/router'
-import { connect as connectIo, /*socketWaitForEvent*/ } from 'utils/socket/socket.helper';
+import { connect as connectIo } from 'utils/socket/socket.helper';
 import { SOCKET_URL } from 'utils/constant';
 import { Circle } from 'rc-progress';
 
@@ -40,8 +40,8 @@ const ModalMint: React.FC<ModalProps> = ({
   const { walletId, quantity } = QRData;
   const [showQR, setShowQR] = useState(false);
   const [qrData] = useState({ session, socketUrl: SOCKET_URL, walletId, quantity, uploadSize})
-  const [qrAction, setQrAction] = useState('MINT')
-  const [qrRetry, setQrRetry] = useState(false)
+  const [qrAction] = useState('MINT')
+  const [qrRetry] = useState(false)
   const [runNFTMintData, setRunNFTMintData] = useState({})
   const [showProgress, setShowProgress] = useState(false);
   const [progressData, setProgressData] = useState([] as number[]);
@@ -99,10 +99,8 @@ const ModalMint: React.FC<ModalProps> = ({
       socket.emit('RUN_NFT_MINT', {nftUrls, seriesId})
       setShowProgress(false)
       setProgressData([])
-      setQrAction('MINT_RETRY')
-      setQrRetry(true)
       /*try{
-        //await socketWaitForEvent(socket, 'RUN_NFT_MINT_RECEIVED')
+        await socketWaitForEvent(socket, 'RUN_NFT_MINT_RECEIVED')
         // all ok
       }catch(err){
         //The wallet timedout

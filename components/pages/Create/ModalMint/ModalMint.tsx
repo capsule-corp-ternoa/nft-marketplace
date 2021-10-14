@@ -149,7 +149,6 @@ const ModalMint: React.FC<ModalProps> = ({
 
   useEffect(() => {
     if (!alreadySentSocketTimeout && speed && stateSocket && stateSocket.connected && elapsedUploadTime>5000){
-      console.log("sendRemainingTime", remainingTime)
       stateSocket.emit('UPLOAD_REMAINING_TIME', { remainingTime })
       setAlreadySentSocketTimeout(true)
     }

@@ -93,6 +93,7 @@ const ModalMint: React.FC<ModalProps> = ({
       setShowQR(false)
       setShowProgress(true)
       setStartUploadTime(new Date())
+      console.log(publicPgpKeys)
       const { nftUrls, seriesId } = await uploadNFT(publicPgpKeys, setProgressData)
       setRunNFTMintData({ nftUrls, seriesId })
       socket.emit('RUN_NFT_MINT', {nftUrls, seriesId})
@@ -149,6 +150,7 @@ const ModalMint: React.FC<ModalProps> = ({
 
   useEffect(() => {
     if (!alreadySentSocketTimeout && speed && stateSocket && stateSocket.connected && elapsedUploadTime>5000){
+      console.log("sendRemainingTime", remainingTime)
       stateSocket.emit('UPLOAD_REMAINING_TIME', { remainingTime })
       setAlreadySentSocketTimeout(true)
     }

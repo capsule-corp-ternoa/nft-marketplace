@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import style from './Create.module.scss';
 import Footer from 'components/base/Footer';
@@ -50,7 +50,12 @@ const Create: React.FC<CreateProps> = ({
   const [exp, setExp] = useState(false);
   const [nftData, setNFTData] = useState(initalValue);
   const { name, description, quantity } = nftData;
+  const [isRN, setIsRN] = useState(false)
 
+  useEffect(() => {
+    setIsRN(window.isRNApp);
+  }, []);
+  
   const validateQuantity = (value: number, limit: number) => {
     return value && value > 0 && value <= limit;
   };
@@ -199,7 +204,7 @@ const Create: React.FC<CreateProps> = ({
                     id="uploadNFT"
                     onChange={(event) => updateFile(event, setSecretNFT)}
                     className={style.HiddenInput}
-                    accept=".jpg, .jpeg, .png, .gif, .mp4, .mov"
+                    accept={!isRN ? ".jpg, .jpeg, .png, .gif, .mp4, .mov" : ".jpg, .jpeg, .png, .gif"}
                   />
                 </div>
 
@@ -240,7 +245,7 @@ const Create: React.FC<CreateProps> = ({
                         id="uploadSecretNFT"
                         onChange={(event) => updateFile(event, setNFT)}
                         className={style.HiddenInput}
-                        accept=".jpg, .jpeg, .png, .gif, .mp4, .mov"
+                        accept={!isRN ? ".jpg, .jpeg, .png, .gif, .mp4, .mov" : ".jpg, .jpeg, .png, .gif"}
                       />
                     </div>
                   </label>

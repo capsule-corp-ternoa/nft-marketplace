@@ -38,7 +38,6 @@ const ModalMint: React.FC<ModalProps> = ({
   const [session] = useState(randomstring.generate());
   const { walletId, quantity } = QRData;
   const [showQR, setShowQR] = useState(false);
-  const [qrData] = useState({ session, socketUrl: SOCKET_URL, walletId, quantity, uploadSize})
   const [qrAction] = useState('MINT')
   const [qrRetry] = useState(false)
   const [runNFTMintData, setRunNFTMintData] = useState({})
@@ -71,7 +70,7 @@ const ModalMint: React.FC<ModalProps> = ({
     setStateSocket(socket)
     socket.on('CONNECTION_SUCCESS', () => {
       if (isRN) {
-        const data = qrData;
+        const data = { session, socketUrl: SOCKET_URL, walletId, quantity, uploadSize};
         setTimeout(function () {
           window.ReactNativeWebView.postMessage(JSON.stringify({ action: qrAction, data }));
         }, 2000);
@@ -108,7 +107,7 @@ const ModalMint: React.FC<ModalProps> = ({
         setQrRetry(true)
         if (isRN) {
           setTimeout(function () {
-            window.ReactNativeWebView.postMessage(JSON.stringify({ action: qrAction, data: qrData }));
+            window.ReactNativeWebView.postMessage(JSON.stringify({ action: qrAction, data: { session, socketUrl: SOCKET_URL, walletId, quantity, uploadSize} }));
           }, 2000);
         } else {
           setShowQR(true);
@@ -180,7 +179,7 @@ const ModalMint: React.FC<ModalProps> = ({
             {showQR && (
               <div className={style.QR}>
                 <QRCode
-                  data={qrData}
+                  data={{ session, socketUrl: SOCKET_URL, walletId, quantity, uploadSize}}
                   action={qrAction}
                 />
               </div>

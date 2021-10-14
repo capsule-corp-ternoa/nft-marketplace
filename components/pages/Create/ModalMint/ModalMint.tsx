@@ -99,21 +99,23 @@ const ModalMint: React.FC<ModalProps> = ({
       socket.emit('RUN_NFT_MINT', {nftUrls, seriesId})
       setShowProgress(false)
       setProgressData([])
-      try{
+      setQrAction('MINT_RETRY')
+      setQrRetry(true)
+      /*try{
         //await socketWaitForEvent(socket, 'RUN_NFT_MINT_RECEIVED')
         // all ok
       }catch(err){
         //The wallet timedout
         setQrAction('MINT_RETRY')
         setQrRetry(true)
-        /*if (isRN) {
+        if (isRN) {
           setTimeout(function () {
             window.ReactNativeWebView.postMessage(JSON.stringify({ action: qrAction, data: qrData }));
           }, 2000);
         } else {
           setShowQR(true);
-        }*/
-      }
+        }
+      }*/
     });
     socket.on('WALLET_READY', () =>{
       socket.emit('RUN_NFT_MINT', runNFTMintData)
@@ -147,11 +149,6 @@ const ModalMint: React.FC<ModalProps> = ({
     }
   }, [showQR]);
 
-  /*useEffect(() => {
-    if (output.length > 0) {
-      setShowQR(true);
-    }
-  }, [output])*/
   useEffect(() => {
     if (!alreadySentSocketTimeout && speed && stateSocket && stateSocket.connected && elapsedUploadTime>5000){
       stateSocket.emit('UPLOAD_REMAINING_TIME', { remainingTime })

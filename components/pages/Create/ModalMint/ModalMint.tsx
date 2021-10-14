@@ -6,7 +6,7 @@ import randomstring from 'randomstring';
 import QRCode from 'components/base/QRCode';
 import CheckMark from 'components/assets/checkmark';
 import { useRouter } from 'next/router'
-import { connect as connectIo, socketWaitForEvent } from 'utils/socket/socket.helper';
+import { connect as connectIo, /*socketWaitForEvent*/ } from 'utils/socket/socket.helper';
 import { SOCKET_URL } from 'utils/constant';
 import { Circle } from 'rc-progress';
 
@@ -100,7 +100,7 @@ const ModalMint: React.FC<ModalProps> = ({
       setShowProgress(false)
       setProgressData([])
       try{
-        await socketWaitForEvent(socket, 'RUN_NFT_MINT_RECEIVED')
+        //await socketWaitForEvent(socket, 'RUN_NFT_MINT_RECEIVED')
         // all ok
       }catch(err){
         //The wallet timedout
@@ -147,11 +147,11 @@ const ModalMint: React.FC<ModalProps> = ({
     }
   }, [showQR]);
 
-  useEffect(() => {
+  /*useEffect(() => {
     if (output.length > 0) {
       setShowQR(true);
     }
-  }, [output])
+  }, [output])*/
   useEffect(() => {
     if (!alreadySentSocketTimeout && speed && stateSocket && stateSocket.connected && elapsedUploadTime>5000){
       stateSocket.emit('UPLOAD_REMAINING_TIME', { remainingTime })

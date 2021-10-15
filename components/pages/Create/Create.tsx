@@ -128,7 +128,7 @@ const Create: React.FC<CreateProps> = ({
       isError = true
     }
     if (!isError && !(target.files[0]!.type.substr(0, 5) === 'video' || target.files[0]!.type.substr(0, 5) === 'image')){
-      setError("You can't select files different from videos or images.");
+      setError(`You can't select files different from ${!isRN ? "videos or " : ""}images.`);
       isError = true
     }
     if (!isError && target.files[0].size > 31000000) {
@@ -211,7 +211,7 @@ const Create: React.FC<CreateProps> = ({
                     Click here to upload your file.
                   </div>
                   <div className={style.InsightLight}>
-                    JPEG, JPG, PNG, GIF, MP4 or MOV. Max 30mb.
+                    JPEG, JPG, PNG, GIF{`${!isRN ? ", MP4 or MOV" : ""}`}. Max 30mb.
                   </div>
                 </div>
 

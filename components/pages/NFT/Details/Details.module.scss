@@ -63,6 +63,8 @@
   flex-wrap: nowrap;
 }
 .infoDatas {
+  display: flex;
+  align-items: center;
   padding: 5px 10px;
 }
 .TopInfosCreator {
@@ -107,6 +109,7 @@
   border-radius: 64px;
 }
 .infoDatasTitle {
+  margin: 0 10px;
   font-family: 'Airbnb Cereal App Book';
   font-size: 12px;
   font-style: normal;
@@ -121,7 +124,7 @@
 
 .ownersContainers {
   height: 29vh;
-  width:auto;
+  width: auto;
 }
 .owners {
   display: flex;
@@ -179,7 +182,7 @@
   font-family: 'Airbnb Cereal App Bold';
   color: black;
 }
-.ownerTwitterUsername{
+.ownerTwitterUsername {
   font-size: 14px;
   font-family: 'Airbnb Cereal App Book';
   color: black;
@@ -210,7 +213,7 @@
   background-color: lighten($primary, 35%);
 }
 
-.History{
+.History {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -220,7 +223,7 @@
   opacity: 0.9;
   border-radius: 12px;
 }
-.HistoryLeftBlock{
+.HistoryLeftBlock {
   display: flex;
   align-items: center;
 }
@@ -239,13 +242,13 @@
   object-fit: cover;
   box-shadow: 0 3px 3px rgba(0, 0, 0, 0.25);
 }
-.HistoryName{
+.HistoryName {
   font-family: 'Airbnb Cereal App Bold';
   font-size: 16px;
   margin-left: 10px;
 }
 
-.TernoaChainButton{
+.TernoaChainButton {
   color: $primary;
   padding: 10px 50px;
   margin: 10px;
@@ -253,9 +256,8 @@
   font-family: 'Airbnb Cereal App Medium';
   cursor: default;
   opacity: 0.5;
-  border : solid 1px $primary;
+  border: solid 1px $primary;
   border-radius: 50px;
-
 }
 @media (max-width: 1300px) {
   .detailsMain {
@@ -282,12 +284,8 @@
     font-family: 'Airbnb Cereal App light';
   }
   .ownerDatasName {
-   display: flex;
+    display: flex;
   }
-  .ownerTwitterUsername{
-    margin-left: 5px;
-  }
-  
 }
 @media (max-width: 840px) {
   .detailsMain {
@@ -325,7 +323,11 @@
     flex-direction: column;
     text-align: center;
   }
-  .ownerTwitterUsername{
+  .infoDatas {
+    flex-direction: column;
+    justify-content: center;
+  }
+  .ownerTwitterUsername {
     display: none;
   }
 }
@@ -347,14 +349,13 @@
   .buyButton {
     padding: 8px 30px;
   }
-  .HistoryLeftBlock{
-    width:100%;
+  .HistoryLeftBlock {
+    width: 100%;
   }
-  .TernoaChainButton{
+  .TernoaChainButton {
     padding: 10px 15px;
-    text-align:center;
+    text-align: center;
   }
-  
 }
 @media (max-width: 576px) {
   .detailsMenu {
@@ -399,6 +400,7 @@
   }
   .infoDatas {
     padding: 5px 10px;
+    justify-content: center;
   }
   .infoDatasWrapper {
     flex-wrap: nowrap;
@@ -419,8 +421,8 @@
     width: 40px;
     height: 40px;
   }
-  .TernoaChainButton{
+  .TernoaChainButton {
     padding: 5px 10px;
-    text-align:center;
+    text-align: center;
   }
 }

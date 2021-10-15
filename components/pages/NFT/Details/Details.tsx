@@ -31,7 +31,7 @@ const Details: React.FC<DetailsProps> = ({
   const [serieDataCount, setSerieDataCount] = useState({} as any);
   const bgGradient = { background: gradient(NFT.ownerData.name) };
   const serieData = NFT?.serieData ? NFT.serieData : [];
-
+  console.log(NFT)
   useEffect(() => {
     const serieDataGroupedArray = [] as NftType[];
     //const ownerNftsCountObject = {} as any;
@@ -206,6 +206,8 @@ const Details: React.FC<DetailsProps> = ({
     );
   };
 
+  console.log(NFT)
+
   return (
     <div className={styleDetails.detailsMain}>
       <div className={styleDetails.detailsMenu}>
@@ -282,7 +284,15 @@ const Details: React.FC<DetailsProps> = ({
                 </div>
               </div>
               <div className={styleDetails.infoDatasWrapper}>
-                <div className={styleDetails.infoDatas}>
+              <div className={styleDetails.infoDatas}>
+                  <small className={styleDetails.infoDatasTitle}>
+                    Series ID : 
+                  </small>
+                  <div className={styleDetails.infoDatasContent}>
+                    {NFT.serieId}
+                  </div>
+                </div>
+                {/* <div className={styleDetails.infoDatas}>
                   <small className={styleDetails.infoDatasTitle}>
                     Contract Address
                   </small>
@@ -303,7 +313,7 @@ const Details: React.FC<DetailsProps> = ({
                   <div className={styleDetails.infoDatasContent}>
                     1024 x 1024 px.IMAGE(427KB)
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
           )}

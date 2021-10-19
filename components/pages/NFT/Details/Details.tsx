@@ -151,7 +151,6 @@ const Details: React.FC<DetailsProps> = ({
                 size={'fullwidth'}
                 user={ownerData}
                 showTooltip={false}
-                link={`/${NFTRowOwner}`}
               />
             ) : (
               <div
@@ -264,7 +263,6 @@ const Details: React.FC<DetailsProps> = ({
                       size={'fullwidth'}
                       user={NFT.creatorData}
                       showTooltip={false}
-                      link={`/${NFT.creatorData.walletId}`}
                     />
                   </div>
                   <div className={styleDetails.TopInfosCreatorName}>
@@ -342,7 +340,6 @@ const Details: React.FC<DetailsProps> = ({
                       size={'fullwidth'}
                       user={NFT.ownerData}
                       showTooltip={false}
-                      link={`/${NFT.ownerData.walletId}`}
                     />
                   </div>
                   <div className={styleDetails.HistoryName}>
@@ -364,7 +361,6 @@ const Details: React.FC<DetailsProps> = ({
                       size={'fullwidth'}
                       user={NFT.creatorData}
                       showTooltip={false}
-                      link={`/${NFT.creatorData.walletId}`}
                     />
                   </div>
                   <div className={styleDetails.HistoryName}>

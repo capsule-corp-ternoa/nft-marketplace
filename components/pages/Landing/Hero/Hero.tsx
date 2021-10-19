@@ -19,7 +19,7 @@ const Hero: React.FC<HeroProps> = ({ users }) => {
   function returnCreators() {
     return users.slice(0, 10).map((item, index) => (
       <div key={index} className={style.CreatorWrapper}>
-        <Creator user={item} showTooltip={true} link={`/${item.walletId}`} />
+        <Creator user={item} showTooltip={true} />
       </div>
     ));
   }

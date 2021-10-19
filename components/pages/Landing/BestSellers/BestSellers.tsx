@@ -16,7 +16,7 @@ const BestSellers: React.FC<BestSellersProps> = ({ creators }) => {
   function returnCreators() {
     return creators.map((item, index) => (
         <div key={index} className={style.CreatorShell}>
-          <Creator user={item} showTooltip={false} link={`/${item.walletId}`}/>
+          <Creator user={item} showTooltip={false}/>
           <div className={style.CreatorInfos}>
             <h2 className={style.CreatorName}>{item.name}</h2>
             <span className={style.CreatorCaps}>0 CAPS</span>

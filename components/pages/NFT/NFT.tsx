@@ -174,7 +174,6 @@ const NFTPage: React.FC<NFTPageProps> = ({
                     className={style.TopInfosCreatorPictureIMG}
                     size={'fullwidth'}
                     user={NFT.creatorData}
-                    link={`/${NFT.creatorData.walletId}`}
                   />
                 </div>
                 <div className={style.TopInfosCreatorName}>

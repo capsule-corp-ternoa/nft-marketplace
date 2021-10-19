@@ -459,7 +459,7 @@ const Profile: React.FC<ProfileProps> = ({
     return creators.map((item: UserType, i: number) => {
       return (
         <div key={item._id} className={style.CreatorShell}>
-              <Creator user={item} size="small" showTooltip={false} link={`/${item.walletId}`}/>
+              <Creator user={item} size="small" showTooltip={false}/>
           <div className={style.CreatorInfos}>
             <Link href={`/${item.walletId}`}>
               <a>

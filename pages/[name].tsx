@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import AlphaBanner from 'components/base/AlphaBanner';
 import MainHeader from 'components/base/MainHeader';
@@ -52,6 +52,16 @@ const PublicProfilePage: React.FC<PublicProfileProps> = ({
       console.log(err);
     }
   };
+
+  useEffect(() => {
+    setViewProfile(profile)
+  }, [profile])
+  useEffect(() => {
+    setDataNfts(data)
+  }, [data])
+  useEffect(() => {
+    setDataNftsHasNextPage(dataHasNextPage)
+  }, [dataHasNextPage])
 
   return (
     <>

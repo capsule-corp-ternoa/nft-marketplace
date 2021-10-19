@@ -31,7 +31,7 @@ const Details: React.FC<DetailsProps> = ({
   const [serieDataCount, setSerieDataCount] = useState({} as any);
   const bgGradient = { background: gradient(NFT.ownerData.name) };
   const serieData = NFT?.serieData ? NFT.serieData : [];
-  console.log(NFT)
+  
   useEffect(() => {
     const serieDataGroupedArray = [] as NftType[];
     //const ownerNftsCountObject = {} as any;
@@ -205,8 +205,6 @@ const Details: React.FC<DetailsProps> = ({
       </div>
     );
   };
-
-  console.log(NFT)
 
   return (
     <div className={styleDetails.detailsMain}>

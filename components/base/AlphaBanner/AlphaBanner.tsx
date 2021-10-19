@@ -9,11 +9,11 @@ const AlphaBanner: React.FC = () => {
         Welcome to the <span className={style.Alpha}> Alpha Version</span> of
         SecretNFT. All the marketplace is in{' '}
         <a
-          href="https://telemetry.polkadot.io/#list/Ternoa%20Chaos%20Net"
+          href="https://telemetry.polkadot.io/#list/0xd9adfc7ea82be63ba28088d62b96e9270ad2af25c962afc393361909670835b2"
           target="blank"
           className={style.Link}
         >
-          chaos net
+          testnet
         </a>
         .
       </p>

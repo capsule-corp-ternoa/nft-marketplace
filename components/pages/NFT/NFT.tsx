@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
 import style from './NFT.module.scss';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
@@ -12,7 +13,7 @@ import { UserType, NftType } from 'interfaces';
 import { likeNFT, unlikeNFT } from 'actions/user';
 import ModalShare from 'components/base/ModalShare';
 import NoNFTImage from '../../assets/NoNFTImage';
-import gradient from 'random-gradient';
+// import gradient from 'random-gradient';
 import Details from './Details';
 import Creator from 'components/base/Creator';
 import { MARKETPLACE_ID } from 'utils/constant';
@@ -41,7 +42,7 @@ const NFTPage: React.FC<NFTPageProps> = ({
 }) => {
   const [likeLoading, setLikeLoading] = useState(false);
   const [modalShareOpen, setModalShareOpen] = useState(false);
-  const bgGradient = { background: gradient(NFT.ownerData.name) };
+  // const bgGradient = { background: gradient(NFT.ownerData.name) };
   const shareSubject = 'Check out this Secret NFT';
   const shareText = `Check out ${NFT.name ? NFT.name : 'this nft'} on ${
     process.env.NEXT_PUBLIC_APP_LINK
@@ -70,18 +71,28 @@ const NFTPage: React.FC<NFTPageProps> = ({
             : 0),
         0
       );
-  const smallestPriceRow = (!NFT.serieData || NFT.serieData.length<=1) ? 
-    NFT
-  : 
-    NFT.serieData.filter(x=>x.marketplaceId === MARKETPLACE_ID).sort(
-      (a, b) =>
-        (a.owner === b.owner ? 0 : (!user ? 0 : (a.owner===user.walletId ? 1 : (b.owner===user.walletId ? -1 : 0)))) || // take nft which i'm not owner first
-        b.listed - a.listed || //listed first
-        Number(a.price) - Number(b.price) || //lowest price first
-        Number(a.priceTiime) - Number(b.priceTiime) // lower pricetiime first
-    )[0];
-  const userCanBuy = user ? 
-      user.capsAmount &&
+  const smallestPriceRow =
+    !NFT.serieData || NFT.serieData.length <= 1
+      ? NFT
+      : NFT.serieData
+          .filter((x) => x.marketplaceId === MARKETPLACE_ID)
+          .sort(
+            (a, b) =>
+              (a.owner === b.owner
+                ? 0
+                : !user
+                ? 0
+                : a.owner === user.walletId
+                ? 1
+                : b.owner === user.walletId
+                ? -1
+                : 0) || // take nft which i'm not owner first
+              b.listed - a.listed || //listed first
+              Number(a.price) - Number(b.price) || //lowest price first
+              Number(a.priceTiime) - Number(b.priceTiime) // lower pricetiime first
+          )[0];
+  const userCanBuy = user
+    ? user.capsAmount &&
       smallestPriceRow &&
       smallestPriceRow.listed &&
       smallestPriceRow.price &&
@@ -89,11 +100,10 @@ const NFTPage: React.FC<NFTPageProps> = ({
       Number(user.capsAmount) >= Number(smallestPriceRow.price) &&
       user.walletId !== smallestPriceRow.owner &&
       smallestPriceRow.marketplaceId === MARKETPLACE_ID
-    : 
-      smallestPriceRow ? 
-        smallestPriceRow.listed===1 && smallestPriceRow.marketplaceId === MARKETPLACE_ID 
-      : 
-        false;
+    : smallestPriceRow
+    ? smallestPriceRow.listed === 1 &&
+      smallestPriceRow.marketplaceId === MARKETPLACE_ID
+    : false;
 
   useEffect(() => {
     setNftToBuy(smallestPriceRow);
@@ -136,9 +146,9 @@ const NFTPage: React.FC<NFTPageProps> = ({
   };
 
   const handleBuy = () => {
-    setNftToBuy(smallestPriceRow)
-    setExp(2)
-  }
+    setNftToBuy(smallestPriceRow);
+    setExp(2);
+  };
 
   return (
     <div className={style.Container}>
@@ -160,21 +170,16 @@ const NFTPage: React.FC<NFTPageProps> = ({
             <div className={style.Top}>
               <div className={style.TopInfosCreator}>
                 <div className={style.TopInfosCreatorPicture}>
-                  {NFT.creatorData?.picture || NFT.creatorData?.name ? (
-                    <Creator
-                      className={style.TopInfosCreatorPictureIMG}
-                      size={'fullwidth'}
-                      user={NFT.creatorData}
-                    />
-                  ) : (
-                    <div
-                      className={style.TopInfosCreatorPictureIMG}
-                      style={bgGradient}
-                    />
-                  )}
+                  <Creator
+                    className={style.TopInfosCreatorPictureIMG}
+                    size={'fullwidth'}
+                    user={NFT.creatorData}
+                  />
                 </div>
                 <div className={style.TopInfosCreatorName}>
-                  {NFT.creatorData.name}
+                  <Link href={`/${NFT.creatorData.walletId}`}>
+                    <a>{NFT.creatorData.name}</a>
+                  </Link>
                   <span className={style.creatorTwitterUsername}>
                     {NFT.creatorData?.twitterName
                       ? NFT.creatorData.twitterName
@@ -215,18 +220,20 @@ const NFTPage: React.FC<NFTPageProps> = ({
             <p className={style.Description}>{NFT.description}</p>
             <div className={style.Buy}>
               <div
-                onClick={() =>
-                  userCanBuy && 
-                  handleBuy()
-                }
+                onClick={() => userCanBuy && handleBuy()}
                 className={
-                  userCanBuy ? 
-                    style.Button
-                  : 
-                    `${style.Button} ${style.Disabled}`
+                  userCanBuy
+                    ? style.Button
+                    : `${style.Button} ${style.Disabled}`
                 }
               >
-                Buy {`${smallestPriceRow && (smallestPriceRow.price || smallestPriceRow.priceTiime) ? "for " : ""}`}
+                Buy{' '}
+                {`${
+                  smallestPriceRow &&
+                  (smallestPriceRow.price || smallestPriceRow.priceTiime)
+                    ? 'for '
+                    : ''
+                }`}
                 {smallestPriceRow && (
                   <>
                     {smallestPriceRow.price &&

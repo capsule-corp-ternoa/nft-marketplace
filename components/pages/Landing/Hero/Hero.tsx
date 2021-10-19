@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import style from './Hero.module.scss';
-import Link from 'next/link';
 
 import Creator from 'components/base/Creator';
 //import Ternoart from 'components/assets/ternoart';
@@ -19,11 +18,9 @@ const Hero: React.FC<HeroProps> = ({ users }) => {
 
   function returnCreators() {
     return users.slice(0, 10).map((item, index) => (
-      <Link key={index} href={`/${item.walletId}`}>
-        <a className={style.CreatorWrapper}>
-          <Creator user={item} showTooltip={true} />
-        </a>
-      </Link>
+      <div key={index} className={style.CreatorWrapper}>
+        <Creator user={item} showTooltip={true} />
+      </div>
     ));
   }
 
@@ -49,10 +46,7 @@ const Hero: React.FC<HeroProps> = ({ users }) => {
               width="100%"
               id="video"
             >
-              <source
-                data-reactid=".0.1.0.0.0"
-                src="ternoart.mp4"
-              />
+              <source data-reactid=".0.1.0.0.0" src="ternoart.mp4" />
             </video>
             <span className={style.Sound} onClick={() => toggleMute()}>
               {mute ? (

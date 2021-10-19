@@ -6,7 +6,6 @@ import Blaze from 'components/assets/blaze';
 import Creator from 'components/base/Creator';
 
 import { UserType } from 'interfaces/index';
-import Link from 'next/link';
 
 export interface BestSellersProps {
   creators: UserType[];
@@ -16,15 +15,13 @@ const BestSellers: React.FC<BestSellersProps> = ({ creators }) => {
   const [isFiltered, setIsFiltered] = useState(false);
   function returnCreators() {
     return creators.map((item, index) => (
-      <Link key={index} href={`/${item.walletId}`}>
-        <a className={style.CreatorShell}>
-          <Creator user={item} showTooltip={false} />
+        <div key={index} className={style.CreatorShell}>
+          <Creator user={item} showTooltip={false}/>
           <div className={style.CreatorInfos}>
             <h2 className={style.CreatorName}>{item.name}</h2>
             <span className={style.CreatorCaps}>0 CAPS</span>
           </div>
-        </a>
-      </Link>
+        </div>
     ));
   }
 

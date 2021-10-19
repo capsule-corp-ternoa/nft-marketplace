@@ -38,25 +38,38 @@ const LandingPage: React.FC<LandingProps> = ({
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    if (window.isRNApp && window.walletId && (!Cookies.get('token') || decryptCookie(Cookies.get('token') as string)!==window.walletId)){
-      if (params.get('walletId') && params.get('walletId')!==window.walletId){
-        resetUser()
+    if (
+      window.isRNApp &&
+      window.walletId &&
+      (!Cookies.get('token') ||
+        decryptCookie(Cookies.get('token') as string) !== window.walletId)
+    ) {
+      if (
+        params.get('walletId') &&
+        params.get('walletId') !== window.walletId
+      ) {
+        resetUser();
       }
-      Cookies.remove('token')
+      Cookies.remove('token');
       Cookies.set('token', encryptCookie(window.walletId), { expires: 1 });
     }
-    if (!window.isRNApp && params.get('walletId')) setWalletUser(null)
+    if (!window.isRNApp && params.get('walletId')) setWalletUser(null);
   }, []);
 
   const resetUser = async () => {
-    const user = await getUser(window.walletId)
-    setWalletUser(user)
-  }
+    const user = await getUser(window.walletId);
+    setWalletUser(user);
+  };
 
   return (
     <>
       <Head>
-        <title>{process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : "SecretNFT"} - Welcome</title>
+        <title>
+          {process.env.NEXT_PUBLIC_APP_NAME
+            ? process.env.NEXT_PUBLIC_APP_NAME
+            : 'SecretNFT'}{' '}
+          - Welcome
+        </title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta name="description" content="SecretNFT Marketplace, by Ternoa." />
         <meta name="og:image" content="ternoa-social-banner.jpg" />
@@ -65,7 +78,10 @@ const LandingPage: React.FC<LandingProps> = ({
       {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
       {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
       <AlphaBanner />
-      <MainHeader user={walletUser as UserType} setModalExpand={setModalExpand} />
+      <MainHeader
+        user={walletUser as UserType}
+        setModalExpand={setModalExpand}
+      />
       <Landing
         setModalExpand={setModalExpand}
         setNotAvailable={setNotAvailable}
@@ -80,29 +96,45 @@ const LandingPage: React.FC<LandingProps> = ({
   );
 };
 export async function getServerSideProps(ctx: NextPageContext) {
-  const token = ctx.query.walletId as string || (cookies(ctx).token && decryptCookie(cookies(ctx).token as string));
-  let users: UserType[] = [], user: UserType | null = null, regularNfts: NftType[] = [];
+  const token =
+    (ctx.query.walletId as string) ||
+    (cookies(ctx).token && decryptCookie(cookies(ctx).token as string));
+  let users: UserType[] = [],
+    user: UserType | null = null,
+    regularNfts: NftType[] = [];
   const promises = [];
-  promises.push(new Promise<void>((success) => {
-    getUsers().then(result => {
-      users = result.data
-      success();
-    }).catch(success);
-  }));
+  promises.push(
+    new Promise<void>((success) => {
+      getUsers()
+        .then((result) => {
+          users = result.data;
+          success();
+        })
+        .catch(success);
+    })
+  );
   if (token) {
-    promises.push(new Promise<void>((success) => {
-      getUser(token).then(_user => {
-        user = _user
-        success();
-      }).catch(success);
-    }));
+    promises.push(
+      new Promise<void>((success) => {
+        getUser(token)
+          .then((_user) => {
+            user = _user;
+            success();
+          })
+          .catch(success);
+      })
+    );
   }
-  promises.push(new Promise<void>((success) => {
-    getCategoryNFTs(undefined, "1", "19").then(result => {
-      regularNfts = result.data
-      success();
-    }).catch(success);
-  }));
+  promises.push(
+    new Promise<void>((success) => {
+      getCategoryNFTs(undefined, '1', '19')
+        .then((result) => {
+          regularNfts = result.data;
+          success();
+        })
+        .catch(success);
+    })
+  );
   await Promise.all(promises);
   users = arrayShuffle(users);
   let popularNfts = arrayShuffle((regularNfts || []).slice(0, 8));
@@ -118,7 +150,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
       NFTCreators,
       totalCountNFT,
     },
-  }
+  };
 }
 
 export default LandingPage;

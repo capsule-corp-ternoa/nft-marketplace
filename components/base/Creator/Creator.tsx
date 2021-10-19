@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import Router from 'next/router';
 import style from './Creator.module.scss';
 import Badge from 'components/assets/badge';
 
@@ -12,6 +12,7 @@ export interface CreatorProps {
   showTooltip?: boolean;
   size?: string;
   className?: string;
+  isClickable?: boolean;
 }
 
 const Creator: React.FC<CreatorProps> = ({
@@ -19,6 +20,7 @@ const Creator: React.FC<CreatorProps> = ({
   showTooltip = true,
   size,
   className,
+  isClickable = true,
 }) => {
   const [isHovering, setIsHovering] = useState(false);
 
@@ -44,6 +46,9 @@ const Creator: React.FC<CreatorProps> = ({
   return (
     <div
       className={className ? `${style.Creator} ${className}` : style.Creator}
+      onClick={() =>
+        isClickable && user && user.walletId && Router.push(`/${user.walletId}`)
+      }
     >
       <div
         className={

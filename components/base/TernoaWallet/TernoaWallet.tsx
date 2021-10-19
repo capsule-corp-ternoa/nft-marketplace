@@ -44,9 +44,8 @@ const TernoaWallet: React.FC<TernoaWalletProps> = ({ setModalExpand }) => {
       const walletId = data.walletId as string;
       let isUserCreated = false
       try {
-        const datas = await getUser(walletId);
-        console.log('wallet response', datas);
-        if(!datas && !datas.walletId) {
+        const user = await getUser(walletId);
+        if(!user.walletId) {
           const response = await fetch(`${NODE_API_URL}/api/users/create`, {
             method: 'POST',
             body: JSON.stringify({ walletId }),
@@ -59,10 +58,12 @@ const TernoaWallet: React.FC<TernoaWalletProps> = ({ setModalExpand }) => {
       } catch (err) {
         console.log(err);
       }
-      isUserCreated && Cookies.set('token', encryptCookie(walletId), {
-        //sameSite: 'strict',
-        expires: 1,
-      });
+      if (isUserCreated){
+        Cookies.set('token', encryptCookie(walletId), {
+          //sameSite: 'strict',
+          expires: 1,
+        });
+      } 
       socket.emit('RECEIVED_WALLET_ID', data);
       socket.close();
       window.location.reload();

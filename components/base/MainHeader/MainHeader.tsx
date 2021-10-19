@@ -113,7 +113,7 @@ const MainHeader: React.FC<HeaderProps> = ({ setModalExpand, user }) => {
           <div className={style.Dropdown}>
             <div className={style.DropdownContainer}>
               <div className={style.DropdownProfile}>
-                <Creator user={user} size="xsmall" showTooltip={false} />
+                <Creator user={user} size="xsmall" showTooltip={false}/>
                 <div className={style.Name}>{user?.name}</div>
               </div>
 

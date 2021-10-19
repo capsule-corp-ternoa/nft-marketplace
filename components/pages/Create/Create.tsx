@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import style from './Create.module.scss';
 import Footer from 'components/base/Footer';
@@ -50,7 +50,19 @@ const Create: React.FC<CreateProps> = ({
   const [exp, setExp] = useState(false);
   const [nftData, setNFTData] = useState(initalValue);
   const { name, description, quantity } = nftData;
+  const [isRN, setIsRN] = useState(false)
+  const [acceptedFileTypes, setAcceptedFileTypes] = useState([".jpg", ".jpeg", ".png", ".gif", ".mp4", ".mov"])
 
+  useEffect(() => {
+    setIsRN(window.isRNApp);
+  }, []);
+
+  useEffect(() => {
+    if (isRN){
+      setAcceptedFileTypes([".jpg", ".jpeg", ".png", ".gif"])
+    }
+  }, [isRN])
+  
   const validateQuantity = (value: number, limit: number) => {
     return value && value > 0 && value <= limit;
   };
@@ -105,21 +117,33 @@ const Create: React.FC<CreateProps> = ({
   ) => {
     const { target } = event;
     let file = null;
+    let isError = false
     if (!(target && target.files && target.files[0])) {
       setFunction(file);
       setSelect('Select NFT Option');
       return;
     }
-    if (target.files[0].size <= 31000000) {
-      if (
-        (target.files[0]!.type.substr(0, 5) === 'video' || target.files[0]!.type === 'image/gif') &&
-        (select === 'Blur' || select === 'Protect')
-      ) {
-        setSelect('Select NFT Option');
-      }
-      file = target.files[0];
-    } else {
+    if (!isError && isRN && target.files[0]!.type.substr(0, 5) === 'video'){
+      setError("You can't select video type on mobile DApp yet.");
+      isError = true
+    }
+    if (!isError && !(target.files[0]!.type.substr(0, 5) === 'video' || target.files[0]!.type.substr(0, 5) === 'image')){
+      setError(`You can't select files different from ${!isRN ? "videos or " : ""}images.`);
+      isError = true
+    }
+    if (!isError && target.files[0].size > 31000000) {
       setError('Max file size is 30mb.');
+      isError = true
+    }
+    if (
+      (target.files[0]!.type.substr(0, 5) === 'video' || target.files[0]!.type === 'image/gif') &&
+      (select === 'Blur' || select === 'Protect')
+    ) {
+      setSelect('Select NFT Option');
+    }
+    if (!isError){
+      file = target.files[0];
+    }else{
       setModalCreate(true);
       setSelect('Select NFT Option');
     }
@@ -187,7 +211,7 @@ const Create: React.FC<CreateProps> = ({
                     Click here to upload your file.
                   </div>
                   <div className={style.InsightLight}>
-                    JPEG, JPG, PNG, GIF, MP4 or MOV. Max 30mb.
+                    JPEG, JPG, PNG, GIF{`${!isRN ? ", MP4 or MOV" : ""}`}. Max 30mb.
                   </div>
                 </div>
 
@@ -199,7 +223,7 @@ const Create: React.FC<CreateProps> = ({
                     id="uploadNFT"
                     onChange={(event) => updateFile(event, setSecretNFT)}
                     className={style.HiddenInput}
-                    accept=".jpg, .jpeg, .png, .gif, .mp4, .mov"
+                    accept={acceptedFileTypes.join(',')}
                   />
                 </div>
 
@@ -240,7 +264,7 @@ const Create: React.FC<CreateProps> = ({
                         id="uploadSecretNFT"
                         onChange={(event) => updateFile(event, setNFT)}
                         className={style.HiddenInput}
-                        accept=".jpg, .jpeg, .png, .gif, .mp4, .mov"
+                        accept={acceptedFileTypes.join(',')}
                       />
                     </div>
                   </label>

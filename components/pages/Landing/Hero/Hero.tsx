@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import style from './Hero.module.scss';
 
 import Creator from 'components/base/Creator';
 //import Ternoart from 'components/assets/ternoart';
 
-import SoundOn from 'components/assets/SoundOn';
-import SoundOff from 'components/assets/SoundOff';
+//import SoundOn from 'components/assets/SoundOn';
+//import SoundOff from 'components/assets/SoundOff';
 
 import { UserType } from 'interfaces/index';
 
@@ -14,7 +14,7 @@ export interface HeroProps {
 }
 
 const Hero: React.FC<HeroProps> = ({ users }) => {
-  const [mute, setMute] = useState(true);
+  //const [mute, setMute] = useState(true);
 
   function returnCreators() {
     return users.slice(0, 10).map((item, index) => (
@@ -24,16 +24,16 @@ const Hero: React.FC<HeroProps> = ({ users }) => {
     ));
   }
 
-  function toggleMute() {
+  /*function toggleMute() {
     var video = document.getElementById('video') as HTMLVideoElement;
     video!.muted = !video!.muted;
     setMute(!mute);
-  }
+  }*/
 
   return (
     <>
       <div className={style.Hero}>
-        <div className={style.Head}>
+        {/*<div className={style.Head}>
           <div className={style.VideoContainer}>
             <video
               className={style.Video}
@@ -57,7 +57,7 @@ const Hero: React.FC<HeroProps> = ({ users }) => {
             </span>
           </div>
 
-          {/*<div className={style.Content}>
+          <div className={style.Content}>
             <div className={style.Left}>
               <div className={style.Label}>
                 Hello Alpha tester
@@ -110,8 +110,8 @@ const Hero: React.FC<HeroProps> = ({ users }) => {
                 </div>
               </div>
             </div>
-          </div>*/}
-        </div>
+          </div>
+        </div>*/}
         <div className={style.Creators}>
           <h3 className={style.CreatorsTitle}>Creators</h3>
           <div className={style.CreatorsDisplay}>{returnCreators()}</div>

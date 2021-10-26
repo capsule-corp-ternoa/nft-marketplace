@@ -100,6 +100,12 @@ export async function getServerSideProps(ctx: NextPageContext) {
     data: NftType[] = [],
     dataHasNextPage: boolean = false;
   const promises = [];
+  const req = ctx.req
+  if (req){
+    const forwarded = req.headers["x-forwarded-for"] as string
+    const ip = forwarded ? forwarded.split(/, /)[0] : req.connection.remoteAddress
+    console.log(ip)
+  }
   if (token) {
     promises.push(
       new Promise<void>((success) => {

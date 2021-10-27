@@ -80,7 +80,7 @@ const PublicProfilePage: React.FC<PublicProfileProps> = ({
       {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
       <AlphaBanner />
       <MainHeader user={walletUser} setModalExpand={setModalExpand} />
-      <div>{ip}</div>
+      <div>{ip ? ip : "no ip"}</div>
       <PublicProfile
         user={walletUser}
         setUser={setWalletUser}

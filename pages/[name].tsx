@@ -18,6 +18,7 @@ export interface PublicProfileProps {
   profile: UserType;
   data: NftType[];
   dataHasNextPage: boolean;
+  ip: string | undefined;
 }
 
 const PublicProfilePage: React.FC<PublicProfileProps> = ({
@@ -25,6 +26,7 @@ const PublicProfilePage: React.FC<PublicProfileProps> = ({
   data,
   profile,
   dataHasNextPage,
+  ip,
 }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
@@ -78,6 +80,7 @@ const PublicProfilePage: React.FC<PublicProfileProps> = ({
       {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
       <AlphaBanner />
       <MainHeader user={walletUser} setModalExpand={setModalExpand} />
+      <div>{ip}</div>
       <PublicProfile
         user={walletUser}
         setUser={setWalletUser}
@@ -101,9 +104,10 @@ export async function getServerSideProps(ctx: NextPageContext) {
     dataHasNextPage: boolean = false;
   const promises = [];
   const req = ctx.req
+  let ip: string | undefined = ""
   if (req){
     const forwarded = req.headers["x-forwarded-for"] as string
-    const ip = forwarded ? forwarded.split(/, /)[0] : req.connection.remoteAddress
+    ip = forwarded ? forwarded.split(/, /)[0] : req.connection.remoteAddress
     console.log(ip)
   }
   if (token) {
@@ -141,7 +145,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
     };
   }
   return {
-    props: { user, profile, data, dataHasNextPage },
+    props: { user, profile, data, dataHasNextPage, ip },
   };
 }
 

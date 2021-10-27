@@ -210,7 +210,6 @@ const ModalMint: React.FC<ModalProps> = ({
         {(mintReponse === false) && <div className={style.Text}>
           Mint was not added to the blockchain.
         </div>}
-        <div className={style.Text}>runNFTMintData : {JSON.stringify(runNFTMintData)}</div>
       </>
     );
   }

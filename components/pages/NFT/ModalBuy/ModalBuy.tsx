@@ -7,6 +7,7 @@ import randomstring from 'randomstring';
 import { connect as connectIo } from 'utils/socket/socket.helper';
 import Link from 'next/link';
 import CheckMark from 'components/assets/checkmark';
+import { SOCKET_URL } from 'utils/constant';
 
 export interface ModalBuyProps {
   setModalExpand: (b: boolean) => void;
@@ -24,7 +25,7 @@ const ModalBuy: React.FC<ModalBuyProps> = ({ setModalExpand, id }) => {
   useEffect(() => {
     setIsRN(window.isRNApp);
     console.log('socket connect on session',session);
-    const socket = connectIo(`/socket/buyNft`, { session });
+    const socket = connectIo(`/socket/buyNft`, { session, socketUrl: SOCKET_URL });
     socket.on('connect_error', (e) => {
       console.error('connection error socket', e);
       setModalExpand(false);
@@ -32,7 +33,7 @@ const ModalBuy: React.FC<ModalBuyProps> = ({ setModalExpand, id }) => {
 
     socket.on('CONNECTION_SUCCESS', () => {
       if (window.isRNApp) {
-        const data = { session, nft_id: id };
+        const data = { session, socketUrl: SOCKET_URL, nft_id: id };
         setLoading(true)
         setTimeout(function () {
           window.ReactNativeWebView.postMessage(JSON.stringify({ action: 'BUY', data }));
@@ -87,7 +88,7 @@ const ModalBuy: React.FC<ModalBuyProps> = ({ setModalExpand, id }) => {
           </div>
           <div className={style.QR}>
             {showQR &&
-              <QRCode data={{ session, nft_id: id }} action={'BUY'} />
+              <QRCode data={{ session, socketUrl: SOCKET_URL, nft_id: id }} action={'BUY'} />
             }
             {loading && (
               <div className={style.Loading}>

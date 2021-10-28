@@ -1,5 +1,4 @@
-import React from 'react';
-
+import React, { useEffect, useState } from 'react';
 import style from './Sidebar.module.scss';
 import Badge from 'components/assets/badge';
 import CopyPaste from 'components/assets/copypaste';
@@ -42,6 +41,11 @@ const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   const router = useRouter();
   const bgGradient = user ? { background: gradient(user.name) } : {};
+  const [isRn, setIsRn] = useState(false)
+  
+  useEffect(() => {
+    setIsRn(window.isRNApp);
+  }, []);
 
   function returnActiveTitle(name: string) {
     if (scope === name) {
@@ -58,8 +62,10 @@ const Sidebar: React.FC<SidebarProps> = ({
   }
 
   function disconnect() {
-    Cookies.remove('token');
-    router.push('/');
+    if (!isRn){
+      Cookies.remove('token');
+      router.push('/');
+    }
   }
 
   return (
@@ -104,7 +110,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           <span className={style.CapsData}>
             {user.capsAmount ? computeCaps(Number(user.capsAmount)) : 0} CAPS
           </span>
-          <span className={style.CapsData}>
+          <span className={style.CapsData} style={{display: "none"}}>
             {user.tiimeAmount ? computeTiime(Number(user.tiimeAmount)) : 0} TIIME
           </span>
           <div className={style.Burger} onClick={() => setExpand(true)}>
@@ -190,10 +196,13 @@ const Sidebar: React.FC<SidebarProps> = ({
             {followedAmount}
           </div>
         </div>
-        <div className={style.Disconnect} onClick={disconnect}>
-          <PowerOff className={style.PowerOff} />
-          Disconnect
-        </div>
+        {!isRn && 
+          <div className={style.Disconnect} onClick={disconnect}>
+            <PowerOff className={style.PowerOff} />
+            Disconnect
+          </div>
+        }
+        
       </div>
     </div>
   );

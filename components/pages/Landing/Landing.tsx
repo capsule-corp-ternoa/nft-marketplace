@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import style from './Landing.module.scss';
 import Hero from './Hero';
@@ -8,7 +8,6 @@ import FloatingHeader from 'components/base/FloatingHeader';
 import NoNFTComponent from 'components/base/NoNFTComponent';
 import { UserType, NftType } from 'interfaces/index';
 import dynamic from 'next/dynamic';
-import { getUser } from 'actions/user';
 const Showcase = dynamic(() => import('./Showcase'), {
   ssr: false,
 });
@@ -20,7 +19,6 @@ export interface LandingProps {
   setNotAvailable: (b: boolean) => void;
   popularNfts: NftType[];
   bestSellingNfts: NftType[];
-  betaNfts: NftType[];
   NFTCreators: NftType[];
   totalCountNFT: number;
 }
@@ -32,27 +30,14 @@ const Landing: React.FC<LandingProps> = ({
   users,
   popularNfts,
   bestSellingNfts,
-  betaNfts,
   NFTCreators,
   totalCountNFT,
 }) => {
   const [walletUser, setWalletUser] = useState(user);
-  useEffect(() => {
-    async function callBack() {
-      try {
-        let res = await getUser(window.walletId);
-        setWalletUser(res);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    if (window.isRNApp && window.walletId) callBack();
-  }, []);
   return (
     <div className={style.Container}>
       <Hero users={users} />
       {totalCountNFT === 0 && <NoNFTComponent/>}
-      <Showcase category="Beta Testers" NFTs={betaNfts} user={walletUser} setUser={setWalletUser}/>
       <Showcase category="Most popular" NFTs={popularNfts} user={walletUser} setUser={setWalletUser} />
       <Showcase category="Best sellers" NFTs={bestSellingNfts} user={walletUser} setUser={setWalletUser}/>
       <ArtCreators NFTs={NFTCreators} creators={users} user={walletUser} setUser={setWalletUser}/>

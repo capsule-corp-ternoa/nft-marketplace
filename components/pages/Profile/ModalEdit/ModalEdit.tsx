@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useEffect, useState } from 'react';
+import router from 'next/router';
 import style from './ModalEdit.module.scss';
 import Close from 'components/assets/close';
 import QRCode from 'components/base/QRCode';
@@ -7,6 +8,7 @@ import randomstring from 'randomstring';
 import { connect as connectIo } from 'utils/socket/socket.helper';
 import Link from 'next/link';
 import CheckMark from 'components/assets/checkmark';
+import { SOCKET_URL } from 'utils/constant';
 
 export interface ModalEditProps {
   setModalExpand: (b: boolean) => void;
@@ -24,7 +26,7 @@ const ModalEdit: React.FC<ModalEditProps> = ({ setModalExpand, data }) => {
   useEffect(() => {
     setIsRN(window.isRNApp);
     console.log('socket connect on session',session);
-    const socket = connectIo(`/socket/updateProfile`, { session });
+    const socket = connectIo(`/socket/updateProfile`, { session, socketUrl: SOCKET_URL });
     socket.on('connect_error', (e) => {
       console.error('connection error socket', e);
       setModalExpand(false);
@@ -34,7 +36,7 @@ const ModalEdit: React.FC<ModalEditProps> = ({ setModalExpand, data }) => {
       if (window.isRNApp) {
         setLoading(true)
         setTimeout(function () {
-          window.ReactNativeWebView.postMessage(JSON.stringify({ action: 'UPDATE_PROFILE', data: {...data, session} }));
+          window.ReactNativeWebView.postMessage(JSON.stringify({ action: 'UPDATE_PROFILE', data: {...data, session, socketUrl: SOCKET_URL} }));
         }, 2000);
       } else {
         setShowQR(true);
@@ -54,7 +56,8 @@ const ModalEdit: React.FC<ModalEditProps> = ({ setModalExpand, data }) => {
       socket.close();
       setTimeout(() => {
         setModalExpand(false);
-      }, 2000)
+        router.reload()
+      }, 1000)
     });
     socket.on('disconnect', () => {
       setModalExpand(false);
@@ -87,7 +90,7 @@ const ModalEdit: React.FC<ModalEditProps> = ({ setModalExpand, data }) => {
           </div>
           <div className={style.QR}>
             {showQR &&
-              <QRCode data={{...data, session}} action={'UPDATE_PROFILE'} />
+              <QRCode data={{...data, session, socketUrl: SOCKET_URL}} action={'UPDATE_PROFILE'} />
             }
             {loading && (
               <div className={style.Loading}>

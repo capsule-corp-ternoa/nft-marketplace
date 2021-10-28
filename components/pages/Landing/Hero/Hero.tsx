@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import style from './Hero.module.scss';
-import Link from 'next/link';
 
 import Creator from 'components/base/Creator';
-import Ternoart from 'components/assets/ternoart';
+//import Ternoart from 'components/assets/ternoart';
 
-import SoundOn from 'components/assets/SoundOn';
-import SoundOff from 'components/assets/SoundOff';
+//import SoundOn from 'components/assets/SoundOn';
+//import SoundOff from 'components/assets/SoundOff';
 
 import { UserType } from 'interfaces/index';
 
@@ -15,28 +14,26 @@ export interface HeroProps {
 }
 
 const Hero: React.FC<HeroProps> = ({ users }) => {
-  const [mute, setMute] = useState(true);
+  //const [mute, setMute] = useState(true);
 
   function returnCreators() {
     return users.slice(0, 10).map((item, index) => (
-      <Link key={index} href={`/${item.walletId}`}>
-        <a className={style.CreatorWrapper}>
-          <Creator user={item} showTooltip={true} />
-        </a>
-      </Link>
+      <div key={index} className={style.CreatorWrapper}>
+        <Creator user={item} showTooltip={true} />
+      </div>
     ));
   }
 
-  function toggleMute() {
+  /*function toggleMute() {
     var video = document.getElementById('video') as HTMLVideoElement;
     video!.muted = !video!.muted;
     setMute(!mute);
-  }
+  }*/
 
   return (
     <>
       <div className={style.Hero}>
-        <div className={style.Head}>
+        {/*<div className={style.Head}>
           <div className={style.VideoContainer}>
             <video
               className={style.Video}
@@ -49,11 +46,7 @@ const Hero: React.FC<HeroProps> = ({ users }) => {
               width="100%"
               id="video"
             >
-              <source
-                type="video/mp4"
-                data-reactid=".0.1.0.0.0"
-                src="ternoart.mp4"
-              />
+              <source data-reactid=".0.1.0.0.0" src="ternoart.mp4" />
             </video>
             <span className={style.Sound} onClick={() => toggleMute()}>
               {mute ? (
@@ -67,7 +60,7 @@ const Hero: React.FC<HeroProps> = ({ users }) => {
           <div className={style.Content}>
             <div className={style.Left}>
               <div className={style.Label}>
-                Hello Alpha tester
+                Hello Beta tester
                 <span role="img" className={style.Emoji} aria-label="wave">
                   👋
                 </span>
@@ -78,9 +71,9 @@ const Hero: React.FC<HeroProps> = ({ users }) => {
                   <div className={style.Bold}>Try SecretNFT</div>
                 </div>
                 <p className={style.Description}>
-                  We invit you to try “SecretNFT” our NFTs marketplace in alpha
+                  We invite you to try the “SecretNFT”, our NFTs marketplace in beta
                   version on Ternoa Chain. Help us discover bugs, give feedbacks
-                  to improve our products and <span>earn NFTs in return</span> !
+                  to improve the product and the experience. <span>You earn NFTs in return</span> ! 🙂
                 </p>
               </div>
 
@@ -118,7 +111,7 @@ const Hero: React.FC<HeroProps> = ({ users }) => {
               </div>
             </div>
           </div>
-        </div>
+        </div>*/}
         <div className={style.Creators}>
           <h3 className={style.CreatorsTitle}>Creators</h3>
           <div className={style.CreatorsDisplay}>{returnCreators()}</div>

@@ -4,14 +4,12 @@ import style from './ModalShare.module.scss';
 import Close from 'components/assets/close';
 import CopyPaste from 'components/assets/copypaste';
 import { 
-  EmailShareButton,
   FacebookShareButton,
   LinkedinShareButton,
   RedditShareButton,
   TelegramShareButton,
   TwitterShareButton,
   WhatsappShareButton,
-  EmailIcon,
   FacebookIcon,
   LinkedinIcon,
   RedditIcon,
@@ -38,14 +36,14 @@ const ModalShare: React.FC<ModalWalletProps> = ({ setModalExpand, title, subject
         {title}
       </div>
       <div className={style.SocialButtons}>
-        <EmailShareButton
+        {/*<EmailShareButton
           url={url}
           subject={subject}
           body={text}
           separator={'\n'}
         >
           <EmailIcon size={40} round={true}/>
-        </EmailShareButton>
+        </EmailShareButton>*/}
         <FacebookShareButton
           url={url}
           quote={text}

@@ -9,6 +9,7 @@ import { NftType, UserType } from 'interfaces/index';
 import { computeCaps, computeTiime } from 'utils/strings';
 import { likeNFT, unlikeNFT } from 'actions/user';
 import { getNFT } from 'actions/nft';
+import { MARKETPLACE_ID } from 'utils/constant';
 
 export interface NftCardProps {
   item: NftType;
@@ -18,6 +19,7 @@ export interface NftCardProps {
   setUser?: (u: UserType) => void
   likedNfts?: NftType[]
   setLikedNfts?: (nfts: NftType[]) => void
+  scope?: string
 }
 
 function manageRouting(
@@ -36,11 +38,35 @@ const NftCard: React.FC<NftCardProps> = ({
   setUser,
   likedNfts,
   setLikedNfts,
+  scope,
 }) => {
   const [isHovering, setIsHovering] = useState(false);
   const [type, setType] = useState<string | null>(null);
   const [likeLoading, setLikeLoading] = useState(false)
-  const isLiked = !user ? undefined : user.likedNFTs?.includes(item.id)
+  const isLiked = !user ? undefined : (item.serieId === "0" ? user.likedNFTs?.map(x => x.nftId).includes(item.id) : user.likedNFTs?.map(x => x.serieId).includes(item.serieId))
+  const smallestPriceRow = !(item.serieData) ? item : item.serieData.filter(x=>x.marketplaceId === MARKETPLACE_ID).sort(
+    (a, b) =>
+      b.listed - a.listed ||
+      Number(a.price) - Number(b.price) ||
+      Number(a.priceTiime) - Number(b.priceTiime)
+  )[0];
+  const displayQuantity = () => {
+    if (!scope) return `${typeof item.totalListedNft !== 'undefined' ? item.totalListedNft : 1}`
+    switch(scope){
+      case 'My NFTs':
+        return `${typeof item.totalNft !== 'undefined' ? item.serieData?.filter(x=>x.owner===user?.walletId).length : 1}`
+      case 'My creations':
+        return `${typeof item.totalNft !== 'undefined' ? item.totalNft : 1}`
+      case 'My NFTs on sale':
+        return `${typeof item.totalListedNft !== 'undefined' ? item.serieData?.filter(x=>x.owner===user?.walletId && x.listed===1).length : 1}`
+      case 'My NFTs not for sale':
+        return `${(typeof item.totalListedNft !== 'undefined' && typeof item.totalNft !== 'undefined') ? item.serieData?.filter(x=>x.owner===user?.walletId && x.listed===0).length : 1}`
+      case 'Liked': 
+        return 0
+      default:
+        return `${typeof item.totalListedNft !== 'undefined' ? item.totalListedNft : 1}`
+    }
+  }
   useEffect(() => {
     async function callBack() {
       try {
@@ -67,15 +93,15 @@ const NftCard: React.FC<NftCardProps> = ({
 
   const isMobile = useMediaQuery({ query: '(max-device-width: 720px)' });
 
-  const handleLikeDislike = async (nftId: string) => {
+  const handleLikeDislike = async (nftId: string, serieId: string) => {
     try{
       let res = null
       if (!likeLoading && isLiked !== undefined && user){
         setLikeLoading(true)
         if (!isLiked){
-          res = await likeNFT(user.walletId, nftId)
+          res = await likeNFT(user.walletId, nftId, serieId)
         }else{
-          res = await unlikeNFT(user.walletId, nftId)
+          res = await unlikeNFT(user.walletId, nftId, serieId)
         }
       }
       if (res !== null && setUser){
@@ -116,9 +142,9 @@ const NftCard: React.FC<NftCardProps> = ({
           `${style.NFTIMG} ${(type?.substr(0, 5) === 'image' && isHovering) ? style.ImgScaling : ""}`
         }
       />
-      <span className={style.QtyLabel}>
-        {`${typeof item.totalListedNft !== 'undefined' ? item.totalListedNft : 1}`}
-      </span>
+      {Number(displayQuantity()) > 1 && <span className={style.QtyLabel}>
+        {displayQuantity()}
+      </span>}
       {item.cryptedMedia?.url !== item.media?.url && !isHovering && (
         <span className={style.SecretLabel}>S</span>
       )}
@@ -141,7 +167,7 @@ const NftCard: React.FC<NftCardProps> = ({
               : 
                 style.Hide
             }
-            onClick={(e) => {e.stopPropagation(); handleLikeDislike(item.id);}}
+            onClick={(e) => {e.stopPropagation(); handleLikeDislike(item.id, item.serieId);}}
           >
             <Heart className={style.HeartSVG} />
           </div>
@@ -159,6 +185,7 @@ const NftCard: React.FC<NftCardProps> = ({
                 className={isHovering ? style.Slide : ''}
                 size="card"
                 showTooltip={false}
+                isClickable={false}
               />
             )}
             {item.creatorData && (
@@ -171,17 +198,17 @@ const NftCard: React.FC<NftCardProps> = ({
               </div>
             )}
           </div>
-          {((item.price && Number(item.price)>0) || (item.priceTiime && Number(item.priceTiime))) &&
+          {(smallestPriceRow && smallestPriceRow.listed && ((smallestPriceRow.price && Number(smallestPriceRow.price)>0) || (smallestPriceRow.priceTiime && Number(smallestPriceRow.priceTiime)))) &&
             <div className={isHovering ? `${style.Button} ${style.FadeLong}` : style.Button}>
               <div className={style.Price}>
-                {item.price && Number(item.price)>0 &&
-                  `${computeCaps(Number(item.price))} CAPS`
+                {smallestPriceRow.price && Number(smallestPriceRow.price)>0 &&
+                  `${computeCaps(Number(smallestPriceRow.price))} CAPS`
                 }
-                {item.price && Number(item.price)>0 && item.priceTiime && Number(item.priceTiime) && 
+                {smallestPriceRow.price && Number(smallestPriceRow.price)>0 && smallestPriceRow.priceTiime && Number(smallestPriceRow.priceTiime) && 
                   ` / `
                 }
-                {item.priceTiime && Number(item.priceTiime)>0 && 
-                  `${computeTiime(Number(item.priceTiime))} TIIME`
+                {smallestPriceRow.priceTiime && Number(smallestPriceRow.priceTiime)>0 && 
+                  `${computeTiime(Number(smallestPriceRow.priceTiime))} TIIME`
                 }
               </div>
               <div className={style.ButtonText}>Buy</div>

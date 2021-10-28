@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
-import AlphaBanner from 'components/base/AlphaBanner';
+import BetaBanner from 'components/base/BetaBanner';
 import MainHeader from 'components/base/MainHeader';
 import ModalBuy from 'components/pages/NFT/ModalBuy';
 import TernoaWallet from 'components/base/TernoaWallet';
@@ -16,6 +16,8 @@ import { NftType, UserType } from 'interfaces';
 import { NextPageContext } from 'next';
 
 import { onModelClose, onModelOpen } from '../../utils/model-helpers';
+import { decryptCookie } from 'utils/cookie';
+import { getUserIp } from 'utils/functions';
 
 export interface NFTPageProps {
   user: UserType;
@@ -26,21 +28,10 @@ export interface NFTPageProps {
 const NftPage: React.FC<NFTPageProps> = ({ user, NFT, capsValue }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [exp, setExp] = useState(0);
+  const [nftToBuy, setNftToBuy] = useState(NFT)
   const [notAvailable, setNotAvailable] = useState(false);
   const [type, setType] = useState<string | null>(null);
   const [walletUser, setWalletUser] = useState(user);
-
-  useEffect(() => {
-    async function callBack() {
-      try {
-        let res = await getUser(window.walletId);
-        setWalletUser(res);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    if (window.isRNApp && window.walletId) callBack();
-  }, []);
 
   useEffect(() => {
     async function callBack() {
@@ -68,16 +59,16 @@ const NftPage: React.FC<NFTPageProps> = ({ user, NFT, capsValue }) => {
   return (
     <>
       <Head>
-        <title>{NFT.name} - SecretNFT</title>
+        <title>{NFT.name} - {process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : "SecretNFT"}</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta name="description" content={NFT.description} />
         <meta name="og:image" content={NFT.media.url} />
         <meta property="og:image" content={NFT.media.url} />
       </Head>
       {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
-      {[1, 2].indexOf(exp) !== -1 && (
+      {(exp===1 || exp===2) && (
         <ModalShowcase
-          NFT={NFT}
+          NFT={exp === 1 ? NFT : nftToBuy}
           setExp={setExp}
           exp={exp}
           setModalExpand={() => setExp(3)}
@@ -85,14 +76,15 @@ const NftPage: React.FC<NFTPageProps> = ({ user, NFT, capsValue }) => {
           user={walletUser}
         />
       )}
-      {exp === 3 && <ModalBuy setModalExpand={() => setExp(0)} id={NFT.id} />}
+      {exp === 3 && <ModalBuy setModalExpand={() => setExp(0)} id={nftToBuy.id} />}
       {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
 
-      <AlphaBanner />
+      <BetaBanner />
       <MainHeader user={walletUser} setModalExpand={setModalExpand} />
       <NFTPage
         NFT={NFT}
         setExp={setExp}
+        setNftToBuy={setNftToBuy}
         setModalExpand={setModalExpand}
         setNotAvailable={setNotAvailable}
         user={walletUser}
@@ -105,9 +97,10 @@ const NftPage: React.FC<NFTPageProps> = ({ user, NFT, capsValue }) => {
 };
 
 export async function getServerSideProps(ctx: NextPageContext) {
-  const token = cookies(ctx).token;
+  const token = cookies(ctx).token && decryptCookie(cookies(ctx).token as string);
   let user: UserType | null = null, NFT: NftType | null = null, capsValue: number = 0
   const promises = [];
+  let ip = getUserIp(ctx.req)
   if (token) {
     promises.push(new Promise<void>((success) => {
       getUser(token).then(_user => {
@@ -117,7 +110,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
     }));
   }
   promises.push(new Promise<void>((success) => {
-    getNFT(ctx.query.name as string, true, token ? token : null).then(_nft => {
+    getNFT(ctx.query.name as string, true, token ? token : null, ip).then(_nft => {
       NFT = _nft
       success();
     }).catch(success);

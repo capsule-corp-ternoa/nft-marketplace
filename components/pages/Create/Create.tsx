@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import style from './Create.module.scss';
 import Footer from 'components/base/Footer';
@@ -20,9 +20,9 @@ export interface CreateProps {
   NFTData: NFTProps;
   setNFTData: (o: NFTProps) => void;
   NFT: File | null;
-  setNFT: (f: File) => void;
+  setNFT: (f: File | null) => void;
   secretNFT: File | null;
-  setSecretNFT: (f: File) => void;
+  setSecretNFT: (f: File | null) => void;
   select: string;
   setSelect: (s: string) => void;
   processFile: () => Promise<void>;
@@ -48,33 +48,45 @@ const Create: React.FC<CreateProps> = ({
   setProcessed,
 }) => {
   const [exp, setExp] = useState(false);
-  const [isRN, setIsRN] = useState(false);
-  const [nftData, setNFTData] = useState({} as NFTProps)
+  const [nftData, setNFTData] = useState(initalValue);
   const { name, description, quantity } = nftData;
+  const [isRN, setIsRN] = useState(false)
+  const [acceptedFileTypes, setAcceptedFileTypes] = useState([".jpg", ".jpeg", ".png", ".gif", ".mp4", ".mov"])
 
   useEffect(() => {
     setIsRN(window.isRNApp);
-    setNFTData(initalValue)
-  });
+  }, []);
 
+  useEffect(() => {
+    if (isRN){
+      setAcceptedFileTypes([".jpg", ".jpeg", ".png", ".gif"])
+    }
+  }, [isRN])
+  
   const validateQuantity = (value: number, limit: number) => {
-    return (value && value > 0 && value <= limit)
-  }
+    return value && value > 0 && value <= limit;
+  };
 
-  const isDataValid = name && description && validateQuantity(quantity, 10) && select !== 'Select NFT Option'
+  const isDataValid =
+    name &&
+    description &&
+    validateQuantity(quantity, 10) &&
+    secretNFT &&
+    (select !== 'Secret' || NFT) &&
+    select !== 'Select NFT Option';
 
   function onChange(
     e:
       | React.ChangeEvent<HTMLInputElement>
       | React.ChangeEvent<HTMLTextAreaElement>
   ) {
-    const nextNftData = { ...nftData, [e.target.name]: e.target.value }
+    const nextNftData = { ...nftData, [e.target.name]: e.target.value };
     setNFTData(nextNftData);
     setNftDataToParent(nextNftData);
   }
 
   function returnType(NFTarg: File) {
-    if (NFTarg!.type.substr(0, 5) === 'image')
+    if (NFTarg!.type.substr(0, 5) === 'image') {
       return (
         <img
           className={style.IMGBackground}
@@ -83,17 +95,60 @@ const Create: React.FC<CreateProps> = ({
           id="output"
         />
       );
-    else if (NFTarg!.type.substr(0, 5) === 'video')
+    } else if (NFTarg!.type.substr(0, 5) === 'video') {
       return (
-        <video autoPlay muted playsInline loop className={style.IMGBackground}>
-          <source
-            id="outputVideo"
-            src={URL.createObjectURL(NFTarg)}
-            type="video/mp4"
-          />
+        <video
+          autoPlay
+          muted
+          playsInline
+          loop
+          className={style.IMGBackground}
+          key={NFTarg.name + NFTarg.lastModified}
+        >
+          <source id="outputVideo" src={URL.createObjectURL(NFTarg)} />
         </video>
       );
+    }
   }
+
+  const updateFile = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    setFunction: (f: File | null) => void
+  ) => {
+    const { target } = event;
+    let file = null;
+    let isError = false
+    if (!(target && target.files && target.files[0])) {
+      setFunction(file);
+      setSelect('Select NFT Option');
+      return;
+    }
+    if (!isError && isRN && target.files[0]!.type.substr(0, 5) === 'video'){
+      setError("You can't select video type on mobile DApp yet.");
+      isError = true
+    }
+    if (!isError && !(target.files[0]!.type.substr(0, 5) === 'video' || target.files[0]!.type.substr(0, 5) === 'image')){
+      setError(`You can't select files different from ${!isRN ? "videos or " : ""}images.`);
+      isError = true
+    }
+    if (!isError && target.files[0].size > 31000000) {
+      setError('Max file size is 30mb.');
+      isError = true
+    }
+    if (
+      (target.files[0]!.type.substr(0, 5) === 'video' || target.files[0]!.type === 'image/gif') &&
+      (select === 'Blur' || select === 'Protect')
+    ) {
+      setSelect('Select NFT Option');
+    }
+    if (!isError){
+      file = target.files[0];
+    }else{
+      setModalCreate(true);
+      setSelect('Select NFT Option');
+    }
+    setFunction(file);
+  };
 
   function uploadFiles() {
     if (
@@ -101,6 +156,8 @@ const Create: React.FC<CreateProps> = ({
       !description ||
       !quantity ||
       quantity > 10 ||
+      secretNFT === null ||
+      (select === 'Secret' && NFT === null) ||
       select === 'Select NFT Option'
     ) {
       setError('Please fill the form entirely.');
@@ -127,11 +184,9 @@ const Create: React.FC<CreateProps> = ({
       return false;
     else return true;
   }
-
   return (
     <div className={style.Container}>
       <div className={style.Wrapper}>
-        <div className={style.Label}>Coming Soon</div>
         <h2 className={style.Title}>Create NFT</h2>
         <div className={style.InnerContainer}>
           <div className={style.Top}>
@@ -156,7 +211,7 @@ const Create: React.FC<CreateProps> = ({
                     Click here to upload your file.
                   </div>
                   <div className={style.InsightLight}>
-                    JPEG, JPG, PNG, GIF, or MP4. Max 30mb.
+                    JPEG, JPG, PNG, GIF{`${!isRN ? ", MP4 or MOV" : ""}`}. Max 30mb.
                   </div>
                 </div>
 
@@ -166,12 +221,9 @@ const Create: React.FC<CreateProps> = ({
                   <input
                     type="file"
                     id="uploadNFT"
-                    onChange={(event) => {
-                      const { target } = event;
-                      if (target && target.files) setSecretNFT(target.files[0]);
-                    }}
+                    onChange={(event) => updateFile(event, setSecretNFT)}
                     className={style.HiddenInput}
-                    accept=".jpg, .jpeg, .png, .gif, .mp4"
+                    accept={acceptedFileTypes.join(',')}
                   />
                 </div>
 
@@ -195,7 +247,7 @@ const Create: React.FC<CreateProps> = ({
                     }
                   >
                     <div className={NFT ? style.Hidden : style.NFTSNull}>
-                      <div className={style.Label}>Coming soon</div>
+                      {/*<div className={style.Label}>Coming soon</div>*/}
                       <Upload className={style.UploadSVG2} />
                       <div className={style.NFTSTips}>
                         Click to select your file that will hide your NFT for
@@ -210,12 +262,9 @@ const Create: React.FC<CreateProps> = ({
                       <input
                         type="file"
                         id="uploadSecretNFT"
-                        onChange={(event) => {
-                          const { target } = event;
-                          if (target && target.files) setNFT(target.files[0]);
-                        }}
+                        onChange={(event) => updateFile(event, setNFT)}
                         className={style.HiddenInput}
-                        accept=".jpg, .jpeg, .png, .gif, .mp4"
+                        accept={acceptedFileTypes.join(',')}
                       />
                     </div>
                   </label>
@@ -256,7 +305,11 @@ const Create: React.FC<CreateProps> = ({
                   value={quantity}
                   onChange={onChange}
                   placeholder="1"
-                  className={`${style.Input} ${quantity && !validateQuantity(quantity, 10) ? style.InputError : ""}`}
+                  className={`${style.Input} ${
+                    quantity && !validateQuantity(quantity, 10)
+                      ? style.InputError
+                      : ''
+                  }`}
                 />
               </div>
 
@@ -325,17 +378,16 @@ const Create: React.FC<CreateProps> = ({
               </div>
             </div>
           </div>
-          {!isRN && (
-            <div 
-              className={`${style.Create} ${!isDataValid ? style.CreateDisabled : ""}`}
-              onClick={() => isDataValid && uploadFiles()}
-            >
-              Create NFT
-            </div>
-          )}
+          <div
+            className={`${style.Create} ${
+              !(isDataValid && user) ? style.CreateDisabled : ''
+            }`}
+            onClick={() => isDataValid && user && uploadFiles()}
+          >
+            Create NFT
+          </div>
         </div>
       </div>
-
       <Footer setNotAvailable={setNotAvailable} />
       <FloatingHeader user={user} setModalExpand={setModalExpand} />
     </div>

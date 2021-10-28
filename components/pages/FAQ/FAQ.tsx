@@ -16,19 +16,19 @@ export interface FAQProps {
 const FAQ: React.FC<FAQProps> = ({ user, setModalExpand, setNotAvailable }) => {
   const sec = [
     {
-      question: 'What is SecretNFT Marketplace ?',
+      question: `What is ${process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : "SecretNFT"} Marketplace ?`,
       answer:
-        '“SecretNFT” is a NFTs marketplace for digital creators. Discover Tokenized Digital Art. Artists issue authenticated single edition digital artworks. These are certified on the Ternoa blockchain to prevent forgery. Each artwork is authentically created by an artist in the network, and tokenized as a collectible digital item that you can own, display and trade.',
+        `“${process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : "SecretNFT"}” is a NFTs marketplace for digital creators. Discover Tokenized Digital Art. Artists issue authenticated single edition digital artworks. These are certified on the Ternoa blockchain to prevent forgery. Each artwork is authentically created by an artist in the network, and tokenized as a collectible digital item that you can own, display and trade.`,
     },
     {
       question: 'How to submit your NFT as an artist?',
       answer:
-        'In alpha version, you fill our form here. Soon you will be able to upload your creations on “SecretNFT”.',
+        `In beta version, you fill our form here. Soon you will be able to upload your creations on “${process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : "SecretNFT"}”.`,
     },
     {
-      question: 'What do I use for payment when buying on SecretNFT ?',
+      question: `What do I use for payment when buying on ${process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : "SecretNFT"} ?`,
       answer:
-        '“SecretNFT” is on Ternoa Chain, so all the platform use CAPS for transactions.',
+        `“${process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : "SecretNFT"}” is on Ternoa Chain, so all the platform use CAPS for transactions.`,
     },
     {
       question: 'What is CAPS and why do i need some ?',
@@ -36,9 +36,9 @@ const FAQ: React.FC<FAQProps> = ({ user, setModalExpand, setNotAvailable }) => {
         'CAPS is the Ternoa token. You can see more about the CAPS here. You need some CAPS to buy or sell creations.',
     },
     {
-      question: 'What is “chaos CAPS”?',
+      question: 'What are “test CAPS”?',
       answer:
-        '“Chaos CAPS” are fake CAPS usable on our chaos net (the first blockchain version). Real CAPS will come on testnet.',
+        '“Test CAPS” are CAPS usable on our testnet. Real CAPS will come on mainnet.',
     },
   ];
   function returnSections() {

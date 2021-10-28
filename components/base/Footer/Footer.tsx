@@ -14,6 +14,12 @@ export interface FooterProps {
 }
 
 const Footer: React.FC<FooterProps> = ({ setNotAvailable }) => {
+  const telegramLink = process.env.NEXT_PUBLIC_TELEGRAM_LINK ? process.env.NEXT_PUBLIC_TELEGRAM_LINK : "https://t.me/ternoa"
+  const twitterLink = process.env.NEXT_PUBLIC_TWITTER_LINK ? process.env.NEXT_PUBLIC_TWITTER_LINK : "https://twitter.com/SecretNFT_"
+  const linkedinLink = process.env.NEXT_PUBLIC_LINKEDIN_LINK ? process.env.NEXT_PUBLIC_LINKEDIN_LINK : "https://www.linkedin.com/company/50607388/"
+  const instagramLink = process.env.NEXT_PUBLIC_INSTAGRAM_LINK ? process.env.NEXT_PUBLIC_INSTAGRAM_LINK : "https://www.instagram.com/ternoa_/"
+  const githubLink = process.env.NEXT_PUBLIC_GITHUB_LINK ? process.env.NEXT_PUBLIC_GITHUB_LINK : "https://github.com/capsule-corp-ternoa"
+  const youtubeLink = process.env.NEXT_PUBLIC_YOUTUBE_LINK ? process.env.NEXT_PUBLIC_YOUTUBE_LINK : "https://www.youtube.com/channel/UCUYvbtRE5HoWPz7z88V7Khw"
   return (
     <div className={style.Footer}>
       <WaterMark className={style.WaterMark} />
@@ -30,42 +36,43 @@ const Footer: React.FC<FooterProps> = ({ setNotAvailable }) => {
           </div>
         </div>
         <div className={style.SocialMedias}>
-          <a href="https://t.me/ternoa" target="_blank">
+          {telegramLink!=="false" && <a href={telegramLink} target="_blank">
             <Telegram onClick={() => true} className={style.SVGMedia} />
-          </a>
-          <a href="https://twitter.com/SecretNFT_">
+          </a>}
+          {twitterLink!=="false" && <a href={twitterLink} target="_blank">
             <Twitter onClick={() => true} className={style.SVGMediaTwitter} />
-          </a>
-          <a href="https://www.linkedin.com/company/50607388/" target="_blank">
+          </a>}
+          {linkedinLink!=="false" && <a href={linkedinLink} target="_blank">
             <LinkedIn onClick={() => true} className={style.SVGMedia} />
-          </a>
-          <a href="https://www.instagram.com/ternoa_/" target="_blank">
+          </a>}
+          {instagramLink!=="false" && <a href={instagramLink} target="_blank">
             <Instagram onClick={() => true} className={style.SVGMedia} />
-          </a>
-          <a href="https://github.com/capsule-corp-ternoa" target="_blank">
+          </a>}
+          {githubLink!=="false" && <a href={githubLink} target="_blank">
             <Github onClick={() => true} className={style.SVGMedia} />
-          </a>
-          <a
-            href="https://www.youtube.com/channel/UCUYvbtRE5HoWPz7z88V7Khw"
-            target="_blank"
-          >
+          </a>}
+          {youtubeLink!=="false" && <a href={youtubeLink} target="_blank">
             <Youtube onClick={() => true} className={style.SVGMedia} />
-          </a>
+          </a>}
         </div>
       </div>
       <div className={style.FooterBar}>
         <div className={style.Legals}>
-          <div className={style.Link}>SECRET NFT</div>
+          <div className={style.Link}>{process.env.NEXT_PUBLIC_APP_NAME || "SecretNFT"}</div>
           <div className={style.Link}>All rights reserved</div>
           <a
-            href="https://intercom.help/ternoa/fr/collections/2774679-legal"
+            href="https://ternoahelp.zendesk.com/hc/fr/articles/4409410791185-Terms-of-use"
             className={style.Link}
+            target="_blank"
+						rel="noreferrer noopener"
           >
             Terms
           </a>
           <a
-            href="https://intercom.help/ternoa/fr/collections/2774679-legal"
+            href="https://ternoahelp.zendesk.com/hc/fr/articles/4409410776337-Privacy-Policy"
             className={style.Link}
+            target="_blank"
+						rel="noreferrer noopener"
           >
             Privacy
           </a>

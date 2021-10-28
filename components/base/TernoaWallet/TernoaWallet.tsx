@@ -7,7 +7,9 @@ import randomstring from 'randomstring';
 import Cookies from 'js-cookie';
 import { onModelClose } from 'utils/model-helpers';
 import { connect as connectIo } from 'utils/socket/socket.helper';
-
+import { encryptCookie } from 'utils/cookie';
+import { NODE_API_URL, SOCKET_URL } from 'utils/constant';
+import { getUser } from 'actions/user';
 export interface TernoaWalletProps {
   setModalExpand: (b: boolean) => void;
 }
@@ -19,7 +21,10 @@ const TernoaWallet: React.FC<TernoaWalletProps> = ({ setModalExpand }) => {
 
   useEffect(() => {
     console.log('socket connect on session', session);
-    const socket = connectIo(`/socket/login`,{ session });
+    const socket = connectIo(`/socket/login`, {
+      session,
+      socketUrl: SOCKET_URL,
+    });
 
     socket.on('CONNECTION_SUCCESS', () => {
       setShowQR(true);
@@ -34,12 +39,31 @@ const TernoaWallet: React.FC<TernoaWalletProps> = ({ setModalExpand }) => {
     });
 
     socket.on('CONNECTION_FAILURE', (data) => setError(data.msg));
-    socket.on('RECEIVE_WALLET_ID', (data) => {
+    socket.on('RECEIVE_WALLET_ID', async (data) => {
       console.log('SEND_WALLET_ID', data);
-      Cookies.set('token', data.walletId, {
-        sameSite: 'strict',
-        expires: 1,
-      });
+      const walletId = data.walletId as string;
+      let isUserCreated = false
+      try {
+        const user = await getUser(walletId);
+        if(!user.walletId) {
+          const response = await fetch(`${NODE_API_URL}/api/users/create`, {
+            method: 'POST',
+            body: JSON.stringify({ walletId }),
+          })
+          const created = await response.json();
+          if(created.walletId) isUserCreated = true;
+        }else{
+          isUserCreated=true
+        }
+      } catch (err) {
+        console.log(err);
+      }
+      if (isUserCreated){
+        Cookies.set('token', encryptCookie(walletId), {
+          //sameSite: 'strict',
+          expires: 1,
+        });
+      } 
       socket.emit('RECEIVED_WALLET_ID', data);
       socket.close();
       window.location.reload();
@@ -67,14 +91,17 @@ const TernoaWallet: React.FC<TernoaWalletProps> = ({ setModalExpand }) => {
         </div>
         <div className={style.QR}>
           {showQR ? (
-            <QRCode data={{ session }} action={'LOGIN'} />
+            <QRCode
+              data={{ session, socketUrl: SOCKET_URL }}
+              action={'LOGIN'}
+            />
           ) : (
-              <div className={style.Loading}>
-                <span className={style.Dot}></span>
-                <span className={style.Dot}></span>
-                <span className={style.Dot}></span>
-              </div>
-            )}
+            <div className={style.Loading}>
+              <span className={style.Dot}></span>
+              <span className={style.Dot}></span>
+              <span className={style.Dot}></span>
+            </div>
+          )}
         </div>
         {error && <div className={style.Error}>{error}</div>}
       </div>

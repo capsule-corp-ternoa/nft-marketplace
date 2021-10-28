@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
-import AlphaBanner from 'components/base/AlphaBanner';
+import BetaBanner from 'components/base/BetaBanner';
 import MainHeader from 'components/base/MainHeader';
 import TernoaWallet from 'components/base/TernoaWallet';
 import PublicProfile from 'components/pages/PublicProfile';
@@ -8,42 +8,66 @@ import NotAvailableModal from 'components/base/NotAvailable';
 import cookies from 'next-cookies';
 
 import { getUser, getProfile } from 'actions/user';
-import { getProfileNFTS } from 'actions/nft';
+import { getCreatorNFTS } from 'actions/nft';
 import { NftType, UserType } from 'interfaces';
 import { NextPageContext } from 'next';
+import { decryptCookie } from 'utils/cookie';
+import { getUserIp } from 'utils/functions';
 
 export interface PublicProfileProps {
   user: UserType;
   profile: UserType;
   data: NftType[];
+  dataHasNextPage: boolean;
 }
 
 const PublicProfilePage: React.FC<PublicProfileProps> = ({
   user,
   data,
   profile,
+  dataHasNextPage,
 }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
   const [walletUser, setWalletUser] = useState(user);
   const [viewProfile, setViewProfile] = useState(profile);
+  const [dataNfts, setDataNfts] = useState(data);
+  const [dataNftsHasNextPage, setDataNftsHasNextPage] = useState(dataHasNextPage);
+  const [isLoading, setIsLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const loadMoreNfts = async () => {
+    setIsLoading(true);
+    try {
+      if (dataNftsHasNextPage) {
+        let result = await getCreatorNFTS(
+          viewProfile.walletId,
+          (currentPage + 1).toString()
+        );
+        setCurrentPage(currentPage + 1);
+        setDataNftsHasNextPage(result.hasNextPage || false);
+        setDataNfts([...dataNfts, ...result.data]);
+        setIsLoading(false);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   useEffect(() => {
-    async function callBack() {
-      try {
-        let res = await getUser(window.walletId);
-        setWalletUser(res);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    if (window.isRNApp && window.walletId) callBack();
-  }, []);
+    setViewProfile(profile)
+  }, [profile])
+  useEffect(() => {
+    setDataNfts(data)
+  }, [data])
+  useEffect(() => {
+    setDataNftsHasNextPage(dataHasNextPage)
+  }, [dataHasNextPage])
 
   return (
     <>
       <Head>
-        <title>SecretNFT - {viewProfile.name}</title>
+        <title>{process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : "SecretNFT"} - {viewProfile.name}</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta
           name="description"
@@ -53,41 +77,53 @@ const PublicProfilePage: React.FC<PublicProfileProps> = ({
       </Head>
       {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
       {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
-      <AlphaBanner />
+      <BetaBanner />
       <MainHeader user={walletUser} setModalExpand={setModalExpand} />
       <PublicProfile
         user={walletUser}
         setUser={setWalletUser}
         profile={viewProfile}
         setProfile={setViewProfile}
-        NFTS={data}
+        NFTS={dataNfts}
         setModalExpand={setModalExpand}
         setNotAvailable={setNotAvailable}
+        loadMore={loadMoreNfts}
+        hasNextPage={dataNftsHasNextPage}
+        loading={isLoading}
       />
     </>
   );
 };
 export async function getServerSideProps(ctx: NextPageContext) {
-  const token = cookies(ctx).token;
-  let user: UserType | null = null, profile: UserType | null = null, data: NftType[] = []
+  const token = cookies(ctx).token && decryptCookie(cookies(ctx).token as string);
+  let user: UserType | null = null,
+    profile: UserType | null = null,
+    data: NftType[] = [],
+    dataHasNextPage: boolean = false;
   const promises = [];
+  let ip = getUserIp(ctx.req)
   if (token) {
-    promises.push(new Promise<void>((success) => {
-      getUser(token).then(_user => {
-        user = _user
-        success();
-      }).catch(success);
-    }));
+    promises.push(
+      new Promise<void>((success) => {
+        getUser(token)
+          .then((_user) => {
+            user = _user;
+            success();
+          })
+          .catch(success);
+      })
+    );
   }
   promises.push(new Promise<void>((success) => {
-    getProfile(ctx.query.name as string, token ? token : null).then(_profile => {
+    getProfile(ctx.query.name as string, token ? token : null, ip).then(_profile => {
       profile = _profile
       success();
     }).catch(success);
   }));
   promises.push(new Promise<void>((success) => {
-    getProfileNFTS(ctx.query.name as string).then(_nfts => {
-      data = _nfts
+    getCreatorNFTS(ctx.query.name as string, undefined, undefined, true).then(result => {
+      data = result.data
+      dataHasNextPage = result.hasNextPage || false;
       success();
     }).catch(success);
   }));
@@ -101,7 +137,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
     };
   }
   return {
-    props: { user, profile, data },
+    props: { user, profile, data, dataHasNextPage },
   };
 }
 

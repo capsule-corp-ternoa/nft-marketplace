@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
-import AlphaBanner from 'components/base/AlphaBanner';
+import BetaBanner from 'components/base/BetaBanner';
 import MainHeader from 'components/base/MainHeader';
 import TernoaWallet from 'components/base/TernoaWallet';
 import Create from 'components/pages/Create';
@@ -8,12 +8,13 @@ import ModalMint from 'components/pages/Create/ModalMint';
 import NotAvailableModal from 'components/base/NotAvailable';
 import cookies from 'next-cookies';
 import Router from 'next/router';
-
+import mime from 'mime-types'
 import { getUser } from 'actions/user';
 import { UserType } from 'interfaces';
 import { NextPageContext } from 'next';
-
 import { imgToBlur, imgToWatermark } from 'utils/imageProcessing/image';
+import { decryptCookie } from 'utils/cookie';
+import { getFilehash, generateSeriesId, cryptAndUploadNFT, uploadIPFS } from '../utils/nftEncryption'
 
 export interface CreatePageProps {
   user: UserType;
@@ -26,6 +27,7 @@ export interface NFTProps {
 }
 
 const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
+  const isNftCreationEnabled = process.env.NEXT_PUBLIC_IS_NFT_CREATION_ENABLED === undefined ? true : process.env.NEXT_PUBLIC_IS_NFT_CREATION_ENABLED === 'true'
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
   const [modalCreate, setModalCreate] = useState(false);
@@ -33,48 +35,45 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
   const [processed, setProcessed] = useState(false);
   const [error, setError] = useState('');
   const [output, setOutput] = useState<string[]>([]);
-  const isNftCreationEnabled = process.env.NEXT_PUBLIC_IS_NFT_CREATION_ENABLED===undefined ? true : process.env.NEXT_PUBLIC_IS_NFT_CREATION_ENABLED === 'true'
-
-  const [NFTData, setNFTData] = React.useState<NFTProps>({
+  const [NFT, setNFT] = useState<File | null>(null);
+  const [secretNFT, setSecretNFT] = useState<File | null>(null);
+  const [uploadSize, setUploadSize] = useState(0)
+  const [NFTData, setNFTData] = useState<NFTProps>({
     name: '',
     description: '',
     quantity: 1,
   });
-  const [walletUser, setWalletUser] = useState(user);
+  const { name, description, quantity } = NFTData;
+  const [QRData, setQRData] = useState({
+    walletId: user ? user.walletId : '',
+    quantity: quantity,
+  });
+  const [runNFTMintData, setRunNFTMintData] = useState<any>(null);
 
   useEffect(() => {
-    async function callBack() {
-      try {
-        let res = await getUser(window.walletId);
-        setWalletUser(res);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    if (window.isRNApp && window.walletId) callBack();
-  }, []);
-
-  useEffect(() => {
-    if (!isNftCreationEnabled){
+    if (!isNftCreationEnabled) {
       Router.push("/")
     }
   }, [isNftCreationEnabled])
 
-  const [NFT, setNFT] = useState<File | null>(null);
-  const [secretNFT, setSecretNFT] = useState<File | null>(null);
-  const { name, description, quantity } = NFTData;
-  const [QRData, setQRData] = useState({
-    links: output,
-    walletId: user ? user.walletId : '',
-    fileHash: '',
-    price: 1,
-  });
-
   useEffect(() => {
     if (processed) {
-      uploadNFT();
+      try {
+        initMintingNFT();
+      } catch (err) {
+        console.log(err)
+        setError(err as string);
+      }
     }
   }, [processed]);
+
+  useEffect(() => {
+    if (secretNFT && quantity && Number(quantity) > 0) {
+      const previewSize = NFT ? NFT.size : secretNFT.size
+      const secretsSize = secretNFT.size * Number(quantity)
+      setUploadSize(previewSize + secretsSize)
+    }
+  }, [quantity, NFT, secretNFT])
 
   async function processFile() {
     try {
@@ -115,91 +114,73 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
     }
   }
 
-  async function uploadNFT() {
+  function initMintingNFT() {
+    if (!user) throw new Error('Please login to create an NFT.')
+    if (!secretNFT ||
+      !name ||
+      !description ||
+      (!NFT && !(select === 'Select NFT Option' || select === 'None')) ||
+      !(quantity && quantity > 0 && quantity <= 10))
+      throw new Error('Elements are undefined');
+    setQRData({
+      ...QRData,
+      quantity,
+    });
+    setOutput([quantity.toString()]);
+    setProcessed(false);
+  }
+
+  async function uploadNFT(publicPGPs: string[], setProgressData?: Function) {
     try {
-      if (!user) {
-        setError('Please login to create an NFT.');
-      }
-      if (
-        !secretNFT ||
-        !name ||
-        !description ||
-        (!NFT && !(select === 'Select NFT Option' || select === 'None'))
-      ) {
-        throw new Error('Elements are undefined');
-      }
-
-      const data = new FormData();
-      {
-        NFT ? data.append('file', NFT) : data.append('file', secretNFT);
-      }
-
-      const resUpload = await fetch(
-        `${process.env.NEXT_PUBLIC_SDK_URL}/api/uploadIM`,
-        {
-          method: 'POST',
-          body: data,
+      if (!secretNFT) throw new Error();
+      const { url: previewLink, mediaType } = await uploadIPFS(NFT ? NFT : secretNFT, setProgressData, 0);
+      const fileHash = await getFilehash(secretNFT)
+      const seriesId = generateSeriesId(fileHash)
+      const cryptedMediaType = mime.lookup(secretNFT.name)
+      //Parallel
+      const cryptPromises = Array.from({ length: quantity }).map((_x, i) => {
+        return cryptAndUploadNFT(secretNFT, cryptedMediaType as string, publicPGPs[i] as string, setProgressData, 1 + i)
+      })
+      const cryptResults = await Promise.all(cryptPromises);
+      /* SEQUENTIAL
+      const cryptResults = [] as any
+      for (let i=0; i<quantity; i++){
+        const singleResult = await cryptAndUploadNFT(secretNFT, cryptedMediaType as string, publicPGPs[i] as string, setProgressData, 1+i)
+        cryptResults.push(singleResult)
+      }*/
+      const cryptNFTsJSONs = cryptResults.map((r: any) => r[0]);
+      const publicPGPsIPFS = cryptResults.map((r: any) => r[1]);
+      const results = cryptNFTsJSONs.map((result: any, i: number) => {
+        const data = {
+          name,
+          description,
+          publicPGP: publicPGPsIPFS[i].url,
+          media: {
+            url: previewLink,
+            mediaType: mediaType
+          },
+          cryptedMedia: {
+            url: result.url,
+            cryptedMediaType: cryptedMediaType,
+          },
         }
-      );
-
-      const { url: previewLink, mediaType } = await resUpload.json();
-
-      let cryptPromises = [];
-      for (let i = 0; i < quantity; i++) {
-        const formData = new FormData();
-        formData.append('file', secretNFT);
-        cryptPromises.push(
-          fetch(`${process.env.NEXT_PUBLIC_SDK_URL}/api/cryptFile`, {
-            method: 'POST',
-            body: formData,
-          })
-        );
-      }
-      try {
-        const cryptResults = await Promise.all(cryptPromises);
-        const cryptJSONs = await Promise.all(cryptResults.map((r) => r.json()));
-
-        const results = cryptJSONs.map((result, index) => {
-          return fetch(`${process.env.NEXT_PUBLIC_SDK_URL}/api/uploadEx`, {
-            method: 'POST',
-            body: new URLSearchParams({
-              name,
-              description,
-              fileHash: result.fileHash,
-              keyPath: result.keyPath,
-              media: previewLink,
-              mediaType,
-              cryptedMedia: result.file,
-              cryptedMediaType: secretNFT.type,
-              itemTotal: quantity + '',
-              itemId: index + 1 + '',
-            }),
-          });
-        });
-        const JSONPromises = await Promise.all(results);
-        const JSONURLS = await Promise.all(JSONPromises.map((r) => r.json()));
-        setOutput(JSONURLS);
-        setQRData({
-          ...QRData,
-          links: JSONURLS,
-          fileHash: cryptJSONs[0].fileHash,
-        });
-        setProcessed(false);
-      } catch (err) {
-        console.error(err);
-      }
-      return output;
+        const finalBlob = new Blob([JSON.stringify(data)], { type: 'application/json' })
+        const finalFile = new File([finalBlob], "final json")
+        return uploadIPFS(finalFile);
+      });
+      const JSONURLS = (await Promise.all(results));
+      return { nftUrls: JSONURLS as any[], seriesId: (seriesId ? seriesId : 0) };
     } catch (err) {
       setError('Please try again.');
       console.log(err);
-      return [];
+      return { nftUrls: [] as any[], seriesId: 0 };
     }
   }
 
   return (
     <>
       <Head>
-        <title>SecretNFT - Create your NFT</title>
+        <title>{process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : "SecretNFT"} - Create your NFT</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta name="description" content="SecretNFT Marketplace, by Ternoa." />
         <meta name="og:image" content="ternoa-social-banner.jpg" />
@@ -214,16 +195,20 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
           setError={setError}
           output={output}
           QRData={QRData}
+          uploadNFT={uploadNFT}
+          uploadSize={uploadSize}
+          runNFTMintData={runNFTMintData}
+          setRunNFTMintData={setRunNFTMintData}
         />
       )}
-      <AlphaBanner />
-      <MainHeader user={walletUser} setModalExpand={setModalExpand} />
-      {isNftCreationEnabled && 
+      <BetaBanner />
+      <MainHeader user={user} setModalExpand={setModalExpand} />
+      {isNftCreationEnabled &&
         <Create
           setModalExpand={setModalExpand}
           setNotAvailable={setNotAvailable}
           setModalCreate={setModalCreate}
-          user={walletUser}
+          user={user}
           NFT={NFT}
           setNFT={setNFT}
           secretNFT={secretNFT}
@@ -243,7 +228,7 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
 
 export async function getServerSideProps(ctx: NextPageContext) {
   let user = null;
-  const token = cookies(ctx).token;
+  const token = cookies(ctx).token && decryptCookie(cookies(ctx).token as string);
   if (token) user = await getUser(token).catch(() => null);
   return {
     props: { user },

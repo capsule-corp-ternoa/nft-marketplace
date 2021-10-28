@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
-import AlphaBanner from 'components/base/AlphaBanner';
+import BetaBanner from 'components/base/BetaBanner';
 import MainHeader from 'components/base/MainHeader';
 import ModalBuy from 'components/pages/NFT/ModalBuy';
 import TernoaWallet from 'components/base/TernoaWallet';
@@ -79,7 +79,7 @@ const NftPage: React.FC<NFTPageProps> = ({ user, NFT, capsValue }) => {
       {exp === 3 && <ModalBuy setModalExpand={() => setExp(0)} id={nftToBuy.id} />}
       {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
 
-      <AlphaBanner />
+      <BetaBanner />
       <MainHeader user={walletUser} setModalExpand={setModalExpand} />
       <NFTPage
         NFT={NFT}

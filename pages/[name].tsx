@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
-import AlphaBanner from 'components/base/AlphaBanner';
+import BetaBanner from 'components/base/BetaBanner';
 import MainHeader from 'components/base/MainHeader';
 import TernoaWallet from 'components/base/TernoaWallet';
 import PublicProfile from 'components/pages/PublicProfile';
@@ -77,7 +77,7 @@ const PublicProfilePage: React.FC<PublicProfileProps> = ({
       </Head>
       {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
       {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
-      <AlphaBanner />
+      <BetaBanner />
       <MainHeader user={walletUser} setModalExpand={setModalExpand} />
       <PublicProfile
         user={walletUser}

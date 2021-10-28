@@ -60,7 +60,7 @@ const Hero: React.FC<HeroProps> = ({ users }) => {
           <div className={style.Content}>
             <div className={style.Left}>
               <div className={style.Label}>
-                Hello Alpha tester
+                Hello Beta tester
                 <span role="img" className={style.Emoji} aria-label="wave">
                   👋
                 </span>
@@ -71,7 +71,7 @@ const Hero: React.FC<HeroProps> = ({ users }) => {
                   <div className={style.Bold}>Try SecretNFT</div>
                 </div>
                 <p className={style.Description}>
-                  We invite you to try the “SecretNFT”, our NFTs marketplace in alpha
+                  We invite you to try the “SecretNFT”, our NFTs marketplace in beta
                   version on Ternoa Chain. Help us discover bugs, give feedbacks
                   to improve the product and the experience. <span>You earn NFTs in return</span> ! 🙂
                 </p>

@@ -23,7 +23,7 @@ const FAQ: React.FC<FAQProps> = ({ user, setModalExpand, setNotAvailable }) => {
     {
       question: 'How to submit your NFT as an artist?',
       answer:
-        `In alpha version, you fill our form here. Soon you will be able to upload your creations on “${process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : "SecretNFT"}”.`,
+        `In beta version, you fill our form here. Soon you will be able to upload your creations on “${process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : "SecretNFT"}”.`,
     },
     {
       question: `What do I use for payment when buying on ${process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : "SecretNFT"} ?`,

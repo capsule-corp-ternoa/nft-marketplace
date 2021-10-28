@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Head from 'next/head';
-import AlphaBanner from 'components/base/AlphaBanner';
+import BetaBanner from 'components/base/BetaBanner';
 import MainHeader from 'components/base/MainHeader';
 import TernoaWallet from 'components/base/TernoaWallet';
 import Wallet from 'components/pages/Wallet';
@@ -31,7 +31,7 @@ const WalletPage: React.FC<WalletPageProps> = ({ user }) => {
       </Head>
       {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
       {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
-      <AlphaBanner />
+      <BetaBanner />
       <MainHeader user={user} setModalExpand={setModalExpand} />
       <Wallet
         user={user}

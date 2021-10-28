@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
-import AlphaBanner from 'components/base/AlphaBanner';
+import BetaBanner from 'components/base/BetaBanner';
 import MainHeader from 'components/base/MainHeader';
 import TernoaWallet from 'components/base/TernoaWallet';
 import Create from 'components/pages/Create';
@@ -198,7 +198,7 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
           uploadSize={uploadSize}
         />
       )}
-      <AlphaBanner />
+      <BetaBanner />
       <MainHeader user={user} setModalExpand={setModalExpand} />
       {isNftCreationEnabled && 
         <Create

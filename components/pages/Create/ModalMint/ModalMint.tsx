@@ -153,7 +153,7 @@ const ModalMint: React.FC<ModalProps> = ({
   }, [runNFTMintData])
 
   useEffect(() => {
-    if (!alreadySentSocketTimeout && speed && stateSocket && stateSocket.connected /*&& elapsedUploadTime>5000*/) {
+    if (!alreadySentSocketTimeout && speed && stateSocket && stateSocket.connected && elapsedUploadTime>5000) {
       stateSocket.emit('UPLOAD_REMAINING_TIME', { remainingTime })
       setAlreadySentSocketTimeout(true)
     }
@@ -172,7 +172,7 @@ const ModalMint: React.FC<ModalProps> = ({
                 </div>
                 :
                 <div className={style.Text}>
-                  Flash this QR Code on your mobile wallet app to finish the minting process.
+                  Flash this QR Code on your mobile wallet app to finish the minting process to the blockchain.
                 </div>
               :
               <div className={style.Text}>
@@ -217,7 +217,9 @@ const ModalMint: React.FC<ModalProps> = ({
     <div id="createModal" className={style.Background}>
       <div className={style.Container}>
         <Close onClick={() => setModalCreate(false)} className={style.Close} />
-        <div className={style.Title}>Create NFT</div>
+        <div className={style.Title}>
+          {!qrRetry ? "Create NFT" : "Finish the process"}
+        </div>
         {error ? <div className={style.Error}>{error}</div> : returnState()}
       </div>
     </div>

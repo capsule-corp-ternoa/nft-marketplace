@@ -127,7 +127,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
   }
   promises.push(
     new Promise<void>((success) => {
-      getCategoryNFTs(undefined, '1', '19', false)
+      getCategoryNFTs(undefined, '1', '19', true)
         .then((result) => {
           regularNfts = result.data;
           success();

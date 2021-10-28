@@ -73,20 +73,19 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
 
   const populateProfileData = async (token: string) => {
     //created nfts
-    const createdNfts = await getCreatorNFTS(token, undefined, undefined, false)
-    console.log("set data")
+    const createdNfts = await getCreatorNFTS(token, undefined, undefined, true)
     setCreatedNfts(createdNfts.data)
     setCreatedNftsHasNextPage(createdNfts.hasNextPage)
     //Owned listed NFTs
-    const ownedListed = await getOwnedNFTS(token, true, 1, undefined, undefined, false)
+    const ownedListed = await getOwnedNFTS(token, true, 1, undefined, undefined, true)
     setOwnedNftsListed(ownedListed.data)
     setOwnedNftsListedHasNextPage(ownedListed.hasNextPage)
     //Owned not listed NFTs
-    const ownedUnlisted = await getOwnedNFTS(token, false, 0, undefined, undefined, false)
+    const ownedUnlisted = await getOwnedNFTS(token, false, 0, undefined, undefined, true)
     setOwnedNftsUnlisted(ownedUnlisted.data)
     setOwnedNftsUnlistedHasNextPage(ownedUnlisted.hasNextPage)
     //Liked NFTs
-    const liked = await getLikedNFTs(token, undefined, undefined, false)
+    const liked = await getLikedNFTs(token, undefined, undefined, true)
     setLikedNfts(liked.data)
     setLikedNftsHasNextPage(liked.hasNextPage)
     //profile followers
@@ -97,8 +96,6 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
     const followed = await getFollowed(token)
     setFollowedUsers(followed.data)
     setFollowedUsersHasNextPage(followed.hasNextPage)
-    console.log("set data")
-
   } 
 
   const loadMoreCreatedNfts = async () => {
@@ -107,7 +104,9 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
       if (createdNftsHasNextPage) {
         let result = await getCreatorNFTS(
           walletUser.walletId,
-          (createdCurrentPage + 1).toString()
+          (createdCurrentPage + 1).toString(),
+          undefined,
+          true
         );
         setCreatedCurrentPage(createdCurrentPage + 1);
         setCreatedNftsHasNextPage(result.hasNextPage || false);
@@ -126,7 +125,9 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
           walletUser.walletId,
           false,
           undefined,
-          (ownedCurrentPage + 1).toString()
+          (ownedCurrentPage + 1).toString(),
+          undefined,
+          true
         );
         setOwnedCurrentPage(ownedCurrentPage + 1);
         setOwnedNftsHasNextPage(result.hasNextPage || false);
@@ -145,7 +146,9 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
           walletUser.walletId,
           true,
           1,
-          (ownedNftsListedCurrentPage + 1).toString()
+          (ownedNftsListedCurrentPage + 1).toString(),
+          undefined,
+          true
         );
         setOwnedNftsListedCurrentPage(ownedNftsListedCurrentPage + 1);
         setOwnedNftsListedHasNextPage(result.hasNextPage || false);
@@ -164,7 +167,9 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
           walletUser.walletId,
           false,
           0,
-          (ownedNftsUnlistedCurrentPage + 1).toString()
+          (ownedNftsUnlistedCurrentPage + 1).toString(),
+          undefined,
+          true
         );
         setOwnedNftsUnlistedCurrentPage(ownedNftsUnlistedCurrentPage + 1);
         setOwnedNftsUnlistedHasNextPage(result.hasNextPage || false);
@@ -181,7 +186,9 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
       if (likedNftsHasNextPage) {
         let result = await getLikedNFTs(
           walletUser.walletId,
-          (likedCurrentPage + 1).toString()
+          (likedCurrentPage + 1).toString(),
+          undefined,
+          true
         );
         setLikedCurrentPage(likedCurrentPage + 1);
         setLikedNftsHasNextPage(result.hasNextPage || false);
@@ -312,7 +319,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
     );
     promises.push(
       new Promise<void>((success) => {
-        getOwnedNFTS(token, false, undefined, undefined, undefined, false)
+        getOwnedNFTS(token, false, undefined, undefined, undefined, true)
           .then((result) => {
             owned = result.data;
             ownedHasNextPage = result.hasNextPage || false;

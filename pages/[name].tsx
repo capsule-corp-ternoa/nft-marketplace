@@ -42,7 +42,9 @@ const PublicProfilePage: React.FC<PublicProfileProps> = ({
       if (dataNftsHasNextPage) {
         let result = await getCreatorNFTS(
           viewProfile.walletId,
-          (currentPage + 1).toString()
+          (currentPage + 1).toString(),
+          undefined,
+          true
         );
         setCurrentPage(currentPage + 1);
         setDataNftsHasNextPage(result.hasNextPage || false);

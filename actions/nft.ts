@@ -24,9 +24,9 @@ export const getCreatorNFTS = async (id: string, page: string="1", limit: string
 };
 
 export const getCategoryNFTs = async (codes?: string | string[], page: string="1", limit: string=DEFAULT_LIMIT_PAGINATION, noSeriesData: boolean = false) => {
-  const queryString = !codes ? "" : (typeof codes==='string' ? `&codes=${codes}` : `&codes=${codes.join("&codes=")}&noSeriesData=${noSeriesData}`)
+  const queryString = !codes ? "" : (typeof codes==='string' ? `&codes=${codes}` : `&codes=${codes.join("&codes=")}`)
   const res = await fetch(
-    `${NODE_API_URL}/api/NFTs/category/?marketplaceId=${MARKETPLACE_ID}&listed=1&page=${page}&limit=${limit}${queryString}&noSeriesData=${noSeriesData}`
+    `${NODE_API_URL}/api/NFTs/category/?marketplaceId=${MARKETPLACE_ID}&listed=1&page=${page}&limit=${limit}&noSeriesData=${noSeriesData}${queryString}`
   );
   if (!res.ok) throw new Error('error fetching NFTs by categories');
   let result: CustomResponse<NftType> = await res.json();

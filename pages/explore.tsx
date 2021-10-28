@@ -41,7 +41,9 @@ const ExplorePage: React.FC<ExplorePage> = ({
       if (dataNftsHasNextPage) {
         let result = await getCategoryNFTs(
           undefined,
-          (currentPage + 1).toString()
+          (currentPage + 1).toString(),
+          undefined,
+          true
         );
         setCurrentPage(currentPage + 1);
         setDataNftsHasNextPage(result.hasNextPage || false);

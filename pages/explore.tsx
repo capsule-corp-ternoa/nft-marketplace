@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Head from 'next/head';
-import AlphaBanner from 'components/base/AlphaBanner';
+import BetaBanner from 'components/base/BetaBanner';
 import MainHeader from 'components/base/MainHeader';
 import Explore from 'components/pages/Explore';
 import TernoaWallet from 'components/base/TernoaWallet';
@@ -64,7 +64,7 @@ const ExplorePage: React.FC<ExplorePage> = ({
       </Head>
       {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
       {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
-      <AlphaBanner />
+      <BetaBanner />
       <MainHeader user={walletUser} setModalExpand={setModalExpand} />
       <Explore
         NFTS={dataNfts}
@@ -100,7 +100,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
   }
   promises.push(
     new Promise<void>((success) => {
-      getCategoryNFTs()
+      getCategoryNFTs(undefined, undefined, undefined, true)
         .then((result) => {
           data = result.data;
           dataHasNextPage = result.hasNextPage || false;

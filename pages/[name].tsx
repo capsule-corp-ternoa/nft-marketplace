@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
-import AlphaBanner from 'components/base/AlphaBanner';
+import BetaBanner from 'components/base/BetaBanner';
 import MainHeader from 'components/base/MainHeader';
 import TernoaWallet from 'components/base/TernoaWallet';
 import PublicProfile from 'components/pages/PublicProfile';
@@ -12,6 +12,7 @@ import { getCreatorNFTS } from 'actions/nft';
 import { NftType, UserType } from 'interfaces';
 import { NextPageContext } from 'next';
 import { decryptCookie } from 'utils/cookie';
+import { getUserIp } from 'utils/functions';
 
 export interface PublicProfileProps {
   user: UserType;
@@ -76,7 +77,7 @@ const PublicProfilePage: React.FC<PublicProfileProps> = ({
       </Head>
       {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
       {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
-      <AlphaBanner />
+      <BetaBanner />
       <MainHeader user={walletUser} setModalExpand={setModalExpand} />
       <PublicProfile
         user={walletUser}
@@ -100,6 +101,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
     data: NftType[] = [],
     dataHasNextPage: boolean = false;
   const promises = [];
+  let ip = getUserIp(ctx.req)
   if (token) {
     promises.push(
       new Promise<void>((success) => {
@@ -113,13 +115,13 @@ export async function getServerSideProps(ctx: NextPageContext) {
     );
   }
   promises.push(new Promise<void>((success) => {
-    getProfile(ctx.query.name as string, token ? token : null).then(_profile => {
+    getProfile(ctx.query.name as string, token ? token : null, ip).then(_profile => {
       profile = _profile
       success();
     }).catch(success);
   }));
   promises.push(new Promise<void>((success) => {
-    getCreatorNFTS(ctx.query.name as string).then(result => {
+    getCreatorNFTS(ctx.query.name as string, undefined, undefined, true).then(result => {
       data = result.data
       dataHasNextPage = result.hasNextPage || false;
       success();

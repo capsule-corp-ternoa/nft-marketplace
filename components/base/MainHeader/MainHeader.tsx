@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 
-import Logo from 'components/assets/LogoTernoa';
+import Logo from 'components/assets/LogoTernoaBlack';
 import Creator from '../Creator';
 import CopyPaste from 'components/assets/copypaste';
 
@@ -32,7 +32,6 @@ const MainHeader: React.FC<HeaderProps> = ({ setModalExpand, user }) => {
             <Logo className={style.Logo} onClick={() => true} />
           </a>
         </Link>
-
         <div className={style.SearchBar}>
           <input
             type="search"

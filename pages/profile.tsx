@@ -74,7 +74,6 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
   const populateProfileData = async (token: string) => {
     //created nfts
     const createdNfts = await getCreatorNFTS(token, undefined, undefined, false)
-    console.log("set data")
     setCreatedNfts(createdNfts.data)
     setCreatedNftsHasNextPage(createdNfts.hasNextPage)
     //Owned listed NFTs
@@ -97,8 +96,6 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
     const followed = await getFollowed(token)
     setFollowedUsers(followed.data)
     setFollowedUsersHasNextPage(followed.hasNextPage)
-    console.log("set data")
-
   } 
 
   const loadMoreCreatedNfts = async () => {

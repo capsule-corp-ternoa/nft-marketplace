@@ -14,7 +14,7 @@ import { UserType } from 'interfaces';
 import { NextPageContext } from 'next';
 import { imgToBlur, imgToWatermark } from 'utils/imageProcessing/image';
 import { decryptCookie } from 'utils/cookie';
-import {getFilehash, generateSeriesId, cryptAndUploadNFT, uploadIPFS} from '../utils/nftEncryption'
+import { getFilehash, generateSeriesId, cryptAndUploadNFT, uploadIPFS } from '../utils/nftEncryption'
 
 export interface CreatePageProps {
   user: UserType;
@@ -27,7 +27,7 @@ export interface NFTProps {
 }
 
 const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
-  const isNftCreationEnabled = process.env.NEXT_PUBLIC_IS_NFT_CREATION_ENABLED===undefined ? true : process.env.NEXT_PUBLIC_IS_NFT_CREATION_ENABLED === 'true'
+  const isNftCreationEnabled = process.env.NEXT_PUBLIC_IS_NFT_CREATION_ENABLED === undefined ? true : process.env.NEXT_PUBLIC_IS_NFT_CREATION_ENABLED === 'true'
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
   const [modalCreate, setModalCreate] = useState(false);
@@ -48,18 +48,19 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
     walletId: user ? user.walletId : '',
     quantity: quantity,
   });
-  
+  const [runNFTMintData, setRunNFTMintData] = useState<any>(null);
+
   useEffect(() => {
-    if (!isNftCreationEnabled){
+    if (!isNftCreationEnabled) {
       Router.push("/")
     }
   }, [isNftCreationEnabled])
 
   useEffect(() => {
     if (processed) {
-      try{
+      try {
         initMintingNFT();
-      }catch(err){
+      } catch (err) {
         console.log(err)
         setError(err as string);
       }
@@ -67,7 +68,7 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
   }, [processed]);
 
   useEffect(() => {
-    if (secretNFT && quantity && Number(quantity) > 0){
+    if (secretNFT && quantity && Number(quantity) > 0) {
       const previewSize = NFT ? NFT.size : secretNFT.size
       const secretsSize = secretNFT.size * Number(quantity)
       setUploadSize(previewSize + secretsSize)
@@ -113,14 +114,14 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
     }
   }
 
-  function initMintingNFT(){
+  function initMintingNFT() {
     if (!user) throw new Error('Please login to create an NFT.')
-    if (!secretNFT || 
-        !name || 
-        !description || 
-        (!NFT && !(select === 'Select NFT Option' || select === 'None')) || 
-        !(quantity && quantity > 0 && quantity <= 10)) 
-        throw new Error('Elements are undefined');
+    if (!secretNFT ||
+      !name ||
+      !description ||
+      (!NFT && !(select === 'Select NFT Option' || select === 'None')) ||
+      !(quantity && quantity > 0 && quantity <= 10))
+      throw new Error('Elements are undefined');
     setQRData({
       ...QRData,
       quantity,
@@ -137,8 +138,8 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
       const seriesId = generateSeriesId(fileHash)
       const cryptedMediaType = mime.lookup(secretNFT.name)
       //Parallel
-      const cryptPromises = Array.from({ length: quantity }).map((_x,i) => {
-        return cryptAndUploadNFT(secretNFT, cryptedMediaType as string, publicPGPs[i] as string, setProgressData, 1+i)
+      const cryptPromises = Array.from({ length: quantity }).map((_x, i) => {
+        return cryptAndUploadNFT(secretNFT, cryptedMediaType as string, publicPGPs[i] as string, setProgressData, 1 + i)
       })
       const cryptResults = await Promise.all(cryptPromises);
       /* SEQUENTIAL
@@ -163,16 +164,16 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
             cryptedMediaType: cryptedMediaType,
           },
         }
-        const finalBlob = new Blob([JSON.stringify(data)], {type:'application/json'})
+        const finalBlob = new Blob([JSON.stringify(data)], { type: 'application/json' })
         const finalFile = new File([finalBlob], "final json")
         return uploadIPFS(finalFile);
       });
       const JSONURLS = (await Promise.all(results));
-      return {nftUrls: JSONURLS as any[], seriesId:(seriesId ? seriesId : 0)};
+      return { nftUrls: JSONURLS as any[], seriesId: (seriesId ? seriesId : 0) };
     } catch (err) {
       setError('Please try again.');
       console.log(err);
-      return {nftUrls: [] as any[], seriesId:0};
+      return { nftUrls: [] as any[], seriesId: 0 };
     }
   }
 
@@ -196,11 +197,13 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
           QRData={QRData}
           uploadNFT={uploadNFT}
           uploadSize={uploadSize}
+          runNFTMintData={runNFTMintData}
+          setRunNFTMintData={setRunNFTMintData}
         />
       )}
       <BetaBanner />
       <MainHeader user={user} setModalExpand={setModalExpand} />
-      {isNftCreationEnabled && 
+      {isNftCreationEnabled &&
         <Create
           setModalExpand={setModalExpand}
           setNotAvailable={setNotAvailable}

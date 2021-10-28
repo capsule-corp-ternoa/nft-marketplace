@@ -104,8 +104,8 @@ export const unlikeNFT = async (walletId: string, nftId: string, serieId: string
   }
 }
 
-export const getLikedNFTs = async (walletId: string, page: string="1", limit: string=DEFAULT_LIMIT_PAGINATION) => {
-  const res = await fetch(`${NODE_API_URL}/api/users/${walletId}/liked?page=${page}&limit=${limit}`)
+export const getLikedNFTs = async (walletId: string, page: string="1", limit: string=DEFAULT_LIMIT_PAGINATION, noSeriesData: boolean = false) => {
+  const res = await fetch(`${NODE_API_URL}/api/users/${walletId}/liked?page=${page}&limit=${limit}&noSeriesData=${noSeriesData}`)
   if (!res.ok) throw new Error();
   let result: CustomResponse<NftType> = await res.json();
   result.data = filterNFTs(result.data)

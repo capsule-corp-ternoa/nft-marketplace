@@ -121,7 +121,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
     }).catch(success);
   }));
   promises.push(new Promise<void>((success) => {
-    getCreatorNFTS(ctx.query.name as string).then(result => {
+    getCreatorNFTS(ctx.query.name as string, undefined, undefined, true).then(result => {
       data = result.data
       dataHasNextPage = result.hasNextPage || false;
       success();

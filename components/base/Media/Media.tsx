@@ -9,7 +9,7 @@ export interface MediaProps {
 
 const loader = '/loader.svg'
 const timer = (ms:number) => new Promise(res => setTimeout(res, ms));
-const defaultFallback = ""
+const defaultFallback = './media-placeholder.svg'
 const totalRetries = 5
 
 const Media: React.FC<MediaProps & Record<string,any>> = ({ 
@@ -52,18 +52,16 @@ const Media: React.FC<MediaProps & Record<string,any>> = ({
   return (
     <>
       {type !== null &&
-        mediaSrc!==fallbackSrc && //to remove when we have fb image
-          (mediaSrc === fallbackSrc || mediaSrc === loader || mediaType === 'image') ?
-            <img 
-              src={mediaSrc}
-              {...rest}
-            />
-          :
-            mediaType === 'video' &&
-              <video playsInline autoPlay muted loop {...rest}>
-                <source id="outputVideo" src={mediaSrc} />
-              </video>
-        
+        (mediaSrc === fallbackSrc || mediaSrc === loader || mediaType === 'image') ?
+          <img 
+            src={mediaSrc}
+            {...rest}
+          />
+        :
+          mediaType === 'video' &&
+            <video playsInline autoPlay muted loop {...rest}>
+              <source id="outputVideo" src={mediaSrc} />
+            </video>
       }
     </>
   )

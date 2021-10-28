@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
-import AlphaBanner from 'components/base/AlphaBanner';
+import BetaBanner from 'components/base/BetaBanner';
 import MainHeader from 'components/base/MainHeader';
 import TernoaWallet from 'components/base/TernoaWallet';
 import Profile from 'components/pages/Profile';
@@ -17,39 +17,15 @@ import { decryptCookie } from 'utils/cookie';
 
 export interface ProfilePageProps {
   user: UserType;
-  created: NftType[];
-  createdHasNextPage: boolean;
   owned: NftType[];
   ownedHasNextPage: boolean;
-  ownedListed: NftType[];
-  ownedListedHasNextPage: boolean;
-  ownedUnlisted: NftType[];
-  ownedUnlistedHasNextPage: boolean;
-  liked: NftType[];
-  likedHasNextPage: boolean;
-  followers: UserType[];
-  followersHasNextPage: boolean;
-  followed: UserType[];
-  followedHasNextPage: boolean;
   loading: boolean;
 }
 
 const ProfilePage: React.FC<ProfilePageProps> = ({
   user,
-  created,
-  createdHasNextPage,
   owned,
   ownedHasNextPage,
-  ownedListed,
-  ownedListedHasNextPage,
-  ownedUnlisted,
-  ownedUnlistedHasNextPage,
-  liked,
-  likedHasNextPage,
-  followers,
-  followersHasNextPage,
-  followed,
-  followedHasNextPage,
 }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
@@ -58,34 +34,72 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [isFiltered, setIsFiltered] = useState(false);
   const [searchValue, setSearchValue] = useState('');
-  //Created NFTs
-  const [createdNfts, setCreatedNfts] = useState(created);
-  const [createdNftsHasNextPage, setCreatedNftsHasNextPage] = useState(createdHasNextPage);
-  const [createdCurrentPage, setCreatedCurrentPage] = useState(1);
   //Owned NFTs
   const [ownedNfts, setOwnedNfts] = useState(owned);
   const [ownedNftsHasNextPage, setOwnedNftsHasNextPage] = useState(ownedHasNextPage);
   const [ownedCurrentPage, setOwnedCurrentPage] = useState(1);
+  //Created NFTs
+  const [createdNfts, setCreatedNfts] = useState([] as NftType[]);
+  const [createdNftsHasNextPage, setCreatedNftsHasNextPage] = useState(false);
+  const [createdCurrentPage, setCreatedCurrentPage] = useState(1);
   //Owned listed NFTs
-  const [ownedNftsListed, setOwnedNftsListed] = useState(ownedListed);
-  const [ownedNftsListedHasNextPage, setOwnedNftsListedHasNextPage] = useState(ownedListedHasNextPage);
+  const [ownedNftsListed, setOwnedNftsListed] = useState([] as NftType[]);
+  const [ownedNftsListedHasNextPage, setOwnedNftsListedHasNextPage] = useState(false);
   const [ownedNftsListedCurrentPage, setOwnedNftsListedCurrentPage] = useState(1);
   //Owned not listed NFTs
-  const [ownedNftsUnlisted, setOwnedNftsUnlisted] = useState(ownedUnlisted);
-  const [ownedNftsUnlistedHasNextPage, setOwnedNftsUnlistedHasNextPage] = useState(ownedUnlistedHasNextPage);
+  const [ownedNftsUnlisted, setOwnedNftsUnlisted] = useState([] as NftType[]);
+  const [ownedNftsUnlistedHasNextPage, setOwnedNftsUnlistedHasNextPage] = useState(false);
   const [ownedNftsUnlistedCurrentPage, setOwnedNftsUnlistedCurrentPage] = useState(1);
   //Liked NFTs
-  const [likedNfts, setLikedNfts] = useState(liked);
-  const [likedNftsHasNextPage, setLikedNftsHasNextPage] = useState(likedHasNextPage);
+  const [likedNfts, setLikedNfts] = useState([] as NftType[]);
+  const [likedNftsHasNextPage, setLikedNftsHasNextPage] = useState(false);
   const [likedCurrentPage, setLikedCurrentPage] = useState(1);
   //profile followers
-  const [followersUsers, setFollowersUsers] = useState(followers);
-  const [followersUsersHasNextPage, setFollowersUsersHasNextPage] = useState(followersHasNextPage);
+  const [followersUsers, setFollowersUsers] = useState([] as UserType[]);
+  const [followersUsersHasNextPage, setFollowersUsersHasNextPage] = useState(false);
   const [followersCurrentPage, setFollowersCurrentPage] = useState(1);
   //profile followed
-  const [followedUsers, setFollowedUsers] = useState(followed);
-  const [followedUsersHasNextPage, setFollowedUsersHasNextPage] = useState(followedHasNextPage);
+  const [followedUsers, setFollowedUsers] = useState([] as UserType[]);
+  const [followedUsersHasNextPage, setFollowedUsersHasNextPage] = useState(false);
   const [followedCurrentPage, setFollowedCurrentPage] = useState(1);
+
+  useEffect(() => {
+    try{
+      populateProfileData(user.walletId)
+    }catch(err){
+      console.log(err)
+    }
+  }, [])
+
+  const populateProfileData = async (token: string) => {
+    //created nfts
+    const createdNfts = await getCreatorNFTS(token, undefined, undefined, false)
+    console.log("set data")
+    setCreatedNfts(createdNfts.data)
+    setCreatedNftsHasNextPage(createdNfts.hasNextPage)
+    //Owned listed NFTs
+    const ownedListed = await getOwnedNFTS(token, true, 1, undefined, undefined, false)
+    setOwnedNftsListed(ownedListed.data)
+    setOwnedNftsListedHasNextPage(ownedListed.hasNextPage)
+    //Owned not listed NFTs
+    const ownedUnlisted = await getOwnedNFTS(token, false, 0, undefined, undefined, false)
+    setOwnedNftsUnlisted(ownedUnlisted.data)
+    setOwnedNftsUnlistedHasNextPage(ownedUnlisted.hasNextPage)
+    //Liked NFTs
+    const liked = await getLikedNFTs(token, undefined, undefined, false)
+    setLikedNfts(liked.data)
+    setLikedNftsHasNextPage(liked.hasNextPage)
+    //profile followers
+    const followers = await getFollowers(token)
+    setFollowersUsers(followers.data)
+    setFollowersUsersHasNextPage(followers.hasNextPage)
+    //profile followed
+    const followed = await getFollowed(token)
+    setFollowedUsers(followed.data)
+    setFollowedUsersHasNextPage(followed.hasNextPage)
+    console.log("set data")
+
+  } 
 
   const loadMoreCreatedNfts = async () => {
     setIsLoading(true);
@@ -240,7 +254,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
       {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
       {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
       {successPopup && <SuccessPopup setSuccessPopup={setSuccessPopup} />}
-      <AlphaBanner />
+      <BetaBanner />
       <MainHeader user={walletUser} setModalExpand={setModalExpand} />
       <Profile
         user={walletUser}
@@ -283,21 +297,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
 
 export async function getServerSideProps(ctx: NextPageContext) {
   const token = cookies(ctx).token && decryptCookie(cookies(ctx).token as string);
-  let user = null,
-    created: NftType[] = [],
-    createdHasNextPage: boolean = false,
-    owned: NftType[] = [],
-    ownedHasNextPage: boolean = false,
-    ownedListed: NftType[] = [],
-    ownedListedHasNextPage: boolean = false,
-    ownedUnlisted: NftType[] = [],
-    ownedUnlistedHasNextPage: boolean = false,
-    liked: NftType[] = [],
-    likedHasNextPage: boolean = false,
-    followers: UserType[] = [],
-    followersHasNextPage: boolean = false,
-    followed: UserType[] = [],
-    followedHasNextPage: boolean = false;
+  let user = null, owned: NftType[] = [], ownedHasNextPage: boolean = false
   const promises = [];
   if (token) {
     promises.push(
@@ -312,76 +312,10 @@ export async function getServerSideProps(ctx: NextPageContext) {
     );
     promises.push(
       new Promise<void>((success) => {
-        getCreatorNFTS(token)
-          .then((result) => {
-            created = result.data;
-            createdHasNextPage = result.hasNextPage || false;
-            success();
-          })
-          .catch(success);
-      })
-    );
-    promises.push(
-      new Promise<void>((success) => {
-        getOwnedNFTS(token, false)
+        getOwnedNFTS(token, false, undefined, undefined, undefined, false)
           .then((result) => {
             owned = result.data;
             ownedHasNextPage = result.hasNextPage || false;
-            success();
-          })
-          .catch(success);
-      })
-    );
-    promises.push(
-      new Promise<void>((success) => {
-        getOwnedNFTS(token, true, 1)
-          .then((result) => {
-            ownedListed = result.data;
-            ownedListedHasNextPage = result.hasNextPage || false;
-            success();
-          })
-          .catch(success);
-      })
-    );
-    promises.push(
-      new Promise<void>((success) => {
-        getOwnedNFTS(token, false, 0)
-          .then((result) => {
-            ownedUnlisted = result.data;
-            ownedUnlistedHasNextPage = result.hasNextPage || false;
-            success();
-          })
-          .catch(success);
-      })
-    );
-    promises.push(
-      new Promise<void>((success) => {
-        getLikedNFTs(token)
-          .then((result) => {
-            liked = result.data;
-            likedHasNextPage = result.hasNextPage || false;
-            success();
-          })
-          .catch(success);
-      })
-    );
-    promises.push(
-      new Promise<void>((success) => {
-        getFollowers(token)
-          .then((result) => {
-            followers = result.data;
-            followersHasNextPage = result.hasNextPage || false;
-            success();
-          })
-          .catch(success);
-      })
-    );
-    promises.push(
-      new Promise<void>((success) => {
-        getFollowed(token)
-          .then((result) => {
-            followed = result.data;
-            followedHasNextPage = result.hasNextPage || false;
             success();
           })
           .catch(success);
@@ -400,20 +334,8 @@ export async function getServerSideProps(ctx: NextPageContext) {
   return {
     props: {
       user,
-      created,
-      createdHasNextPage,
       owned,
       ownedHasNextPage,
-      ownedListed,
-      ownedListedHasNextPage,
-      ownedUnlisted,
-      ownedUnlistedHasNextPage,
-      liked,
-      likedHasNextPage,
-      followers,
-      followersHasNextPage,
-      followed,
-      followedHasNextPage,
     },
   };
 }

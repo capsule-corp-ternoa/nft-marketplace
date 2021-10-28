@@ -61,14 +61,18 @@ const Footer: React.FC<FooterProps> = ({ setNotAvailable }) => {
           <div className={style.Link}>{process.env.NEXT_PUBLIC_APP_NAME || "SecretNFT"}</div>
           <div className={style.Link}>All rights reserved</div>
           <a
-            href="https://intercom.help/ternoa/fr/collections/2774679-legal"
+            href="https://ternoahelp.zendesk.com/hc/fr/articles/4409410791185-Terms-of-use"
             className={style.Link}
+            target="_blank"
+						rel="noreferrer noopener"
           >
             Terms
           </a>
           <a
-            href="https://intercom.help/ternoa/fr/collections/2774679-legal"
+            href="https://ternoahelp.zendesk.com/hc/fr/articles/4409410776337-Privacy-Policy"
             className={style.Link}
+            target="_blank"
+						rel="noreferrer noopener"
           >
             Privacy
           </a>

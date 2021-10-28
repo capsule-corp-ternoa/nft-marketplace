@@ -12,13 +12,13 @@ import { getCreatorNFTS } from 'actions/nft';
 import { NftType, UserType } from 'interfaces';
 import { NextPageContext } from 'next';
 import { decryptCookie } from 'utils/cookie';
+import { getUserIp } from 'utils/functions';
 
 export interface PublicProfileProps {
   user: UserType;
   profile: UserType;
   data: NftType[];
   dataHasNextPage: boolean;
-  ip: string | undefined;
 }
 
 const PublicProfilePage: React.FC<PublicProfileProps> = ({
@@ -26,7 +26,6 @@ const PublicProfilePage: React.FC<PublicProfileProps> = ({
   data,
   profile,
   dataHasNextPage,
-  ip,
 }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
@@ -80,7 +79,6 @@ const PublicProfilePage: React.FC<PublicProfileProps> = ({
       {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
       <AlphaBanner />
       <MainHeader user={walletUser} setModalExpand={setModalExpand} />
-      <div>{ip ? ip : "no ip"}</div>
       <PublicProfile
         user={walletUser}
         setUser={setWalletUser}
@@ -103,13 +101,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
     data: NftType[] = [],
     dataHasNextPage: boolean = false;
   const promises = [];
-  const req = ctx.req
-  let ip: string | undefined = ""
-  if (req){
-    const forwarded = req.headers["x-forwarded-for"] as string
-    ip = forwarded ? forwarded.split(/, /)[0] : req.connection.remoteAddress
-    console.log(ip)
-  }
+  let ip = getUserIp(ctx.req)
   if (token) {
     promises.push(
       new Promise<void>((success) => {
@@ -123,7 +115,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
     );
   }
   promises.push(new Promise<void>((success) => {
-    getProfile(ctx.query.name as string, token ? token : null).then(_profile => {
+    getProfile(ctx.query.name as string, token ? token : null, ip).then(_profile => {
       profile = _profile
       success();
     }).catch(success);
@@ -145,7 +137,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
     };
   }
   return {
-    props: { user, profile, data, dataHasNextPage, ip },
+    props: { user, profile, data, dataHasNextPage },
   };
 }
 

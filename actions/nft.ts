@@ -34,8 +34,8 @@ export const getCategoryNFTs = async (codes?: string | string[], page: string="1
   return result
 };
 
-export const getNFT = async (id: string, incViews: boolean = false, viewerWalletId: string | null = null) => {
-  const res = await fetch(`${NODE_API_URL}/api/NFTs/${id}?incViews=${incViews}&viewerWalletId=${viewerWalletId}`);
+export const getNFT = async (id: string, incViews: boolean = false, viewerWalletId: string | null = null, ip?: string) => {
+  const res = await fetch(`${NODE_API_URL}/api/NFTs/${id}?incViews=${incViews}&viewerWalletId=${viewerWalletId}&viewerIp=${ip}`);
   if (!res.ok) throw new Error('error fetching NFT');
   let data: NftType = await res.json();
   if (!data.creatorData || !data.ownerData || !data.media) throw new Error();

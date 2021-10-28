@@ -17,6 +17,7 @@ import { NextPageContext } from 'next';
 
 import { onModelClose, onModelOpen } from '../../utils/model-helpers';
 import { decryptCookie } from 'utils/cookie';
+import { getUserIp } from 'utils/functions';
 
 export interface NFTPageProps {
   user: UserType;
@@ -99,6 +100,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
   const token = cookies(ctx).token && decryptCookie(cookies(ctx).token as string);
   let user: UserType | null = null, NFT: NftType | null = null, capsValue: number = 0
   const promises = [];
+  let ip = getUserIp(ctx.req)
   if (token) {
     promises.push(new Promise<void>((success) => {
       getUser(token).then(_user => {
@@ -108,7 +110,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
     }));
   }
   promises.push(new Promise<void>((success) => {
-    getNFT(ctx.query.name as string, true, token ? token : null).then(_nft => {
+    getNFT(ctx.query.name as string, true, token ? token : null, ip).then(_nft => {
       NFT = _nft
       success();
     }).catch(success);

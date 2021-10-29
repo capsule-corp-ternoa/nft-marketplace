@@ -61,7 +61,9 @@ const NFTPage: React.FC<NFTPageProps> = ({
     : NFT.serieId === '0'
     ? user.likedNFTs?.map((x) => x.nftId).includes(NFT.id)
     : user.likedNFTs?.map((x) => x.serieId).includes(NFT.serieId);
-  const numberListedOnThisMarketplace = !NFT.serieData
+  const numberListedOnThisMarketplace = NFT.totalListedInMarketplace 
+    ? NFT.totalListedInMarketplace 
+    : !NFT.serieData
     ? 0
     : NFT.serieData.reduce(
         (prev, current) =>
@@ -72,7 +74,7 @@ const NFTPage: React.FC<NFTPageProps> = ({
         0
       );
   const smallestPriceRow =
-    !NFT.serieData || NFT.serieData.length <= 1
+    (!NFT.serieData || NFT.serieData.length <= 1)
       ? NFT
       : NFT.serieData
           .filter((x) => x.marketplaceId === MARKETPLACE_ID)
@@ -257,7 +259,7 @@ const NFTPage: React.FC<NFTPageProps> = ({
               <div className={style.AvailbleText}>
                 <NoNFTImage className={style.AvailbleCards} />
                 {`${numberListedOnThisMarketplace} of ${
-                  NFT.serieData ? NFT.serieData.length : 0
+                  NFT.serieData ? NFT.serieData.length : 1
                 }`}{' '}
                 Available
               </div>

@@ -23,7 +23,6 @@ export interface LandingProps {
   NFTCreators: NftType[];
   totalCountNFT: number;
 }
-
 const LandingPage: React.FC<LandingProps> = ({
   user,
   users,
@@ -51,13 +50,19 @@ const LandingPage: React.FC<LandingProps> = ({
         resetUser();
       }
       Cookies.remove('token');
+      setUser();
       Cookies.set('token', encryptCookie(window.walletId), { expires: 1 });
     }
-    if (!window.isRNApp && params.get('walletId')) setWalletUser(null);
+    if (!window.isRNApp && params.get('walletId')) {
+      resetUser();
+    }
   }, []);
 
-  const resetUser = async () => {
-    const user = await getUser(window.walletId);
+  const resetUser = () => {
+    setWalletUser(null);
+  }
+  const setUser = async () => {
+    const user = await getUser(window.walletId).catch((e) => appLog('log// ERROR// null', e));
     setWalletUser(user);
   };
 

@@ -35,8 +35,12 @@ export type NftType = {
   serieId: string;
   itemTotal: string;
   serieData?: NftType[];
-  totalListedNft?: number;
   totalNft?: number;
+  totalListedNft?: number;
+  totalListedInMarketplace?: number;
+  totalOwnedByRequestingUser?: number;
+  smallestPrice?: string;
+  smallestPriceTiime?: string;
   itemId: string;
   categories: CategoryType[];
   viewsCount?: number;

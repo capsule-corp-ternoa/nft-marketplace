@@ -18,6 +18,7 @@ import { NextPageContext } from 'next';
 import { onModelClose, onModelOpen } from '../../utils/model-helpers';
 import { decryptCookie } from 'utils/cookie';
 import { getUserIp } from 'utils/functions';
+import { MARKETPLACE_ID } from 'utils/constant';
 
 export interface NFTPageProps {
   user: UserType;
@@ -110,7 +111,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
     }));
   }
   promises.push(new Promise<void>((success) => {
-    getNFT(ctx.query.name as string, true, token ? token : null, ip).then(_nft => {
+    getNFT(ctx.query.name as string, true, token ? token : null, ip, false, MARKETPLACE_ID).then(_nft => {
       NFT = _nft
       success();
     }).catch(success);

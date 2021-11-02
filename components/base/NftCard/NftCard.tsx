@@ -44,18 +44,21 @@ const NftCard: React.FC<NftCardProps> = ({
   const [likeLoading, setLikeLoading] = useState(false)
   const isLiked = !user ? undefined : (item.serieId === "0" ? user.likedNFTs?.map(x => x.nftId).includes(item.id) : user.likedNFTs?.map(x => x.serieId).includes(item.serieId))
   const displayQuantity = () => {
-    if (!scope) return `${typeof item.totalListedNft !== 'undefined' ? item.totalListedNft : 1}`
+    const defaultValue = `${typeof item.totalListedInMarketplace !== 'undefined' ? item.totalListedInMarketplace : (typeof item.totalListedNft !== 'undefined' ? item.totalListedNft : 1)}`
+    if (!scope) return defaultValue
     switch(scope){
       case 'My NFTs':
-        return `${typeof item.totalNft !== 'undefined' ? item.serieData?.filter(x=>x.owner===user?.walletId).length : 1}`
+        return `${item.totalOwnedByRequestingUser ? item.totalOwnedByRequestingUser : 1}`
       case 'My creations':
         return `${typeof item.totalNft !== 'undefined' ? item.totalNft : 1}`
       case 'My NFTs on sale':
-        return `${typeof item.totalListedNft !== 'undefined' ? item.serieData?.filter(x=>x.owner===user?.walletId && x.listed===1).length : 1}`
+        return `${item.serieData ? item.serieData.filter(x=>x.owner===user?.walletId && x.listed===1).length : 1}`
       case 'My NFTs not for sale':
-        return `${(typeof item.totalListedNft !== 'undefined' && typeof item.totalNft !== 'undefined') ? item.serieData?.filter(x=>x.owner===user?.walletId && x.listed===0).length : 1}`
+        return `${item.serieData ? item.serieData.filter(x=>x.owner===user?.walletId && x.listed===0).length : 1}`
+      case 'Liked': 
+        return 0
       default:
-        return `${typeof item.totalListedNft !== 'undefined' ? item.totalListedNft : 1}`
+        return defaultValue
     }
   }
   useEffect(() => {
@@ -84,15 +87,15 @@ const NftCard: React.FC<NftCardProps> = ({
 
   const isMobile = useMediaQuery({ query: '(max-device-width: 720px)' });
 
-  const handleLikeDislike = async (nftId: string) => {
+  const handleLikeDislike = async (nftId: string, serieId: string) => {
     try{
       let res = null
       if (!likeLoading && isLiked !== undefined && user){
         setLikeLoading(true)
         if (!isLiked){
-          res = await likeNFT(user.walletId, nftId)
+          res = await likeNFT(user.walletId, nftId, serieId)
         }else{
-          res = await unlikeNFT(user.walletId, nftId)
+          res = await unlikeNFT(user.walletId, nftId, serieId)
         }
       }
       if (res !== null && setUser){
@@ -158,7 +161,7 @@ const NftCard: React.FC<NftCardProps> = ({
               : 
                 style.Hide
             }
-            onClick={(e) => {e.stopPropagation(); handleLikeDislike(item.id);}}
+            onClick={(e) => {e.stopPropagation(); handleLikeDislike(item.id, item.serieId);}}
           >
             <Heart className={style.HeartSVG} />
           </div>
@@ -176,6 +179,7 @@ const NftCard: React.FC<NftCardProps> = ({
                 className={isHovering ? style.Slide : ''}
                 size="card"
                 showTooltip={false}
+                isClickable={false}
               />
             )}
             {item.creatorData && (
@@ -188,17 +192,17 @@ const NftCard: React.FC<NftCardProps> = ({
               </div>
             )}
           </div>
-          {((item.price && Number(item.price)>0) || (item.priceTiime && Number(item.priceTiime))) &&
+          {((item.smallestPrice && Number(item.smallestPrice)) || (item.smallestPriceTiime && Number(item.smallestPriceTiime))) &&
             <div className={isHovering ? `${style.Button} ${style.FadeLong}` : style.Button}>
               <div className={style.Price}>
-                {item.price && Number(item.price)>0 &&
-                  `${computeCaps(Number(item.price))} CAPS`
+                {item.smallestPrice && Number(item.smallestPrice)>0 &&
+                  `${computeCaps(Number(item.smallestPrice))} CAPS`
                 }
-                {item.price && Number(item.price)>0 && item.priceTiime && Number(item.priceTiime) && 
+                {item.smallestPrice && Number(item.smallestPrice) && item.smallestPriceTiime && Number(item.smallestPriceTiime) && 
                   ` / `
                 }
-                {item.priceTiime && Number(item.priceTiime)>0 && 
-                  `${computeTiime(Number(item.priceTiime))} TIIME`
+                {item.smallestPriceTiime && Number(item.smallestPriceTiime)>0 && 
+                  `${computeTiime(Number(item.smallestPriceTiime))} TIIME`
                 }
               </div>
               <div className={style.ButtonText}>Buy</div>

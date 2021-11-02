@@ -23,6 +23,7 @@ const FloatingHeader: React.FC<FloatingHeaderProps> = ({
   const [, setSearchValue] = useState('' as string);
   const [isExpanded, setIsExpanded] = useState(false);
   const [fullProfile, setFullProfile] = useState(false);
+
   const bgGradient = user ? { background: gradient(user.name) } : {};
 
   const updateKeywordSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,6 +48,9 @@ const FloatingHeader: React.FC<FloatingHeaderProps> = ({
             />
           </div>
           <div className={style.Links}>
+            <Link href="/create">
+              <a className={style.Link}>Create</a>
+            </Link>
             <Link href="/explore">
               <a className={style.Link}>Explore</a>
             </Link>
@@ -148,7 +152,7 @@ const FloatingHeader: React.FC<FloatingHeaderProps> = ({
         <div className={style.Dropdown}>
           <div className={style.DropdownContainer}>
             <div className={style.DropdownProfile}>
-              <Creator user={user} size="xsmall" showTooltip={false} />
+              <Creator user={user} size="xsmall" showTooltip={false}/>
               <div className={style.Name}>{user?.name}</div>
             </div>
 
@@ -176,7 +180,7 @@ const FloatingHeader: React.FC<FloatingHeaderProps> = ({
               </a>
             </Link>
           </div>
-          <Link href="/5FnhujHhfXdD9Ahkn2Aw7T71GnoRr4yU42Ne5Sxc2RmmhAnm">
+          <Link href={`/${user.walletId}`}>
             <a className={style.CapsSection}>
               <div className={style.SectionTitle}>My artist profile</div>
             </a>

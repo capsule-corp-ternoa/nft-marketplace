@@ -4,8 +4,6 @@ export type UserType = {
   banner?: string;
   bio?: string;
   verified: boolean;
-  nbFollowers: number;
-  nbFollowing: number;
   viewsCount?: number;
   walletId: string;
   picture?: string;
@@ -24,7 +22,7 @@ export type NftType = {
   owner: string;
   creator: string;
   listed: number;
-  timeStampList?: string;
+  timestampList?: string;
   uri?: string;
   price: string;
   priceTiime: string;
@@ -37,11 +35,16 @@ export type NftType = {
   serieId: string;
   itemTotal: string;
   serieData?: NftType[];
-  totalListedNft?: number;
   totalNft?: number;
+  totalListedNft?: number;
+  totalListedInMarketplace?: number;
+  totalOwnedByRequestingUser?: number;
+  smallestPrice?: string;
+  smallestPriceTiime?: string;
   itemId: string;
   categories: CategoryType[];
   viewsCount?: number;
+  marketplaceId?: string;
 };
 
 export type CategoryType = {
@@ -55,4 +58,11 @@ export type FollowType = {
   _id: string;
   followed: UserType;
   follower: UserType;
+}
+
+export type CustomResponse<DataType> = {
+  totalCount?: number;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+  data: DataType[]
 }

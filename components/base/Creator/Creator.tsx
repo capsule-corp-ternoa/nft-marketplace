@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import Router from 'next/router';
 import style from './Creator.module.scss';
 import Badge from 'components/assets/badge';
 
@@ -12,6 +12,7 @@ export interface CreatorProps {
   showTooltip?: boolean;
   size?: string;
   className?: string;
+  isClickable?: boolean;
 }
 
 const Creator: React.FC<CreatorProps> = ({
@@ -19,6 +20,7 @@ const Creator: React.FC<CreatorProps> = ({
   showTooltip = true,
   size,
   className,
+  isClickable = true,
 }) => {
   const [isHovering, setIsHovering] = useState(false);
 
@@ -30,18 +32,23 @@ const Creator: React.FC<CreatorProps> = ({
     if (size === 'card') return style.CreatorsItemCard;
     if (size === 'small') return style.CreatorsItemSmall;
     if (size === 'xsmall') return style.CreatorsItemXSmall;
+    if (size === 'fullwidth') return style.CreatorsItemFullwidth;
     return style.CreatorsItem;
   }
 
   function manageBadgeClass() {
     if (size === 'card') return style.CreatorsBadgeSM;
     if (size === 'xsmall') return style.CreatorsBadgeXSM;
+    if (size === 'fullwidth') return style.CreatorsBadgeXSM;
     return style.CreatorsBadge;
   }
 
   return (
     <div
       className={className ? `${style.Creator} ${className}` : style.Creator}
+      onClick={() =>
+        isClickable && user && user.walletId && Router.push(`/${user.walletId}`)
+      }
     >
       <div
         className={

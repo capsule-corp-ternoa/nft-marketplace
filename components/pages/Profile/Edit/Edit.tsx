@@ -6,6 +6,8 @@ import { UserType } from 'interfaces';
 import { validateTwitter, validateUrl } from 'utils/strings';
 import ModalEdit from '../ModalEdit/ModalEdit';
 import { reviewRequested } from 'actions/user';
+import { uploadIPFS } from 'utils/nftEncryption';
+import { MARKETPLACE_ID, NODE_API_URL } from 'utils/constant';
 
 export interface EditProps {
   user: UserType;
@@ -45,15 +47,10 @@ const Edit: React.FC<EditProps> = ({ user, setBanner, setSuccessPopup }) => {
     handleChange(x, "banner")
   }
   const fileToUrl = async (x: string, name: string) => {
-    let fd = new FormData();
     let blob = await (await fetch(x)).blob();
     let file = new File([blob], name)
-    fd.append('file', file);
-    let resUpload = await fetch(`${process.env.NEXT_PUBLIC_SDK_URL}/api/uploadIM`, {
-      method: 'POST',
-      body: fd
-    })
-    let { url } = await resUpload.json();
+    let resUpload = await uploadIPFS(file)
+    let { url } = resUpload;
     if (url) {
       return url
     }else{
@@ -142,8 +139,8 @@ const Edit: React.FC<EditProps> = ({ user, setBanner, setSuccessPopup }) => {
                     <Badge className={style.BadgeTwitter} />
                   </div>
                 :
-                  user.twitterName && user.twitterName.length>2 && !user.twitterVerified &&
-                    <a href={`${process.env.NEXT_PUBLIC_NODE_API}/api/mp/users/verifyTwitter/${data.walletId}`}>
+                  user.twitterName && user.twitterName.length>2 && !user.twitterVerified && MARKETPLACE_ID==="0" && 
+                    <a href={`${NODE_API_URL}/api/users/verifyTwitter/${data.walletId}`}>
                       Verify your account ({user.twitterName})
                     </a>
                 }

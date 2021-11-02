@@ -1,19 +1,19 @@
 import React from 'react';
 import Link from 'next/link';
-import style from './AlphaBanner.module.scss';
+import style from './BetaBanner.module.scss';
 
-const AlphaBanner: React.FC = () => {
+const BetaBanner: React.FC = () => {
   return (
     <div className={style.Banner}>
       <p className={style.Text}>
-        Welcome to the <span className={style.Alpha}> Alpha Version</span> of
+        Welcome to the <span className={style.Beta}> Beta Version</span> of
         SecretNFT. All the marketplace is in{' '}
         <a
-          href="https://telemetry.polkadot.io/#list/Ternoa%20Chaos%20Net"
+          href="https://telemetry.polkadot.io/#list/0xd9adfc7ea82be63ba28088d62b96e9270ad2af25c962afc393361909670835b2"
           target="blank"
           className={style.Link}
         >
-          chaos net
+          testnet
         </a>
         .
       </p>
@@ -24,4 +24,4 @@ const AlphaBanner: React.FC = () => {
   );
 };
 
-export default AlphaBanner;
+export default BetaBanner;

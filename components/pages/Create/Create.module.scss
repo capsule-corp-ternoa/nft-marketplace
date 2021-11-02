@@ -10,101 +10,106 @@
 .Wrapper {
   margin-left: auto;
   margin-right: auto;
-  width: 1100px;
+  width: 110rem;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  padding: 70px 24px;
+  padding: 9.6rem 2.4rem;
 }
 
 .Title {
   font-family: "Airbnb Cereal App Bold";
-  font-size: 42px;
-  line-height: 48px;
-  margin: 0px;
-  margin-top: 18px;
-  margin-bottom: 14px;
+  font-size: 6.4rem;
+  line-height: 1.3;
+  margin: 0;
 }
 
-.InnerContainer {
-  background: #ffffff;
-  box-shadow: 0px 0px 11px 2px rgba(0, 0, 0, 0.05);
-  border-radius: 27px;
-  width: 100%;
-  padding: 40px 60px;
-  box-sizing: border-box;
-  margin-top: 32px;
+.Subtitle {
   display: flex;
-  flex-direction: column;
-}
-
-.Top {
-  display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
-}
-
-.TopInf {
-  font-size: 18px;
-  line-height: 26px;
   font-family: "Airbnb Cereal App Medium";
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  font-size: 2rem;
+  line-height: 1.3;
+  margin-top: 4rem;
 }
 
 .EyeSVG {
-  width: 24px;
-  margin-right: 10px;
+  width: 2.4rem;
+  margin-right: 1rem;
   fill: black;
+}
+
+.NFTPreview {
+  width: 100%;
+  height: 32rem;
+  display: flex;
+  position: relative;
+  border-radius: 1.6rem;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  box-sizing: border-box;
+  cursor: pointer;
+  margin-top: 5.4rem;
 }
 
 .Data {
   display: flex;
   width: 100%;
+  margin-top: 12rem;
+
+  >* {
+    box-sizing: border-box;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+
+    > :first-child {
+      margin-top: 0;
+    }
+
+  }
 }
 
 .Left {
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-  margin-right: 70px;
-  position: relative;
+  border-right: 1px solid #E0E0E0;
+  padding-right: 13.6rem;
 }
 
 .Right {
-  display: flex;
-  flex-direction: column;
-  width: 350px;
-  box-sizing: border-box;
+  padding-left: 13.6rem;
 }
 
-.Subtitle {
-  font-family: "Airbnb Cereal App Bold";
-  font-size: 16px;
-  line-height: 20px;
-  margin: 0px;
-  margin-bottom: 8px;
-}
 .InputShell {
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-bottom: 24px;
+  margin-top: 6.4rem;
+
+  &Description {
+    flex: 1;
+  }
+}
+
+.InputLabel {
+  font-family: "Airbnb Cereal App Bold";
+  font-size: 2rem;
+  line-height: 1.3;
+  margin: 0;
 }
 
 .Input {
   width: 100%;
-  background: #ffffff;
-  border: 1px solid #e1e1e1;
+  background: #F7F7F7;
+  border: 0.2rem solid rgba(0, 0, 0, 0);
+  border-radius: 0.8rem;
   font-family: "Airbnb Cereal App Book";
-  box-sizing: border-box;
-  border-radius: 7px;
+  font-size: 1.6rem;
+  margin-top: 1.6rem;
   outline: none;
-  width: 100%;
   padding: 14px 16px;
-  font-size: 15px;
+
+  &:focus {
+    border: 0.2rem solid #7417EA;
+  }
 }
 
 .Input::placeholder {
@@ -116,17 +121,8 @@
 }
 
 .Textarea {
-  font-size: 15px;
-  width: 100%;
-  background: #ffffff;
-  border: 1px solid #e1e1e1;
   resize: none;
-  border-radius: 7px;
-  height: 100px;
-  font-family: "Airbnb Cereal App Book";
-  padding: 12px;
-  outline: none;
-  box-sizing: border-box;
+  flex: 1;
 }
 
 .Textarea::placeholder {
@@ -140,17 +136,6 @@
   margin-top: 8px;
   margin-left: 8px;
   color: #c1c1c1;
-}
-
-.NFTPreview {
-  width: 278px;
-  height: 458px;
-  border-radius: 27px;
-  display: flex;
-  box-sizing: border-box;
-  position: relative;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  cursor: pointer;
 }
 
 .NFTSPreview {
@@ -196,6 +181,7 @@
   cursor: pointer;
   display: none;
 }
+
 .HiddenInput {
   width: 100%;
   height: 100%;
@@ -226,6 +212,7 @@
   height: 100%;
   border-radius: 27px;
 }
+
 .WaterMarkSVG {
   width: 160px;
   position: absolute;
@@ -329,20 +316,27 @@
   margin-left: 24px;
 }
 
+.Advice {
+  color: #7417EA;
+  font-family: "Airbnb Cereal App";
+  font-size: 1.6rem;
+  line-height: 0.8;
+  margin: 7.2rem auto 0;
+}
+
 .Create {
   display: flex;
   justify-content: center;
   align-items: center;
+  align-self: center;
   background: $primary;
-  color: white;
-  padding: 14px 40px;
-  border-radius: 40px;
-  cursor: pointer;
+  border: none;
+  border-radius: 4rem;
   color: white;
   font-family: "Airbnb Cereal App Bold";
   font-size: 13px;
-  align-self: center;
-  margin-top: 56px;
+  margin-top: 2.4rem;
+  padding: 0.8rem 2rem;
   transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
   z-index: 1;
 
@@ -456,6 +450,7 @@
     justify-content: center;
     align-items: center;
   }
+
   .InnerContainer {
     width: 100%;
     padding: 24px 24px;
@@ -516,6 +511,7 @@
   .Subtitle {
     font-size: 14px;
   }
+
   .NFTPreview {
     width: 250px;
     height: 430px;

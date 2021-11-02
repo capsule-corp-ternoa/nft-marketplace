@@ -9,7 +9,6 @@ import { NftType, UserType } from 'interfaces/index';
 import { computeCaps, computeTiime } from 'utils/strings';
 import { likeNFT, unlikeNFT } from 'actions/user';
 import { getNFT } from 'actions/nft';
-import { MARKETPLACE_ID } from 'utils/constant';
 
 export interface NftCardProps {
   item: NftType;
@@ -44,27 +43,22 @@ const NftCard: React.FC<NftCardProps> = ({
   const [type, setType] = useState<string | null>(null);
   const [likeLoading, setLikeLoading] = useState(false)
   const isLiked = !user ? undefined : (item.serieId === "0" ? user.likedNFTs?.map(x => x.nftId).includes(item.id) : user.likedNFTs?.map(x => x.serieId).includes(item.serieId))
-  const smallestPriceRow = !(item.serieData) ? item : item.serieData.filter(x=>x.marketplaceId === MARKETPLACE_ID).sort(
-    (a, b) =>
-      b.listed - a.listed ||
-      Number(a.price) - Number(b.price) ||
-      Number(a.priceTiime) - Number(b.priceTiime)
-  )[0];
   const displayQuantity = () => {
-    if (!scope) return `${typeof item.totalListedNft !== 'undefined' ? item.totalListedNft : 1}`
+    const defaultValue = `${typeof item.totalListedInMarketplace !== 'undefined' ? item.totalListedInMarketplace : (typeof item.totalListedNft !== 'undefined' ? item.totalListedNft : 1)}`
+    if (!scope) return defaultValue
     switch(scope){
       case 'My NFTs':
-        return `${typeof item.totalNft !== 'undefined' ? item.serieData?.filter(x=>x.owner===user?.walletId).length : 1}`
+        return `${item.totalOwnedByRequestingUser ? item.totalOwnedByRequestingUser : 1}`
       case 'My creations':
         return `${typeof item.totalNft !== 'undefined' ? item.totalNft : 1}`
       case 'My NFTs on sale':
-        return `${typeof item.totalListedNft !== 'undefined' ? item.serieData?.filter(x=>x.owner===user?.walletId && x.listed===1).length : 1}`
+        return `${item.serieData ? item.serieData.filter(x=>x.owner===user?.walletId && x.listed===1).length : 1}`
       case 'My NFTs not for sale':
-        return `${(typeof item.totalListedNft !== 'undefined' && typeof item.totalNft !== 'undefined') ? item.serieData?.filter(x=>x.owner===user?.walletId && x.listed===0).length : 1}`
+        return `${item.serieData ? item.serieData.filter(x=>x.owner===user?.walletId && x.listed===0).length : 1}`
       case 'Liked': 
         return 0
       default:
-        return `${typeof item.totalListedNft !== 'undefined' ? item.totalListedNft : 1}`
+        return defaultValue
     }
   }
   useEffect(() => {
@@ -198,17 +192,17 @@ const NftCard: React.FC<NftCardProps> = ({
               </div>
             )}
           </div>
-          {(smallestPriceRow && smallestPriceRow.listed && ((smallestPriceRow.price && Number(smallestPriceRow.price)>0) || (smallestPriceRow.priceTiime && Number(smallestPriceRow.priceTiime)))) &&
+          {((item.smallestPrice && Number(item.smallestPrice)) || (item.smallestPriceTiime && Number(item.smallestPriceTiime))) &&
             <div className={isHovering ? `${style.Button} ${style.FadeLong}` : style.Button}>
               <div className={style.Price}>
-                {smallestPriceRow.price && Number(smallestPriceRow.price)>0 &&
-                  `${computeCaps(Number(smallestPriceRow.price))} CAPS`
+                {item.smallestPrice && Number(item.smallestPrice)>0 &&
+                  `${computeCaps(Number(item.smallestPrice))} CAPS`
                 }
-                {smallestPriceRow.price && Number(smallestPriceRow.price)>0 && smallestPriceRow.priceTiime && Number(smallestPriceRow.priceTiime) && 
+                {item.smallestPrice && Number(item.smallestPrice) && item.smallestPriceTiime && Number(item.smallestPriceTiime) && 
                   ` / `
                 }
-                {smallestPriceRow.priceTiime && Number(smallestPriceRow.priceTiime)>0 && 
-                  `${computeTiime(Number(smallestPriceRow.priceTiime))} TIIME`
+                {item.smallestPriceTiime && Number(item.smallestPriceTiime)>0 && 
+                  `${computeTiime(Number(item.smallestPriceTiime))} TIIME`
                 }
               </div>
               <div className={style.ButtonText}>Buy</div>

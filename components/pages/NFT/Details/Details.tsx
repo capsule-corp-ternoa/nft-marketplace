@@ -174,21 +174,23 @@ const Details: React.FC<DetailsProps> = ({
                 {ownerData?.twitterName ? ownerData.twitterName : null}
               </span>
             </div>
-            <div className={styleDetails.ownerDatasSales}>
-              {NFTRowListed === 0
-                ? `${serieDataCount[key]} edition${
-                    serieDataCount[key] > 1 ? 's' : ''
-                  } not for sale`
-                : NFTRowListed === 1 && NFTRowMarketplaceId === MARKETPLACE_ID
-                ? `${serieDataCount[key]}${
-                    '' /*/${ownerNftsCount[NFTRowOwner]}*/
-                  } on sale for ${computeCaps(Number(NFTRowPrice))} CAPS ${
-                    serieDataCount[key] > 1 ? 'each' : ''
-                  }`
-                : `${serieDataCount[key]}${
-                    '' /*/${ownerNftsCount[NFTRowOwner]}*/
-                  } on sale on other marketplace(s)`}
-            </div>
+            <Link href={`/nft/${NFTRowId}`}>
+              <a className={styleDetails.ownerDatasSales}>
+                {NFTRowListed === 0
+                  ? `${serieDataCount[key]} edition${
+                      serieDataCount[key] > 1 ? 's' : ''
+                    } not for sale`
+                  : NFTRowListed === 1 && NFTRowMarketplaceId === MARKETPLACE_ID
+                  ? `${serieDataCount[key]}${
+                      '' /*/${ownerNftsCount[NFTRowOwner]}*/
+                    } on sale for ${computeCaps(Number(NFTRowPrice))} CAPS ${
+                      serieDataCount[key] > 1 ? 'each' : ''
+                    }`
+                  : `${serieDataCount[key]}${
+                      '' /*/${ownerNftsCount[NFTRowOwner]}*/
+                    } on sale on other marketplace(s)`}
+              </a>
+            </Link>
           </div>
         </div>
         <div>

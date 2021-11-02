@@ -62,7 +62,7 @@ const LandingPage: React.FC<LandingProps> = ({
     setWalletUser(null);
   }
   const setUser = async () => {
-    const user = await getUser(window.walletId).catch((e) => appLog('log// ERROR// null', e));
+    const user = await getUser(window.walletId);
     setWalletUser(user);
   };
 

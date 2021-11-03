@@ -35,7 +35,5 @@ export async function imgToWatermark(NFT: File | null) {
   }
   protectedImage.composite(image,0,0)
   protectedImage.composite(watermark, xPos, yPos);
-  console.log(xPos, yPos)
-  console.log(await protectedImage.getBase64Async(image.getMIME()))
   return await protectedImage.getBase64Async(image.getMIME());
 }

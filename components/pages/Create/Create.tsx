@@ -22,8 +22,8 @@ export interface CreateProps {
   setNFT: (f: File | null) => void;
   secretNFT: File | null;
   setSecretNFT: (f: File | null) => void;
-  select: NftEffectType;
-  setSelect: (s: NftEffectType) => void;
+  effect: NftEffectType;
+  setEffect: (s: NftEffectType) => void;
   processFile: () => Promise<void>;
   setError: (s: string) => void;
   setProcessed: (b: boolean) => void;
@@ -40,8 +40,8 @@ const Create: React.FC<CreateProps> = ({
   NFTData: initalValue,
   setNFTData: setNftDataToParent,
   user,
-  select,
-  setSelect,
+  effect,
+  setEffect,
   processFile,
   setError,
   setProcessed,
@@ -58,7 +58,7 @@ const Create: React.FC<CreateProps> = ({
     description &&
     validateQuantity(quantity, 10) &&
     secretNFT &&
-    (select !== NFT_EFFECT_SECRET || NFT);
+    (effect !== NFT_EFFECT_SECRET || NFT);
 
   function onChange(
     e:
@@ -77,7 +77,7 @@ const Create: React.FC<CreateProps> = ({
       !quantity ||
       quantity > 10 ||
       secretNFT === null ||
-      (select === NFT_EFFECT_SECRET && NFT === null)
+      (effect === NFT_EFFECT_SECRET && NFT === null)
     ) {
       setError('Please fill the form entirely.');
       setModalCreate(true);
@@ -85,7 +85,7 @@ const Create: React.FC<CreateProps> = ({
     }
     if (
       secretNFT!.type.substr(0, 5) === 'image' &&
-      select !== NFT_EFFECT_SECRET
+      effect !== NFT_EFFECT_SECRET
     ) {
       processFile();
     } else {
@@ -105,13 +105,13 @@ const Create: React.FC<CreateProps> = ({
         <NftPreview
           className={style.NftPreviewWrapper}
           NFT={NFT}
-          select={select}
+          effect={effect}
           setError={setError}
           setModalCreate={setModalCreate}
           setNFT={setNFT}
           secretNFT={secretNFT}
           setSecretNFT={setSecretNFT}
-          setSelect={setSelect}
+          setEffect={setEffect}
         />
         <div className={style.Data}>
           <div className={style.Left}>

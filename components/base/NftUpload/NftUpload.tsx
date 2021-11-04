@@ -15,7 +15,7 @@ interface Props {
   setError: (s: string) => void;
   setModalCreate: (b: boolean) => void;
   setSecretNFT: (f: File | null) => void;
-  setSelect: (s: NftEffectType) => void;
+  setEffect: (s: NftEffectType) => void;
 }
 
 const NftUpload = ({
@@ -27,7 +27,7 @@ const NftUpload = ({
   setError,
   setModalCreate,
   setSecretNFT,
-  setSelect,
+  setEffect,
 }: Props) => {
   const [acceptedFileTypes, setAcceptedFileTypes] = useState([
     '.jpg',
@@ -53,7 +53,7 @@ const NftUpload = ({
     let isError = false;
     if (!(target && target.files && target.files[0])) {
       setFunction(file);
-      setSelect(NFT_EFFECT_DEFAULT);
+      setEffect(NFT_EFFECT_DEFAULT);
       return;
     }
     if (!isError && isRN && target.files[0]!.type.substr(0, 5) === 'video') {
@@ -81,15 +81,15 @@ const NftUpload = ({
     // if (
     //   (target.files[0]!.type.substr(0, 5) === 'video' ||
     //     target.files[0]!.type === 'image/gif') &&
-    //   (select === 'Blur' || select === 'Protect')
+    //   (effect === 'Blur' || effect === 'Protect')
     // ) {
-    //   setSelect('Select NFT Option');
+    //   setEffect('Select NFT Option');
     // }
     if (!isError) {
       file = target.files[0];
     } else {
       setModalCreate(true);
-      // setSelect(NFT_EFFECT_DEFAULT);
+      // setEffect(NFT_EFFECT_DEFAULT);
     }
     setFunction(file);
   };

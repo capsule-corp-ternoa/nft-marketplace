@@ -37,7 +37,7 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
   const [modalCreate, setModalCreate] = useState(false);
-  const [select, setSelect] = useState<NftEffectType>(NFT_EFFECT_DEFAULT);
+  const [effect, setEffect] = useState<NftEffectType>(NFT_EFFECT_DEFAULT);
   const [processed, setProcessed] = useState(false);
   const [error, setError] = useState('');
   const [output, setOutput] = useState<string[]>([]);
@@ -88,7 +88,7 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
       }
       setOutput([]);
       setError('');
-      if (select === NFT_EFFECT_BLUR && secretNFT.type.substr(0, 5) === 'image') {
+      if (effect === NFT_EFFECT_BLUR && secretNFT.type.substr(0, 5) === 'image') {
         const processFile = new File([secretNFT], 'NFT', {
           type: secretNFT.type,
         });
@@ -100,7 +100,7 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
         setNFT(file);
         setProcessed(true);
       } else if (
-        select === NFT_EFFECT_PROTECT &&
+        effect === NFT_EFFECT_PROTECT &&
         secretNFT.type.substr(0, 5) === 'image'
       ) {
         const processFile = new File([secretNFT], 'NFT', {
@@ -221,8 +221,8 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
           setSecretNFT={setSecretNFT}
           NFTData={NFTData}
           setNFTData={setNFTData}
-          select={select}
-          setSelect={setSelect}
+          effect={effect}
+          setEffect={setEffect}
           processFile={processFile}
           setError={setError}
           setProcessed={setProcessed}

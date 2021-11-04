@@ -17,7 +17,7 @@ interface Props {
   setError: (s: string) => void;
   setModalCreate: (b: boolean) => void;
   setNFT: (f: File | null) => void;
-  setSelect: (s: NftEffectType) => void;
+  setEffect: (s: NftEffectType) => void;
   type: NftEffectType;
 }
 
@@ -56,7 +56,7 @@ const NftPreviewCard = ({
   setError,
   setModalCreate,
   setNFT,
-  setSelect,
+  setEffect,
   type,
 }: Props) => {
   return (
@@ -102,7 +102,7 @@ const NftPreviewCard = ({
                   setError={setError}
                   setModalCreate={setModalCreate}
                   setSecretNFT={setNFT}
-                  setSelect={setSelect}
+                  setEffect={setEffect}
                 />
               ) : (
                 returnType(NFT, isSelected)
@@ -128,7 +128,7 @@ const NftPreviewCard = ({
           id={`NftType_${type}`}
           className={style.HiddenInput}
           name={`NftType_${type}`}
-          onClick={() => setSelect(type)}
+          onClick={() => setEffect(type)}
           value={type}
         />
       </div>

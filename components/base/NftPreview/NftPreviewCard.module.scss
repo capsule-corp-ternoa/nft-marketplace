@@ -1,0 +1,145 @@
+.NftPreviewCard {
+  background: transparent;
+  border: 3px solid rgb(0, 0, 0, 0);
+  border-radius: 2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  flex: 1;
+  flex-direction: column;
+  padding: 0.8rem 0.8rem 2.4rem;
+
+  &__active,
+  &:hover {
+    border: 3px dashed #7417EA;
+  }
+}
+
+// NFT Type styles
+.IMGWrapper {
+  position: relative;
+}
+
+//// Default
+.IMGBackground {
+  width: 100%;
+  height: auto;
+  border-radius: 1.2rem;
+  background: linear-gradient(180deg, #f29fff 0%, #878cff 100%);
+  box-shadow: 0px 0px 14.5243px 5.0835px rgba(0, 0, 0, 0.15);
+  opacity: 0.4;
+  overflow: hidden;
+  transform: translateZ(0);
+
+  &__selected {
+    opacity: 1;
+  }
+}
+
+//// Blur
+.Blur {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 1.2rem;
+}
+
+//// Protected
+.OPTN {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 1.2rem;
+  opacity: 0.4;
+
+  &__selected {
+    opacity: 1;
+  }
+}
+
+.OPTNCTNR {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 1.2rem;
+}
+
+.WaterMarkSVG {
+  width: 14rem;
+  position: absolute;
+
+  bottom: 1.6rem;
+  left: 1.6rem;
+  z-index: 10;
+}
+
+//// Secret
+.SecretWrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.SecretUpload {
+  width: auto;
+  height: auto;
+  background: white;
+  border: none;
+  padding: 2rem;
+}
+
+.SecretUploadDescription {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.SecretUploadTopDescription {
+  color: #7417EA;
+  font-family: "Airbnb Cereal App Bold";
+  margin-bottom: 0.8rem;
+}
+
+.NftTypeRadio {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2.4rem;
+}
+
+.NftTypeRadioLabel {
+  font-family: "Airbnb Cereal App Bold";
+  font-size: 1.6rem;
+  line-height: 1.2;
+  margin-left: 0.8rem;
+  text-transform: capitalize;
+}
+
+.HiddenShell {
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  display: none;
+}
+
+.HiddenInput {
+  width: 100%;
+  height: 100%;
+  outline: none;
+  opacity: 0;
+  filter: alpha(opacity=0);
+  -ms-filter: "alpha(opacity=0)";
+  -khtml-opacity: 0;
+  -moz-opacity: 0;
+  cursor: pointer;
+}

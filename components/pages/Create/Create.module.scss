@@ -39,16 +39,10 @@
   fill: black;
 }
 
-.NFTPreview {
+.NftPreviewWrapper {
   width: 100%;
-  height: 32rem;
-  display: flex;
-  position: relative;
-  border-radius: 1.6rem;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  box-sizing: border-box;
-  cursor: pointer;
-  margin-top: 5.4rem;
+  height: auto;
+  margin-top: 5.6rem;
 }
 
 .Data {
@@ -101,6 +95,7 @@
   background: #F7F7F7;
   border: 0.2rem solid rgba(0, 0, 0, 0);
   border-radius: 0.8rem;
+  box-sizing: border-box;
   font-family: "Airbnb Cereal App Book";
   font-size: 1.6rem;
   margin-top: 1.6rem;
@@ -136,171 +131,6 @@
   margin-top: 8px;
   margin-left: 8px;
   color: #c1c1c1;
-}
-
-.NFTSPreview {
-  width: 190px;
-  height: 320px;
-  border-radius: 27px;
-  display: flex;
-  box-sizing: border-box;
-  position: relative;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  position: absolute;
-  z-index: 20;
-  bottom: -20px;
-  left: -20px;
-  background-color: white;
-  cursor: pointer;
-}
-
-.Hidden {
-  position: absolute;
-  z-index: 1;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 27px;
-  visibility: hidden;
-}
-
-.IMGBackground {
-  position: absolute;
-  z-index: 1;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 27px;
-}
-
-.HiddenShell {
-  position: absolute;
-  z-index: 1;
-  width: 100%;
-  height: 100%;
-  cursor: pointer;
-  display: none;
-}
-
-.HiddenInput {
-  width: 100%;
-  height: 100%;
-  outline: none;
-  opacity: 0;
-  filter: alpha(opacity=0);
-  -ms-filter: "alpha(opacity=0)";
-  -khtml-opacity: 0;
-  -moz-opacity: 0;
-  cursor: pointer;
-}
-
-.NFTPreviewBorder {
-  border: 1px dashed $primary;
-  box-shadow: none;
-}
-
-.OPTN {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  border-radius: 27px;
-}
-
-.OPTNCTNR {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  border-radius: 27px;
-}
-
-.WaterMarkSVG {
-  width: 160px;
-  position: absolute;
-  z-index: 10;
-  bottom: 20px;
-  left: 20px;
-}
-
-.Blur {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  z-index: 3;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-radius: 27px;
-}
-
-.NFTNull {
-  display: flex;
-  flex-direction: column;
-  padding: 80px 24px;
-  width: 100%;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
-.NFTSNull {
-  display: flex;
-  flex-direction: column;
-  padding: 16px 18px;
-  width: 100%;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-
-  .Label {
-    align-self: center;
-    margin-top: -40px;
-    margin-bottom: 30px;
-  }
-}
-
-.NFTSTips {
-  color: $primary;
-  font-family: "Airbnb Cereal App Medium";
-  font-size: 13px;
-  line-height: 15px;
-  margin: 18px 0px;
-  text-align: center;
-  align-self: center;
-}
-
-.NFTSTips2 {
-  color: $primary;
-  font-family: "Airbnb Cereal App Light";
-  font-size: 10px;
-  line-height: 14px;
-  color: #686464;
-  text-align: center;
-}
-
-.UploadSVG2 {
-  width: 40px;
-}
-
-.UploadSVG {
-  width: 80px;
-}
-
-.InsightMedium {
-  font-family: "Airbnb Cereal App Light";
-  font-size: 15px;
-  line-height: 24px;
-  text-align: center;
-  color: #686464;
-  margin: 18px 0px;
-  max-width: 150px;
-}
-
-.InsightLight {
-  font-family: "Airbnb Cereal App Light";
-  font-size: 15px;
-  line-height: 24px;
-  color: #b1b1b1;
-  text-align: center;
-  max-width: 200px;
 }
 
 .SelectShell {

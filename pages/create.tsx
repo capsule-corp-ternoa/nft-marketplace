@@ -10,7 +10,13 @@ import cookies from 'next-cookies';
 import Router from 'next/router';
 import mime from 'mime-types'
 import { getUser } from 'actions/user';
-import { UserType } from 'interfaces';
+import {
+  NFT_EFFECT_BLUR,
+  NFT_EFFECT_DEFAULT,
+  NFT_EFFECT_PROTECT,
+  NftEffectType,
+  UserType,
+} from 'interfaces';
 import { NextPageContext } from 'next';
 import { imgToBlur, imgToWatermark } from 'utils/imageProcessing/image';
 import { decryptCookie } from 'utils/cookie';
@@ -31,7 +37,7 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
   const [modalCreate, setModalCreate] = useState(false);
-  const [select, setSelect] = useState('Select NFT Option');
+  const [select, setSelect] = useState<NftEffectType>(NFT_EFFECT_DEFAULT);
   const [processed, setProcessed] = useState(false);
   const [error, setError] = useState('');
   const [output, setOutput] = useState<string[]>([]);
@@ -82,7 +88,7 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
       }
       setOutput([]);
       setError('');
-      if (select === 'Blur' && secretNFT.type.substr(0, 5) === 'image') {
+      if (select === NFT_EFFECT_BLUR && secretNFT.type.substr(0, 5) === 'image') {
         const processFile = new File([secretNFT], 'NFT', {
           type: secretNFT.type,
         });
@@ -94,7 +100,7 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
         setNFT(file);
         setProcessed(true);
       } else if (
-        select === 'Protect' &&
+        select === NFT_EFFECT_PROTECT &&
         secretNFT.type.substr(0, 5) === 'image'
       ) {
         const processFile = new File([secretNFT], 'NFT', {
@@ -119,7 +125,7 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
     if (!secretNFT ||
       !name ||
       !description ||
-      (!NFT && !(select === 'Select NFT Option' || select === 'None')) ||
+      !NFT ||
       !(quantity && quantity > 0 && quantity <= 10))
       throw new Error('Elements are undefined');
     setQRData({

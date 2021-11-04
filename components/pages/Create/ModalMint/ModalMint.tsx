@@ -91,28 +91,33 @@ const ModalMint: React.FC<ModalProps> = ({
     });
     socket.once('PGPS_READY', async ({ publicPgpKeys }: { publicPgpKeys: string[] }) => {
       socket.emit('PGPS_READY_RECEIVED')
+      console.log(publicPgpKeys)
       setShowQR(false)
       setShowProgress(true)
       setStartUploadTime(new Date())
       const { nftUrls, seriesId } = await uploadNFT(publicPgpKeys, setProgressData)
-      setRunNFTMintData({ nftUrls, seriesId })
-      socket.emit('RUN_NFT_MINT', { nftUrls, seriesId })
-      setShowProgress(false)
-      setProgressData([])
-      try {
-        await socketWaitForEvent(socket, 'RUN_NFT_MINT_RECEIVED')
-        // all ok
-      } catch (err) {
-        //The wallet timeout
-        setQrAction('MINT_RETRY')
-        setQrRetry(true)
-        if (isRN) {
-          setTimeout(function () {
-            window.ReactNativeWebView.postMessage(JSON.stringify({ action: qrAction, data: { session, socketUrl: SOCKET_URL, walletId, quantity, uploadSize } }));
-          }, 2000);
-        } else {
-          setShowQR(true);
+      if (nftUrls.length > 0){
+        setRunNFTMintData({ nftUrls, seriesId })
+        socket.emit('RUN_NFT_MINT', { nftUrls, seriesId })
+        setShowProgress(false)
+        setProgressData([])
+        try {
+          await socketWaitForEvent(socket, 'RUN_NFT_MINT_RECEIVED')
+          // all ok
+        } catch (err) {
+          //The wallet timeout
+          setQrAction('MINT_RETRY')
+          setQrRetry(true)
+          if (isRN) {
+            setTimeout(function () {
+              window.ReactNativeWebView.postMessage(JSON.stringify({ action: qrAction, data: { session, socketUrl: SOCKET_URL, walletId, quantity, uploadSize } }));
+            }, 2000);
+          } else {
+            setShowQR(true);
+          }
         }
+      }else{
+        setError('Please try again.');
       }
     });
     socket.once('MINTING_NFT', ({ success }: { success: boolean }) => {

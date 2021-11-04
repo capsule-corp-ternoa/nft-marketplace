@@ -21,7 +21,7 @@
     "file-to-array-buffer": "^1.0.0",
     "i18next": "^19.9.2",
     "i18next-browser-languagedetector": "^6.1.0",
-    "jimp": "^0.9.8",
+    "jimp": "^0.16.1",
     "js-cookie": "^2.2.1",
     "json-stringify-safe": "^5.0.1",
     "jszip": "^3.6.0",

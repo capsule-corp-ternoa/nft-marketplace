@@ -1,6 +1,5 @@
-import { CustomResponse, NftType, UserType } from 'interfaces/index';
-import { filterNFTs } from "./nft";
-import { DEFAULT_LIMIT_PAGINATION, NODE_API_URL } from "../utils/constant";
+import { CustomResponse, UserType } from 'interfaces/index';
+import { NODE_API_URL } from "../utils/constant";
 import Cookies from 'js-cookie';
 
 export const getUser = async (token: string) => {
@@ -102,12 +101,4 @@ export const unlikeNFT = async (walletId: string, nftId: string, serieId: string
   }else{
     throw new Error("Unvalid authentication");
   }
-}
-
-export const getLikedNFTs = async (walletId: string, page: string="1", limit: string=DEFAULT_LIMIT_PAGINATION, noSeriesData: boolean = false) => {
-  const res = await fetch(`${NODE_API_URL}/api/users/${walletId}/liked?page=${page}&limit=${limit}&noSeriesData=${noSeriesData}`)
-  if (!res.ok) throw new Error();
-  let result: CustomResponse<NftType> = await res.json();
-  result.data = filterNFTs(result.data)
-  return result;
 }

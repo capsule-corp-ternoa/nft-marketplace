@@ -10,7 +10,7 @@ import cookies from 'next-cookies';
 import { getUser } from 'actions/user';
 import { getOwnedNFTS, getCreatorNFTS } from 'actions/nft';
 import { getFollowers, getFollowed } from 'actions/follower';
-import { getLikedNFTs } from 'actions/user';
+import { getLikedNFTs } from 'actions/nft';
 import { NftType, UserType } from 'interfaces';
 import { NextPageContext } from 'next';
 import { decryptCookie } from 'utils/cookie';

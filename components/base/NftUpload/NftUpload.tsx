@@ -14,7 +14,7 @@ interface Props {
   note?: string;
   setError: (s: string) => void;
   setModalCreate: (b: boolean) => void;
-  setSecretNFT: (f: File | null) => void;
+  setNFT: (f: File | null) => void;
   setEffect: (s: NftEffectType) => void;
 }
 
@@ -26,7 +26,7 @@ const NftUpload = ({
   note,
   setError,
   setModalCreate,
-  setSecretNFT,
+  setNFT,
   setEffect,
 }: Props) => {
   const [acceptedFileTypes, setAcceptedFileTypes] = useState([
@@ -133,7 +133,7 @@ const NftUpload = ({
           <input
             type="file"
             id="uploadNFT"
-            onChange={(event) => updateFile(event, setSecretNFT)}
+            onChange={(event) => updateFile(event, setNFT)}
             className={style.HiddenInput}
             accept={acceptedFileTypes.join(',')}
           />

@@ -11,10 +11,11 @@ import Router from 'next/router';
 import mime from 'mime-types'
 import { getUser } from 'actions/user';
 import {
+  NftEffectType,
   NFT_EFFECT_BLUR,
   NFT_EFFECT_DEFAULT,
   NFT_EFFECT_PROTECT,
-  NftEffectType,
+  NFT_EFFECT_SECRET,
   UserType,
 } from 'interfaces';
 import { NextPageContext } from 'next';
@@ -74,44 +75,44 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
   }, [processed]);
 
   useEffect(() => {
-    if (secretNFT && quantity && Number(quantity) > 0) {
-      const previewSize = NFT ? NFT.size : secretNFT.size
-      const secretsSize = secretNFT.size * Number(quantity)
-      setUploadSize(previewSize + secretsSize)
+    if (NFT && quantity && Number(quantity) > 0) {
+      const previewSize = secretNFT ? secretNFT.size : NFT.size
+      const size = NFT.size * Number(quantity)
+      setUploadSize(previewSize + size)
     }
   }, [quantity, NFT, secretNFT])
 
   async function processFile() {
     try {
-      if (!secretNFT) {
+      if (!NFT) {
         throw new Error();
       }
       setOutput([]);
       setError('');
-      if (effect === NFT_EFFECT_BLUR && secretNFT.type.substr(0, 5) === 'image') {
-        const processFile = new File([secretNFT], 'NFT', {
-          type: secretNFT.type,
+      if (effect === NFT_EFFECT_BLUR && NFT.type.substr(0, 5) === 'image') {
+        const processFile = new File([NFT], 'NFT', {
+          type: NFT.type,
         });
         let res = await imgToBlur(processFile);
         const blob = await (await fetch(res as string)).blob();
-        const file = new File([blob], secretNFT.name, {
-          type: secretNFT.type,
+        const file = new File([blob], NFT.name, {
+          type: NFT.type,
         });
-        setNFT(file);
+        setSecretNFT(file);
         setProcessed(true);
       } else if (
         effect === NFT_EFFECT_PROTECT &&
-        secretNFT.type.substr(0, 5) === 'image'
+        NFT.type.substr(0, 5) === 'image'
       ) {
-        const processFile = new File([secretNFT], 'NFT', {
-          type: secretNFT.type,
+        const processFile = new File([NFT], 'NFT', {
+          type: NFT.type,
         });
         let res = await imgToWatermark(processFile);
         const blob = await (await fetch(res as string)).blob();
-        const file = new File([blob], secretNFT.name, {
-          type: secretNFT.type,
+        const file = new File([blob], NFT.name, {
+          type: NFT.type,
         });
-        setNFT(file);
+        setSecretNFT(file);
         setProcessed(true);
       }
     } catch (err) {
@@ -122,10 +123,10 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
 
   function initMintingNFT() {
     if (!user) throw new Error('Please login to create an NFT.')
-    if (!secretNFT ||
+    if (!NFT ||
       !name ||
       !description ||
-      !NFT ||
+      (effect === NFT_EFFECT_SECRET && !secretNFT) ||
       !(quantity && quantity > 0 && quantity <= 10))
       throw new Error('Elements are undefined');
     setQRData({
@@ -138,14 +139,14 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
 
   async function uploadNFT(publicPGPs: string[], setProgressData?: Function) {
     try {
-      if (!secretNFT) throw new Error();
-      const { url: previewLink, mediaType } = await uploadIPFS(NFT ? NFT : secretNFT, setProgressData, 0);
-      const fileHash = await getFilehash(secretNFT)
+      if (!NFT) throw new Error();
+      const { url: previewLink, mediaType } = await uploadIPFS(secretNFT ? secretNFT : NFT, setProgressData, 0);
+      const fileHash = await getFilehash(NFT)
       const seriesId = generateSeriesId(fileHash)
-      const cryptedMediaType = mime.lookup(secretNFT.name)
+      const cryptedMediaType = mime.lookup(NFT.name)
       //Parallel
       const cryptPromises = Array.from({ length: quantity }).map((_x, i) => {
-        return cryptAndUploadNFT(secretNFT, cryptedMediaType as string, publicPGPs[i] as string, setProgressData, 1 + i)
+        return cryptAndUploadNFT(NFT, cryptedMediaType as string, publicPGPs[i] as string, setProgressData, 1 + i)
       })
       const cryptResults = await Promise.all(cryptPromises);
       /* SEQUENTIAL

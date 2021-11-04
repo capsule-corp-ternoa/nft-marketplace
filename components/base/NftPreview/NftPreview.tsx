@@ -48,7 +48,7 @@ const NftPreview = ({
     setIsRN(window.isRNApp);
   }, []);
 
-  if (secretNFT === null) {
+  if (NFT === null) {
     return (
       <NftUpload
         className={className}
@@ -57,7 +57,7 @@ const NftPreview = ({
         note={`JPEG, JPG, PNG, GIF{${!isRN ? ', MP4 or MOV' : ''}}. Max 30mb.`}
         setError={setError}
         setModalCreate={setModalCreate}
-        setSecretNFT={setSecretNFT}
+        setNFT={setNFT}
         setEffect={setEffect}
       />
     );
@@ -73,7 +73,7 @@ const NftPreview = ({
           secretNFT={secretNFT}
           setError={setError}
           setModalCreate={setModalCreate}
-          setNFT={setNFT}
+          setSecretNFT={setSecretNFT}
           setEffect={setEffect}
           type={type}
         />

@@ -57,8 +57,8 @@ const Create: React.FC<CreateProps> = ({
     name &&
     description &&
     validateQuantity(quantity, 10) &&
-    secretNFT &&
-    (effect !== NFT_EFFECT_SECRET || NFT);
+    NFT &&
+    (effect !== NFT_EFFECT_SECRET || secretNFT);
 
   function onChange(
     e:
@@ -76,15 +76,15 @@ const Create: React.FC<CreateProps> = ({
       !description ||
       !quantity ||
       quantity > 10 ||
-      secretNFT === null ||
-      (effect === NFT_EFFECT_SECRET && NFT === null)
+      NFT === null ||
+      (effect === NFT_EFFECT_SECRET && secretNFT === null)
     ) {
       setError('Please fill the form entirely.');
       setModalCreate(true);
       return false;
     }
     if (
-      secretNFT!.type.substr(0, 5) === 'image' &&
+      NFT!.type.substr(0, 5) === 'image' &&
       effect !== NFT_EFFECT_SECRET
     ) {
       processFile();

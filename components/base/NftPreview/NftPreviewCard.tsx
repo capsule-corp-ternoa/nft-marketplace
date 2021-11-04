@@ -12,11 +12,11 @@ import style from './NftPreviewCard.module.scss';
 
 interface Props {
   isSelected: boolean;
-  NFT: File | null;
-  secretNFT: File;
+  NFT: File;
+  secretNFT: File | null;
   setError: (s: string) => void;
   setModalCreate: (b: boolean) => void;
-  setNFT: (f: File | null) => void;
+  setSecretNFT: (f: File | null) => void;
   setEffect: (s: NftEffectType) => void;
   type: NftEffectType;
 }
@@ -55,7 +55,7 @@ const NftPreviewCard = ({
   secretNFT,
   setError,
   setModalCreate,
-  setNFT,
+  setSecretNFT,
   setEffect,
   type,
 }: Props) => {
@@ -68,7 +68,7 @@ const NftPreviewCard = ({
         htmlFor={`NftType_${type}`}
       >
         <div className={style.IMGWrapper}>
-          {returnType(secretNFT, isSelected)}
+          {returnType(NFT, isSelected)}
           {type === NFT_EFFECT_BLUR && <div className={style.Blur} />}
           {type === NFT_EFFECT_PROTECT && (
             <div
@@ -83,7 +83,7 @@ const NftPreviewCard = ({
           )}
           {type === NFT_EFFECT_SECRET && (
             <div className={style.SecretWrapper}>
-              {NFT === null ? (
+              {secretNFT === null ? (
                 <NftUpload
                   className={style.SecretUpload}
                   description={
@@ -101,11 +101,11 @@ const NftPreviewCard = ({
                   note={`PNG, GIF, WEBP, MP4 or MP3. Max 30mb.`}
                   setError={setError}
                   setModalCreate={setModalCreate}
-                  setSecretNFT={setNFT}
+                  setNFT={setSecretNFT}
                   setEffect={setEffect}
                 />
               ) : (
-                returnType(NFT, isSelected)
+                returnType(secretNFT, isSelected)
               )}
             </div>
           )}

@@ -48,6 +48,7 @@
     "sass-loader": "^12.1.0",
     "skynet-js": "^3.0.2",
     "socket.io-client": "^4.0.1",
+    "styled-components": "^5.3.3",
     "utf-8-validate": "^5.0.4",
     "uuid": "^8.3.2"
   },
@@ -68,6 +69,7 @@
     "@types/react-responsive": "^8.0.2",
     "@types/react-virtualized-auto-sizer": "^1.0.1",
     "@types/react-window": "^1.8.5",
+    "@types/styled-components": "^5.1.15",
     "@types/uuid": "^8.3.0",
     "typescript": "4.0",
     "webpack-node-externals": "^3.0.0"

@@ -4,16 +4,22 @@ import { DEFAULT_LIMIT_PAGINATION } from "../utils/constant";
 import Cookies from 'js-cookie';
 
 export const getFollowers = async (walletId: string, page: string="1", limit: string=DEFAULT_LIMIT_PAGINATION, searchText?: string, certifiedOnly?: string) => {
-    const query = `${searchText ? `&nameOrAddressSearch=${searchText}`: ""}${certifiedOnly ? `&certifiedOnly=${certifiedOnly}` : ""}`
-    const res = await fetch(`${NODE_API_URL}/api/follow/followers/${walletId}?page=${page}&limit=${limit}${query}`);
+    const pagination = {page, limit}
+    const filter: any = {}
+    if (searchText) filter.searchText = searchText
+    if (searchText) filter.certifiedOnly = certifiedOnly
+    const res = await fetch(`${NODE_API_URL}/api/follow/followers/${walletId}?pagination=${JSON.stringify(pagination)}&filter=${JSON.stringify(filter)}`);
     if (!res.ok) throw new Error();
     let result = await res.json() as CustomResponse<UserType>;
     return result;
 };
 
 export const getFollowed = async (walletId: string, page: string="1", limit: string=DEFAULT_LIMIT_PAGINATION, searchText?: string, certifiedOnly?: string) => {
-    const query = `${searchText ? `&nameOrAddressSearch=${searchText}`: ""}${certifiedOnly ? `&certifiedOnly=${certifiedOnly}` : ""}`
-    const res = await fetch(`${NODE_API_URL}/api/follow/followed/${walletId}?page=${page}&limit=${limit}${query}`);
+    const pagination = {page, limit}
+    const filter: any = {}
+    if (searchText) filter.searchText = searchText
+    if (searchText) filter.certifiedOnly = certifiedOnly
+    const res = await fetch(`${NODE_API_URL}/api/follow/followed/${walletId}?pagination=${JSON.stringify(pagination)}&filter=${JSON.stringify(filter)}`);
     if (!res.ok) throw new Error();
     let result = await res.json() as CustomResponse<UserType>;
     return result;

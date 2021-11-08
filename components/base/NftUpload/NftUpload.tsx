@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Upload from 'components/assets/upload';
 import WhiteWaterMark from 'components/assets/WhiteWaterMark';
 import { NftEffectType, NFT_EFFECT_DEFAULT } from 'interfaces';
-import Chip from 'components/ui/Chip';
+import Chip from 'ui/components/Chip';
 
 import style from './NftUpload.module.scss';
 

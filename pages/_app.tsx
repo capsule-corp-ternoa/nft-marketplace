@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
-import 'style/base.scss';
+import { ThemeProvider } from 'styled-components';
 import Head from 'next/head';
 import Close from 'components/assets/close';
+import GlobalStyle from 'style/Global';
+import theme from 'ui/theme';
+import 'style/base.scss';
 
 import Router from 'next/router';
 import NProgress from 'nprogress';
@@ -20,7 +23,7 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
     setCookiesConsent(localStorage.getItem('cookiesConsent'));
   }, []);
   return (
-    <>
+    <ThemeProvider theme={theme}>
       <Head>
         <script
           async
@@ -37,13 +40,14 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
           }}
         ></script>
         {/* Tell the browser to never restore the scroll position on load */}
-         <script
-        dangerouslySetInnerHTML={{
-          __html: `history.scrollRestoration = "manual"`,
-        }}
-      />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `history.scrollRestoration = "manual"`,
+          }}
+        />
       </Head>
 
+      <GlobalStyle />
       <Component {...pageProps} />
 
       {!cookiesConsent && !hide && (
@@ -64,7 +68,7 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
           />
         </div>
       )}
-    </>
+    </ThemeProvider>
   );
 };
 

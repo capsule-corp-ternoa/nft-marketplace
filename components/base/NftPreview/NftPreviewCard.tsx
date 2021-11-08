@@ -1,14 +1,14 @@
 import React from 'react';
+import styled, { css } from 'styled-components';
 import WhiteWaterMark from 'components/assets/WhiteWaterMark';
 import NftUpload from 'components/base/NftUpload';
+import { HiddenInput, HiddenShell } from 'components/base/Layout';
 import {
   NftEffectType,
   NFT_EFFECT_BLUR,
   NFT_EFFECT_PROTECT,
   NFT_EFFECT_SECRET,
 } from 'interfaces';
-
-import style from './NftPreviewCard.module.scss';
 
 interface Props {
   isSelected: boolean;
@@ -21,30 +21,45 @@ interface Props {
   type: NftEffectType;
 }
 
+const DefaultEffect = css`
+  width: 100%;
+  height: auto;
+  border-radius: 1.2rem;
+  background: linear-gradient(180deg, #f29fff 0%, #878cff 100%);
+  box-shadow: 0px 0px 14.5243px 5.0835px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  transform: translateZ(0);
+`;
+const IMGDefaultEffect = styled.img<{ isSelected?: boolean }>`
+  ${DefaultEffect}
+  opacity: ${({ isSelected }) => (isSelected ? 1 : 0.4)};
+`;
+const VideoDefaultEffect = styled.video<{ isSelected?: boolean }>`
+  ${DefaultEffect}
+  opacity: ${({ isSelected }) => (isSelected ? 1 : 0.4)};
+`;
+
 function returnType(NFTarg: File, isSelected: boolean) {
   if (NFTarg!.type.substr(0, 5) === 'image') {
     return (
-      <img
-        className={`${style.IMGBackground} ${
-          isSelected ? style.IMGBackground__selected : ''
-        }`}
-        src={URL.createObjectURL(NFTarg)}
+      <IMGDefaultEffect
         alt="img"
         id="output"
+        isSelected={isSelected}
+        src={URL.createObjectURL(NFTarg)}
       />
     );
   } else if (NFTarg!.type.substr(0, 5) === 'video') {
     return (
-      <video
+      <VideoDefaultEffect
         autoPlay
         muted
         playsInline
         loop
-        className={style.IMGBackground}
         key={NFTarg.name + NFTarg.lastModified}
       >
         <source id="outputVideo" src={URL.createObjectURL(NFTarg)} />
-      </video>
+      </VideoDefaultEffect>
     );
   }
 }
@@ -61,40 +76,33 @@ const NftPreviewCard = ({
 }: Props) => {
   return (
     <>
-      <label
-        className={`${style.NftPreviewCard} ${
-          isSelected ? style.NftPreviewCard__active : ''
-        }`}
+      <NftPreviewCardWrapper
         htmlFor={`NftType_${type}`}
+        isSelected={isSelected}
       >
-        <div className={style.IMGWrapper}>
+        <IMGWrapper>
           {returnType(NFT, isSelected)}
-          {type === NFT_EFFECT_BLUR && <div className={style.Blur} />}
+          {type === NFT_EFFECT_BLUR && <Blur />}
           {type === NFT_EFFECT_PROTECT && (
-            <div
-              className={`${style.OPTN} ${
-                isSelected ? style.OPTN__selected : ''
-              }`}
-            >
-              <div className={style.OPTNCTNR}>
-                <WhiteWaterMark className={style.WaterMarkSVG} />
-              </div>
-            </div>
+            <WaterMark isSelected={isSelected}>
+              <WaterMarkWrapper>
+                <WhiteWaterMarkIcon />
+              </WaterMarkWrapper>
+            </WaterMark>
           )}
           {type === NFT_EFFECT_SECRET && (
-            <div className={style.SecretWrapper}>
+            <SecretWrapper>
               {secretNFT === null ? (
-                <NftUpload
-                  className={style.SecretUpload}
+                <SecretUpload
                   description={
-                    <div className={style.SecretUploadDescription}>
-                      <span className={style.SecretUploadTopDescription}>
+                    <SecretUploadDescription>
+                      <SecretUploadTopDescription>
                         Drag your the preview of your secret.
-                      </span>
+                      </SecretUploadTopDescription>
                       <span>
                         Once purchased, the owner will be able to see your NFT
                       </span>
-                    </div>
+                    </SecretUploadDescription>
                   }
                   //isRN={isRN}
                   isSecretOption
@@ -107,33 +115,137 @@ const NftPreviewCard = ({
               ) : (
                 returnType(secretNFT, isSelected)
               )}
-            </div>
+            </SecretWrapper>
           )}
-        </div>
+        </IMGWrapper>
 
-        <div className={style.NftTypeRadio}>
-          <input
-            type="radio"
-            className={style.InputRadio}
-            checked={isSelected}
-            readOnly
-          />
-          <span className={style.NftTypeRadioLabel}>{type}</span>
-        </div>
-      </label>
+        <NftTypeRadio>
+          <input type="radio" checked={isSelected} readOnly />
+          <NftTypeRadioLabel>
+            {type}
+          </NftTypeRadioLabel>
+        </NftTypeRadio>
+      </NftPreviewCardWrapper>
 
-      <div className={style.HiddenShell}>
-        <input
+      <HiddenShell>
+        <HiddenInput
           type="radio"
           id={`NftType_${type}`}
-          className={style.HiddenInput}
           name={`NftType_${type}`}
           onClick={() => setEffect(type)}
           value={type}
         />
-      </div>
+      </HiddenShell>
     </>
   );
 };
+
+const NftPreviewCardWrapper = styled.label<{ isSelected?: boolean }>`
+  background: transparent;
+  border: 3px solid rgb(0, 0, 0, 0);
+  border-radius: 2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  flex: 1;
+  flex-direction: column;
+  padding: 0.8rem 0.8rem 2.4rem;
+
+  &:hover {
+    border: 3px dashed #7417ea;
+  }
+
+  ${({ isSelected }) =>
+    isSelected &&
+    `
+    border: 3px dashed #7417ea;
+  `}
+`;
+
+const IMGWrapper = styled.div`
+  position: relative;
+`;
+
+const Blur = styled.div`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 1.2rem;
+`;
+
+const WaterMark = styled.div<{ isSelected?: boolean }>`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 1.2rem;
+  opacity: ${({ isSelected }) => (isSelected ? 1 : 0.4)};
+`;
+
+const WaterMarkWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 1.2rem;
+`;
+
+const WhiteWaterMarkIcon = styled(WhiteWaterMark)`
+  width: 14rem;
+  position: absolute;
+  bottom: 1.6rem;
+  left: 1.6rem;
+  z-index: 10;
+`;
+
+const SecretWrapper = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 4.8rem 3.2rem 0;
+`;
+
+const SecretUpload = styled(NftUpload)`
+  width: auto;
+  height: auto;
+  border: none;
+`;
+
+const SecretUploadDescription = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const SecretUploadTopDescription = styled.span`
+  color: #7417ea;
+  font-family: 'Airbnb Cereal App Bold';
+  margin-bottom: 0.8rem;
+`;
+
+const NftTypeRadio = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2.4rem;
+`;
+
+const NftTypeRadioLabel = styled.span`
+  font-family: 'Airbnb Cereal App Bold';
+  font-size: 1.6rem;
+  line-height: 1.2;
+  margin-left: 0.8rem;
+  text-transform: capitalize;
+`;
 
 export default NftPreviewCard;

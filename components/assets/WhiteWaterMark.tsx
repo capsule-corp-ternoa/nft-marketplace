@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface WhiteWaterMarkProps {
-  className: string;
+  className?: string;
 }
 
 const WhiteWaterMark: React.FC<WhiteWaterMarkProps> = ({ className }) => (

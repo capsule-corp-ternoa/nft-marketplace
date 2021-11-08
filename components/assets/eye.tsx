@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface EyeProps {
-  className: string;
+  className?: string;
 }
 
 const Eye: React.FC<EyeProps> = ({ className }) => (

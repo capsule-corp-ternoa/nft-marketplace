@@ -1,15 +1,22 @@
 import React, { useState } from 'react';
+import styled from 'styled-components';
 import Eye from 'components/assets/eye';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
+import {
+  Container,
+  Input,
+  InputLabel,
+  InputShell,
+  Textarea,
+  Wrapper,
+} from 'components/base/Layout';
 import NftPreview from 'components/base/NftPreview';
 import { NftEffectType, NFT_EFFECT_SECRET } from 'interfaces';
 
 import { UserType } from 'interfaces/index';
 
 import { NFTProps } from 'pages/create';
-
-import style from './Create.module.scss';
 
 export interface CreateProps {
   user: UserType;
@@ -50,7 +57,7 @@ const Create: React.FC<CreateProps> = ({
   const { name, description, quantity } = nftData;
 
   const validateQuantity = (value: number, limit: number) => {
-    return value && value > 0 && value <= limit;
+    return value > 0 && value <= limit;
   };
 
   const isDataValid =
@@ -83,10 +90,7 @@ const Create: React.FC<CreateProps> = ({
       setModalCreate(true);
       return false;
     }
-    if (
-      NFT!.type.substr(0, 5) === 'image' &&
-      effect !== NFT_EFFECT_SECRET
-    ) {
+    if (NFT!.type.substr(0, 5) === 'image' && effect !== NFT_EFFECT_SECRET) {
       processFile();
     } else {
       setProcessed(true);
@@ -95,15 +99,14 @@ const Create: React.FC<CreateProps> = ({
   }
 
   return (
-    <div className={style.Container}>
-      <div className={style.Wrapper}>
-        <h2 className={style.Title}>Create NFT</h2>
-        <span className={style.Subtitle}>
-          <Eye className={style.EyeSVG} />
+    <Container>
+      <Wrapper>
+        <Title>Create NFT</Title>
+        <Subtitle>
+          <EyeIcon />
           NFT Preview
-        </span>
-        <NftPreview
-          className={style.NftPreviewWrapper}
+        </Subtitle>
+        <SNftPreview
           NFT={NFT}
           effect={effect}
           setError={setError}
@@ -113,107 +116,194 @@ const Create: React.FC<CreateProps> = ({
           setSecretNFT={setSecretNFT}
           setEffect={setEffect}
         />
-        <div className={style.Data}>
-          <div className={style.Left}>
-            <div className={style.InputShell}>
-              <h4 className={style.InputLabel}>Name</h4>
-              <input
+        <Form>
+          <Left>
+            <InputShell>
+              <InputLabel>Name</InputLabel>
+              <Input
                 type="text"
                 placeholder="Enter name"
                 onChange={onChange}
                 name="name"
                 value={name}
-                className={style.Input}
               />
-            </div>
+            </InputShell>
 
-            <div
-              className={`${style.InputShell} ${style.InputShellDescription}`}
-            >
-              <h4 className={style.InputLabel}>Description</h4>
-              <textarea
+            <InputShellDescription>
+              <InputLabel>Description</InputLabel>
+              <Textarea
                 placeholder="Tell about the NFT in a few words..."
                 name="description"
                 value={description}
                 onChange={onChange}
-                className={`${style.Input} ${style.Textarea}`}
               />
-            </div>
-          </div>
-          <div className={style.Right}>
-            <div className={style.InputShell}>
-              <h4 className={style.InputLabel}>Category</h4>
-              <input
+            </InputShellDescription>
+          </Left>
+          <Right>
+            <InputShell>
+              <InputLabel>Category</InputLabel>
+              <Input
                 type="text"
                 placeholder="NFT Category"
                 onChange={onChange}
                 name="name"
                 value={name}
-                className={style.Input}
               />
-            </div>
+            </InputShell>
 
-            <div className={style.InputShell}>
-              <h4 className={style.InputLabel}>
-                Royalties <span className={style.Insight}>(max: 10%)</span>
-              </h4>
-              <input
+            <InputShell>
+              <InputLabel>
+                Royalties <Insight>(max: 10%)</Insight>
+              </InputLabel>
+              <Input
                 type="text"
                 placeholder="Enter royalties"
                 onChange={onChange}
                 name="name"
                 value={name}
-                className={style.Input}
               />
-            </div>
+            </InputShell>
 
-            <div className={style.InputShell}>
-              <h4 className={style.InputLabel}>
-                Quantity <span className={style.Insight}>(max: 10)</span>
-              </h4>
-              <input
+            <InputShell>
+              <InputLabel>
+                Quantity <Insight>(max: 10)</Insight>
+              </InputLabel>
+              <Input
                 type="text"
                 name="quantity"
                 value={quantity}
                 onChange={onChange}
                 placeholder="1"
-                className={`${style.Input} ${
-                  quantity && !validateQuantity(quantity, 10)
-                    ? style.InputError
-                    : ''
-                }`}
+                isError={!validateQuantity(quantity, 10)}
               />
-            </div>
+            </InputShell>
 
-            <div className={style.InputShell}>
-              <h4 className={style.InputLabel}>Serie ID</h4>
-              <input
+            <InputShell>
+              <InputLabel>Serie ID</InputLabel>
+              <Input
                 type="text"
                 placeholder="Enter ID"
                 onChange={onChange}
                 name="name"
                 value={name}
-                className={style.Input}
               />
-            </div>
-          </div>
-        </div>
-        <span className={style.Advice}>
+            </InputShell>
+          </Right>
+        </Form>
+        <Advice>
           Once the information is entered, it will be impossible to modify it !
-        </span>
-        <button
-          className={`${style.Create} ${
-            !(isDataValid && user) ? style.CreateDisabled : ''
-          }`}
+        </Advice>
+        <CreateButton
+          // disabled={!(isDataValid && user)}
           onClick={() => isDataValid && user && uploadFiles()}
         >
           Create NFT
-        </button>
-      </div>
+        </CreateButton>
+      </Wrapper>
       <Footer setNotAvailable={setNotAvailable} />
       <FloatingHeader user={user} setModalExpand={setModalExpand} />
-    </div>
+    </Container>
   );
 };
+
+const Title = styled.h2`
+  font-family: 'Airbnb Cereal App Bold';
+  font-size: 6.4rem;
+  line-height: 1.3;
+  margin: 0;
+`;
+
+const Subtitle = styled.span`
+  display: flex;
+  align-items: center;
+  font-family: 'Airbnb Cereal App Medium';
+  font-size: 2rem;
+  line-height: 1.3;
+  margin-top: 4rem;
+`;
+
+const EyeIcon = styled(Eye)`
+  width: 2.4rem;
+  margin-right: 1rem;
+  fill: black;
+`;
+
+const SNftPreview = styled(NftPreview)`
+  width: 100%;
+  height: auto;
+  margin-top: 5.4rem;
+`;
+
+const Form = styled.form`
+  display: flex;
+  width: 100%;
+  margin-top: 12rem;
+
+  > * {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+
+    > :first-child {
+      margin-top: 0;
+    }
+  }
+`;
+
+const Left = styled.div`
+  border-right: 1px solid #e0e0e0;
+  padding-right: 13.6rem;
+`;
+
+const Right = styled.div`
+  padding-left: 13.6rem;
+`;
+
+const InputShellDescription = styled(InputShell)`
+  flex: 1;
+`;
+
+const Insight = styled.span`
+  color: #c1c1c1;
+  font-family: 'Airbnb Cereal App Book';
+  font-size: 1.2rem;
+  line-height: 1.3;
+  margin-top: 0.8rem 0 0 0.8rem;
+`;
+
+const Advice = styled.span`
+  color: #7417EA;
+  font-size: 1.6rem;
+  line-height: 0.8;
+  margin: 7.2rem auto 0;
+`
+
+const CreateButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+  background: #7417ea;
+  border: none;
+  border-radius: 4rem;
+  color: white;
+  cursor: pointer;
+  font-family: "Airbnb Cereal App Bold";
+  font-size: 1.6rem;
+  margin-top: 2.4rem;
+  padding: 1.2rem 4.8rem;
+  transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  z-index: 1;
+
+  &:hover {
+    color: white;
+    background-color: black;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    pointer-events: none;
+  }
+`
 
 export default Create;

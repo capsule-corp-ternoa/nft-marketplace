@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import styled from 'styled-components'
 import NftUpload from 'components/base/NftUpload';
 import {
   NftEffectType,
@@ -9,8 +10,6 @@ import {
 } from 'interfaces';
 
 import NftPreviewCard from './NftPreviewCard';
-
-import style from './NftPreview.module.scss';
 
 interface Props {
   className?: string;
@@ -64,7 +63,7 @@ const NftPreview = ({
   }
 
   return (
-    <fieldset className={`${className ?? ''} ${style.NftPreviewWrapper}`}>
+    <NftPreviewWrapper className={className}>
       {NFT_EFFECTS_ORDERED.map((type, id) => (
         <NftPreviewCard
           key={id}
@@ -78,8 +77,17 @@ const NftPreview = ({
           type={type}
         />
       ))}
-    </fieldset>
+    </NftPreviewWrapper>
   );
 };
+
+const NftPreviewWrapper = styled.fieldset`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.2rem;
+  border: none;
+  padding: 0;
+`
 
 export default NftPreview;

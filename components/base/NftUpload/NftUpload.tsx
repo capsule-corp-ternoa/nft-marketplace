@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
 import Upload from 'components/assets/upload';
 import WhiteWaterMark from 'components/assets/WhiteWaterMark';
+import { HiddenInput, HiddenShell } from 'components/base/Layout';
 import { NftEffectType, NFT_EFFECT_DEFAULT } from 'interfaces';
 import Chip from 'ui/components/Chip';
-
-import style from './NftUpload.module.scss';
 
 interface Props {
   className?: string;
@@ -95,60 +95,111 @@ const NftUpload = ({
   };
 
   const DefaultContent = (
-    <div className={style.NFTNull}>
-      <Upload className={style.UploadSVG} />
-      {description && <div className={style.InsightMedium}>{description}</div>}
-      {note && <div className={style.InsightLight}>{note}</div>}
-    </div>
+    <Content>
+      <UploadIcon />
+      {description && <InsightMedium>{description}</InsightMedium>}
+      {note && <InsightLight>{note}</InsightLight>}
+    </Content>
   );
 
   const SmallUploadContent = (
-    <div className={`${style.NFTNull} ${style.NFTNull__small}`}>
+    <Content isSmall>
       <Chip color="primaryInverted" text="Secret option" />
-      {description && (
-        <div className={`${style.InsightMedium} ${style.InsightMedium__small}`}>
-          {description}
-        </div>
-      )}
-      <Upload className={style.UploadSVG__small} />
-      {note && (
-        <div className={`${style.InsightLight} ${style.InsightLight__small}`}>
-          {note}
-        </div>
-      )}
-    </div>
+      {description && <InsightMedium isSmall>{description}</InsightMedium>}
+      <UploadIcon isSmall />
+      {note && <InsightLight isSmall>{note}</InsightLight>}
+    </Content>
   );
 
   return (
-    <div className={style.NftUploadWrapper}>
-      <label
-        htmlFor="uploadNFT"
-        className={`${className ?? ''} ${style.NftUpload} ${
-          style.NftUploadBorder
-        }`}
-      >
+    <NftUploadWrapper className={className}>
+      <NftUploadArea htmlFor="uploadNFT" isSecretOption={isSecretOption}>
         {isSecretOption ? SmallUploadContent : DefaultContent}
 
-        <div className={style.HiddenShell}>
-          <input
+        <HiddenShell>
+          <HiddenInput
             type="file"
             id="uploadNFT"
             onChange={(event) => updateFile(event, setNFT)}
-            className={style.HiddenInput}
             accept={acceptedFileTypes.join(',')}
           />
-        </div>
-      </label>
+        </HiddenShell>
+      </NftUploadArea>
       {isSecretOption && (
-        <Chip
-          className={style.SecretChip}
+        <SecretChip
           color="transparent"
-          icon={<WhiteWaterMark className={style.SecretChipIcon} />}
+          icon={<SecretChipIcon />}
           text="Secret"
         />
       )}
-    </div>
+    </NftUploadWrapper>
   );
 };
+
+const NftUploadWrapper = styled.div<{ className?: string }>`
+  box-sizing: border-box;
+
+  ${({ className }) => className}
+`;
+
+const NftUploadArea = styled.label<{ isSecretOption?: boolean }>`
+  background: white;
+  display: flex;
+  position: relative;
+  border: 3px dashed #7417ea;
+  border-radius: 1.6rem;
+  cursor: pointer;
+
+  ${({ isSecretOption }) =>
+    isSecretOption &&
+    `
+    border: none;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    padding: 2.4rem;
+  `}
+`;
+
+const Content = styled.div<{ isSmall?: boolean }>`
+  display: flex;
+  flex-direction: column;
+  padding: ${({ isSmall }) => (isSmall ? 0 : '8rem 2.4rem')};
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+`;
+
+const UploadIcon = styled(Upload)<{ isSmall?: boolean }>`
+  width: ${({ isSmall }) => (isSmall ? '4rem' : '8rem')};
+`;
+
+const Insight = styled.div<{ isSmall?: boolean }>`
+  font-family: 'Airbnb Cereal App Light';
+  font-size: ${({ isSmall }) => (isSmall ? '1rem' : '1.2rem')};
+  line-height: 1.3;
+  text-align: center;
+`;
+
+const InsightMedium = styled(Insight)<{ isSmall?: boolean }>`
+  color: #686464;
+  margin: 1.6rem 0;
+  max-width: 16rem;
+`;
+
+const InsightLight = styled(Insight)<{ isSmall?: boolean }>`
+  color: #b1b1b1;
+  margin-top: ${({ isSmall }) => (isSmall ? '1.6rem' : '0')};
+  max-width: 20rem;
+`;
+
+const SecretChip = styled(Chip)`
+  width: fit-content;
+  margin: 2.4rem auto 0;
+`;
+
+const SecretChipIcon = styled(WhiteWaterMark)`
+  width: 1.6rem;
+  height: 1.6rem;
+`;
 
 export default NftUpload;

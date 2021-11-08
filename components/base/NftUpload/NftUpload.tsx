@@ -95,6 +95,7 @@ const NftUpload = ({
       // setEffect(NFT_EFFECT_DEFAULT);
     }
     setFunction(file);
+    setEffect(isSecretOption ? NFT_EFFECT_SECRET : NFT_EFFECT_DEFAULT);
   };
 
   const DefaultContent = (

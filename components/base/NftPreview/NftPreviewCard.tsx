@@ -9,6 +9,7 @@ import {
   NFT_EFFECT_PROTECT,
   NFT_EFFECT_SECRET,
 } from 'interfaces';
+import Chip from 'ui/components/Chip';
 
 interface Props {
   isSelected: boolean;
@@ -113,7 +114,14 @@ const NftPreviewCard = ({
                   setEffect={setEffect}
                 />
               ) : (
-                returnType(secretNFT, isSelected)
+                <>
+                  {returnType(secretNFT, isSelected)}
+                  <SecretChip
+                    color="transparent"
+                    icon={<SecretChipIcon />}
+                    text="Secret"
+                  />
+                </>
               )}
             </SecretWrapper>
           )}
@@ -121,9 +129,7 @@ const NftPreviewCard = ({
 
         <NftTypeRadio>
           <input type="radio" checked={isSelected} readOnly />
-          <NftTypeRadioLabel>
-            {type}
-          </NftTypeRadioLabel>
+          <NftTypeRadioLabel>{type}</NftTypeRadioLabel>
         </NftTypeRadio>
       </NftPreviewCardWrapper>
 
@@ -208,10 +214,11 @@ const SecretWrapper = styled.div`
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: auto;
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  padding: 4.8rem 3.2rem 0;
+  padding: 4rem 3.2rem 0;
 `;
 
 const SecretUpload = styled(NftUpload)`
@@ -231,6 +238,16 @@ const SecretUploadTopDescription = styled.span`
   color: #7417ea;
   font-family: 'Airbnb Cereal App Bold';
   margin-bottom: 0.8rem;
+`;
+
+const SecretChip = styled(Chip)`
+  width: fit-content;
+  margin: 2.4rem auto 0;
+`;
+
+const SecretChipIcon = styled(WhiteWaterMark)`
+  width: 1.6rem;
+  height: 1.6rem;
 `;
 
 const NftTypeRadio = styled.div`

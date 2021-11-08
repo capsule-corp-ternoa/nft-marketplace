@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Upload from 'components/assets/upload';
-import WhiteWaterMark from 'components/assets/WhiteWaterMark';
 import { HiddenInput, HiddenShell } from 'components/base/Layout';
-import { NftEffectType, NFT_EFFECT_DEFAULT } from 'interfaces';
+import {
+  NftEffectType,
+  NFT_EFFECT_DEFAULT,
+  NFT_EFFECT_SECRET,
+} from 'interfaces';
 import Chip from 'ui/components/Chip';
 
 interface Props {
@@ -125,13 +128,6 @@ const NftUpload = ({
           />
         </HiddenShell>
       </NftUploadArea>
-      {isSecretOption && (
-        <SecretChip
-          color="transparent"
-          icon={<SecretChipIcon />}
-          text="Secret"
-        />
-      )}
     </NftUploadWrapper>
   );
 };
@@ -190,16 +186,6 @@ const InsightLight = styled(Insight)<{ isSmall?: boolean }>`
   color: #b1b1b1;
   margin-top: ${({ isSmall }) => (isSmall ? '1.6rem' : '0')};
   max-width: 20rem;
-`;
-
-const SecretChip = styled(Chip)`
-  width: fit-content;
-  margin: 2.4rem auto 0;
-`;
-
-const SecretChipIcon = styled(WhiteWaterMark)`
-  width: 1.6rem;
-  height: 1.6rem;
 `;
 
 export default NftUpload;

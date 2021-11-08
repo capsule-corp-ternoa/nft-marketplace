@@ -76,6 +76,10 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
     const createdNfts = await getCreatorNFTS(token, undefined, undefined, true)
     setCreatedNfts(createdNfts.data)
     setCreatedNftsHasNextPage(createdNfts.hasNextPage)
+    //Liked NFTs
+    const liked = await getLikedNFTs(token, undefined, undefined, true)
+    setLikedNfts(liked.data)
+    setLikedNftsHasNextPage(liked.hasNextPage)
     //Owned listed NFTs
     const ownedListed = await getOwnedNFTS(token, true, 1, undefined, undefined, true)
     setOwnedNftsListed(ownedListed.data)
@@ -84,10 +88,6 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
     const ownedUnlisted = await getOwnedNFTS(token, false, 0, undefined, undefined, true)
     setOwnedNftsUnlisted(ownedUnlisted.data)
     setOwnedNftsUnlistedHasNextPage(ownedUnlisted.hasNextPage)
-    //Liked NFTs
-    const liked = await getLikedNFTs(token, undefined, undefined, true)
-    setLikedNfts(liked.data)
-    setLikedNftsHasNextPage(liked.hasNextPage)
     //profile followers
     const followers = await getFollowers(token)
     setFollowersUsers(followers.data)
@@ -309,7 +309,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
   if (token) {
     promises.push(
       new Promise<void>((success) => {
-        getUser(token)
+        getUser(token, true)
           .then((_user) => {
             user = _user;
             success();

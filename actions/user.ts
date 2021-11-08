@@ -2,9 +2,9 @@ import { CustomResponse, UserType } from 'interfaces/index';
 import { DEFAULT_LIMIT_PAGINATION, NODE_API_URL } from "../utils/constant";
 import Cookies from 'js-cookie';
 
-export const getUser = async (token: string) => {
+export const getUser = async (token: string, ignoreCache=false) => {
   const res = await fetch(
-    `${NODE_API_URL}/api/users/${token}`
+    `${NODE_API_URL}/api/users/${token}?ignoreCache=${ignoreCache}`
   );
 
   if (!res.ok) throw new Error();

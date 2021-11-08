@@ -17,7 +17,7 @@
     "bufferutil": "^4.0.5",
     "crypto": "^1.0.1",
     "crypto-js": "^4.1.1",
-    "eslint": "^8.2.0",
+    "eslint": "^7.32.0",
     "file-to-array-buffer": "^1.0.0",
     "i18next": "^21.4.1",
     "i18next-browser-languagedetector": "^6.1.2",

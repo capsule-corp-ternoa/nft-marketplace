@@ -110,7 +110,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
   const promises = [];
   promises.push(
     new Promise<void>((success) => {
-      getUsers()
+      getUsers(undefined,true)
         .then((result) => {
           users = result.data;
           success();

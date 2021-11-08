@@ -222,7 +222,6 @@ const Profile: React.FC<ProfileProps> = ({
       loadMoreFollowers(true)
       loadMoreFollowed(true)
     }, 1000)
-
     return () => clearTimeout(timer)
   }, [searchValue, isFiltered])
 

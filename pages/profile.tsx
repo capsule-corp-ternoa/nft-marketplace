@@ -209,7 +209,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
           (pageToLoad + 1).toString(),
           undefined,
           searchValue,
-          isFiltered ? "true" : undefined
+          isFiltered ? true : undefined
         );
         setFollowersCurrentPage(pageToLoad + 1);
         setFollowersUsersHasNextPage(result.hasNextPage || false);
@@ -234,7 +234,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
           (pageToLoad + 1).toString(),
           undefined,
           searchValue,
-          isFiltered ? "true" : undefined
+          isFiltered ? true : undefined
         );
         setFollowedCurrentPage(pageToLoad + 1);
         setFollowedUsersHasNextPage(result.hasNextPage || false);

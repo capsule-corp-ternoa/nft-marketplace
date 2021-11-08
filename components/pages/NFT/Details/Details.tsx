@@ -7,7 +7,7 @@ import styleDetails from './Details.module.scss';
 import { computeCaps } from 'utils/strings';
 import Link from 'next/link';
 import { middleEllipsis } from '../../../../utils/strings';
-import { getUsersByWalletIds } from 'actions/user';
+import { getUsers } from 'actions/user';
 import Creator from 'components/base/Creator';
 import { MARKETPLACE_ID } from 'utils/constant';
 
@@ -92,7 +92,7 @@ const Details: React.FC<DetailsProps> = ({
 
   const loadDisplayedUsers = async (walletIds: string[]) => {
     try {
-      let users = await getUsersByWalletIds(walletIds);
+      let users = await getUsers(walletIds);
       let usersObject = {} as any;
       if (users && users.data.length > 0) {
         users.data.forEach((u) => {

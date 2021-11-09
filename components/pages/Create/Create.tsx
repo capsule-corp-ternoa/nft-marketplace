@@ -189,7 +189,7 @@ const Create: React.FC<CreateProps> = ({
           Once the information is entered, it will be impossible to modify it !
         </Advice>
         <CreateButton
-          // disabled={!(isDataValid && user)}
+          disabled={!(isDataValid && user)}
           onClick={() => isDataValid && user && uploadFiles()}
         >
           Create NFT

@@ -19,19 +19,17 @@ const Select = ({
 }: Props) => {
   const [isExpanded, setSelectExpanded] = useState(false);
 
+  const toggleSelect = () => {
+    return setSelectExpanded((prevState) => !prevState);
+  };
+
   return (
     <SelectContainer className={className}>
-      <SelectRoot
-        color={color}
-        disabled={disabled}
-        onClick={() => setSelectExpanded((prevState) => !prevState)}
-      >
+      <SelectRoot color={color} disabled={disabled} onClick={toggleSelect}>
         {text}
         <ArrowIcon isExpanded={isExpanded} />
       </SelectRoot>
-      {isExpanded && (
-        <SelectOptions>{children(setSelectExpanded)}</SelectOptions>
-      )}
+      {isExpanded && <SelectOptions>{children(toggleSelect)}</SelectOptions>}
     </SelectContainer>
   );
 };

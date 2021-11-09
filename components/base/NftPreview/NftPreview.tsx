@@ -180,4 +180,4 @@ const NftPreviewCardList = styled.fieldset`
   padding: 0;
 `;
 
-export default NftPreview;
+export default React.memo(NftPreview);

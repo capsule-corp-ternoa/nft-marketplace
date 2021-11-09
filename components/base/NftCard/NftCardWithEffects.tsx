@@ -25,11 +25,13 @@ interface Props {
 
 const DefaultEffect = css`
   width: 100%;
-  height: auto;
+  height: 100%;
   border-radius: 1.2rem;
   background: linear-gradient(180deg, #f29fff 0%, #878cff 100%);
   box-shadow: 0px 0px 14.5243px 5.0835px rgba(0, 0, 0, 0.15);
+  object-fit: cover;
   overflow: hidden;
+  position: absolute;
   transform: translateZ(0);
 `;
 const IMGDefaultEffect = styled.img`
@@ -130,6 +132,8 @@ const NftCardWithEffects = ({
 
 const MediaWrapper = styled.div`
   position: relative;
+  width: 250px;
+  height: 430px;
 `;
 
 const Blur = styled.div`

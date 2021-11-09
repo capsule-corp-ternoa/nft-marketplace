@@ -86,10 +86,6 @@ const CardWrapper = styled.div`
   display: flex;
   justify-content: center;
   filter: drop-shadow(0px 0px 10.4276px rgba(0, 0, 0, 0.25));
-
-  > * {
-    width: 18.4rem;
-  }
 `;
 
 const NftPreviewCardWrapper = styled.label<{ isSelected?: boolean }>`

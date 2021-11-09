@@ -1,4 +1,5 @@
 import React from 'react';
+import { useMediaQuery } from 'react-responsive';
 import styled, { css } from 'styled-components';
 import WhiteWaterMark from 'components/assets/WhiteWaterMark';
 import NftUpload from 'components/base/NftUpload';
@@ -10,9 +11,10 @@ import {
   NFT_EFFECT_SECRET,
 } from 'interfaces';
 import Chip from 'ui/components/Chip';
+import { breakpointMap } from 'ui/theme/base';
 
 interface Props {
-  isSelected: boolean;
+  isSelected?: boolean;
   NFT: File;
   secretNFT: File | null;
   setError: (s: string) => void;
@@ -75,58 +77,73 @@ const NftPreviewCard = ({
   setEffect,
   type,
 }: Props) => {
+  const isMobile = useMediaQuery({
+    query: `(max-device-width: ${breakpointMap.md}px)`,
+  });
+
+  const Card = () => (
+    <IMGWrapper>
+      {returnType(NFT, isSelected)}
+      {type === NFT_EFFECT_BLUR && <Blur />}
+      {type === NFT_EFFECT_PROTECT && (
+        <WaterMark isSelected={isSelected}>
+          <WaterMarkWrapper>
+            <WhiteWaterMarkIcon />
+          </WaterMarkWrapper>
+        </WaterMark>
+      )}
+      {type === NFT_EFFECT_SECRET && (
+        <SecretWrapper>
+          {secretNFT === null ? (
+            <SecretUpload
+              description={
+                <SecretUploadDescription>
+                  <SecretUploadTopDescription>
+                    Drag your the preview of your secret.
+                  </SecretUploadTopDescription>
+                  <span>
+                    Once purchased, the owner will be able to see your NFT
+                  </span>
+                </SecretUploadDescription>
+              }
+              //isRN={isRN}
+              isSecretOption
+              note={`PNG, GIF, WEBP, MP4 or MP3. Max 30mb.`}
+              setError={setError}
+              setModalCreate={setModalCreate}
+              setNFT={setSecretNFT}
+              setEffect={setEffect}
+            />
+          ) : (
+            <>
+              {returnType(secretNFT, isSelected)}
+              <SecretChip
+                color="transparent"
+                icon={<SecretChipIcon />}
+                text="Secret"
+              />
+            </>
+          )}
+        </SecretWrapper>
+      )}
+    </IMGWrapper>
+  );
+
+  if (isMobile) {
+    return (
+      <CardWrapper>
+        <Card />
+      </CardWrapper>
+    );
+  }
+
   return (
     <>
       <NftPreviewCardWrapper
         htmlFor={`NftType_${type}`}
         isSelected={isSelected}
       >
-        <IMGWrapper>
-          {returnType(NFT, isSelected)}
-          {type === NFT_EFFECT_BLUR && <Blur />}
-          {type === NFT_EFFECT_PROTECT && (
-            <WaterMark isSelected={isSelected}>
-              <WaterMarkWrapper>
-                <WhiteWaterMarkIcon />
-              </WaterMarkWrapper>
-            </WaterMark>
-          )}
-          {type === NFT_EFFECT_SECRET && (
-            <SecretWrapper>
-              {secretNFT === null ? (
-                <SecretUpload
-                  description={
-                    <SecretUploadDescription>
-                      <SecretUploadTopDescription>
-                        Drag your the preview of your secret.
-                      </SecretUploadTopDescription>
-                      <span>
-                        Once purchased, the owner will be able to see your NFT
-                      </span>
-                    </SecretUploadDescription>
-                  }
-                  //isRN={isRN}
-                  isSecretOption
-                  note={`PNG, GIF, WEBP, MP4 or MP3. Max 30mb.`}
-                  setError={setError}
-                  setModalCreate={setModalCreate}
-                  setNFT={setSecretNFT}
-                  setEffect={setEffect}
-                />
-              ) : (
-                <>
-                  {returnType(secretNFT, isSelected)}
-                  <SecretChip
-                    color="transparent"
-                    icon={<SecretChipIcon />}
-                    text="Secret"
-                  />
-                </>
-              )}
-            </SecretWrapper>
-          )}
-        </IMGWrapper>
-
+        <Card />
         <NftTypeRadio>
           <input type="radio" checked={isSelected} readOnly />
           <NftTypeRadioLabel>{type}</NftTypeRadioLabel>
@@ -145,6 +162,16 @@ const NftPreviewCard = ({
     </>
   );
 };
+
+const CardWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  filter: drop-shadow(0px 0px 10.4276px rgba(0, 0, 0, 0.25));
+
+  > * {
+    width: 18.4rem;
+  }
+`;
 
 const NftPreviewCardWrapper = styled.label<{ isSelected?: boolean }>`
   background: transparent;

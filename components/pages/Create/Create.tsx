@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import Eye from 'components/assets/eye';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
 import {
@@ -101,11 +100,7 @@ const Create: React.FC<CreateProps> = ({
   return (
     <Container>
       <Wrapper>
-        <Title>Create NFT</Title>
-        <Subtitle>
-          <EyeIcon />
-          NFT Preview
-        </Subtitle>
+        <Title>Create your NFT</Title>
         <SNftPreview
           NFT={NFT}
           effect={effect}
@@ -141,7 +136,7 @@ const Create: React.FC<CreateProps> = ({
           </Left>
           <Right>
             <InputShell>
-              <InputLabel>Category</InputLabel>
+              <InputLabel>Category<Insight>(optional)</Insight></InputLabel>
               <Input
                 type="text"
                 placeholder="NFT Category"
@@ -153,7 +148,7 @@ const Create: React.FC<CreateProps> = ({
 
             <InputShell>
               <InputLabel>
-                Royalties <Insight>(max: 10%)</Insight>
+                Royalties<Insight>(max: 10%)</Insight>
               </InputLabel>
               <Input
                 type="text"
@@ -166,7 +161,7 @@ const Create: React.FC<CreateProps> = ({
 
             <InputShell>
               <InputLabel>
-                Quantity <Insight>(max: 10)</Insight>
+                Quantity<Insight>(max: 10)</Insight>
               </InputLabel>
               <Input
                 type="text"
@@ -208,55 +203,76 @@ const Create: React.FC<CreateProps> = ({
 
 const Title = styled.h2`
   font-family: 'Airbnb Cereal App Bold';
-  font-size: 6.4rem;
+  font-size: 3.2rem;
   line-height: 1.3;
   margin: 0;
-`;
+  text-align: center;
 
-const Subtitle = styled.span`
-  display: flex;
-  align-items: center;
-  font-family: 'Airbnb Cereal App Medium';
-  font-size: 2rem;
-  line-height: 1.3;
-  margin-top: 4rem;
-`;
-
-const EyeIcon = styled(Eye)`
-  width: 2.4rem;
-  margin-right: 1rem;
-  fill: black;
+  ${({ theme }) => theme.mediaQueries.md} {
+    font-size: 6.4rem;
+    text-align: left;
+  }
 `;
 
 const SNftPreview = styled(NftPreview)`
   width: 100%;
   height: auto;
-  margin-top: 5.4rem;
+  margin-top: 3.2rem;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    margin-top: 5.4rem;
+  }
 `;
 
 const Form = styled.form`
-  display: flex;
   width: 100%;
-  margin-top: 12rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 4rem;
 
   > * {
+    width: 100%;
     display: flex;
     flex: 1;
     flex-direction: column;
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    align-items: normal;
+    flex-direction: row;
+    margin-top: 12rem;
+  }
+`;
+
+const Left = styled.div`
+  > :first-child {
+    margin-top: 0;
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    border-right: 1px solid #e0e0e0;
+    padding-right: 4.8rem;
+  }
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    padding-right: 13.6rem;
+  }
+`;
+
+const Right = styled.div`
+  ${({ theme }) => theme.mediaQueries.md} {
+    padding-left: 4.8rem;
 
     > :first-child {
       margin-top: 0;
     }
   }
-`;
 
-const Left = styled.div`
-  border-right: 1px solid #e0e0e0;
-  padding-right: 13.6rem;
-`;
-
-const Right = styled.div`
-  padding-left: 13.6rem;
+  ${({ theme }) => theme.mediaQueries.xl} {
+    padding-left: 13.6rem;
+  }
 `;
 
 const InputShellDescription = styled(InputShell)`
@@ -268,15 +284,20 @@ const Insight = styled.span`
   font-family: 'Airbnb Cereal App Book';
   font-size: 1.2rem;
   line-height: 1.3;
-  margin-top: 0.8rem 0 0 0.8rem;
+  margin-left: 0.8rem;
 `;
 
 const Advice = styled.span`
-  color: #7417EA;
+  color: #7417ea;
   font-size: 1.6rem;
-  line-height: 0.8;
-  margin: 7.2rem auto 0;
-`
+  line-height: 1.3;
+  margin: 4rem auto 0;
+  text-align: center;
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    margin: 7.2rem auto 0;
+  }
+`;
 
 const CreateButton = styled.button`
   display: flex;
@@ -288,7 +309,7 @@ const CreateButton = styled.button`
   border-radius: 4rem;
   color: white;
   cursor: pointer;
-  font-family: "Airbnb Cereal App Bold";
+  font-family: 'Airbnb Cereal App Bold';
   font-size: 1.6rem;
   margin-top: 2.4rem;
   padding: 1.2rem 4.8rem;
@@ -304,6 +325,6 @@ const CreateButton = styled.button`
     opacity: 0.4;
     pointer-events: none;
   }
-`
+`;
 
 export default Create;

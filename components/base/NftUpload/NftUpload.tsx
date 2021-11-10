@@ -105,27 +105,16 @@ const NftUpload = ({
     );
   }
 
-  const DefaultContent = (
-    <Content>
-      <UploadIcon />
-      {content && <InsightMedium>{content}</InsightMedium>}
-      {note && <InsightLight>{note}</InsightLight>}
-    </Content>
-  );
-
-  const SmallUploadContent = (
-    <Content isSmall>
-      <Chip color="primaryInverted" text="Secret option" />
-      {content && <InsightMedium isSmall>{content}</InsightMedium>}
-      <UploadIcon isSmall />
-      {note && <InsightLight isSmall>{note}</InsightLight>}
-    </Content>
-  );
-
   return (
     <NftUploadWrapper className={className}>
       <NftUploadArea htmlFor={inputId} isSecretOption={isSecretOption}>
-        {isSecretOption ? SmallUploadContent : DefaultContent}
+        <Content isSmall={isSecretOption}>
+          {isSecretOption && <Chip color="primaryInverted" text="Secret option" />}
+          {!isSecretOption && <UploadIcon />}
+          {content && <InsightMedium isSmall={isSecretOption}>{content}</InsightMedium>}
+          {isSecretOption && <UploadIcon isSmall />}
+          {note && <InsightLight isSmall={isSecretOption}>{note}</InsightLight>}
+        </Content>
 
         <HiddenShell>
           <HiddenInput

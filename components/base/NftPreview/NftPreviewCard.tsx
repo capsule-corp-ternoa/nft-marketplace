@@ -11,7 +11,6 @@ interface Props {
   NFT: File;
   secretNFT: File | null;
   setError: (s: string) => void;
-  setModalCreate: (b: boolean) => void;
   setSecretNFT: (f: File | null) => void;
   setEffect: (s: NftEffectType) => void;
   type: NftEffectType;
@@ -22,7 +21,6 @@ const NftPreviewCard = ({
   NFT,
   secretNFT,
   setError,
-  setModalCreate,
   setSecretNFT,
   setEffect,
   type,
@@ -38,7 +36,6 @@ const NftPreviewCard = ({
           NFT={NFT}
           secretNFT={secretNFT}
           setError={setError}
-          setModalCreate={setModalCreate}
           setSecretNFT={setSecretNFT}
           setEffect={setEffect}
           type={type}
@@ -58,7 +55,6 @@ const NftPreviewCard = ({
           NFT={NFT}
           secretNFT={secretNFT}
           setError={setError}
-          setModalCreate={setModalCreate}
           setSecretNFT={setSecretNFT}
           setEffect={setEffect}
           type={type}

@@ -20,7 +20,6 @@ interface Props {
   NFT: File | null;
   effect: NftEffectType;
   setError: (s: string) => void;
-  setModalCreate: (b: boolean) => void;
   setNFT: (f: File | null) => void;
   secretNFT: File | null;
   setSecretNFT: (f: File | null) => void;
@@ -39,7 +38,6 @@ const NftPreview = ({
   NFT,
   effect,
   setError,
-  setModalCreate,
   setNFT,
   secretNFT,
   setSecretNFT,
@@ -59,11 +57,11 @@ const NftPreview = ({
     return (
       <NftUpload
         className={className}
-        description="Click here to upload your file."
+        content="Click here to upload your file."
+        inputId="uploadNft"
         isRN={isRN}
         note={`JPEG, JPG, PNG, GIF ${!isRN ? ', MP4 or MOV' : ''}. Max 30mb.`}
         setError={setError}
-        setModalCreate={setModalCreate}
         setNFT={setNFT}
         setEffect={setEffect}
       />
@@ -73,10 +71,23 @@ const NftPreview = ({
   return (
     <div className={className}>
       {NFT && (
-        <Title>
-          <EyeIcon />
-          NFT Preview
-        </Title>
+        <NftPreviewHeader>
+          <Title>
+            <EyeIcon />
+            NFT Preview
+          </Title>
+          {NFT.name && (
+            <Reupload
+              content={NFT.name}
+              inputId="reUploadNft"
+              isMinimal
+              isRN={isRN}
+              setError={setError}
+              setNFT={setNFT}
+              setEffect={setEffect}
+            />
+          )}
+        </NftPreviewHeader>
       )}
       {isMobile ? (
         <NftPreviewCardSelection>
@@ -85,7 +96,6 @@ const NftPreview = ({
             NFT={NFT}
             secretNFT={secretNFT}
             setError={setError}
-            setModalCreate={setModalCreate}
             setSecretNFT={setSecretNFT}
             setEffect={setEffect}
             type={effect}
@@ -121,7 +131,6 @@ const NftPreview = ({
               NFT={NFT}
               secretNFT={secretNFT}
               setError={setError}
-              setModalCreate={setModalCreate}
               setSecretNFT={setSecretNFT}
               setEffect={setEffect}
               type={type}
@@ -133,25 +142,42 @@ const NftPreview = ({
   );
 };
 
+const NftPreviewHeader = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 0 2.4rem;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    flex-direction: row;
+    margin-top: 4rem;
+    justify-content: start;
+  }
+`;
+
 const Title = styled.h3`
   display: flex;
-  align-items: center;
+  align-items: end;
   justify-content: center;
   font-family: 'Airbnb Cereal App Medium';
   font-size: 2rem;
   line-height: 1.3;
-  margin: 0 0 2.4rem;
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    margin-top: 4rem;
-    justify-content: start;
-  }
+  margin: 0;
 `;
 
 const EyeIcon = styled(Eye)`
   width: 2.4rem;
   margin-right: 1rem;
   fill: black;
+`;
+
+const Reupload = styled(NftUpload)`
+  margin: 1.6rem 0 0;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    margin: 0 0 0 2.4rem;
+    padding-top: 0.6rem;
+  }
 `;
 
 const NftPreviewCardSelection = styled.div`

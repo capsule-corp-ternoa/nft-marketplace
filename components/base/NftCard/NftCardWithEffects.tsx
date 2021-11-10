@@ -1,5 +1,4 @@
 import React from 'react';
-import { useMediaQuery } from 'react-responsive';
 import styled, { css } from 'styled-components';
 import WhiteWaterMark from 'components/assets/WhiteWaterMark';
 import NftUpload from 'components/base/NftUpload';
@@ -10,14 +9,12 @@ import {
   NFT_EFFECT_SECRET,
 } from 'interfaces';
 import Chip from 'ui/components/Chip';
-import { breakpointMap } from 'ui/theme/base';
 
 interface Props {
   className?: string;
   NFT: File;
   secretNFT: File | null;
   setError: (s: string) => void;
-  setModalCreate: (b: boolean) => void;
   setSecretNFT: (f: File | null) => void;
   setEffect: (s: NftEffectType) => void;
   type: NftEffectType;
@@ -70,70 +67,76 @@ const NftCardWithEffects = ({
   NFT,
   secretNFT,
   setError,
-  setModalCreate,
   setSecretNFT,
   setEffect,
   type,
-}: Props) => {
-  const isMobile = useMediaQuery({
-    query: `(max-device-width: ${breakpointMap.md}px)`,
-  });
-
-  return (
-    <MediaWrapper className={className}>
-      {returnType(NFT)}
-      {type === NFT_EFFECT_BLUR && <Blur />}
-      {type === NFT_EFFECT_PROTECT && (
-        <WaterMark>
-          <WaterMarkWrapper>
-            <WhiteWaterMarkIcon />
-          </WaterMarkWrapper>
-        </WaterMark>
-      )}
-      {type === NFT_EFFECT_SECRET && (
-        <SecretWrapper>
-          {secretNFT === null ? (
-            <SecretUpload
-              description={
-                <SecretUploadDescription>
-                  <SecretUploadTopDescription>
-                    Drag your the preview of your secret.
-                  </SecretUploadTopDescription>
-                  {!isMobile && (
-                    <span>
-                      Once purchased, the owner will be able to see your NFT
-                    </span>
-                  )}
-                </SecretUploadDescription>
-              }
-              //isRN={isRN}
-              isSecretOption
-              note={`PNG, GIF, WEBP, MP4 or MP3. Max 30mb.`}
-              setError={setError}
-              setModalCreate={setModalCreate}
-              setNFT={setSecretNFT}
-              setEffect={setEffect}
-            />
-          ) : (
-            returnType(secretNFT)
-          )}
-          {!isMobile && (
-            <SecretChip
-              color="transparent"
-              icon={<SecretChipIcon />}
-              text="Secret"
-            />
-          )}
-        </SecretWrapper>
-      )}
-    </MediaWrapper>
-  );
-};
-
+}: Props) => (
+  <MediaWrapper className={className}>
+    {returnType(NFT)}
+    {type === NFT_EFFECT_BLUR && <Blur />}
+    {type === NFT_EFFECT_PROTECT && (
+      <WaterMark>
+        <WaterMarkWrapper>
+          <WhiteWaterMarkIcon />
+        </WaterMarkWrapper>
+      </WaterMark>
+    )}
+    {type === NFT_EFFECT_SECRET && (
+      <SecretWrapper>
+        {secretNFT === null ? (
+          <SecretUpload
+            content={
+              <SecretUploadDescription>
+                <SecretUploadTopDescription>
+                  Drag your the preview of your secret.
+                </SecretUploadTopDescription>
+                <span>
+                  Once purchased, the owner will be able to see your NFT
+                </span>
+              </SecretUploadDescription>
+            }
+            inputId="uploadSecretNft"
+            //isRN={isRN}
+            isSecretOption
+            note={`PNG, GIF, WEBP, MP4 or MP3. Max 30mb.`}
+            setError={setError}
+            setNFT={setSecretNFT}
+            setEffect={setEffect}
+          />
+        ) : (
+          <SecretMediaWrapper
+            content={returnType(secretNFT)}
+            inputId="reUploadSecretNft"
+            isMinimal
+            isSecretOption
+            setError={setError}
+            setNFT={setSecretNFT}
+            setEffect={setEffect}
+          />
+        )}
+        <SecretChip
+          color="transparent"
+          icon={<SecretChipIcon />}
+          text="Secret"
+        />
+      </SecretWrapper>
+    )}
+  </MediaWrapper>
+);
 const MediaWrapper = styled.div`
   position: relative;
   width: 250px;
   height: 430px;
+`;
+
+const SecretMediaWrapper = styled(NftUpload)`
+  position: relative;
+  width: 100%;
+  height: 320px;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    height: 290px;
+  }
 `;
 
 const Blur = styled.div`
@@ -185,10 +188,10 @@ const SecretWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 3.2rem 2.4rem 0;
+  padding: 4rem 3.2rem 0;
 
   ${({ theme }) => theme.mediaQueries.md} {
-    padding: 4rem 3.2rem 0;
+    padding: 4.8rem 4rem 0;
   }
 `;
 

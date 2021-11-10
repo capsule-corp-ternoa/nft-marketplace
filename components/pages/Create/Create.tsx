@@ -105,7 +105,6 @@ const Create: React.FC<CreateProps> = ({
           NFT={NFT}
           effect={effect}
           setError={setError}
-          setModalCreate={setModalCreate}
           setNFT={setNFT}
           secretNFT={secretNFT}
           setSecretNFT={setSecretNFT}

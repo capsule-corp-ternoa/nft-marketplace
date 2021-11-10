@@ -11,24 +11,26 @@ import Chip from 'ui/components/Chip';
 
 interface Props {
   className?: string;
-  description?: string | React.ReactElement<any, any>;
+  content?: string | React.ReactNode;
+  inputId: string;
+  isMinimal?: boolean;
   isRN?: boolean;
   isSecretOption?: boolean;
   note?: string;
   setError: (s: string) => void;
-  setModalCreate: (b: boolean) => void;
   setNFT: (f: File | null) => void;
   setEffect: (s: NftEffectType) => void;
 }
 
 const NftUpload = ({
   className,
-  description,
+  content,
+  inputId,
+  isMinimal = false,
   isRN = false,
   isSecretOption = false,
   note,
   setError,
-  setModalCreate,
   setNFT,
   setEffect,
 }: Props) => {
@@ -52,56 +54,61 @@ const NftUpload = ({
     setFunction: (f: File | null) => void
   ) => {
     const { target } = event;
-    let file = null;
+    let file = target?.files?.[0];
     let isError = false;
-    if (!(target && target.files && target.files[0])) {
-      setFunction(file);
-      setEffect(NFT_EFFECT_DEFAULT);
-      return;
+
+    if (file !== null && file !== undefined) {
+      if (!isError && isRN && file!.type.substr(0, 5) === 'video') {
+        setError("You can't select video type on mobile DApp yet.");
+        isError = true;
+      }
+      if (
+        !isError &&
+        !(
+          file!.type.substr(0, 5) === 'video' ||
+          file!.type.substr(0, 5) === 'image'
+        )
+      ) {
+        setError(
+          `You can't select files different from ${
+            !isRN ? 'videos or ' : ''
+          }images.`
+        );
+        isError = true;
+      }
+      if (!isError && file.size > 31000000) {
+        setError('Max file size is 30mb.');
+        isError = true;
+      }
+      if (!isError) {
+        setFunction(file);
+        setEffect(isSecretOption ? NFT_EFFECT_SECRET : NFT_EFFECT_DEFAULT);
+      }
     }
-    if (!isError && isRN && target.files[0]!.type.substr(0, 5) === 'video') {
-      setError("You can't select video type on mobile DApp yet.");
-      isError = true;
-    }
-    if (
-      !isError &&
-      !(
-        target.files[0]!.type.substr(0, 5) === 'video' ||
-        target.files[0]!.type.substr(0, 5) === 'image'
-      )
-    ) {
-      setError(
-        `You can't select files different from ${
-          !isRN ? 'videos or ' : ''
-        }images.`
-      );
-      isError = true;
-    }
-    if (!isError && target.files[0].size > 31000000) {
-      setError('Max file size is 30mb.');
-      isError = true;
-    }
-    // if (
-    //   (target.files[0]!.type.substr(0, 5) === 'video' ||
-    //     target.files[0]!.type === 'image/gif') &&
-    //   (effect === 'Blur' || effect === 'Protect')
-    // ) {
-    //   setEffect('Select NFT Option');
-    // }
-    if (!isError) {
-      file = target.files[0];
-    } else {
-      setModalCreate(true);
-      // setEffect(NFT_EFFECT_DEFAULT);
-    }
-    setFunction(file);
-    setEffect(isSecretOption ? NFT_EFFECT_SECRET : NFT_EFFECT_DEFAULT);
   };
+
+  if (isMinimal) {
+    return (
+      <>
+        <Label className={className} htmlFor={inputId}>
+          {content}
+        </Label>
+        <HiddenShell>
+          <HiddenInput
+            type="file"
+            id={inputId}
+            onChange={(event) => updateFile(event, setNFT)}
+            accept={acceptedFileTypes.join(',')}
+          />
+        </HiddenShell>
+      </>
+    );
+  }
 
   const DefaultContent = (
     <Content>
       <UploadIcon />
-      {description && <InsightMedium>{description}</InsightMedium>}
+      {content && <InsightMedium>{content}</InsightMedium>}
       {note && <InsightLight>{note}</InsightLight>}
     </Content>
   );
@@ -109,7 +116,7 @@ const NftUpload = ({
   const SmallUploadContent = (
     <Content isSmall>
       <Chip color="primaryInverted" text="Secret option" />
-      {description && <InsightMedium isSmall>{description}</InsightMedium>}
+      {content && <InsightMedium isSmall>{content}</InsightMedium>}
       <UploadIcon isSmall />
       {note && <InsightLight isSmall>{note}</InsightLight>}
     </Content>
@@ -117,13 +124,13 @@ const NftUpload = ({
 
   return (
     <NftUploadWrapper className={className}>
-      <NftUploadArea htmlFor="uploadNFT" isSecretOption={isSecretOption}>
+      <NftUploadArea htmlFor={inputId} isSecretOption={isSecretOption}>
         {isSecretOption ? SmallUploadContent : DefaultContent}
 
         <HiddenShell>
           <HiddenInput
             type="file"
-            id="uploadNFT"
+            id={inputId}
             onChange={(event) => updateFile(event, setNFT)}
             accept={acceptedFileTypes.join(',')}
           />
@@ -132,6 +139,14 @@ const NftUpload = ({
     </NftUploadWrapper>
   );
 };
+
+const Label = styled.label`
+  color: #7417ea;
+  cursor: pointer;
+  font-family: 'Airbnb Cereal App Light';
+  font-size: 1.2rem;
+  font-style: italic;
+`;
 
 const NftUploadWrapper = styled.div<{ className?: string }>`
   box-sizing: border-box;

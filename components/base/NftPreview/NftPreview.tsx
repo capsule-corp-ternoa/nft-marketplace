@@ -198,8 +198,9 @@ const Separator = styled.div`
 `;
 
 const NftPreviewCardList = styled.fieldset`
+  width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   gap: 1.2rem;
   border: none;

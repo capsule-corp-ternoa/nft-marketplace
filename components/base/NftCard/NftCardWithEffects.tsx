@@ -125,7 +125,8 @@ const NftCardWithEffects = ({
 );
 const MediaWrapper = styled.div`
   position: relative;
-  width: 250px;
+  width: 100%;
+  max-width: 250px;
   height: 430px;
 `;
 

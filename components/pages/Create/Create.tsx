@@ -11,6 +11,7 @@ import {
   Wrapper,
 } from 'components/base/Layout';
 import NftPreview from 'components/base/NftPreview';
+import Tooltip from 'ui/components/Tooltip';
 import { NftEffectType, NFT_EFFECT_SECRET } from 'interfaces';
 
 import { UserType } from 'interfaces/index';
@@ -135,7 +136,9 @@ const Create: React.FC<CreateProps> = ({
           </Left>
           <Right>
             <InputShell>
-              <InputLabel>Category<Insight>(optional)</Insight></InputLabel>
+              <InputLabel>
+                Category<Insight>(optional)</Insight>
+              </InputLabel>
               <Input
                 type="text"
                 placeholder="NFT Category"
@@ -173,7 +176,11 @@ const Create: React.FC<CreateProps> = ({
             </InputShell>
 
             <InputShell>
-              <InputLabel>Serie ID</InputLabel>
+              <InputLabel>
+                Serie ID
+                <STooltip text="Specified your own serie id" />
+                <Insight>(optional)</Insight>
+              </InputLabel>
               <Input
                 type="text"
                 placeholder="Enter ID"
@@ -285,6 +292,10 @@ const Insight = styled.span`
   line-height: 1.3;
   margin-left: 0.8rem;
 `;
+
+const STooltip = styled(Tooltip)`
+  margin-left: 0.4rem;
+`
 
 const Advice = styled.span`
   color: #7417ea;

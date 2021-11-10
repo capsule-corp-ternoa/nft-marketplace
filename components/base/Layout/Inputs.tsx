@@ -33,6 +33,8 @@ export const InputShell = styled.div`
 `;
 
 export const InputLabel = styled.h4`
+  display: flex;
+  align-items: center;
   font-family: 'Airbnb Cereal App Bold';
   font-size: 2rem;
   line-height: 1.3;

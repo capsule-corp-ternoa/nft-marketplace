@@ -7,6 +7,8 @@ import {
   NFT_EFFECT_BLUR,
   NFT_EFFECT_PROTECT,
   NFT_EFFECT_SECRET,
+  NFT_FILE_TYPE_IMAGE,
+  NFT_FILE_TYPE_VIDEO,
 } from 'interfaces';
 import Chip from 'ui/components/Chip';
 
@@ -39,7 +41,7 @@ const VideoDefaultEffect = styled.video`
 `;
 
 function returnType(NFTarg: File) {
-  if (NFTarg!.type.substr(0, 5) === 'image') {
+  if (NFTarg!.type.substr(0, 5) === NFT_FILE_TYPE_IMAGE) {
     return (
       <IMGDefaultEffect
         alt="img"
@@ -47,7 +49,7 @@ function returnType(NFTarg: File) {
         src={URL.createObjectURL(NFTarg)}
       />
     );
-  } else if (NFTarg!.type.substr(0, 5) === 'video') {
+  } else if (NFTarg!.type.substr(0, 5) === NFT_FILE_TYPE_VIDEO) {
     return (
       <VideoDefaultEffect
         autoPlay

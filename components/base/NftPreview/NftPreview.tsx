@@ -9,6 +9,8 @@ import {
   NFT_EFFECT_DEFAULT,
   NFT_EFFECT_PROTECT,
   NFT_EFFECT_SECRET,
+  NFT_FILE_TYPE_GIF,
+  NFT_FILE_TYPE_VIDEO,
 } from 'interfaces';
 import Select from 'ui/components/Select';
 import { breakpointMap } from 'ui/theme/base';
@@ -48,6 +50,21 @@ const NftPreview = ({
   const isMobile = useMediaQuery({
     query: `(max-device-width: ${breakpointMap.md}px)`,
   });
+
+  const handleAllowedEffect = (effect: NftEffectType) => {
+    if (NFT !== null) {
+      switch (effect) {
+        case NFT_EFFECT_BLUR:
+        case NFT_EFFECT_PROTECT:
+          return (
+            !NFT.type.includes(NFT_FILE_TYPE_VIDEO) &&
+            NFT.type !== NFT_FILE_TYPE_GIF
+          );
+        default:
+          return true;
+      }
+    }
+  };
 
   useEffect(() => {
     setIsRN(window.isRNApp);
@@ -103,17 +120,17 @@ const NftPreview = ({
           <SSelect text={effect}>
             {(setSelectExpanded) => (
               <>
-                {NFT_EFFECTS_ORDERED.map(
-                  (type, id) =>
-                    type !== effect && (
+                {NFT_EFFECTS_ORDERED.filter(handleAllowedEffect).map(
+                  (effectType, id) =>
+                    effectType !== effect && (
                       <li
                         key={id}
                         onClick={() => {
                           setSelectExpanded(false);
-                          setEffect(type);
+                          setEffect(effectType);
                         }}
                       >
-                        {type}
+                        {effectType}
                       </li>
                     )
                 )}
@@ -124,18 +141,20 @@ const NftPreview = ({
         </NftPreviewCardSelection>
       ) : (
         <NftPreviewCardList>
-          {NFT_EFFECTS_ORDERED.map((effectType, id) => (
-            <NftPreviewCard
-              key={id}
-              effect={effectType}
-              isSelected={effect === effectType}
-              NFT={NFT}
-              secretNFT={secretNFT}
-              setError={setError}
-              setSecretNFT={setSecretNFT}
-              setEffect={setEffect}
-            />
-          ))}
+          {NFT_EFFECTS_ORDERED.filter(handleAllowedEffect).map(
+            (effectType, id) => (
+              <NftPreviewCard
+                key={id}
+                effect={effectType}
+                isSelected={effect === effectType}
+                NFT={NFT}
+                secretNFT={secretNFT}
+                setError={setError}
+                setSecretNFT={setSecretNFT}
+                setEffect={setEffect}
+              />
+            )
+          )}
         </NftPreviewCardList>
       )}
     </div>

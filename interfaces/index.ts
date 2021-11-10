@@ -58,6 +58,13 @@ export type NftEffectType =
   | typeof NFT_EFFECT_PROTECT
   | typeof NFT_EFFECT_SECRET;
 
+export const NFT_FILE_TYPE_GIF = 'image/gif';
+export const NFT_FILE_TYPE_IMAGE = 'image';
+export const NFT_FILE_TYPE_JPG = 'image/jpg';
+export const NFT_FILE_TYPE_JPEG = 'image/jpeg';
+export const NFT_FILE_TYPE_PNG = 'image/png';
+export const NFT_FILE_TYPE_VIDEO = 'video';
+
 export type CategoryType = {
   _id: string;
   code: string;

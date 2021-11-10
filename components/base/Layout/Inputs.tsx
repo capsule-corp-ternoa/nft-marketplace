@@ -68,8 +68,8 @@ export const Input = styled.input<{ isError?: boolean }>`
 `;
 
 export const Textarea = styled.textarea`
-  ${InputStyle}
-
   flex: 1;
   resize: none;
+  
+  ${InputStyle}
 `;

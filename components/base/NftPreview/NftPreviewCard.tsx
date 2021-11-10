@@ -7,23 +7,23 @@ import { breakpointMap } from 'ui/theme/base';
 import NftCardWithEffects from '../NftCard/NftCardWithEffects';
 
 interface Props {
+  effect: NftEffectType;
   isSelected?: boolean;
   NFT: File;
   secretNFT: File | null;
   setError: (s: string) => void;
   setSecretNFT: (f: File | null) => void;
   setEffect: (s: NftEffectType) => void;
-  type: NftEffectType;
 }
 
 const NftPreviewCard = ({
+  effect,
   isSelected = false,
   NFT,
   secretNFT,
   setError,
   setSecretNFT,
   setEffect,
-  type,
 }: Props) => {
   const isMobile = useMediaQuery({
     query: `(max-device-width: ${breakpointMap.md}px)`,
@@ -33,12 +33,12 @@ const NftPreviewCard = ({
     return (
       <CardWrapper>
         <NftCardWithEffects
+          effect={effect}
           NFT={NFT}
           secretNFT={secretNFT}
           setError={setError}
           setSecretNFT={setSecretNFT}
           setEffect={setEffect}
-          type={type}
         />
       </CardWrapper>
     );
@@ -47,31 +47,31 @@ const NftPreviewCard = ({
   return (
     <>
       <NftPreviewCardWrapper
-        htmlFor={`NftType_${type}`}
+        htmlFor={`NftType_${effect}`}
         isSelected={isSelected}
       >
         <SNftCardWithEffects
+          effect={effect}
           isSelected={isSelected}
           NFT={NFT}
           secretNFT={secretNFT}
           setError={setError}
           setSecretNFT={setSecretNFT}
           setEffect={setEffect}
-          type={type}
         />
         <NftTypeRadio>
           <input type="radio" checked={isSelected} readOnly />
-          <NftTypeRadioLabel>{type}</NftTypeRadioLabel>
+          <NftTypeRadioLabel>{effect}</NftTypeRadioLabel>
         </NftTypeRadio>
       </NftPreviewCardWrapper>
 
       <HiddenShell>
         <HiddenInput
           type="radio"
-          id={`NftType_${type}`}
-          name={`NftType_${type}`}
-          onClick={() => setEffect(type)}
-          value={type}
+          id={`NftType_${effect}`}
+          name={`NftType_${effect}`}
+          onClick={() => setEffect(effect)}
+          value={effect}
         />
       </HiddenShell>
     </>

@@ -12,12 +12,12 @@ import Chip from 'ui/components/Chip';
 
 interface Props {
   className?: string;
+  effect: NftEffectType;
   NFT: File;
   secretNFT: File | null;
   setError: (s: string) => void;
   setSecretNFT: (f: File | null) => void;
   setEffect: (s: NftEffectType) => void;
-  type: NftEffectType;
 }
 
 const DefaultEffect = css`
@@ -64,24 +64,24 @@ function returnType(NFTarg: File) {
 
 const NftCardWithEffects = ({
   className,
+  effect,
   NFT,
   secretNFT,
   setError,
   setSecretNFT,
   setEffect,
-  type,
 }: Props) => (
   <MediaWrapper className={className}>
     {returnType(NFT)}
-    {type === NFT_EFFECT_BLUR && <Blur />}
-    {type === NFT_EFFECT_PROTECT && (
+    {effect === NFT_EFFECT_BLUR && <Blur />}
+    {effect === NFT_EFFECT_PROTECT && (
       <WaterMark>
         <WaterMarkWrapper>
           <WhiteWaterMarkIcon />
         </WaterMarkWrapper>
       </WaterMark>
     )}
-    {type === NFT_EFFECT_SECRET && (
+    {effect === NFT_EFFECT_SECRET && (
       <SecretWrapper>
         {secretNFT === null ? (
           <SecretUpload

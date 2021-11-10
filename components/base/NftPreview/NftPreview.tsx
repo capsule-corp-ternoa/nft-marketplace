@@ -92,13 +92,13 @@ const NftPreview = ({
       {isMobile ? (
         <NftPreviewCardSelection>
           <NftPreviewCard
+            effect={effect}
             isSelected
             NFT={NFT}
             secretNFT={secretNFT}
             setError={setError}
             setSecretNFT={setSecretNFT}
             setEffect={setEffect}
-            type={effect}
           />
           <SSelect text={effect}>
             {(setSelectExpanded) => (
@@ -124,16 +124,16 @@ const NftPreview = ({
         </NftPreviewCardSelection>
       ) : (
         <NftPreviewCardList>
-          {NFT_EFFECTS_ORDERED.map((type, id) => (
+          {NFT_EFFECTS_ORDERED.map((effectType, id) => (
             <NftPreviewCard
               key={id}
-              isSelected={effect === type}
+              effect={effectType}
+              isSelected={effect === effectType}
               NFT={NFT}
               secretNFT={secretNFT}
               setError={setError}
               setSecretNFT={setSecretNFT}
               setEffect={setEffect}
-              type={type}
             />
           ))}
         </NftPreviewCardList>

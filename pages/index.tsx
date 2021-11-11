@@ -10,7 +10,7 @@ import arrayShuffle from 'array-shuffle';
 import cookies from 'next-cookies';
 
 import { getUser, getUsers } from 'actions/user';
-import { getCategoryNFTs } from 'actions/nft';
+import { getNFTs } from 'actions/nft';
 import { NftType, UserType } from 'interfaces';
 import { NextPageContext } from 'next';
 import { encryptCookie, decryptCookie } from 'utils/cookie';
@@ -132,7 +132,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
   }
   promises.push(
     new Promise<void>((success) => {
-      getCategoryNFTs(undefined, '1', '19', true)
+      getNFTs(undefined, '1', '19', true, true)
         .then((result) => {
           regularNfts = result.data;
           success();

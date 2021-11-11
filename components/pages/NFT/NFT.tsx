@@ -8,12 +8,11 @@ import Scale from 'components/assets/scale';
 import Share from 'components/assets/share';
 import Like from 'components/assets/heart';
 import Eye from 'components/assets/eye';
-import { computeCaps, computeTiime } from 'utils/strings';
+import { computeCaps, computeTiime, middleEllipsis } from 'utils/strings';
 import { UserType, NftType } from 'interfaces';
 import { likeNFT, unlikeNFT } from 'actions/user';
 import ModalShare from 'components/base/ModalShare';
 import NoNFTImage from '../../assets/NoNFTImage';
-// import gradient from 'random-gradient';
 import Details from './Details';
 import Creator from 'components/base/Creator';
 import { MARKETPLACE_ID } from 'utils/constant';
@@ -42,9 +41,8 @@ const NFTPage: React.FC<NFTPageProps> = ({
 }) => {
   const [likeLoading, setLikeLoading] = useState(false);
   const [modalShareOpen, setModalShareOpen] = useState(false);
-  // const bgGradient = { background: gradient(NFT.ownerData.name) };
   const shareSubject = 'Check out this Secret NFT';
-  const shareText = `Check out ${NFT.name ? NFT.name : 'this nft'} on ${
+  const shareText = `Check out ${NFT.title ? NFT.title : 'this nft'} on ${
     process.env.NEXT_PUBLIC_APP_LINK
       ? process.env.NEXT_PUBLIC_APP_LINK
       : 'secret-nft.com'
@@ -131,17 +129,15 @@ const NFTPage: React.FC<NFTPageProps> = ({
 
   const handleShare = async () => {
     try {
-      // TODO : Make share with native
-      // if (window && window.isRNApp && navigator){
-      //   await navigator.share({
-      //     title: shareSubject,
-      //     text: shareText,
-      //     url: shareUrl
-      //   })
-      // }else{
-      //   setModalShareOpen(true)
-      // }
-      setModalShareOpen(true);
+      if (window && window.isRNApp &&  window.navigator && window.navigator.share){
+        await window.navigator.share({
+          title: shareSubject,
+          text: shareText,
+          url: shareUrl
+        })
+      }else{
+        setModalShareOpen(true)
+      }
     } catch (err) {
       console.error(err);
     }
@@ -158,7 +154,7 @@ const NFTPage: React.FC<NFTPageProps> = ({
         <div className={style.Wrapper}>
           <div className={style.NFT}>
             <Media
-              src={NFT.media.url}
+              src={NFT.image!}
               type={type}
               alt="imgnft"
               draggable="false"
@@ -176,16 +172,15 @@ const NFTPage: React.FC<NFTPageProps> = ({
                     className={style.TopInfosCreatorPictureIMG}
                     size={'fullwidth'}
                     user={NFT.creatorData}
+                    walletId={NFT.creator}
                   />
                 </div>
                 <div className={style.TopInfosCreatorName}>
-                  <Link href={`/${NFT.creatorData.walletId}`}>
-                    <a>{NFT.creatorData.name}</a>
+                  <Link href={`/${NFT.creator}`}>
+                    <a>{NFT.creatorData?.name || middleEllipsis(NFT.creator, 20)}</a>
                   </Link>
                   <span className={style.creatorTwitterUsername}>
-                    {NFT.creatorData?.twitterName
-                      ? NFT.creatorData.twitterName
-                      : null}
+                    {NFT.creatorData?.twitterName || null}
                   </span>
                 </div>
               </div>
@@ -218,7 +213,7 @@ const NFTPage: React.FC<NFTPageProps> = ({
                 </div>
               </div>
             </div>
-            <h1 className={style.Title}>{NFT.name}</h1>
+            <h1 className={style.Title}>{NFT.title}</h1>
             <p className={style.Description}>{NFT.description}</p>
             <div className={style.Buy}>
               <div

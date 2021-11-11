@@ -13,9 +13,11 @@ import { NftType, UserType } from 'interfaces';
 import { NextPageContext } from 'next';
 import { decryptCookie } from 'utils/cookie';
 import { getUserIp } from 'utils/functions';
+import { middleEllipsis } from 'utils/strings';
 
 export interface PublicProfileProps {
   user: UserType;
+  profileWalletId: string;
   profile: UserType;
   data: NftType[];
   dataHasNextPage: boolean;
@@ -23,6 +25,7 @@ export interface PublicProfileProps {
 
 const PublicProfilePage: React.FC<PublicProfileProps> = ({
   user,
+  profileWalletId,
   data,
   profile,
   dataHasNextPage,
@@ -41,7 +44,7 @@ const PublicProfilePage: React.FC<PublicProfileProps> = ({
     try {
       if (dataNftsHasNextPage) {
         let result = await getCreatorNFTS(
-          viewProfile.walletId,
+          profileWalletId,
           (currentPage + 1).toString(),
           undefined,
           true
@@ -69,11 +72,11 @@ const PublicProfilePage: React.FC<PublicProfileProps> = ({
   return (
     <>
       <Head>
-        <title>{process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : "SecretNFT"} - {viewProfile.name}</title>
+        <title>{process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : "SecretNFT"} - {viewProfile?.name || middleEllipsis(profileWalletId, 10)}</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta
           name="description"
-          content={`Ternoart - ${viewProfile.name} profile page.`}
+          content={`Ternoart - ${viewProfile?.name || middleEllipsis(profileWalletId, 10)} profile page.`}
         />
         <meta name="og:image" content="ternoa-social-banner.jpg" />
       </Head>
@@ -86,6 +89,7 @@ const PublicProfilePage: React.FC<PublicProfileProps> = ({
         setUser={setWalletUser}
         profile={viewProfile}
         setProfile={setViewProfile}
+        profileWalletId={profileWalletId}
         NFTS={dataNfts}
         setModalExpand={setModalExpand}
         setNotAvailable={setNotAvailable}
@@ -104,6 +108,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
     dataHasNextPage: boolean = false;
   const promises = [];
   let ip = getUserIp(ctx.req)
+  const profileWalletId = ctx.query.name
   if (token) {
     promises.push(
       new Promise<void>((success) => {
@@ -130,16 +135,8 @@ export async function getServerSideProps(ctx: NextPageContext) {
     }).catch(success);
   }));
   await Promise.all(promises)
-  if (!profile) {
-    return {
-      redirect: {
-        permanent: false,
-        destination: '/',
-      },
-    };
-  }
   return {
-    props: { user, profile, data, dataHasNextPage },
+    props: { user, profileWalletId, profile, data, dataHasNextPage },
   };
 }
 

@@ -22,7 +22,7 @@ const Wallet: React.FC<WalletProps> = ({
   setNotAvailable,
 }) => {
   const bgGradient = {
-    background: user.name ? gradient(user.name) : gradient('ternoa'),
+    background:  gradient(user?.name || 'ternoa'),
   };
   return (
     <div className={style.Container}>

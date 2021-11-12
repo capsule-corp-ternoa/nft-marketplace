@@ -3,6 +3,7 @@ import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
 import { HiddenInput, HiddenShell } from 'components/base/Layout';
 import { NftEffectType } from 'interfaces';
+import Radio from 'ui/components/Radio';
 import { breakpointMap } from 'ui/theme/base';
 import NftCardWithEffects from '../NftCard/NftCardWithEffects';
 
@@ -59,10 +60,7 @@ const NftPreviewCard = ({
           setSecretNFT={setSecretNFT}
           setEffect={setEffect}
         />
-        <NftTypeRadio>
-          <input type="radio" checked={isSelected} readOnly />
-          <NftTypeRadioLabel>{effect}</NftTypeRadioLabel>
-        </NftTypeRadio>
+        <SRadio checked={isSelected} label={effect} readOnly />
       </NftPreviewCardWrapper>
 
       <HiddenShell>
@@ -112,19 +110,8 @@ const SNftCardWithEffects = styled(NftCardWithEffects)<{ isSelected: boolean }>`
   opacity: ${({ isSelected }) => (isSelected ? 1 : 0.4)};
 `;
 
-const NftTypeRadio = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 2.4rem;
-`;
-
-const NftTypeRadioLabel = styled.span`
-  font-family: 'Airbnb Cereal App Bold';
-  font-size: 1.6rem;
-  line-height: 1.2;
-  margin-left: 0.8rem;
-  text-transform: capitalize;
-`;
+const SRadio = styled(Radio)`
+  margin-top: 3.2rem;
+`
 
 export default NftPreviewCard;

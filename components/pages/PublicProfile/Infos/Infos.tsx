@@ -7,6 +7,7 @@ import gradient from 'random-gradient';
 import { middleEllipsis } from 'utils/strings';
 import { UserType } from 'interfaces';
 import { follow, unfollow, isUserFollowing, getFollowedCount, getFollowersCount } from 'actions/follower';
+import { clipboardCopy } from 'utils/functions';
 
 export interface InfosProps {
   profile: UserType;
@@ -115,7 +116,7 @@ const Infos: React.FC<InfosProps> = ({ profile, setProfile, profileWalletId,  us
               <div
                 className={style.Address}
                 onClick={() => {
-                  navigator.clipboard.writeText(profileWalletId);
+                  clipboardCopy(profileWalletId);
                 }}
               >
                 {middleEllipsis(profileWalletId, 20)}

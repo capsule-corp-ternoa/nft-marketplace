@@ -253,10 +253,12 @@ const NFTPage: React.FC<NFTPageProps> = ({
             <div className={style.Available}>
               <div className={style.AvailbleText}>
                 <NoNFTImage className={style.AvailbleCards} />
-                {`${numberListedOnThisMarketplace} of ${
-                  NFT.serieData ? NFT.serieData.length : 1
-                }`}{' '}
-                Available
+                <div className={style.AvailableTextContent}>
+                  {`${numberListedOnThisMarketplace} of ${
+                    NFT.serieData ? NFT.serieData.length : 1
+                  }`}{' '}
+                  Available
+                </div>
               </div>
               <div className={style.AvailableBackLine} />
             </div>

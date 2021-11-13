@@ -11,6 +11,7 @@ import gradient from 'random-gradient';
 import { UserType } from 'interfaces/index';
 
 import { onModelOpen } from '../../../utils/model-helpers';
+import { clipboardCopy } from 'utils/functions';
 export interface FloatingHeaderProps {
   user: UserType;
   setModalExpand: (b: boolean) => void;
@@ -166,7 +167,7 @@ const FloatingHeader: React.FC<FloatingHeaderProps> = ({
                 <span 
                   className={style.SectionWallet}
                   onClick={() => {
-                    navigator.clipboard.writeText(user.walletId);
+                    clipboardCopy(user.walletId);
                   }}
                 >
                   {middleEllipsis(user.walletId, 20)}

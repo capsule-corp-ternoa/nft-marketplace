@@ -21,7 +21,7 @@ export interface ModalProps {
     setProgressData?: (n: number[]) => void,
   ) => Promise<{
     nftUrls: string[];
-    seriesId: number;
+    seriesId: number | null;
   }>;
   uploadSize: number;
   runNFTMintData: any,

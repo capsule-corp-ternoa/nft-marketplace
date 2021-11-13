@@ -9,6 +9,7 @@ import Badge from 'components/assets/badge';
 
 import { computeCaps, computeTiime, middleEllipsis } from 'utils/strings';
 import { UserType } from 'interfaces';
+import { clipboardCopy } from 'utils/functions';
 
 export interface WalletProps {
   setNotAvailable: (b: boolean) => void;
@@ -54,7 +55,7 @@ const Wallet: React.FC<WalletProps> = ({
         <div
           className={style.Address}
           onClick={() => {
-            navigator.clipboard.writeText(user.walletId);
+            clipboardCopy(user.walletId);
           }}
         >
           {middleEllipsis(user.walletId, 20)}

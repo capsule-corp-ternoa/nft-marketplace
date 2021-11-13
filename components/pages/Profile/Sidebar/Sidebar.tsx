@@ -11,6 +11,7 @@ import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 
 import { UserType } from 'interfaces';
+import { clipboardCopy } from 'utils/functions';
 
 export interface SidebarProps {
   setScope: (s: string) => void;
@@ -98,7 +99,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         <div
           className={style.Address}
           onClick={() => {
-            navigator.clipboard.writeText(user.walletId);
+            clipboardCopy(user.walletId);
           }}
         >
           {middleEllipsis(user.walletId, 20)}

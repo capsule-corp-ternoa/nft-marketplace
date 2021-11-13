@@ -76,7 +76,7 @@ const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category, user, setUser }) =>
 
   return (
     <>
-      { NFTs?.length > 0 &&
+      {NFTs?.length > 0 &&
         <div className={style.Showcase}>
           <div className={style.Top}>
             <div className={style.Infos}>

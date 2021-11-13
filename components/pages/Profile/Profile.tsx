@@ -221,8 +221,7 @@ const Profile: React.FC<ProfileProps> = ({
     const timer = setTimeout(() => {
       loadMoreFollowers(true)
       loadMoreFollowed(true)
-    }, 1500)
-
+    }, 1000)
     return () => clearTimeout(timer)
   }, [searchValue, isFiltered])
 
@@ -459,7 +458,7 @@ const Profile: React.FC<ProfileProps> = ({
     return creators.map((item: UserType, i: number) => {
       return (
         <div key={item._id} className={style.CreatorShell}>
-              <Creator user={item} size="small" showTooltip={false}/>
+              <Creator user={item} walletId={item.walletId} size="small" showTooltip={false}/>
           <div className={style.CreatorInfos}>
             <Link href={`/${item.walletId}`}>
               <a>

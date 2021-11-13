@@ -2,12 +2,11 @@ import { useEffect, useState } from 'react';
 import { FixedSizeList as List, ListOnItemsRenderedProps } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { UserType, NftType } from 'interfaces';
-import gradient from 'random-gradient';
 import styleDetails from './Details.module.scss';
 import { computeCaps } from 'utils/strings';
 import Link from 'next/link';
 import { middleEllipsis } from '../../../../utils/strings';
-import { getUsersByWalletIds } from 'actions/user';
+import { getUsers } from 'actions/user';
 import Creator from 'components/base/Creator';
 import { MARKETPLACE_ID } from 'utils/constant';
 
@@ -27,22 +26,13 @@ const Details: React.FC<DetailsProps> = ({
   const [currentTab, setCurrentTab] = useState('info');
   const [usersData, setUsersData] = useState({} as any);
   const [serieDataGrouped, setSerieDataGrouped] = useState([] as NftType[]);
-  //const [ownerNftsCount, setOwnerNftsCount] = useState({} as any);
   const [serieDataCount, setSerieDataCount] = useState({} as any);
-  const bgGradient = { background: gradient(NFT.ownerData.name) };
-  const serieData = NFT?.serieData ? NFT.serieData : [];
+  const serieData = NFT?.serieData || [];
   
   useEffect(() => {
     const serieDataGroupedArray = [] as NftType[];
-    //const ownerNftsCountObject = {} as any;
     const serieDataCountObject = {} as any;
     serieData.forEach((x) => {
-      /*// Count owned by owner
-      if (!ownerNftsCountObject[x.owner]) {
-        ownerNftsCountObject[x.owner] = 1;
-      } else {
-        ownerNftsCountObject[x.owner] += 1;
-      }*/
       // Compute rows to display && count number of listed / unlisted for each row
       const key = `${x.owner}-${x.listed}-${x.price}-${x.marketplaceId}`;
       if (!serieDataCountObject[key]) {
@@ -60,7 +50,6 @@ const Details: React.FC<DetailsProps> = ({
       }
     });
     setSerieDataGrouped(serieDataGroupedArray);
-    //setOwnerNftsCount(ownerNftsCountObject);
     setSerieDataCount(serieDataCountObject);
   }, [serieData]);
 
@@ -92,7 +81,7 @@ const Details: React.FC<DetailsProps> = ({
 
   const loadDisplayedUsers = async (walletIds: string[]) => {
     try {
-      let users = await getUsersByWalletIds(walletIds);
+      let users = await getUsers(walletIds);
       let usersObject = {} as any;
       if (users && users.data.length > 0) {
         users.data.forEach((u) => {
@@ -145,28 +134,20 @@ const Details: React.FC<DetailsProps> = ({
         <div className={styleDetails.owner}>
           <div className={styleDetails.ownerBadge}>Owner</div>
           <div className={styleDetails.ownerProfile}>
-            {ownerData?.picture || ownerData?.name ? (
-              <Creator
-                className={styleDetails.ownerProfileIMG}
-                size={'fullwidth'}
-                user={ownerData}
-                showTooltip={false}
-              />
-            ) : (
-              <div
-                className={styleDetails.ownerProfileIMG}
-                style={bgGradient}
-              />
-            )}
+            <Creator
+              className={styleDetails.ownerProfileIMG}
+              size={'fullwidth'}
+              user={ownerData}
+              walletId={NFTRowOwner}
+              showTooltip={false}
+            />
           </div>
           <div className={styleDetails.ownerDatas}>
             <div className={styleDetails.ownerDatasName}>
               <div>
                 <Link href={`/${NFTRowOwner}`}>
                   <a>
-                    {ownerData?.name
-                      ? ownerData.name
-                      : middleEllipsis(NFTRowOwner, 15)}
+                    {ownerData?.name || middleEllipsis(NFTRowOwner, 20)}
                   </a>
                 </Link>
               </div>
@@ -177,18 +158,10 @@ const Details: React.FC<DetailsProps> = ({
             <Link href={`/nft/${NFTRowId}`}>
               <a className={styleDetails.ownerDatasSales}>
                 {NFTRowListed === 0
-                  ? `${serieDataCount[key]} edition${
-                      serieDataCount[key] > 1 ? 's' : ''
-                    } not for sale`
+                  ? `${serieDataCount[key]} edition${serieDataCount[key] > 1 ? 's' : ''} not for sale`
                   : NFTRowListed === 1 && NFTRowMarketplaceId === MARKETPLACE_ID
-                  ? `${serieDataCount[key]}${
-                      '' /*/${ownerNftsCount[NFTRowOwner]}*/
-                    } on sale for ${computeCaps(Number(NFTRowPrice))} CAPS ${
-                      serieDataCount[key] > 1 ? 'each' : ''
-                    }`
-                  : `${serieDataCount[key]}${
-                      '' /*/${ownerNftsCount[NFTRowOwner]}*/
-                    } on sale on other marketplace(s)`}
+                  ? `${serieDataCount[key]} on sale for ${computeCaps(Number(NFTRowPrice))} CAPS ${serieDataCount[key] > 1 ? 'each' : ''}`
+                  : `${serieDataCount[key]} on sale on other marketplace(s)`}
               </a>
             </Link>
           </div>
@@ -264,19 +237,18 @@ const Details: React.FC<DetailsProps> = ({
                       className={styleDetails.TopInfosCreatorPictureIMG}
                       size={'fullwidth'}
                       user={NFT.creatorData}
+                      walletId={NFT.creator}
                       showTooltip={false}
                     />
                   </div>
                   <div className={styleDetails.TopInfosCreatorName}>
                     <div>
-                      <Link href={`/${NFT.creatorData.walletId}`}>
-                        <a>{NFT.creatorData.name}</a>
+                      <Link href={`/${NFT.creator}`}>
+                        <a>{NFT.creatorData?.name || middleEllipsis(NFT.creator, 20)}</a>
                       </Link>
                     </div>
                     <span className={styleDetails.ownerTwitterUsername}>
-                      {NFT.creatorData?.twitterName
-                        ? NFT.creatorData.twitterName
-                        : null}
+                      {NFT.creatorData?.twitterName || null}
                     </span>
                   </div>
                 </div>
@@ -341,12 +313,13 @@ const Details: React.FC<DetailsProps> = ({
                       className={styleDetails.HistoryPictureIMG}
                       size={'fullwidth'}
                       user={NFT.ownerData}
+                      walletId={NFT.owner}
                       showTooltip={false}
                     />
                   </div>
                   <div className={styleDetails.HistoryName}>
-                    <Link href={`/${NFT.ownerData.walletId}`}>
-                      <a>{NFT.ownerData.name}</a>
+                    <Link href={`/${NFT.owner}`}>
+                      <a>{NFT.ownerData?.name || middleEllipsis(NFT.owner, 20)}</a>
                     </Link>
                   </div>
                   <div className={styleDetails.ownerBadge}>Owner</div>
@@ -362,12 +335,13 @@ const Details: React.FC<DetailsProps> = ({
                       className={styleDetails.HistoryPictureIMG}
                       size={'fullwidth'}
                       user={NFT.creatorData}
+                      walletId={NFT.creator}
                       showTooltip={false}
                     />
                   </div>
                   <div className={styleDetails.HistoryName}>
-                    <Link href={`/${NFT.creatorData.walletId}`}>
-                      <a>{NFT.creatorData.name}</a>
+                    <Link href={`/${NFT.creator}`}>
+                      <a>{NFT.creatorData?.name || middleEllipsis(NFT.creator, 20)}</a>
                     </Link>
                   </div>
                   <div className={styleDetails.ownerBadge}>Creator</div>

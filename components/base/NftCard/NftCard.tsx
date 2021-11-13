@@ -64,7 +64,7 @@ const NftCard: React.FC<NftCardProps> = ({
   useEffect(() => {
     async function callBack() {
       try {
-        let res = await fetch(item.media!.url, { method: 'HEAD' });
+        let res = await fetch(item.image!, { method: 'HEAD' });
         setType(res.headers.get('Content-Type'));
         return res;
       } catch (err) {
@@ -128,7 +128,7 @@ const NftCard: React.FC<NftCardProps> = ({
       onMouseOut={() => !isMobile && setIsHovering(false)}
     >
       <Media
-        src={item.media!.url}
+        src={item.image!}
         type={type}
         alt="imgnft"
         draggable="false"
@@ -139,7 +139,7 @@ const NftCard: React.FC<NftCardProps> = ({
       {Number(displayQuantity()) > 1 && <span className={style.QtyLabel}>
         {displayQuantity()}
       </span>}
-      {item.cryptedMedia?.url !== item.media?.url && !isHovering && (
+      {item.properties?.cryptedMedia.ipfs !== item.properties?.preview.ipfs && !isHovering && (
         <span className={style.SecretLabel}>S</span>
       )}
       <div
@@ -170,27 +170,24 @@ const NftCard: React.FC<NftCardProps> = ({
         }
         <div className={style.Infos}>
           <div
-            onClick={(e) => manageRouting(e, item.creatorData.walletId)}
+            onClick={(e) => manageRouting(e, item.creator)}
             className={style.Auth}
           >
-            {item.creatorData && (
-              <Creator
-                user={item.creatorData}
-                className={isHovering ? style.Slide : ''}
-                size="card"
-                showTooltip={false}
-                isClickable={false}
-              />
-            )}
-            {item.creatorData && (
-              <div
-                className={
-                  isHovering ? `${style.Author} ${style.Fade}` : style.Author
-                }
-              >
-                {item.creatorData.name}
-              </div>
-            )}
+            <Creator
+              user={item.creatorData}
+              walletId={item.creator}
+              className={isHovering ? style.Slide : ''}
+              size="card"
+              showTooltip={false}
+              isClickable={false}
+            />
+            <div
+              className={
+                isHovering ? `${style.Author} ${style.Fade}` : style.Author
+              }
+            >
+              {item.creatorData?.name || `Ternoa #${item.creator.slice(0,5)}`}
+            </div>
           </div>
           {((item.smallestPrice && Number(item.smallestPrice)) || (item.smallestPriceTiime && Number(item.smallestPriceTiime))) &&
             <div className={isHovering ? `${style.Button} ${style.FadeLong}` : style.Button}>

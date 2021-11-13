@@ -10,7 +10,7 @@ import cookies from 'next-cookies';
 import { getUser } from 'actions/user';
 import { getOwnedNFTS, getCreatorNFTS } from 'actions/nft';
 import { getFollowers, getFollowed } from 'actions/follower';
-import { getLikedNFTs } from 'actions/user';
+import { getLikedNFTs } from 'actions/nft';
 import { NftType, UserType } from 'interfaces';
 import { NextPageContext } from 'next';
 import { decryptCookie } from 'utils/cookie';
@@ -76,18 +76,18 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
     const createdNfts = await getCreatorNFTS(token, undefined, undefined, true)
     setCreatedNfts(createdNfts.data)
     setCreatedNftsHasNextPage(createdNfts.hasNextPage)
-    //Owned listed NFTs
-    const ownedListed = await getOwnedNFTS(token, true, 1, undefined, undefined, true)
-    setOwnedNftsListed(ownedListed.data)
-    setOwnedNftsListedHasNextPage(ownedListed.hasNextPage)
-    //Owned not listed NFTs
-    const ownedUnlisted = await getOwnedNFTS(token, false, 0, undefined, undefined, true)
-    setOwnedNftsUnlisted(ownedUnlisted.data)
-    setOwnedNftsUnlistedHasNextPage(ownedUnlisted.hasNextPage)
     //Liked NFTs
     const liked = await getLikedNFTs(token, undefined, undefined, true)
     setLikedNfts(liked.data)
     setLikedNftsHasNextPage(liked.hasNextPage)
+    //Owned listed NFTs
+    const ownedListed = await getOwnedNFTS(token, true, true, undefined, undefined, true)
+    setOwnedNftsListed(ownedListed.data)
+    setOwnedNftsListedHasNextPage(ownedListed.hasNextPage)
+    //Owned not listed NFTs
+    const ownedUnlisted = await getOwnedNFTS(token, false, false, undefined, undefined, true)
+    setOwnedNftsUnlisted(ownedUnlisted.data)
+    setOwnedNftsUnlistedHasNextPage(ownedUnlisted.hasNextPage)
     //profile followers
     const followers = await getFollowers(token)
     setFollowersUsers(followers.data)
@@ -145,7 +145,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
         let result = await getOwnedNFTS(
           walletUser.walletId,
           true,
-          1,
+          true,
           (ownedNftsListedCurrentPage + 1).toString(),
           undefined,
           true
@@ -166,7 +166,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
         let result = await getOwnedNFTS(
           walletUser.walletId,
           false,
-          0,
+          false,
           (ownedNftsUnlistedCurrentPage + 1).toString(),
           undefined,
           true
@@ -209,7 +209,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
           (pageToLoad + 1).toString(),
           undefined,
           searchValue,
-          isFiltered ? "true" : undefined
+          isFiltered ? true : undefined
         );
         setFollowersCurrentPage(pageToLoad + 1);
         setFollowersUsersHasNextPage(result.hasNextPage || false);
@@ -234,7 +234,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
           (pageToLoad + 1).toString(),
           undefined,
           searchValue,
-          isFiltered ? "true" : undefined
+          isFiltered ? true : undefined
         );
         setFollowedCurrentPage(pageToLoad + 1);
         setFollowedUsersHasNextPage(result.hasNextPage || false);
@@ -309,7 +309,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
   if (token) {
     promises.push(
       new Promise<void>((success) => {
-        getUser(token)
+        getUser(token, true)
           .then((_user) => {
             user = _user;
             success();

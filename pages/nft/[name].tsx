@@ -37,7 +37,7 @@ const NftPage: React.FC<NFTPageProps> = ({ user, NFT, capsValue }) => {
   useEffect(() => {
     async function callBack() {
       try {
-        let res = await fetch(NFT.media!.url, { method: 'HEAD' });
+        let res = await fetch(NFT.image!, { method: 'HEAD' });
         setType(res.headers.get('Content-Type'));
         return res;
       } catch (err) {
@@ -60,11 +60,11 @@ const NftPage: React.FC<NFTPageProps> = ({ user, NFT, capsValue }) => {
   return (
     <>
       <Head>
-        <title>{NFT.name} - {process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : "SecretNFT"}</title>
+        <title>{NFT.title} - {process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : "SecretNFT"}</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta name="description" content={NFT.description} />
-        <meta name="og:image" content={NFT.media.url} />
-        <meta property="og:image" content={NFT.media.url} />
+        <meta name="og:image" content={NFT.image} />
+        <meta property="og:image" content={NFT.image} />
       </Head>
       {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
       {(exp===1 || exp===2) && (

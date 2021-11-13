@@ -26,7 +26,7 @@ const ArtCreators: React.FC<ArtCreatorsProps> = ({
   function returnCreators() {
     return creators.slice(0, 9).map((item, index) => (
      <div key={index} className={style.CreatorItem}>
-          <Creator user={item} size="small"/>
+          <Creator user={item} walletId={item.walletId} size="small"/>
       </div>
     ));
   }

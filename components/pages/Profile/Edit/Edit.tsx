@@ -49,8 +49,8 @@ const Edit: React.FC<EditProps> = ({ user, setBanner, setSuccessPopup }) => {
   const fileToUrl = async (x: string, name: string) => {
     let blob = await (await fetch(x)).blob();
     let file = new File([blob], name)
-    let resUpload = await uploadIPFS(file)
-    let { url } = resUpload;
+    let resUpload = await uploadIPFS(file, undefined, undefined, true)
+    let { hashOrURL: url } = resUpload;
     if (url) {
       return url
     }else{

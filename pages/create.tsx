@@ -25,7 +25,7 @@ import { decryptCookie } from 'utils/cookie';
 import { getFilehash, generateSeriesId, cryptAndUploadNFT, uploadIPFS } from '../utils/nftEncryption'
 
 const initialCreateNftData = {
-  blurredValue: '5',
+  blurredValue: 5,
 };
 
 export interface CreatePageProps {
@@ -87,19 +87,23 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
     }
   }, [quantity, NFT, secretNFT])
 
-  async function processFile() {
+  async function processFile(blurredValue?: number) {
     try {
       if (!NFT) {
         throw new Error();
       }
       setOutput([]);
       setError('');
-      if (effect === NFT_EFFECT_BLUR && NFT.type.substr(0, 5) === 'image') {
+      if (
+        effect === NFT_EFFECT_BLUR &&
+        NFT.type.substr(0, 5) === 'image' &&
+        blurredValue !== undefined
+      ) {
         const processFile = new File([NFT], 'NFT', {
           type: NFT.type,
         });
-        let res = await imgToBlur(processFile);
-        const blob = await (await fetch(res as string)).blob();
+        let res = await imgToBlur(processFile, blurredValue);
+        const blob = await(await fetch(res as string)).blob();
         const file = new File([blob], NFT.name, {
           type: NFT.type,
         });
@@ -113,7 +117,7 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
           type: NFT.type,
         });
         let res = await imgToWatermark(processFile);
-        const blob = await (await fetch(res as string)).blob();
+        const blob = await(await fetch(res as string)).blob();
         const file = new File([blob], NFT.name, {
           type: NFT.type,
         });

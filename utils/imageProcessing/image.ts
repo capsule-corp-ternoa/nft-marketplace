@@ -1,11 +1,11 @@
 import Jimp from 'jimp';
 
-export async function imgToBlur(NFT: File | null) {
+export async function imgToBlur(NFT: File | null, blurredValue: number) {
   try {
     let image = await Jimp.read(URL.createObjectURL(NFT));
     let blurred = new Jimp(image.getWidth(), image.getHeight(), '#ffffff')
     blurred.composite(image,0,0)
-    blurred.blur(5)
+    blurred.blur(blurredValue)
     return await blurred.getBase64Async(image.getMIME());
   } catch (err) {
     console.log(err);

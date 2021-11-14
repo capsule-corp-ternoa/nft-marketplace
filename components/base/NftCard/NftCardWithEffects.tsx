@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled, { css } from 'styled-components';
 import WhiteWaterMark from 'components/assets/WhiteWaterMark';
 import NftUpload from 'components/base/NftUpload';
+import { useCreateNftContext } from 'components/pages/Create/CreateNftContext';
 import {
   NftEffectType,
   NFT_EFFECT_BLUR,
@@ -34,7 +35,7 @@ const DefaultEffect = css`
   position: absolute;
   transform: translateZ(0);
 `;
-const IMGDefaultEffect = styled.img<{ blurredValue: string }>`
+const IMGDefaultEffect = styled.img<{ blurredValue: number }>`
   ${DefaultEffect}
   filter: ${({ blurredValue }) => `blur(${blurredValue}px)`};
   -webkit-backdrop-filter: ${({ blurredValue }) => `blur(${blurredValue}px)`};
@@ -43,7 +44,7 @@ const VideoDefaultEffect = styled.video`
   ${DefaultEffect}
 `;
 
-function returnType(NFTarg: File, blurredValue: string = '0') {
+function returnType(NFTarg: File, blurredValue: number = 0) {
   if (NFTarg!.type.substr(0, 5) === NFT_FILE_TYPE_IMAGE) {
     return (
       <IMGDefaultEffect
@@ -77,12 +78,15 @@ const NftCardWithEffects = ({
   setSecretNFT,
   setEffect,
 }: Props) => {
-  const [blurredValue, setBlurredValue] = useState<string>('5');
+  const { CreateNftState, setBlurredValue } = useCreateNftContext() ?? {};
+  const { blurredValue } = CreateNftState ?? {};
 
   const handleBlurredChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { target } = event;
-    setEffect(NFT_EFFECT_BLUR);
-    setBlurredValue(target.value);
+    if (setBlurredValue !== undefined) {
+      const { target } = event;
+      setEffect(NFT_EFFECT_BLUR);
+      setBlurredValue(Number(target.value));
+    }
   };
 
   const handleBlurredClick = () => {
@@ -91,12 +95,12 @@ const NftCardWithEffects = ({
 
   return (
     <MediaWrapper className={className}>
-      {returnType(NFT, effect === NFT_EFFECT_BLUR ? blurredValue : '0')}
+      {returnType(NFT, effect === NFT_EFFECT_BLUR ? blurredValue : 0)}
       {effect === NFT_EFFECT_BLUR && (
         <SSlider
           id="blurredSlider"
-          max="15"
-          min="0"
+          max={15}
+          min={0}
           onChange={handleBlurredChange}
           onClick={handleBlurredClick}
           step={1}

@@ -11,6 +11,7 @@ import {
   Wrapper,
 } from 'components/base/Layout';
 import NftPreview from 'components/base/NftPreview';
+import { useCreateNftContext } from 'components/pages/Create/CreateNftContext';
 import Tooltip from 'ui/components/Tooltip';
 import { NftEffectType, NFT_EFFECT_SECRET } from 'interfaces';
 
@@ -31,7 +32,7 @@ export interface CreateProps {
   setSecretNFT: (f: File | null) => void;
   effect: NftEffectType;
   setEffect: (s: NftEffectType) => void;
-  processFile: () => Promise<void>;
+  processFile: (blurredValue?: number) => Promise<void>;
   setError: (s: string) => void;
   setProcessed: (b: boolean) => void;
 }
@@ -53,6 +54,9 @@ const Create: React.FC<CreateProps> = ({
   setError,
   setProcessed,
 }) => {
+  const { CreateNftState } = useCreateNftContext() ?? {};
+  const { blurredValue } = CreateNftState ?? {};
+
   const [nftData, setNFTData] = useState(initalValue);
   const { name, description, quantity } = nftData;
 
@@ -91,7 +95,7 @@ const Create: React.FC<CreateProps> = ({
       return false;
     }
     if (NFT!.type.substr(0, 5) === 'image' && effect !== NFT_EFFECT_SECRET) {
-      processFile();
+      processFile(blurredValue);
     } else {
       setProcessed(true);
     }
@@ -295,7 +299,7 @@ const Insight = styled.span`
 
 const STooltip = styled(Tooltip)`
   margin-left: 0.4rem;
-`
+`;
 
 const Advice = styled.span`
   color: #7417ea;

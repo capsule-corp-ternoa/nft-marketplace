@@ -4,6 +4,7 @@ import BetaBanner from 'components/base/BetaBanner';
 import MainHeader from 'components/base/MainHeader';
 import TernoaWallet from 'components/base/TernoaWallet';
 import Create from 'components/pages/Create';
+import Provider from 'components/pages/Create/CreateNftContext';
 import ModalMint from 'components/pages/Create/ModalMint';
 import NotAvailableModal from 'components/base/NotAvailable';
 import cookies from 'next-cookies';
@@ -22,6 +23,10 @@ import { NextPageContext } from 'next';
 import { imgToBlur, imgToWatermark } from 'utils/imageProcessing/image';
 import { decryptCookie } from 'utils/cookie';
 import { getFilehash, generateSeriesId, cryptAndUploadNFT, uploadIPFS } from '../utils/nftEncryption'
+
+const initialCreateNftData = {
+  blurredValue: '5',
+};
 
 export interface CreatePageProps {
   user: UserType;
@@ -192,43 +197,45 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
         <meta name="description" content="SecretNFT Marketplace, by Ternoa." />
         <meta name="og:image" content="ternoa-social-banner.jpg" />
       </Head>
-      {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
-      {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
-      {modalCreate && (
-        <ModalMint
-          setModalCreate={setModalCreate}
-          processed={processed}
-          error={error}
-          setError={setError}
-          output={output}
-          QRData={QRData}
-          uploadNFT={uploadNFT}
-          uploadSize={uploadSize}
-          runNFTMintData={runNFTMintData}
-          setRunNFTMintData={setRunNFTMintData}
-        />
-      )}
-      <BetaBanner />
-      <MainHeader user={user} setModalExpand={setModalExpand} />
-      {isNftCreationEnabled &&
-        <Create
-          setModalExpand={setModalExpand}
-          setNotAvailable={setNotAvailable}
-          setModalCreate={setModalCreate}
-          user={user}
-          NFT={NFT}
-          setNFT={setNFT}
-          secretNFT={secretNFT}
-          setSecretNFT={setSecretNFT}
-          NFTData={NFTData}
-          setNFTData={setNFTData}
-          effect={effect}
-          setEffect={setEffect}
-          processFile={processFile}
-          setError={setError}
-          setProcessed={setProcessed}
-        />
-      }
+      <Provider createNftData={initialCreateNftData} >
+        {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
+        {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
+        {modalCreate && (
+          <ModalMint
+            setModalCreate={setModalCreate}
+            processed={processed}
+            error={error}
+            setError={setError}
+            output={output}
+            QRData={QRData}
+            uploadNFT={uploadNFT}
+            uploadSize={uploadSize}
+            runNFTMintData={runNFTMintData}
+            setRunNFTMintData={setRunNFTMintData}
+          />
+        )}
+        <BetaBanner />
+        <MainHeader user={user} setModalExpand={setModalExpand} />
+        {isNftCreationEnabled &&
+          <Create
+            setModalExpand={setModalExpand}
+            setNotAvailable={setNotAvailable}
+            setModalCreate={setModalCreate}
+            user={user}
+            NFT={NFT}
+            setNFT={setNFT}
+            secretNFT={secretNFT}
+            setSecretNFT={setSecretNFT}
+            NFTData={NFTData}
+            setNFTData={setNFTData}
+            effect={effect}
+            setEffect={setEffect}
+            processFile={processFile}
+            setError={setError}
+            setProcessed={setProcessed}
+          />
+        }
+      </Provider>
     </>
   );
 };

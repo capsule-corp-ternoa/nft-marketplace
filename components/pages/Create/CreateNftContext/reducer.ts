@@ -3,13 +3,16 @@ import {
   SET_EFFECT,
   SET_ERROR,
   SET_NFT,
+  SET_OUTPUT,
+  SET_QR_DATA,
   SET_RN,
   SET_SECRET_NFT,
+  SET_UPLOAD_SIZE,
   CreateNftActionTypes,
   CreateNftStateType,
 } from './types';
 
-export default function uiDataReducer(
+export default function createNftDataReducer(
   state: CreateNftStateType,
   action: CreateNftActionTypes
 ): CreateNftStateType {
@@ -42,6 +45,20 @@ export default function uiDataReducer(
         NFT,
       };
 
+    case SET_OUTPUT:
+      const { value: output } = action;
+      return {
+        ...state,
+        output,
+      };
+
+    case SET_QR_DATA:
+      const { data: QRData } = action;
+      return {
+        ...state,
+        QRData,
+      };
+
     case SET_RN:
       const { value: isRN } = action;
       return {
@@ -54,6 +71,13 @@ export default function uiDataReducer(
       return {
         ...state,
         secretNFT,
+      };
+
+    case SET_UPLOAD_SIZE:
+      const { value: uploadSize } = action;
+      return {
+        ...state,
+        uploadSize,
       };
 
     default:

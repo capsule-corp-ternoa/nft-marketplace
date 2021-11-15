@@ -85,7 +85,7 @@ const NftCardWithEffects = ({ className, effect }: Props) => {
 
   return (
     <MediaWrapper className={className}>
-      {returnType(NFT!, effect === NFT_EFFECT_BLUR ? blurredValue : 0)}
+      {returnType(secretNFT!, effect === NFT_EFFECT_BLUR ? blurredValue : 0)}
       {effect === NFT_EFFECT_BLUR && (
         <SSlider
           id="blurredSlider"
@@ -106,7 +106,7 @@ const NftCardWithEffects = ({ className, effect }: Props) => {
       )}
       {effect === NFT_EFFECT_SECRET && (
         <SecretWrapper>
-          {secretNFT === null || secretNFT === undefined ? (
+          {NFT === null || NFT === undefined ? (
             <SecretUpload
               content={
                 <SecretUploadDescription>
@@ -124,7 +124,7 @@ const NftCardWithEffects = ({ className, effect }: Props) => {
             />
           ) : (
             <SecretMediaWrapper
-              content={returnType(secretNFT)}
+              content={returnType(NFT)}
               inputId="reUploadSecretNft"
               isMinimal
               isSecretOption

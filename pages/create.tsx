@@ -18,7 +18,7 @@ import {
   NFT_EFFECT_BLUR,
   NFT_EFFECT_DEFAULT,
   NFT_EFFECT_PROTECT,
-  NFT_EFFECT_SECRET,
+  NFT_FILE_TYPE_IMAGE,
   UserType,
 } from 'interfaces';
 import { NextPageContext } from 'next';
@@ -65,7 +65,7 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
   });
   const [runNFTMintData, setRunNFTMintData] = useState<any>(null);
 
-  const { createNftData, setError, setSecretNFT } = useCreateNftContext() ?? {};
+  const { createNftData, setError, setNFT } = useCreateNftContext() ?? {};
   const { effect, error, NFT, secretNFT } = createNftData ?? {};
 
   useEffect(() => {
@@ -86,50 +86,50 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
   }, [processed]);
 
   useEffect(() => {
-    if (NFT && quantity && Number(quantity) > 0) {
-      const previewSize = secretNFT ? secretNFT.size : NFT.size
-      const size = NFT.size * Number(quantity)
-      setUploadSize(previewSize + size)
+    if (secretNFT && quantity && Number(quantity) > 0) {
+      const previewSize = NFT ? NFT.size : secretNFT.size
+      const secretsSize = secretNFT.size * Number(quantity)
+      setUploadSize(previewSize + secretsSize)
     }
   }, [quantity, NFT, secretNFT])
 
   async function processFile(blurredValue?: number) {
     try {
-      if (!NFT) {
+      if (!secretNFT) {
         throw new Error();
       }
       setOutput([]);
       if (setError !== undefined) setError('');
       if (
         effect === NFT_EFFECT_BLUR &&
-        NFT.type.substr(0, 5) === 'image' &&
+        secretNFT.type.substr(0, 5) === NFT_FILE_TYPE_IMAGE &&
         blurredValue !== undefined &&
-        setSecretNFT !== undefined
+        setNFT !== undefined
       ) {
-        const processFile = new File([NFT], 'NFT', {
-          type: NFT.type,
+        const processFile = new File([secretNFT], 'NFT', {
+          type: secretNFT.type,
         });
         let res = await imgToBlur(processFile, blurredValue);
-        const blob = await(await fetch(res as string)).blob();
-        const file = new File([blob], NFT.name, {
-          type: NFT.type,
+        const blob = await (await fetch(res as string)).blob();
+        const file = new File([blob], secretNFT.name, {
+          type: secretNFT.type,
         });
-        setSecretNFT(file);
+        setNFT(file);
         setProcessed(true);
       } else if (
         effect === NFT_EFFECT_PROTECT &&
-        NFT.type.substr(0, 5) === 'image' &&
-        setSecretNFT !== undefined
+        secretNFT.type.substr(0, 5) === NFT_FILE_TYPE_IMAGE &&
+        setNFT !== undefined
       ) {
-        const processFile = new File([NFT], 'NFT', {
-          type: NFT.type,
+        const processFile = new File([secretNFT], 'NFT', {
+          type: secretNFT.type,
         });
         let res = await imgToWatermark(processFile);
-        const blob = await(await fetch(res as string)).blob();
-        const file = new File([blob], NFT.name, {
-          type: NFT.type,
+        const blob = await (await fetch(res as string)).blob();
+        const file = new File([blob], secretNFT.name, {
+          type: secretNFT.type,
         });
-        setSecretNFT(file);
+        setNFT(file);
         setProcessed(true);
       }
     } catch (err) {
@@ -140,10 +140,10 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
 
   function initMintingNFT() {
     if (!user) throw new Error('Please login to create an NFT.')
-    if (!NFT ||
+    if (!secretNFT ||
       !name ||
       !description ||
-      (effect === NFT_EFFECT_SECRET && !secretNFT) ||
+      (!NFT && !(effect === NFT_EFFECT_DEFAULT)) ||
       !(quantity && quantity > 0 && quantity <= 10))
       throw new Error('Elements are undefined');
     setQRData({
@@ -156,14 +156,14 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
 
   async function uploadNFT(publicPGPs: string[], setProgressData?: Function) {
     try {
-      if (!NFT) throw new Error();
-      const { url: previewLink, mediaType } = await uploadIPFS(secretNFT ? secretNFT : NFT, setProgressData, 0);
-      const fileHash = await getFilehash(NFT)
+      if (!secretNFT) throw new Error();
+      const { url: previewLink, mediaType } = await uploadIPFS(NFT ? NFT : secretNFT, setProgressData, 0);
+      const fileHash = await getFilehash(secretNFT)
       const seriesId = generateSeriesId(fileHash)
-      const cryptedMediaType = mime.lookup(NFT.name)
+      const cryptedMediaType = mime.lookup(secretNFT.name)
       //Parallel
       const cryptPromises = Array.from({ length: quantity }).map((_x, i) => {
-        return cryptAndUploadNFT(NFT, cryptedMediaType as string, publicPGPs[i] as string, setProgressData, 1 + i)
+        return cryptAndUploadNFT(secretNFT, cryptedMediaType as string, publicPGPs[i] as string, setProgressData, 1 + i)
       })
       const cryptResults = await Promise.all(cryptPromises);
       /* SEQUENTIAL

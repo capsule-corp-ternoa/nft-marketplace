@@ -97,7 +97,7 @@ const NftUpload = ({
             type="file"
             id={inputId}
             onChange={(event) =>
-              updateFile(event, isSecretOption ? setSecretNFT : setNFT)
+              updateFile(event, isSecretOption ? setNFT : setSecretNFT)
             }
             accept={acceptedFileTypes.join(',')}
           />
@@ -126,7 +126,7 @@ const NftUpload = ({
             type="file"
             id={inputId}
             onChange={(event) =>
-              updateFile(event, isSecretOption ? setSecretNFT : setNFT)
+              updateFile(event, isSecretOption ? setNFT : setSecretNFT)
             }
             accept={acceptedFileTypes.join(',')}
           />

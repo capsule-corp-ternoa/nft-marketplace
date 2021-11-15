@@ -13,7 +13,7 @@ import {
 import NftPreview from 'components/base/NftPreview';
 import { useCreateNftContext } from 'components/pages/Create/CreateNftContext';
 import Tooltip from 'ui/components/Tooltip';
-import { NFT_EFFECT_SECRET } from 'interfaces';
+import { NFT_EFFECT_SECRET, NFT_FILE_TYPE_IMAGE } from 'interfaces';
 
 import { UserType } from 'interfaces/index';
 
@@ -54,8 +54,8 @@ const Create: React.FC<CreateProps> = ({
     name &&
     description &&
     validateQuantity(quantity, 10) &&
-    NFT &&
-    (effect !== NFT_EFFECT_SECRET || secretNFT);
+    secretNFT &&
+    (effect !== NFT_EFFECT_SECRET || NFT);
 
   function onChange(
     e:
@@ -73,14 +73,17 @@ const Create: React.FC<CreateProps> = ({
       !description ||
       !quantity ||
       quantity > 10 ||
-      NFT === null ||
-      (effect === NFT_EFFECT_SECRET && secretNFT === null)
+      secretNFT === null ||
+      (effect === NFT_EFFECT_SECRET && NFT === null)
     ) {
       if (setError !== undefined) setError('Please fill the form entirely.');
       setModalCreate(true);
       return false;
     }
-    if (NFT!.type.substr(0, 5) === 'image' && effect !== NFT_EFFECT_SECRET) {
+    if (
+      secretNFT!.type.substr(0, 5) === NFT_FILE_TYPE_IMAGE &&
+      effect !== NFT_EFFECT_SECRET
+    ) {
       processFile(blurredValue);
     } else {
       setProcessed(true);

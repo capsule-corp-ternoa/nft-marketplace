@@ -31,20 +31,20 @@ const NFT_EFFECTS_ORDERED: NftEffectType[] = [
 
 const NftPreview = ({ className }: Props) => {
   const { createNftData, setEffect, setRN } = useCreateNftContext() ?? {};
-  const { effect, isRN, NFT } = createNftData ?? {};
+  const { effect, isRN, secretNFT } = createNftData ?? {};
 
   const isMobile = useMediaQuery({
     query: `(max-device-width: ${breakpointMap.md}px)`,
   });
 
   const handleAllowedEffect = (effect: NftEffectType) => {
-    if (NFT !== null && NFT !== undefined) {
+    if (secretNFT !== null && secretNFT !== undefined) {
       switch (effect) {
         case NFT_EFFECT_BLUR:
         case NFT_EFFECT_PROTECT:
           return (
-            !NFT.type.includes(NFT_FILE_TYPE_VIDEO) &&
-            NFT.type !== NFT_FILE_TYPE_GIF
+            !secretNFT.type.includes(NFT_FILE_TYPE_VIDEO) &&
+            secretNFT.type !== NFT_FILE_TYPE_GIF
           );
         default:
           return true;
@@ -58,7 +58,7 @@ const NftPreview = ({ className }: Props) => {
     }
   }, []);
 
-  if (NFT === null) {
+  if (secretNFT === null) {
     return (
       <NftUpload
         className={className}
@@ -71,15 +71,15 @@ const NftPreview = ({ className }: Props) => {
 
   return (
     <div className={className}>
-      {NFT && (
+      {secretNFT && (
         <NftPreviewHeader>
           <Title>
             <EyeIcon />
             NFT Preview
           </Title>
-          {NFT.name && (
+          {secretNFT.name && (
             <Reupload
-              content={NFT.name}
+              content={secretNFT.name}
               inputId="reUploadNft"
               isMinimal
             />

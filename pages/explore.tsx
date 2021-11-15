@@ -9,7 +9,7 @@ import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
 import cookies from 'next-cookies';
 import { getUser } from 'actions/user';
-import { getCategoryNFTs } from 'actions/nft';
+import { getNFTs } from 'actions/nft';
 import { NftType, UserType } from 'interfaces';
 import { NextPageContext } from 'next';
 import { decryptCookie } from 'utils/cookie';
@@ -39,10 +39,11 @@ const ExplorePage: React.FC<ExplorePage> = ({
     setIsLoading(true)
     try {
       if (dataNftsHasNextPage) {
-        let result = await getCategoryNFTs(
+        let result = await getNFTs(
           undefined,
           (currentPage + 1).toString(),
           undefined,
+          true,
           true
         );
         setCurrentPage(currentPage + 1);
@@ -102,7 +103,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
   }
   promises.push(
     new Promise<void>((success) => {
-      getCategoryNFTs(undefined, undefined, undefined, true)
+      getNFTs(undefined, undefined, undefined, true, true)
         .then((result) => {
           data = result.data;
           dataHasNextPage = result.hasNextPage || false;

@@ -8,7 +8,8 @@ import gradient from 'random-gradient';
 import { UserType } from 'interfaces/index';
 
 export interface CreatorProps {
-  user: UserType;
+  user?: UserType;
+  walletId: string;
   showTooltip?: boolean;
   size?: string;
   className?: string;
@@ -17,6 +18,7 @@ export interface CreatorProps {
 
 const Creator: React.FC<CreatorProps> = ({
   user,
+  walletId,
   showTooltip = true,
   size,
   className,
@@ -25,7 +27,7 @@ const Creator: React.FC<CreatorProps> = ({
   const [isHovering, setIsHovering] = useState(false);
 
   const bgGradient = {
-    background: user.name ? gradient(user.name) : gradient('ternoa'),
+    background: gradient(user?.name || walletId),
   };
 
   function manageClass() {
@@ -47,7 +49,7 @@ const Creator: React.FC<CreatorProps> = ({
     <div
       className={className ? `${style.Creator} ${className}` : style.Creator}
       onClick={() =>
-        isClickable && user && user.walletId && Router.push(`/${user.walletId}`)
+        isClickable && walletId && Router.push(`/${walletId}`)
       }
     >
       <div
@@ -57,42 +59,38 @@ const Creator: React.FC<CreatorProps> = ({
             : style.Hide
         }
       >
-        <div className={style.CreatorName}>{user.name}</div>
+        <div className={style.CreatorName}>{user?.name || walletId}</div>
       </div>
-      {user.name ? (
-        <div
-          className={manageClass()}
-          onFocus={() => false}
-          onBlur={() => false}
-          onMouseOver={() => setIsHovering(true)}
-          onMouseOut={() => setIsHovering(false)}
-          data-tip
-          data-for={showTooltip && `tooltip${user._id}`}
-        >
-          {user.verified && <Badge className={manageBadgeClass()} />}
-          {user.picture ? (
-            <img
-              className={style.CreatorsImage}
-              draggable="false"
-              src={user.picture}
-            />
-          ) : (
-            <div style={bgGradient} className={style.CreatorsImage}>
-              <div
-                className={
-                  size === 'xsmall'
-                    ? style.CreatorLetterSmall
-                    : style.CreatorLetter
-                }
-              >
-                {user.name.charAt(0)}
-              </div>
+      <div
+        className={manageClass()}
+        onFocus={() => false}
+        onBlur={() => false}
+        onMouseOver={() => setIsHovering(true)}
+        onMouseOut={() => setIsHovering(false)}
+        data-tip
+        data-for={showTooltip && `tooltip${walletId}`}
+      >
+        {user?.verified && <Badge className={manageBadgeClass()} />}
+        {user?.picture ? (
+          <img
+            className={style.CreatorsImage}
+            draggable="false"
+            src={user.picture}
+          />
+        ) : (
+          <div style={bgGradient} className={style.CreatorsImage}>
+            <div
+              className={
+                size === 'xsmall'
+                  ? style.CreatorLetterSmall
+                  : style.CreatorLetter
+              }
+            >
+              {user?.name.charAt(0) || 'T'}
             </div>
-          )}
-        </div>
-      ) : (
-        ''
-      )}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

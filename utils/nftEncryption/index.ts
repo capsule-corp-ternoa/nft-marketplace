@@ -62,13 +62,13 @@ export const cryptAndUploadNFT = async (
   })
 }
 
-export const uploadIPFS = async(file: File, setProgressData?: Function, progressIndex?:number) => {
+export const uploadIPFS = async(file: File, setProgressData?: Function, progressIndex?:number, getLink: boolean=false) => {
   try{
     const mediaType = mime.lookup(file.name);
     const result = await ipfsApi.addFile(file, setProgressData, progressIndex);
     if (result && (result as any).Hash) {
       return {
-        url: `${ipfsGatewayUri}/${(result as any).Hash}`,
+        hashOrURL: getLink ? `${ipfsGatewayUri}/${(result as any).Hash}` : (result as any).Hash,
         mediaType
       };
     } else {

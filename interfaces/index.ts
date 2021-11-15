@@ -22,14 +22,23 @@ export type NftType = {
   owner: string;
   creator: string;
   listed: number;
+  title?: string;
+  image?: string;
+  properties?: {
+    preview: {
+      ipfs: string,
+      mediaType: string
+    }
+    cryptedMedia: {
+      ipfs: string,
+      mediaType: string
+    }
+    publicPGP: string
+  }
   timestampList?: string;
-  uri?: string;
   price: string;
   priceTiime: string;
-  name?: string;
   description?: string;
-  media: { url: string };
-  cryptedMedia?: { url: string };
   ownerData: UserType;
   creatorData: UserType;
   serieId: string;

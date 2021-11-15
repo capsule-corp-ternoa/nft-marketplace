@@ -12,6 +12,7 @@ export interface PublicProfileProps {
   setUser?: (u: UserType) => void;
   profile: UserType;
   setProfile: (u: UserType) => void;
+  profileWalletId: string;
   NFTS: NftType[];
   setNotAvailable: (b: boolean) => void;
   setModalExpand: (b: boolean) => void;
@@ -25,6 +26,7 @@ const PublicProfile: React.FC<PublicProfileProps> = ({
   setUser,
   profile,
   setProfile,
+  profileWalletId,
   NFTS,
   setModalExpand,
   setNotAvailable,
@@ -49,7 +51,7 @@ const PublicProfile: React.FC<PublicProfileProps> = ({
           alt="banner"
         />
       </div>
-      <Infos profile={profile} setProfile={setProfile} user={user} />
+      <Infos profile={profile} setProfile={setProfile} profileWalletId={profileWalletId} user={user} />
         <div className={style.NFTWrapper}>{returnNFTs()}</div>
         {hasNextPage && (
           <>

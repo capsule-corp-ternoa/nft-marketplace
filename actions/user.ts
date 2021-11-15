@@ -1,11 +1,10 @@
-import { CustomResponse, NftType, UserType } from 'interfaces/index';
-import { filterNFTs } from "./nft";
+import { CustomResponse, UserType } from 'interfaces/index';
 import { DEFAULT_LIMIT_PAGINATION, NODE_API_URL } from "../utils/constant";
 import Cookies from 'js-cookie';
 
-export const getUser = async (token: string) => {
+export const getUser = async (token: string, ignoreCache=false) => {
   const res = await fetch(
-    `${NODE_API_URL}/api/users/${token}`
+    `${NODE_API_URL}/api/users/${token}?ignoreCache=${ignoreCache}`
   );
 
   if (!res.ok) throw new Error();
@@ -43,17 +42,13 @@ export const getAccountBalance = async (id: string) => {
   return data.capsAmout;
 };
 
-export const getUsers = async () => {
-  const res = await fetch(`${NODE_API_URL}/api/users`);
-  if (!res.ok) throw new Error();
-  const response: CustomResponse<UserType> = await res.json();
-  return response;
-};
-
-export const getUsersByWalletIds = async (walletIds: string[]) => {
-  if (walletIds.length === 0) return {totalCount:0, data:[]}
-  const query = `?walletIds=${walletIds.join("&walletIds=")}`
-  const res = await fetch(`${NODE_API_URL}/api/users/getUsers${query}`);
+export const getUsers = async (walletIds?: string[], artist?: boolean, verified?: boolean, page: string = "1", limit: string = DEFAULT_LIMIT_PAGINATION) => {
+  const paginationOptions = {page, limit}
+  const filter:any = {}
+  if (walletIds) filter.walletIds = walletIds
+  if (artist !== undefined) filter.artist = artist
+  if (verified !== undefined) filter.verified = verified
+  const res = await fetch(`${NODE_API_URL}/api/users/?filter=${JSON.stringify(filter)}&pagination=${JSON.stringify(paginationOptions)}`);
   if (!res.ok) throw new Error();
   const response: CustomResponse<UserType> = await res.json();
   return response;
@@ -102,12 +97,4 @@ export const unlikeNFT = async (walletId: string, nftId: string, serieId: string
   }else{
     throw new Error("Unvalid authentication");
   }
-}
-
-export const getLikedNFTs = async (walletId: string, page: string="1", limit: string=DEFAULT_LIMIT_PAGINATION, noSeriesData: boolean = false) => {
-  const res = await fetch(`${NODE_API_URL}/api/users/${walletId}/liked?page=${page}&limit=${limit}&noSeriesData=${noSeriesData}`)
-  if (!res.ok) throw new Error();
-  let result: CustomResponse<NftType> = await res.json();
-  result.data = filterNFTs(result.data)
-  return result;
 }

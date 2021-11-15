@@ -10,6 +10,7 @@ import { computeCaps, computeTiime, middleEllipsis } from 'utils/strings';
 import gradient from 'random-gradient';
 
 import { UserType } from 'interfaces/index';
+import { clipboardCopy } from 'utils/functions';
 
 export interface HeaderProps {
   user: UserType;
@@ -112,8 +113,8 @@ const MainHeader: React.FC<HeaderProps> = ({ setModalExpand, user }) => {
           <div className={style.Dropdown}>
             <div className={style.DropdownContainer}>
               <div className={style.DropdownProfile}>
-                <Creator user={user} size="xsmall" showTooltip={false}/>
-                <div className={style.Name}>{user?.name}</div>
+                <Creator user={user} walletId={user.walletId} size="xsmall" showTooltip={false}/>
+                <div className={style.Name}>{user.name}</div>
               </div>
 
               <div className={`${style.Section} ${style.NoHover}`}>
@@ -128,7 +129,7 @@ const MainHeader: React.FC<HeaderProps> = ({ setModalExpand, user }) => {
                   <span 
                     className={style.SectionWallet}
                     onClick={() => {
-                      navigator.clipboard.writeText(user.walletId);
+                      clipboardCopy(user.walletId);
                     }}
                   >
                     {middleEllipsis(user.walletId, 20)}

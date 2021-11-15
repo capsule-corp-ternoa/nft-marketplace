@@ -157,7 +157,7 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
   async function uploadNFT(publicPGPs: string[], setProgressData?: Function) {
     try {
       if (!secretNFT) throw new Error();
-      const { url: previewLink, mediaType } = await uploadIPFS(NFT ? NFT : secretNFT, setProgressData, 0);
+      const { hashOrURL: previewHash, mediaType } = await uploadIPFS(NFT ? NFT : secretNFT, setProgressData, 0);
       const fileHash = await getFilehash(secretNFT)
       const seriesId = generateSeriesId(fileHash)
       const cryptedMediaType = mime.lookup(secretNFT.name)
@@ -176,24 +176,27 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
       const publicPGPsIPFS = cryptResults.map((r: any) => r[1]);
       const results = cryptNFTsJSONs.map((result: any, i: number) => {
         const data = {
-          name,
+          title: name,
           description,
-          publicPGP: publicPGPsIPFS[i].url,
-          media: {
-            url: previewLink,
-            mediaType: mediaType
-          },
-          cryptedMedia: {
-            url: result.url,
-            cryptedMediaType: cryptedMediaType,
+          image: previewHash,
+          properties: {
+            publicPGP: publicPGPsIPFS[i].hashOrURL,
+            preview: {
+              ipfs: previewHash,
+              mediaType
+            },
+            cryptedMedia: {
+              ipfs: result.hashOrURL,
+              cryptedMediaType
+            }
           },
         }
         const finalBlob = new Blob([JSON.stringify(data)], { type: 'application/json' })
         const finalFile = new File([finalBlob], "final json")
         return uploadIPFS(finalFile);
       });
-      const JSONURLS = (await Promise.all(results));
-      return { nftUrls: JSONURLS as any[], seriesId: (seriesId ? seriesId : 0) };
+      const JSONHASHES = (await Promise.all(results));
+      return { nftUrls: JSONHASHES as any[], seriesId: (seriesId ? seriesId : null) };
     } catch (err) {
       if (setError !== undefined) setError('Please try again.');
       console.log(err);

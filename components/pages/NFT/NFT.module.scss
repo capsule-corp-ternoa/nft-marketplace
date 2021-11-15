@@ -266,19 +266,21 @@
 .AvailbleText {
   color: #b1b1b1;
   background-color: white;
-  border: solid 1px white;
   font-size: 16px;
   padding: 0 10px;
   font-family: 'Airbnb Cereal App book';
   display: flex;
+  height: 25px;
 }
 .AvailbleCards {
   width: 15px;
   margin-right: 5px;
 }
+.AvailableTextContent{
+  align-self: center;
+}
 .AvailableBackLine {
   width: 50%;
-  margin: 10px 0;
   border-bottom: solid 1px #b1b1b1;
   position: absolute;
   z-index: -1;

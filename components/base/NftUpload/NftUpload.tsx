@@ -2,11 +2,8 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Upload from 'components/assets/upload';
 import { HiddenInput, HiddenShell } from 'components/base/Layout';
-import {
-  NftEffectType,
-  NFT_EFFECT_DEFAULT,
-  NFT_EFFECT_SECRET,
-} from 'interfaces';
+import { useCreateNftContext } from 'components/pages/Create/CreateNftContext';
+import { NFT_EFFECT_DEFAULT, NFT_EFFECT_SECRET } from 'interfaces';
 import Chip from 'ui/components/Chip';
 
 interface Props {
@@ -14,12 +11,8 @@ interface Props {
   content?: string | React.ReactNode;
   inputId: string;
   isMinimal?: boolean;
-  isRN?: boolean;
   isSecretOption?: boolean;
   note?: string;
-  setError: (s: string) => void;
-  setNFT: (f: File | null) => void;
-  setEffect: (s: NftEffectType) => void;
 }
 
 const NftUpload = ({
@@ -27,13 +20,13 @@ const NftUpload = ({
   content,
   inputId,
   isMinimal = false,
-  isRN = false,
   isSecretOption = false,
   note,
-  setError,
-  setNFT,
-  setEffect,
 }: Props) => {
+  const { createNftData, setEffect, setError, setNFT, setSecretNFT } =
+    useCreateNftContext() ?? {};
+  const { isRN } = createNftData ?? {};
+
   const [acceptedFileTypes, setAcceptedFileTypes] = useState([
     '.jpg',
     '.jpeg',
@@ -59,7 +52,8 @@ const NftUpload = ({
 
     if (file !== null && file !== undefined) {
       if (!isError && isRN && file!.type.substr(0, 5) === 'video') {
-        setError("You can't select video type on mobile DApp yet.");
+        if (setError !== undefined)
+          setError("You can't select video type on mobile DApp yet.");
         isError = true;
       }
       if (
@@ -69,23 +63,28 @@ const NftUpload = ({
           file!.type.substr(0, 5) === 'image'
         )
       ) {
-        setError(
-          `You can't select files different from ${
-            !isRN ? 'videos or ' : ''
-          }images.`
-        );
+        if (setError !== undefined)
+          setError(
+            `You can't select files different from ${
+              isRN === false ? 'videos or ' : ''
+            }images.`
+          );
         isError = true;
       }
       if (!isError && file.size > 31000000) {
-        setError('Max file size is 30mb.');
+        if (setError !== undefined) setError('Max file size is 30mb.');
         isError = true;
       }
-      if (!isError) {
+      if (!isError && setEffect !== undefined) {
         setFunction(file);
         setEffect(isSecretOption ? NFT_EFFECT_SECRET : NFT_EFFECT_DEFAULT);
       }
     }
   };
+
+  if (setNFT === undefined || setSecretNFT === undefined) {
+    return null;
+  }
 
   if (isMinimal) {
     return (
@@ -97,7 +96,9 @@ const NftUpload = ({
           <HiddenInput
             type="file"
             id={inputId}
-            onChange={(event) => updateFile(event, setNFT)}
+            onChange={(event) =>
+              updateFile(event, isSecretOption ? setSecretNFT : setNFT)
+            }
             accept={acceptedFileTypes.join(',')}
           />
         </HiddenShell>
@@ -109,9 +110,13 @@ const NftUpload = ({
     <NftUploadWrapper className={className}>
       <NftUploadArea htmlFor={inputId} isSecretOption={isSecretOption}>
         <Content isSmall={isSecretOption}>
-          {isSecretOption && <Chip color="primaryInverted" text="Secret option" />}
+          {isSecretOption && (
+            <Chip color="primaryInverted" text="Secret option" />
+          )}
           {!isSecretOption && <UploadIcon />}
-          {content && <InsightMedium isSmall={isSecretOption}>{content}</InsightMedium>}
+          {content && (
+            <InsightMedium isSmall={isSecretOption}>{content}</InsightMedium>
+          )}
           {isSecretOption && <UploadIcon isSmall />}
           {note && <InsightLight isSmall={isSecretOption}>{note}</InsightLight>}
         </Content>
@@ -120,7 +125,9 @@ const NftUpload = ({
           <HiddenInput
             type="file"
             id={inputId}
-            onChange={(event) => updateFile(event, setNFT)}
+            onChange={(event) =>
+              updateFile(event, isSecretOption ? setSecretNFT : setNFT)
+            }
             accept={acceptedFileTypes.join(',')}
           />
         </HiddenShell>

@@ -17,11 +17,6 @@ import Slider from 'ui/components/Slider';
 interface Props {
   className?: string;
   effect: NftEffectType;
-  NFT: File;
-  secretNFT: File | null;
-  setError: (s: string) => void;
-  setSecretNFT: (f: File | null) => void;
-  setEffect: (s: NftEffectType) => void;
 }
 
 const DefaultEffect = css`
@@ -69,20 +64,13 @@ function returnType(NFTarg: File, blurredValue: number = 0) {
   }
 }
 
-const NftCardWithEffects = ({
-  className,
-  effect,
-  NFT,
-  secretNFT,
-  setError,
-  setSecretNFT,
-  setEffect,
-}: Props) => {
-  const { CreateNftState, setBlurredValue } = useCreateNftContext() ?? {};
-  const { blurredValue } = CreateNftState ?? {};
+const NftCardWithEffects = ({ className, effect }: Props) => {
+  const { createNftData, setBlurredValue, setEffect } =
+    useCreateNftContext() ?? {};
+  const { blurredValue, NFT, secretNFT } = createNftData ?? {};
 
   const handleBlurredChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (setBlurredValue !== undefined) {
+    if (setBlurredValue !== undefined && setEffect !== undefined) {
       const { target } = event;
       setEffect(NFT_EFFECT_BLUR);
       setBlurredValue(Number(target.value));
@@ -90,12 +78,14 @@ const NftCardWithEffects = ({
   };
 
   const handleBlurredClick = () => {
-    setEffect(NFT_EFFECT_BLUR);
+    if (setEffect !== undefined) {
+      setEffect(NFT_EFFECT_BLUR);
+    }
   };
 
   return (
     <MediaWrapper className={className}>
-      {returnType(NFT, effect === NFT_EFFECT_BLUR ? blurredValue : 0)}
+      {returnType(NFT!, effect === NFT_EFFECT_BLUR ? blurredValue : 0)}
       {effect === NFT_EFFECT_BLUR && (
         <SSlider
           id="blurredSlider"
@@ -116,7 +106,7 @@ const NftCardWithEffects = ({
       )}
       {effect === NFT_EFFECT_SECRET && (
         <SecretWrapper>
-          {secretNFT === null ? (
+          {secretNFT === null || secretNFT === undefined ? (
             <SecretUpload
               content={
                 <SecretUploadDescription>
@@ -129,12 +119,8 @@ const NftCardWithEffects = ({
                 </SecretUploadDescription>
               }
               inputId="uploadSecretNft"
-              //isRN={isRN}
               isSecretOption
               note={`PNG, GIF, WEBP, MP4 or MP3. Max 30mb.`}
-              setError={setError}
-              setNFT={setSecretNFT}
-              setEffect={setEffect}
             />
           ) : (
             <SecretMediaWrapper
@@ -142,9 +128,6 @@ const NftCardWithEffects = ({
               inputId="reUploadSecretNft"
               isMinimal
               isSecretOption
-              setError={setError}
-              setNFT={setSecretNFT}
-              setEffect={setEffect}
             />
           )}
           <SecretChip

@@ -1,19 +1,59 @@
 import {
   SET_BLURRED_VALUE,
+  SET_EFFECT,
+  SET_ERROR,
+  SET_NFT,
+  SET_RN,
+  SET_SECRET_NFT,
   CreateNftActionTypes,
-  CreateNftState,
+  CreateNftStateType,
 } from './types';
 
 export default function uiDataReducer(
-  state: CreateNftState,
+  state: CreateNftStateType,
   action: CreateNftActionTypes
-): CreateNftState {
+): CreateNftStateType {
   switch (action.type) {
     case SET_BLURRED_VALUE:
-      const { value } = action;
+      const { value: blurredValue } = action;
       return {
         ...state,
-        blurredValue: value,
+        blurredValue,
+      };
+
+    case SET_EFFECT:
+      const { effect } = action;
+      return {
+        ...state,
+        effect,
+      };
+
+    case SET_ERROR:
+      const { error } = action;
+      return {
+        ...state,
+        error,
+      };
+
+    case SET_NFT:
+      const { NFT } = action;
+      return {
+        ...state,
+        NFT,
+      };
+
+    case SET_RN:
+      const { value: isRN } = action;
+      return {
+        ...state,
+        isRN,
+      };
+
+    case SET_SECRET_NFT:
+      const { NFT: secretNFT } = action;
+      return {
+        ...state,
+        secretNFT,
       };
 
     default:

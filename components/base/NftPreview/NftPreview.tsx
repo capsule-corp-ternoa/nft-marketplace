@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
 import Eye from 'components/assets/eye';
 import NftUpload from 'components/base/NftUpload';
+import { useCreateNftContext } from 'components/pages/Create/CreateNftContext';
 import {
   NftEffectType,
   NFT_EFFECT_BLUR,
@@ -19,13 +20,6 @@ import NftPreviewCard from './NftPreviewCard';
 
 interface Props {
   className?: string;
-  NFT: File | null;
-  effect: NftEffectType;
-  setError: (s: string) => void;
-  setNFT: (f: File | null) => void;
-  secretNFT: File | null;
-  setSecretNFT: (f: File | null) => void;
-  setEffect: (s: NftEffectType) => void;
 }
 
 const NFT_EFFECTS_ORDERED: NftEffectType[] = [
@@ -35,24 +29,16 @@ const NFT_EFFECTS_ORDERED: NftEffectType[] = [
   NFT_EFFECT_BLUR,
 ];
 
-const NftPreview = ({
-  className,
-  NFT,
-  effect,
-  setError,
-  setNFT,
-  secretNFT,
-  setSecretNFT,
-  setEffect,
-}: Props) => {
-  const [isRN, setIsRN] = useState(false);
+const NftPreview = ({ className }: Props) => {
+  const { createNftData, setEffect, setRN } = useCreateNftContext() ?? {};
+  const { effect, isRN, NFT } = createNftData ?? {};
 
   const isMobile = useMediaQuery({
     query: `(max-device-width: ${breakpointMap.md}px)`,
   });
 
   const handleAllowedEffect = (effect: NftEffectType) => {
-    if (NFT !== null) {
+    if (NFT !== null && NFT !== undefined) {
       switch (effect) {
         case NFT_EFFECT_BLUR:
         case NFT_EFFECT_PROTECT:
@@ -67,7 +53,9 @@ const NftPreview = ({
   };
 
   useEffect(() => {
-    setIsRN(window.isRNApp);
+    if (setRN !== undefined) {
+      setRN(window.isRNApp);
+    }
   }, []);
 
   if (NFT === null) {
@@ -76,11 +64,7 @@ const NftPreview = ({
         className={className}
         content="Click here to upload your file."
         inputId="uploadNft"
-        isRN={isRN}
         note={`JPEG, JPG, PNG, GIF ${!isRN ? ', MP4 or MOV' : ''}. Max 30mb.`}
-        setError={setError}
-        setNFT={setNFT}
-        setEffect={setEffect}
       />
     );
   }
@@ -98,25 +82,13 @@ const NftPreview = ({
               content={NFT.name}
               inputId="reUploadNft"
               isMinimal
-              isRN={isRN}
-              setError={setError}
-              setNFT={setNFT}
-              setEffect={setEffect}
             />
           )}
         </NftPreviewHeader>
       )}
-      {isMobile ? (
+      {isMobile && effect !== undefined ? (
         <NftPreviewCardSelection>
-          <NftPreviewCard
-            effect={effect}
-            isSelected
-            NFT={NFT}
-            secretNFT={secretNFT}
-            setError={setError}
-            setSecretNFT={setSecretNFT}
-            setEffect={setEffect}
-          />
+          <NftPreviewCard effect={effect} isSelected />
           <SSelect text={effect}>
             {(setSelectExpanded) => (
               <>
@@ -126,8 +98,10 @@ const NftPreview = ({
                       <li
                         key={id}
                         onClick={() => {
-                          setSelectExpanded(false);
-                          setEffect(effectType);
+                          if (setEffect !== undefined) {
+                            setSelectExpanded(false);
+                            setEffect(effectType);
+                          }
                         }}
                       >
                         {effectType}
@@ -147,11 +121,6 @@ const NftPreview = ({
                 key={id}
                 effect={effectType}
                 isSelected={effect === effectType}
-                NFT={NFT}
-                secretNFT={secretNFT}
-                setError={setError}
-                setSecretNFT={setSecretNFT}
-                setEffect={setEffect}
               />
             )
           )}

@@ -13,7 +13,7 @@ import {
 import NftPreview from 'components/base/NftPreview';
 import { useCreateNftContext } from 'components/pages/Create/CreateNftContext';
 import Tooltip from 'ui/components/Tooltip';
-import { NftEffectType, NFT_EFFECT_SECRET } from 'interfaces';
+import { NFT_EFFECT_SECRET } from 'interfaces';
 
 import { UserType } from 'interfaces/index';
 
@@ -26,14 +26,7 @@ export interface CreateProps {
   setModalCreate: (b: boolean) => void;
   NFTData: NFTProps;
   setNFTData: (o: NFTProps) => void;
-  NFT: File | null;
-  setNFT: (f: File | null) => void;
-  secretNFT: File | null;
-  setSecretNFT: (f: File | null) => void;
-  effect: NftEffectType;
-  setEffect: (s: NftEffectType) => void;
   processFile: (blurredValue?: number) => Promise<void>;
-  setError: (s: string) => void;
   setProcessed: (b: boolean) => void;
 }
 
@@ -41,21 +34,14 @@ const Create: React.FC<CreateProps> = ({
   setModalExpand,
   setNotAvailable,
   setModalCreate,
-  NFT,
-  setNFT,
-  secretNFT,
-  setSecretNFT,
   NFTData: initalValue,
   setNFTData: setNftDataToParent,
   user,
-  effect,
-  setEffect,
   processFile,
-  setError,
   setProcessed,
 }) => {
-  const { CreateNftState } = useCreateNftContext() ?? {};
-  const { blurredValue } = CreateNftState ?? {};
+  const { createNftData, setError } = useCreateNftContext() ?? {};
+  const { blurredValue, effect, NFT, secretNFT } = createNftData ?? {};
 
   const [nftData, setNFTData] = useState(initalValue);
   const { name, description, quantity } = nftData;
@@ -90,7 +76,7 @@ const Create: React.FC<CreateProps> = ({
       NFT === null ||
       (effect === NFT_EFFECT_SECRET && secretNFT === null)
     ) {
-      setError('Please fill the form entirely.');
+      if (setError !== undefined) setError('Please fill the form entirely.');
       setModalCreate(true);
       return false;
     }
@@ -106,15 +92,7 @@ const Create: React.FC<CreateProps> = ({
     <Container>
       <Wrapper>
         <Title>Create your NFT</Title>
-        <SNftPreview
-          NFT={NFT}
-          effect={effect}
-          setError={setError}
-          setNFT={setNFT}
-          secretNFT={secretNFT}
-          setSecretNFT={setSecretNFT}
-          setEffect={setEffect}
-        />
+        <SNftPreview />
         <Form>
           <Left>
             <InputShell>

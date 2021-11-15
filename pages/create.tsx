@@ -4,7 +4,10 @@ import BetaBanner from 'components/base/BetaBanner';
 import MainHeader from 'components/base/MainHeader';
 import TernoaWallet from 'components/base/TernoaWallet';
 import Create from 'components/pages/Create';
-import Provider from 'components/pages/Create/CreateNftContext';
+import Provider, {
+  useCreateNftContext,
+} from 'components/pages/Create/CreateNftContext';
+import { CreateNftStateType } from 'components/pages/Create/CreateNftContext/types';
 import ModalMint from 'components/pages/Create/ModalMint';
 import NotAvailableModal from 'components/base/NotAvailable';
 import cookies from 'next-cookies';
@@ -12,7 +15,6 @@ import Router from 'next/router';
 import mime from 'mime-types'
 import { getUser } from 'actions/user';
 import {
-  NftEffectType,
   NFT_EFFECT_BLUR,
   NFT_EFFECT_DEFAULT,
   NFT_EFFECT_PROTECT,
@@ -24,8 +26,13 @@ import { imgToBlur, imgToWatermark } from 'utils/imageProcessing/image';
 import { decryptCookie } from 'utils/cookie';
 import { getFilehash, generateSeriesId, cryptAndUploadNFT, uploadIPFS } from '../utils/nftEncryption'
 
-const initialCreateNftData = {
+const initialCreateNftData: CreateNftStateType = {
   blurredValue: 5,
+  effect: NFT_EFFECT_DEFAULT,
+  error: '',
+  isRN: false,
+  NFT: null,
+  secretNFT: null,
 };
 
 export interface CreatePageProps {
@@ -43,12 +50,8 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
   const [modalCreate, setModalCreate] = useState(false);
-  const [effect, setEffect] = useState<NftEffectType>(NFT_EFFECT_DEFAULT);
   const [processed, setProcessed] = useState(false);
-  const [error, setError] = useState('');
   const [output, setOutput] = useState<string[]>([]);
-  const [NFT, setNFT] = useState<File | null>(null);
-  const [secretNFT, setSecretNFT] = useState<File | null>(null);
   const [uploadSize, setUploadSize] = useState(0)
   const [NFTData, setNFTData] = useState<NFTProps>({
     name: '',
@@ -62,6 +65,9 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
   });
   const [runNFTMintData, setRunNFTMintData] = useState<any>(null);
 
+  const { createNftData, setError, setSecretNFT } = useCreateNftContext() ?? {};
+  const { effect, error, NFT, secretNFT } = createNftData ?? {};
+
   useEffect(() => {
     if (!isNftCreationEnabled) {
       Router.push("/")
@@ -69,7 +75,7 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
   }, [isNftCreationEnabled])
 
   useEffect(() => {
-    if (processed) {
+    if (processed && setError !== undefined) {
       try {
         initMintingNFT();
       } catch (err) {
@@ -93,11 +99,12 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
         throw new Error();
       }
       setOutput([]);
-      setError('');
+      if (setError !== undefined) setError('');
       if (
         effect === NFT_EFFECT_BLUR &&
         NFT.type.substr(0, 5) === 'image' &&
-        blurredValue !== undefined
+        blurredValue !== undefined &&
+        setSecretNFT !== undefined
       ) {
         const processFile = new File([NFT], 'NFT', {
           type: NFT.type,
@@ -111,7 +118,8 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
         setProcessed(true);
       } else if (
         effect === NFT_EFFECT_PROTECT &&
-        NFT.type.substr(0, 5) === 'image'
+        NFT.type.substr(0, 5) === 'image' &&
+        setSecretNFT !== undefined
       ) {
         const processFile = new File([NFT], 'NFT', {
           type: NFT.type,
@@ -125,7 +133,7 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
         setProcessed(true);
       }
     } catch (err) {
-      setError('Please try again.');
+      if (setError !== undefined) setError('Please try again.');
       console.log(err);
     }
   }
@@ -187,7 +195,7 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
       const JSONURLS = (await Promise.all(results));
       return { nftUrls: JSONURLS as any[], seriesId: (seriesId ? seriesId : 0) };
     } catch (err) {
-      setError('Please try again.');
+      if (setError !== undefined) setError('Please try again.');
       console.log(err);
       return { nftUrls: [] as any[], seriesId: 0 };
     }
@@ -204,12 +212,12 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
       <Provider createNftData={initialCreateNftData} >
         {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
         {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
-        {modalCreate && (
+        {modalCreate &&  (
           <ModalMint
             setModalCreate={setModalCreate}
             processed={processed}
-            error={error}
-            setError={setError}
+            error={error!}
+            setError={setError!}
             output={output}
             QRData={QRData}
             uploadNFT={uploadNFT}
@@ -226,16 +234,9 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
             setNotAvailable={setNotAvailable}
             setModalCreate={setModalCreate}
             user={user}
-            NFT={NFT}
-            setNFT={setNFT}
-            secretNFT={secretNFT}
-            setSecretNFT={setSecretNFT}
             NFTData={NFTData}
             setNFTData={setNFTData}
-            effect={effect}
-            setEffect={setEffect}
             processFile={processFile}
-            setError={setError}
             setProcessed={setProcessed}
           />
         }

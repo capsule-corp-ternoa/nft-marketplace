@@ -2,6 +2,7 @@ import React from 'react';
 import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
 import { HiddenInput, HiddenShell } from 'components/base/Layout';
+import { useCreateNftContext } from 'components/pages/Create/CreateNftContext';
 import { NftEffectType } from 'interfaces';
 import Radio from 'ui/components/Radio';
 import { breakpointMap } from 'ui/theme/base';
@@ -10,22 +11,14 @@ import NftCardWithEffects from '../NftCard/NftCardWithEffects';
 interface Props {
   effect: NftEffectType;
   isSelected?: boolean;
-  NFT: File;
-  secretNFT: File | null;
-  setError: (s: string) => void;
-  setSecretNFT: (f: File | null) => void;
-  setEffect: (s: NftEffectType) => void;
 }
 
 const NftPreviewCard = ({
   effect,
   isSelected = false,
-  NFT,
-  secretNFT,
-  setError,
-  setSecretNFT,
-  setEffect,
 }: Props) => {
+  const { setEffect } = useCreateNftContext() ?? {};
+
   const isMobile = useMediaQuery({
     query: `(max-device-width: ${breakpointMap.md}px)`,
   });
@@ -35,11 +28,6 @@ const NftPreviewCard = ({
       <CardWrapper>
         <NftCardWithEffects
           effect={effect}
-          NFT={NFT}
-          secretNFT={secretNFT}
-          setError={setError}
-          setSecretNFT={setSecretNFT}
-          setEffect={setEffect}
         />
       </CardWrapper>
     );
@@ -54,11 +42,6 @@ const NftPreviewCard = ({
         <SNftCardWithEffects
           effect={effect}
           isSelected={isSelected}
-          NFT={NFT}
-          secretNFT={secretNFT}
-          setError={setError}
-          setSecretNFT={setSecretNFT}
-          setEffect={setEffect}
         />
         <SRadio checked={isSelected} label={effect} readOnly />
       </NftPreviewCardWrapper>
@@ -68,7 +51,11 @@ const NftPreviewCard = ({
           type="radio"
           id={`NftType_${effect}`}
           name={`NftType_${effect}`}
-          onClick={() => setEffect(effect)}
+          onClick={() => {
+            if (setEffect !== undefined) {
+              setEffect(effect);
+            }
+          }}
           value={effect}
         />
       </HiddenShell>
@@ -112,6 +99,6 @@ const SNftCardWithEffects = styled(NftCardWithEffects)<{ isSelected: boolean }>`
 
 const SRadio = styled(Radio)`
   margin-top: 3.2rem;
-`
+`;
 
 export default NftPreviewCard;

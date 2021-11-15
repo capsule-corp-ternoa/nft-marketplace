@@ -33,6 +33,7 @@ const DefaultEffect = css`
 const IMGDefaultEffect = styled.img<{ blurredValue: number }>`
   ${DefaultEffect}
   filter: ${({ blurredValue }) => `blur(${blurredValue}px)`};
+  backdrop-filter: ${({ blurredValue }) => `blur(${blurredValue}px)`};
   -webkit-backdrop-filter: ${({ blurredValue }) => `blur(${blurredValue}px)`};
 `;
 const VideoDefaultEffect = styled.video`

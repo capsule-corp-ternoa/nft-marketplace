@@ -1,12 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
-import style from './Create.module.scss';
+import React, { useState } from 'react';
+import styled from 'styled-components';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
-import ArrowBottom from 'components/assets/arrowBottom';
-import Upload from 'components/assets/upload';
-import WhiteWaterMark from 'components/assets/WhiteWaterMark';
-import Eye from 'components/assets/eye';
+import {
+  Container,
+  Input,
+  InputLabel,
+  InputShell,
+  Textarea,
+  Wrapper,
+} from 'components/base/Layout';
+import NftPreview from 'components/base/NftPreview';
+import { useCreateNftContext } from 'components/pages/Create/CreateNftContext';
+import Tooltip from 'ui/components/Tooltip';
+import { NFT_EFFECT_SECRET, NFT_FILE_TYPE_IMAGE } from 'interfaces';
 
 import { UserType } from 'interfaces/index';
 
@@ -19,14 +26,7 @@ export interface CreateProps {
   setModalCreate: (b: boolean) => void;
   NFTData: NFTProps;
   setNFTData: (o: NFTProps) => void;
-  NFT: File | null;
-  setNFT: (f: File | null) => void;
-  secretNFT: File | null;
-  setSecretNFT: (f: File | null) => void;
-  select: string;
-  setSelect: (s: string) => void;
-  processFile: () => Promise<void>;
-  setError: (s: string) => void;
+  processFile: (blurredValue?: number) => Promise<void>;
   setProcessed: (b: boolean) => void;
 }
 
@@ -34,37 +34,20 @@ const Create: React.FC<CreateProps> = ({
   setModalExpand,
   setNotAvailable,
   setModalCreate,
-  NFT,
-  setNFT,
-  secretNFT,
-  setSecretNFT,
   NFTData: initalValue,
   setNFTData: setNftDataToParent,
   user,
-  select,
-  setSelect,
   processFile,
-  setError,
   setProcessed,
 }) => {
-  const [exp, setExp] = useState(false);
+  const { createNftData, setError } = useCreateNftContext() ?? {};
+  const { blurredValue, effect, NFT, secretNFT } = createNftData ?? {};
+
   const [nftData, setNFTData] = useState(initalValue);
   const { name, description, quantity } = nftData;
-  const [isRN, setIsRN] = useState(false)
-  const [acceptedFileTypes, setAcceptedFileTypes] = useState([".jpg", ".jpeg", ".png", ".gif", ".mp4", ".mov"])
 
-  useEffect(() => {
-    setIsRN(window.isRNApp);
-  }, []);
-
-  useEffect(() => {
-    if (isRN){
-      setAcceptedFileTypes([".jpg", ".jpeg", ".png", ".gif"])
-    }
-  }, [isRN])
-  
   const validateQuantity = (value: number, limit: number) => {
-    return value && value > 0 && value <= limit;
+    return value > 0 && value <= limit;
   };
 
   const isDataValid =
@@ -72,8 +55,7 @@ const Create: React.FC<CreateProps> = ({
     description &&
     validateQuantity(quantity, 10) &&
     secretNFT &&
-    (select !== 'Secret' || NFT) &&
-    select !== 'Select NFT Option';
+    (effect !== NFT_EFFECT_SECRET || NFT);
 
   function onChange(
     e:
@@ -85,71 +67,6 @@ const Create: React.FC<CreateProps> = ({
     setNftDataToParent(nextNftData);
   }
 
-  function returnType(NFTarg: File) {
-    if (NFTarg!.type.substr(0, 5) === 'image') {
-      return (
-        <img
-          className={style.IMGBackground}
-          src={URL.createObjectURL(NFTarg)}
-          alt="img"
-          id="output"
-        />
-      );
-    } else if (NFTarg!.type.substr(0, 5) === 'video') {
-      return (
-        <video
-          autoPlay
-          muted
-          playsInline
-          loop
-          className={style.IMGBackground}
-          key={NFTarg.name + NFTarg.lastModified}
-        >
-          <source id="outputVideo" src={URL.createObjectURL(NFTarg)} />
-        </video>
-      );
-    }
-  }
-
-  const updateFile = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    setFunction: (f: File | null) => void
-  ) => {
-    const { target } = event;
-    let file = null;
-    let isError = false
-    if (!(target && target.files && target.files[0])) {
-      setFunction(file);
-      setSelect('Select NFT Option');
-      return;
-    }
-    if (!isError && isRN && target.files[0]!.type.substr(0, 5) === 'video'){
-      setError("You can't select video type on mobile DApp yet.");
-      isError = true
-    }
-    if (!isError && !(target.files[0]!.type.substr(0, 5) === 'video' || target.files[0]!.type.substr(0, 5) === 'image')){
-      setError(`You can't select files different from ${!isRN ? "videos or " : ""}images.`);
-      isError = true
-    }
-    if (!isError && target.files[0].size > 31000000) {
-      setError('Max file size is 30mb.');
-      isError = true
-    }
-    if (
-      (target.files[0]!.type.substr(0, 5) === 'video' || target.files[0]!.type === 'image/gif') &&
-      (select === 'Blur' || select === 'Protect')
-    ) {
-      setSelect('Select NFT Option');
-    }
-    if (!isError){
-      file = target.files[0];
-    }else{
-      setModalCreate(true);
-      setSelect('Select NFT Option');
-    }
-    setFunction(file);
-  };
-
   function uploadFiles() {
     if (
       !name ||
@@ -157,241 +74,252 @@ const Create: React.FC<CreateProps> = ({
       !quantity ||
       quantity > 10 ||
       secretNFT === null ||
-      (select === 'Secret' && NFT === null) ||
-      select === 'Select NFT Option'
+      (effect === NFT_EFFECT_SECRET && NFT === null)
     ) {
-      setError('Please fill the form entirely.');
+      if (setError !== undefined) setError('Please fill the form entirely.');
       setModalCreate(true);
       return false;
     }
     if (
-      secretNFT!.type.substr(0, 5) === 'image' &&
-      select !== 'None' &&
-      select !== 'Secret'
+      secretNFT!.type.substr(0, 5) === NFT_FILE_TYPE_IMAGE &&
+      effect !== NFT_EFFECT_SECRET
     ) {
-      processFile();
+      processFile(blurredValue);
     } else {
       setProcessed(true);
     }
     setModalCreate(true);
   }
 
-  function checkType() {
-    if (
-      secretNFT!.type.substr(0, 5) === 'video' ||
-      secretNFT!.type === 'image/gif'
-    )
-      return false;
-    else return true;
-  }
   return (
-    <div className={style.Container}>
-      <div className={style.Wrapper}>
-        <h2 className={style.Title}>Create NFT</h2>
-        <div className={style.InnerContainer}>
-          <div className={style.Top}>
-            <span className={style.TopInf}>
-              <Eye className={style.EyeSVG} />
-              NFT Preview
-            </span>
-          </div>
-          <div className={style.Data}>
-            <div className={style.Left}>
-              <label
-                htmlFor="uploadNFT"
-                className={
-                  secretNFT
-                    ? style.NFTPreview
-                    : `${style.NFTPreview} ${style.NFTPreviewBorder}`
-                }
-              >
-                <div className={secretNFT ? style.Hidden : style.NFTNull}>
-                  <Upload className={style.UploadSVG} />
-                  <div className={style.InsightMedium}>
-                    Click here to upload your file.
-                  </div>
-                  <div className={style.InsightLight}>
-                    JPEG, JPG, PNG, GIF{`${!isRN ? ", MP4 or MOV" : ""}`}. Max 30mb.
-                  </div>
-                </div>
+    <Container>
+      <Wrapper>
+        <Title>Create your NFT</Title>
+        <SNftPreview />
+        <Form>
+          <Left>
+            <InputShell>
+              <InputLabel>Name</InputLabel>
+              <Input
+                type="text"
+                placeholder="Enter name"
+                onChange={onChange}
+                name="name"
+                value={name}
+              />
+            </InputShell>
 
-                {secretNFT && returnType(secretNFT)}
+            <InputShellDescription>
+              <InputLabel>Description</InputLabel>
+              <Textarea
+                placeholder="Tell about the NFT in a few words..."
+                name="description"
+                value={description}
+                onChange={onChange}
+              />
+            </InputShellDescription>
+          </Left>
+          <Right>
+            <InputShell>
+              <InputLabel>
+                Category<Insight>(optional)</Insight>
+              </InputLabel>
+              <Input
+                type="text"
+                placeholder="NFT Category"
+                onChange={onChange}
+                name="name"
+                value={name}
+              />
+            </InputShell>
 
-                <div className={style.HiddenShell}>
-                  <input
-                    type="file"
-                    id="uploadNFT"
-                    onChange={(event) => updateFile(event, setSecretNFT)}
-                    className={style.HiddenInput}
-                    accept={acceptedFileTypes.join(',')}
-                  />
-                </div>
+            <InputShell>
+              <InputLabel>
+                Royalties<Insight>(max: 10%)</Insight>
+              </InputLabel>
+              <Input
+                type="text"
+                placeholder="Enter royalties"
+                onChange={onChange}
+                name="name"
+                value={name}
+              />
+            </InputShell>
 
-                {select === 'Blur' && secretNFT && (
-                  <div className={style.Blur} />
-                )}
-                {select === 'Protect' && secretNFT && (
-                  <div className={style.OPTN}>
-                    <div className={style.OPTNCTNR}>
-                      <WhiteWaterMark className={style.WaterMarkSVG} />
-                    </div>
-                  </div>
-                )}
-                {select === 'Secret' && (
-                  <label
-                    htmlFor="uploadSecretNFT"
-                    className={
-                      NFT
-                        ? style.NFTSPreview
-                        : `${style.NFTSPreview} ${style.NFTPreviewBorder}`
-                    }
-                  >
-                    <div className={NFT ? style.Hidden : style.NFTSNull}>
-                      {/*<div className={style.Label}>Coming soon</div>*/}
-                      <Upload className={style.UploadSVG2} />
-                      <div className={style.NFTSTips}>
-                        Click to select your file that will hide your NFT for
-                        the surprise.
-                      </div>
-                      <div className={style.NFTSTips2}>
-                        Once purchased, the owner will be able to see your NFT
-                      </div>
-                    </div>
-                    {NFT && returnType(NFT)}
-                    <div className={style.HiddenShell}>
-                      <input
-                        type="file"
-                        id="uploadSecretNFT"
-                        onChange={(event) => updateFile(event, setNFT)}
-                        className={style.HiddenInput}
-                        accept={acceptedFileTypes.join(',')}
-                      />
-                    </div>
-                  </label>
-                )}
-              </label>
-            </div>
-            <div className={style.Right}>
-              <div className={style.InputShell}>
-                <h4 className={style.Subtitle}>Name</h4>
-                <input
-                  type="text"
-                  placeholder="Ternoa collection"
-                  onChange={onChange}
-                  name="name"
-                  value={name}
-                  className={style.Input}
-                />
-              </div>
+            <InputShell>
+              <InputLabel>
+                Quantity<Insight>(max: 10)</Insight>
+              </InputLabel>
+              <Input
+                type="text"
+                name="quantity"
+                value={quantity}
+                onChange={onChange}
+                placeholder="1"
+                isError={!validateQuantity(quantity, 10)}
+              />
+            </InputShell>
 
-              <div className={style.InputShell}>
-                <h4 className={style.Subtitle}>Description</h4>
-                <textarea
-                  placeholder="A cool description"
-                  name="description"
-                  value={description}
-                  onChange={onChange}
-                  className={style.Textarea}
-                />
-              </div>
-
-              <div className={style.InputShell}>
-                <h4 className={style.Subtitle}>
-                  Quantity <span className={style.Insight}>(max: 10)</span>
-                </h4>
-                <input
-                  type="text"
-                  name="quantity"
-                  value={quantity}
-                  onChange={onChange}
-                  placeholder="1"
-                  className={`${style.Input} ${
-                    quantity && !validateQuantity(quantity, 10)
-                      ? style.InputError
-                      : ''
-                  }`}
-                />
-              </div>
-
-              <div className={style.SelectShell}>
-                <div className={style.SelectContainer}>
-                  <div
-                    className={secretNFT ? style.Select : style.SelectDisabled}
-                    onClick={() => {
-                      secretNFT ? setExp(!exp) : false;
-                    }}
-                  >
-                    {select}
-                    <ArrowBottom
-                      className={exp ? style.arrowbtmselect : style.arrowbtm}
-                    />
-                  </div>
-                  {exp && (
-                    <div className={style.SelectOptn}>
-                      {checkType() && (
-                        <div
-                          className={style.SelectItem}
-                          onClick={() => {
-                            setSelect('Protect');
-                            setExp(false);
-                          }}
-                        >
-                          Protect
-                        </div>
-                      )}
-                      <div
-                        className={style.SelectItem}
-                        onClick={() => {
-                          setSelect('Secret');
-                          setExp(false);
-                        }}
-                      >
-                        Secret
-                      </div>
-
-                      {checkType() && (
-                        <div
-                          className={style.SelectItem}
-                          onClick={() => {
-                            setSelect('Blur');
-                            setExp(false);
-                          }}
-                        >
-                          Blur
-                        </div>
-                      )}
-                      <div
-                        className={style.SelectItem}
-                        onClick={() => {
-                          setSelect('None');
-                          setExp(false);
-                        }}
-                      >
-                        None
-                      </div>
-                    </div>
-                  )}
-                </div>
-                <Link href="/faq">
-                  <a className={style.Link}>How it works</a>
-                </Link>
-              </div>
-            </div>
-          </div>
-          <div
-            className={`${style.Create} ${
-              !(isDataValid && user) ? style.CreateDisabled : ''
-            }`}
-            onClick={() => isDataValid && user && uploadFiles()}
-          >
-            Create NFT
-          </div>
-        </div>
-      </div>
+            <InputShell>
+              <InputLabel>
+                Serie ID
+                <STooltip text="Specified your own serie id" />
+                <Insight>(optional)</Insight>
+              </InputLabel>
+              <Input
+                type="text"
+                placeholder="Enter ID"
+                onChange={onChange}
+                name="name"
+                value={name}
+              />
+            </InputShell>
+          </Right>
+        </Form>
+        <Advice>
+          Once the information is entered, it will be impossible to modify it !
+        </Advice>
+        <CreateButton
+          disabled={!(isDataValid && user)}
+          onClick={() => isDataValid && user && uploadFiles()}
+        >
+          Create NFT
+        </CreateButton>
+      </Wrapper>
       <Footer setNotAvailable={setNotAvailable} />
       <FloatingHeader user={user} setModalExpand={setModalExpand} />
-    </div>
+    </Container>
   );
 };
+
+const Title = styled.h2`
+  font-family: 'Airbnb Cereal App Bold';
+  font-size: 3.2rem;
+  line-height: 1.3;
+  margin: 0;
+  text-align: center;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    font-size: 6.4rem;
+    text-align: left;
+  }
+`;
+
+const SNftPreview = styled(NftPreview)`
+  width: 100%;
+  height: auto;
+  margin-top: 3.2rem;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    margin-top: 5.4rem;
+  }
+`;
+
+const Form = styled.form`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 4rem;
+
+  > * {
+    width: 100%;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    align-items: normal;
+    flex-direction: row;
+    margin-top: 12rem;
+  }
+`;
+
+const Left = styled.div`
+  > :first-child {
+    margin-top: 0;
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    border-right: 1px solid #e0e0e0;
+    padding-right: 4.8rem;
+  }
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    padding-right: 13.6rem;
+  }
+`;
+
+const Right = styled.div`
+  ${({ theme }) => theme.mediaQueries.md} {
+    padding-left: 4.8rem;
+
+    > :first-child {
+      margin-top: 0;
+    }
+  }
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    padding-left: 13.6rem;
+  }
+`;
+
+const InputShellDescription = styled(InputShell)`
+  flex: 1;
+`;
+
+const Insight = styled.span`
+  color: #c1c1c1;
+  font-family: 'Airbnb Cereal App Book';
+  font-size: 1.2rem;
+  line-height: 1.3;
+  margin-left: 0.8rem;
+`;
+
+const STooltip = styled(Tooltip)`
+  margin-left: 0.4rem;
+`;
+
+const Advice = styled.span`
+  color: #7417ea;
+  font-size: 1.6rem;
+  line-height: 1.3;
+  margin: 4rem auto 0;
+  text-align: center;
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    margin: 7.2rem auto 0;
+  }
+`;
+
+const CreateButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+  background: #7417ea;
+  border: none;
+  border-radius: 4rem;
+  color: white;
+  cursor: pointer;
+  font-family: 'Airbnb Cereal App Bold';
+  font-size: 1.6rem;
+  margin-top: 2.4rem;
+  padding: 1.2rem 4.8rem;
+  transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  z-index: 1;
+
+  &:hover {
+    color: white;
+    background-color: black;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    pointer-events: none;
+  }
+`;
 
 export default Create;

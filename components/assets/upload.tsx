@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface UploadProps {
-  className: string;
+  className?: string;
 }
 
 const Upload: React.FC<UploadProps> = ({ className }) => (

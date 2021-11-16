@@ -7,7 +7,7 @@ interface Props {
   id?: string;
   label?: string;
   name?: string;
-  onClick?: () => void;
+  onChange?: () => void;
   readOnly?: boolean;
   value?: string;
 }
@@ -18,7 +18,7 @@ const Radio = ({
   id,
   label,
   name,
-  onClick,
+  onChange,
   readOnly,
   value,
 }: Props) => (
@@ -28,7 +28,7 @@ const Radio = ({
       id={id}
       checked={checked}
       name={name}
-      onClick={onClick}
+      onChange={onChange}
       readOnly={readOnly}
       value={value}
     />
@@ -66,7 +66,7 @@ const RadioInput = styled.input`
     width: 1.2rem;
     height: 1.2rem;
     border-radius: 50%;
-    background: #7417EA;
+    background: #7417ea;
     transform: scale(0);
     transition: 120ms transform ease-in-out;
     box-shadow: inset 1.2rem 1.2rem var(--form-control-color);

@@ -50,7 +50,7 @@ const NftPreviewCard = ({ effect, isSelected = false }: Props) => {
         <SRadio
           checked={isSelected}
           label={effect}
-          onClick={handleCardSelect}
+          onChange={handleCardSelect}
         />
       </NftPreviewCardWrapper>
 

@@ -2,9 +2,10 @@ import React, { useEffect } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
 import Eye from 'components/assets/eye';
-import NftUpload from 'components/base/NftUpload';
-import { Subtitle } from 'components/layout';
+import { NftCardWithEffects, NftUpload } from 'components/base/NftPreview';
+import { HiddenInput, HiddenShell, Subtitle } from 'components/layout';
 import { useCreateNftContext } from 'components/pages/Create/CreateNftContext';
+import Radio from 'components/ui/Radio';
 import Select from 'components/ui/Select';
 import {
   NftEffectType,
@@ -16,8 +17,7 @@ import {
   NFT_FILE_TYPE_VIDEO,
 } from 'interfaces';
 import { breakpointMap } from 'style/theme/base';
-
-import NftPreviewCard from './NftPreviewCard';
+import { processFile } from 'utils/imageProcessing/image';
 
 interface Props {
   className?: string;
@@ -31,8 +31,9 @@ const NFT_EFFECTS_ORDERED: NftEffectType[] = [
 ];
 
 const NftPreview = ({ className }: Props) => {
-  const { createNftData, setEffect, setRN } = useCreateNftContext() ?? {};
-  const { effect, isRN, secretNFT } = createNftData ?? {};
+  const { createNftData, setEffect, setRN, setError, setNFT } =
+    useCreateNftContext();
+  const { blurredValue, effect, isRN, secretNFT } = createNftData;
 
   const isMobile = useMediaQuery({
     query: `(max-device-width: ${breakpointMap.md}px)`,
@@ -50,6 +51,16 @@ const NftPreview = ({ className }: Props) => {
         default:
           return true;
       }
+    }
+  };
+
+  const handleCardSelect = (effect: NftEffectType) => {
+    setEffect(effect);
+    if (
+      secretNFT &&
+      (effect === NFT_EFFECT_BLUR || effect === NFT_EFFECT_PROTECT)
+    ) {
+      processFile(secretNFT, effect, setError, blurredValue).then(setNFT);
     }
   };
 
@@ -91,7 +102,9 @@ const NftPreview = ({ className }: Props) => {
       )}
       {isMobile && effect !== undefined ? (
         <SWrapper>
-          <NftPreviewCard effect={effect} isSelected />
+          <SMobileCardWrapper>
+            <NftCardWithEffects effect={effect} />
+          </SMobileCardWrapper>
           <SSelect text={effect}>
             {(setSelectExpanded) => (
               <>
@@ -118,15 +131,35 @@ const NftPreview = ({ className }: Props) => {
         </SWrapper>
       ) : (
         <SFieldset>
-          {NFT_EFFECTS_ORDERED.filter(handleAllowedEffect).map(
-            (effectType, id) => (
-              <NftPreviewCard
-                key={id}
-                effect={effectType}
+          {NFT_EFFECTS_ORDERED.filter(handleAllowedEffect).map((effectType) => (
+            <>
+              <SLabel
+                key={effectType}
+                htmlFor={`NftType_${effectType}`}
                 isSelected={effect === effectType}
-              />
-            )
-          )}
+              >
+                <SCardWrapper isSelected={effect === effectType}>
+                  <NftCardWithEffects effect={effectType} />
+                </SCardWrapper>
+
+                <SRadio
+                  checked={effect === effectType}
+                  label={effectType}
+                  onChange={() => handleCardSelect(effectType)}
+                />
+              </SLabel>
+
+              <HiddenShell>
+                <HiddenInput
+                  type="radio"
+                  id={`NftType_${effectType}`}
+                  name={`NftType_${effectType}`}
+                  onClick={() => handleCardSelect(effectType)}
+                  value={effectType}
+                />
+              </HiddenShell>
+            </>
+          ))}
         </SFieldset>
       )}
     </div>
@@ -168,6 +201,13 @@ const SWrapper = styled.div`
   justify-content: center;
 `;
 
+const SMobileCardWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  filter: drop-shadow(0px 0px 10.4276px rgba(0, 0, 0, 0.25));
+`;
+
 const SSelect = styled(Select)`
   margin-top: 2.4rem;
 `;
@@ -186,6 +226,39 @@ const SFieldset = styled.fieldset`
   gap: 1.2rem;
   border: none;
   padding: 0;
+`;
+
+const SLabel = styled.label<{ isSelected?: boolean }>`
+  background: transparent;
+  border: 3px solid rgb(0, 0, 0, 0);
+  border-radius: 2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  flex: 1 1 0;
+  flex-direction: column;
+  padding: 0.8rem 0.8rem 2.4rem;
+  max-width: 280px;
+
+  &:hover {
+    border: 3px dashed #7417ea;
+  }
+
+  ${({ isSelected }) =>
+    isSelected &&
+    `
+    border: 3px dashed #7417ea;
+  `}
+`;
+
+const SCardWrapper = styled.div<{ isSelected: boolean }>`
+  width: 100%;
+  height: auto;
+  opacity: ${({ isSelected }) => (isSelected ? 1 : 0.4)};
+`;
+
+const SRadio = styled(Radio)`
+  margin-top: 3.2rem;
 `;
 
 export default React.memo(NftPreview);

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import WhiteWaterMark from 'components/assets/WhiteWaterMark';
-import NftUpload from 'components/base/NftUpload';
+import { NftUpload } from 'components/base/NftPreview';
 import { useCreateNftContext } from 'components/pages/Create/CreateNftContext';
 import {
   NftEffectType,

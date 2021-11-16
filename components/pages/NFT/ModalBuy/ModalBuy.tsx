@@ -5,9 +5,9 @@ import Close from 'components/assets/close';
 import QRCode from 'components/base/QRCode';
 import randomstring from 'randomstring';
 import { connect as connectIo } from 'utils/socket/socket.helper';
-import Link from 'next/link';
-import CheckMark from 'components/assets/checkmark';
 import { SOCKET_URL } from 'utils/constant';
+import { navigateToSuccess } from 'utils/functions';
+import { useRouter } from 'next/router';
 
 export interface ModalBuyProps {
   setModalExpand: (b: boolean) => void;
@@ -16,9 +16,9 @@ export interface ModalBuyProps {
 
 const ModalBuy: React.FC<ModalBuyProps> = ({ setModalExpand, id }) => {
   const [session] = useState(randomstring.generate());
+  const router = useRouter()
   const [error, setError] = useState('');
   const [showQR, setShowQR] = useState(false);
-  const [success, setSuccess] = useState(false);
   const [isRN, setIsRN] = useState(false);
   const [loading, setLoading] = useState(false)
 
@@ -47,15 +47,22 @@ const ModalBuy: React.FC<ModalBuyProps> = ({ setModalExpand, id }) => {
     socket.on('NFT_BUY', (data) => {
       setLoading(false)
       console.log('NFT_BUY:' + data.success);
-      if (data.success) setSuccess(true);
-      else {
+      if (!data.success){
         setError('Something went wrong. Please try again.');
       }
       socket.emit('NFT_BUY_RECEIVED');
       socket.close();
-      setTimeout(() => {
-        setModalExpand(false);
-      }, 2000)
+      if (data.success){
+        setTimeout(() => {
+          navigateToSuccess(
+            router, 
+            "NFT purchased !", 
+            "Go back to your profile page", 
+            "/profile", 
+            false, 
+            "The NFT will soon appear in your profile page")
+        }, 1000)
+      }
     });
     socket.on('disconnect', () => {
       setModalExpand(false);
@@ -66,41 +73,27 @@ const ModalBuy: React.FC<ModalBuyProps> = ({ setModalExpand, id }) => {
   }, []);
 
   function manageTransaction() {
-    if (success) {
-      return (
-        <>
-          <CheckMark className={style.CheckMark} />
-          <div className={style.Text}>
-            Congratulations ! NFT successfully bought.
-          </div>
-          <Link href="/explore">
-            <a className={style.Button}>Back to explore</a>
-          </Link>
-        </>
-      );
-    } else {
-      return (
-        <>
-          <div className={style.Text}>
-            {isRN
-              ? 'Transaction in progress...'
-              : 'Flash the QR Code on your mobile wallet to buy this NFT'}
-          </div>
-          <div className={style.QR}>
-            {showQR &&
-              <QRCode data={{ session, socketUrl: SOCKET_URL, nft_id: id }} action={'BUY'} />
-            }
-            {loading && (
-              <div className={style.Loading}>
-                <span className={style.Dot}></span>
-                <span className={style.Dot}></span>
-                <span className={style.Dot}></span>
-              </div>
-            )}
-          </div>
-        </>
-      );
-    }
+    return (
+      <>
+        <div className={style.Text}>
+          {isRN
+            ? 'Transaction in progress...'
+            : 'Flash the QR Code on your mobile wallet to buy this NFT'}
+        </div>
+        <div className={style.QR}>
+          {showQR &&
+            <QRCode data={{ session, socketUrl: SOCKET_URL, nft_id: id }} action={'BUY'} />
+          }
+          {loading && (
+            <div className={style.Loading}>
+              <span className={style.Dot}></span>
+              <span className={style.Dot}></span>
+              <span className={style.Dot}></span>
+            </div>
+          )}
+        </div>
+      </>
+    );
   }
 
   return (

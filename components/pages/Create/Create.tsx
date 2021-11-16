@@ -16,6 +16,7 @@ import {
 import NftPreview from 'components/base/NftPreview';
 import { useCreateNftContext } from 'components/pages/Create/CreateNftContext';
 import { NFT_EFFECT_DEFAULT, NFT_EFFECT_SECRET, UserType } from 'interfaces';
+import Button from 'components/ui/Button';
 import Tooltip from 'components/ui/Tooltip';
 
 import { NFTProps } from 'pages/create';
@@ -208,12 +209,11 @@ const Create: React.FC<CreateProps> = ({
         <SAdvice>
           Once the information is entered, it will be impossible to modify it !
         </SAdvice>
-        <CreateButton
+        <Button
           disabled={!(isDataValid && user)}
           onClick={() => isDataValid && user && uploadFiles()}
-        >
-          Create NFT
-        </CreateButton>
+          text="Create NFT"
+        />
       </Wrapper>
       <Footer setNotAvailable={setNotAvailable} />
       <FloatingHeader user={user} setModalExpand={setModalExpand} />
@@ -300,34 +300,6 @@ const SAdvice = styled(Advice)`
 
   ${({ theme }) => theme.mediaQueries.xl} {
     margin: 7.2rem auto 0;
-  }
-`;
-
-const CreateButton = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  align-self: center;
-  background: #7417ea;
-  border: none;
-  border-radius: 4rem;
-  color: white;
-  cursor: pointer;
-  font-family: 'Airbnb Cereal App Bold';
-  font-size: 1.6rem;
-  margin-top: 2.4rem;
-  padding: 1.2rem 4.8rem;
-  transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-  z-index: 1;
-
-  &:hover {
-    color: white;
-    background-color: black;
-  }
-
-  &:disabled {
-    opacity: 0.4;
-    pointer-events: none;
   }
 `;
 

@@ -1,9 +1,3 @@
-export { Container, Wrapper } from './Container';
-export {
-  HiddenInput,
-  HiddenShell,
-  Input,
-  InputLabel,
-  InputShell,
-  Textarea,
-} from './Inputs';
+export * from './Container';
+export * from './Inputs';
+export * from './Typography';

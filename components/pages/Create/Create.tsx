@@ -3,11 +3,14 @@ import styled from 'styled-components';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
 import {
+  Advice,
   Container,
   Input,
   InputLabel,
   InputShell,
+  Insight,
   Textarea,
+  Title,
   Wrapper,
 } from 'components/layout';
 import NftPreview from 'components/base/NftPreview';
@@ -146,7 +149,7 @@ const Create: React.FC<CreateProps> = ({
             {/* TODO in the future with autocomplete */}
             {/* <InputShell>
               <InputLabel>
-                Categories<Insight>(optional)</Insight>
+                Categories<SInsight>(optional)</SInsight>
               </InputLabel>
               <Input
                 type="text"
@@ -161,7 +164,7 @@ const Create: React.FC<CreateProps> = ({
             {/* TODO in the future */}
             {/* <InputShell>
               <InputLabel>
-                Royalties<Insight>(max: 10%)</Insight>
+                Royalties<SInsight>(max: 10%)</SInsight>
               </InputLabel>
               <Input
                 type="text"
@@ -174,7 +177,7 @@ const Create: React.FC<CreateProps> = ({
 
             <InputShell>
               <InputLabel>
-                Quantity<Insight>(max: 10)</Insight>
+                Quantity<SInsight>(max: 10)</SInsight>
               </InputLabel>
               <Input
                 type="text"
@@ -190,7 +193,7 @@ const Create: React.FC<CreateProps> = ({
               <InputLabel>
                 Serie ID
                 <STooltip text="Specified your own serie id" />
-                <Insight>(optional)</Insight>
+                <SInsight>(optional)</SInsight>
               </InputLabel>
               <Input
                 type="text"
@@ -202,9 +205,9 @@ const Create: React.FC<CreateProps> = ({
             </InputShell>
           </Right>
         </Form>
-        <Advice>
+        <SAdvice>
           Once the information is entered, it will be impossible to modify it !
-        </Advice>
+        </SAdvice>
         <CreateButton
           disabled={!(isDataValid && user)}
           onClick={() => isDataValid && user && uploadFiles()}
@@ -217,19 +220,6 @@ const Create: React.FC<CreateProps> = ({
     </Container>
   );
 };
-
-const Title = styled.h2`
-  font-family: 'Airbnb Cereal App Bold';
-  font-size: 3.2rem;
-  line-height: 1.3;
-  margin: 0;
-  text-align: center;
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    font-size: 6.4rem;
-    text-align: left;
-  }
-`;
 
 const SNftPreview = styled(NftPreview)`
   width: 100%;
@@ -296,22 +286,15 @@ const InputShellDescription = styled(InputShell)`
   flex: 1;
 `;
 
-const Insight = styled.span`
-  color: #c1c1c1;
-  font-family: 'Airbnb Cereal App Book';
-  font-size: 1.2rem;
-  line-height: 1.3;
-  margin-left: 0.8rem;
-`;
-
 const STooltip = styled(Tooltip)`
   margin-left: 0.4rem;
 `;
 
-const Advice = styled.span`
-  color: #7417ea;
-  font-size: 1.6rem;
-  line-height: 1.3;
+const SInsight = styled(Insight)`
+  margin-left: 0.8rem;
+`;
+
+const SAdvice = styled(Advice)`
   margin: 4rem auto 0;
   text-align: center;
 

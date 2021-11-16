@@ -16,7 +16,7 @@ import { NftType, UserType } from 'interfaces';
 import { NextPageContext } from 'next';
 
 import { onModelClose, onModelOpen } from '../../utils/model-helpers';
-import { decryptCookie } from 'utils/cookie';
+import { decryptCookie, setUserFromDApp } from 'utils/cookie';
 import { getUserIp } from 'utils/functions';
 import { MARKETPLACE_ID } from 'utils/constant';
 
@@ -33,6 +33,10 @@ const NftPage: React.FC<NFTPageProps> = ({ user, NFT, capsValue }) => {
   const [notAvailable, setNotAvailable] = useState(false);
   const [type, setType] = useState<string | null>(null);
   const [walletUser, setWalletUser] = useState(user);
+
+  useEffect(() => {
+    setUserFromDApp(setWalletUser)
+  }, []);
 
   useEffect(() => {
     async function callBack() {

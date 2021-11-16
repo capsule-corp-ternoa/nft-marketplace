@@ -43,7 +43,7 @@ const ModalMint: React.FC<ModalProps> = ({
   const [alreadySentSocketTimeout, setAlreadySentSocketTimeout] = useState(false)
   const [stateSocket, setStateSocket] = useState<any>(null)
   const router = useRouter();
-  const { description } = NFTData;
+  const { description, name } = NFTData;
   const progressQuantity = 1 + Number(quantity)
   const elapsedUploadTime = (startUploadTime && startUploadTime instanceof Date) ? (+new Date() - +startUploadTime) : 0
   const generalPercentage = () => {

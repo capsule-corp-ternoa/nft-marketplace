@@ -138,9 +138,8 @@ const NftPreview = ({ className, isRN }: Props) => {
           {NFT_EFFECTS_ORDERED.filter((effectType) =>
             handleAllowedEffect(secretNFT, effectType)
           ).map((effectType) => (
-            <>
+            <SLabelWrapper key={effectType}>
               <SLabel
-                key={effectType}
                 htmlFor={`NftType_${effectType}`}
                 isSelected={effect === effectType}
               >
@@ -164,7 +163,7 @@ const NftPreview = ({ className, isRN }: Props) => {
                   value={effectType}
                 />
               </HiddenShell>
-            </>
+            </SLabelWrapper>
           ))}
         </SFieldset>
       )}
@@ -234,17 +233,22 @@ const SFieldset = styled.fieldset`
   padding: 0;
 `;
 
+const SLabelWrapper = styled.label<{ isSelected?: boolean }>`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  flex: 1 1 0;
+  flex-direction: column;
+  max-width: 280px;
+`;
+
 const SLabel = styled.label<{ isSelected?: boolean }>`
+  width: 100%;
+  height: auto;
   background: transparent;
   border: 3px solid rgb(0, 0, 0, 0);
   border-radius: 2rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  flex: 1 1 0;
-  flex-direction: column;
   padding: 0.8rem 0.8rem 2.4rem;
-  max-width: 280px;
 
   &:hover {
     border: 3px dashed #7417ea;

@@ -4,43 +4,34 @@ import style from './ModalMint.module.scss';
 import Close from 'components/assets/close';
 import randomstring from 'randomstring';
 import QRCode from 'components/base/QRCode';
+import { useCreateNftContext } from 'components/pages/Create/CreateNftContext';
+import mime from 'mime-types';
 import { useRouter } from 'next/router'
 import { connect as connectIo, socketWaitForEvent } from 'utils/socket/socket.helper';
 import { SOCKET_URL } from 'utils/constant';
+import { getFilehash, generateSeriesId, cryptAndUploadNFT, uploadIPFS } from 'utils/nftEncryption'
 import { Circle } from 'rc-progress';
 
+import { NFTProps } from 'pages/create';
+
 export interface ModalProps {
+  NFTData: NFTProps;
   setModalCreate: (b: boolean) => void;
-  processed: boolean;
-  error: string;
-  setError: (s: string) => void;
-  output: string[];
-  QRData: any;
-  uploadNFT: (
-    publicPGPs: string[],
-    setProgressData?: (n: number[]) => void,
-  ) => Promise<{
-    nftUrls: string[];
-    seriesId: number | null;
-  }>;
-  uploadSize: number;
   runNFTMintData: any,
   setRunNFTMintData: (data: any) => void;
 }
 
 const ModalMint: React.FC<ModalProps> = ({
+  NFTData,
   setModalCreate,
-  error,
-  setError,
-  output,
-  QRData,
-  uploadNFT,
-  uploadSize,
   runNFTMintData,
   setRunNFTMintData
 }) => {
+  const { createNftData, setError } = useCreateNftContext() ?? {};
+  const { error, NFT, output, QRData, secretNFT, uploadSize } = createNftData ?? {};
+
   const [session] = useState(randomstring.generate());
-  const { walletId, quantity } = QRData;
+  const { walletId, quantity } = QRData ?? {};
   const [showQR, setShowQR] = useState(false);
   const [qrAction, setQrAction] = useState('MINT')
   const [qrRetry, setQrRetry] = useState(false)
@@ -52,6 +43,7 @@ const ModalMint: React.FC<ModalProps> = ({
   const [alreadySentSocketTimeout, setAlreadySentSocketTimeout] = useState(false)
   const [stateSocket, setStateSocket] = useState<any>(null)
   const router = useRouter();
+  const { description } = NFTData;
   const progressQuantity = 1 + Number(quantity)
   const elapsedUploadTime = (startUploadTime && startUploadTime instanceof Date) ? (+new Date() - +startUploadTime) : 0
   const generalPercentage = () => {
@@ -65,7 +57,9 @@ const ModalMint: React.FC<ModalProps> = ({
     }
     return Math.ceil(percentage)
   }
-  const speed = Math.floor((uploadSize * (generalPercentage() / 100)) / elapsedUploadTime)
+  const speed = Math.floor(
+    ((uploadSize ?? 0) * (generalPercentage() / 100)) / elapsedUploadTime
+  );
   const remainingTime = Math.ceil(((elapsedUploadTime / generalPercentage()) * (100 - generalPercentage())))
   const handleMintSocketProcess = () => {
     const socket = connectIo(`/socket/createNft`, { session, socketUrl: SOCKET_URL }, undefined, 20 * 60 * 1000);
@@ -87,7 +81,7 @@ const ModalMint: React.FC<ModalProps> = ({
 
     socket.once('CONNECTION_FAILURE', (data: any) => {
       console.error('connection failure socket', data)
-      setError(data.msg)
+      if (setError !== undefined) setError(data.msg);
     });
     socket.once('PGPS_READY', async ({ publicPgpKeys }: { publicPgpKeys: string[] }) => {
       socket.emit('PGPS_READY_RECEIVED')
@@ -117,7 +111,7 @@ const ModalMint: React.FC<ModalProps> = ({
           }
         }
       }else{
-        setError('Please try again.');
+        if (setError !== undefined) setError('Please try again.');
       }
     });
     socket.once('MINTING_NFT', ({ success }: { success: boolean }) => {
@@ -138,17 +132,71 @@ const ModalMint: React.FC<ModalProps> = ({
       }
     };
   }
+
+  async function uploadNFT(publicPGPs: string[], setProgressData?: Function) {
+    try {
+      if (!secretNFT) throw new Error();
+      const { hashOrURL: previewHash, mediaType } = await uploadIPFS(NFT ? NFT : secretNFT, setProgressData, 0);
+      const fileHash = await getFilehash(secretNFT)
+      const seriesId = generateSeriesId(fileHash)
+      const cryptedMediaType = mime.lookup(secretNFT.name)
+      //Parallel
+      const cryptPromises = Array.from({ length: quantity ?? 0 }).map((_x, i) => {
+        return cryptAndUploadNFT(secretNFT, cryptedMediaType as string, publicPGPs[i] as string, setProgressData, 1 + i)
+      })
+      const cryptResults = await Promise.all(cryptPromises);
+      /* SEQUENTIAL
+      const cryptResults = [] as any
+      for (let i=0; i<quantity; i++){
+        const singleResult = await cryptAndUploadNFT(secretNFT, cryptedMediaType as string, publicPGPs[i] as string, setProgressData, 1+i)
+        cryptResults.push(singleResult)
+      }*/
+      const cryptNFTsJSONs = cryptResults.map((r: any) => r[0]);
+      const publicPGPsIPFS = cryptResults.map((r: any) => r[1]);
+      const results = cryptNFTsJSONs.map((result: any, i: number) => {
+        const data = {
+          title: name,
+          description,
+          image: previewHash,
+          properties: {
+            publicPGP: publicPGPsIPFS[i].hashOrURL,
+            preview: {
+              ipfs: previewHash,
+              mediaType
+            },
+            cryptedMedia: {
+              ipfs: result.hashOrURL,
+              cryptedMediaType
+            }
+          },
+        }
+        const finalBlob = new Blob([JSON.stringify(data)], { type: 'application/json' })
+        const finalFile = new File([finalBlob], "final json")
+        return uploadIPFS(finalFile);
+      });
+      const JSONHASHES = (await Promise.all(results));
+      return { nftUrls: JSONHASHES as any[], seriesId: (seriesId ? seriesId : null) };
+    } catch (err) {
+      if (setError !== undefined) setError('Please try again.');
+      console.log(err);
+      return { nftUrls: [] as any[], seriesId: 0 };
+    }
+  }
+
   useEffect(() => {
+    console.log('useEffect 1')
     setIsRN(window.isRNApp);
   }, []);
 
   useEffect(() => {
-    if (output.length > 0) {
+    console.log('useEffect 2')
+    if (output !== undefined && output.length > 0) {
       handleMintSocketProcess();
     }
   }, [output])
 
   useEffect(() => {
+    console.log('useEffect 3')
     if (stateSocket && runNFTMintData) {
       stateSocket.once('WALLET_READY', () => {
         stateSocket.emit('RUN_NFT_MINT', runNFTMintData)
@@ -158,6 +206,7 @@ const ModalMint: React.FC<ModalProps> = ({
   }, [runNFTMintData])
 
   useEffect(() => {
+    console.log('useEffect 4')
     if (!alreadySentSocketTimeout && speed && stateSocket && stateSocket.connected && elapsedUploadTime>5000) {
       stateSocket.emit('UPLOAD_REMAINING_TIME', { remainingTime })
       setAlreadySentSocketTimeout(true)

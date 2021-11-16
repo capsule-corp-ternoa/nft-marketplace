@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
@@ -12,10 +12,16 @@ import {
 } from 'components/base/Layout';
 import NftPreview from 'components/base/NftPreview';
 import { useCreateNftContext } from 'components/pages/Create/CreateNftContext';
+import {
+  NFT_EFFECT_BLUR,
+  NFT_EFFECT_DEFAULT,
+  NFT_EFFECT_PROTECT,
+  NFT_EFFECT_SECRET,
+  NFT_FILE_TYPE_IMAGE,
+  UserType,
+} from 'interfaces';
 import Tooltip from 'ui/components/Tooltip';
-import { NFT_EFFECT_SECRET, NFT_FILE_TYPE_IMAGE } from 'interfaces';
-
-import { UserType } from 'interfaces/index';
+import { imgToBlur, imgToWatermark } from 'utils/imageProcessing/image';
 
 import { NFTProps } from 'pages/create';
 
@@ -26,8 +32,6 @@ export interface CreateProps {
   setModalCreate: (b: boolean) => void;
   NFTData: NFTProps;
   setNFTData: (o: NFTProps) => void;
-  processFile: (blurredValue?: number) => Promise<void>;
-  setProcessed: (b: boolean) => void;
 }
 
 const Create: React.FC<CreateProps> = ({
@@ -37,14 +41,19 @@ const Create: React.FC<CreateProps> = ({
   NFTData: initalValue,
   setNFTData: setNftDataToParent,
   user,
-  processFile,
-  setProcessed,
 }) => {
-  const { createNftData, setError } = useCreateNftContext() ?? {};
-  const { blurredValue, effect, NFT, secretNFT } = createNftData ?? {};
+  const {
+    createNftData,
+    setError,
+    setNFT,
+    setOutput,
+    setQRData,
+    setUploadSize,
+  } = useCreateNftContext() ?? {};
+  const { blurredValue, effect, NFT, QRData, secretNFT } = createNftData ?? {};
 
   const [nftData, setNFTData] = useState(initalValue);
-  const { name, description, quantity } = nftData;
+  const { category, description, name, quantity, seriesId } = nftData;
 
   const validateQuantity = (value: number, limit: number) => {
     return value > 0 && value <= limit;
@@ -67,29 +76,91 @@ const Create: React.FC<CreateProps> = ({
     setNftDataToParent(nextNftData);
   }
 
-  function uploadFiles() {
-    if (
-      !name ||
-      !description ||
-      !quantity ||
-      quantity > 10 ||
-      secretNFT === null ||
-      (effect === NFT_EFFECT_SECRET && NFT === null)
-    ) {
-      if (setError !== undefined) setError('Please fill the form entirely.');
-      setModalCreate(true);
-      return false;
+  function initMintingNFT(processedFile?: File) {
+    if (!user) throw new Error('Please login to create an NFT.');
+    if (!(NFT || processedFile) && !(effect === NFT_EFFECT_DEFAULT))
+      throw new Error('Elements are undefined');
+    setQRData!({
+      ...QRData,
+      quantity,
+    });
+    setOutput!([quantity.toString()]);
+  }
+
+  async function processFile() {
+    try {
+      if (!secretNFT || !setNFT) {
+        throw new Error();
+      }
+      if (setOutput !== undefined) setOutput([]);
+      if (setError !== undefined) setError('');
+
+      const newProcessedFile = new File([secretNFT], 'NFT', {
+        type: secretNFT.type,
+      });
+      let res;
+
+      if (effect === NFT_EFFECT_BLUR && blurredValue !== undefined) {
+        res = await imgToBlur(newProcessedFile, blurredValue);
+      } else if (effect === NFT_EFFECT_PROTECT) {
+        res = await imgToWatermark(newProcessedFile);
+      }
+      const blob = await (await fetch(res as string)).blob();
+      const file = new File([blob], secretNFT.name, {
+        type: secretNFT.type,
+      });
+      setNFT(file);
+      return file;
+    } catch (err) {
+      if (setError !== undefined) setError('Please try again.');
+      console.log(err);
+      return undefined;
     }
+  }
+
+  async function uploadFiles() {
     if (
-      secretNFT!.type.substr(0, 5) === NFT_FILE_TYPE_IMAGE &&
+      secretNFT &&
+      secretNFT.type.substr(0, 5) === NFT_FILE_TYPE_IMAGE &&
+      effect !== NFT_EFFECT_DEFAULT &&
       effect !== NFT_EFFECT_SECRET
     ) {
-      processFile(blurredValue);
+      const processedFile = await processFile();
+      if (processedFile !== undefined) {
+        initMintingNFT(processedFile);
+      }
     } else {
-      setProcessed(true);
+      initMintingNFT();
     }
     setModalCreate(true);
   }
+
+  useEffect(() => {
+    if (
+      secretNFT &&
+      quantity &&
+      Number(quantity) > 0 &&
+      setUploadSize !== undefined
+    ) {
+      const previewSize = NFT ? NFT.size : secretNFT.size;
+      const secretsSize = secretNFT.size * Number(quantity);
+      setUploadSize(previewSize + secretsSize);
+    }
+  }, [quantity, NFT, secretNFT]);
+
+  useEffect(() => {
+    if (
+      user &&
+      user.walletId &&
+      setQRData !== undefined &&
+      QRData !== undefined
+    ) {
+      setQRData({
+        ...QRData,
+        walletId: user.walletId,
+      });
+    }
+  }, [user]);
 
   return (
     <Container>
@@ -126,14 +197,16 @@ const Create: React.FC<CreateProps> = ({
               </InputLabel>
               <Input
                 type="text"
+                disabled
                 placeholder="NFT Category"
                 onChange={onChange}
-                name="name"
-                value={name}
+                name="category"
+                value={category}
               />
             </InputShell>
 
-            <InputShell>
+            {/* TODO in the future */}
+            {/* <InputShell>
               <InputLabel>
                 Royalties<Insight>(max: 10%)</Insight>
               </InputLabel>
@@ -141,10 +214,10 @@ const Create: React.FC<CreateProps> = ({
                 type="text"
                 placeholder="Enter royalties"
                 onChange={onChange}
-                name="name"
-                value={name}
+                name="royalties"
+                value={royalties}
               />
-            </InputShell>
+            </InputShell> */}
 
             <InputShell>
               <InputLabel>
@@ -170,8 +243,8 @@ const Create: React.FC<CreateProps> = ({
                 type="text"
                 placeholder="Enter ID"
                 onChange={onChange}
-                name="name"
-                value={name}
+                name="seriesId"
+                value={seriesId}
               />
             </InputShell>
           </Right>

@@ -25,11 +25,6 @@ export const InputShell = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-top: 4rem;
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    margin-top: 6.4rem;
-  }
 `;
 
 export const InputLabel = styled.h4`

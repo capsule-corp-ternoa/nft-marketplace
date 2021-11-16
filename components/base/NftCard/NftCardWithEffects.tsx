@@ -31,20 +31,20 @@ const DefaultEffect = css`
   position: absolute;
   transform: translateZ(0);
 `;
-const IMGDefaultEffect = styled.img<{ blurredValue: number }>`
+const SImage = styled.img<{ blurredValue: number }>`
   ${DefaultEffect}
   filter: ${({ blurredValue }) => `blur(${blurredValue}px)`};
   backdrop-filter: ${({ blurredValue }) => `blur(${blurredValue}px)`};
   -webkit-backdrop-filter: ${({ blurredValue }) => `blur(${blurredValue}px)`};
 `;
-const VideoDefaultEffect = styled.video`
+const SVideo = styled.video`
   ${DefaultEffect}
 `;
 
 function returnType(NFTarg: File, blurredValue: number = 0) {
   if (NFTarg!.type.substr(0, 5) === NFT_FILE_TYPE_IMAGE) {
     return (
-      <IMGDefaultEffect
+      <SImage
         alt="img"
         blurredValue={blurredValue}
         id="output"
@@ -53,7 +53,7 @@ function returnType(NFTarg: File, blurredValue: number = 0) {
     );
   } else if (NFTarg!.type.substr(0, 5) === NFT_FILE_TYPE_VIDEO) {
     return (
-      <VideoDefaultEffect
+      <SVideo
         autoPlay
         muted
         playsInline
@@ -61,7 +61,7 @@ function returnType(NFTarg: File, blurredValue: number = 0) {
         key={NFTarg.name + NFTarg.lastModified}
       >
         <source id="outputVideo" src={URL.createObjectURL(NFTarg)} />
-      </VideoDefaultEffect>
+      </SVideo>
     );
   }
 }
@@ -88,7 +88,7 @@ const NftCardWithEffects = ({ className, effect }: Props) => {
   };
 
   return (
-    <MediaWrapper className={className}>
+    <SWrapper className={className}>
       {returnType(secretNFT!, effect === NFT_EFFECT_BLUR ? blurredValue : 0)}
       {effect === NFT_EFFECT_BLUR && (
         <SSlider
@@ -102,17 +102,11 @@ const NftCardWithEffects = ({ className, effect }: Props) => {
           value={blurredValue}
         />
       )}
-      {effect === NFT_EFFECT_PROTECT && (
-        <WaterMark>
-          <WaterMarkWrapper>
-            <WhiteWaterMarkIcon />
-          </WaterMarkWrapper>
-        </WaterMark>
-      )}
+      {effect === NFT_EFFECT_PROTECT && <SWhiteWaterMarkIcon />}
       {effect === NFT_EFFECT_SECRET && (
-        <SecretWrapper>
+        <SSecretWrapper>
           {NFT === null || NFT === undefined ? (
-            <SecretUpload
+            <NftUpload
               content={
                 <SecretUploadDescription>
                   <SecretUploadTopDescription>
@@ -128,24 +122,22 @@ const NftCardWithEffects = ({ className, effect }: Props) => {
               note={`PNG, GIF, WEBP, MP4 or MP3. Max 30mb.`}
             />
           ) : (
-            <SecretMediaWrapper
-              content={returnType(NFT)}
-              inputId="reUploadSecretNft"
-              isMinimal
-              isSecretOption
-            />
+            <SCoverWrapper>
+              <NftUpload
+                content={returnType(NFT)}
+                inputId="reUploadSecretNft"
+                isMinimal
+                isSecretOption
+              />
+            </SCoverWrapper>
           )}
-          <SecretChip
-            color="transparent"
-            icon={<SecretChipIcon />}
-            text="Secret"
-          />
-        </SecretWrapper>
+          <SChip color="transparent" icon={<SChipIcon />} text="Secret" />
+        </SSecretWrapper>
       )}
-    </MediaWrapper>
+    </SWrapper>
   );
 };
-const MediaWrapper = styled.div`
+const SWrapper = styled.div`
   position: relative;
   width: 100%;
   border-radius: 1.2rem;
@@ -154,7 +146,7 @@ const MediaWrapper = styled.div`
   overflow: hidden;
 `;
 
-const SecretMediaWrapper = styled(NftUpload)`
+const SCoverWrapper = styled.div`
   position: relative;
   width: 100%;
   height: 320px;
@@ -172,23 +164,7 @@ const SSlider = styled(Slider)`
   z-index: 10;
 `;
 
-const WaterMark = styled.div`
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  border-radius: 1.2rem;
-`;
-
-const WaterMarkWrapper = styled.div`
-  position: relative;
-  width: 100%;
-  height: 100%;
-  border-radius: 1.2rem;
-`;
-
-const WhiteWaterMarkIcon = styled(WhiteWaterMark)`
+const SWhiteWaterMarkIcon = styled(WhiteWaterMark)`
   width: 10rem;
   position: absolute;
   bottom: 1.6rem;
@@ -200,7 +176,7 @@ const WhiteWaterMarkIcon = styled(WhiteWaterMark)`
   }
 `;
 
-const SecretWrapper = styled.div`
+const SSecretWrapper = styled.div`
   position: absolute;
   top: 0;
   left: 0;
@@ -216,12 +192,6 @@ const SecretWrapper = styled.div`
   }
 `;
 
-const SecretUpload = styled(NftUpload)`
-  width: auto;
-  height: auto;
-  border: none;
-`;
-
 const SecretUploadDescription = styled.div`
   display: flex;
   flex-direction: column;
@@ -231,16 +201,16 @@ const SecretUploadDescription = styled.div`
 
 const SecretUploadTopDescription = styled.span`
   color: #7417ea;
-  font-family: 'Airbnb Cereal App Bold';
+  font-family: ${({ theme }) => theme.fonts.bold};
   margin-bottom: 0.8rem;
 `;
 
-const SecretChip = styled(Chip)`
+const SChip = styled(Chip)`
   width: fit-content;
   margin: 2.4rem auto 0;
 `;
 
-const SecretChipIcon = styled(WhiteWaterMark)`
+const SChipIcon = styled(WhiteWaterMark)`
   width: 1.6rem;
   height: 1.6rem;
 `;

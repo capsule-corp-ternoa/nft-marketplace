@@ -122,9 +122,11 @@ const Create: React.FC<CreateProps> = ({
     <Container>
       <Wrapper>
         <Title>Create your NFT</Title>
-        <SNftPreview />
-        <Form>
-          <Left>
+        <SNftPreviewWrapper>
+          <NftPreview />
+        </SNftPreviewWrapper>
+        <SForm>
+          <SLeft>
             <InputShell>
               <InputLabel>Name</InputLabel>
               <Input
@@ -136,7 +138,7 @@ const Create: React.FC<CreateProps> = ({
               />
             </InputShell>
 
-            <InputShellDescription>
+            <SInputShellDescription>
               <InputLabel>Description</InputLabel>
               <Textarea
                 placeholder="Tell about the NFT in a few words..."
@@ -144,9 +146,9 @@ const Create: React.FC<CreateProps> = ({
                 value={description}
                 onChange={onChange}
               />
-            </InputShellDescription>
-          </Left>
-          <Right>
+            </SInputShellDescription>
+          </SLeft>
+          <SRight>
             {/* TODO in the future with autocomplete */}
             {/* <InputShell>
               <InputLabel>
@@ -204,12 +206,12 @@ const Create: React.FC<CreateProps> = ({
                 value={seriesId}
               />
             </InputShell>
-          </Right>
-        </Form>
+          </SRight>
+        </SForm>
         <SAdvice>
           Once the information is entered, it will be impossible to modify it !
         </SAdvice>
-        <Button
+        <SButton
           disabled={!(isDataValid && user)}
           onClick={() => isDataValid && user && uploadFiles()}
           text="Create NFT"
@@ -221,9 +223,7 @@ const Create: React.FC<CreateProps> = ({
   );
 };
 
-const SNftPreview = styled(NftPreview)`
-  width: 100%;
-  height: auto;
+const SNftPreviewWrapper = styled.div`
   margin-top: 3.2rem;
 
   ${({ theme }) => theme.mediaQueries.md} {
@@ -231,7 +231,7 @@ const SNftPreview = styled(NftPreview)`
   }
 `;
 
-const Form = styled.form`
+const SForm = styled.form`
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -253,11 +253,21 @@ const Form = styled.form`
   }
 `;
 
-const Left = styled.div`
-  > :first-child {
-    margin-top: 0;
-  }
+const FormSideLayout = styled.div`
+  > * {
+    margin-top: 4rem;
 
+    ${({ theme }) => theme.mediaQueries.md} {
+      margin-top: 6.4rem;
+    }
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+`;
+
+const SLeft = styled(FormSideLayout)`
   ${({ theme }) => theme.mediaQueries.md} {
     border-right: 1px solid #e0e0e0;
     padding-right: 4.8rem;
@@ -268,13 +278,9 @@ const Left = styled.div`
   }
 `;
 
-const Right = styled.div`
+const SRight = styled(FormSideLayout)`
   ${({ theme }) => theme.mediaQueries.md} {
     padding-left: 4.8rem;
-
-    > :first-child {
-      margin-top: 0;
-    }
   }
 
   ${({ theme }) => theme.mediaQueries.xl} {
@@ -282,7 +288,7 @@ const Right = styled.div`
   }
 `;
 
-const InputShellDescription = styled(InputShell)`
+const SInputShellDescription = styled(InputShell)`
   flex: 1;
 `;
 
@@ -301,6 +307,10 @@ const SAdvice = styled(Advice)`
   ${({ theme }) => theme.mediaQueries.xl} {
     margin: 7.2rem auto 0;
   }
+`;
+
+const SButton = styled(Button)`
+  margin-top: 4.8rem;
 `;
 
 export default Create;

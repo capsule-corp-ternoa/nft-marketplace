@@ -3,7 +3,9 @@ import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
 import Eye from 'components/assets/eye';
 import NftUpload from 'components/base/NftUpload';
+import { Subtitle } from 'components/layout';
 import { useCreateNftContext } from 'components/pages/Create/CreateNftContext';
+import Select from 'components/ui/Select';
 import {
   NftEffectType,
   NFT_EFFECT_BLUR,
@@ -13,7 +15,6 @@ import {
   NFT_FILE_TYPE_GIF,
   NFT_FILE_TYPE_VIDEO,
 } from 'interfaces';
-import Select from 'components/ui/Select';
 import { breakpointMap } from 'style/theme/base';
 
 import NftPreviewCard from './NftPreviewCard';
@@ -72,22 +73,24 @@ const NftPreview = ({ className }: Props) => {
   return (
     <div className={className}>
       {secretNFT && (
-        <NftPreviewHeader>
-          <Title>
-            <EyeIcon />
+        <SHeader>
+          <Subtitle>
+            <SEyeIcon />
             NFT Preview
-          </Title>
+          </Subtitle>
           {secretNFT.name && (
-            <Reupload
-              content={secretNFT.name}
-              inputId="reUploadNft"
-              isMinimal
-            />
+            <SReuploadWrapper>
+              <NftUpload
+                content={secretNFT.name}
+                inputId="reUploadNft"
+                isMinimal
+              />
+            </SReuploadWrapper>
           )}
-        </NftPreviewHeader>
+        </SHeader>
       )}
       {isMobile && effect !== undefined ? (
-        <NftPreviewCardSelection>
+        <SWrapper>
           <NftPreviewCard effect={effect} isSelected />
           <SSelect text={effect}>
             {(setSelectExpanded) => (
@@ -111,10 +114,10 @@ const NftPreview = ({ className }: Props) => {
               </>
             )}
           </SSelect>
-          <Separator />
-        </NftPreviewCardSelection>
+          <SSeparator />
+        </SWrapper>
       ) : (
-        <NftPreviewCardList>
+        <SFieldset>
           {NFT_EFFECTS_ORDERED.filter(handleAllowedEffect).map(
             (effectType, id) => (
               <NftPreviewCard
@@ -124,13 +127,13 @@ const NftPreview = ({ className }: Props) => {
               />
             )
           )}
-        </NftPreviewCardList>
+        </SFieldset>
       )}
     </div>
   );
 };
 
-const NftPreviewHeader = styled.div`
+const SHeader = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -143,23 +146,13 @@ const NftPreviewHeader = styled.div`
   }
 `;
 
-const Title = styled.h3`
-  display: flex;
-  align-items: end;
-  justify-content: center;
-  font-family: 'Airbnb Cereal App Medium';
-  font-size: 2rem;
-  line-height: 1.3;
-  margin: 0;
-`;
-
-const EyeIcon = styled(Eye)`
+const SEyeIcon = styled(Eye)`
   width: 2.4rem;
   margin-right: 1rem;
   fill: black;
 `;
 
-const Reupload = styled(NftUpload)`
+const SReuploadWrapper = styled.div`
   margin: 1.6rem 0 0;
 
   ${({ theme }) => theme.mediaQueries.md} {
@@ -168,7 +161,7 @@ const Reupload = styled(NftUpload)`
   }
 `;
 
-const NftPreviewCardSelection = styled.div`
+const SWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -179,13 +172,13 @@ const SSelect = styled(Select)`
   margin-top: 2.4rem;
 `;
 
-const Separator = styled.div`
+const SSeparator = styled.div`
   width: 15rem;
   border-bottom: 2px solid #e0e0e0;
   margin-top: 3.2rem;
 `;
 
-const NftPreviewCardList = styled.fieldset`
+const SFieldset = styled.fieldset`
   width: 100%;
   display: flex;
   justify-content: center;

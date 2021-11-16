@@ -34,25 +34,25 @@ const NftPreviewCard = ({ effect, isSelected = false }: Props) => {
 
   if (isMobile) {
     return (
-      <CardWrapper>
+      <SMobileWrapper>
         <NftCardWithEffects effect={effect} />
-      </CardWrapper>
+      </SMobileWrapper>
     );
   }
 
   return (
     <>
-      <NftPreviewCardWrapper
-        htmlFor={`NftType_${effect}`}
-        isSelected={isSelected}
-      >
-        <SNftCardWithEffects effect={effect} isSelected={isSelected} />
+      <SLabel htmlFor={`NftType_${effect}`} isSelected={isSelected}>
+        <SWrapper isSelected={isSelected}>
+          <NftCardWithEffects effect={effect} />
+        </SWrapper>
+
         <SRadio
           checked={isSelected}
           label={effect}
           onChange={handleCardSelect}
         />
-      </NftPreviewCardWrapper>
+      </SLabel>
 
       <HiddenShell>
         <HiddenInput
@@ -67,14 +67,14 @@ const NftPreviewCard = ({ effect, isSelected = false }: Props) => {
   );
 };
 
-const CardWrapper = styled.div`
+const SMobileWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
   filter: drop-shadow(0px 0px 10.4276px rgba(0, 0, 0, 0.25));
 `;
 
-const NftPreviewCardWrapper = styled.label<{ isSelected?: boolean }>`
+const SLabel = styled.label<{ isSelected?: boolean }>`
   background: transparent;
   border: 3px solid rgb(0, 0, 0, 0);
   border-radius: 2rem;
@@ -97,7 +97,9 @@ const NftPreviewCardWrapper = styled.label<{ isSelected?: boolean }>`
   `}
 `;
 
-const SNftCardWithEffects = styled(NftCardWithEffects)<{ isSelected: boolean }>`
+const SWrapper = styled.div<{ isSelected: boolean }>`
+  width: 100%;
+  height: auto;
   opacity: ${({ isSelected }) => (isSelected ? 1 : 0.4)};
 `;
 

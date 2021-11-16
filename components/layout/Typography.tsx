@@ -8,10 +8,24 @@ export const Advice = styled.span`
 `;
 
 export const Insight = styled.span`
-  color: #c1c1c1;
+  color: #b1b1b1;
   font-family: ${({ theme }) => theme.fonts.regular};
   font-size: 1.2rem;
   line-height: 1.3;
+`;
+
+export const InsightLight = styled(Insight)`
+  font-family: ${({ theme }) => theme.fonts.light};
+`;
+
+export const Subtitle = styled.h3`
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  font-family: ${({ theme }) => theme.fonts.medium};
+  font-size: 2rem;
+  line-height: 1.3;
+  margin: 0;
 `;
 
 export const Title = styled.h2`

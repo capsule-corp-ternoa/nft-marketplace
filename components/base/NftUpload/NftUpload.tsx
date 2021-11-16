@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Upload from 'components/assets/upload';
-import { HiddenInput, HiddenShell } from 'components/layout';
+import { HiddenInput, HiddenShell, InsightLight } from 'components/layout';
 import { useCreateNftContext } from 'components/pages/Create/CreateNftContext';
-import { NFT_EFFECT_DEFAULT, NFT_EFFECT_SECRET } from 'interfaces';
 import Chip from 'components/ui/Chip';
+import { NFT_EFFECT_DEFAULT, NFT_EFFECT_SECRET } from 'interfaces';
 
 interface Props {
   className?: string;
@@ -107,32 +107,30 @@ const NftUpload = ({
   }
 
   return (
-    <NftUploadWrapper className={className}>
-      <NftUploadArea htmlFor={inputId} isSecretOption={isSecretOption}>
-        <Content isSmall={isSecretOption}>
-          {isSecretOption && (
-            <Chip color="primaryInverted" text="Secret option" />
-          )}
-          {!isSecretOption && <UploadIcon />}
-          {content && (
-            <InsightMedium isSmall={isSecretOption}>{content}</InsightMedium>
-          )}
-          {isSecretOption && <UploadIcon isSmall />}
-          {note && <InsightLight isSmall={isSecretOption}>{note}</InsightLight>}
-        </Content>
+    <SLabel htmlFor={inputId} isSecretOption={isSecretOption}>
+      <SWrapper isSmall={isSecretOption}>
+        {isSecretOption && (
+          <Chip color="primaryInverted" text="Secret option" />
+        )}
+        {!isSecretOption && <SUploadIcon />}
+        {content && (
+          <SInsightMedium isSmall={isSecretOption}>{content}</SInsightMedium>
+        )}
+        {isSecretOption && <SUploadIcon isSmall />}
+        {note && <InsightLight>{note}</InsightLight>}
+      </SWrapper>
 
-        <HiddenShell>
-          <HiddenInput
-            type="file"
-            id={inputId}
-            onChange={(event) =>
-              updateFile(event, isSecretOption ? setNFT : setSecretNFT)
-            }
-            accept={acceptedFileTypes.join(',')}
-          />
-        </HiddenShell>
-      </NftUploadArea>
-    </NftUploadWrapper>
+      <HiddenShell>
+        <HiddenInput
+          type="file"
+          id={inputId}
+          onChange={(event) =>
+            updateFile(event, isSecretOption ? setNFT : setSecretNFT)
+          }
+          accept={acceptedFileTypes.join(',')}
+        />
+      </HiddenShell>
+    </SLabel>
   );
 };
 
@@ -144,15 +142,12 @@ const Label = styled.label`
   font-style: italic;
 `;
 
-const NftUploadWrapper = styled.div<{ className?: string }>`
-  box-sizing: border-box;
-
-  ${({ className }) => className}
-`;
-
-const NftUploadArea = styled.label<{ isSecretOption?: boolean }>`
+const SLabel = styled.label<{ isSecretOption?: boolean }>`
+  width: 100%;
+  height: auto;
   background: white;
   display: flex;
+  justify-content: center;
   position: relative;
   border: 3px dashed #7417ea;
   border-radius: 1.6rem;
@@ -167,37 +162,35 @@ const NftUploadArea = styled.label<{ isSecretOption?: boolean }>`
   `}
 `;
 
-const Content = styled.div<{ isSmall?: boolean }>`
+const SWrapper = styled.div<{ isSmall?: boolean }>`
   display: flex;
   flex-direction: column;
   padding: ${({ isSmall }) => (isSmall ? 0 : '8rem 2.4rem')};
   width: 100%;
+  max-width: ${({ isSmall }) => (isSmall ? '16rem' : '26rem')};
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  text-align: center;
+
+  > * {
+    margin-top: 1.6rem;
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
 `;
 
-const UploadIcon = styled(Upload)<{ isSmall?: boolean }>`
+const SUploadIcon = styled(Upload)<{ isSmall?: boolean }>`
   width: ${({ isSmall }) => (isSmall ? '4rem' : '8rem')};
 `;
 
-const Insight = styled.div<{ isSmall?: boolean }>`
-  font-family: 'Airbnb Cereal App Light';
-  font-size: ${({ isSmall }) => (isSmall ? '1rem' : '1.2rem')};
-  line-height: 1.3;
-  text-align: center;
-`;
 
-const InsightMedium = styled(Insight)<{ isSmall?: boolean }>`
+const SInsightMedium = styled(InsightLight)<{ isSmall?: boolean }>`
   color: #686464;
+  font-size: ${({ isSmall }) => (isSmall ? '1.2rem' : '1.6rem')};
   margin: 1.6rem 0;
-  max-width: 16rem;
-`;
-
-const InsightLight = styled(Insight)<{ isSmall?: boolean }>`
-  color: #b1b1b1;
-  margin-top: ${({ isSmall }) => (isSmall ? '1.6rem' : '0')};
-  max-width: 20rem;
 `;
 
 export default NftUpload;

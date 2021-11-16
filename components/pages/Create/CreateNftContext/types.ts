@@ -1,8 +1,8 @@
 import { NftEffectType } from 'interfaces';
 
 type QRDataType = {
-  walletId?: string,
-  quantity: number,
+  walletId?: string;
+  quantity: number;
 };
 export interface CreateNftStateType {
   blurredValue: number;
@@ -13,10 +13,10 @@ export interface CreateNftStateType {
   output: string[];
   QRData: QRDataType;
   secretNFT: File | null;
-  uploadSize: number,
+  uploadSize: number;
 }
 
-export interface CreateNftProviderValue {
+export type CreateNftContextProps = {
   createNftData: CreateNftStateType;
   setBlurredValue: (value: number) => void;
   setEffect: (effect: NftEffectType) => void;
@@ -27,9 +27,7 @@ export interface CreateNftProviderValue {
   setQRData: (data: QRDataType) => void;
   setSecretNFT: (f: File | null) => void;
   setUploadSize: (n: number) => void;
-}
-
-export type CreateNftContextProps = CreateNftProviderValue | undefined;
+};
 
 // Actions names
 export const SET_BLURRED_VALUE = 'SET_BLURRED_VALUE';

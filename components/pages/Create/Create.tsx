@@ -53,7 +53,7 @@ const Create: React.FC<CreateProps> = ({
   const { blurredValue, effect, NFT, QRData, secretNFT } = createNftData ?? {};
 
   const [nftData, setNFTData] = useState(initalValue);
-  const { category, description, name, quantity, seriesId } = nftData;
+  const { description, name, quantity, seriesId } = nftData;
 
   const validateQuantity = (value: number, limit: number) => {
     return value > 0 && value <= limit;
@@ -191,9 +191,10 @@ const Create: React.FC<CreateProps> = ({
             </InputShellDescription>
           </Left>
           <Right>
-            <InputShell>
+            {/* TODO in the future with autocomplete */}
+            {/* <InputShell>
               <InputLabel>
-                Category<Insight>(optional)</Insight>
+                Categories<Insight>(optional)</Insight>
               </InputLabel>
               <Input
                 type="text"
@@ -203,7 +204,7 @@ const Create: React.FC<CreateProps> = ({
                 name="category"
                 value={category}
               />
-            </InputShell>
+            </InputShell> */}
 
             {/* TODO in the future */}
             {/* <InputShell>

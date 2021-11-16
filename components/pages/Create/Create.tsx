@@ -9,7 +9,7 @@ import {
   InputShell,
   Textarea,
   Wrapper,
-} from 'components/base/Layout';
+} from 'components/layout';
 import NftPreview from 'components/base/NftPreview';
 import { useCreateNftContext } from 'components/pages/Create/CreateNftContext';
 import { NFT_EFFECT_DEFAULT, NFT_EFFECT_SECRET, UserType } from 'interfaces';

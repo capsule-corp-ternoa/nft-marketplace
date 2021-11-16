@@ -1,7 +1,7 @@
 import React from 'react';
 import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
-import { HiddenInput, HiddenShell } from 'components/base/Layout';
+import { HiddenInput, HiddenShell } from 'components/layout';
 import { useCreateNftContext } from 'components/pages/Create/CreateNftContext';
 import { NftEffectType, NFT_EFFECT_BLUR, NFT_EFFECT_PROTECT } from 'interfaces';
 import Radio from 'components/ui/Radio';

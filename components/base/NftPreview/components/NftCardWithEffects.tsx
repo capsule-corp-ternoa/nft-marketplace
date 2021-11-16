@@ -72,6 +72,10 @@ const NftCardWithEffects = ({ className, effect, isRN }: Props) => {
     useCreateNftContext();
   const { blurredValue, NFT, secretNFT } = createNftData;
 
+  if (secretNFT === null) {
+    return null;
+  }
+
   const handleBlurredChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { target } = event;
     setEffect(NFT_EFFECT_BLUR);
@@ -80,17 +84,14 @@ const NftCardWithEffects = ({ className, effect, isRN }: Props) => {
 
   const handleBlurredProcess = () => {
     setEffect(NFT_EFFECT_BLUR);
-    if (
-      secretNFT &&
-      (effect === NFT_EFFECT_BLUR || effect === NFT_EFFECT_PROTECT)
-    ) {
+    if (effect === NFT_EFFECT_BLUR || effect === NFT_EFFECT_PROTECT) {
       processFile(secretNFT, effect, setError, blurredValue).then(setNFT);
     }
   };
 
   return (
     <SWrapper className={className}>
-      {returnType(secretNFT!, effect === NFT_EFFECT_BLUR ? blurredValue : 0)}
+      {returnType(secretNFT, effect === NFT_EFFECT_BLUR ? blurredValue : 0)}
       {effect === NFT_EFFECT_BLUR && (
         <SSlider
           id="blurredSlider"

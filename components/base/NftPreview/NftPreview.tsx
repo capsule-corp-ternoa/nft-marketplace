@@ -39,28 +39,23 @@ const NftPreview = ({ className, isRN }: Props) => {
     query: `(max-device-width: ${breakpointMap.md}px)`,
   });
 
-  const handleAllowedEffect = (effect: NftEffectType) => {
-    if (secretNFT !== null && secretNFT !== undefined) {
-      switch (effect) {
-        case NFT_EFFECT_BLUR:
-        case NFT_EFFECT_PROTECT:
-          return (
-            !secretNFT.type.includes(NFT_FILE_TYPE_VIDEO) &&
-            secretNFT.type !== NFT_FILE_TYPE_GIF
-          );
-        default:
-          return true;
-      }
+  const handleAllowedEffect = (file: File, effect: NftEffectType) => {
+    switch (effect) {
+      case NFT_EFFECT_BLUR:
+      case NFT_EFFECT_PROTECT:
+        return (
+          !file.type.includes(NFT_FILE_TYPE_VIDEO) &&
+          file.type !== NFT_FILE_TYPE_GIF
+        );
+      default:
+        return true;
     }
   };
 
-  const handleCardSelect = (effect: NftEffectType) => {
+  const handleCardSelect = (file: File, effect: NftEffectType) => {
     setEffect(effect);
-    if (
-      secretNFT &&
-      (effect === NFT_EFFECT_BLUR || effect === NFT_EFFECT_PROTECT)
-    ) {
-      processFile(secretNFT, effect, setError, blurredValue).then(setNFT);
+    if (effect === NFT_EFFECT_BLUR || effect === NFT_EFFECT_PROTECT) {
+      processFile(file, effect, setError, blurredValue).then(setNFT);
     }
   };
 
@@ -78,23 +73,21 @@ const NftPreview = ({ className, isRN }: Props) => {
 
   return (
     <div className={className}>
-      {secretNFT && (
-        <SHeader>
-          <Subtitle>
-            <SEyeIcon />
-            NFT Preview
-          </Subtitle>
-          {secretNFT.name && (
-            <SReuploadWrapper>
-              <NftUpload
-                content={secretNFT.name}
-                inputId="reUploadNft"
-                isMinimal
-              />
-            </SReuploadWrapper>
-          )}
-        </SHeader>
-      )}
+      <SHeader>
+        <Subtitle>
+          <SEyeIcon />
+          NFT Preview
+        </Subtitle>
+        {secretNFT.name && (
+          <SReuploadWrapper>
+            <NftUpload
+              content={secretNFT.name}
+              inputId="reUploadNft"
+              isMinimal
+            />
+          </SReuploadWrapper>
+        )}
+      </SHeader>
       {isMobile && effect !== undefined ? (
         <SWrapper>
           <SMobileCardWrapper>
@@ -103,7 +96,9 @@ const NftPreview = ({ className, isRN }: Props) => {
           <SSelect text={effect}>
             {(setSelectExpanded) => (
               <>
-                {NFT_EFFECTS_ORDERED.filter(handleAllowedEffect).map(
+                {NFT_EFFECTS_ORDERED.filter((effectType) =>
+                  handleAllowedEffect(secretNFT, effectType)
+                ).map(
                   (effectType, id) =>
                     effectType !== effect && (
                       <li
@@ -124,7 +119,9 @@ const NftPreview = ({ className, isRN }: Props) => {
         </SWrapper>
       ) : (
         <SFieldset>
-          {NFT_EFFECTS_ORDERED.filter(handleAllowedEffect).map((effectType) => (
+          {NFT_EFFECTS_ORDERED.filter((effectType) =>
+            handleAllowedEffect(secretNFT, effectType)
+          ).map((effectType) => (
             <>
               <SLabel
                 key={effectType}
@@ -138,7 +135,7 @@ const NftPreview = ({ className, isRN }: Props) => {
                 <SRadio
                   checked={effect === effectType}
                   label={effectType}
-                  onChange={() => handleCardSelect(effectType)}
+                  onChange={() => handleCardSelect(secretNFT, effectType)}
                 />
               </SLabel>
 
@@ -147,7 +144,7 @@ const NftPreview = ({ className, isRN }: Props) => {
                   type="radio"
                   id={`NftType_${effectType}`}
                   name={`NftType_${effectType}`}
-                  onClick={() => handleCardSelect(effectType)}
+                  onClick={() => handleCardSelect(secretNFT, effectType)}
                   value={effectType}
                 />
               </HiddenShell>

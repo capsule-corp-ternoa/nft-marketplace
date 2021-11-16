@@ -13,10 +13,7 @@ interface Props {
   isSelected?: boolean;
 }
 
-const NftPreviewCard = ({
-  effect,
-  isSelected = false,
-}: Props) => {
+const NftPreviewCard = ({ effect, isSelected = false }: Props) => {
   const { setEffect } = useCreateNftContext() ?? {};
 
   const isMobile = useMediaQuery({
@@ -26,9 +23,7 @@ const NftPreviewCard = ({
   if (isMobile) {
     return (
       <CardWrapper>
-        <NftCardWithEffects
-          effect={effect}
-        />
+        <NftCardWithEffects effect={effect} />
       </CardWrapper>
     );
   }
@@ -39,11 +34,16 @@ const NftPreviewCard = ({
         htmlFor={`NftType_${effect}`}
         isSelected={isSelected}
       >
-        <SNftCardWithEffects
-          effect={effect}
-          isSelected={isSelected}
+        <SNftCardWithEffects effect={effect} isSelected={isSelected} />
+        <SRadio
+          checked={isSelected}
+          label={effect}
+          onClick={() => {
+            if (setEffect !== undefined) {
+              setEffect(effect);
+            }
+          }}
         />
-        <SRadio checked={isSelected} label={effect} readOnly />
       </NftPreviewCardWrapper>
 
       <HiddenShell>

@@ -11,10 +11,7 @@ import NotAvailableModal from 'components/base/NotAvailable';
 import cookies from 'next-cookies';
 import Router from 'next/router';
 import { getUser } from 'actions/user';
-import {
-  NFT_EFFECT_DEFAULT,
-  UserType,
-} from 'interfaces';
+import { NFT_EFFECT_DEFAULT, UserType } from 'interfaces';
 import { NextPageContext } from 'next';
 import { decryptCookie } from 'utils/cookie';
 
@@ -47,7 +44,10 @@ export interface NFTProps {
 }
 
 const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
-  const isNftCreationEnabled = process.env.NEXT_PUBLIC_IS_NFT_CREATION_ENABLED === undefined ? true : process.env.NEXT_PUBLIC_IS_NFT_CREATION_ENABLED === 'true'
+  const isNftCreationEnabled =
+    process.env.NEXT_PUBLIC_IS_NFT_CREATION_ENABLED === undefined
+      ? true
+      : process.env.NEXT_PUBLIC_IS_NFT_CREATION_ENABLED === 'true';
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
   const [modalCreate, setModalCreate] = useState(false);
@@ -63,22 +63,29 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
 
   useEffect(() => {
     if (!isNftCreationEnabled) {
-      Router.push("/")
+      Router.push('/');
     }
-  }, [isNftCreationEnabled])
+  }, [isNftCreationEnabled]);
 
   return (
     <>
       <Head>
-        <title>{process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : "SecretNFT"} - Create your NFT</title>
+        <title>
+          {process.env.NEXT_PUBLIC_APP_NAME
+            ? process.env.NEXT_PUBLIC_APP_NAME
+            : 'SecretNFT'}{' '}
+          - Create your NFT
+        </title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta name="description" content="SecretNFT Marketplace, by Ternoa." />
         <meta name="og:image" content="ternoa-social-banner.jpg" />
       </Head>
-      <Provider createNftData={initialCreateNftData} >
+      <Provider createNftData={initialCreateNftData}>
         {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
-        {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
-        {modalCreate &&  (
+        {notAvailable && (
+          <NotAvailableModal setNotAvailable={setNotAvailable} />
+        )}
+        {modalCreate && (
           <ModalMint
             NFTData={NFTData}
             setModalCreate={setModalCreate}
@@ -88,7 +95,7 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
         )}
         <BetaBanner />
         <MainHeader user={user} setModalExpand={setModalExpand} />
-        {isNftCreationEnabled &&
+        {isNftCreationEnabled && (
           <Create
             setModalExpand={setModalExpand}
             setNotAvailable={setNotAvailable}
@@ -97,7 +104,7 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
             NFTData={NFTData}
             setNFTData={setNFTData}
           />
-        }
+        )}
       </Provider>
     </>
   );
@@ -105,7 +112,8 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
 
 export async function getServerSideProps(ctx: NextPageContext) {
   let user = null;
-  const token = cookies(ctx).token && decryptCookie(cookies(ctx).token as string);
+  const token =
+    cookies(ctx).token && decryptCookie(cookies(ctx).token as string);
   if (token) user = await getUser(token).catch(() => null);
   return {
     props: { user },

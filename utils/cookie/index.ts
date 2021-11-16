@@ -1,4 +1,6 @@
+import { getUser } from 'actions/user';
 import cryptoJs from 'crypto-js'
+import Cookies from 'js-cookie';
 
 export const encryptCookie = (cookie: string) => {
     try{
@@ -18,5 +20,21 @@ export const decryptCookie = (cookie: string) => {
         return decryptedCookie
     }catch(err){
         return ""
+    }
+}
+
+export const setUserFromDApp = async (setWalletUser:Function) => {
+    const params = new URLSearchParams(window.location.search);
+    if (window.isRNApp && window.walletId && (!Cookies.get('token') || decryptCookie(Cookies.get('token') as string) !== window.walletId)) {
+        if (params.get('walletId') && params.get('walletId') !== window.walletId) {
+            setWalletUser(null);
+        }
+        Cookies.remove('token');
+        const user = await getUser(window.walletId);
+        setWalletUser(user);
+        Cookies.set('token', encryptCookie(window.walletId), { expires: 1 });
+    }
+    if (!window.isRNApp && params.get('walletId')) {
+        setWalletUser(null);
     }
 }

@@ -1,4 +1,5 @@
 import { IncomingMessage } from "http"
+import { NextRouter } from "next/router"
 
 export const getUserIp = (req: IncomingMessage | undefined) => {
   let ip: string | undefined = ""
@@ -14,4 +15,27 @@ export const clipboardCopy = (str: string) => {
   if (navigator && navigator.clipboard){
     navigator.clipboard.writeText(str)
   }
+}
+
+export const navigateToSuccess = (
+  router: NextRouter,
+  title: string,
+  buttonText: string,
+  returnUrl: string,
+  isRedirect: boolean,
+  text?: string,
+) => {
+  router.push(
+    {
+      pathname: '/success',
+      query: {
+        title,
+        text,
+        buttonText,
+        returnUrl,
+        isRedirect,
+      }
+    }, 
+    "/success"
+  )
 }

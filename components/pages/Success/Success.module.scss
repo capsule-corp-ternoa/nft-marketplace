@@ -1,0 +1,107 @@
+@import "style/colors.scss";
+
+.Container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.Wrapper {
+  margin-left: auto;
+  margin-right: auto;
+  width: 600px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 30px 24px;
+  align-items: center;
+}
+
+.Title {
+  font-family: "Airbnb Cereal App Black";
+  font-size: 42px;
+  line-height: 48px;
+  margin: 0px;
+  margin-top: 18px;
+  margin-bottom: 0px;
+  text-align: center;
+}
+
+.Text {
+  font-family: "Airbnb Cereal App Light";
+  text-align: center;
+  font-size: 32px;
+  line-height: 38px;
+  padding-top: 20px;
+}
+
+.Image{
+  width:70%;
+}
+
+.Button {
+  align-items: center;
+  border: 2px solid $primary;
+  color: $primary;
+  border-radius: 30px;
+  padding: 14px 64px;
+  font-size: 16px;
+  font-family: "Airbnb Cereal App Medium";
+  margin-top: 60px;
+  margin-bottom: 120px;
+  align-self: center;
+  cursor: pointer;
+  transition: all 0.3s ease-out;
+  text-align: center;
+  &:hover {
+    background-color: $primary;
+    color: white;
+  }
+}
+
+@media (max-width: 950px) {
+  .Wrapper {
+    width: 100%;
+    padding: 20px 40px;
+  }
+
+  .Title {
+    font-family: "Airbnb Cereal App Black";
+    font-size: 38px;
+    line-height: 42px;
+    margin: 0px;
+    margin-top: 18px;
+    margin-bottom: 0px;
+    text-align: center;
+  }
+
+  .Text {
+    font-family: "Airbnb Cereal App Light";
+    text-align: center;
+    font-size: 24px;
+    line-height: 28px;
+    padding-top: 5px;
+  }
+  .Image{
+    width:50%;
+  }
+  
+  .Button {
+    padding: 12px 58px;
+    font-size: 14px;
+    margin-top: 30px;
+    margin-bottom: 100px;
+    text-align: center;
+    &:hover {
+      background-color: $primary;
+      color: white;
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .Image{
+    width:70%;
+  }
+}

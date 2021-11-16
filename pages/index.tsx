@@ -36,27 +36,8 @@ const LandingPage: React.FC<LandingProps> = ({
 
   useEffect(() => {
     setUserFromDApp(setWalletUser)
-    // const params = new URLSearchParams(window.location.search);
-    // if (window.isRNApp && window.walletId && (!Cookies.get('token') || decryptCookie(Cookies.get('token') as string) !== window.walletId)) {
-    //   if (params.get('walletId') && params.get('walletId') !== window.walletId) {
-    //     resetUser();
-    //   }
-    //   Cookies.remove('token');
-    //   setUser();
-    //   Cookies.set('token', encryptCookie(window.walletId), { expires: 1 });
-    // }
-    // if (!window.isRNApp && params.get('walletId')) {
-    //   resetUser();
-    // }
   }, []);
-
-  /*const resetUser = () => {
-    setWalletUser(null);
-  }
-  const setUser = async () => {
-    const user = await getUser(window.walletId);
-    setWalletUser(user);
-  };*/
+  
   return (
     <>
       <Head>

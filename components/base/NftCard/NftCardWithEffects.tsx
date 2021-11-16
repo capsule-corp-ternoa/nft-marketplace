@@ -13,6 +13,7 @@ import {
 } from 'interfaces';
 import Chip from 'ui/components/Chip';
 import Slider from 'ui/components/Slider';
+import { processFile } from 'utils/imageProcessing/image';
 
 interface Props {
   className?: string;
@@ -66,21 +67,23 @@ function returnType(NFTarg: File, blurredValue: number = 0) {
 }
 
 const NftCardWithEffects = ({ className, effect }: Props) => {
-  const { createNftData, setBlurredValue, setEffect } =
-    useCreateNftContext() ?? {};
-  const { blurredValue, NFT, secretNFT } = createNftData ?? {};
+  const { createNftData, setBlurredValue, setEffect, setError, setNFT } =
+    useCreateNftContext();
+  const { blurredValue, NFT, secretNFT } = createNftData;
 
   const handleBlurredChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (setBlurredValue !== undefined && setEffect !== undefined) {
-      const { target } = event;
-      setEffect(NFT_EFFECT_BLUR);
-      setBlurredValue(Number(target.value));
-    }
+    const { target } = event;
+    setEffect(NFT_EFFECT_BLUR);
+    setBlurredValue(Number(target.value));
   };
 
-  const handleBlurredClick = () => {
-    if (setEffect !== undefined) {
-      setEffect(NFT_EFFECT_BLUR);
+  const handleBlurredProcess = () => {
+    setEffect(NFT_EFFECT_BLUR);
+    if (
+      secretNFT &&
+      (effect === NFT_EFFECT_BLUR || effect === NFT_EFFECT_PROTECT)
+    ) {
+      processFile(secretNFT, effect, setError, blurredValue).then(setNFT);
     }
   };
 
@@ -92,8 +95,9 @@ const NftCardWithEffects = ({ className, effect }: Props) => {
           id="blurredSlider"
           max={15}
           min={0}
+          onBlur={handleBlurredProcess}
           onChange={handleBlurredChange}
-          onClick={handleBlurredClick}
+          onClick={handleBlurredProcess}
           step={1}
           value={blurredValue}
         />

@@ -13,15 +13,12 @@ import {
 import NftPreview from 'components/base/NftPreview';
 import { useCreateNftContext } from 'components/pages/Create/CreateNftContext';
 import {
-  NFT_EFFECT_BLUR,
   NFT_EFFECT_DEFAULT,
-  NFT_EFFECT_PROTECT,
   NFT_EFFECT_SECRET,
   NFT_FILE_TYPE_IMAGE,
   UserType,
 } from 'interfaces';
 import Tooltip from 'ui/components/Tooltip';
-import { imgToBlur, imgToWatermark } from 'utils/imageProcessing/image';
 
 import { NFTProps } from 'pages/create';
 
@@ -45,12 +42,11 @@ const Create: React.FC<CreateProps> = ({
   const {
     createNftData,
     setError,
-    setNFT,
     setOutput,
     setQRData,
     setUploadSize,
   } = useCreateNftContext() ?? {};
-  const { blurredValue, effect, NFT, QRData, secretNFT } = createNftData ?? {};
+  const { effect, NFT, QRData, secretNFT } = createNftData ?? {};
 
   const [nftData, setNFTData] = useState(initalValue);
   const { description, name, quantity, seriesId } = nftData;
@@ -76,46 +72,15 @@ const Create: React.FC<CreateProps> = ({
     setNftDataToParent(nextNftData);
   }
 
-  function initMintingNFT(processedFile?: File) {
+  function initMintingNFT() {
     if (!user) throw new Error('Please login to create an NFT.');
-    if (!(NFT || processedFile) && !(effect === NFT_EFFECT_DEFAULT))
+    if (!NFT && !(effect === NFT_EFFECT_DEFAULT))
       throw new Error('Elements are undefined');
     setQRData!({
       ...QRData,
       quantity,
     });
     setOutput!([quantity.toString()]);
-  }
-
-  async function processFile() {
-    try {
-      if (!secretNFT || !setNFT) {
-        throw new Error();
-      }
-      if (setOutput !== undefined) setOutput([]);
-      if (setError !== undefined) setError('');
-
-      const newProcessedFile = new File([secretNFT], 'NFT', {
-        type: secretNFT.type,
-      });
-      let res;
-
-      if (effect === NFT_EFFECT_BLUR && blurredValue !== undefined) {
-        res = await imgToBlur(newProcessedFile, blurredValue);
-      } else if (effect === NFT_EFFECT_PROTECT) {
-        res = await imgToWatermark(newProcessedFile);
-      }
-      const blob = await (await fetch(res as string)).blob();
-      const file = new File([blob], secretNFT.name, {
-        type: secretNFT.type,
-      });
-      setNFT(file);
-      return file;
-    } catch (err) {
-      if (setError !== undefined) setError('Please try again.');
-      console.log(err);
-      return undefined;
-    }
   }
 
   async function uploadFiles() {
@@ -125,14 +90,11 @@ const Create: React.FC<CreateProps> = ({
       effect !== NFT_EFFECT_DEFAULT &&
       effect !== NFT_EFFECT_SECRET
     ) {
-      const processedFile = await processFile();
-      if (processedFile !== undefined) {
-        initMintingNFT(processedFile);
-      }
-    } else {
+      setOutput([]);
+      setError('');
       initMintingNFT();
+      setModalCreate(true);
     }
-    setModalCreate(true);
   }
 
   useEffect(() => {

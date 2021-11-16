@@ -6,6 +6,7 @@ interface Props {
   id?: string | undefined;
   max?: string | number | undefined;
   min?: string | number | undefined;
+  onBlur?: React.FocusEventHandler<HTMLInputElement>;
   onChange: React.ChangeEventHandler<HTMLInputElement>;
   onClick: React.MouseEventHandler<HTMLInputElement>;
   step?: string | number | undefined;
@@ -17,6 +18,7 @@ const Slider = ({
   id,
   max,
   min,
+  onBlur,
   onChange,
   onClick,
   step,
@@ -29,6 +31,7 @@ const Slider = ({
         id={id}
         min={min}
         max={max}
+        onBlur={onBlur}
         onChange={onChange}
         onClick={onClick}
         step={step}

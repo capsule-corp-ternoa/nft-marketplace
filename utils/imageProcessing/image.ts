@@ -1,4 +1,5 @@
 import Jimp from 'jimp';
+import { NftEffectType, NFT_EFFECT_BLUR, NFT_EFFECT_PROTECT } from 'interfaces';
 
 export async function imgToBlur(NFT: File | null, blurredValue: number) {
   try {
@@ -37,3 +38,34 @@ export async function imgToWatermark(NFT: File | null) {
   protectedImage.composite(watermark, xPos, yPos);
   return await protectedImage.getBase64Async(image.getMIME());
 }
+
+export const processFile = async (
+  NFT: File,
+  effect: NftEffectType,
+  setError: (error: string) => void,
+  blurredValue?: number,
+) => {
+  try {
+    const newProcessedFile = new File([NFT], 'NFT', {
+      type: NFT.type,
+    });
+    let res;
+
+    if (effect === NFT_EFFECT_BLUR && blurredValue) {
+      res = await imgToBlur(newProcessedFile, blurredValue);
+    } else if (effect === NFT_EFFECT_PROTECT) {
+      res = await imgToWatermark(newProcessedFile);
+    }
+
+    const blob = await (await fetch(res as string)).blob();
+    const file = new File([blob], NFT.name, {
+      type: NFT.type,
+    });
+
+    return await file;
+  } catch (err) {
+    setError('Please try again.');
+    console.log(err);
+    return null;
+  }
+};

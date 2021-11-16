@@ -3,9 +3,10 @@ import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
 import { HiddenInput, HiddenShell } from 'components/base/Layout';
 import { useCreateNftContext } from 'components/pages/Create/CreateNftContext';
-import { NftEffectType } from 'interfaces';
+import { NftEffectType, NFT_EFFECT_BLUR, NFT_EFFECT_PROTECT } from 'interfaces';
 import Radio from 'ui/components/Radio';
 import { breakpointMap } from 'ui/theme/base';
+import { processFile } from 'utils/imageProcessing/image';
 import NftCardWithEffects from '../NftCard/NftCardWithEffects';
 
 interface Props {
@@ -14,11 +15,22 @@ interface Props {
 }
 
 const NftPreviewCard = ({ effect, isSelected = false }: Props) => {
-  const { setEffect } = useCreateNftContext() ?? {};
+  const { createNftData, setEffect, setError, setNFT } = useCreateNftContext();
+  const { blurredValue, secretNFT } = createNftData;
 
   const isMobile = useMediaQuery({
     query: `(max-device-width: ${breakpointMap.md}px)`,
   });
+
+  const handleCardSelect = () => {
+    setEffect(effect);
+    if (
+      secretNFT &&
+      (effect === NFT_EFFECT_BLUR || effect === NFT_EFFECT_PROTECT)
+    ) {
+      processFile(secretNFT, effect, setError, blurredValue).then(setNFT);
+    }
+  };
 
   if (isMobile) {
     return (
@@ -38,11 +50,7 @@ const NftPreviewCard = ({ effect, isSelected = false }: Props) => {
         <SRadio
           checked={isSelected}
           label={effect}
-          onClick={() => {
-            if (setEffect !== undefined) {
-              setEffect(effect);
-            }
-          }}
+          onClick={handleCardSelect}
         />
       </NftPreviewCardWrapper>
 
@@ -51,11 +59,7 @@ const NftPreviewCard = ({ effect, isSelected = false }: Props) => {
           type="radio"
           id={`NftType_${effect}`}
           name={`NftType_${effect}`}
-          onClick={() => {
-            if (setEffect !== undefined) {
-              setEffect(effect);
-            }
-          }}
+          onClick={handleCardSelect}
           value={effect}
         />
       </HiddenShell>

@@ -81,15 +81,15 @@ const NftCardWithEffects = ({ className, effect, isRN }: Props) => {
 
   const handleBlurredChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { target } = event;
+    const newBlur = Number(target.value);
     setEffect(NFT_EFFECT_BLUR);
-    setBlurredValue(Number(target.value));
+    setBlurredValue(newBlur);
   };
 
-  const handleBlurredProcess = () => {
-    setEffect(NFT_EFFECT_BLUR);
-    if (effect === NFT_EFFECT_BLUR || effect === NFT_EFFECT_PROTECT) {
-      processFile(secretNFT, effect, setError, blurredValue).then(setNFT);
-    }
+  const handleBlurredProcess = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { target } = event;
+    const newBlur = Number(target.value);
+    processFile(secretNFT, effect, setError, newBlur).then(setNFT);
   };
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -115,7 +115,6 @@ const NftCardWithEffects = ({ className, effect, isRN }: Props) => {
           min={0}
           onBlur={handleBlurredProcess}
           onChange={handleBlurredChange}
-          onClick={handleBlurredProcess}
           step={1}
           value={blurredValue}
         />

@@ -14,36 +14,57 @@ import {
   Wrapper,
 } from 'components/layout';
 import NftPreview from 'components/base/NftPreview';
-import { useCreateNftContext } from 'components/pages/Create/CreateNftContext';
-import { NFT_EFFECT_DEFAULT, NFT_EFFECT_SECRET, UserType } from 'interfaces';
+import {
+  NFT_EFFECT_DEFAULT,
+  NFT_EFFECT_SECRET,
+  NftEffectType,
+  UserType,
+} from 'interfaces';
 import Button from 'components/ui/Button';
 import Tooltip from 'components/ui/Tooltip';
 
 import { NFTProps } from 'pages/create';
 
+type QRDataType = {
+  walletId: string;
+  quantity: number;
+};
+
 export interface CreateProps {
-  isRN?: boolean;
-  user: UserType;
-  setModalExpand: (b: boolean) => void;
-  setNotAvailable: (b: boolean) => void;
-  setModalCreate: (b: boolean) => void;
+  NFT: File | null;
   NFTData: NFTProps;
+  QRData: QRDataType;
+  secretNFT: File | null;
+  user: UserType;
+  setError: (err: string) => void;
+  setModalExpand: (b: boolean) => void;
+  setModalCreate: (b: boolean) => void;
+  setNotAvailable: (b: boolean) => void;
+  setNFT: (f: File | null) => void;
   setNFTData: (o: NFTProps) => void;
+  setOutput: (s: string[]) => void;
+  setQRData: (data: QRDataType) => void;
+  setSecretNFT: (f: File | null) => void;
 }
 
 const Create: React.FC<CreateProps> = ({
-  isRN,
-  setModalExpand,
-  setNotAvailable,
-  setModalCreate,
+  NFT,
   NFTData: initalValue,
-  setNFTData: setNftDataToParent,
+  QRData,
+  secretNFT,
   user,
+  setError,
+  setModalExpand,
+  setModalCreate,
+  setNotAvailable,
+  setNFT,
+  setNFTData: setNftDataToParent,
+  setOutput,
+  setQRData,
+  setSecretNFT,
 }) => {
-  const { createNftData, setError, setOutput, setQRData, setUploadSize } =
-    useCreateNftContext();
-  const { effect, NFT, QRData, secretNFT } = createNftData;
-
+  const [effect, setEffect] = useState<NftEffectType>(NFT_EFFECT_DEFAULT);
+  const [isRN, setRN] = useState(false);
   const [nftData, setNFTData] = useState(initalValue);
   const { description, name, quantity, seriesId } = nftData;
 
@@ -94,28 +115,23 @@ const Create: React.FC<CreateProps> = ({
   }
 
   useEffect(() => {
-    if (secretNFT && quantity && Number(quantity) > 0) {
-      const previewSize = NFT ? NFT.size : secretNFT.size;
-      const secretsSize = secretNFT.size * Number(quantity);
-      setUploadSize(previewSize + secretsSize);
-    }
-  }, [quantity, NFT, secretNFT]);
-
-  useEffect(() => {
-    if (user?.walletId) {
-      setQRData({
-        ...QRData,
-        walletId: user.walletId,
-      });
-    }
-  }, [user]);
+    setRN(window.isRNApp);
+  }, []);
 
   return (
     <Container>
       <Wrapper>
         <Title>Create your NFT</Title>
         <SNftPreviewWrapper>
-          <NftPreview isRN={isRN} />
+          <NftPreview
+            effect={effect}
+            isRN={isRN}
+            secretNFT={secretNFT}
+            setEffect={setEffect}
+            setError={setError}
+            setNFT={setNFT}
+            setSecretNFT={setSecretNFT}
+          />
         </SNftPreviewWrapper>
         <SForm>
           <SLeft>
@@ -186,8 +202,8 @@ const Create: React.FC<CreateProps> = ({
 
             <InputShell>
               <InputLabel>
-                Serie ID
-                <STooltip text="Specified your own serie id" />
+                Series ID
+                <STooltip text="Specified your own series id" />
                 <SInsight>(optional)</SInsight>
               </InputLabel>
               <Input

@@ -3,7 +3,6 @@ import styled, { css } from 'styled-components';
 import WhiteWaterMark from 'components/assets/WhiteWaterMark';
 import { NftUpload } from 'components/base/NftPreview';
 import { updateFile } from 'components/base/NftPreview/components/NftUpload';
-import { useCreateNftContext } from 'components/pages/Create/CreateNftContext';
 import {
   NftEffectType,
   NFT_EFFECT_BLUR,
@@ -17,9 +16,15 @@ import Slider from 'components/ui/Slider';
 import { processFile } from 'utils/imageProcessing/image';
 
 interface Props {
+  blurValue: number;
   className?: string;
   effect: NftEffectType;
   isRN?: boolean;
+  secretNFT: File;
+  setBlurValue: (v: number) => void;
+  setEffect: (effect: NftEffectType) => void;
+  setError: (err: string) => void;
+  setNFT: (f: File | null) => void;
 }
 
 const DefaultEffect = css`
@@ -68,22 +73,24 @@ function returnType(NFTarg: File, blurredValue: number = 0) {
   }
 }
 
-const NftCardWithEffects = ({ className, effect, isRN }: Props) => {
-  const { createNftData, setBlurredValue, setEffect, setError, setNFT } =
-    useCreateNftContext();
-  const { blurredValue, secretNFT } = createNftData;
-
+const NftCardWithEffects = ({
+  blurValue,
+  className,
+  effect,
+  isRN,
+  secretNFT,
+  setBlurValue,
+  setEffect,
+  setError,
+  setNFT,
+}: Props) => {
   const [coverNFT, setCoverNFT] = useState<File | null>(null);
-
-  if (secretNFT === null) {
-    return null;
-  }
 
   const handleBlurredChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { target } = event;
     const newBlur = Number(target.value);
     setEffect(NFT_EFFECT_BLUR);
-    setBlurredValue(newBlur);
+    setBlurValue(newBlur);
   };
 
   const handleBlurredProcess = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -107,16 +114,16 @@ const NftCardWithEffects = ({ className, effect, isRN }: Props) => {
 
   return (
     <SWrapper className={className}>
-      {returnType(secretNFT, effect === NFT_EFFECT_BLUR ? blurredValue : 0)}
+      {returnType(secretNFT, effect === NFT_EFFECT_BLUR ? blurValue : 0)}
       {effect === NFT_EFFECT_BLUR && (
         <SSlider
           id="blurredSlider"
           max={15}
-          min={0}
+          min={1}
           onBlur={handleBlurredProcess}
           onChange={handleBlurredChange}
           step={1}
-          value={blurredValue}
+          value={blurValue}
         />
       )}
       {effect === NFT_EFFECT_PROTECT && <SWhiteWaterMarkIcon />}

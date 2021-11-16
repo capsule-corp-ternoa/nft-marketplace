@@ -4,30 +4,14 @@ import BetaBanner from 'components/base/BetaBanner';
 import MainHeader from 'components/base/MainHeader';
 import TernoaWallet from 'components/base/TernoaWallet';
 import Create from 'components/pages/Create';
-import Provider from 'components/pages/Create/CreateNftContext';
-import { CreateNftStateType } from 'components/pages/Create/CreateNftContext/types';
 import ModalMint from 'components/pages/Create/ModalMint';
 import NotAvailableModal from 'components/base/NotAvailable';
 import cookies from 'next-cookies';
 import Router from 'next/router';
 import { getUser } from 'actions/user';
-import { NFT_EFFECT_DEFAULT, UserType } from 'interfaces';
+import { UserType } from 'interfaces';
 import { NextPageContext } from 'next';
 import { decryptCookie } from 'utils/cookie';
-
-const initialCreateNftData: CreateNftStateType = {
-  blurredValue: 5,
-  effect: NFT_EFFECT_DEFAULT,
-  error: '',
-  NFT: null,
-  output: [],
-  QRData: {
-    walletId: '',
-    quantity: 1,
-  },
-  secretNFT: null,
-  uploadSize: 0,
-};
 
 export interface CreatePageProps {
   user: UserType;
@@ -48,10 +32,14 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
       ? true
       : process.env.NEXT_PUBLIC_IS_NFT_CREATION_ENABLED === 'true';
 
-  const [isRN, setRN] = useState(false);
+  const [error, setError] = useState('');
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
   const [modalCreate, setModalCreate] = useState(false);
+  const [NFT, setNFT] = useState<File | null>(null);
+  const [output, setOutput] = useState<string[]>([]);
+  const [secretNFT, setSecretNFT] = useState<File | null>(null);
+  const [uploadSize, setUploadSize] = useState(0);
   const [NFTData, setNFTData] = useState<NFTProps>({
     category: undefined,
     description: '',
@@ -60,8 +48,12 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
     royalties: 0,
     seriesId: '',
   });
+  const { quantity } = NFTData;
+  const [QRData, setQRData] = useState({
+    walletId: user ? user.walletId : '',
+    quantity: quantity,
+  });
   const [runNFTMintData, setRunNFTMintData] = useState<any>(null);
-
   useEffect(() => {
     if (!isNftCreationEnabled) {
       Router.push('/');
@@ -69,8 +61,12 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
   }, [isNftCreationEnabled]);
 
   useEffect(() => {
-    setRN(window.isRNApp);
-  }, []);
+    if (secretNFT && quantity && Number(quantity) > 0) {
+      const previewSize = NFT ? NFT.size : secretNFT.size;
+      const secretsSize = secretNFT.size * Number(quantity);
+      setUploadSize(previewSize + secretsSize);
+    }
+  }, [quantity, NFT, secretNFT]);
 
   return (
     <>
@@ -85,16 +81,23 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
         <meta name="description" content="SecretNFT Marketplace, by Ternoa." />
         <meta name="og:image" content="ternoa-social-banner.jpg" />
       </Head>
-      <Provider createNftData={initialCreateNftData}>
+      <>
         {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
         {notAvailable && (
           <NotAvailableModal setNotAvailable={setNotAvailable} />
         )}
         {modalCreate && (
           <ModalMint
+            error={error}
+            NFT={NFT}
             NFTData={NFTData}
-            setModalCreate={setModalCreate}
+            output={output}
+            QRData={QRData}
             runNFTMintData={runNFTMintData}
+            secretNFT={secretNFT}
+            uploadSize={uploadSize}
+            setError={setError}
+            setModalCreate={setModalCreate}
             setRunNFTMintData={setRunNFTMintData}
           />
         )}
@@ -102,16 +105,23 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
         <MainHeader user={user} setModalExpand={setModalExpand} />
         {isNftCreationEnabled && (
           <Create
-            isRN={isRN}
-            setModalExpand={setModalExpand}
-            setNotAvailable={setNotAvailable}
-            setModalCreate={setModalCreate}
-            user={user}
+            NFT={NFT}
             NFTData={NFTData}
+            QRData={QRData}
+            secretNFT={secretNFT}
+            user={user}
+            setError={setError}
+            setModalExpand={setModalExpand}
+            setModalCreate={setModalCreate}
+            setNotAvailable={setNotAvailable}
+            setNFT={setNFT}
             setNFTData={setNFTData}
+            setOutput={setOutput}
+            setQRData={setQRData}
+            setSecretNFT={setSecretNFT}
           />
         )}
-      </Provider>
+      </>
     </>
   );
 };

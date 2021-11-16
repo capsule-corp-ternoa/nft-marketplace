@@ -2,9 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Upload from 'components/assets/upload';
 import { HiddenInput, HiddenShell, InsightLight } from 'components/layout';
-import { useCreateNftContext } from 'components/pages/Create/CreateNftContext';
 import Chip from 'components/ui/Chip';
-import { NFT_EFFECT_DEFAULT, NFT_EFFECT_SECRET } from 'interfaces';
 
 interface Props {
   className?: string;
@@ -14,7 +12,47 @@ interface Props {
   isRN?: boolean;
   isSecretOption?: boolean;
   note?: string;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
+
+export const updateFile = (
+  event: React.ChangeEvent<HTMLInputElement>,
+  setError: (s: string) => void,
+  setFunction: (f: File) => void,
+  isRN = false
+) => {
+  const { target } = event;
+  let file = target?.files?.[0];
+  let isError = false;
+
+  if (file !== null && file !== undefined) {
+    if (!isError && isRN && file!.type.substr(0, 5) === 'video') {
+      setError("You can't select video type on mobile DApp yet.");
+      isError = true;
+    }
+    if (
+      !isError &&
+      !(
+        file!.type.substr(0, 5) === 'video' ||
+        file!.type.substr(0, 5) === 'image'
+      )
+    ) {
+      setError(
+        `You can't select files different from ${
+          isRN === false ? 'videos or ' : ''
+        }images.`
+      );
+      isError = true;
+    }
+    if (!isError && file.size > 31000000) {
+      setError('Max file size is 30mb.');
+      isError = true;
+    }
+    if (!isError) {
+      setFunction(file);
+    }
+  }
+};
 
 const NftUpload = ({
   className,
@@ -24,9 +62,8 @@ const NftUpload = ({
   isRN,
   isSecretOption = false,
   note,
+  onChange,
 }: Props) => {
-  const { setEffect, setError, setNFT, setSecretNFT } = useCreateNftContext();
-
   const [acceptedFileTypes, setAcceptedFileTypes] = useState([
     '.jpg',
     '.jpeg',
@@ -42,44 +79,6 @@ const NftUpload = ({
     }
   }, [isRN]);
 
-  const updateFile = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    setFunction: (f: File | null) => void
-  ) => {
-    const { target } = event;
-    let file = target?.files?.[0];
-    let isError = false;
-
-    if (file !== null && file !== undefined) {
-      if (!isError && isRN && file!.type.substr(0, 5) === 'video') {
-        setError("You can't select video type on mobile DApp yet.");
-        isError = true;
-      }
-      if (
-        !isError &&
-        !(
-          file!.type.substr(0, 5) === 'video' ||
-          file!.type.substr(0, 5) === 'image'
-        )
-      ) {
-        setError(
-          `You can't select files different from ${
-            isRN === false ? 'videos or ' : ''
-          }images.`
-        );
-        isError = true;
-      }
-      if (!isError && file.size > 31000000) {
-        setError('Max file size is 30mb.');
-        isError = true;
-      }
-      if (!isError) {
-        setFunction(file);
-        setEffect(isSecretOption ? NFT_EFFECT_SECRET : NFT_EFFECT_DEFAULT);
-      }
-    }
-  };
-
   if (isMinimal) {
     return (
       <>
@@ -90,9 +89,7 @@ const NftUpload = ({
           <HiddenInput
             type="file"
             id={inputId}
-            onChange={(event) =>
-              updateFile(event, isSecretOption ? setNFT : setSecretNFT)
-            }
+            onChange={onChange}
             accept={acceptedFileTypes.join(',')}
           />
         </HiddenShell>
@@ -118,9 +115,7 @@ const NftUpload = ({
         <HiddenInput
           type="file"
           id={inputId}
-          onChange={(event) =>
-            updateFile(event, isSecretOption ? setNFT : setSecretNFT)
-          }
+          onChange={onChange}
           accept={acceptedFileTypes.join(',')}
         />
       </HiddenShell>

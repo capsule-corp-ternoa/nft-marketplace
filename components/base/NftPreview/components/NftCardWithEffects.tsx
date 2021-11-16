@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import WhiteWaterMark from 'components/assets/WhiteWaterMark';
 import { NftUpload } from 'components/base/NftPreview';
+import { updateFile } from 'components/base/NftPreview/components/NftUpload';
 import { useCreateNftContext } from 'components/pages/Create/CreateNftContext';
 import {
   NftEffectType,
@@ -70,7 +71,9 @@ function returnType(NFTarg: File, blurredValue: number = 0) {
 const NftCardWithEffects = ({ className, effect, isRN }: Props) => {
   const { createNftData, setBlurredValue, setEffect, setError, setNFT } =
     useCreateNftContext();
-  const { blurredValue, NFT, secretNFT } = createNftData;
+  const { blurredValue, secretNFT } = createNftData;
+
+  const [coverNFT, setCoverNFT] = useState<File | null>(null);
 
   if (secretNFT === null) {
     return null;
@@ -87,6 +90,19 @@ const NftCardWithEffects = ({ className, effect, isRN }: Props) => {
     if (effect === NFT_EFFECT_BLUR || effect === NFT_EFFECT_PROTECT) {
       processFile(secretNFT, effect, setError, blurredValue).then(setNFT);
     }
+  };
+
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    updateFile(
+      event,
+      setError,
+      (file: File) => {
+        setNFT(file);
+        setCoverNFT(file);
+        setEffect(NFT_EFFECT_SECRET);
+      },
+      isRN
+    );
   };
 
   return (
@@ -107,7 +123,7 @@ const NftCardWithEffects = ({ className, effect, isRN }: Props) => {
       {effect === NFT_EFFECT_PROTECT && <SWhiteWaterMarkIcon />}
       {effect === NFT_EFFECT_SECRET && (
         <SSecretWrapper>
-          {NFT === null || NFT === undefined ? (
+          {coverNFT === null ? (
             <NftUpload
               content={
                 <SecretUploadDescription>
@@ -123,15 +139,17 @@ const NftCardWithEffects = ({ className, effect, isRN }: Props) => {
               isRN={isRN}
               isSecretOption
               note={`PNG, GIF, WEBP, MP4 or MP3. Max 30mb.`}
+              onChange={handleFileUpload}
             />
           ) : (
             <SCoverWrapper>
               <NftUpload
-                content={returnType(NFT)}
+                content={returnType(coverNFT)}
                 inputId="reUploadSecretNft"
                 isMinimal
                 isRN={isRN}
                 isSecretOption
+                onChange={handleFileUpload}
               />
             </SCoverWrapper>
           )}

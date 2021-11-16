@@ -3,6 +3,7 @@ import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
 import Eye from 'components/assets/eye';
 import { NftCardWithEffects, NftUpload } from 'components/base/NftPreview';
+import { updateFile } from 'components/base/NftPreview/components/NftUpload';
 import { HiddenInput, HiddenShell, Subtitle } from 'components/layout';
 import { useCreateNftContext } from 'components/pages/Create/CreateNftContext';
 import Radio from 'components/ui/Radio';
@@ -32,7 +33,8 @@ const NFT_EFFECTS_ORDERED: NftEffectType[] = [
 ];
 
 const NftPreview = ({ className, isRN }: Props) => {
-  const { createNftData, setEffect, setError, setNFT } = useCreateNftContext();
+  const { createNftData, setEffect, setError, setNFT, setSecretNFT } =
+    useCreateNftContext();
   const { blurredValue, effect, secretNFT } = createNftData;
 
   const isMobile = useMediaQuery({
@@ -59,6 +61,18 @@ const NftPreview = ({ className, isRN }: Props) => {
     }
   };
 
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    updateFile(
+      event,
+      setError,
+      (file: File) => {
+        setSecretNFT(file);
+        setEffect(NFT_EFFECT_DEFAULT);
+      },
+      isRN
+    );
+  };
+
   if (secretNFT === null) {
     return (
       <NftUpload
@@ -67,6 +81,7 @@ const NftPreview = ({ className, isRN }: Props) => {
         inputId="uploadNft"
         isRN={isRN}
         note={`JPEG, JPG, PNG, GIF ${!isRN ? ', MP4 or MOV' : ''}. Max 30mb.`}
+        onChange={handleFileUpload}
       />
     );
   }
@@ -84,6 +99,7 @@ const NftPreview = ({ className, isRN }: Props) => {
               content={secretNFT.name}
               inputId="reUploadNft"
               isMinimal
+              onChange={handleFileUpload}
             />
           </SReuploadWrapper>
         )}

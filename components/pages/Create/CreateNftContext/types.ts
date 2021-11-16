@@ -8,7 +8,6 @@ export interface CreateNftStateType {
   blurredValue: number;
   effect: NftEffectType;
   error: string;
-  isRN: boolean;
   NFT: File | null;
   output: string[];
   QRData: QRDataType;
@@ -21,7 +20,6 @@ export type CreateNftContextProps = {
   setBlurredValue: (value: number) => void;
   setEffect: (effect: NftEffectType) => void;
   setError: (error: string) => void;
-  setRN: (value: boolean) => void;
   setNFT: (f: File | null) => void;
   setOutput: (value: string[]) => void;
   setQRData: (data: QRDataType) => void;
@@ -36,7 +34,6 @@ export const SET_ERROR = 'SET_ERROR';
 export const SET_NFT = 'SET_NFT';
 export const SET_OUTPUT = 'SET_OUTPUT';
 export const SET_QR_DATA = 'SET_QR_DATA';
-export const SET_RN = 'SET_RN';
 export const SET_SECRET_NFT = 'SET_SECRET_NFT';
 export const SET_UPLOAD_SIZE = 'SET_UPLOAD_SIZE';
 
@@ -71,11 +68,6 @@ type SetQRData = {
   data: QRDataType;
 };
 
-type SetRNType = {
-  type: typeof SET_RN;
-  value: boolean;
-};
-
 type SetUploadSize = {
   type: typeof SET_UPLOAD_SIZE;
   value: number;
@@ -88,5 +80,4 @@ export type CreateNftActionTypes =
   | SetNftType
   | SetOutput
   | SetQRData
-  | SetRNType
   | SetUploadSize;

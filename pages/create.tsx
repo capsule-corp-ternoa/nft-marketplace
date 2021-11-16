@@ -19,7 +19,6 @@ const initialCreateNftData: CreateNftStateType = {
   blurredValue: 5,
   effect: NFT_EFFECT_DEFAULT,
   error: '',
-  isRN: false,
   NFT: null,
   output: [],
   QRData: {
@@ -48,6 +47,8 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
     process.env.NEXT_PUBLIC_IS_NFT_CREATION_ENABLED === undefined
       ? true
       : process.env.NEXT_PUBLIC_IS_NFT_CREATION_ENABLED === 'true';
+
+  const [isRN, setRN] = useState(false);
   const [modalExpand, setModalExpand] = useState(false);
   const [notAvailable, setNotAvailable] = useState(false);
   const [modalCreate, setModalCreate] = useState(false);
@@ -66,6 +67,10 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
       Router.push('/');
     }
   }, [isNftCreationEnabled]);
+
+  useEffect(() => {
+    setRN(window.isRNApp);
+  }, []);
 
   return (
     <>
@@ -97,6 +102,7 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
         <MainHeader user={user} setModalExpand={setModalExpand} />
         {isNftCreationEnabled && (
           <Create
+            isRN={isRN}
             setModalExpand={setModalExpand}
             setNotAvailable={setNotAvailable}
             setModalCreate={setModalCreate}

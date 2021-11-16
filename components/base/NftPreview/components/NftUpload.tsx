@@ -11,6 +11,7 @@ interface Props {
   content?: string | React.ReactNode;
   inputId: string;
   isMinimal?: boolean;
+  isRN?: boolean;
   isSecretOption?: boolean;
   note?: string;
 }
@@ -20,12 +21,11 @@ const NftUpload = ({
   content,
   inputId,
   isMinimal = false,
+  isRN,
   isSecretOption = false,
   note,
 }: Props) => {
-  const { createNftData, setEffect, setError, setNFT, setSecretNFT } =
-    useCreateNftContext() ?? {};
-  const { isRN } = createNftData ?? {};
+  const { setEffect, setError, setNFT, setSecretNFT } = useCreateNftContext();
 
   const [acceptedFileTypes, setAcceptedFileTypes] = useState([
     '.jpg',
@@ -52,8 +52,7 @@ const NftUpload = ({
 
     if (file !== null && file !== undefined) {
       if (!isError && isRN && file!.type.substr(0, 5) === 'video') {
-        if (setError !== undefined)
-          setError("You can't select video type on mobile DApp yet.");
+        setError("You can't select video type on mobile DApp yet.");
         isError = true;
       }
       if (
@@ -63,28 +62,23 @@ const NftUpload = ({
           file!.type.substr(0, 5) === 'image'
         )
       ) {
-        if (setError !== undefined)
-          setError(
-            `You can't select files different from ${
-              isRN === false ? 'videos or ' : ''
-            }images.`
-          );
+        setError(
+          `You can't select files different from ${
+            isRN === false ? 'videos or ' : ''
+          }images.`
+        );
         isError = true;
       }
       if (!isError && file.size > 31000000) {
-        if (setError !== undefined) setError('Max file size is 30mb.');
+        setError('Max file size is 30mb.');
         isError = true;
       }
-      if (!isError && setEffect !== undefined) {
+      if (!isError) {
         setFunction(file);
         setEffect(isSecretOption ? NFT_EFFECT_SECRET : NFT_EFFECT_DEFAULT);
       }
     }
   };
-
-  if (setNFT === undefined || setSecretNFT === undefined) {
-    return null;
-  }
 
   if (isMinimal) {
     return (
@@ -185,7 +179,6 @@ const SWrapper = styled.div<{ isSmall?: boolean }>`
 const SUploadIcon = styled(Upload)<{ isSmall?: boolean }>`
   width: ${({ isSmall }) => (isSmall ? '4rem' : '8rem')};
 `;
-
 
 const SInsightMedium = styled(InsightLight)<{ isSmall?: boolean }>`
   color: #686464;

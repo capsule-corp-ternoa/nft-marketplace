@@ -10,12 +10,13 @@ import {
   SET_NFT,
   SET_OUTPUT,
   SET_QR_DATA,
-  SET_RN,
   SET_SECRET_NFT,
   SET_UPLOAD_SIZE,
 } from './types';
 
-export const CreateNftContext = createContext<CreateNftContextProps>(undefined);
+export const CreateNftContext = createContext<
+  CreateNftContextProps | undefined
+>(undefined);
 
 interface Props {
   children: React.ReactNode;
@@ -48,15 +49,6 @@ const CreateNftContextProvider = ({ createNftData, children }: Props) => {
       dispatch({
         type: SET_ERROR,
         error,
-      }),
-    []
-  );
-
-  const setRN = useCallback(
-    (value) =>
-      dispatch({
-        type: SET_RN,
-        value,
       }),
     []
   );
@@ -116,7 +108,6 @@ const CreateNftContextProvider = ({ createNftData, children }: Props) => {
         setNFT,
         setOutput,
         setQRData,
-        setRN,
         setSecretNFT,
         setUploadSize,
       }}

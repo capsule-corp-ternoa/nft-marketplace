@@ -18,6 +18,7 @@ import { processFile } from 'utils/imageProcessing/image';
 interface Props {
   className?: string;
   effect: NftEffectType;
+  isRN?: boolean;
 }
 
 const DefaultEffect = css`
@@ -66,7 +67,7 @@ function returnType(NFTarg: File, blurredValue: number = 0) {
   }
 }
 
-const NftCardWithEffects = ({ className, effect }: Props) => {
+const NftCardWithEffects = ({ className, effect, isRN }: Props) => {
   const { createNftData, setBlurredValue, setEffect, setError, setNFT } =
     useCreateNftContext();
   const { blurredValue, NFT, secretNFT } = createNftData;
@@ -118,6 +119,7 @@ const NftCardWithEffects = ({ className, effect }: Props) => {
                 </SecretUploadDescription>
               }
               inputId="uploadSecretNft"
+              isRN={isRN}
               isSecretOption
               note={`PNG, GIF, WEBP, MP4 or MP3. Max 30mb.`}
             />
@@ -127,6 +129,7 @@ const NftCardWithEffects = ({ className, effect }: Props) => {
                 content={returnType(NFT)}
                 inputId="reUploadSecretNft"
                 isMinimal
+                isRN={isRN}
                 isSecretOption
               />
             </SCoverWrapper>

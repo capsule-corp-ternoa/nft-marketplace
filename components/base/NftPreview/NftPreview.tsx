@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
 import Eye from 'components/assets/eye';
@@ -21,6 +21,7 @@ import { processFile } from 'utils/imageProcessing/image';
 
 interface Props {
   className?: string;
+  isRN?: boolean;
 }
 
 const NFT_EFFECTS_ORDERED: NftEffectType[] = [
@@ -30,10 +31,9 @@ const NFT_EFFECTS_ORDERED: NftEffectType[] = [
   NFT_EFFECT_BLUR,
 ];
 
-const NftPreview = ({ className }: Props) => {
-  const { createNftData, setEffect, setRN, setError, setNFT } =
-    useCreateNftContext();
-  const { blurredValue, effect, isRN, secretNFT } = createNftData;
+const NftPreview = ({ className, isRN }: Props) => {
+  const { createNftData, setEffect, setError, setNFT } = useCreateNftContext();
+  const { blurredValue, effect, secretNFT } = createNftData;
 
   const isMobile = useMediaQuery({
     query: `(max-device-width: ${breakpointMap.md}px)`,
@@ -64,18 +64,13 @@ const NftPreview = ({ className }: Props) => {
     }
   };
 
-  useEffect(() => {
-    if (setRN !== undefined) {
-      setRN(window.isRNApp);
-    }
-  }, []);
-
   if (secretNFT === null) {
     return (
       <NftUpload
         className={className}
         content="Click here to upload your file."
         inputId="uploadNft"
+        isRN={isRN}
         note={`JPEG, JPG, PNG, GIF ${!isRN ? ', MP4 or MOV' : ''}. Max 30mb.`}
       />
     );
@@ -103,7 +98,7 @@ const NftPreview = ({ className }: Props) => {
       {isMobile && effect !== undefined ? (
         <SWrapper>
           <SMobileCardWrapper>
-            <NftCardWithEffects effect={effect} />
+            <NftCardWithEffects effect={effect} isRN={isRN} />
           </SMobileCardWrapper>
           <SSelect text={effect}>
             {(setSelectExpanded) => (
@@ -114,10 +109,8 @@ const NftPreview = ({ className }: Props) => {
                       <li
                         key={id}
                         onClick={() => {
-                          if (setEffect !== undefined) {
-                            setSelectExpanded(false);
-                            setEffect(effectType);
-                          }
+                          setSelectExpanded(false);
+                          setEffect(effectType);
                         }}
                       >
                         {effectType}
@@ -139,7 +132,7 @@ const NftPreview = ({ className }: Props) => {
                 isSelected={effect === effectType}
               >
                 <SCardWrapper isSelected={effect === effectType}>
-                  <NftCardWithEffects effect={effectType} />
+                  <NftCardWithEffects effect={effectType} isRN={isRN} />
                 </SCardWrapper>
 
                 <SRadio

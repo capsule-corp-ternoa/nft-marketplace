@@ -5,7 +5,6 @@ import {
   SET_NFT,
   SET_OUTPUT,
   SET_QR_DATA,
-  SET_RN,
   SET_SECRET_NFT,
   SET_UPLOAD_SIZE,
   CreateNftActionTypes,
@@ -57,13 +56,6 @@ export default function createNftDataReducer(
       return {
         ...state,
         QRData,
-      };
-
-    case SET_RN:
-      const { value: isRN } = action;
-      return {
-        ...state,
-        isRN,
       };
 
     case SET_SECRET_NFT:

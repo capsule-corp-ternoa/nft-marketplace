@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import { HiddenInput, HiddenShell } from 'components/base/Layout';
 import { useCreateNftContext } from 'components/pages/Create/CreateNftContext';
 import { NftEffectType, NFT_EFFECT_BLUR, NFT_EFFECT_PROTECT } from 'interfaces';
-import Radio from 'ui/components/Radio';
-import { breakpointMap } from 'ui/theme/base';
+import Radio from 'components/ui/Radio';
+import { breakpointMap } from 'style/theme/base';
 import { processFile } from 'utils/imageProcessing/image';
 import NftCardWithEffects from '../NftCard/NftCardWithEffects';
 

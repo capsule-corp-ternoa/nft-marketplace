@@ -4,7 +4,7 @@ import Upload from 'components/assets/upload';
 import { HiddenInput, HiddenShell } from 'components/base/Layout';
 import { useCreateNftContext } from 'components/pages/Create/CreateNftContext';
 import { NFT_EFFECT_DEFAULT, NFT_EFFECT_SECRET } from 'interfaces';
-import Chip from 'ui/components/Chip';
+import Chip from 'components/ui/Chip';
 
 interface Props {
   className?: string;

@@ -11,8 +11,8 @@ import {
   NFT_FILE_TYPE_IMAGE,
   NFT_FILE_TYPE_VIDEO,
 } from 'interfaces';
-import Chip from 'ui/components/Chip';
-import Slider from 'ui/components/Slider';
+import Chip from 'components/ui/Chip';
+import Slider from 'components/ui/Slider';
 import { processFile } from 'utils/imageProcessing/image';
 
 interface Props {

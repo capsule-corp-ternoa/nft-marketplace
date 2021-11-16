@@ -1,5 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
-import { TernoaTheme } from 'ui/theme';
+import { TernoaTheme } from 'style/theme';
 
 declare module 'styled-components' {
   export interface DefaultTheme extends TernoaTheme {}

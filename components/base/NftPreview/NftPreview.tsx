@@ -13,8 +13,8 @@ import {
   NFT_FILE_TYPE_GIF,
   NFT_FILE_TYPE_VIDEO,
 } from 'interfaces';
-import Select from 'ui/components/Select';
-import { breakpointMap } from 'ui/theme/base';
+import Select from 'components/ui/Select';
+import { breakpointMap } from 'style/theme/base';
 
 import NftPreviewCard from './NftPreviewCard';
 

@@ -3,7 +3,7 @@ import { ThemeProvider } from 'styled-components';
 import Head from 'next/head';
 import Close from 'components/assets/close';
 import GlobalStyle from 'style/Global';
-import theme from 'ui/theme';
+import theme from 'style/theme';
 import 'style/base.scss';
 
 import Router from 'next/router';

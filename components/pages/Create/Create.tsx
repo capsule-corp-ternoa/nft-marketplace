@@ -12,12 +12,7 @@ import {
 } from 'components/base/Layout';
 import NftPreview from 'components/base/NftPreview';
 import { useCreateNftContext } from 'components/pages/Create/CreateNftContext';
-import {
-  NFT_EFFECT_DEFAULT,
-  NFT_EFFECT_SECRET,
-  NFT_FILE_TYPE_IMAGE,
-  UserType,
-} from 'interfaces';
+import { NFT_EFFECT_DEFAULT, NFT_EFFECT_SECRET, UserType } from 'interfaces';
 import Tooltip from 'ui/components/Tooltip';
 
 import { NFTProps } from 'pages/create';
@@ -39,13 +34,8 @@ const Create: React.FC<CreateProps> = ({
   setNFTData: setNftDataToParent,
   user,
 }) => {
-  const {
-    createNftData,
-    setError,
-    setOutput,
-    setQRData,
-    setUploadSize,
-  } = useCreateNftContext() ?? {};
+  const { createNftData, setError, setOutput, setQRData, setUploadSize } =
+    useCreateNftContext();
   const { effect, NFT, QRData, secretNFT } = createNftData ?? {};
 
   const [nftData, setNFTData] = useState(initalValue);
@@ -84,16 +74,16 @@ const Create: React.FC<CreateProps> = ({
   }
 
   async function uploadFiles() {
-    if (
-      secretNFT &&
-      secretNFT.type.substr(0, 5) === NFT_FILE_TYPE_IMAGE &&
-      effect !== NFT_EFFECT_DEFAULT &&
-      effect !== NFT_EFFECT_SECRET
-    ) {
+    try {
       setOutput([]);
       setError('');
       initMintingNFT();
       setModalCreate(true);
+    } catch (err) {
+      console.error(err);
+      if (err instanceof Error) {
+        setError(err.message);
+      }
     }
   }
 

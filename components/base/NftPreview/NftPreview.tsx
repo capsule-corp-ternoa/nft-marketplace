@@ -1,9 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
 import Eye from 'components/assets/eye';
-import NftUpload from 'components/base/NftUpload';
-import { useCreateNftContext } from 'components/pages/Create/CreateNftContext';
+import { NftCardWithEffects, NftUpload } from 'components/base/NftPreview';
+import { updateFile } from 'components/base/NftPreview/components/NftUpload';
+import { HiddenInput, HiddenShell, Subtitle } from 'components/layout';
+import Radio from 'components/ui/Radio';
+import Select from 'components/ui/Select';
 import {
   NftEffectType,
   NFT_EFFECT_BLUR,
@@ -13,13 +16,20 @@ import {
   NFT_FILE_TYPE_GIF,
   NFT_FILE_TYPE_VIDEO,
 } from 'interfaces';
-import Select from 'ui/components/Select';
-import { breakpointMap } from 'ui/theme/base';
+import { breakpointMap } from 'style/theme/base';
+import { processFile } from 'utils/imageProcessing/image';
 
-import NftPreviewCard from './NftPreviewCard';
+const DEFAULT_BLUR_VALUE = 5;
 
 interface Props {
   className?: string;
+  effect: NftEffectType;
+  isRN?: boolean;
+  secretNFT: File | null;
+  setEffect: (effect: NftEffectType) => void;
+  setError: (err: string) => void;
+  setNFT: (f: File | null) => void;
+  setSecretNFT: (f: File | null) => void;
 }
 
 const NFT_EFFECTS_ORDERED: NftEffectType[] = [
@@ -29,34 +39,53 @@ const NFT_EFFECTS_ORDERED: NftEffectType[] = [
   NFT_EFFECT_BLUR,
 ];
 
-const NftPreview = ({ className }: Props) => {
-  const { createNftData, setEffect, setRN } = useCreateNftContext() ?? {};
-  const { effect, isRN, secretNFT } = createNftData ?? {};
+const NftPreview = ({
+  className,
+  effect,
+  isRN,
+  secretNFT,
+  setEffect,
+  setError,
+  setNFT,
+  setSecretNFT,
+}: Props) => {
+  const [blurValue, setBlurValue] = useState<number>(DEFAULT_BLUR_VALUE);
 
   const isMobile = useMediaQuery({
     query: `(max-device-width: ${breakpointMap.md}px)`,
   });
 
-  const handleAllowedEffect = (effect: NftEffectType) => {
-    if (secretNFT !== null && secretNFT !== undefined) {
-      switch (effect) {
-        case NFT_EFFECT_BLUR:
-        case NFT_EFFECT_PROTECT:
-          return (
-            !secretNFT.type.includes(NFT_FILE_TYPE_VIDEO) &&
-            secretNFT.type !== NFT_FILE_TYPE_GIF
-          );
-        default:
-          return true;
-      }
+  const handleAllowedEffect = (file: File, effect: NftEffectType) => {
+    switch (effect) {
+      case NFT_EFFECT_BLUR:
+      case NFT_EFFECT_PROTECT:
+        return (
+          !file.type.includes(NFT_FILE_TYPE_VIDEO) &&
+          file.type !== NFT_FILE_TYPE_GIF
+        );
+      default:
+        return true;
     }
   };
 
-  useEffect(() => {
-    if (setRN !== undefined) {
-      setRN(window.isRNApp);
+  const handleCardSelect = (file: File, effect: NftEffectType) => {
+    setEffect(effect);
+    if (effect === NFT_EFFECT_BLUR || effect === NFT_EFFECT_PROTECT) {
+      processFile(file, effect, setError, blurValue).then(setNFT);
     }
-  }, []);
+  };
+
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    updateFile(
+      event,
+      setError,
+      (file: File) => {
+        setSecretNFT(file);
+        setEffect(NFT_EFFECT_DEFAULT);
+      },
+      isRN
+    );
+  };
 
   if (secretNFT === null) {
     return (
@@ -64,44 +93,58 @@ const NftPreview = ({ className }: Props) => {
         className={className}
         content="Click here to upload your file."
         inputId="uploadNft"
+        isRN={isRN}
         note={`JPEG, JPG, PNG, GIF ${!isRN ? ', MP4 or MOV' : ''}. Max 30mb.`}
+        onChange={handleFileUpload}
       />
     );
   }
 
   return (
     <div className={className}>
-      {secretNFT && (
-        <NftPreviewHeader>
-          <Title>
-            <EyeIcon />
-            NFT Preview
-          </Title>
-          {secretNFT.name && (
-            <Reupload
+      <SHeader>
+        <Subtitle>
+          <SEyeIcon />
+          NFT Preview
+        </Subtitle>
+        {secretNFT.name && (
+          <SReuploadWrapper>
+            <NftUpload
               content={secretNFT.name}
               inputId="reUploadNft"
               isMinimal
+              onChange={handleFileUpload}
             />
-          )}
-        </NftPreviewHeader>
-      )}
+          </SReuploadWrapper>
+        )}
+      </SHeader>
       {isMobile && effect !== undefined ? (
-        <NftPreviewCardSelection>
-          <NftPreviewCard effect={effect} isSelected />
+        <SWrapper>
+          <SMobileCardWrapper>
+            <NftCardWithEffects
+              blurValue={blurValue}
+              effect={effect}
+              isRN={isRN}
+              secretNFT={secretNFT}
+              setBlurValue={setBlurValue}
+              setEffect={setEffect}
+              setError={setError}
+              setNFT={setNFT}
+            />
+          </SMobileCardWrapper>
           <SSelect text={effect}>
             {(setSelectExpanded) => (
               <>
-                {NFT_EFFECTS_ORDERED.filter(handleAllowedEffect).map(
+                {NFT_EFFECTS_ORDERED.filter((effectType) =>
+                  handleAllowedEffect(secretNFT, effectType)
+                ).map(
                   (effectType, id) =>
                     effectType !== effect && (
                       <li
                         key={id}
                         onClick={() => {
-                          if (setEffect !== undefined) {
-                            setSelectExpanded(false);
-                            setEffect(effectType);
-                          }
+                          setSelectExpanded(false);
+                          setEffect(effectType);
                         }}
                       >
                         {effectType}
@@ -111,26 +154,56 @@ const NftPreview = ({ className }: Props) => {
               </>
             )}
           </SSelect>
-          <Separator />
-        </NftPreviewCardSelection>
+          <SSeparator />
+        </SWrapper>
       ) : (
-        <NftPreviewCardList>
-          {NFT_EFFECTS_ORDERED.filter(handleAllowedEffect).map(
-            (effectType, id) => (
-              <NftPreviewCard
-                key={id}
-                effect={effectType}
+        <SFieldset>
+          {NFT_EFFECTS_ORDERED.filter((effectType) =>
+            handleAllowedEffect(secretNFT, effectType)
+          ).map((effectType) => (
+            <SLabelWrapper key={effectType}>
+              <SLabel
+                htmlFor={`NftType_${effectType}`}
                 isSelected={effect === effectType}
-              />
-            )
-          )}
-        </NftPreviewCardList>
+              >
+                <SCardWrapper isSelected={effect === effectType}>
+                  <NftCardWithEffects
+                    blurValue={blurValue}
+                    effect={effectType}
+                    isRN={isRN}
+                    secretNFT={secretNFT}
+                    setBlurValue={setBlurValue}
+                    setEffect={setEffect}
+                    setError={setError}
+                    setNFT={setNFT}
+                  />
+                </SCardWrapper>
+
+                <SRadio
+                  checked={effect === effectType}
+                  label={effectType}
+                  onChange={() => handleCardSelect(secretNFT, effectType)}
+                />
+              </SLabel>
+
+              <HiddenShell>
+                <HiddenInput
+                  type="radio"
+                  id={`NftType_${effectType}`}
+                  name={`NftType_${effectType}`}
+                  onClick={() => handleCardSelect(secretNFT, effectType)}
+                  value={effectType}
+                />
+              </HiddenShell>
+            </SLabelWrapper>
+          ))}
+        </SFieldset>
       )}
     </div>
   );
 };
 
-const NftPreviewHeader = styled.div`
+const SHeader = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -143,23 +216,13 @@ const NftPreviewHeader = styled.div`
   }
 `;
 
-const Title = styled.h3`
-  display: flex;
-  align-items: end;
-  justify-content: center;
-  font-family: 'Airbnb Cereal App Medium';
-  font-size: 2rem;
-  line-height: 1.3;
-  margin: 0;
-`;
-
-const EyeIcon = styled(Eye)`
+const SEyeIcon = styled(Eye)`
   width: 2.4rem;
   margin-right: 1rem;
   fill: black;
 `;
 
-const Reupload = styled(NftUpload)`
+const SReuploadWrapper = styled.div`
   margin: 1.6rem 0 0;
 
   ${({ theme }) => theme.mediaQueries.md} {
@@ -168,24 +231,31 @@ const Reupload = styled(NftUpload)`
   }
 `;
 
-const NftPreviewCardSelection = styled.div`
+const SWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 `;
 
+const SMobileCardWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  filter: drop-shadow(0px 0px 10.4276px rgba(0, 0, 0, 0.25));
+`;
+
 const SSelect = styled(Select)`
   margin-top: 2.4rem;
 `;
 
-const Separator = styled.div`
+const SSeparator = styled.div`
   width: 15rem;
   border-bottom: 2px solid #e0e0e0;
   margin-top: 3.2rem;
 `;
 
-const NftPreviewCardList = styled.fieldset`
+const SFieldset = styled.fieldset`
   width: 100%;
   display: flex;
   justify-content: center;
@@ -193,6 +263,44 @@ const NftPreviewCardList = styled.fieldset`
   gap: 1.2rem;
   border: none;
   padding: 0;
+`;
+
+const SLabelWrapper = styled.label<{ isSelected?: boolean }>`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  flex: 1 1 0;
+  flex-direction: column;
+  max-width: 280px;
+`;
+
+const SLabel = styled.label<{ isSelected?: boolean }>`
+  width: 100%;
+  height: auto;
+  background: transparent;
+  border: 3px solid rgb(0, 0, 0, 0);
+  border-radius: 2rem;
+  padding: 0.8rem 0.8rem 2.4rem;
+
+  &:hover {
+    border: 3px dashed #7417ea;
+  }
+
+  ${({ isSelected }) =>
+    isSelected &&
+    `
+    border: 3px dashed #7417ea;
+  `}
+`;
+
+const SCardWrapper = styled.div<{ isSelected: boolean }>`
+  width: 100%;
+  height: auto;
+  opacity: ${({ isSelected }) => (isSelected ? 1 : 0.4)};
+`;
+
+const SRadio = styled(Radio)`
+  margin-top: 3.2rem;
 `;
 
 export default React.memo(NftPreview);

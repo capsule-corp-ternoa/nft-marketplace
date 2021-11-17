@@ -7,6 +7,7 @@ interface Props {
   id?: string;
   label?: string;
   name?: string;
+  onChange?: () => void;
   readOnly?: boolean;
   value?: string;
 }
@@ -17,6 +18,7 @@ const Radio = ({
   id,
   label,
   name,
+  onChange,
   readOnly,
   value,
 }: Props) => (
@@ -26,6 +28,7 @@ const Radio = ({
       id={id}
       checked={checked}
       name={name}
+      onChange={onChange}
       readOnly={readOnly}
       value={value}
     />
@@ -36,6 +39,7 @@ const Radio = ({
 const RadioContainer = styled.label`
   display: flex;
   align-items: center;
+  cursor: pointer;
   justify-content: center;
   gap: 0.8rem;
   font-family: 'Airbnb Cereal App Bold';
@@ -52,6 +56,7 @@ const RadioInput = styled.input`
   background-color: #fff;
   border: 0.2rem solid currentColor;
   border-radius: 50%;
+  cursor: pointer;
   display: grid;
   margin: 0;
   place-content: center;
@@ -61,7 +66,7 @@ const RadioInput = styled.input`
     width: 1.2rem;
     height: 1.2rem;
     border-radius: 50%;
-    background: #7417EA;
+    background: #7417ea;
     transform: scale(0);
     transition: 120ms transform ease-in-out;
     box-shadow: inset 1.2rem 1.2rem var(--form-control-color);

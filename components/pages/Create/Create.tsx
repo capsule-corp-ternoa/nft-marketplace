@@ -3,57 +3,70 @@ import styled from 'styled-components';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
 import {
+  Advice,
   Container,
   Input,
   InputLabel,
   InputShell,
+  Insight,
   Textarea,
+  Title,
   Wrapper,
-} from 'components/base/Layout';
+} from 'components/layout';
 import NftPreview from 'components/base/NftPreview';
-import { useCreateNftContext } from 'components/pages/Create/CreateNftContext';
 import {
-  NFT_EFFECT_BLUR,
   NFT_EFFECT_DEFAULT,
-  NFT_EFFECT_PROTECT,
   NFT_EFFECT_SECRET,
-  NFT_FILE_TYPE_IMAGE,
+  NftEffectType,
   UserType,
 } from 'interfaces';
-import Tooltip from 'ui/components/Tooltip';
-import { imgToBlur, imgToWatermark } from 'utils/imageProcessing/image';
+import Button from 'components/ui/Button';
+import Tooltip from 'components/ui/Tooltip';
 
 import { NFTProps } from 'pages/create';
 
+type QRDataType = {
+  walletId: string;
+  quantity: number;
+};
+
 export interface CreateProps {
-  user: UserType;
-  setModalExpand: (b: boolean) => void;
-  setNotAvailable: (b: boolean) => void;
-  setModalCreate: (b: boolean) => void;
+  NFT: File | null;
   NFTData: NFTProps;
+  QRData: QRDataType;
+  secretNFT: File | null;
+  user: UserType;
+  setError: (err: string) => void;
+  setModalExpand: (b: boolean) => void;
+  setModalCreate: (b: boolean) => void;
+  setNotAvailable: (b: boolean) => void;
+  setNFT: (f: File | null) => void;
   setNFTData: (o: NFTProps) => void;
+  setOutput: (s: string[]) => void;
+  setQRData: (data: QRDataType) => void;
+  setSecretNFT: (f: File | null) => void;
 }
 
 const Create: React.FC<CreateProps> = ({
-  setModalExpand,
-  setNotAvailable,
-  setModalCreate,
+  NFT,
   NFTData: initalValue,
-  setNFTData: setNftDataToParent,
+  QRData,
+  secretNFT,
   user,
+  setError,
+  setModalExpand,
+  setModalCreate,
+  setNotAvailable,
+  setNFT,
+  setNFTData: setNftDataToParent,
+  setOutput,
+  setQRData,
+  setSecretNFT,
 }) => {
-  const {
-    createNftData,
-    setError,
-    setNFT,
-    setOutput,
-    setQRData,
-    setUploadSize,
-  } = useCreateNftContext() ?? {};
-  const { blurredValue, effect, NFT, QRData, secretNFT } = createNftData ?? {};
-
+  const [effect, setEffect] = useState<NftEffectType>(NFT_EFFECT_DEFAULT);
+  const [isRN, setRN] = useState(false);
   const [nftData, setNFTData] = useState(initalValue);
-  const { category, description, name, quantity, seriesId } = nftData;
+  const { description, name, quantity, seriesId } = nftData;
 
   const validateQuantity = (value: number, limit: number) => {
     return value > 0 && value <= limit;
@@ -76,9 +89,9 @@ const Create: React.FC<CreateProps> = ({
     setNftDataToParent(nextNftData);
   }
 
-  function initMintingNFT(processedFile?: File) {
+  function initMintingNFT() {
     if (!user) throw new Error('Please login to create an NFT.');
-    if (!(NFT || processedFile) && !(effect === NFT_EFFECT_DEFAULT))
+    if (!NFT && !(effect === NFT_EFFECT_DEFAULT))
       throw new Error('Elements are undefined');
     setQRData!({
       ...QRData,
@@ -87,88 +100,41 @@ const Create: React.FC<CreateProps> = ({
     setOutput!([quantity.toString()]);
   }
 
-  async function processFile() {
-    try {
-      if (!secretNFT || !setNFT) {
-        throw new Error();
-      }
-      if (setOutput !== undefined) setOutput([]);
-      if (setError !== undefined) setError('');
-
-      const newProcessedFile = new File([secretNFT], 'NFT', {
-        type: secretNFT.type,
-      });
-      let res;
-
-      if (effect === NFT_EFFECT_BLUR && blurredValue !== undefined) {
-        res = await imgToBlur(newProcessedFile, blurredValue);
-      } else if (effect === NFT_EFFECT_PROTECT) {
-        res = await imgToWatermark(newProcessedFile);
-      }
-      const blob = await (await fetch(res as string)).blob();
-      const file = new File([blob], secretNFT.name, {
-        type: secretNFT.type,
-      });
-      setNFT(file);
-      return file;
-    } catch (err) {
-      if (setError !== undefined) setError('Please try again.');
-      console.log(err);
-      return undefined;
-    }
-  }
-
   async function uploadFiles() {
-    if (
-      secretNFT &&
-      secretNFT.type.substr(0, 5) === NFT_FILE_TYPE_IMAGE &&
-      effect !== NFT_EFFECT_DEFAULT &&
-      effect !== NFT_EFFECT_SECRET
-    ) {
-      const processedFile = await processFile();
-      if (processedFile !== undefined) {
-        initMintingNFT(processedFile);
-      }
-    } else {
+    try {
+      setOutput([]);
+      setError('');
       initMintingNFT();
+      setModalCreate(true);
+    } catch (err) {
+      console.error(err);
+      if (err instanceof Error) {
+        setError(err.message);
+      }
     }
-    setModalCreate(true);
   }
 
   useEffect(() => {
-    if (
-      secretNFT &&
-      quantity &&
-      Number(quantity) > 0 &&
-      setUploadSize !== undefined
-    ) {
-      const previewSize = NFT ? NFT.size : secretNFT.size;
-      const secretsSize = secretNFT.size * Number(quantity);
-      setUploadSize(previewSize + secretsSize);
-    }
-  }, [quantity, NFT, secretNFT]);
-
-  useEffect(() => {
-    if (
-      user &&
-      user.walletId &&
-      setQRData !== undefined &&
-      QRData !== undefined
-    ) {
-      setQRData({
-        ...QRData,
-        walletId: user.walletId,
-      });
-    }
-  }, [user]);
+    setRN(window.isRNApp);
+  }, []);
 
   return (
     <Container>
       <Wrapper>
         <Title>Create your NFT</Title>
-        <SNftPreview />
-        <Form>
-          <Left>
+        <SNftPreviewWrapper>
+          <NftPreview
+            effect={effect}
+            isRN={isRN}
+            secretNFT={secretNFT}
+            setEffect={setEffect}
+            setError={setError}
+            setNFT={setNFT}
+            setSecretNFT={setSecretNFT}
+          />
+        </SNftPreviewWrapper>
+        <SForm>
+          <SLeft>
             <InputShell>
               <InputLabel>Name</InputLabel>
               <Input
@@ -180,7 +146,7 @@ const Create: React.FC<CreateProps> = ({
               />
             </InputShell>
 
-            <InputShellDescription>
+            <SInputShellDescription>
               <InputLabel>Description</InputLabel>
               <Textarea
                 placeholder="Tell about the NFT in a few words..."
@@ -188,12 +154,13 @@ const Create: React.FC<CreateProps> = ({
                 value={description}
                 onChange={onChange}
               />
-            </InputShellDescription>
-          </Left>
-          <Right>
-            <InputShell>
+            </SInputShellDescription>
+          </SLeft>
+          <SRight>
+            {/* TODO in the future with autocomplete */}
+            {/* <InputShell>
               <InputLabel>
-                Category<Insight>(optional)</Insight>
+                Categories<SInsight>(optional)</SInsight>
               </InputLabel>
               <Input
                 type="text"
@@ -203,12 +170,12 @@ const Create: React.FC<CreateProps> = ({
                 name="category"
                 value={category}
               />
-            </InputShell>
+            </InputShell> */}
 
             {/* TODO in the future */}
             {/* <InputShell>
               <InputLabel>
-                Royalties<Insight>(max: 10%)</Insight>
+                Royalties<SInsight>(max: 10%)</SInsight>
               </InputLabel>
               <Input
                 type="text"
@@ -221,7 +188,7 @@ const Create: React.FC<CreateProps> = ({
 
             <InputShell>
               <InputLabel>
-                Quantity<Insight>(max: 10)</Insight>
+                Quantity<SInsight>(max: 10)</SInsight>
               </InputLabel>
               <Input
                 type="text"
@@ -235,9 +202,9 @@ const Create: React.FC<CreateProps> = ({
 
             <InputShell>
               <InputLabel>
-                Serie ID
-                <STooltip text="Specified your own serie id" />
-                <Insight>(optional)</Insight>
+                Series ID
+                <STooltip text="Specified your own series id" />
+                <SInsight>(optional)</SInsight>
               </InputLabel>
               <Input
                 type="text"
@@ -247,17 +214,16 @@ const Create: React.FC<CreateProps> = ({
                 value={seriesId}
               />
             </InputShell>
-          </Right>
-        </Form>
-        <Advice>
+          </SRight>
+        </SForm>
+        <SAdvice>
           Once the information is entered, it will be impossible to modify it !
-        </Advice>
-        <CreateButton
+        </SAdvice>
+        <SButton
           disabled={!(isDataValid && user)}
           onClick={() => isDataValid && user && uploadFiles()}
-        >
-          Create NFT
-        </CreateButton>
+          text="Create NFT"
+        />
       </Wrapper>
       <Footer setNotAvailable={setNotAvailable} />
       <FloatingHeader user={user} setModalExpand={setModalExpand} />
@@ -265,22 +231,7 @@ const Create: React.FC<CreateProps> = ({
   );
 };
 
-const Title = styled.h2`
-  font-family: 'Airbnb Cereal App Bold';
-  font-size: 3.2rem;
-  line-height: 1.3;
-  margin: 0;
-  text-align: center;
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    font-size: 6.4rem;
-    text-align: left;
-  }
-`;
-
-const SNftPreview = styled(NftPreview)`
-  width: 100%;
-  height: auto;
+const SNftPreviewWrapper = styled.div`
   margin-top: 3.2rem;
 
   ${({ theme }) => theme.mediaQueries.md} {
@@ -288,7 +239,7 @@ const SNftPreview = styled(NftPreview)`
   }
 `;
 
-const Form = styled.form`
+const SForm = styled.form`
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -310,11 +261,21 @@ const Form = styled.form`
   }
 `;
 
-const Left = styled.div`
-  > :first-child {
-    margin-top: 0;
-  }
+const FormSideLayout = styled.div`
+  > * {
+    margin-top: 4rem;
 
+    ${({ theme }) => theme.mediaQueries.md} {
+      margin-top: 6.4rem;
+    }
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+`;
+
+const SLeft = styled(FormSideLayout)`
   ${({ theme }) => theme.mediaQueries.md} {
     border-right: 1px solid #e0e0e0;
     padding-right: 4.8rem;
@@ -325,13 +286,9 @@ const Left = styled.div`
   }
 `;
 
-const Right = styled.div`
+const SRight = styled(FormSideLayout)`
   ${({ theme }) => theme.mediaQueries.md} {
     padding-left: 4.8rem;
-
-    > :first-child {
-      margin-top: 0;
-    }
   }
 
   ${({ theme }) => theme.mediaQueries.xl} {
@@ -339,26 +296,19 @@ const Right = styled.div`
   }
 `;
 
-const InputShellDescription = styled(InputShell)`
+const SInputShellDescription = styled(InputShell)`
   flex: 1;
-`;
-
-const Insight = styled.span`
-  color: #c1c1c1;
-  font-family: 'Airbnb Cereal App Book';
-  font-size: 1.2rem;
-  line-height: 1.3;
-  margin-left: 0.8rem;
 `;
 
 const STooltip = styled(Tooltip)`
   margin-left: 0.4rem;
 `;
 
-const Advice = styled.span`
-  color: #7417ea;
-  font-size: 1.6rem;
-  line-height: 1.3;
+const SInsight = styled(Insight)`
+  margin-left: 0.8rem;
+`;
+
+const SAdvice = styled(Advice)`
   margin: 4rem auto 0;
   text-align: center;
 
@@ -367,32 +317,8 @@ const Advice = styled.span`
   }
 `;
 
-const CreateButton = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  align-self: center;
-  background: #7417ea;
-  border: none;
-  border-radius: 4rem;
-  color: white;
-  cursor: pointer;
-  font-family: 'Airbnb Cereal App Bold';
-  font-size: 1.6rem;
-  margin-top: 2.4rem;
-  padding: 1.2rem 4.8rem;
-  transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-  z-index: 1;
-
-  &:hover {
-    color: white;
-    background-color: black;
-  }
-
-  &:disabled {
-    opacity: 0.4;
-    pointer-events: none;
-  }
+const SButton = styled(Button)`
+  margin-top: 4.8rem;
 `;
 
 export default Create;

@@ -30,17 +30,18 @@ export const Subtitle = styled.h3`
 `;
 
 export const Title = styled.h2`
-  display: inline-flex;
-  align-items: start;
+  display: inline-block;
   font-family: ${({ theme }) => theme.fonts.bold};
   font-size: 3.2rem;
-  gap: 2.4rem;
   line-height: 1.3;
   margin: 0;
-  max-width: 64rem;
   text-align: center;
 
   ${({ theme }) => theme.mediaQueries.md} {
+    display: inline-flex;
+    align-items: start;
+    gap: 2.4rem;
+    max-width: 64rem;
     font-size: 6.4rem;
     text-align: left;
   }

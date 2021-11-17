@@ -304,7 +304,12 @@ const NFTPage: React.FC<NFTPageProps> = ({
 };
 
 const SChip = styled(Chip)`
-  transform: translateY(85%);
+  margin: 1.6rem auto 0;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    margin: 0;
+    transform: translateY(85%);
+  }
 `
 
 const SDot = styled.div`

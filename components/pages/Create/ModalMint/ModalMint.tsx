@@ -12,6 +12,7 @@ import { getFilehash, generateSeriesId, cryptAndUploadNFT, uploadIPFS } from 'ut
 import { Circle } from 'rc-progress';
 
 import { NFTProps } from 'pages/create';
+import { navigateToSuccess } from 'utils/functions';
 
 export interface ModalProps {
   error: string;
@@ -128,8 +129,14 @@ const ModalMint: React.FC<ModalProps> = ({
       setMintResponse(success)
       setTimeout(() => {
         setModalCreate(false);
-        router.reload()
-      }, 1500)
+        navigateToSuccess(
+          router, 
+          "NFT created !", 
+          "Go back to your profile page", 
+          "/profile", 
+          false, 
+          "The NFT will soon appear in your profile page")
+      }, 1000)
     });
     socket.once('disconnect', () => {
       setModalCreate(false);

@@ -34,7 +34,7 @@ const Details: React.FC<DetailsProps> = ({
     const serieDataCountObject = {} as any;
     serieData.forEach((x) => {
       // Compute rows to display && count number of listed / unlisted for each row
-      const key = `${x.owner}-${x.listed}-${x.price}-${x.marketplaceId}`;
+      const key = `${x.owner}-${x.listed}-${x.price}-${x.marketplaceId}-${x.isCapsule}`;
       if (!serieDataCountObject[key]) {
         serieDataCountObject[key] = 1;
         serieDataGroupedArray.push({
@@ -116,7 +116,7 @@ const Details: React.FC<DetailsProps> = ({
     const ownerData = (
       usersData[NFTRowOwner] ? usersData[NFTRowOwner] : null
     ) as UserType;
-    const key = `${NFTRowOwner}-${NFTRowListed}-${NFTRowPrice}-${NFTRowMarketplaceId}`;
+    const key = `${NFTRowOwner}-${NFTRowListed}-${NFTRowPrice}-${NFTRowMarketplaceId}-${NFTRow?.isCapsule}`;
     const NFTRowTypeWording = (NFTRow?.isCapsule ? 'capsule' : 'edition') + (serieDataCount[key] > 1 ? 's' : '');
     const userCanBuy = user
       ? user.capsAmount &&

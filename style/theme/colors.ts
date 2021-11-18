@@ -7,6 +7,9 @@ export const colors: Colors = {
 
   invertedContrast: '#fff',
   contrast: '#000',
+
+  neutral400: '#c1c1c1',
+  neutral500: '#f7f7f7',
 }
 
 export default {

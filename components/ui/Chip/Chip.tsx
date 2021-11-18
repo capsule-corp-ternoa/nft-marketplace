@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Colors } from 'style/theme/types';
 
 interface IChip {
-  color: keyof Colors;
+  color?: keyof Colors;
   isDeletable?: boolean;
   size?: 'small' | 'medium';
   variant?: 'rectangle' | 'round';
@@ -52,9 +52,10 @@ const SChipContainer = styled.div<IChip>`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: ${({ theme, color }) => theme.colors[`${color}`]};
+  background: ${({ theme, color }) => color ? theme.colors[`${color}`] : 'whiteblur'};
   backdrop-filter: ${({ color }) =>
-    color === 'transparent' ? 'blur(2.8rem)' : 'blur(0)'};
+    color === 'whiteblur' ? 'blur(2.8rem)' : 'blur(0)'};
+  border: ${({ color }) => color === 'invertedContrast' ? '2px dashed #E0E0E0' : 'none'};
   border-radius: ${({ isDeletable, variant }) =>
     isDeletable || variant === 'rectangle' ? '0.8rem' : '6.4rem'};
   padding: ${({ size }) =>
@@ -76,22 +77,22 @@ const SText = styled.div<IChip>`
         return theme.colors.invertedContrast;
       case 'primaryLight':
         return theme.colors.primary;
-      case 'transparent':
-        return theme.colors.contrast;
+      case 'invertedContrast':
+      case 'whiteblur':
       default:
-        return theme.colors.invertedContrast;
+        return theme.colors.contrast;
     }
   }};
 `;
 
 const SButton = styled.button<IChip>`
-  background: transparent;
+  background: whiteblur;
   border: none;
   position: relative;
   margin-left: 0.8rem;
 `;
 
-const SCross = styled.div<{ color: keyof Colors }>`
+const SCross = styled.div<{ color?: keyof Colors }>`
   position: absolute;
   top: 0;
   left: 0.8rem;
@@ -105,10 +106,10 @@ const SCross = styled.div<{ color: keyof Colors }>`
         return theme.colors.invertedContrast;
       case 'primaryLight':
         return theme.colors.primary;
-      case 'transparent':
-        return theme.colors.contrast;
+      case 'invertedContrast':
+      case 'whiteblur':
       default:
-        return theme.colors.invertedContrast;
+        return theme.colors.contrast;
     }
   }};
 `;

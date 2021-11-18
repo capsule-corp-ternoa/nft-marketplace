@@ -7,7 +7,7 @@ export interface Colors {
   neutral500: string;
   primary: string;
   primaryLight: string;
-  transparent: string;
+  whiteBlur: string;
 }
 
 export interface Fonts {

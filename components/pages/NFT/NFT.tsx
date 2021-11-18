@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import styled from 'styled-components'
 import style from './NFT.module.scss';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
@@ -16,6 +17,8 @@ import NoNFTImage from '../../assets/NoNFTImage';
 import Details from './Details';
 import Creator from 'components/base/Creator';
 import { MARKETPLACE_ID } from 'utils/constant';
+import { Title } from 'components/layout'
+import Chip from 'components/ui/Chip';
 import Showcase from 'components/base/Showcase';
 import { getByTheSameArtistNFTs } from 'actions/nft';
 
@@ -225,7 +228,19 @@ const NFTPage: React.FC<NFTPageProps> = ({
                 </div>
               </div>
             </div>
-            <h1 className={style.Title}>{NFT.title}</h1>
+            <Title>
+              {NFT.title}
+              {NFT.serieData?.[0].isCapsule && <SChip
+                color="primaryLight"
+                text={
+                  <>
+                    <SDot />
+                    Capsule
+                  </>
+                }
+                variant="rectangle"
+              />}
+            </Title>
             <p className={style.Description}>{NFT.description}</p>
             <div className={style.Buy}>
               <div
@@ -300,5 +315,21 @@ const NFTPage: React.FC<NFTPageProps> = ({
     </div>
   );
 };
+
+const SChip = styled(Chip)`
+  margin: 1.6rem auto 0;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    margin: 0;
+    transform: translateY(85%);
+  }
+`
+
+const SDot = styled.div`
+  width: 0.8rem;
+  height: 0.8rem;
+  background: ${({theme}) => theme.colors.primary};
+  border-radius: 50%;
+`
 
 export default NFTPage;

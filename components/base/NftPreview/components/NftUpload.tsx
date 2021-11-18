@@ -101,7 +101,12 @@ const NftUpload = ({
     <SLabel htmlFor={inputId} isSecretOption={isSecretOption}>
       <SWrapper isSmall={isSecretOption}>
         {isSecretOption && (
-          <Chip color="primaryInverted" text="Secret option" />
+          <Chip
+            color="primaryLight"
+            text="Secret option"
+            size="small"
+            variant="round"
+          />
         )}
         {!isSecretOption && <SUploadIcon />}
         {content && (

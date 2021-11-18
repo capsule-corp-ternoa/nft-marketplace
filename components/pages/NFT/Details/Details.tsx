@@ -34,7 +34,7 @@ const Details: React.FC<DetailsProps> = ({
     const serieDataCountObject = {} as any;
     serieData.forEach((x) => {
       // Compute rows to display && count number of listed / unlisted for each row
-      const key = `${x.owner}-${x.listed}-${x.price}-${x.marketplaceId}`;
+      const key = `${x.owner}-${x.listed}-${x.price}-${x.marketplaceId}-${x.isCapsule}`;
       if (!serieDataCountObject[key]) {
         serieDataCountObject[key] = 1;
         serieDataGroupedArray.push({
@@ -44,6 +44,8 @@ const Details: React.FC<DetailsProps> = ({
           owner: x.owner,
           price: x.price,
           priceTiime: x.priceTiime,
+          serieId: x.serieId,
+          isCapsule: x.isCapsule,
         } as NftType);
       } else {
         serieDataCountObject[key] += 1;
@@ -114,7 +116,8 @@ const Details: React.FC<DetailsProps> = ({
     const ownerData = (
       usersData[NFTRowOwner] ? usersData[NFTRowOwner] : null
     ) as UserType;
-    const key = `${NFTRowOwner}-${NFTRowListed}-${NFTRowPrice}-${NFTRowMarketplaceId}`;
+    const key = `${NFTRowOwner}-${NFTRowListed}-${NFTRowPrice}-${NFTRowMarketplaceId}-${NFTRow?.isCapsule}`;
+    const NFTRowTypeWording = (NFTRow?.isCapsule ? 'capsule' : 'edition') + (serieDataCount[key] > 1 ? 's' : '');
     const userCanBuy = user
       ? user.capsAmount &&
         NFTRow &&
@@ -125,6 +128,7 @@ const Details: React.FC<DetailsProps> = ({
         user.walletId !== NFTRowOwner &&
         NFTRowMarketplaceId === MARKETPLACE_ID
       : NFTRowListed === 1 && NFTRowMarketplaceId === MARKETPLACE_ID;
+
     return (
       <div
         className={styleDetails.owners}
@@ -158,10 +162,14 @@ const Details: React.FC<DetailsProps> = ({
             <Link href={`/nft/${NFTRowId}`}>
               <a className={styleDetails.ownerDatasSales}>
                 {NFTRowListed === 0
-                  ? `${serieDataCount[key]} edition${serieDataCount[key] > 1 ? 's' : ''} not for sale`
+                  ? `${serieDataCount[key]} ${NFTRowTypeWording} not for sale`
                   : NFTRowListed === 1 && NFTRowMarketplaceId === MARKETPLACE_ID
-                  ? `${serieDataCount[key]} on sale for ${computeCaps(Number(NFTRowPrice))} CAPS ${serieDataCount[key] > 1 ? 'each' : ''}`
-                  : `${serieDataCount[key]} on sale on other marketplace(s)`}
+                  ? `${
+                      serieDataCount[key]
+                    } ${NFTRowTypeWording} on sale for ${computeCaps(
+                      Number(NFTRowPrice)
+                    )} CAPS ${serieDataCount[key] > 1 ? 'each' : ''}`
+                  : `${serieDataCount[key]} ${NFTRowTypeWording} on sale on other marketplace(s)`}
               </a>
             </Link>
           </div>

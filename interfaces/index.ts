@@ -34,7 +34,8 @@ export type NftType = {
       mediaType: string
     }
     publicPGP: string
-  }
+  };
+  isCapsule: boolean;
   timestampList?: string;
   price: string;
   priceTiime: string;

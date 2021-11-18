@@ -159,7 +159,13 @@ const NftCardWithEffects = ({
               />
             </SCoverWrapper>
           )}
-          <SChip color="transparent" icon={<SChipIcon />} text="Secret" />
+          <SChip
+            color="transparent"
+            icon={<SChipIcon />}
+            size="medium"
+            text="Secret"
+            variant="round"
+          />
         </SSecretWrapper>
       )}
     </SWrapper>
@@ -214,10 +220,6 @@ const SSecretWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   padding: 4rem 3.2rem 0;
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    padding: 4.8rem 4rem 0;
-  }
 `;
 
 const SecretUploadDescription = styled.div`
@@ -239,8 +241,9 @@ const SChip = styled(Chip)`
 `;
 
 const SChipIcon = styled(WhiteWaterMark)`
-  width: 1.6rem;
-  height: 1.6rem;
+  width: 2rem;
+  height: 2rem;
+  margin-right: 0.4rem;
 `;
 
 export default React.memo(NftCardWithEffects);

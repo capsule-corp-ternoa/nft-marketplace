@@ -1,5 +1,13 @@
 export type Breakpoints = string[];
 
+export interface Colors {
+  contrast: string;
+  invertedContrast: string;
+  primary: string;
+  primaryLight: string;
+  transparent: string;
+}
+
 export interface Fonts {
   black: string;
   bold: string;

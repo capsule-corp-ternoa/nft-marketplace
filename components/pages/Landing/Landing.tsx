@@ -8,7 +8,7 @@ import FloatingHeader from 'components/base/FloatingHeader';
 import NoNFTComponent from 'components/base/NoNFTComponent';
 import { UserType, NftType } from 'interfaces/index';
 import dynamic from 'next/dynamic';
-const Showcase = dynamic(() => import('./Showcase'), {
+const Showcase = dynamic(() => import('../../base/Showcase'), {
   ssr: false,
 });
 

@@ -63,6 +63,19 @@ export const getLikedNFTs = async (walletId: string, page: string="1", limit: st
   return result;
 }
 
+export const getByTheSameArtistNFTs = async (walletId: string, page: string="1", limit: string=DEFAULT_LIMIT_PAGINATION, noSeriesData: boolean = false) => {
+  const paginationOptions = {page, limit}
+  const filterOptions: any = {creator: walletId, noSeriesData}
+  const sortOptions: string = "created_at:desc"
+  const res = await fetch(
+    `${NODE_API_URL}/api/NFTs/?pagination=${JSON.stringify(paginationOptions)}&filter=${JSON.stringify(filterOptions)}&sort=${sortOptions}`
+  );
+  if (!res.ok) throw new Error();
+  let result: CustomResponse<NftType> = await res.json();
+  result.data = filterNFTs(result.data)
+  return result;
+}
+
 export const getUserNFTsStat = async (id: string, onlyFromMpId: boolean): Promise<{
   countOwned: number, 
   countOwnedListed: number, 

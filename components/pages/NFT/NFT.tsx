@@ -16,6 +16,8 @@ import NoNFTImage from '../../assets/NoNFTImage';
 import Details from './Details';
 import Creator from 'components/base/Creator';
 import { MARKETPLACE_ID } from 'utils/constant';
+import Showcase from 'components/base/Showcase';
+import { getByTheSameArtistNFTs } from 'actions/nft';
 
 export interface NFTPageProps {
   NFT: NftType;
@@ -41,6 +43,7 @@ const NFTPage: React.FC<NFTPageProps> = ({
 }) => {
   const [likeLoading, setLikeLoading] = useState(false);
   const [modalShareOpen, setModalShareOpen] = useState(false);
+  const [byTheSameArtistNFTs, setByTheSameArtistNFTs] = useState<NftType[]>([])
   const shareSubject = 'Check out this Secret NFT';
   const shareText = `Check out ${NFT.title ? NFT.title : 'this nft'} on ${
     process.env.NEXT_PUBLIC_APP_LINK
@@ -108,6 +111,15 @@ const NFTPage: React.FC<NFTPageProps> = ({
   useEffect(() => {
     setNftToBuy(smallestPriceRow);
   }, [smallestPriceRow]);
+
+  useEffect(() => {
+    loadByTheSameArtistNFTs()
+  }, [NFT])
+
+  const loadByTheSameArtistNFTs = async () => {
+    const NFTs = await getByTheSameArtistNFTs(NFT.creator, "1", "7", true)
+    setByTheSameArtistNFTs(NFTs.data.filter(x => x.serieId !== NFT.serieId))
+  }
 
   const handleLikeDislike = async () => {
     try {
@@ -272,6 +284,7 @@ const NFTPage: React.FC<NFTPageProps> = ({
             setExp={setExp}
           />
         </div>
+        {byTheSameArtistNFTs.length>0 && <Showcase category="By the same artist" NFTs={byTheSameArtistNFTs} user={user} setUser={setUser} />}
       </div>
       <Footer setNotAvailable={setNotAvailable} />
       <FloatingHeader user={user} setModalExpand={setModalExpand} />

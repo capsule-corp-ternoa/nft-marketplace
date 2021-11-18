@@ -160,7 +160,7 @@ const NftCardWithEffects = ({
             </SCoverWrapper>
           )}
           <SChip
-            color="transparent"
+            color="whiteBlur"
             icon={<SChipIcon />}
             size="medium"
             text="Secret"

@@ -39,7 +39,8 @@ const Chip = ({
       </SText>
       {onDelete && (
         <SButton color={color} onClick={onDelete}>
-          X
+          <SCross1 color={color} />
+          <SCross2 color={color} />
         </SButton>
       )}
     </SChipContainer>
@@ -65,10 +66,9 @@ const SText = styled.div<IChip>`
   align-items: center;
   gap: 0.8rem;
   font-family: ${({ theme }) => theme.fonts.bold};
-  font-size: ${({ size }) => (size === 'small' ? '1.2rem' : '1.6rem')};
+  font-size: ${({ size }) => (size === 'small' ? '1.4rem' : '1.6rem')};
   margin-left: 0.4rem;
   white-space: nowrap;
-  opacity: 0.7;
 
   color: ${({ theme, color }) => {
     switch (color) {
@@ -87,9 +87,19 @@ const SText = styled.div<IChip>`
 const SButton = styled.button<IChip>`
   background: transparent;
   border: none;
+  position: relative;
   margin-left: 0.8rem;
+`;
 
-  color: ${({ theme, color }) => {
+const SCross = styled.div<{ color: keyof Colors }>`
+  position: absolute;
+  top: 0;
+  left: 0.8rem;
+  width: 2px;
+  height: 14px;
+  margin-top: -0.6rem;
+
+  background: ${({ theme, color }) => {
     switch (color) {
       case 'primary':
         return theme.colors.invertedContrast;
@@ -101,6 +111,14 @@ const SButton = styled.button<IChip>`
         return theme.colors.invertedContrast;
     }
   }};
+`;
+
+const SCross1 = styled(SCross)`
+  transform: rotate(-45deg);
+`;
+
+const SCross2 = styled(SCross)`
+  transform: rotate(45deg);
 `;
 
 export default Chip;

@@ -165,8 +165,11 @@ const SOptions = styled.ul`
   background: ${({ theme }) => theme.colors.neutral500};
   border-radius: 0.8rem;
   list-style-type: none;
-  margin: -2rem 0 0;
-  padding: 3.2rem 1.6rem 1.6rem;
+  margin: 0;
+  padding: 1.6rem;
+  position: absolute;
+  top: calc(100% - 0.7rem);
+  left: 0;
 `;
 
 const SEmptyLabel = styled.span`

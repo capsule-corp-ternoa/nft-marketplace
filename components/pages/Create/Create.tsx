@@ -331,8 +331,11 @@ const SLeft = styled(FormSideLayout)`
 `;
 
 const SRight = styled(FormSideLayout)`
+  margin-top: 4rem;
+
   ${({ theme }) => theme.mediaQueries.md} {
     padding-left: 4.8rem;
+    margin-top: 0;
   }
 
   ${({ theme }) => theme.mediaQueries.xl} {

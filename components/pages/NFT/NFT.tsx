@@ -241,6 +241,16 @@ const NFTPage: React.FC<NFTPageProps> = ({
                 variant="rectangle"
               />}
             </Title>
+            <SCategoriesWrapper>
+              {NFT.categories.map(({ name }) => (
+                <Chip
+                  color="invertedContrast"
+                  text={name}
+                  size="medium"
+                  variant="rectangle"
+                />
+              ))}
+            </SCategoriesWrapper>
             <p className={style.Description}>{NFT.description}</p>
             <div className={style.Buy}>
               <div
@@ -330,6 +340,21 @@ const SDot = styled.div`
   height: 0.8rem;
   background: ${({theme}) => theme.colors.primary};
   border-radius: 50%;
+`
+
+const SCategoriesWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1.6rem;
+  margin-top: 1.6rem;
+
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    justify-content: start;
+    margin: 0;
+  }
 `
 
 export default NFTPage;

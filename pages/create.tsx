@@ -8,17 +8,19 @@ import ModalMint from 'components/pages/Create/ModalMint';
 import NotAvailableModal from 'components/base/NotAvailable';
 import cookies from 'next-cookies';
 import Router from 'next/router';
+import { getCategories } from 'actions/category';
 import { getUser } from 'actions/user';
-import { UserType } from 'interfaces';
+import { CategoryType, UserType } from 'interfaces';
 import { NextPageContext } from 'next';
 import { decryptCookie } from 'utils/cookie';
 
 export interface CreatePageProps {
+  categories: CategoryType[];
   user: UserType;
 }
 
 export interface NFTProps {
-  category?: string;
+  categories: CategoryType[];
   description: string;
   name: string;
   quantity: number;
@@ -26,7 +28,7 @@ export interface NFTProps {
   seriesId: string;
 }
 
-const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
+const CreatePage: React.FC<CreatePageProps> = ({ categories, user }) => {
   const isNftCreationEnabled =
     process.env.NEXT_PUBLIC_IS_NFT_CREATION_ENABLED === undefined
       ? true
@@ -41,7 +43,7 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
   const [secretNFT, setSecretNFT] = useState<File | null>(null);
   const [uploadSize, setUploadSize] = useState(0);
   const [NFTData, setNFTData] = useState<NFTProps>({
-    category: undefined,
+    categories: [],
     description: '',
     name: '',
     quantity: 1,
@@ -105,6 +107,7 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
         <MainHeader user={user} setModalExpand={setModalExpand} />
         {isNftCreationEnabled && (
           <Create
+            categoriesOptions={categories}
             NFT={NFT}
             NFTData={NFTData}
             QRData={QRData}
@@ -127,12 +130,40 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
 };
 
 export async function getServerSideProps(ctx: NextPageContext) {
+  let categories: CategoryType[] = [];
   let user = null;
+
+  const promises = [];
+
   const token =
     cookies(ctx).token && decryptCookie(cookies(ctx).token as string);
-  if (token) user = await getUser(token).catch(() => null);
+  if (token) {
+    promises.push(
+      new Promise<void>((success) => {
+        getUser(token)
+          .then((_user) => {
+            user = _user;
+            success();
+          })
+          .catch(success);
+      })
+    );
+  }
+
+  promises.push(
+    new Promise<void>((success) => {
+      getCategories()
+        .then((result) => {
+          categories = result;
+          success();
+        })
+        .catch(success);
+    })
+  );
+
+  await Promise.all(promises);
   return {
-    props: { user },
+    props: { categories, user },
   };
 }
 

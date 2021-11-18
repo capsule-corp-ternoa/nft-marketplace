@@ -86,7 +86,7 @@ const SText = styled.div<IChip>`
 `;
 
 const SButton = styled.button<IChip>`
-  background: whiteblur;
+  background: transparent;
   border: none;
   position: relative;
   margin-left: 0.8rem;

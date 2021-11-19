@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import Icon, { IconNameType } from 'components/assets/Icon';
 import { Colors } from 'style/theme/types';
 
 interface IChip {
@@ -11,7 +12,7 @@ interface IChip {
 
 interface Props extends IChip {
   className?: string;
-  icon?: React.SVGProps<SVGSVGElement>;
+  icon?: IconNameType;
   onDelete?: () => void;
   text: string | React.ReactNode;
 }
@@ -33,7 +34,7 @@ const Chip = ({
       size={size}
       variant={variant}
     >
-      {icon}
+      {icon && <SIcon name={icon} size={size} />}
       <SText color={color} size={size}>
         {text}
       </SText>
@@ -52,14 +53,22 @@ const SChipContainer = styled.div<IChip>`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: ${({ theme, color }) => color ? theme.colors[`${color}`] : 'whiteblur'};
+  background: ${({ theme, color }) =>
+    color ? theme.colors[`${color}`] : 'transparent'};
   backdrop-filter: ${({ color }) =>
-    color === 'whiteblur' ? 'blur(2.8rem)' : 'blur(0)'};
-  border: ${({ color }) => color === 'invertedContrast' ? '2px dashed #E0E0E0' : 'none'};
+    color === 'whiteBlur' ? 'blur(2.8rem)' : 'blur(0)'};
+  border: ${({ color }) =>
+    color === 'invertedContrast' ? '2px dashed #E0E0E0' : 'none'};
   border-radius: ${({ isDeletable, variant }) =>
     isDeletable || variant === 'rectangle' ? '0.8rem' : '6.4rem'};
   padding: ${({ size }) =>
     size === 'small' ? '0.4rem 1.2rem' : '0.8rem 1.2rem'};
+`;
+
+const SIcon = styled(Icon)<IChip>`
+  width: ${({ size }) => (size === 'small' ? '1.6rem' : '2rem')};
+  height: ${({ size }) => (size === 'small' ? '1.6rem' : '2rem')};
+  margin-right: ${({ size }) => (size === 'small' ? '0.4rem' : '0.8rem')};
 `;
 
 const SText = styled.div<IChip>`
@@ -68,7 +77,6 @@ const SText = styled.div<IChip>`
   gap: 0.8rem;
   font-family: ${({ theme }) => theme.fonts.bold};
   font-size: ${({ size }) => (size === 'small' ? '1.4rem' : '1.6rem')};
-  margin-left: 0.4rem;
   white-space: nowrap;
 
   color: ${({ theme, color }) => {
@@ -78,7 +86,7 @@ const SText = styled.div<IChip>`
       case 'primaryLight':
         return theme.colors.primary;
       case 'invertedContrast':
-      case 'whiteblur':
+      case 'whiteBlur':
       default:
         return theme.colors.contrast;
     }
@@ -107,7 +115,7 @@ const SCross = styled.div<{ color?: keyof Colors }>`
       case 'primaryLight':
         return theme.colors.primary;
       case 'invertedContrast':
-      case 'whiteblur':
+      case 'whiteBlur':
       default:
         return theme.colors.contrast;
     }

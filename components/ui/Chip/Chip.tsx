@@ -66,8 +66,8 @@ const SChipContainer = styled.div<IChip>`
 `;
 
 const SIcon = styled(Icon)<IChip>`
-  width: ${({ size }) => (size === 'small' ? '1.6rem' : '2rem')};
-  height: ${({ size }) => (size === 'small' ? '1.6rem' : '2rem')};
+  width: ${({ size }) => (size === 'small' ? '1.2rem' : '2rem')};
+  height: ${({ size }) => (size === 'small' ? '1.2rem' : '2rem')};
   margin-right: ${({ size }) => (size === 'small' ? '0.4rem' : '0.8rem')};
 `;
 
@@ -76,7 +76,7 @@ const SText = styled.div<IChip>`
   align-items: center;
   gap: 0.8rem;
   font-family: ${({ theme }) => theme.fonts.bold};
-  font-size: ${({ size }) => (size === 'small' ? '1.4rem' : '1.6rem')};
+  font-size: ${({ size }) => (size === 'small' ? '1rem' : '1.6rem')};
   white-space: nowrap;
 
   color: ${({ theme, color }) => {

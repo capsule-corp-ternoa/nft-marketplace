@@ -17,6 +17,7 @@ import NoNFTImage from '../../assets/NoNFTImage';
 import Details from './Details';
 import Creator from 'components/base/Creator';
 import { MARKETPLACE_ID } from 'utils/constant';
+import { getRandomNFTFromArray } from 'utils/functions';
 
 export interface NFTPageProps {
   NFT: NftType;
@@ -151,7 +152,21 @@ const NFTPage: React.FC<NFTPageProps> = ({
   };
 
   const handleBuy = () => {
-    setNftToBuy(smallestPriceRow);
+    //get a random row to buy if same price
+    const smallestPriceRows = (!NFT.serieData || NFT.serieData.length <= 1) ? 
+      [NFT]
+    : 
+      NFT.serieData
+        .filter((x) => x.marketplaceId === MARKETPLACE_ID && x.listed===1 && (!user || (x.owner !== user.walletId)))
+        .sort(
+          (a, b) =>
+            Number(a.price) - Number(b.price) || //lowest price first
+            Number(a.priceTiime) - Number(b.priceTiime) // lower pricetiime first
+        ).filter((x, _i, arr) => 
+          x.price === arr[0].price &&
+          x.priceTiime === arr[0].priceTiime
+        )
+    setNftToBuy(getRandomNFTFromArray(smallestPriceRows));
     setExp(2);
   };
 

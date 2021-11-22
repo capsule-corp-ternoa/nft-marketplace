@@ -52,9 +52,9 @@ const SChipContainer = styled.div<IChip>`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: ${({ theme, color }) => color ? theme.colors[`${color}`] : 'whiteblur'};
+  background: ${({ theme, color }) => color ? theme.colors[`${color}`] : 'whiteBlur'};
   backdrop-filter: ${({ color }) =>
-    color === 'whiteblur' ? 'blur(2.8rem)' : 'blur(0)'};
+    color === 'whiteBlur' ? 'blur(2.8rem)' : 'blur(0)'};
   border: ${({ color }) => color === 'invertedContrast' ? '2px dashed #E0E0E0' : 'none'};
   border-radius: ${({ isDeletable, variant }) =>
     isDeletable || variant === 'rectangle' ? '0.8rem' : '6.4rem'};
@@ -78,7 +78,7 @@ const SText = styled.div<IChip>`
       case 'primaryLight':
         return theme.colors.primary;
       case 'invertedContrast':
-      case 'whiteblur':
+      case 'whiteBlur':
       default:
         return theme.colors.contrast;
     }
@@ -107,7 +107,7 @@ const SCross = styled.div<{ color?: keyof Colors }>`
       case 'primaryLight':
         return theme.colors.primary;
       case 'invertedContrast':
-      case 'whiteblur':
+      case 'whiteBlur':
       default:
         return theme.colors.contrast;
     }

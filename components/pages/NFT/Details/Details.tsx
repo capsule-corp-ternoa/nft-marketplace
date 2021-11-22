@@ -71,8 +71,6 @@ const Details: React.FC<DetailsProps> = ({
 
   const handleCustomBuy = (NFT: NftType) => {
     const key = `${NFT.owner}-${NFT.listed}-${NFT.price}-${NFT.marketplaceId}`;
-    console.log(serieDataCount[key])
-    console.log(serieData.find(x => x.id === getRandomNFTFromArray(serieDataCount[key])))
     const NFTToBuy = serieData.find(x => x.id === getRandomNFTFromArray(serieDataCount[key])) || NFT
     setNftToBuy(NFTToBuy);
     setExp(2);

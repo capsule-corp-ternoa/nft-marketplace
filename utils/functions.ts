@@ -1,5 +1,4 @@
 import { IncomingMessage } from "http"
-import { NftType } from "interfaces"
 
 export const getUserIp = (req: IncomingMessage | undefined) => {
   let ip: string | undefined = ""
@@ -11,6 +10,6 @@ export const getUserIp = (req: IncomingMessage | undefined) => {
 }
 export const appLog = (...args: any) => window.ReactNativeWebView ? window.ReactNativeWebView.postMessage(JSON.stringify({ action: 'console.log', args })) : console.log(...args);
 
-export const getRandomNFTFromArray = (array: NftType[]) => {
+export const getRandomNFTFromArray = (array: any[]) => {
   return array[Math.floor(Math.random() * array.length)]
 }

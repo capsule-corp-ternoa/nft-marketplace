@@ -10,6 +10,7 @@ import { middleEllipsis } from '../../../../utils/strings';
 import { getUsersByWalletIds } from 'actions/user';
 import Creator from 'components/base/Creator';
 import { MARKETPLACE_ID } from 'utils/constant';
+import { getRandomNFTFromArray } from 'utils/functions';
 
 export interface DetailsProps {
   NFT: NftType;
@@ -50,7 +51,7 @@ const Details: React.FC<DetailsProps> = ({
       // Compute rows to display && count number of listed / unlisted for each row
       const key = `${x.owner}-${x.listed}-${x.price}-${x.marketplaceId}`;
       if (!serieDataCountObject[key]) {
-        serieDataCountObject[key] = 1;
+        serieDataCountObject[key] = [x.id];
         serieDataGroupedArray.push({
           id: x.id,
           listed: x.listed,
@@ -60,7 +61,7 @@ const Details: React.FC<DetailsProps> = ({
           priceTiime: x.priceTiime,
         } as NftType);
       } else {
-        serieDataCountObject[key] += 1;
+        serieDataCountObject[key].push(x.id);
       }
     });
     setSerieDataGrouped(serieDataGroupedArray);
@@ -69,7 +70,11 @@ const Details: React.FC<DetailsProps> = ({
   }, [serieData]);
 
   const handleCustomBuy = (NFT: NftType) => {
-    setNftToBuy(NFT);
+    const key = `${NFT.owner}-${NFT.listed}-${NFT.price}-${NFT.marketplaceId}`;
+    console.log(serieDataCount[key])
+    console.log(serieData.find(x => x.id === getRandomNFTFromArray(serieDataCount[key])))
+    const NFTToBuy = serieData.find(x => x.id === getRandomNFTFromArray(serieDataCount[key])) || NFT
+    setNftToBuy(NFTToBuy);
     setExp(2);
   };
 
@@ -182,16 +187,16 @@ const Details: React.FC<DetailsProps> = ({
             <Link href={`/nft/${NFTRowId}`}>
               <a className={styleDetails.ownerDatasSales}>
                 {NFTRowListed === 0
-                  ? `${serieDataCount[key]} edition${
-                      serieDataCount[key] > 1 ? 's' : ''
+                  ? `${serieDataCount[key].length} edition${
+                      serieDataCount[key].length > 1 ? 's' : ''
                     } not for sale`
                   : NFTRowListed === 1 && NFTRowMarketplaceId === MARKETPLACE_ID
-                  ? `${serieDataCount[key]}${
+                  ? `${serieDataCount[key].length}${
                       '' /*/${ownerNftsCount[NFTRowOwner]}*/
                     } on sale for ${computeCaps(Number(NFTRowPrice))} CAPS ${
-                      serieDataCount[key] > 1 ? 'each' : ''
+                      serieDataCount[key].length > 1 ? 'each' : ''
                     }`
-                  : `${serieDataCount[key]}${
+                  : `${serieDataCount[key].length}${
                       '' /*/${ownerNftsCount[NFTRowOwner]}*/
                     } on sale on other marketplace(s)`}
               </a>

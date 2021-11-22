@@ -100,3 +100,10 @@ export const getHistory = async (nftId: string, seriesId: string, grouped: boole
   let result = await res.json()
   return result;
 }
+
+export const canAddToSeries = async (seriesId: string, walletId: string) => {
+  const res = await fetch(`${NODE_API_URL}/api/nfts/series/can-add?seriesId=${seriesId}&walletId=${walletId}`)
+  if (!res.ok) throw new Error('error getting information about this series for this user');
+  let result = await res.json()
+  return result as boolean
+}

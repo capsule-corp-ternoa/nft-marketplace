@@ -24,6 +24,7 @@ import Button from 'components/ui/Button';
 import Tooltip from 'components/ui/Tooltip';
 
 import { NFTProps } from 'pages/create';
+import { canAddToSeries } from 'actions/nft';
 
 type QRDataType = {
   walletId: string;
@@ -64,7 +65,28 @@ const Create = ({
   const [effect, setEffect] = useState<NftEffectType>(NFT_EFFECT_DEFAULT);
   const [isRN, setRN] = useState(false);
   const [nftData, setNFTData] = useState(initalValue);
+  const [canAddToSeriesValue, setCanAddToSeriesValue] = useState(true)
   const { description, name, quantity, seriesId } = nftData;
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!seriesId || seriesId === ""){
+        setCanAddToSeriesValue(true)
+      }else{
+        checkAddToSerie()
+      }
+    }, 1000)
+    return () => clearTimeout(timer)
+  }, [seriesId, user])
+
+  const checkAddToSerie = async () => {
+    if (user){
+      const canAdd = await canAddToSeries(seriesId, user.walletId)
+      setCanAddToSeriesValue(canAdd)
+    }else{
+      setCanAddToSeriesValue(false)
+    }
+  }
 
   const validateQuantity = (value: number, limit: number) => {
     return value > 0 && value <= limit;
@@ -75,7 +97,8 @@ const Create = ({
     description &&
     validateQuantity(quantity, 10) &&
     secretNFT &&
-    (effect !== NFT_EFFECT_SECRET || NFT);
+    (effect !== NFT_EFFECT_SECRET || NFT) &&
+    canAddToSeriesValue;
 
   function onChange(
     e:
@@ -201,7 +224,7 @@ const Create = ({
             <InputShell>
               <InputLabel>
                 Series ID
-                <STooltip text="Specified your own series id" />
+                <STooltip text="Specified your own series id. Series must be locked (never listed / transferred) and owned by you" />
                 <SInsight>(optional)</SInsight>
               </InputLabel>
               <Input
@@ -210,6 +233,7 @@ const Create = ({
                 onChange={onChange}
                 name="seriesId"
                 value={seriesId}
+                isError={!canAddToSeriesValue}
               />
             </InputShell>
           </SRight>

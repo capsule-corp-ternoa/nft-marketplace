@@ -4,7 +4,6 @@ import BetaBanner from 'components/base/BetaBanner';
 import MainHeader from 'components/base/MainHeader';
 import Landing from 'components/pages/Landing';
 import TernoaWallet from 'components/base/TernoaWallet';
-import NotAvailableModal from 'components/base/NotAvailable';
 import arrayShuffle from 'array-shuffle';
 import cookies from 'next-cookies';
 
@@ -22,16 +21,15 @@ export interface LandingProps {
   NFTCreators: NftType[];
   totalCountNFT: number;
 }
-const LandingPage: React.FC<LandingProps> = ({
+const LandingPage = ({
   user,
   users,
   popularNfts,
   bestSellingNfts,
   NFTCreators,
   totalCountNFT,
-}) => {
+}: LandingProps) => {
   const [modalExpand, setModalExpand] = useState(false);
-  const [notAvailable, setNotAvailable] = useState(false);
   const [walletUser, setWalletUser] = useState(user);
 
   useEffect(() => {
@@ -53,7 +51,6 @@ const LandingPage: React.FC<LandingProps> = ({
         <meta property="og:image" content="ternoa-social-banner.jpg" />
       </Head>
       {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
-      {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
       <BetaBanner />
       <MainHeader
         user={walletUser as UserType}
@@ -61,7 +58,6 @@ const LandingPage: React.FC<LandingProps> = ({
       />
       <Landing
         setModalExpand={setModalExpand}
-        setNotAvailable={setNotAvailable}
         user={walletUser as UserType}
         users={users}
         popularNfts={popularNfts}

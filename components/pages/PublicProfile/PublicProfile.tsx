@@ -14,14 +14,13 @@ export interface PublicProfileProps {
   setProfile: (u: UserType) => void;
   profileWalletId: string;
   NFTS: NftType[];
-  setNotAvailable: (b: boolean) => void;
   setModalExpand: (b: boolean) => void;
   loadMore: () => void;
   hasNextPage: boolean;
   loading: boolean;
 }
 
-const PublicProfile: React.FC<PublicProfileProps> = ({
+const PublicProfile = ({
   user,
   setUser,
   profile,
@@ -29,11 +28,10 @@ const PublicProfile: React.FC<PublicProfileProps> = ({
   profileWalletId,
   NFTS,
   setModalExpand,
-  setNotAvailable,
   loadMore,
   hasNextPage,
   loading,
-}) => {
+}: PublicProfileProps) => {
   function returnNFTs() {
     return NFTS.map((item: NftType) => (
       <div key={item.id} className={style.NFTShell}>
@@ -65,7 +63,7 @@ const PublicProfile: React.FC<PublicProfileProps> = ({
           </>
         )}
       <FloatingHeader user={user} setModalExpand={setModalExpand} />
-      <Footer setNotAvailable={setNotAvailable} />
+      <Footer />
     </div>
   );
 };

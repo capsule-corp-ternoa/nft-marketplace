@@ -4,7 +4,6 @@ import BetaBanner from 'components/base/BetaBanner';
 import MainHeader from 'components/base/MainHeader';
 import TernoaWallet from 'components/base/TernoaWallet';
 import Profile from 'components/pages/Profile';
-import NotAvailableModal from 'components/base/NotAvailable';
 import SuccessPopup from 'components/base/SuccessPopup';
 import cookies from 'next-cookies';
 import { getUser } from 'actions/user';
@@ -22,13 +21,12 @@ export interface ProfilePageProps {
   loading: boolean;
 }
 
-const ProfilePage: React.FC<ProfilePageProps> = ({
+const ProfilePage = ({
   user,
   owned,
   ownedHasNextPage,
-}) => {
+}: ProfilePageProps) => {
   const [modalExpand, setModalExpand] = useState(false);
-  const [notAvailable, setNotAvailable] = useState(false);
   const [successPopup, setSuccessPopup] = useState(false);
   const [walletUser, setWalletUser] = useState(user);
   const [isLoading, setIsLoading] = useState(false);
@@ -259,7 +257,6 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
         <meta name="og:image" content="ternoa-social-banner.jpg" />
       </Head>
       {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
-      {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
       {successPopup && <SuccessPopup setSuccessPopup={setSuccessPopup} />}
       <BetaBanner />
       <MainHeader user={walletUser} setModalExpand={setModalExpand} />
@@ -294,7 +291,6 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
         followedUsersHasNextPage={followedUsersHasNextPage}
         loadMoreFollowed={loadMoreFollowed}
         setModalExpand={setModalExpand}
-        setNotAvailable={setNotAvailable}
         setSuccessPopup={setSuccessPopup}
         loading={isLoading}
       />

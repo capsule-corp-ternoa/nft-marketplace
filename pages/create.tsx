@@ -5,7 +5,6 @@ import MainHeader from 'components/base/MainHeader';
 import TernoaWallet from 'components/base/TernoaWallet';
 import Create from 'components/pages/Create';
 import ModalMint from 'components/pages/Create/ModalMint';
-import NotAvailableModal from 'components/base/NotAvailable';
 import cookies from 'next-cookies';
 import Router from 'next/router';
 import { getUser } from 'actions/user';
@@ -26,7 +25,7 @@ export interface NFTProps {
   seriesId: string;
 }
 
-const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
+const CreatePage = ({ user }: CreatePageProps) => {
   const isNftCreationEnabled =
     process.env.NEXT_PUBLIC_IS_NFT_CREATION_ENABLED === undefined
       ? true
@@ -34,7 +33,6 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
 
   const [error, setError] = useState('');
   const [modalExpand, setModalExpand] = useState(false);
-  const [notAvailable, setNotAvailable] = useState(false);
   const [modalCreate, setModalCreate] = useState(false);
   const [NFT, setNFT] = useState<File | null>(null);
   const [output, setOutput] = useState<string[]>([]);
@@ -83,9 +81,6 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
       </Head>
       <>
         {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
-        {notAvailable && (
-          <NotAvailableModal setNotAvailable={setNotAvailable} />
-        )}
         {modalCreate && (
           <ModalMint
             error={error}
@@ -113,7 +108,6 @@ const CreatePage: React.FC<CreatePageProps> = ({ user }) => {
             setError={setError}
             setModalExpand={setModalExpand}
             setModalCreate={setModalCreate}
-            setNotAvailable={setNotAvailable}
             setNFT={setNFT}
             setNFTData={setNFTData}
             setOutput={setOutput}

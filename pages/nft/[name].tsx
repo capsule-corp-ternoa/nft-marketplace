@@ -6,7 +6,6 @@ import ModalBuy from 'components/pages/NFT/ModalBuy';
 import TernoaWallet from 'components/base/TernoaWallet';
 import NFTPage from 'components/pages/NFT';
 import ModalShowcase from 'components/pages/NFT/ModalShowcase';
-import NotAvailableModal from 'components/base/NotAvailable';
 import cookies from 'next-cookies';
 
 import { getUser } from 'actions/user';
@@ -26,11 +25,10 @@ export interface NFTPageProps {
   capsValue: number;
 }
 
-const NftPage: React.FC<NFTPageProps> = ({ user, NFT, capsValue }) => {
+const NftPage = ({ user, NFT, capsValue }: NFTPageProps) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [exp, setExp] = useState(0);
   const [nftToBuy, setNftToBuy] = useState(NFT)
-  const [notAvailable, setNotAvailable] = useState(false);
   const [type, setType] = useState<string | null>(null);
   const [walletUser, setWalletUser] = useState(user);
 
@@ -70,7 +68,6 @@ const NftPage: React.FC<NFTPageProps> = ({ user, NFT, capsValue }) => {
         <meta name="og:image" content={NFT.image} />
         <meta property="og:image" content={NFT.image} />
       </Head>
-      {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
       {(exp===1 || exp===2) && (
         <ModalShowcase
           NFT={exp === 1 ? NFT : nftToBuy}
@@ -91,7 +88,6 @@ const NftPage: React.FC<NFTPageProps> = ({ user, NFT, capsValue }) => {
         setExp={setExp}
         setNftToBuy={setNftToBuy}
         setModalExpand={setModalExpand}
-        setNotAvailable={setNotAvailable}
         user={walletUser}
         setUser={setWalletUser}
         type={type}

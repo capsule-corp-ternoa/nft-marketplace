@@ -15,18 +15,16 @@ export interface SuccessProps {
   buttonText: string;
   returnUrl: string
   setModalExpand: (b: boolean) => void;
-  setNotAvailable: (b: boolean) => void;
 }
 
-const Success: React.FC<SuccessProps> = ({ 
+const Success = ({ 
   user,
   title,
   text,
   buttonText,
   returnUrl,
   setModalExpand,
-  setNotAvailable,
-}) => {
+}: SuccessProps) => {
   return (
     <div className={style.Container}>
       <div className={style.Wrapper}>
@@ -38,7 +36,7 @@ const Success: React.FC<SuccessProps> = ({
         </Link>
       </div>
       <FloatingHeader user={user} setModalExpand={setModalExpand} />
-      <Footer setNotAvailable={setNotAvailable} />
+      <Footer />
     </div>
   );
 };

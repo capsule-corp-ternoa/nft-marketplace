@@ -28,6 +28,7 @@ export interface NFTPageProps {
   setNotAvailable: (b: boolean) => void;
   setModalExpand: (b: boolean) => void;
   capsValue: number;
+  isUserFromDappQR: boolean;
 }
 
 const NFTPage: React.FC<NFTPageProps> = ({
@@ -39,10 +40,12 @@ const NFTPage: React.FC<NFTPageProps> = ({
   user,
   setUser,
   type,
+  isUserFromDappQR,
 }) => {
   const [likeLoading, setLikeLoading] = useState(false);
   const [modalShareOpen, setModalShareOpen] = useState(false);
   // const bgGradient = { background: gradient(NFT.ownerData.name) };
+  const isVR = (NFT.categories.findIndex(x => x.code === "vr") !== -1 || NFT.serieId === "1390370908") && NFT.creator === NFT.owner
   const shareSubject = 'Check out this Secret NFT';
   const shareText = `Check out ${NFT.name ? NFT.name : 'this nft'} on ${
     process.env.NEXT_PUBLIC_APP_LINK
@@ -93,7 +96,7 @@ const NFTPage: React.FC<NFTPageProps> = ({
               Number(a.price) - Number(b.price) || //lowest price first
               Number(a.priceTiime) - Number(b.priceTiime) // lower pricetiime first
           )[0];
-  const userCanBuy = user
+  const userCanBuy = (!isVR || (isVR && isUserFromDappQR)) && (user
     ? user.capsAmount &&
       smallestPriceRow &&
       smallestPriceRow.listed &&
@@ -105,7 +108,7 @@ const NFTPage: React.FC<NFTPageProps> = ({
     : smallestPriceRow
     ? smallestPriceRow.listed === 1 &&
       smallestPriceRow.marketplaceId === MARKETPLACE_ID
-    : false;
+    : false);
 
   useEffect(() => {
     setNftToBuy(smallestPriceRow);
@@ -229,30 +232,36 @@ const NFTPage: React.FC<NFTPageProps> = ({
                     : `${style.Button} ${style.Disabled}`
                 }
               >
-                Buy{' '}
-                {`${
-                  smallestPriceRow &&
-                  (smallestPriceRow.price || smallestPriceRow.priceTiime)
-                    ? 'for '
-                    : ''
-                }`}
-                {smallestPriceRow && (
+                {(isVR && !isUserFromDappQR) ? 
+                  "Reserved for VR gallery"
+                :
                   <>
-                    {smallestPriceRow.price &&
-                      Number(smallestPriceRow.price) > 0 &&
-                      `${computeCaps(Number(smallestPriceRow.price))} CAPS`}
-                    {smallestPriceRow.price &&
-                      Number(smallestPriceRow.price) > 0 &&
-                      smallestPriceRow.priceTiime &&
-                      Number(smallestPriceRow.priceTiime) &&
-                      ` / `}
-                    {smallestPriceRow.priceTiime &&
-                      Number(smallestPriceRow.priceTiime) > 0 &&
-                      `${computeTiime(
-                        Number(smallestPriceRow.priceTiime)
-                      )} TIIME`}
+                    Buy{' '}
+                    {`${
+                      smallestPriceRow &&
+                      (smallestPriceRow.price || smallestPriceRow.priceTiime)
+                        ? 'for '
+                        : ''
+                    }`}
+                    {smallestPriceRow && (
+                      <>
+                        {smallestPriceRow.price &&
+                          Number(smallestPriceRow.price) > 0 &&
+                          `${computeCaps(Number(smallestPriceRow.price))} CAPS`}
+                        {smallestPriceRow.price &&
+                          Number(smallestPriceRow.price) > 0 &&
+                          smallestPriceRow.priceTiime &&
+                          Number(smallestPriceRow.priceTiime) &&
+                          ` / `}
+                        {smallestPriceRow.priceTiime &&
+                          Number(smallestPriceRow.priceTiime) > 0 &&
+                          `${computeTiime(
+                            Number(smallestPriceRow.priceTiime)
+                          )} TIIME`}
+                      </>
+                    )}
                   </>
-                )}
+                }
               </div>
             </div>
             <div className={style.Available}>
@@ -273,6 +282,8 @@ const NFTPage: React.FC<NFTPageProps> = ({
             user={user}
             setNftToBuy={setNftToBuy}
             setExp={setExp}
+            isUserFromDappQR={isUserFromDappQR}
+            isVR={isVR}
           />
         </div>
       </div>

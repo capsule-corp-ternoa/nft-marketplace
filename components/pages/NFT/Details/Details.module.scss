@@ -57,6 +57,8 @@
 
 .creatorWrapper {
   display: flex;
+  min-height: 70px;
+  align-items: center;
 }
 .infoDatasWrapper {
   display: flex;
@@ -65,7 +67,7 @@
 }
 .infoDatas {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   padding: 5px 10px;
 }
 .TopInfosCreator {
@@ -105,7 +107,7 @@
   font-size: 13px;
   line-height: 13px;
   padding: 10px 15px;
-  margin: 20px;
+  margin: 0 20px;
   background: rgba(116, 23, 234, 0.1);
   border-radius: 64px;
 }
@@ -123,11 +125,11 @@
   font-size: 16px;
 }
 
-.ownersContainers {
+.rowsContainers {
   height: 29vh;
   width: auto;
 }
-.owners {
+.rows {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -136,12 +138,12 @@
   opacity: 0.9;
   border-radius: 12px;
 }
-.owner {
+.row {
   display: flex;
   align-items: center;
   width: 70%;
 }
-.ownerBadge {
+.rowBadge {
   color: #7417ea;
   font-family: 'Airbnb Cereal App Bold';
   font-style: normal;
@@ -153,46 +155,42 @@
   background: rgba(116, 23, 234, 0.1);
   border-radius: 64px;
 }
-.ownerProfile {
-  width: 55px;
-  height: 55px;
-  margin: 10px;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.ownerProfileIMG {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  position: absolute;
-  z-index: 1;
-  object-fit: cover;
-  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.25);
-}
-.ownerDatas {
+.rowDatas {
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 70%;
 }
-.ownerDatasName {
+.rowDatasName {
   font-size: 16px;
-  line-height: 21px;
+  line-height: 16px;
+  margin-left: 10px;
   font-family: 'Airbnb Cereal App Bold';
   color: black;
 }
-.ownerTwitterUsername {
+.historyDatasName{
+  font-size: 16px;
+  line-height: 16px;
+  margin-left: 10px;
+  font-family: 'Airbnb Cereal App Bold';
+  color: black;
+}
+.rowTwitterUsername {
   font-size: 14px;
   font-family: 'Airbnb Cereal App Book';
   color: black;
 }
-.ownerDatasSales {
+.rowDatasDetails {
   font-size: 16px;
   line-height: 21px;
+  margin-left: 10px;
   font-family: 'Airbnb Cereal App Bold';
   color: black;
+}
+.historyDatasDetailDate {
+  font-size: 11px;
+  font-family: 'Airbnb Cereal App Light';
+  margin-left: 10px;
 }
 .buyButton {
   color: white;
@@ -220,7 +218,6 @@
   align-items: center;
   background: #f7f7f7;
   margin: 10px 0;
-  padding: 10px;
   opacity: 0.9;
   border-radius: 12px;
 }
@@ -229,12 +226,12 @@
   align-items: center;
 }
 
-.HistoryPicture {
+.CreatorPicture {
   width: 50px;
   height: 50px;
   position: relative;
 }
-.HistoryPictureIMG {
+.CreatorPictureIMG {
   width: 100%;
   height: 100%;
   border-radius: 50%;
@@ -249,6 +246,18 @@
   margin-left: 10px;
 }
 
+.HistoryAddress{
+  cursor: pointer;
+  font-size: 11px;  
+}
+
+.SmallCopyPaste{
+  width: 1.2rem;
+  fill: #cbc9c9;
+  vertical-align: middle;
+  margin-left: 2px;
+}
+
 .TernoaChainButton {
   color: $primary;
   padding: 10px 50px;
@@ -259,6 +268,7 @@
   opacity: 0.5;
   border: solid 1px $primary;
   border-radius: 50px;
+  text-align: center;
 }
 @media (max-width: 1300px) {
   .detailsMain {
@@ -276,16 +286,16 @@
     margin-left: auto;
     margin-right: auto;
   }
-  .ownerDatas {
+  .rowDatas {
     flex-direction: column;
     justify-content: start;
     align-items: flex-start;
   }
-  .ownerDatasSales {
-    font-family: 'Airbnb Cereal App light';
-  }
-  .ownerDatasName {
+  .rowDatasName {
     display: flex;
+  }
+  .HistoryAddress {
+    display: none;
   }
 }
 @media (max-width: 840px) {
@@ -309,13 +319,13 @@
     flex-wrap: wrap;
     width: 80%;
   }
-  .ownerDatas {
+  .rowDatas {
     flex-direction: column;
     justify-content: start;
     align-items: flex-start;
     width: 50%;
   }
-  .owner {
+  .row {
     width: 100%;
   }
   .infoDatasWrapper {
@@ -327,10 +337,12 @@
   .infoDatas {
     flex-direction: column;
     justify-content: center;
+    align-items: center;
   }
-  .ownerTwitterUsername {
+  .rowTwitterUsername {
     display: none;
   }
+
 }
 @media (max-width: 720px) {
   .detailsMain {
@@ -377,20 +389,25 @@
   .detailsContent {
     padding: 15px 0;
   }
-  .ownerProfile {
-    width: 40px;
-    height: 40px;
-  }
-  .ownerBadge {
+  .rowBadge {
     display: none;
   }
-  .ownerDatasName {
+  .rowDatasName {
     font-size: 12px;
     line-height: 12px;
   }
-  .ownerDatasSales {
+
+  .historyDatasName {
     font-size: 12px;
     line-height: 12px;
+  }
+
+  .rowDatasDetails {
+    font-size: 12px;
+    line-height: 12px;
+  }
+  .historyDatasDetailDate {
+    font-size: 10px;
   }
   .buyButton {
     padding: 8px 20px;
@@ -402,6 +419,7 @@
   .infoDatas {
     padding: 5px 10px;
     justify-content: center;
+    align-items: center;
   }
   .infoDatasWrapper {
     flex-wrap: nowrap;
@@ -412,18 +430,22 @@
   .creatorWrapper {
     display: flex;
     flex-direction: column-reverse;
+    align-items: center;
   }
   .creatorBadge {
     text-align: center;
     padding: 10px;
     margin: 10px;
   }
-  .HistoryPicture {
+  .CreatorPicture {
     width: 40px;
     height: 40px;
   }
   .TernoaChainButton{
     padding: 5px 10px;
     text-align:center;
+  }
+  .CreatorPicture {
+    margin-Left: 20px;
   }
 }

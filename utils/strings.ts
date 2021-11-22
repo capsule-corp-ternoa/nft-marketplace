@@ -95,3 +95,8 @@ export const removeURLSlash = (url: string) => {
       return url
   }
 }
+
+export const formatDate = (d: Date) => {
+  //06/08/2021, 13:21
+  return `${d.getDate()}/${d.getMonth()}/${d.getFullYear()}, ${d.getHours()}:${d.getMinutes()}`
+}

@@ -31,6 +31,7 @@ export interface NFTPageProps {
   setExp: (n: number) => void;
   setModalExpand: (b: boolean) => void;
   capsValue: number;
+  isUserFromDappQR: boolean;
 }
 
 const NFTPage = ({
@@ -41,10 +42,12 @@ const NFTPage = ({
   user,
   setUser,
   type,
+  isUserFromDappQR,
 }: NFTPageProps) => {
   const [likeLoading, setLikeLoading] = useState(false);
   const [modalShareOpen, setModalShareOpen] = useState(false);
   const [byTheSameArtistNFTs, setByTheSameArtistNFTs] = useState<NftType[]>([])
+  const isVR = (NFT.categories.findIndex(x => x.code === "vr") !== -1 || NFT.serieId === "1390370908") && NFT.creator === NFT.owner
   const shareSubject = 'Check out this Secret NFT';
   const shareText = `Check out ${NFT.title ? NFT.title : 'this nft'} on ${
     process.env.NEXT_PUBLIC_APP_LINK
@@ -95,7 +98,7 @@ const NFTPage = ({
               Number(a.price) - Number(b.price) || //lowest price first
               Number(a.priceTiime) - Number(b.priceTiime) // lower pricetiime first
           )[0];
-  const userCanBuy = user
+  const userCanBuy = (!isVR || (isVR && isUserFromDappQR)) && (user
     ? user.capsAmount &&
       smallestPriceRow &&
       smallestPriceRow.listed &&
@@ -107,7 +110,7 @@ const NFTPage = ({
     : smallestPriceRow
     ? smallestPriceRow.listed === 1 &&
       smallestPriceRow.marketplaceId === MARKETPLACE_ID
-    : false;
+    : false);
 
   useEffect(() => {
     setNftToBuy(smallestPriceRow);
@@ -249,30 +252,36 @@ const NFTPage = ({
                     : `${style.Button} ${style.Disabled}`
                 }
               >
-                Buy{' '}
-                {`${
-                  smallestPriceRow &&
-                  (smallestPriceRow.price || smallestPriceRow.priceTiime)
-                    ? 'for '
-                    : ''
-                }`}
-                {smallestPriceRow && (
+                {(isVR && !isUserFromDappQR) ? 
+                  "Reserved for VR gallery"
+                :
                   <>
-                    {smallestPriceRow.price &&
-                      Number(smallestPriceRow.price) > 0 &&
-                      `${computeCaps(Number(smallestPriceRow.price))} CAPS`}
-                    {smallestPriceRow.price &&
-                      Number(smallestPriceRow.price) > 0 &&
-                      smallestPriceRow.priceTiime &&
-                      Number(smallestPriceRow.priceTiime) &&
-                      ` / `}
-                    {smallestPriceRow.priceTiime &&
-                      Number(smallestPriceRow.priceTiime) > 0 &&
-                      `${computeTiime(
-                        Number(smallestPriceRow.priceTiime)
-                      )} TIIME`}
+                    Buy{' '}
+                    {`${
+                      smallestPriceRow &&
+                      (smallestPriceRow.price || smallestPriceRow.priceTiime)
+                        ? 'for '
+                        : ''
+                    }`}
+                    {smallestPriceRow && (
+                      <>
+                        {smallestPriceRow.price &&
+                          Number(smallestPriceRow.price) > 0 &&
+                          `${computeCaps(Number(smallestPriceRow.price))} CAPS`}
+                        {smallestPriceRow.price &&
+                          Number(smallestPriceRow.price) > 0 &&
+                          smallestPriceRow.priceTiime &&
+                          Number(smallestPriceRow.priceTiime) &&
+                          ` / `}
+                        {smallestPriceRow.priceTiime &&
+                          Number(smallestPriceRow.priceTiime) > 0 &&
+                          `${computeTiime(
+                            Number(smallestPriceRow.priceTiime)
+                          )} TIIME`}
+                      </>
+                    )}
                   </>
-                )}
+                }
               </div>
             </div>
             <div className={style.Available}>
@@ -295,6 +304,8 @@ const NFTPage = ({
             user={user}
             setNftToBuy={setNftToBuy}
             setExp={setExp}
+            isUserFromDappQR={isUserFromDappQR}
+            isVR={isVR}
           />
         </div>
         {byTheSameArtistNFTs.length>0 && <Showcase category="By the same artist" NFTs={byTheSameArtistNFTs} user={user} setUser={setUser} />}

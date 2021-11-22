@@ -31,9 +31,10 @@ const NftPage = ({ user, NFT, capsValue }: NFTPageProps) => {
   const [nftToBuy, setNftToBuy] = useState(NFT)
   const [type, setType] = useState<string | null>(null);
   const [walletUser, setWalletUser] = useState(user);
+  const [isUserFromDappQR, setIsUserFromDappQR] = useState(false);
 
   useEffect(() => {
-    setUserFromDApp(setWalletUser)
+    setUserFromDApp(setWalletUser, setIsUserFromDappQR)
   }, []);
 
   useEffect(() => {
@@ -92,6 +93,7 @@ const NftPage = ({ user, NFT, capsValue }: NFTPageProps) => {
         setUser={setWalletUser}
         type={type}
         capsValue={capsValue}
+        isUserFromDappQR={isUserFromDappQR}
       />
     </>
   );

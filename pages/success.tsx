@@ -3,7 +3,6 @@ import Head from 'next/head';
 import BetaBanner from 'components/base/BetaBanner';
 import MainHeader from 'components/base/MainHeader';
 import TernoaWallet from 'components/base/TernoaWallet';
-import NotAvailableModal from 'components/base/NotAvailable';
 import cookies from 'next-cookies';
 import { getUser } from 'actions/user';
 import { UserType } from 'interfaces';
@@ -16,9 +15,8 @@ export interface SuccessProps {
   user: UserType
 }
 
-const SuccessPage: React.FC<SuccessProps> = ({ user }) => {
+const SuccessPage = ({ user }: SuccessProps) => {
   const [modalExpand, setModalExpand] = useState(false);
-  const [notAvailable, setNotAvailable] = useState(false);
   const router = useRouter();
   const {title, text, buttonText, returnUrl, isRedirect} = router.query
   console.log(title, text, buttonText, returnUrl, isRedirect)
@@ -45,7 +43,6 @@ const SuccessPage: React.FC<SuccessProps> = ({ user }) => {
         <meta name="og:image" content="ternoa-social-banner.jpg" />
       </Head>
       {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
-      {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
       <BetaBanner />
       <MainHeader user={user} setModalExpand={setModalExpand} />
       <Success
@@ -55,7 +52,6 @@ const SuccessPage: React.FC<SuccessProps> = ({ user }) => {
         buttonText={String(buttonText)}
         returnUrl={String(returnUrl)}
         setModalExpand={setModalExpand}
-        setNotAvailable={setNotAvailable}
       />
     </>
   );

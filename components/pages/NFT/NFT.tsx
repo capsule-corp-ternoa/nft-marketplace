@@ -29,23 +29,21 @@ export interface NFTPageProps {
   setUser: (u: UserType) => void;
   type: string | null;
   setExp: (n: number) => void;
-  setNotAvailable: (b: boolean) => void;
   setModalExpand: (b: boolean) => void;
   capsValue: number;
   isUserFromDappQR: boolean;
 }
 
-const NFTPage: React.FC<NFTPageProps> = ({
+const NFTPage = ({
   setExp,
   NFT,
   setNftToBuy,
   setModalExpand,
-  setNotAvailable,
   user,
   setUser,
   type,
   isUserFromDappQR,
-}) => {
+}: NFTPageProps) => {
   const [likeLoading, setLikeLoading] = useState(false);
   const [modalShareOpen, setModalShareOpen] = useState(false);
   const [byTheSameArtistNFTs, setByTheSameArtistNFTs] = useState<NftType[]>([])
@@ -312,7 +310,7 @@ const NFTPage: React.FC<NFTPageProps> = ({
         </div>
         {byTheSameArtistNFTs.length>0 && <Showcase category="By the same artist" NFTs={byTheSameArtistNFTs} user={user} setUser={setUser} />}
       </div>
-      <Footer setNotAvailable={setNotAvailable} />
+      <Footer />
       <FloatingHeader user={user} setModalExpand={setModalExpand} />
       {modalShareOpen && (
         <ModalShare

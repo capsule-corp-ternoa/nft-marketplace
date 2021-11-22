@@ -39,7 +39,6 @@ export interface CreateProps {
   setError: (err: string) => void;
   setModalExpand: (b: boolean) => void;
   setModalCreate: (b: boolean) => void;
-  setNotAvailable: (b: boolean) => void;
   setNFT: (f: File | null) => void;
   setNFTData: (o: NFTProps) => void;
   setOutput: (s: string[]) => void;
@@ -47,7 +46,7 @@ export interface CreateProps {
   setSecretNFT: (f: File | null) => void;
 }
 
-const Create: React.FC<CreateProps> = ({
+const Create = ({
   NFT,
   NFTData: initalValue,
   QRData,
@@ -56,13 +55,12 @@ const Create: React.FC<CreateProps> = ({
   setError,
   setModalExpand,
   setModalCreate,
-  setNotAvailable,
   setNFT,
   setNFTData: setNftDataToParent,
   setOutput,
   setQRData,
   setSecretNFT,
-}) => {
+}: CreateProps) => {
   const [effect, setEffect] = useState<NftEffectType>(NFT_EFFECT_DEFAULT);
   const [isRN, setRN] = useState(false);
   const [nftData, setNFTData] = useState(initalValue);
@@ -225,7 +223,7 @@ const Create: React.FC<CreateProps> = ({
           text="Create NFT"
         />
       </Wrapper>
-      <Footer setNotAvailable={setNotAvailable} />
+      <Footer />
       <FloatingHeader user={user} setModalExpand={setModalExpand} />
     </Container>
   );

@@ -9,11 +9,7 @@ import Instagram from 'components/assets/SocialMedias/Instagram';
 import Github from 'components/assets/SocialMedias/Github';
 import Youtube from 'components/assets/SocialMedias/Youtube';
 
-export interface FooterProps {
-  setNotAvailable: (b: boolean) => void;
-}
-
-const Footer: React.FC<FooterProps> = ({ setNotAvailable }) => {
+const Footer = () => {
   const telegramLink = process.env.NEXT_PUBLIC_TELEGRAM_LINK ? process.env.NEXT_PUBLIC_TELEGRAM_LINK : "https://t.me/ternoa"
   const twitterLink = process.env.NEXT_PUBLIC_TWITTER_LINK ? process.env.NEXT_PUBLIC_TWITTER_LINK : "https://twitter.com/SecretNFT_"
   const linkedinLink = process.env.NEXT_PUBLIC_LINKEDIN_LINK ? process.env.NEXT_PUBLIC_LINKEDIN_LINK : "https://www.linkedin.com/company/50607388/"
@@ -24,17 +20,6 @@ const Footer: React.FC<FooterProps> = ({ setNotAvailable }) => {
     <div className={style.Footer}>
       <WaterMark className={style.WaterMark} />
       <div className={style.Container}>
-        <span className={style.Insight}>Keep in touch !</span>
-        <div className={style.InputContainer}>
-          <input
-            className={style.Input}
-            placeholder="Your email..."
-            type="text"
-          />
-          <div className={style.Button} onClick={() => setNotAvailable(true)}>
-            Go
-          </div>
-        </div>
         <div className={style.SocialMedias}>
           {telegramLink!=="false" && <a href={telegramLink} target="_blank">
             <Telegram onClick={() => true} className={style.SVGMedia} />

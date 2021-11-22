@@ -4,7 +4,6 @@ import BetaBanner from 'components/base/BetaBanner';
 import MainHeader from 'components/base/MainHeader';
 import TernoaWallet from 'components/base/TernoaWallet';
 import Wallet from 'components/pages/Wallet';
-import NotAvailableModal from 'components/base/NotAvailable';
 import cookies from 'next-cookies';
 
 import { getUser } from 'actions/user';
@@ -17,9 +16,8 @@ export interface WalletPageProps {
   token: string;
 }
 
-const WalletPage: React.FC<WalletPageProps> = ({ user }) => {
+const WalletPage = ({ user }: WalletPageProps) => {
   const [modalExpand, setModalExpand] = useState(false);
-  const [notAvailable, setNotAvailable] = useState(false);
 
   return (
     <>
@@ -30,13 +28,11 @@ const WalletPage: React.FC<WalletPageProps> = ({ user }) => {
         <meta name="og:image" content="ternoa-social-banner.jpg" />
       </Head>
       {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
-      {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
       <BetaBanner />
       <MainHeader user={user} setModalExpand={setModalExpand} />
       <Wallet
         user={user}
         setModalExpand={setModalExpand}
-        setNotAvailable={setNotAvailable}
       />
     </>
   );

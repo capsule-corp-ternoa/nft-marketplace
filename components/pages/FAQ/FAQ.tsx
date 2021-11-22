@@ -10,10 +10,9 @@ import { UserType } from 'interfaces/index';
 export interface FAQProps {
   user: UserType;
   setModalExpand: (b: boolean) => void;
-  setNotAvailable: (b: boolean) => void;
 }
 
-const FAQ: React.FC<FAQProps> = ({ user, setModalExpand, setNotAvailable }) => {
+const FAQ = ({ user, setModalExpand }: FAQProps) => {
   const sec = [
     {
       question: `What is ${process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : "SecretNFT"} Marketplace ?`,
@@ -54,7 +53,7 @@ const FAQ: React.FC<FAQProps> = ({ user, setModalExpand, setNotAvailable }) => {
         <div className={style.Inner}>{returnSections()}</div>
       </div>
       <FloatingHeader user={user} setModalExpand={setModalExpand} />
-      <Footer setNotAvailable={setNotAvailable} />
+      <Footer />
     </div>
   );
 };

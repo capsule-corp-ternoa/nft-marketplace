@@ -4,7 +4,6 @@ import BetaBanner from 'components/base/BetaBanner';
 import MainHeader from 'components/base/MainHeader';
 import TernoaWallet from 'components/base/TernoaWallet';
 import PublicProfile from 'components/pages/PublicProfile';
-import NotAvailableModal from 'components/base/NotAvailable';
 import cookies from 'next-cookies';
 
 import { getUser, getProfile } from 'actions/user';
@@ -23,15 +22,14 @@ export interface PublicProfileProps {
   dataHasNextPage: boolean;
 }
 
-const PublicProfilePage: React.FC<PublicProfileProps> = ({
+const PublicProfilePage = ({
   user,
   profileWalletId,
   data,
   profile,
   dataHasNextPage,
-}) => {
+}: PublicProfileProps) => {
   const [modalExpand, setModalExpand] = useState(false);
-  const [notAvailable, setNotAvailable] = useState(false);
   const [walletUser, setWalletUser] = useState(user);
   const [viewProfile, setViewProfile] = useState(profile);
   const [dataNfts, setDataNfts] = useState(data);
@@ -81,7 +79,6 @@ const PublicProfilePage: React.FC<PublicProfileProps> = ({
         <meta name="og:image" content="ternoa-social-banner.jpg" />
       </Head>
       {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
-      {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
       <BetaBanner />
       <MainHeader user={walletUser} setModalExpand={setModalExpand} />
       <PublicProfile
@@ -92,7 +89,6 @@ const PublicProfilePage: React.FC<PublicProfileProps> = ({
         profileWalletId={profileWalletId}
         NFTS={dataNfts}
         setModalExpand={setModalExpand}
-        setNotAvailable={setNotAvailable}
         loadMore={loadMoreNfts}
         hasNextPage={dataNftsHasNextPage}
         loading={isLoading}

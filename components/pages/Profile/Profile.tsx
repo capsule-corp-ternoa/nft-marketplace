@@ -17,7 +17,6 @@ import { getUserNFTsStat } from 'actions/nft';
 
 export interface ProfileProps {
   setModalExpand: (b: boolean) => void;
-  setNotAvailable: (b: boolean) => void;
   setSuccessPopup: (b: boolean) => void;
   user: UserType;
   setUser: (u: UserType) => void;
@@ -58,9 +57,8 @@ export interface ProfileProps {
   loadMoreFollowed: (forceLoad?: boolean)=>void;
 }
 
-const Profile: React.FC<ProfileProps> = ({
+const Profile = ({
   setModalExpand,
-  setNotAvailable,
   setSuccessPopup,
   user,
   setUser,
@@ -92,7 +90,7 @@ const Profile: React.FC<ProfileProps> = ({
   followedUsersHasNextPage,
   loadMoreFollowed,
   setFollowed,
-}) => {
+}: ProfileProps) => {
   const router = useRouter();
   const [scope, setScope] = useState(
     router.query?.scope === 'edit' ? 'edit' : 'My NFTs'
@@ -516,7 +514,7 @@ const Profile: React.FC<ProfileProps> = ({
         {returnCategory()}
       </div>
       <FloatingHeader user={user} setModalExpand={setModalExpand} />
-      <Footer setNotAvailable={setNotAvailable} />
+      <Footer />
       {expand && (
         <FloatingMenu
           setScope={setScope}

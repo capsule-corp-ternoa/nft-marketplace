@@ -12,16 +12,14 @@ import { UserType } from 'interfaces';
 import { clipboardCopy } from 'utils/functions';
 
 export interface WalletProps {
-  setNotAvailable: (b: boolean) => void;
   setModalExpand: (b: boolean) => void;
   user: UserType;
 }
 
-const Wallet: React.FC<WalletProps> = ({
+const Wallet = ({
   user,
   setModalExpand,
-  setNotAvailable,
-}) => {
+}: WalletProps) => {
   const bgGradient = {
     background:  gradient(user?.name || 'ternoa'),
   };
@@ -73,7 +71,7 @@ const Wallet: React.FC<WalletProps> = ({
           Buy CAPS
         </a>
       </div>
-      <Footer setNotAvailable={setNotAvailable} />
+      <Footer />
       <FloatingHeader user={user} setModalExpand={setModalExpand} />
     </div>
   );

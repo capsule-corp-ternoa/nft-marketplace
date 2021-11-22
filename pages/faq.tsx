@@ -3,7 +3,6 @@ import Head from 'next/head';
 import BetaBanner from 'components/base/BetaBanner';
 import MainHeader from 'components/base/MainHeader';
 import TernoaWallet from 'components/base/TernoaWallet';
-import NotAvailableModal from 'components/base/NotAvailable';
 import FAQ from 'components/pages/FAQ';
 import cookies from 'next-cookies';
 import { getUser } from 'actions/user';
@@ -15,9 +14,8 @@ export interface FAQProps {
   user: UserType;
 }
 
-const FAQPage: React.FC<FAQProps> = ({ user }) => {
+const FAQPage = ({ user }: FAQProps) => {
   const [modalExpand, setModalExpand] = useState(false);
-  const [notAvailable, setNotAvailable] = useState(false);
 
   return (
     <>
@@ -28,13 +26,11 @@ const FAQPage: React.FC<FAQProps> = ({ user }) => {
         <meta name="og:image" content="ternoa-social-banner.jpg" />
       </Head>
       {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
-      {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
       <BetaBanner />
       <MainHeader user={user} setModalExpand={setModalExpand} />
       <FAQ
         user={user}
         setModalExpand={setModalExpand}
-        setNotAvailable={setNotAvailable}
       />
     </>
   );

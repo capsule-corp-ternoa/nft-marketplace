@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface CopyPasteProps {
-  className: string;
+  className?: string;
 }
 
 const CopyPaste: React.FC<CopyPasteProps> = ({ className }) => (

@@ -1,14 +1,17 @@
 import { useEffect, useState } from 'react';
 import { FixedSizeList as List, ListOnItemsRenderedProps } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import { UserType, NftType } from 'interfaces';
+import { UserType, NftType, NFTTransferType, CustomResponse } from 'interfaces';
 import styleDetails from './Details.module.scss';
-import { computeCaps } from 'utils/strings';
+import { computeCaps, formatDate } from 'utils/strings';
 import Link from 'next/link';
 import { middleEllipsis } from '../../../../utils/strings';
 import { getUsers } from 'actions/user';
 import Creator from 'components/base/Creator';
 import { MARKETPLACE_ID } from 'utils/constant';
+import CopyPaste from 'components/assets/copypaste';
+import { clipboardCopy } from 'utils/functions';
+import { getHistory } from 'actions/nft';
 
 export interface DetailsProps {
   NFT: NftType;
@@ -27,12 +30,18 @@ const Details: React.FC<DetailsProps> = ({
   isUserFromDappQR,
   isVR,
 }) => {
-  const [currentTab, setCurrentTab] = useState('info');
+  const tabs = ["infos", "owners", "history", "bid"]
+  const [currentTab, setCurrentTab] = useState(tabs[0]);
   const [usersData, setUsersData] = useState({} as any);
   const [serieDataGrouped, setSerieDataGrouped] = useState([] as NftType[]);
   const [serieDataCount, setSerieDataCount] = useState({} as any);
+  const [historyData, setHistoryData] = useState<NFTTransferType[]>([])
   const serieData = NFT?.serieData || [];
   
+  useEffect(() => {
+    loadHistoryData()
+  }, [])
+
   useEffect(() => {
     const serieDataGroupedArray = [] as NftType[];
     const serieDataCountObject = {} as any;
@@ -68,7 +77,7 @@ const Details: React.FC<DetailsProps> = ({
     setCurrentTab(tab);
   };
 
-  const onRowRendered = ({
+  const onRowRenderedOwners = ({
     overscanStartIndex,
     overscanStopIndex,
   }: ListOnItemsRenderedProps) => {
@@ -81,6 +90,28 @@ const Details: React.FC<DetailsProps> = ({
       }
       if (ownersToLoad.length > 0) {
         loadDisplayedUsers(ownersToLoad);
+      }
+    }
+  };
+
+  const onRowRenderedHistory = ({
+    overscanStartIndex,
+    overscanStopIndex,
+  }: ListOnItemsRenderedProps) => {
+    let usersToLoad = [];
+    if (historyData.length > 0) {
+      for (let i = overscanStartIndex; i <= overscanStopIndex; i++) {
+        if (historyData[i]){
+          if (historyData[i].from.startsWith("5") && !usersData[historyData[i].from]) {
+            usersToLoad.push(usersData[historyData[i].from]);
+          }
+          if (historyData[i].to.startsWith("5") && !usersData[historyData[i].to]) {
+            usersToLoad.push(usersData[historyData[i].to]);
+          }
+        }
+      }
+      if (usersToLoad.length > 0) {
+        loadDisplayedUsers(usersToLoad);
       }
     }
   };
@@ -100,7 +131,17 @@ const Details: React.FC<DetailsProps> = ({
     }
   };
 
-  const ownerData = ({
+  const loadHistoryData = async () => {
+    try{
+      const data:CustomResponse<NFTTransferType> = await getHistory(NFT.id, NFT.serieId, true)
+      if (!data || !data.data) throw new Error("No data found")
+      setHistoryData(data.data)
+    }catch(err){
+      console.log(err);
+    }
+  }
+
+  const ownerRowData = ({
     index,
     style,
   }: {
@@ -135,23 +176,23 @@ const Details: React.FC<DetailsProps> = ({
     );
     return (
       <div
-        className={styleDetails.owners}
+        className={styleDetails.rows}
         key={NFTRowId}
         style={{ ...style, height: (style?.height as any) - GUTTER_SIZE }}
       >
-        <div className={styleDetails.owner}>
-          <div className={styleDetails.ownerBadge}>Owner</div>
-          <div className={styleDetails.ownerProfile}>
+        <div className={styleDetails.row}>
+          <div className={styleDetails.rowBadge}>Owner</div>
+          <div className={styleDetails.CreatorPicture}>
             <Creator
-              className={styleDetails.ownerProfileIMG}
+              className={styleDetails.CreatorPictureIMG}
               size={'fullwidth'}
               user={ownerData}
               walletId={NFTRowOwner}
               showTooltip={false}
             />
           </div>
-          <div className={styleDetails.ownerDatas}>
-            <div className={styleDetails.ownerDatasName}>
+          <div className={styleDetails.rowDatas}>
+            <div className={styleDetails.rowDatasName}>
               <div>
                 <Link href={`/${NFTRowOwner}`}>
                   <a>
@@ -159,12 +200,12 @@ const Details: React.FC<DetailsProps> = ({
                   </a>
                 </Link>
               </div>
-              <span className={styleDetails.ownerTwitterUsername}>
+              <span className={styleDetails.rowTwitterUsername}>
                 {ownerData?.twitterName ? ownerData.twitterName : null}
               </span>
             </div>
             <Link href={`/nft/${NFTRowId}`}>
-              <a className={styleDetails.ownerDatasSales}>
+              <a className={styleDetails.rowDatasDetails}>
                 {NFTRowListed === 0
                   ? `${serieDataCount[key]} ${NFTRowTypeWording} not for sale`
                   : NFTRowListed === 1 && NFTRowMarketplaceId === MARKETPLACE_ID
@@ -192,54 +233,124 @@ const Details: React.FC<DetailsProps> = ({
     );
   };
 
+  const historyRowData = ({
+    index,
+    style,
+  }: {
+    index: number;
+    style: React.CSSProperties | undefined;
+  }) => {
+    const GUTTER_SIZE = 5;
+    const NFTTransferRow = historyData[index]
+    const fromData = (
+      usersData[NFTTransferRow.from] ? usersData[NFTTransferRow.from] : null
+    ) as UserType;
+    const toData = (
+      usersData[NFTTransferRow.to] ? usersData[NFTTransferRow.to] : null
+    ) as UserType;
+    return (
+      <div
+        className={styleDetails.rows}
+        key={NFTTransferRow.id}
+        style={{ ...style, height: (style?.height as any) - GUTTER_SIZE }}
+      >
+        <div className={styleDetails.row}>
+          <div className={styleDetails.rowBadge}>
+            {NFTTransferRow.typeOfTransaction.substr(0,1).toUpperCase() + NFTTransferRow.typeOfTransaction.substr(1,NFTTransferRow.typeOfTransaction.length - 1)}
+          </div>
+          <div className={styleDetails.CreatorPicture}>
+            <Creator
+              className={styleDetails.CreatorPictureIMG}
+              size={'fullwidth'}
+              user={NFTTransferRow.typeOfTransaction === "creation" ? toData : fromData}
+              walletId={NFTTransferRow.typeOfTransaction === "creation" ? NFTTransferRow.to : NFTTransferRow.from}
+              showTooltip={false}
+            />
+          </div>
+          <div className={styleDetails.rowDatas}>
+            <div className={styleDetails.historyDatasName}>
+              <div>
+                {NFTTransferRow.typeOfTransaction !== "creation" ? 
+                  <Link href={`/${NFTTransferRow.from}`}>
+                    <a>
+                      {fromData?.name || middleEllipsis(NFTTransferRow.from, 20)}
+                    </a>
+                  </Link>
+                :
+                  <Link href={`/${NFTTransferRow.to}`}>
+                    <a>
+                      {toData?.name || middleEllipsis(NFTTransferRow.to, 20)}
+                    </a>
+                  </Link>
+                }
+              </div>
+              {NFTTransferRow.typeOfTransaction !== "creation" ? 
+                <span className={styleDetails.HistoryAddress} onClick={() => clipboardCopy(NFTTransferRow.from)}>
+                  {fromData?.name ? middleEllipsis(NFTTransferRow.from, 20) : "copy to clipboard"}
+                  <CopyPaste className={styleDetails.SmallCopyPaste}/>
+                </span>
+              : 
+                <span className={styleDetails.HistoryAddress} onClick={() => clipboardCopy(NFTTransferRow.to)}>
+                  {toData?.name ? middleEllipsis(NFTTransferRow.to, 20) : "copy to clipboard"}
+                  <CopyPaste className={styleDetails.SmallCopyPaste}/>
+                </span>
+              }
+            </div>
+            <div >
+              <div className={styleDetails.rowDatasDetails}>
+                {NFTTransferRow.typeOfTransaction === "creation" &&
+                  `Created ${NFTTransferRow.quantity} edition${NFTTransferRow.quantity > 1 ? "s" : ""}`
+                }
+                {NFTTransferRow.typeOfTransaction === "transfer" &&
+                  `Transferred ${NFTTransferRow.quantity} edition${NFTTransferRow.quantity > 1 ? "s" : ""}
+                  to ${toData?.name ? toData.name : middleEllipsis(NFTTransferRow.to, 15)}`
+                }
+                {NFTTransferRow.typeOfTransaction === "sale" &&
+                  `Sold ${NFTTransferRow.quantity} edition${NFTTransferRow.quantity > 1 ? "s" : ""} 
+                  to ${toData?.name ? toData.name : middleEllipsis(NFTTransferRow.to, 15)}`
+                }
+                {NFTTransferRow.typeOfTransaction === "burn" &&
+                  `Burned ${NFTTransferRow.quantity} edition${NFTTransferRow.quantity > 1 ? "s" : ""}`
+                }
+              </div>
+              {NFTTransferRow.timestamp && 
+                <div className={styleDetails.historyDatasDetailDate}>
+                    {formatDate(new Date(NFTTransferRow.timestamp))}
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+        <div className={styleDetails.TernoaChainButton}>
+          View transaction
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className={styleDetails.detailsMain}>
       <div className={styleDetails.detailsMenu}>
-        <button
-          className={
-            currentTab === 'info'
-              ? styleDetails.detailsMenuActiveItem
-              : styleDetails.detailsMenuItem
-          }
-          onClick={() => switchTab('info')}
-        >
-          Infos
-        </button>
-        <button
-          className={
-            currentTab === 'owners'
-              ? styleDetails.detailsMenuActiveItem
-              : styleDetails.detailsMenuItem
-          }
-          onClick={() => switchTab('owners')}
-        >
-          Owners
-        </button>
-        <button
-          className={
-            currentTab === 'history'
-              ? styleDetails.detailsMenuActiveItem
-              : styleDetails.detailsMenuItem
-          }
-          onClick={() => switchTab('history')}
-        >
-          History
-        </button>
-        <button
-          className={
-            currentTab === 'bid'
-              ? styleDetails.detailsMenuActiveItem
-              : styleDetails.detailsMenuItem
-          }
-          onClick={() => switchTab('bid')}
-          disabled={true}
-        >
-          Bid
-        </button>
+        {tabs.map(x => {
+          return (
+            <button
+              key={x}
+              className={
+                currentTab === x
+                  ? styleDetails.detailsMenuActiveItem
+                  : styleDetails.detailsMenuItem
+              }
+              onClick={() => switchTab(x)}
+              disabled={x==="bid"}
+            >
+              {x[0].toUpperCase() + x.substring(1)}
+            </button>
+          )
+        })}
       </div>
       <div>
         <div className={styleDetails.detailsContent}>
-          {currentTab === 'info' && (
+          {currentTab === 'infos' && (
             <div className={styleDetails.detailsInfos}>
               <div className={styleDetails.creatorWrapper}>
                 <div className={styleDetails.creatorBadge}>Creator</div>
@@ -259,7 +370,7 @@ const Details: React.FC<DetailsProps> = ({
                         <a>{NFT.creatorData?.name || middleEllipsis(NFT.creator, 20)}</a>
                       </Link>
                     </div>
-                    <span className={styleDetails.ownerTwitterUsername}>
+                    <span className={styleDetails.rowTwitterUsername}>
                       {NFT.creatorData?.twitterName || null}
                     </span>
                   </div>
@@ -274,33 +385,11 @@ const Details: React.FC<DetailsProps> = ({
                     {NFT.serieId}
                   </div>
                 </div>
-                {/* <div className={styleDetails.infoDatas}>
-                  <small className={styleDetails.infoDatasTitle}>
-                    Contract Address
-                  </small>
-                  <div className={styleDetails.infoDatasContent}>
-                    0x1dDB2C0897daF18632662E71fdD2dbDC0eB3a9Ec
-                  </div>
-                </div>
-                <div className={styleDetails.infoDatas}>
-                  <small className={styleDetails.infoDatasTitle}>
-                    Token ID
-                  </small>
-                  <div className={styleDetails.infoDatasContent}>
-                    100300039566
-                  </div>
-                </div>
-                <div className={styleDetails.infoDatas}>
-                  <small className={styleDetails.infoDatasTitle}>Size</small>
-                  <div className={styleDetails.infoDatasContent}>
-                    1024 x 1024 px.IMAGE(427KB)
-                  </div>
-                </div> */}
               </div>
             </div>
           )}
           {currentTab === 'owners' && (
-            <div className={styleDetails.ownersContainers}>
+            <div className={styleDetails.rowsContainers}>
               <AutoSizer>
                 {({ width, height }) => (
                   <List
@@ -308,61 +397,30 @@ const Details: React.FC<DetailsProps> = ({
                     height={height}
                     itemCount={serieDataGrouped.length}
                     itemSize={75}
-                    onItemsRendered={onRowRendered}
+                    onItemsRendered={onRowRenderedOwners}
                   >
-                    {ownerData}
+                    {ownerRowData}
                   </List>
                 )}
               </AutoSizer>
             </div>
           )}
           {currentTab === 'history' && (
-            <>
-              <div className={styleDetails.History}>
-                <div className={styleDetails.HistoryLeftBlock}>
-                  <div className={styleDetails.HistoryPicture}>
-                    <Creator
-                      className={styleDetails.HistoryPictureIMG}
-                      size={'fullwidth'}
-                      user={NFT.ownerData}
-                      walletId={NFT.owner}
-                      showTooltip={false}
-                    />
-                  </div>
-                  <div className={styleDetails.HistoryName}>
-                    <Link href={`/${NFT.owner}`}>
-                      <a>{NFT.ownerData?.name || middleEllipsis(NFT.owner, 20)}</a>
-                    </Link>
-                  </div>
-                  <div className={styleDetails.ownerBadge}>Owner</div>
-                </div>
-                <div className={styleDetails.TernoaChainButton}>
-                  View transaction on Ternoa Chain
-                </div>
-              </div>
-              <div className={styleDetails.History}>
-                <div className={styleDetails.HistoryLeftBlock}>
-                  <div className={styleDetails.HistoryPicture}>
-                    <Creator
-                      className={styleDetails.HistoryPictureIMG}
-                      size={'fullwidth'}
-                      user={NFT.creatorData}
-                      walletId={NFT.creator}
-                      showTooltip={false}
-                    />
-                  </div>
-                  <div className={styleDetails.HistoryName}>
-                    <Link href={`/${NFT.creator}`}>
-                      <a>{NFT.creatorData?.name || middleEllipsis(NFT.creator, 20)}</a>
-                    </Link>
-                  </div>
-                  <div className={styleDetails.ownerBadge}>Creator</div>
-                </div>
-                <div className={styleDetails.TernoaChainButton}>
-                  View transaction on Ternoa Chain
-                </div>
-              </div>
-            </>
+            <div className={styleDetails.rowsContainers}>
+              <AutoSizer>
+                {({ width, height }) => (
+                  <List
+                    width={width}
+                    height={height}
+                    itemCount={historyData.length}
+                    itemSize={75}
+                    onItemsRendered={onRowRenderedHistory}
+                  >
+                    {historyRowData}
+                  </List>
+                )}
+              </AutoSizer>
+            </div>
           )}
           {currentTab === 'bid' && <div></div>}
         </div>

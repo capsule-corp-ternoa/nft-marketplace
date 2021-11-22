@@ -91,3 +91,12 @@ export const getUserNFTsStat = async (id: string, onlyFromMpId: boolean): Promis
   let result = await res.json()
   return result;
 };
+
+export const getHistory = async (nftId: string, seriesId: string, grouped: boolean=false) => {
+  const sortOptions: string = "timestamp:desc"
+  const filterOptions: any = {grouped: grouped}
+  const res = await fetch(`${NODE_API_URL}/api/nfts/history/${seriesId}/${nftId}?sort=${sortOptions}&filter=${JSON.stringify(filterOptions)}`);
+  if (!res.ok) throw new Error('error fetching NFT history');
+  let result = await res.json()
+  return result;
+}

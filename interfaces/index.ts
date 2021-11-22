@@ -88,6 +88,18 @@ export type FollowType = {
   follower: UserType;
 }
 
+export type NFTTransferType = {
+  id: string;
+  nftId: string;
+  seriesId: string;
+  from: string;
+  to: string;
+  timestamp: Date;
+  typeOfTransaction: string;
+  amount: string;
+  quantity: number;
+}
+
 export type CustomResponse<DataType> = {
   totalCount?: number;
   hasNextPage: boolean;

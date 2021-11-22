@@ -33,9 +33,10 @@ const NftPage: React.FC<NFTPageProps> = ({ user, NFT, capsValue }) => {
   const [notAvailable, setNotAvailable] = useState(false);
   const [type, setType] = useState<string | null>(null);
   const [walletUser, setWalletUser] = useState(user);
+  const [isUserFromDappQR, setIsUserFromDappQR] = useState(false);
 
   useEffect(() => {
-    setUserFromDApp(setWalletUser)
+    setUserFromDApp(setWalletUser, setIsUserFromDappQR)
   }, []);
 
   useEffect(() => {
@@ -96,6 +97,7 @@ const NftPage: React.FC<NFTPageProps> = ({ user, NFT, capsValue }) => {
         setUser={setWalletUser}
         type={type}
         capsValue={capsValue}
+        isUserFromDappQR={isUserFromDappQR}
       />
     </>
   );

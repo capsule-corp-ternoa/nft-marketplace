@@ -176,7 +176,7 @@ const SWrapper = styled.div`
   width: 100%;
   border-radius: 1.2rem;
   max-width: 250px;
-  height: 430px;
+  height: ${({ theme }) => theme.sizes.cardHeight.sm};
   overflow: hidden;
 `;
 

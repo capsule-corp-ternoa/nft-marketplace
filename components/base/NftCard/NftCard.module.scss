@@ -4,8 +4,6 @@
   display: flex;
   position: relative;
   box-sizing: border-box;
-  width: 250px;
-  height: 390px;
   border-radius: 12px;
   background: linear-gradient(180deg, #f29fff 0%, #878cff 100%);
   box-shadow: 0px 0px 14.5243px 5.0835px rgba(0, 0, 0, 0.15);
@@ -18,8 +16,6 @@
   display: flex;
   position: relative;
   box-sizing: border-box;
-  width: 250px;
-  height: 390px;
   border-radius: 12px;
   background: linear-gradient(180deg, #f29fff 0%, #878cff 100%);
   box-shadow: 0px 0px 14.5243px 5.0835px rgba(0, 0, 0, 0.15);
@@ -32,8 +28,6 @@
   display: flex;
   position: relative;
   box-sizing: border-box;
-  width: 250px;
-  height: 390px;
   border-radius: 12px;
   background: linear-gradient(180deg, #f29fff 0%, #878cff 100%);
   box-shadow: 0px 0px 14.5243px 5.0835px rgba(0, 0, 0, 0.15);
@@ -279,12 +273,6 @@
 }
 
 @media (max-width: 1300px) {
-  .NFT,
-  .NFTGrid {
-    width: 220px;
-    height: 330px;
-  }
-
   .Button {
     padding: 6px 14px;
     margin-top: 8px;
@@ -302,13 +290,6 @@
 }
 
 @media (max-width: 720px) {
-  .NFT,
-  .NFTGrid,
-  .NFTProfile {
-    width: 190px;
-    height: 280px;
-  }
-
   .SecretLabel {
     padding: 2.5px 16px;
     font-size: 16px;
@@ -323,28 +304,5 @@
   }
   .HeartSVG {
     width: 16px;
-  }
-}
-
-@media (max-width: 600px) {
-  .NFTGrid {
-    width: 270px;
-    height: 380px;
-  }
-  .NFT {
-    width: 190px;
-    height: 280px;
-  }
-
-  .NFTProfile {
-    width: 160px;
-    height: 283px;
-  }
-}
-
-@media (max-width: 400px) {
-  .NFTProfile {
-    width: 130px;
-    height: 230px;
   }
 }

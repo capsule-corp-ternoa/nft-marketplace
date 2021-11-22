@@ -15,6 +15,8 @@ export interface DetailsProps {
   user: UserType;
   setNftToBuy: (NFT: NftType) => void;
   setExp: (n: number) => void;
+  isUserFromDappQR: boolean;
+  isVR: boolean;
 }
 
 const Details: React.FC<DetailsProps> = ({
@@ -22,6 +24,8 @@ const Details: React.FC<DetailsProps> = ({
   user,
   setNftToBuy,
   setExp,
+  isUserFromDappQR,
+  isVR,
 }) => {
   const [currentTab, setCurrentTab] = useState('info');
   const [usersData, setUsersData] = useState({} as any);
@@ -118,7 +122,7 @@ const Details: React.FC<DetailsProps> = ({
     ) as UserType;
     const key = `${NFTRowOwner}-${NFTRowListed}-${NFTRowPrice}-${NFTRowMarketplaceId}-${NFTRow?.isCapsule}`;
     const NFTRowTypeWording = (NFTRow?.isCapsule ? 'capsule' : 'edition') + (serieDataCount[key] > 1 ? 's' : '');
-    const userCanBuy = user
+    const userCanBuy = (!isVR || (isVR && isUserFromDappQR)) && (user
       ? user.capsAmount &&
         NFTRow &&
         NFTRowListed === 1 &&
@@ -127,8 +131,8 @@ const Details: React.FC<DetailsProps> = ({
         Number(user.capsAmount) >= Number(NFTRowPrice) &&
         user.walletId !== NFTRowOwner &&
         NFTRowMarketplaceId === MARKETPLACE_ID
-      : NFTRowListed === 1 && NFTRowMarketplaceId === MARKETPLACE_ID;
-
+      : NFTRowListed === 1 && NFTRowMarketplaceId === MARKETPLACE_ID
+    );
     return (
       <div
         className={styleDetails.owners}
@@ -181,7 +185,7 @@ const Details: React.FC<DetailsProps> = ({
             }`}
             onClick={() => userCanBuy && NFTRow && handleCustomBuy(NFTRow)}
           >
-            {(user && user.walletId) !== NFTRowOwner ? 'Buy' : 'Owned'}
+            {(user && user.walletId) === NFTRowOwner ? 'Owned' : ((isVR && !isUserFromDappQR) ? 'VR gallery' : 'Buy')}
           </div>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import { IncomingMessage } from "http"
+import { NftType } from "interfaces"
 import { NextRouter } from "next/router"
 
 export const getUserIp = (req: IncomingMessage | undefined) => {
@@ -38,4 +39,8 @@ export const navigateToSuccess = (
     }, 
     "/success"
   )
+}
+
+export const getRandomNFTFromArray = (array: NftType[]) => {
+  return array[Math.floor(Math.random() * array.length)]
 }

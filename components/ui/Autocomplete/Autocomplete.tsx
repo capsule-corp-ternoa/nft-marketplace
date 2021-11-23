@@ -7,6 +7,7 @@ interface Props<T extends { _id: string; name: string }> {
   className?: string;
   list: T[];
   label: React.ReactNode;
+  maxOptionsShowed?: number;
   onChipDelete: (list: T[], id: T['_id']) => void;
   onOptionClick: (option: T) => void;
   options: T[];
@@ -16,35 +17,38 @@ const Autocomplete = <T extends { _id: string; name: string }>({
   className,
   label,
   list,
+  maxOptionsShowed = 5,
   onChipDelete,
   onOptionClick,
   options,
 }: Props<T>) => {
-  const [filteredOptions, setFilteredOptions] = useState<T[]>(options);
+  const [isShowOptions, setIsShowOptions] = useState<boolean>(false);
   const [text, setText] = useState<string>('');
 
   const inputEl = useRef<HTMLInputElement>(null);
+  const isMoreOptions = options.length > 0;
+
+  const filterTextMatching = (option: T) =>
+    option.name.toLocaleLowerCase().includes(text.toLocaleLowerCase());
 
   const handleOptionClick = (option: T) => {
     onOptionClick(option);
     setText('');
-    inputEl?.current?.focus();
+    setIsShowOptions(false);
   };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newText = e.target.value;
-    const newOptions = options.filter(
-      ({ name }) =>
-        !list.find(({ name: listItemName }) => listItemName === name) && // remove already set categories first
-        name.toLocaleLowerCase().includes(newText.toLocaleLowerCase()) // display only matching
-    );
-
-    setFilteredOptions(newOptions);
-    setText(newText);
+    setText(e.target.value);
   };
 
   return (
-    <SAutocompleteContainer className={className}>
+    <SAutocompleteContainer
+      className={className}
+      onMouseLeave={() => {
+        setIsShowOptions(false);
+        inputEl?.current?.blur();
+      }}
+    >
       <InputShell>
         <InputLabel>{label}</InputLabel>
         <SInputWrapper isEmpty={list.length < 1}>
@@ -64,33 +68,44 @@ const Autocomplete = <T extends { _id: string; name: string }>({
             ref={inputEl}
             placeholder="Add NFT Categories"
             onChange={onChange}
+            onFocus={() => setIsShowOptions(true)}
             name="categories"
             value={text}
           />
           <SInputBorderWrapper id="borderWrapper" />
         </SInputWrapper>
       </InputShell>
-      {text && (
+      {(text || isShowOptions) && (
         <SOptions>
           <>
-            {filteredOptions.map((option) => (
-              <SOption
-                key={option._id}
-                onClick={() => {
-                  const index = list.findIndex(({ _id }) => _id === option._id);
+            {options
+              .filter(filterTextMatching)
+              .slice(0, maxOptionsShowed)
+              .map((option) => (
+                <SOption
+                  key={option._id}
+                  onClick={() => {
+                    const index = list.findIndex(
+                      ({ _id }) => _id === option._id
+                    );
 
-                  if (index === -1) {
-                    handleOptionClick(option);
-                  }
-                }}
-              >
-                <span>{option.name}</span>
-              </SOption>
-            ))}
-            {filteredOptions.length === 0 && (
-              <SEmptyLabel>
-                No matching, this category does not exist.
-              </SEmptyLabel>
+                    if (index === -1) {
+                      handleOptionClick(option);
+                    }
+                  }}
+                >
+                  <span>{option.name}</span>
+                </SOption>
+              ))}
+            {isMoreOptions ? (
+              text &&
+              options.filter(filterTextMatching).length === 0 && (
+                <SEmptyLabel>
+                  No matching, this category does not exist.
+                </SEmptyLabel>
+              )
+            ) : (
+              <SEmptyLabel>All available categories are set</SEmptyLabel>
             )}
           </>
         </SOptions>
@@ -163,12 +178,14 @@ const SChip = styled(Chip)`
 const SOptions = styled.ul`
   width: 100%;
   background: ${({ theme }) => theme.colors.neutral500};
-  border-radius: 0.8rem;
+  border-radius: 0 0.8rem;
   list-style-type: none;
   margin: 0;
+  max-height: 8.8rem;
+  overflow-y: scroll;
   padding: 1.6rem;
   position: absolute;
-  top: calc(100% - 0.7rem);
+  top: calc(100% - 0.3rem);
   left: 0;
 `;
 

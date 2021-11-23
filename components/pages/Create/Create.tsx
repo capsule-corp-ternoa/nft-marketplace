@@ -34,7 +34,7 @@ type QRDataType = {
 };
 
 export interface CreateProps {
-  categoriesOptions: CategoryType[],
+  categoriesOptions: CategoryType[];
   NFT: File | null;
   NFTData: NFTProps;
   QRData: QRDataType;
@@ -69,28 +69,29 @@ const Create = ({
   const [effect, setEffect] = useState<NftEffectType>(NFT_EFFECT_DEFAULT);
   const [isRN, setRN] = useState(false);
   const [nftData, setNFTData] = useState(initalValue);
-  const [canAddToSeriesValue, setCanAddToSeriesValue] = useState(true)
+  const [canAddToSeriesValue, setCanAddToSeriesValue] = useState(true);
+
   const { categories, description, name, quantity, seriesId } = nftData;
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (!seriesId || seriesId === ""){
-        setCanAddToSeriesValue(true)
-      }else{
-        checkAddToSerie()
+      if (!seriesId || seriesId === '') {
+        setCanAddToSeriesValue(true);
+      } else {
+        checkAddToSerie();
       }
-    }, 1000)
-    return () => clearTimeout(timer)
-  }, [seriesId, user])
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [seriesId, user]);
 
   const checkAddToSerie = async () => {
-    if (user){
-      const canAdd = await canAddToSeries(seriesId, user.walletId)
-      setCanAddToSeriesValue(canAdd)
-    }else{
-      setCanAddToSeriesValue(true)
+    if (user) {
+      const canAdd = await canAddToSeries(seriesId, user.walletId);
+      setCanAddToSeriesValue(canAdd);
+    } else {
+      setCanAddToSeriesValue(true);
     }
-  }
+  };
 
   const validateQuantity = (value: number, limit: number) => {
     return value > 0 && value <= limit;
@@ -212,7 +213,13 @@ const Create = ({
               list={categories}
               onChipDelete={handleCategoryChipDelete}
               onOptionClick={handleCategoryOptionClick}
-              options={categoriesOptions}
+              /* Remove already set categories */
+              options={categoriesOptions.filter(
+                ({ name }) =>
+                  !categories.find(
+                    ({ name: listItemName }) => listItemName === name
+                  )
+              )}
             />
 
             {/* TODO in the future */}

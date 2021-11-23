@@ -198,7 +198,7 @@ const Details: React.FC<DetailsProps> = ({
               <div>
                 <Link href={`/${NFTRowOwner}`}>
                   <a>
-                    {ownerData?.name || middleEllipsis(NFTRowOwner, 20)}
+                    {ownerData?.name || middleEllipsis(NFTRowOwner, 15)}
                   </a>
                 </Link>
               </div>
@@ -288,28 +288,28 @@ const Details: React.FC<DetailsProps> = ({
               </div>
               {NFTTransferRow.typeOfTransaction !== "creation" ? 
                 <span className={styleDetails.HistoryAddress} onClick={() => clipboardCopy(NFTTransferRow.from)}>
-                  {fromData?.name ? middleEllipsis(NFTTransferRow.from, 20) : "copy to clipboard"}
+                  {fromData?.name ? middleEllipsis(NFTTransferRow.from, 15) : "copy to clipboard"}
                   <CopyPaste className={styleDetails.SmallCopyPaste}/>
                 </span>
               : 
                 <span className={styleDetails.HistoryAddress} onClick={() => clipboardCopy(NFTTransferRow.to)}>
-                  {toData?.name ? middleEllipsis(NFTTransferRow.to, 20) : "copy to clipboard"}
+                  {toData?.name ? middleEllipsis(NFTTransferRow.to, 15) : "copy to clipboard"}
                   <CopyPaste className={styleDetails.SmallCopyPaste}/>
                 </span>
               }
             </div>
-            <div >
+            <div>
               <div className={styleDetails.rowDatasDetails}>
                 {NFTTransferRow.typeOfTransaction === "creation" &&
                   `Created ${NFTTransferRow.quantity} edition${NFTTransferRow.quantity > 1 ? "s" : ""}`
                 }
                 {NFTTransferRow.typeOfTransaction === "transfer" &&
                   `Transferred ${NFTTransferRow.quantity} edition${NFTTransferRow.quantity > 1 ? "s" : ""}
-                  to ${toData?.name ? toData.name : middleEllipsis(NFTTransferRow.to, 15)}`
+                  to ${toData?.name ? toData.name : middleEllipsis(NFTTransferRow.to, 10)}`
                 }
                 {NFTTransferRow.typeOfTransaction === "sale" &&
                   `Sold ${NFTTransferRow.quantity} edition${NFTTransferRow.quantity > 1 ? "s" : ""} 
-                  to ${toData?.name ? toData.name : middleEllipsis(NFTTransferRow.to, 15)}`
+                  to ${toData?.name ? toData.name : middleEllipsis(NFTTransferRow.to, 10)}`
                 }
                 {NFTTransferRow.typeOfTransaction === "burn" &&
                   `Burned ${NFTTransferRow.quantity} edition${NFTTransferRow.quantity > 1 ? "s" : ""}`

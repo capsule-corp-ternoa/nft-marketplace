@@ -219,7 +219,7 @@ const SSecretWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 4rem 3.2rem 0;
+  padding: 3.2rem 3.2rem 0;
 `;
 
 const SecretUploadDescription = styled.div`

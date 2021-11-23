@@ -138,9 +138,6 @@ const NftCard: React.FC<NftCardProps> = ({
           `${style.NFTIMG} ${(type?.substr(0, 5) === 'image' && isHovering) ? style.ImgScaling : ""}`
         }
       />
-      {Number(displayQuantity()) > 1 && <span className={style.QtyLabel}>
-        {displayQuantity()}
-      </span>}
       {Number(displayQuantity()) > 1 && (
         <SAvailableChipWrapper>
           <Chip

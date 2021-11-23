@@ -54,7 +54,7 @@ const ModalMint: React.FC<ModalProps> = ({
   const [alreadySentSocketTimeout, setAlreadySentSocketTimeout] = useState(false)
   const [stateSocket, setStateSocket] = useState<any>(null)
   const router = useRouter();
-  const { description, name } = NFTData;
+  const { categories, description, name } = NFTData;
   const progressQuantity = 1 + Number(quantity)
   const elapsedUploadTime = (startUploadTime && startUploadTime instanceof Date) ? (+new Date() - +startUploadTime) : 0
   const generalPercentage = () => {
@@ -98,10 +98,10 @@ const ModalMint: React.FC<ModalProps> = ({
       setShowQR(false)
       setShowProgress(true)
       setStartUploadTime(new Date())
-      const { nftUrls, seriesId } = await uploadNFT(publicPgpKeys, setProgressData)
+      const { categories, nftUrls, seriesId } = await uploadNFT(publicPgpKeys, setProgressData)
       if (nftUrls.length > 0){
-        setRunNFTMintData({ nftUrls, seriesId })
-        socket.emit('RUN_NFT_MINT', { nftUrls, seriesId })
+        setRunNFTMintData({ categories, nftUrls, seriesId })
+        socket.emit('RUN_NFT_MINT', { categories, nftUrls, seriesId })
         setShowProgress(false)
         setProgressData([])
         try {
@@ -190,11 +190,15 @@ const ModalMint: React.FC<ModalProps> = ({
         return uploadIPFS(finalFile);
       });
       const JSONHASHES = (await Promise.all(results));
-      return { nftUrls: JSONHASHES as any[], seriesId: (seriesId ? seriesId : null) };
+      return {
+        categories: categories.map((x) => x.code),
+        nftUrls: JSONHASHES as any[],
+        seriesId: seriesId ? seriesId : null,
+      };
     } catch (err) {
       if (setError !== undefined) setError('Please try again.');
       console.log(err);
-      return { nftUrls: [] as any[], seriesId: 0 };
+      return { categories: [] as string[], nftUrls: [] as any[], seriesId: 0 };
     }
   }
 

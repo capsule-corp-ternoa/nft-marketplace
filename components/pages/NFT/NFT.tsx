@@ -246,7 +246,7 @@ const NFTPage = ({
             </div>
             <Title>
               {NFT.title}
-              {NFT.serieData?.[0].isCapsule && <SChip
+              {NFT.isCapsule && <SChip
                 color="primaryLight"
                 text={
                   <>

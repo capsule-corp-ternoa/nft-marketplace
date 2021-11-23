@@ -40,7 +40,7 @@ const Details: React.FC<DetailsProps> = ({
   
   useEffect(() => {
     loadHistoryData()
-  }, [])
+  }, [NFT.id, NFT.serieId])
 
   useEffect(() => {
     const serieDataGroupedArray = [] as NftType[];
@@ -309,6 +309,7 @@ const Details: React.FC<DetailsProps> = ({
                 }
                 {NFTTransferRow.typeOfTransaction === "sale" &&
                   `Sold ${NFTTransferRow.quantity} edition${NFTTransferRow.quantity > 1 ? "s" : ""} 
+                  for ${computeCaps(Number(NFTTransferRow.amount))} caps 
                   to ${toData?.name ? toData.name : middleEllipsis(NFTTransferRow.to, 15)}`
                 }
                 {NFTTransferRow.typeOfTransaction === "burn" &&

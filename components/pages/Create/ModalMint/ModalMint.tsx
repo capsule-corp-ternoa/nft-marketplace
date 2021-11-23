@@ -126,18 +126,19 @@ const ModalMint: React.FC<ModalProps> = ({
     socket.once('MINTING_NFT', ({ success }: { success: boolean }) => {
       socket.emit('MINTING_NFT_RECEIVED')
       socket.close();
-      //TODO
       setMintResponse(success)
-      setTimeout(() => {
-        setModalCreate(false);
-        navigateToSuccess(
-          router, 
-          "NFT(s) created !", 
-          "Go back to your profile page", 
-          "/profile", 
-          false, 
-          "The NFT(s) will soon appear in your profile page")
-      }, 1000)
+      if (success){
+        setTimeout(() => {
+          setModalCreate(false);
+          navigateToSuccess(
+            router, 
+            "NFT(s) created !", 
+            "Go back to your profile page", 
+            "/profile", 
+            false, 
+            "The NFT(s) will soon appear in your profile page")
+        }, 1000)
+      }
     });
     socket.once('disconnect', () => {
       setModalCreate(false);
@@ -272,9 +273,6 @@ const ModalMint: React.FC<ModalProps> = ({
             )}
           </>
         )}
-        {(mintReponse === true) && <div className={style.Text}>
-          Mint was added to the blockchain.
-        </div>}
         {(mintReponse === false) && <div className={style.Text}>
           Mint was not added to the blockchain.
         </div>}

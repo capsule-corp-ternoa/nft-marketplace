@@ -121,7 +121,7 @@ const NftCard: React.FC<NftCardProps> = ({
   }
 
   return (
-    <div
+    <SMediaWrapper
       onClick={() => !isDragging && Router.push(`/nft/${item.id}`)}
       className={manageClass()}
       onFocus={() => false}
@@ -264,9 +264,19 @@ const NftCard: React.FC<NftCardProps> = ({
           }
       </div>
       </div>
-    </div>
+    </SMediaWrapper>
   );
 };
+
+const SMediaWrapper = styled.div`
+  height: ${({theme}) => theme.sizes.cardHeight.xs};
+  width: ${({theme}) => theme.sizes.cardWidth.xs};
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    height: ${({theme}) => theme.sizes.cardHeight.sm};
+    width: ${({theme}) => theme.sizes.cardWidth.sm};
+  }
+`
 
 const SChipWrapper = styled.div`
   background: transparent;

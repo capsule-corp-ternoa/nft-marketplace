@@ -183,7 +183,7 @@ const NFTPage = ({
     <div className={style.Container}>
       <div className={style.MainWrapper}>
         <div className={style.Wrapper}>
-          <div className={style.NFT}>
+          <SMediaWrapper className={style.NFT}>
             <Media
               src={NFT.image!}
               type={type}
@@ -194,7 +194,7 @@ const NFTPage = ({
             <div onClick={() => setExp(1)} className={style.Scale}>
               <Scale className={style.ScaleSVG} />
             </div>
-          </div>
+          </SMediaWrapper>
           <div className={style.Text}>
             <div className={style.Top}>
               <div className={style.TopInfosCreator}>
@@ -349,6 +349,16 @@ const NFTPage = ({
     </div>
   );
 };
+
+const SMediaWrapper = styled.div`
+  height: ${({theme}) => theme.sizes.cardHeight.md};
+  width: ${({theme}) => theme.sizes.cardWidth.md};
+
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    height: ${({theme}) => theme.sizes.cardHeight.lg};
+    width: ${({theme}) => theme.sizes.cardWidth.lg};
+  }
+`
 
 const SChip = styled(Chip)`
   margin: 1.6rem auto 0;

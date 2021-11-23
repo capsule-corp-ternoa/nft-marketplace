@@ -18,16 +18,19 @@ const TooltipContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative;
 
   > span {
-      display: none;
-    }
+    display: none;
+  }
 
   &:hover {
     > span {
       display: block;
     }
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    position: relative;
   }
 `;
 
@@ -43,13 +46,19 @@ const Popover = styled.span`
   color: #686464;
   font-family: 'Airbnb Cereal App Light';
   font-size: 1.2rem;
+  min-width: 24rem;
+  max-width: 32rem;
   padding: 0.8rem 1.6rem;
   position: absolute;
-  top: -4rem;
+  bottom: 110%;
   left: 50%;
+  text-align: center;
   transform: translateX(calc(-50% + 0px));
-  white-space: nowrap;
-  z-index: 1000;
+  z-index: 2;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    bottom: 150%;
+  }
 `;
 
 export default Tooltip;

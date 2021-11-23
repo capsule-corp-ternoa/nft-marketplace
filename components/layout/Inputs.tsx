@@ -25,6 +25,7 @@ export const InputShell = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  position: relative;
 `;
 
 export const InputLabel = styled.h4`

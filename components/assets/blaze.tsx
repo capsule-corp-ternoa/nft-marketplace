@@ -1,10 +1,10 @@
 import React from 'react';
 
 interface BlazeProps {
-  className: string;
+  className?: string;
 }
 
-const Blaze: React.FC<BlazeProps> = ({ className }) => (
+const Blaze = ({ className }: BlazeProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     className={className}

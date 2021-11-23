@@ -4,7 +4,7 @@ interface ArrowBottomProps {
   className?: string;
 }
 
-const ArrowBottom: React.FC<ArrowBottomProps> = ({ className }) => (
+const ArrowBottom = ({ className }: ArrowBottomProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     className={className}

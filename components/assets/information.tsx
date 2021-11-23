@@ -4,7 +4,7 @@ interface InformationProps {
   className?: string;
 }
 
-const Information: React.FC<InformationProps> = ({ className }) => (
+const Information = ({ className }: InformationProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     className={className}

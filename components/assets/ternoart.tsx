@@ -1,10 +1,10 @@
 import React from 'react';
 
 interface TernoartProps {
-  className: string;
+  className?: string;
 }
 
-const Ternoart: React.FC<TernoartProps> = ({ className }) => (
+const Ternoart = ({ className }: TernoartProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     className={className}

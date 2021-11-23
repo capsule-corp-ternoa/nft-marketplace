@@ -4,7 +4,7 @@ interface WhiteWaterMarkProps {
   className?: string;
 }
 
-const WhiteWaterMark: React.FC<WhiteWaterMarkProps> = ({ className }) => (
+const WhiteWaterMark = ({ className }: WhiteWaterMarkProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     className={className}

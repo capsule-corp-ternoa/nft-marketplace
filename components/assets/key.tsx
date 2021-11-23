@@ -1,10 +1,10 @@
 import React from 'react';
 
 interface KeyProps {
-  className: string;
+  className?: string;
 }
 
-const Key: React.FC<KeyProps> = ({ className }) => (
+const Key = ({ className }: KeyProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     className={className}

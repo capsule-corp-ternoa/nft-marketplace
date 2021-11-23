@@ -1,11 +1,11 @@
 import React from 'react';
 
 interface LinkedInProps {
-  className: string;
-  onClick: React.MouseEventHandler<SVGSVGElement>;
+  className?: string;
+  onClick?: React.MouseEventHandler<SVGSVGElement>;
 }
 
-const LinkedIn: React.FC<LinkedInProps> = ({ className, onClick }) => (
+const LinkedIn = ({ className, onClick }: LinkedInProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     className={className}

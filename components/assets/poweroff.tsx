@@ -1,10 +1,10 @@
 import React from 'react';
 
 interface PowerOffProps {
-  className: string;
+  className?: string;
 }
 
-const PowerOff: React.FC<PowerOffProps> = ({ className }) => (
+const PowerOff = ({ className }: PowerOffProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     className={className}

@@ -1,11 +1,11 @@
 import React from 'react';
 
 interface ArrProps {
-  className: string;
-  onClick: React.MouseEventHandler<SVGSVGElement>;
+  className?: string;
+  onClick?: React.MouseEventHandler<SVGSVGElement>;
 }
 
-const Arr: React.FC<ArrProps> = ({ className, onClick }) => (
+const Arr = ({ className, onClick }: ArrProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     className={className}

@@ -4,7 +4,7 @@ interface CopyPasteProps {
   className?: string;
 }
 
-const CopyPaste: React.FC<CopyPasteProps> = ({ className }) => (
+const CopyPaste = ({ className }: CopyPasteProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     className={className}

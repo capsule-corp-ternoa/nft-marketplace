@@ -1,11 +1,11 @@
 import React from 'react';
 
 interface YoutubeProps {
-  className: string;
-  onClick: React.MouseEventHandler<SVGSVGElement>;
+  className?: string;
+  onClick?: React.MouseEventHandler<SVGSVGElement>;
 }
 
-const Youtube: React.FC<YoutubeProps> = ({ className, onClick }) => (
+const Youtube = ({ className, onClick }: YoutubeProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     className={className}

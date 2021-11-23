@@ -4,7 +4,7 @@ interface EyeProps {
   className?: string;
 }
 
-const Eye: React.FC<EyeProps> = ({ className }) => (
+const Eye = ({ className }: EyeProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     className={className}

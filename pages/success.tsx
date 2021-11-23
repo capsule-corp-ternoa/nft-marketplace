@@ -19,8 +19,6 @@ const SuccessPage = ({ user }: SuccessProps) => {
   const [modalExpand, setModalExpand] = useState(false);
   const router = useRouter();
   const {title, text, buttonText, returnUrl, isRedirect} = router.query
-  console.log(title, text, buttonText, returnUrl, isRedirect)
-  console.log(typeof isRedirect)
   useEffect(() => {
     if (!(title && buttonText && returnUrl && isRedirect!==undefined)){
       router.push("/")

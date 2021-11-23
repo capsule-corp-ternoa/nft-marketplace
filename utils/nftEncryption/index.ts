@@ -1,26 +1,9 @@
-import crypto from 'crypto'
-import gen from 'random-seed'
 import * as openpgp from 'openpgp'
 import mime from 'mime-types'
 import TernoaIpfsApi from './ipfs.helper'
 import { ipfsGatewayUri } from './ipfs.const';
 
 const ipfsApi = new TernoaIpfsApi();
-
-export const generateSeriesId = (fileHash: string) => {
-  const serieGen = gen.create(fileHash)
-  const serieId = serieGen.intBetween(0, 4294967295)
-  return serieId
-}
-
-export const getFilehash = async (file: File) => {
-  const hash = crypto.createHash('sha256');
-  const arrayBuffer = await file.arrayBuffer()
-  const buffer = Buffer.from(arrayBuffer)
-  hash.update(buffer)
-  const fileHash = hash.digest('hex');
-  return fileHash;
-}
 
 const cryptFilePgp = async (file: File, publicPGP: string) => {
   const arrayBuffer = await file.arrayBuffer()

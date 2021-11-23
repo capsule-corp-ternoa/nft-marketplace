@@ -253,7 +253,7 @@ const Create = ({
             <InputShell>
               <InputLabel>
                 Series ID
-                <STooltip text="Specified your own series id. Series must be locked (never listed / transferred) and owned by you" />
+                <STooltip text="Specified your own series id. Series must be locked (never listed / transferred) and owned by you." />
                 <SInsight>(optional)</SInsight>
               </InputLabel>
               <Input

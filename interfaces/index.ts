@@ -98,6 +98,9 @@ export type NFTTransferType = {
   typeOfTransaction: string;
   amount: string;
   quantity: number;
+  extrinsic: {
+    id: string;
+  };
 }
 
 export type CustomResponse<DataType> = {

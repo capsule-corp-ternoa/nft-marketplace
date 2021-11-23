@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { middleEllipsis } from '../../../../utils/strings';
 import { getUsers } from 'actions/user';
 import Creator from 'components/base/Creator';
-import { MARKETPLACE_ID } from 'utils/constant';
+import { EXPLORER_URL, MARKETPLACE_ID } from 'utils/constant';
 import CopyPaste from 'components/assets/copypaste';
 import { clipboardCopy, getRandomNFTFromArray } from 'utils/functions';
 import { getHistory } from 'actions/nft';
@@ -324,8 +324,10 @@ const Details: React.FC<DetailsProps> = ({
             </div>
           </div>
         </div>
-        <div className={styleDetails.TernoaChainButton}>
-          View transaction
+        <div className={styleDetails.TernoaChainButton + " " + (EXPLORER_URL ? "" : styleDetails.disabled)}>
+          <a href={`${EXPLORER_URL ? `${EXPLORER_URL}/nft/${NFTTransferRow.id}?extrinsic=${NFTTransferRow.extrinsic.id}` : "#"}`} target="_blank">
+            View transaction
+          </a>
         </div>
       </div>
     );

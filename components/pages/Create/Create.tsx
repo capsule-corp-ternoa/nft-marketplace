@@ -70,13 +70,16 @@ const Create = ({
   const [isRN, setRN] = useState(false);
   const [nftData, setNFTData] = useState(initalValue);
   const [canAddToSeriesValue, setCanAddToSeriesValue] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { categories, description, name, quantity, seriesId } = nftData;
 
   useEffect(() => {
+    setIsLoading(true)
     const timer = setTimeout(() => {
       if (!seriesId || seriesId === '') {
         setCanAddToSeriesValue(true);
+        setIsLoading(false)
       } else {
         checkAddToSerie();
       }
@@ -91,6 +94,7 @@ const Create = ({
     } else {
       setCanAddToSeriesValue(true);
     }
+    setIsLoading(false)
   };
 
   const validateQuantity = (value: number, limit: number) => {
@@ -103,7 +107,8 @@ const Create = ({
     validateQuantity(quantity, 10) &&
     secretNFT &&
     (effect !== NFT_EFFECT_SECRET || NFT) &&
-    canAddToSeriesValue;
+    canAddToSeriesValue &&
+    !isLoading;
 
   const handleChange = (
     e:

@@ -176,7 +176,7 @@ const SWrapper = styled.div`
   width: 100%;
   border-radius: 1.2rem;
   max-width: 250px;
-  height: 430px;
+  height: ${({ theme }) => theme.sizes.cardHeight.sm};
   overflow: hidden;
 `;
 
@@ -219,7 +219,7 @@ const SSecretWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 4rem 3.2rem 0;
+  padding: 3.2rem 3.2rem 0;
 `;
 
 const SecretUploadDescription = styled.div`

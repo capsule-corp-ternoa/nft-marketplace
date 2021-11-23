@@ -26,3 +26,18 @@ export type MediaQueries = {
   xl: string;
   xxl: string;
 };
+
+export type Sizes = {
+  cardHeight: {
+    xs: string;
+    sm: string;
+    md: string;
+    lg: string;
+  };
+  cardWidth: {
+    xs: string;
+    sm: string;
+    md: string;
+    lg: string;
+  };
+};

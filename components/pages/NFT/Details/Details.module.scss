@@ -211,6 +211,8 @@
 .disabled {
   pointer-events: none;
   background-color: lighten($primary, 35%);
+  color: white !important;
+  border: none !important;
 }
 
 .History {
@@ -265,11 +267,14 @@
   margin: 10px;
   font-size: 12px;
   font-family: 'Airbnb Cereal App Medium';
-  cursor: default;
-  opacity: 0.5;
+  cursor: pointer;
   border: solid 1px $primary;
   border-radius: 50px;
   text-align: center;
+  &:hover{
+    background-color: $primary;
+    color: white;
+  }
 }
 @media (max-width: 1300px) {
   .detailsMain {

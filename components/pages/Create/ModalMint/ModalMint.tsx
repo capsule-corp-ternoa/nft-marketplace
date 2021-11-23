@@ -8,7 +8,7 @@ import mime from 'mime-types';
 import { useRouter } from 'next/router'
 import { connect as connectIo, socketWaitForEvent } from 'utils/socket/socket.helper';
 import { SOCKET_URL } from 'utils/constant';
-import { getFilehash, generateSeriesId, cryptAndUploadNFT, uploadIPFS } from 'utils/nftEncryption';
+import { cryptAndUploadNFT, uploadIPFS } from 'utils/nftEncryption';
 import { Circle } from 'rc-progress';
 
 import { NFTProps } from 'pages/create';
@@ -54,7 +54,7 @@ const ModalMint: React.FC<ModalProps> = ({
   const [alreadySentSocketTimeout, setAlreadySentSocketTimeout] = useState(false)
   const [stateSocket, setStateSocket] = useState<any>(null)
   const router = useRouter();
-  const { categories, description, name } = NFTData;
+  const { categories, description, name, seriesId } = NFTData;
   const progressQuantity = 1 + Number(quantity)
   const elapsedUploadTime = (startUploadTime && startUploadTime instanceof Date) ? (+new Date() - +startUploadTime) : 0
   const generalPercentage = () => {
@@ -127,16 +127,18 @@ const ModalMint: React.FC<ModalProps> = ({
       socket.emit('MINTING_NFT_RECEIVED')
       socket.close();
       setMintResponse(success)
-      setTimeout(() => {
-        setModalCreate(false);
-        navigateToSuccess(
-          router, 
-          "NFT created !", 
-          "Go back to your profile page", 
-          "/profile", 
-          false, 
-          "The NFT will soon appear in your profile page")
-      }, 1000)
+      if (success){
+        setTimeout(() => {
+          setModalCreate(false);
+          navigateToSuccess(
+            router, 
+            "NFT(s) created !", 
+            "Go back to your profile page", 
+            "/profile", 
+            false, 
+            "The NFT(s) will soon appear in your profile page")
+        }, 1000)
+      }
     });
     socket.once('disconnect', () => {
       setModalCreate(false);
@@ -152,8 +154,6 @@ const ModalMint: React.FC<ModalProps> = ({
     try {
       if (!secretNFT) throw new Error();
       const { hashOrURL: previewHash, mediaType } = await uploadIPFS(NFT ? NFT : secretNFT, setProgressData, 0);
-      const fileHash = await getFilehash(secretNFT)
-      const seriesId = generateSeriesId(fileHash)
       const cryptedMediaType = mime.lookup(secretNFT.name)
       //Parallel
       const cryptPromises = Array.from({ length: quantity ?? 0 }).map((_x, i) => {
@@ -273,9 +273,6 @@ const ModalMint: React.FC<ModalProps> = ({
             )}
           </>
         )}
-        {(mintReponse === true) && <div className={style.Text}>
-          Mint was added to the blockchain.
-        </div>}
         {(mintReponse === false) && <div className={style.Text}>
           Mint was not added to the blockchain.
         </div>}

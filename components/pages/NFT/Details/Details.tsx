@@ -264,38 +264,41 @@ const Details: React.FC<DetailsProps> = ({
             <Creator
               className={styleDetails.CreatorPictureIMG}
               size={'fullwidth'}
-              user={NFTTransferRow.typeOfTransaction === "creation" ? toData : fromData}
-              walletId={NFTTransferRow.typeOfTransaction === "creation" ? NFTTransferRow.to : NFTTransferRow.from}
+              user={(NFTTransferRow.typeOfTransaction === "creation" || NFTTransferRow.typeOfTransaction === "sale") ? toData : fromData}
+              walletId={(NFTTransferRow.typeOfTransaction === "creation" || NFTTransferRow.typeOfTransaction === "sale") ? NFTTransferRow.to : NFTTransferRow.from}
               showTooltip={false}
             />
           </div>
           <div className={styleDetails.rowDatas}>
             <div className={styleDetails.historyDatasName}>
-              <div>
-                {NFTTransferRow.typeOfTransaction !== "creation" ? 
-                  <Link href={`/${NFTTransferRow.from}`}>
-                    <a>
-                      {fromData?.name || middleEllipsis(NFTTransferRow.from, 10)}
-                    </a>
-                  </Link>
-                :
-                  <Link href={`/${NFTTransferRow.to}`}>
-                    <a>
-                      {toData?.name || middleEllipsis(NFTTransferRow.to, 10)}
-                    </a>
-                  </Link>
-                }
-              </div>
-              {NFTTransferRow.typeOfTransaction !== "creation" ? 
-                <span className={styleDetails.HistoryAddress} onClick={() => clipboardCopy(NFTTransferRow.from)}>
-                  {fromData?.name ? middleEllipsis(NFTTransferRow.from, 15) : "copy to clipboard"}
-                  <CopyPaste className={styleDetails.SmallCopyPaste}/>
-                </span>
-              : 
-                <span className={styleDetails.HistoryAddress} onClick={() => clipboardCopy(NFTTransferRow.to)}>
-                  {toData?.name ? middleEllipsis(NFTTransferRow.to, 15) : "copy to clipboard"}
-                  <CopyPaste className={styleDetails.SmallCopyPaste}/>
-                </span>
+              {(NFTTransferRow.typeOfTransaction === "creation" || NFTTransferRow.typeOfTransaction === "sale")  ? 
+                <>
+                  <div>
+                    <Link href={`/${NFTTransferRow.to}`}>
+                      <a>
+                        {toData?.name || middleEllipsis(NFTTransferRow.to, 10)}
+                      </a>
+                    </Link>
+                  </div>
+                  <span className={styleDetails.HistoryAddress} onClick={() => clipboardCopy(NFTTransferRow.to)}>
+                    {toData?.name ? middleEllipsis(NFTTransferRow.to, 15) : "copy to clipboard"}
+                    <CopyPaste className={styleDetails.SmallCopyPaste}/>
+                  </span>
+                </>
+              :
+                <>
+                  <div>
+                      <Link href={`/${NFTTransferRow.from}`}>
+                        <a>
+                          {fromData?.name || middleEllipsis(NFTTransferRow.from, 10)}
+                        </a>
+                      </Link>
+                  </div>
+                  <span className={styleDetails.HistoryAddress} onClick={() => clipboardCopy(NFTTransferRow.from)}>
+                    {fromData?.name ? middleEllipsis(NFTTransferRow.from, 15) : "copy to clipboard"}
+                    <CopyPaste className={styleDetails.SmallCopyPaste}/>
+                  </span>
+                </>
               }
             </div>
             <div>
@@ -308,9 +311,9 @@ const Details: React.FC<DetailsProps> = ({
                   to ${toData?.name ? toData.name : middleEllipsis(NFTTransferRow.to, 10)}`
                 }
                 {NFTTransferRow.typeOfTransaction === "sale" &&
-                  `Sold ${NFTTransferRow.quantity} edition${NFTTransferRow.quantity > 1 ? "s" : ""} 
+                  `Bought ${NFTTransferRow.quantity} edition${NFTTransferRow.quantity > 1 ? "s" : ""} 
                   for ${computeCaps(Number(NFTTransferRow.amount))} caps 
-                  to ${toData?.name ? toData.name : middleEllipsis(NFTTransferRow.to, 10)}`
+                  from ${fromData?.name ? fromData.name : middleEllipsis(NFTTransferRow.from, 10)}`
                 }
                 {NFTTransferRow.typeOfTransaction === "burn" &&
                   `Burned ${NFTTransferRow.quantity} edition${NFTTransferRow.quantity > 1 ? "s" : ""}`

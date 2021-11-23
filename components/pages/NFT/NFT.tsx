@@ -258,8 +258,9 @@ const NFTPage = ({
               />}
             </Title>
             <SCategoriesWrapper>
-              {NFT.categories.map(({ name }) => (
+              {NFT.categories.map(({ name, code }) => (
                 <Chip
+                  key={code}
                   color="invertedContrast"
                   text={name}
                   size="medium"

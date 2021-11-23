@@ -105,10 +105,10 @@ const Details: React.FC<DetailsProps> = ({
       for (let i = overscanStartIndex; i <= overscanStopIndex; i++) {
         if (historyData[i]){
           if (historyData[i].from.startsWith("5") && !usersData[historyData[i].from]) {
-            usersToLoad.push(usersData[historyData[i].from]);
+            usersToLoad.push(historyData[i].from);
           }
           if (historyData[i].to.startsWith("5") && !usersData[historyData[i].to]) {
-            usersToLoad.push(usersData[historyData[i].to]);
+            usersToLoad.push(historyData[i].to);
           }
         }
       }
@@ -275,13 +275,13 @@ const Details: React.FC<DetailsProps> = ({
                 {NFTTransferRow.typeOfTransaction !== "creation" ? 
                   <Link href={`/${NFTTransferRow.from}`}>
                     <a>
-                      {fromData?.name || middleEllipsis(NFTTransferRow.from, 20)}
+                      {fromData?.name || middleEllipsis(NFTTransferRow.from, 10)}
                     </a>
                   </Link>
                 :
                   <Link href={`/${NFTTransferRow.to}`}>
                     <a>
-                      {toData?.name || middleEllipsis(NFTTransferRow.to, 20)}
+                      {toData?.name || middleEllipsis(NFTTransferRow.to, 10)}
                     </a>
                   </Link>
                 }

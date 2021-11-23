@@ -21,6 +21,7 @@ import { Title } from 'components/layout'
 import Chip from 'components/ui/Chip';
 import Showcase from 'components/base/Showcase';
 import { getByTheSameArtistNFTs } from 'actions/nft';
+import { getRandomNFTFromArray } from 'utils/functions';
 
 export interface NFTPageProps {
   NFT: NftType;
@@ -160,7 +161,21 @@ const NFTPage = ({
   };
 
   const handleBuy = () => {
-    setNftToBuy(smallestPriceRow);
+    //get a random row to buy if same price
+    const smallestPriceRows = (!NFT.serieData || NFT.serieData.length <= 1) ? 
+      [NFT]
+    : 
+      NFT.serieData
+        .filter((x) => x.marketplaceId === MARKETPLACE_ID && x.listed===1 && (!user || (x.owner !== user.walletId)))
+        .sort(
+          (a, b) =>
+            Number(a.price) - Number(b.price) || //lowest price first
+            Number(a.priceTiime) - Number(b.priceTiime) // lower pricetiime first
+        ).filter((x, _i, arr) => 
+          x.price === arr[0].price &&
+          x.priceTiime === arr[0].priceTiime
+        )
+    setNftToBuy(getRandomNFTFromArray(smallestPriceRows));
     setExp(2);
   };
 
@@ -231,7 +246,7 @@ const NFTPage = ({
             </div>
             <Title>
               {NFT.title}
-              {NFT.serieData?.[0].isCapsule && <SChip
+              {NFT.isCapsule && <SChip
                 color="primaryLight"
                 text={
                   <>
@@ -242,6 +257,16 @@ const NFTPage = ({
                 variant="rectangle"
               />}
             </Title>
+            <SCategoriesWrapper>
+              {NFT.categories.map(({ name }) => (
+                <Chip
+                  color="invertedContrast"
+                  text={name}
+                  size="medium"
+                  variant="rectangle"
+                />
+              ))}
+            </SCategoriesWrapper>
             <p className={style.Description}>{NFT.description}</p>
             <div className={style.Buy}>
               <div
@@ -349,6 +374,21 @@ const SDot = styled.div`
   height: 0.8rem;
   background: ${({theme}) => theme.colors.primary};
   border-radius: 50%;
+`
+
+const SCategoriesWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1.6rem;
+  margin-top: 1.6rem;
+
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    justify-content: start;
+    margin: 0;
+  }
 `
 
 export default NFTPage;

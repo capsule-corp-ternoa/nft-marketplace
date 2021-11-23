@@ -10,7 +10,7 @@ import { getUsers } from 'actions/user';
 import Creator from 'components/base/Creator';
 import { MARKETPLACE_ID } from 'utils/constant';
 import CopyPaste from 'components/assets/copypaste';
-import { clipboardCopy } from 'utils/functions';
+import { clipboardCopy, getRandomNFTFromArray } from 'utils/functions';
 import { getHistory } from 'actions/nft';
 
 export interface DetailsProps {
@@ -40,7 +40,7 @@ const Details: React.FC<DetailsProps> = ({
   
   useEffect(() => {
     loadHistoryData()
-  }, [])
+  }, [NFT.id, NFT.serieId])
 
   useEffect(() => {
     const serieDataGroupedArray = [] as NftType[];
@@ -49,7 +49,7 @@ const Details: React.FC<DetailsProps> = ({
       // Compute rows to display && count number of listed / unlisted for each row
       const key = `${x.owner}-${x.listed}-${x.price}-${x.marketplaceId}-${x.isCapsule}`;
       if (!serieDataCountObject[key]) {
-        serieDataCountObject[key] = 1;
+        serieDataCountObject[key] = [x.id];
         serieDataGroupedArray.push({
           id: x.id,
           listed: x.listed,
@@ -61,7 +61,7 @@ const Details: React.FC<DetailsProps> = ({
           isCapsule: x.isCapsule,
         } as NftType);
       } else {
-        serieDataCountObject[key] += 1;
+        serieDataCountObject[key].push(x.id);
       }
     });
     setSerieDataGrouped(serieDataGroupedArray);
@@ -69,7 +69,9 @@ const Details: React.FC<DetailsProps> = ({
   }, [serieData]);
 
   const handleCustomBuy = (NFT: NftType) => {
-    setNftToBuy(NFT);
+    const key = `${NFT.owner}-${NFT.listed}-${NFT.price}-${NFT.marketplaceId}`;
+    const NFTToBuy = serieData.find(x => x.id === getRandomNFTFromArray(serieDataCount[key])) || NFT
+    setNftToBuy(NFTToBuy);
     setExp(2);
   };
 
@@ -103,10 +105,10 @@ const Details: React.FC<DetailsProps> = ({
       for (let i = overscanStartIndex; i <= overscanStopIndex; i++) {
         if (historyData[i]){
           if (historyData[i].from.startsWith("5") && !usersData[historyData[i].from]) {
-            usersToLoad.push(usersData[historyData[i].from]);
+            usersToLoad.push(historyData[i].from);
           }
           if (historyData[i].to.startsWith("5") && !usersData[historyData[i].to]) {
-            usersToLoad.push(usersData[historyData[i].to]);
+            usersToLoad.push(historyData[i].to);
           }
         }
       }
@@ -162,7 +164,7 @@ const Details: React.FC<DetailsProps> = ({
       usersData[NFTRowOwner] ? usersData[NFTRowOwner] : null
     ) as UserType;
     const key = `${NFTRowOwner}-${NFTRowListed}-${NFTRowPrice}-${NFTRowMarketplaceId}-${NFTRow?.isCapsule}`;
-    const NFTRowTypeWording = (NFTRow?.isCapsule ? 'capsule' : 'edition') + (serieDataCount[key] > 1 ? 's' : '');
+    const NFTRowTypeWording = (NFTRow?.isCapsule ? 'capsule' : 'edition') + (serieDataCount[key].length > 1 ? 's' : '');
     const userCanBuy = (!isVR || (isVR && isUserFromDappQR)) && (user
       ? user.capsAmount &&
         NFTRow &&
@@ -207,14 +209,14 @@ const Details: React.FC<DetailsProps> = ({
             <Link href={`/nft/${NFTRowId}`}>
               <a className={styleDetails.rowDatasDetails}>
                 {NFTRowListed === 0
-                  ? `${serieDataCount[key]} ${NFTRowTypeWording} not for sale`
+                  ? `${serieDataCount[key].length} ${NFTRowTypeWording} not for sale`
                   : NFTRowListed === 1 && NFTRowMarketplaceId === MARKETPLACE_ID
                   ? `${
-                      serieDataCount[key]
+                      serieDataCount[key].length
                     } ${NFTRowTypeWording} on sale for ${computeCaps(
                       Number(NFTRowPrice)
-                    )} CAPS ${serieDataCount[key] > 1 ? 'each' : ''}`
-                  : `${serieDataCount[key]} ${NFTRowTypeWording} on sale on other marketplace(s)`}
+                    )} CAPS ${serieDataCount[key].length > 1 ? 'each' : ''}`
+                  : `${serieDataCount[key].length} ${NFTRowTypeWording} on sale on other marketplace(s)`}
               </a>
             </Link>
           </div>
@@ -273,13 +275,13 @@ const Details: React.FC<DetailsProps> = ({
                 {NFTTransferRow.typeOfTransaction !== "creation" ? 
                   <Link href={`/${NFTTransferRow.from}`}>
                     <a>
-                      {fromData?.name || middleEllipsis(NFTTransferRow.from, 20)}
+                      {fromData?.name || middleEllipsis(NFTTransferRow.from, 10)}
                     </a>
                   </Link>
                 :
                   <Link href={`/${NFTTransferRow.to}`}>
                     <a>
-                      {toData?.name || middleEllipsis(NFTTransferRow.to, 20)}
+                      {toData?.name || middleEllipsis(NFTTransferRow.to, 10)}
                     </a>
                   </Link>
                 }
@@ -307,6 +309,7 @@ const Details: React.FC<DetailsProps> = ({
                 }
                 {NFTTransferRow.typeOfTransaction === "sale" &&
                   `Sold ${NFTTransferRow.quantity} edition${NFTTransferRow.quantity > 1 ? "s" : ""} 
+                  for ${computeCaps(Number(NFTTransferRow.amount))} caps 
                   to ${toData?.name ? toData.name : middleEllipsis(NFTTransferRow.to, 15)}`
                 }
                 {NFTTransferRow.typeOfTransaction === "burn" &&

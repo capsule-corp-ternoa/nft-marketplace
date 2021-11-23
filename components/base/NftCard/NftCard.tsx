@@ -6,6 +6,7 @@ import Router from 'next/router';
 import { useMediaQuery } from 'react-responsive';
 import Media from '../Media';
 import Heart from 'components/assets/heart';
+import Chip from 'components/ui/Chip';
 import { NftType, UserType } from 'interfaces/index';
 import { computeCaps, computeTiime } from 'utils/strings';
 import { likeNFT, unlikeNFT } from 'actions/user';
@@ -140,9 +141,54 @@ const NftCard: React.FC<NftCardProps> = ({
       {Number(displayQuantity()) > 1 && <span className={style.QtyLabel}>
         {displayQuantity()}
       </span>}
-      {item.properties?.cryptedMedia.ipfs !== item.properties?.preview.ipfs && !isHovering && (
-        <span className={style.SecretLabel}>S</span>
+      {Number(displayQuantity()) > 1 && (
+        <SAvailableChipWrapper>
+          <Chip
+            color="whiteBlur"
+            size="small"
+            text={`Available : ${displayQuantity()} of ${item.totalNft}`}
+            variant="round"
+          />
+        </SAvailableChipWrapper>
       )}
+      {item.properties?.cryptedMedia.ipfs !== item.properties?.preview.ipfs &&
+        !isHovering && (
+          <SSecretChipWrapper>
+            <Chip
+              color="whiteBlur"
+              icon="secretCards"
+              size="small"
+              text="Secret"
+              variant="round"
+            />
+          </SSecretChipWrapper>
+        )}
+      {((item.smallestPrice && Number(item.smallestPrice)) ||
+        (item.smallestPriceTiime && Number(item.smallestPriceTiime))) &&
+        !isHovering && (
+          <SPriceChipWrapper>
+            <Chip
+              color="whiteBlur"
+              size="small"
+              text={
+                <>
+                  {item.smallestPrice &&
+                    Number(item.smallestPrice) > 0 &&
+                    `${computeCaps(Number(item.smallestPrice))} CAPS`}
+                  {item.smallestPrice &&
+                    Number(item.smallestPrice) &&
+                    item.smallestPriceTiime &&
+                    Number(item.smallestPriceTiime) &&
+                    ` / `}
+                  {item.smallestPriceTiime &&
+                    Number(item.smallestPriceTiime) > 0 &&
+                    `${computeTiime(Number(item.smallestPriceTiime))} TIIME`}
+                </>
+              }
+              variant="round"
+            />
+          </SPriceChipWrapper>
+        )}
       <div
         className={
           isHovering
@@ -191,20 +237,30 @@ const NftCard: React.FC<NftCardProps> = ({
             </div>
           </div>
           {((item.smallestPrice && Number(item.smallestPrice)) || (item.smallestPriceTiime && Number(item.smallestPriceTiime))) &&
-            <div className={isHovering ? `${style.Button} ${style.FadeLong}` : style.Button}>
-              <div className={style.Price}>
-                {item.smallestPrice && Number(item.smallestPrice)>0 &&
-                  `${computeCaps(Number(item.smallestPrice))} CAPS`
+            <SPriceWrapper className={isHovering ? style.FadeLong : ''}>
+              <Chip
+                color="whiteBlur"
+                size="small"
+                text={
+                  <>
+                    {item.smallestPrice &&
+                      Number(item.smallestPrice) > 0 &&
+                      `${computeCaps(Number(item.smallestPrice))} CAPS`}
+                    {item.smallestPrice &&
+                      Number(item.smallestPrice) &&
+                      item.smallestPriceTiime &&
+                      Number(item.smallestPriceTiime) &&
+                      ` / `}
+                    {item.smallestPriceTiime &&
+                      Number(item.smallestPriceTiime) > 0 &&
+                      `${computeTiime(
+                        Number(item.smallestPriceTiime)
+                      )} TIIME`}
+                  </>
                 }
-                {item.smallestPrice && Number(item.smallestPrice) && item.smallestPriceTiime && Number(item.smallestPriceTiime) && 
-                  ` / `
-                }
-                {item.smallestPriceTiime && Number(item.smallestPriceTiime)>0 && 
-                  `${computeTiime(Number(item.smallestPriceTiime))} TIIME`
-                }
-              </div>
-              <div className={style.ButtonText}>Buy</div>
-            </div>
+                variant="round"
+              />
+            </SPriceWrapper>
           }
       </div>
       </div>
@@ -220,6 +276,34 @@ const SMediaWrapper = styled.div`
     height: ${({theme}) => theme.sizes.cardHeight.sm};
     width: ${({theme}) => theme.sizes.cardWidth.sm};
   }
+`
+
+const SChipWrapper = styled.div`
+  background: transparent;
+  position: absolute;
+  z-index: 4;
+`
+
+const SAvailableChipWrapper = styled(SChipWrapper)`
+  top: 1.6rem;
+  left: 1.6rem;
+`
+
+const SSecretChipWrapper = styled(SChipWrapper)`
+  top: 1.6rem;
+  right: 1.6rem;
+`
+
+const SPriceChipWrapper = styled(SChipWrapper)`
+  width: fit-content;
+  bottom: 1.6rem;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+`
+
+const SPriceWrapper = styled.div`
+  margin-top: 0.8rem;
 `
 
 export default NftCard;

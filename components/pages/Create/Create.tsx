@@ -17,13 +17,16 @@ import NftPreview from 'components/base/NftPreview';
 import {
   NFT_EFFECT_DEFAULT,
   NFT_EFFECT_SECRET,
+  CategoryType,
   NftEffectType,
   UserType,
 } from 'interfaces';
+import Autocomplete from 'components/ui/Autocomplete';
 import Button from 'components/ui/Button';
 import Tooltip from 'components/ui/Tooltip';
 
 import { NFTProps } from 'pages/create';
+import { canAddToSeries } from 'actions/nft';
 
 type QRDataType = {
   walletId: string;
@@ -31,6 +34,7 @@ type QRDataType = {
 };
 
 export interface CreateProps {
+  categoriesOptions: CategoryType[];
   NFT: File | null;
   NFTData: NFTProps;
   QRData: QRDataType;
@@ -47,6 +51,7 @@ export interface CreateProps {
 }
 
 const Create = ({
+  categoriesOptions,
   NFT,
   NFTData: initalValue,
   QRData,
@@ -64,7 +69,29 @@ const Create = ({
   const [effect, setEffect] = useState<NftEffectType>(NFT_EFFECT_DEFAULT);
   const [isRN, setRN] = useState(false);
   const [nftData, setNFTData] = useState(initalValue);
-  const { description, name, quantity, seriesId } = nftData;
+  const [canAddToSeriesValue, setCanAddToSeriesValue] = useState(true);
+
+  const { categories, description, name, quantity, seriesId } = nftData;
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!seriesId || seriesId === '') {
+        setCanAddToSeriesValue(true);
+      } else {
+        checkAddToSerie();
+      }
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [seriesId, user]);
+
+  const checkAddToSerie = async () => {
+    if (user) {
+      const canAdd = await canAddToSeries(seriesId, user.walletId);
+      setCanAddToSeriesValue(canAdd);
+    } else {
+      setCanAddToSeriesValue(true);
+    }
+  };
 
   const validateQuantity = (value: number, limit: number) => {
     return value > 0 && value <= limit;
@@ -75,17 +102,39 @@ const Create = ({
     description &&
     validateQuantity(quantity, 10) &&
     secretNFT &&
-    (effect !== NFT_EFFECT_SECRET || NFT);
+    (effect !== NFT_EFFECT_SECRET || NFT) &&
+    canAddToSeriesValue;
 
-  function onChange(
+  const handleChange = (
     e:
       | React.ChangeEvent<HTMLInputElement>
       | React.ChangeEvent<HTMLTextAreaElement>
-  ) {
+  ) => {
     const nextNftData = { ...nftData, [e.target.name]: e.target.value };
     setNFTData(nextNftData);
     setNftDataToParent(nextNftData);
-  }
+  };
+
+  const handleCategoryChipDelete = (
+    list: CategoryType[],
+    id: CategoryType['_id']
+  ) => {
+    const nextNftData = {
+      ...nftData,
+      categories: list.filter((item) => item._id !== id),
+    };
+    setNFTData(nextNftData);
+    setNftDataToParent(nextNftData);
+  };
+
+  const handleCategoryOptionClick = (option: CategoryType) => {
+    const nextNftData = {
+      ...nftData,
+      categories: categories.concat(option),
+    };
+    setNFTData(nextNftData);
+    setNftDataToParent(nextNftData);
+  };
 
   function initMintingNFT() {
     if (!user) throw new Error('Please login to create an NFT.');
@@ -138,7 +187,7 @@ const Create = ({
               <Input
                 type="text"
                 placeholder="Enter name"
-                onChange={onChange}
+                onChange={handleChange}
                 name="name"
                 value={name}
               />
@@ -150,25 +199,28 @@ const Create = ({
                 placeholder="Tell about the NFT in a few words..."
                 name="description"
                 value={description}
-                onChange={onChange}
+                onChange={handleChange}
               />
             </SInputShellDescription>
           </SLeft>
           <SRight>
-            {/* TODO in the future with autocomplete */}
-            {/* <InputShell>
-              <InputLabel>
-                Categories<SInsight>(optional)</SInsight>
-              </InputLabel>
-              <Input
-                type="text"
-                disabled
-                placeholder="NFT Category"
-                onChange={onChange}
-                name="category"
-                value={category}
-              />
-            </InputShell> */}
+            <Autocomplete<CategoryType>
+              label={
+                <>
+                  Categories<SInsight>(optional)</SInsight>
+                </>
+              }
+              list={categories}
+              onChipDelete={handleCategoryChipDelete}
+              onOptionClick={handleCategoryOptionClick}
+              /* Remove already set categories */
+              options={categoriesOptions.filter(
+                ({ name }) =>
+                  !categories.find(
+                    ({ name: listItemName }) => listItemName === name
+                  )
+              )}
+            />
 
             {/* TODO in the future */}
             {/* <InputShell>
@@ -178,7 +230,7 @@ const Create = ({
               <Input
                 type="text"
                 placeholder="Enter royalties"
-                onChange={onChange}
+                onChange={handleChange}
                 name="royalties"
                 value={royalties}
               />
@@ -192,7 +244,7 @@ const Create = ({
                 type="text"
                 name="quantity"
                 value={quantity}
-                onChange={onChange}
+                onChange={handleChange}
                 placeholder="1"
                 isError={!validateQuantity(quantity, 10)}
               />
@@ -201,15 +253,16 @@ const Create = ({
             <InputShell>
               <InputLabel>
                 Series ID
-                <STooltip text="Specified your own series id" />
+                <STooltip text="Specified your own series id. Series must be locked (never listed / transferred) and owned by you" />
                 <SInsight>(optional)</SInsight>
               </InputLabel>
               <Input
                 type="text"
                 placeholder="Enter ID"
-                onChange={onChange}
+                onChange={handleChange}
                 name="seriesId"
                 value={seriesId}
+                isError={!canAddToSeriesValue}
               />
             </InputShell>
           </SRight>
@@ -285,8 +338,11 @@ const SLeft = styled(FormSideLayout)`
 `;
 
 const SRight = styled(FormSideLayout)`
+  margin-top: 4rem;
+
   ${({ theme }) => theme.mediaQueries.md} {
     padding-left: 4.8rem;
+    margin-top: 0;
   }
 
   ${({ theme }) => theme.mediaQueries.xl} {

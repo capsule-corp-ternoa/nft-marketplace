@@ -15,7 +15,7 @@
   margin-right: auto;
   justify-content: center;
   box-sizing: border-box;
-  padding: 60px 0;
+  padding: 60px 0 20px 0;
 }
 
 .Wrapper {
@@ -321,7 +321,7 @@
 @media (max-width: 1300px) {
   .MainWrapper {
     width: 980px;
-    padding: 40px 0;
+    padding: 40px 0 20px 0;
   }
   .Wrapper {
     width: 980px;
@@ -392,7 +392,7 @@
 @media (max-width: 1000px) {
   .MainWrapper {
     width: 100%;
-    padding: 30px 24px;
+    padding: 30px 24px 20px 24px;
   }
   .Wrapper {
     width: 100%;

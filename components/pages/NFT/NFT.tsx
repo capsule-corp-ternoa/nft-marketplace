@@ -323,8 +323,8 @@ const NFTPage = ({
             isVR={isVR}
           />
         </div>
-        {byTheSameArtistNFTs.length>0 && <Showcase category="By the same artist" NFTs={byTheSameArtistNFTs} user={user} setUser={setUser} />}
       </div>
+      {byTheSameArtistNFTs.length>0 && <Showcase category="By the same artist" NFTs={byTheSameArtistNFTs} user={user} setUser={setUser} />}
       <Footer />
       <FloatingHeader user={user} setModalExpand={setModalExpand} />
       {modalShareOpen && (

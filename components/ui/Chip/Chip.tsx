@@ -94,19 +94,18 @@ const SText = styled.div<IChip>`
 `;
 
 const SButton = styled.button<IChip>`
+  cursor: pointer;
   background: transparent;
   border: none;
+  padding-left: 1.6rem;
   position: relative;
-  margin-left: 0.8rem;
 `;
 
 const SCross = styled.div<{ color?: keyof Colors }>`
-  position: absolute;
-  top: 0;
-  left: 0.8rem;
+  position: relative;
   width: 2px;
   height: 14px;
-  margin-top: -0.6rem;
+  margin-top: -1.3rem;
 
   background: ${({ theme, color }) => {
     switch (color) {
@@ -124,6 +123,10 @@ const SCross = styled.div<{ color?: keyof Colors }>`
 
 const SCross1 = styled(SCross)`
   transform: rotate(-45deg);
+  position: relative;
+  top: 0.1rem;
+  left: 0;
+  margin: 0;
 `;
 
 const SCross2 = styled(SCross)`

@@ -131,11 +131,11 @@ const ModalMint: React.FC<ModalProps> = ({
         setModalCreate(false);
         navigateToSuccess(
           router, 
-          "NFT created !", 
+          "NFT(s) created !", 
           "Go back to your profile page", 
           "/profile", 
           false, 
-          "The NFT will soon appear in your profile page")
+          "The NFT(s) will soon appear in your profile page")
       }, 1000)
     });
     socket.once('disconnect', () => {

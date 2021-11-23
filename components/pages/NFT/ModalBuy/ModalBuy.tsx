@@ -56,11 +56,11 @@ const ModalBuy: React.FC<ModalBuyProps> = ({ setModalExpand, id }) => {
         setTimeout(() => {
           navigateToSuccess(
             router, 
-            "NFT purchased !", 
+            "NFT(s) purchased !", 
             "Go back to your profile page", 
             "/profile", 
             false, 
-            "The NFT will soon appear in your profile page")
+            "The NFT(s) will soon appear in your profile page")
         }, 1000)
       }
     });

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
-import WhiteWaterMark from 'components/assets/WhiteWaterMark';
+import Icon from 'components/assets/Icon'
 import { NftUpload } from 'components/base/NftPreview';
 import { updateFile } from 'components/base/NftPreview/components/NftUpload';
 import {
@@ -126,7 +126,7 @@ const NftCardWithEffects = ({
           value={blurValue}
         />
       )}
-      {effect === NFT_EFFECT_PROTECT && <SWhiteWaterMarkIcon />}
+      {effect === NFT_EFFECT_PROTECT && <SIcon name="whiteWaterMark" />}
       {effect === NFT_EFFECT_SECRET && (
         <SSecretWrapper>
           {coverNFT === null ? (
@@ -160,8 +160,8 @@ const NftCardWithEffects = ({
             </SCoverWrapper>
           )}
           <SChip
-            color="transparent"
-            icon={<SChipIcon />}
+            color="whiteBlur"
+            icon="whiteWaterMark"
             size="medium"
             text="Secret"
             variant="round"
@@ -198,7 +198,7 @@ const SSlider = styled(Slider)`
   z-index: 10;
 `;
 
-const SWhiteWaterMarkIcon = styled(WhiteWaterMark)`
+const SIcon = styled(Icon)`
   width: 10rem;
   position: absolute;
   bottom: 1.6rem;
@@ -238,12 +238,6 @@ const SecretUploadTopDescription = styled.span`
 const SChip = styled(Chip)`
   width: fit-content;
   margin: 2.4rem auto 0;
-`;
-
-const SChipIcon = styled(WhiteWaterMark)`
-  width: 2rem;
-  height: 2rem;
-  margin-right: 0.4rem;
 `;
 
 export default React.memo(NftCardWithEffects);

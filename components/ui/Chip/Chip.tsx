@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
+import Icon, { IconNameType } from 'components/assets/Icon';
 import { Colors } from 'style/theme/types';
 
 interface IChip {
-  color: keyof Colors;
+  color?: keyof Colors;
   isDeletable?: boolean;
   size?: 'small' | 'medium';
   variant?: 'rectangle' | 'round';
@@ -11,7 +12,7 @@ interface IChip {
 
 interface Props extends IChip {
   className?: string;
-  icon?: React.SVGProps<SVGSVGElement>;
+  icon?: IconNameType;
   onDelete?: () => void;
   text: string | React.ReactNode;
 }
@@ -33,13 +34,14 @@ const Chip = ({
       size={size}
       variant={variant}
     >
-      {icon}
+      {icon && <SIcon name={icon} size={size} />}
       <SText color={color} size={size}>
         {text}
       </SText>
       {onDelete && (
         <SButton color={color} onClick={onDelete}>
-          X
+          <SCross1 color={color} />
+          <SCross2 color={color} />
         </SButton>
       )}
     </SChipContainer>
@@ -51,13 +53,22 @@ const SChipContainer = styled.div<IChip>`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: ${({ theme, color }) => theme.colors[`${color}`]};
+  background: ${({ theme, color }) =>
+    color ? theme.colors[`${color}`] : 'transparent'};
   backdrop-filter: ${({ color }) =>
-    color === 'transparent' ? 'blur(2.8rem)' : 'blur(0)'};
+    color === 'whiteBlur' ? 'blur(2.8rem)' : 'blur(0)'};
+  border: ${({ color }) =>
+    color === 'invertedContrast' ? '2px dashed #E0E0E0' : 'none'};
   border-radius: ${({ isDeletable, variant }) =>
     isDeletable || variant === 'rectangle' ? '0.8rem' : '6.4rem'};
   padding: ${({ size }) =>
     size === 'small' ? '0.4rem 1.2rem' : '0.8rem 1.2rem'};
+`;
+
+const SIcon = styled(Icon)<IChip>`
+  width: ${({ size }) => (size === 'small' ? '1.2rem' : '2rem')};
+  height: ${({ size }) => (size === 'small' ? '1.2rem' : '2rem')};
+  margin-right: ${({ size }) => (size === 'small' ? '0.4rem' : '0.8rem')};
 `;
 
 const SText = styled.div<IChip>`
@@ -65,10 +76,8 @@ const SText = styled.div<IChip>`
   align-items: center;
   gap: 0.8rem;
   font-family: ${({ theme }) => theme.fonts.bold};
-  font-size: ${({ size }) => (size === 'small' ? '1.2rem' : '1.6rem')};
-  margin-left: 0.4rem;
+  font-size: ${({ size }) => (size === 'small' ? '1rem' : '1.6rem')};
   white-space: nowrap;
-  opacity: 0.7;
 
   color: ${({ theme, color }) => {
     switch (color) {
@@ -76,31 +85,52 @@ const SText = styled.div<IChip>`
         return theme.colors.invertedContrast;
       case 'primaryLight':
         return theme.colors.primary;
-      case 'transparent':
-        return theme.colors.contrast;
+      case 'invertedContrast':
+      case 'whiteBlur':
       default:
-        return theme.colors.invertedContrast;
+        return theme.colors.contrast;
     }
   }};
 `;
 
 const SButton = styled.button<IChip>`
+  cursor: pointer;
   background: transparent;
   border: none;
-  margin-left: 0.8rem;
+  padding-left: 1.6rem;
+  position: relative;
+`;
 
-  color: ${({ theme, color }) => {
+const SCross = styled.div<{ color?: keyof Colors }>`
+  position: relative;
+  width: 2px;
+  height: 14px;
+  margin-top: -1.3rem;
+
+  background: ${({ theme, color }) => {
     switch (color) {
       case 'primary':
         return theme.colors.invertedContrast;
       case 'primaryLight':
         return theme.colors.primary;
-      case 'transparent':
-        return theme.colors.contrast;
+      case 'invertedContrast':
+      case 'whiteBlur':
       default:
-        return theme.colors.invertedContrast;
+        return theme.colors.contrast;
     }
   }};
+`;
+
+const SCross1 = styled(SCross)`
+  transform: rotate(-45deg);
+  position: relative;
+  top: 0.1rem;
+  left: 0;
+  margin: 0;
+`;
+
+const SCross2 = styled(SCross)`
+  transform: rotate(45deg);
 `;
 
 export default Chip;

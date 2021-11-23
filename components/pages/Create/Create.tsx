@@ -84,7 +84,7 @@ const Create = ({
       const canAdd = await canAddToSeries(seriesId, user.walletId)
       setCanAddToSeriesValue(canAdd)
     }else{
-      setCanAddToSeriesValue(false)
+      setCanAddToSeriesValue(true)
     }
   }
 

@@ -88,13 +88,19 @@ const Create = ({
   }, [seriesId, user]);
 
   const checkAddToSerie = async () => {
-    if (user) {
-      const canAdd = await canAddToSeries(seriesId, user.walletId);
-      setCanAddToSeriesValue(canAdd);
-    } else {
-      setCanAddToSeriesValue(true);
+    try{
+      if (user) {
+        const canAdd = await canAddToSeries(seriesId, user.walletId);
+        setCanAddToSeriesValue(canAdd);
+      } else {
+        setCanAddToSeriesValue(true);
+      }
+      setIsLoading(false)
+    }catch(err){
+      setCanAddToSeriesValue(false);
+      setIsLoading(false)
+      console.log(err)
     }
-    setIsLoading(false)
   };
 
   const validateQuantity = (value: number, limit: number) => {

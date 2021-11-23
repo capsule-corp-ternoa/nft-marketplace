@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import Icon, { IconNameType } from 'components/assets/Icon';
+import Icon from 'components/ui/Icon';
+import { IconNameType } from 'components/ui/Icon/Icon';
 import { Colors } from 'style/theme/types';
 
 interface IChip {

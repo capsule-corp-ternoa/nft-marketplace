@@ -18,6 +18,7 @@ export interface DetailsProps {
   setExp: (n: number) => void;
   isUserFromDappQR: boolean;
   isVR: boolean;
+  canUserBuyAgain: boolean;
 }
 
 const Details: React.FC<DetailsProps> = ({
@@ -27,6 +28,7 @@ const Details: React.FC<DetailsProps> = ({
   setExp,
   isUserFromDappQR,
   isVR,
+  canUserBuyAgain,
 }) => {
   const [currentTab, setCurrentTab] = useState('info');
   const [usersData, setUsersData] = useState({} as any);
@@ -130,7 +132,7 @@ const Details: React.FC<DetailsProps> = ({
       usersData[NFTRowOwner] ? usersData[NFTRowOwner] : null
     ) as UserType;
     const key = `${NFTRowOwner}-${NFTRowListed}-${NFTRowPrice}-${NFTRowMarketplaceId}`;
-    const userCanBuy = (!isVR || (isVR && isUserFromDappQR)) && (user
+    const userCanBuy = (!isVR || (isVR && isUserFromDappQR && canUserBuyAgain)) && (user
       ? user.capsAmount &&
         NFTRow &&
         NFTRowListed === 1 &&

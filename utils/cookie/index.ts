@@ -33,7 +33,9 @@ export const setUserFromDApp = async (setWalletUser:Function, setIsUserFromDapp?
         const user = await getUser(window.walletId);
         setWalletUser(user);
         Cookies.set('token', encryptCookie(window.walletId), { expires: 1 });
-        if (setIsUserFromDapp) setIsUserFromDapp(true)
+    }
+    if (window.isRNApp && window.walletId && setIsUserFromDapp){
+        setIsUserFromDapp(true)
     }
     if (!window.isRNApp && params.get('walletId')) {
         setWalletUser(null);

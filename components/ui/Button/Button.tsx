@@ -1,25 +1,35 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Colors } from 'style/theme/types';
 
-interface Props {
+interface IButton {
+  color?: keyof Colors;
+}
+interface Props extends IButton {
   className?: string;
   disabled?: boolean;
   onClick?: () => void;
   text?: string;
 }
 
-const Button = ({ className, disabled, onClick, text }: Props) => (
-  <SButton className={className} disabled={disabled} onClick={onClick}>
+const Button = ({ className, color, disabled, onClick, text }: Props) => (
+  <SButton
+    className={className}
+    color={color}
+    disabled={disabled}
+    onClick={onClick}
+  >
     {text}
   </SButton>
 );
 
-const SButton = styled.button`
+const SButton = styled.button<IButton>`
   display: flex;
   justify-content: center;
   align-items: center;
   align-self: center;
-  background: #7417ea;
+  background: ${({ theme, color }) =>
+    color ? theme.colors[`${color}`] : theme.colors.primary};
   border: none;
   border-radius: 4rem;
   color: white;

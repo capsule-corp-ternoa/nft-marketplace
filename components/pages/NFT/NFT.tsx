@@ -133,9 +133,7 @@ const NFTPage = ({
 
   const loadCanUserBuyAgain = async () => {
     const res = await getOwnedNFTS(user.walletId,false, undefined, undefined, undefined, true, NFT.serieData?.map(x => x.id))
-    console.log("res", res)
     const canUserBuyAgainValue = res.totalCount === 0
-    console.log("canUserBuyAgainValue", canUserBuyAgainValue)
     setCanUserBuyAgain(canUserBuyAgainValue)
   }
 

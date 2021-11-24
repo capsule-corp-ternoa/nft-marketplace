@@ -200,9 +200,6 @@ const NFTPage = ({
 
   return (
     <div className={style.Container}>
-      <div>{"isVR" + isVR}</div>
-      <div>{"isUserFromDappQR" + isUserFromDappQR}</div>
-      <div>{"canUserBuyAgainValue" + canUserBuyAgain}</div>
       <div className={style.MainWrapper}>
         <div className={style.Wrapper}>
           <SMediaWrapper className={style.NFT}>

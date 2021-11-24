@@ -47,7 +47,7 @@ const NFTPage: React.FC<NFTPageProps> = ({
   const [modalShareOpen, setModalShareOpen] = useState(false);
   // const bgGradient = { background: gradient(NFT.ownerData.name) };
   const [canUserBuyAgain, setCanUserBuyAgain] = useState(true)
-  const isVR = (NFT.categories.findIndex(x => x.code === "vr") !== -1 || NFT.serieId === "1390370908" || NFT.serieId === "FirstSeries") && NFT.creator === NFT.owner
+  const isVR = (NFT.categories.findIndex(x => x.code === "vr") !== -1 || NFT.serieId === "1390370908" || NFT.serieId === "3350596370" || NFT.serieId === "ABCC") && NFT.creator === NFT.owner
   const shareSubject = 'Check out this Secret NFT';
   const shareText = `Check out ${NFT.name ? NFT.name : 'this nft'} on ${
     process.env.NEXT_PUBLIC_APP_LINK

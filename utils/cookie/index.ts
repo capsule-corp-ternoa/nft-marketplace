@@ -37,5 +37,6 @@ export const setUserFromDApp = async (setWalletUser:Function, setIsUserFromDapp?
     }
     if (!window.isRNApp && params.get('walletId')) {
         setWalletUser(null);
+        if (setIsUserFromDapp) setIsUserFromDapp(false)
     }
 }

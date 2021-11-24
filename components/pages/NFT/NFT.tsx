@@ -124,7 +124,6 @@ const NFTPage = ({
 
   useEffect(() => {
     if (isVR && user){
-      setCanUserBuyAgain(false)
       loadCanUserBuyAgain()
     }else{
       setCanUserBuyAgain(true)
@@ -132,9 +131,13 @@ const NFTPage = ({
   }, [isVR])
 
   const loadCanUserBuyAgain = async () => {
-    const res = await getOwnedNFTS(user.walletId,false, undefined, undefined, undefined, true, NFT.serieData?.map(x => x.id))
-    const canUserBuyAgainValue = res.totalCount === 0
-    setCanUserBuyAgain(canUserBuyAgainValue)
+    try{
+      const res = await getOwnedNFTS(user.walletId,false, undefined, undefined, undefined, true, NFT.serieData?.map(x => x.id))
+      const canUserBuyAgainValue = res.totalCount === 0
+      setCanUserBuyAgain(canUserBuyAgainValue)
+    }catch(err){
+      setCanUserBuyAgain(false)
+    }
   }
 
   const loadByTheSameArtistNFTs = async () => {
@@ -197,6 +200,9 @@ const NFTPage = ({
 
   return (
     <div className={style.Container}>
+      <div>{"isVR" + isVR}</div>
+      <div>{"isUserFromDappQR" + isUserFromDappQR}</div>
+      <div>{"canUserBuyAgainValue" + canUserBuyAgain}</div>
       <div className={style.MainWrapper}>
         <div className={style.Wrapper}>
           <SMediaWrapper className={style.NFT}>

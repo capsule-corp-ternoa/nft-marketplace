@@ -135,8 +135,10 @@ const NFTPage = ({
       const res = await getOwnedNFTS(user.walletId,false, undefined, undefined, undefined, true, NFT.serieData?.map(x => x.id))
       const canUserBuyAgainValue = res.totalCount === 0
       setCanUserBuyAgain(canUserBuyAgainValue)
+      return canUserBuyAgainValue
     }catch(err){
       setCanUserBuyAgain(false)
+      return false
     }
   }
 
@@ -179,7 +181,7 @@ const NFTPage = ({
     }
   };
 
-  const handleBuy = () => {
+  const handleBuy = async () => {
     //get a random row to buy if same price
     const smallestPriceRows = (!NFT.serieData || NFT.serieData.length <= 1) ? 
       [NFT]
@@ -194,8 +196,14 @@ const NFTPage = ({
           x.price === arr[0].price &&
           x.priceTiime === arr[0].priceTiime
         )
-    setNftToBuy(getRandomNFTFromArray(smallestPriceRows));
-    setExp(2);
+    let canBuyAgain = true
+    if (isVR){
+      canBuyAgain = await loadCanUserBuyAgain()
+    }
+    if (canBuyAgain){
+      setNftToBuy(getRandomNFTFromArray(smallestPriceRows));
+      setExp(2);
+    }
   };
 
   return (

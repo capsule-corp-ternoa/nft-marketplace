@@ -20,6 +20,7 @@ export interface DetailsProps {
   setExp: (n: number) => void;
   isUserFromDappQR: boolean;
   isVR: boolean;
+  canUserBuyAgain: boolean;
 }
 
 const Details: React.FC<DetailsProps> = ({
@@ -29,6 +30,7 @@ const Details: React.FC<DetailsProps> = ({
   setExp,
   isUserFromDappQR,
   isVR,
+  canUserBuyAgain,
 }) => {
   const tabs = ["infos", "owners", "history", "bid"]
   const [currentTab, setCurrentTab] = useState(tabs[0]);
@@ -165,7 +167,7 @@ const Details: React.FC<DetailsProps> = ({
     ) as UserType;
     const key = `${NFTRowOwner}-${NFTRowListed}-${NFTRowPrice}-${NFTRowMarketplaceId}-${NFTRow?.isCapsule}`;
     const NFTRowTypeWording = (NFTRow?.isCapsule ? 'capsule' : 'edition') + (serieDataCount[key].length > 1 ? 's' : '');
-    const userCanBuy = (!isVR || (isVR && isUserFromDappQR)) && (user
+    const userCanBuy = (!isVR || (isVR && isUserFromDappQR && canUserBuyAgain)) && (user
       ? user.capsAmount &&
         NFTRow &&
         NFTRowListed === 1 &&

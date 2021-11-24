@@ -53,6 +53,7 @@ const ModalMint: React.FC<ModalProps> = ({
   const [startUploadTime, setStartUploadTime] = useState<any>(null)
   const [alreadySentSocketTimeout, setAlreadySentSocketTimeout] = useState(false)
   const [stateSocket, setStateSocket] = useState<any>(null)
+  const [here, setHere] = useState("no data")
   const router = useRouter();
   const { categories, description, name, seriesId } = NFTData;
   const progressQuantity = 1 + Number(quantity)
@@ -81,6 +82,7 @@ const ModalMint: React.FC<ModalProps> = ({
         }, 2000);
       } else {
         setShowQR(true);
+        setHere("indeed")
       }
     });
     socket.once('connect_error', (e: any) => {
@@ -285,7 +287,8 @@ const ModalMint: React.FC<ModalProps> = ({
         <Close onClick={() => setModalCreate(false)} className={style.Close} />
         <div className={style.Title}>
           {!qrRetry ? "Create NFT" : "Finish the process"}
-          {"isRN" + isRN}
+          {"isRN " + isRN}
+          {"here " + here}
         </div>
         {error ? <div className={style.Error}>{error}</div> : returnState()}
       </div>

@@ -20,7 +20,7 @@ import { MARKETPLACE_ID } from 'utils/constant';
 import { Title } from 'components/layout'
 import Chip from 'components/ui/Chip';
 import Showcase from 'components/base/Showcase';
-import { getByTheSameArtistNFTs } from 'actions/nft';
+import { getByTheSameArtistNFTs, getOwnedNFTS } from 'actions/nft';
 import { getRandomNFTFromArray } from 'utils/functions';
 
 export interface NFTPageProps {
@@ -48,7 +48,8 @@ const NFTPage = ({
   const [likeLoading, setLikeLoading] = useState(false);
   const [modalShareOpen, setModalShareOpen] = useState(false);
   const [byTheSameArtistNFTs, setByTheSameArtistNFTs] = useState<NftType[]>([])
-  const isVR = (NFT.categories.findIndex(x => x.code === "vr") !== -1 || NFT.serieId === "1390370908") && NFT.creator === NFT.owner
+  const [canUserBuyAgain, setCanUserBuyAgain] = useState(true)
+  const isVR = (NFT.categories.findIndex(x => x.code === "vr") !== -1 || NFT.serieId === "1390370908" || NFT.serieId === "FirstSeries") && NFT.creator === NFT.owner
   const shareSubject = 'Check out this Secret NFT';
   const shareText = `Check out ${NFT.title ? NFT.title : 'this nft'} on ${
     process.env.NEXT_PUBLIC_APP_LINK
@@ -99,7 +100,7 @@ const NFTPage = ({
               Number(a.price) - Number(b.price) || //lowest price first
               Number(a.priceTiime) - Number(b.priceTiime) // lower pricetiime first
           )[0];
-  const userCanBuy = (!isVR || (isVR && isUserFromDappQR)) && (user
+  const userCanBuy = (!isVR || (isVR && isUserFromDappQR && canUserBuyAgain)) && (user
     ? user.capsAmount &&
       smallestPriceRow &&
       smallestPriceRow.listed &&
@@ -120,6 +121,21 @@ const NFTPage = ({
   useEffect(() => {
     loadByTheSameArtistNFTs()
   }, [NFT])
+
+  useEffect(() => {
+    if (isVR && user){
+      setCanUserBuyAgain(false)
+      loadCanUserBuyAgain()
+    }else{
+      setCanUserBuyAgain(true)
+    }
+  }, [isVR])
+
+  const loadCanUserBuyAgain = async () => {
+    const res = await getOwnedNFTS(user.walletId,false, undefined, undefined, undefined, true, NFT.serieData?.map(x => x.id))
+    const canUserBuyAgainValue = res.totalCount === 0
+    setCanUserBuyAgain(canUserBuyAgainValue)
+  }
 
   const loadByTheSameArtistNFTs = async () => {
     const NFTs = await getByTheSameArtistNFTs(NFT.creator, "1", "7", true)
@@ -332,6 +348,7 @@ const NFTPage = ({
             setExp={setExp}
             isUserFromDappQR={isUserFromDappQR}
             isVR={isVR}
+            canUserBuyAgain={canUserBuyAgain}
           />
         </div>
       </div>

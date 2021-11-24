@@ -4,11 +4,12 @@ import { DEFAULT_LIMIT_PAGINATION } from "../utils/constant";
 
 export const filterNFTs = (data: NftType[]) => data.filter((item) => item.image)
 
-export const getOwnedNFTS = async (id: string, onlyFromMpId: boolean, listed? :boolean,  page: string="1", limit: string=DEFAULT_LIMIT_PAGINATION, noSeriesData: boolean = false) => {
+export const getOwnedNFTS = async (id: string, onlyFromMpId: boolean, listed? :boolean,  page: string="1", limit: string=DEFAULT_LIMIT_PAGINATION, noSeriesData: boolean = false, nftIdsFilter: string[] = []) => {
   const paginationOptions = {page, limit}
   const filterOptions: any = {owner: id, noSeriesData}
   if (listed !== undefined) filterOptions.listed = listed
   if (onlyFromMpId) filterOptions.marketplaceId = MARKETPLACE_ID
+  if (nftIdsFilter.length > 0) filterOptions.ids = nftIdsFilter
   const res = await fetch(`${NODE_API_URL}/api/NFTs/?pagination=${JSON.stringify(paginationOptions)}&filter=${JSON.stringify(filterOptions)}`);
   if (!res.ok) throw new Error('error fetching owned NFTs');
   let result: CustomResponse<NftType> = await res.json();

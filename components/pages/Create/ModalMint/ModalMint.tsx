@@ -75,7 +75,7 @@ const ModalMint: React.FC<ModalProps> = ({
     const socket = connectIo(`/socket/createNft`, { session, socketUrl: SOCKET_URL }, undefined, 20 * 60 * 1000);
     setStateSocket(socket)
     socket.once('CONNECTION_SUCCESS', () => {
-      if (isRN) {
+      if (isRN || window.isRNApp) {
         const data = { session, socketUrl: SOCKET_URL, walletId, quantity, uploadSize };
         setTimeout(function () {
           window.ReactNativeWebView.postMessage(JSON.stringify({ action: qrAction, data }));
@@ -113,7 +113,7 @@ const ModalMint: React.FC<ModalProps> = ({
           //The wallet timeout
           setQrAction('MINT_RETRY')
           setQrRetry(true)
-          if (isRN) {
+          if (isRN || window.isRNApp) {
             setTimeout(function () {
               window.ReactNativeWebView.postMessage(JSON.stringify({ action: qrAction, data: { session, socketUrl: SOCKET_URL, walletId, quantity, uploadSize } }));
             }, 2000);

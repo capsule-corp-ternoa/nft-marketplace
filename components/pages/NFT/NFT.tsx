@@ -124,7 +124,6 @@ const NFTPage = ({
 
   useEffect(() => {
     if (isVR && user){
-      setCanUserBuyAgain(false)
       loadCanUserBuyAgain()
     }else{
       setCanUserBuyAgain(true)
@@ -132,9 +131,13 @@ const NFTPage = ({
   }, [isVR])
 
   const loadCanUserBuyAgain = async () => {
-    const res = await getOwnedNFTS(user.walletId,false, undefined, undefined, undefined, true, NFT.serieData?.map(x => x.id))
-    const canUserBuyAgainValue = res.totalCount === 0
-    setCanUserBuyAgain(canUserBuyAgainValue)
+    try{
+      const res = await getOwnedNFTS(user.walletId,false, undefined, undefined, undefined, true, NFT.serieData?.map(x => x.id))
+      const canUserBuyAgainValue = res.totalCount === 0
+      setCanUserBuyAgain(canUserBuyAgainValue)
+    }catch(err){
+      setCanUserBuyAgain(false)
+    }
   }
 
   const loadByTheSameArtistNFTs = async () => {
@@ -197,6 +200,9 @@ const NFTPage = ({
 
   return (
     <div className={style.Container}>
+      <div>{"isVR" + isVR}</div>
+      <div>{"isUserFromDappQR" + isUserFromDappQR}</div>
+      <div>{"canUserBuyAgainValue" + canUserBuyAgain}</div>
       <div className={style.MainWrapper}>
         <div className={style.Wrapper}>
           <SMediaWrapper className={style.NFT}>
@@ -297,32 +303,36 @@ const NFTPage = ({
                 {(isVR && !isUserFromDappQR) ? 
                   "Reserved for VR gallery"
                 :
-                  <>
-                    Buy{' '}
-                    {`${
-                      smallestPriceRow &&
-                      (smallestPriceRow.price || smallestPriceRow.priceTiime)
-                        ? 'for '
-                        : ''
-                    }`}
-                    {smallestPriceRow && (
-                      <>
-                        {smallestPriceRow.price &&
-                          Number(smallestPriceRow.price) > 0 &&
-                          `${computeCaps(Number(smallestPriceRow.price))} CAPS`}
-                        {smallestPriceRow.price &&
-                          Number(smallestPriceRow.price) > 0 &&
-                          smallestPriceRow.priceTiime &&
-                          Number(smallestPriceRow.priceTiime) &&
-                          ` / `}
-                        {smallestPriceRow.priceTiime &&
-                          Number(smallestPriceRow.priceTiime) > 0 &&
-                          `${computeTiime(
-                            Number(smallestPriceRow.priceTiime)
-                          )} TIIME`}
-                      </>
-                    )}
-                  </>
+                  (!canUserBuyAgain ? 
+                    "1 VR NFT per account"
+                  :
+                    <>
+                      Buy{' '}
+                      {`${
+                        smallestPriceRow &&
+                        (smallestPriceRow.price || smallestPriceRow.priceTiime)
+                          ? 'for '
+                          : ''
+                      }`}
+                      {smallestPriceRow && (
+                        <>
+                          {smallestPriceRow.price &&
+                            Number(smallestPriceRow.price) > 0 &&
+                            `${computeCaps(Number(smallestPriceRow.price))} CAPS`}
+                          {smallestPriceRow.price &&
+                            Number(smallestPriceRow.price) > 0 &&
+                            smallestPriceRow.priceTiime &&
+                            Number(smallestPriceRow.priceTiime) &&
+                            ` / `}
+                          {smallestPriceRow.priceTiime &&
+                            Number(smallestPriceRow.priceTiime) > 0 &&
+                            `${computeTiime(
+                              Number(smallestPriceRow.priceTiime)
+                            )} TIIME`}
+                        </>
+                      )}
+                    </>
+                  )
                 }
               </div>
             </div>

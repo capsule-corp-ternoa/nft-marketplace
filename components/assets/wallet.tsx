@@ -1,10 +1,10 @@
 import React from 'react';
 
 interface WalletProps {
-  className: string;
+  className?: string;
 }
 
-const Wallet: React.FC<WalletProps> = ({ className }) => (
+const Wallet = ({ className }: WalletProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     className={className}

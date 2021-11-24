@@ -1,10 +1,10 @@
 import React from 'react';
 
 interface WaterMarkProps {
-  className: string;
+  className?: string;
 }
 
-const WaterMark: React.FC<WaterMarkProps> = ({ className }) => (
+const WaterMark = ({ className }: WaterMarkProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     className={className}

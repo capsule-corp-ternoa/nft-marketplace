@@ -1,11 +1,11 @@
 import React from 'react';
 
 interface UKProps {
-  className: string;
-  onClick: React.MouseEventHandler<SVGSVGElement>;
+  className?: string;
+  onClick?: React.MouseEventHandler<SVGSVGElement>;
 }
 
-const UK: React.FC<UKProps> = ({ className, onClick }) => (
+const UK = ({ className, onClick }: UKProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     className={className}

@@ -4,7 +4,7 @@ interface SuccessImageProps {
   className?: string;
 }
 
-const SuccessImage: React.FC<SuccessImageProps> = ({ className }) => (
+const SuccessImage = ({ className }: SuccessImageProps) => (
   <svg
     viewBox="0 0 589 473"
     xmlns="http://www.w3.org/2000/svg"

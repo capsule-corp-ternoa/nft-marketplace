@@ -1,10 +1,10 @@
 import React from 'react';
 
 interface BadgeProps {
-  className: string;
+  className?: string;
 }
 
-const Badge: React.FC<BadgeProps> = ({ className }) => (
+const Badge = ({ className }: BadgeProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     className={className}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
-import Icon from 'components/assets/Icon'
+import Icon from 'components/ui/Icon'
 import { NftUpload } from 'components/base/NftPreview';
 import { updateFile } from 'components/base/NftPreview/components/NftUpload';
 import {

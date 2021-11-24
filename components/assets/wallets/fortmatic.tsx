@@ -1,10 +1,10 @@
 import React from 'react';
 
 interface FortmaticProps {
-  className: string;
+  className?: string;
 }
 
-const Fortmatic: React.FC<FortmaticProps> = ({ className }) => (
+const Fortmatic = ({ className }: FortmaticProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     className={className}

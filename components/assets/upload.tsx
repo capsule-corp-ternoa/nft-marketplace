@@ -4,7 +4,7 @@ interface UploadProps {
   className?: string;
 }
 
-const Upload: React.FC<UploadProps> = ({ className }) => (
+const Upload = ({ className }: UploadProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     className={className}

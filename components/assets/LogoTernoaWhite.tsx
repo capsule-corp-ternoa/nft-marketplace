@@ -1,11 +1,11 @@
 import React from 'react';
 
 interface LogoProps {
-  className: string;
-  onClick: React.MouseEventHandler<SVGSVGElement | HTMLImageElement>;
+  className?: string;
+  onClick?: React.MouseEventHandler<SVGSVGElement | HTMLImageElement>;
 }
 
-const LogoTernoa: React.FC<LogoProps> = ({ className, onClick }) => {
+const LogoTernoa = ({ className, onClick }: LogoProps) => {
   return process.env.NEXT_PUBLIC_APP_LOGO_PATH ?
       <img
         src={process.env.NEXT_PUBLIC_APP_LOGO_PATH}

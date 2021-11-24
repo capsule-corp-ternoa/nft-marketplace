@@ -1,10 +1,10 @@
 import React from 'react';
 
 interface CheckProps {
-  className: string;
+  className?: string;
 }
 
-const Check: React.FC<CheckProps> = ({ className }) => (
+const Check = ({ className }: CheckProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     className={className}

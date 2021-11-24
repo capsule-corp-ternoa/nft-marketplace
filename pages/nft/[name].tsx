@@ -32,9 +32,15 @@ const NftPage = ({ user, NFT, capsValue }: NFTPageProps) => {
   const [type, setType] = useState<string | null>(null);
   const [walletUser, setWalletUser] = useState(user);
   const [isUserFromDappQR, setIsUserFromDappQR] = useState(false);
+  const [test, setTest] = useState("nodata")
+
+  const bla = async () => {
+    const a = await setUserFromDApp(setWalletUser, setIsUserFromDappQR)
+    setTest(a)
+  }
 
   useEffect(() => {
-    setUserFromDApp(setWalletUser, setIsUserFromDappQR)
+    bla()
   }, []);
 
   useEffect(() => {
@@ -84,6 +90,7 @@ const NftPage = ({ user, NFT, capsValue }: NFTPageProps) => {
 
       <BetaBanner />
       <MainHeader user={walletUser} setModalExpand={setModalExpand} />
+      {test}
       <NFTPage
         NFT={NFT}
         setExp={setExp}

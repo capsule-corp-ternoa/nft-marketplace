@@ -7,6 +7,7 @@ export interface Colors {
   neutral500: string;
   primary: string;
   primaryLight: string;
+  secondary: string;
   whiteBlur: string;
 }
 

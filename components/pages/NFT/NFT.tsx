@@ -118,7 +118,6 @@ const NFTPage: React.FC<NFTPageProps> = ({
 
   useEffect(() => {
     if (isVR && user){
-      setCanUserBuyAgain(false)
       loadCanUserBuyAgain()
     }else{
       setCanUserBuyAgain(true)
@@ -126,12 +125,16 @@ const NFTPage: React.FC<NFTPageProps> = ({
   }, [isVR])
 
   const loadCanUserBuyAgain = async () => {
-    const res = await getOwnedNFTS(user.walletId,false, undefined, undefined, undefined, false)
-    const ownedIds: string[] = []
-    res.data.forEach(x => x.serieData?.map(x => ownedIds.push(x.id)))
-    const nftOwnedInSeries = NFT.serieData?.filter(x => ownedIds.includes(x.id)) || []
-    const canUserBuyAgainValue = nftOwnedInSeries?.length === 0
-    setCanUserBuyAgain(canUserBuyAgainValue)
+    try{
+      const res = await getOwnedNFTS(user.walletId,false, undefined, undefined, undefined, false)
+      const ownedIds: string[] = []
+      res.data.forEach(x => x.serieData?.map(x => ownedIds.push(x.id)))
+      const nftOwnedInSeries = NFT.serieData?.filter(x => ownedIds.includes(x.id)) || []
+      const canUserBuyAgainValue = nftOwnedInSeries?.length === 0
+      setCanUserBuyAgain(canUserBuyAgainValue)
+    }catch(err){
+      setCanUserBuyAgain(false)
+    }
   }
 
 
@@ -178,6 +181,9 @@ const NFTPage: React.FC<NFTPageProps> = ({
 
   return (
     <div className={style.Container}>
+      <div>{"isVR" + isVR}</div>
+      <div>{"isUserFromDappQR" + isUserFromDappQR}</div>
+      <div>{"canUserBuyAgainValue" + canUserBuyAgain}</div>
       <div className={style.MainWrapper}>
         <div className={style.Wrapper}>
           <div className={style.NFT}>

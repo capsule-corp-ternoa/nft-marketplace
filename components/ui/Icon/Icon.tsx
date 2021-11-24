@@ -12,6 +12,8 @@ export type IconNameType =
   | 'close'
   | 'copyPaste'
   | 'edit'
+  | 'error404'
+  | 'error500'
   | 'eye'
   | 'faqArrow'
   | 'fortmatic'
@@ -96,6 +98,14 @@ const Icon = ({ className, name }: Props) => {
     case 'edit': {
       const Edit = dynamic(() => import('components/assets/edit'));
       return <Edit className={className} />;
+    }
+    case 'error404': {
+      const Error404 = dynamic(() => import('components/assets/Error404'));
+      return <Error404 className={className} />;
+    }
+    case 'error500': {
+      const Error500 = dynamic(() => import('components/assets/Error500'));
+      return <Error500 className={className} />;
     }
     case 'eye': {
       const Eye = dynamic(() => import('components/assets/eye'));

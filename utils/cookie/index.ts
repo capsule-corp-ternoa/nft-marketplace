@@ -25,6 +25,9 @@ export const decryptCookie = (cookie: string) => {
 
 export const setUserFromDApp = async (setWalletUser:Function, setIsUserFromDapp?:Function) => {
     const params = new URLSearchParams(window.location.search);
+    let a = "test"
+    a = Cookies.get('token') as string
+    if (a !== "test") a = decryptCookie(Cookies.get('token') as string)
     if (window.isRNApp && window.walletId && (!Cookies.get('token') || decryptCookie(Cookies.get('token') as string) !== window.walletId)) {
         if (params.get('walletId') && params.get('walletId') !== window.walletId) {
             setWalletUser(null);
@@ -32,11 +35,15 @@ export const setUserFromDApp = async (setWalletUser:Function, setIsUserFromDapp?
         Cookies.remove('token');
         const user = await getUser(window.walletId);
         setWalletUser(user);
-        Cookies.set('token', encryptCookie(window.walletId));
-        if (setIsUserFromDapp) setIsUserFromDapp(true)
+        Cookies.set('token', encryptCookie(window.walletId), { expires: 1 });
+        if (setIsUserFromDapp){
+            setIsUserFromDapp(true)
+            a = a + " setIsUserFromDapp(true) setIsUserFromDapp(true) !!"
+        }
     }
     if (!window.isRNApp && params.get('walletId')) {
         setWalletUser(null);
         if (setIsUserFromDapp) setIsUserFromDapp(false)
     }
+    return a
 }

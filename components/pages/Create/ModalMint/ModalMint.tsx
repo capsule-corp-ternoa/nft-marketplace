@@ -285,6 +285,7 @@ const ModalMint: React.FC<ModalProps> = ({
         <Close onClick={() => setModalCreate(false)} className={style.Close} />
         <div className={style.Title}>
           {!qrRetry ? "Create NFT" : "Finish the process"}
+          {"isRN" + isRN}
         </div>
         {error ? <div className={style.Error}>{error}</div> : returnState()}
       </div>

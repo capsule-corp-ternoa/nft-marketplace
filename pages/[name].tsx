@@ -131,6 +131,11 @@ export async function getServerSideProps(ctx: NextPageContext) {
     }).catch(success);
   }));
   await Promise.all(promises)
+  if (!profile || !data) {
+    return {
+      notFound: true,
+    };
+  }
   return {
     props: { user, profileWalletId, profile, data, dataHasNextPage },
   };

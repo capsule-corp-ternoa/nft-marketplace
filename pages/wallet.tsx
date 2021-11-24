@@ -44,10 +44,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
   if (token) user = await getUser(token).catch(() => null);
   if (!user) {
     return {
-      redirect: {
-        permanent: false,
-        destination: '/',
-      },
+      notFound: true,
     };
   }
   return {

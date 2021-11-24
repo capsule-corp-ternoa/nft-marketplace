@@ -230,7 +230,7 @@ const Details: React.FC<DetailsProps> = ({
             }`}
             onClick={() => userCanBuy && NFTRow && handleCustomBuy(NFTRow)}
           >
-            {(user && user.walletId) === NFTRowOwner ? 'Owned' : ((isVR && !isUserFromDappQR) ? 'VR gallery' : 'Buy')}
+            {(user && user.walletId) === NFTRowOwner ? 'Owned' : ((isVR && !isUserFromDappQR) ? 'VR gallery' : (canUserBuyAgain ? 'Buy' : '1 per account'))}
           </div>
         </div>
       </div>

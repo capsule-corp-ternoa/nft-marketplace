@@ -303,32 +303,36 @@ const NFTPage = ({
                 {(isVR && !isUserFromDappQR) ? 
                   "Reserved for VR gallery"
                 :
-                  <>
-                    Buy{' '}
-                    {`${
-                      smallestPriceRow &&
-                      (smallestPriceRow.price || smallestPriceRow.priceTiime)
-                        ? 'for '
-                        : ''
-                    }`}
-                    {smallestPriceRow && (
-                      <>
-                        {smallestPriceRow.price &&
-                          Number(smallestPriceRow.price) > 0 &&
-                          `${computeCaps(Number(smallestPriceRow.price))} CAPS`}
-                        {smallestPriceRow.price &&
-                          Number(smallestPriceRow.price) > 0 &&
-                          smallestPriceRow.priceTiime &&
-                          Number(smallestPriceRow.priceTiime) &&
-                          ` / `}
-                        {smallestPriceRow.priceTiime &&
-                          Number(smallestPriceRow.priceTiime) > 0 &&
-                          `${computeTiime(
-                            Number(smallestPriceRow.priceTiime)
-                          )} TIIME`}
-                      </>
-                    )}
-                  </>
+                  (!canUserBuyAgain ? 
+                    "1 VR NFT per account"
+                  :
+                    <>
+                      Buy{' '}
+                      {`${
+                        smallestPriceRow &&
+                        (smallestPriceRow.price || smallestPriceRow.priceTiime)
+                          ? 'for '
+                          : ''
+                      }`}
+                      {smallestPriceRow && (
+                        <>
+                          {smallestPriceRow.price &&
+                            Number(smallestPriceRow.price) > 0 &&
+                            `${computeCaps(Number(smallestPriceRow.price))} CAPS`}
+                          {smallestPriceRow.price &&
+                            Number(smallestPriceRow.price) > 0 &&
+                            smallestPriceRow.priceTiime &&
+                            Number(smallestPriceRow.priceTiime) &&
+                            ` / `}
+                          {smallestPriceRow.priceTiime &&
+                            Number(smallestPriceRow.priceTiime) > 0 &&
+                            `${computeTiime(
+                              Number(smallestPriceRow.priceTiime)
+                            )} TIIME`}
+                        </>
+                      )}
+                    </>
+                  )
                 }
               </div>
             </div>

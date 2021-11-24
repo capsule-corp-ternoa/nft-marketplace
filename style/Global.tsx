@@ -10,7 +10,8 @@ const GlobalStyle = createGlobalStyle`
   *::before,
   *::after {
     box-sizing: inherit;
-    font-family: 'Airbnb Cereal App Book';
+    font-family: ${({ theme }) => theme.fonts.regular};
+    line-height: 1.3;
   }
 
   html {

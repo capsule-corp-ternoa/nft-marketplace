@@ -71,7 +71,7 @@ const Details: React.FC<DetailsProps> = ({
   }, [serieData]);
 
   const handleCustomBuy = (NFT: NftType) => {
-    const key = `${NFT.owner}-${NFT.listed}-${NFT.price}-${NFT.marketplaceId}`;
+    const key = `${NFT.owner}-${NFT.listed}-${NFT.price}-${NFT.marketplaceId}-${NFT.isCapsule}`;
     const NFTToBuy = serieData.find(x => x.id === getRandomNFTFromArray(serieDataCount[key])) || NFT
     setNftToBuy(NFTToBuy);
     setExp(2);

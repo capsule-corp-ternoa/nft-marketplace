@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import ClickAwayListener from 'react-click-away-listener';
 import styled from 'styled-components';
 import { InputLabel, InputShell } from 'components/layout';
 import Chip from 'components/ui/Chip';
@@ -34,7 +35,7 @@ const Autocomplete = <T extends { _id: string; name: string }>({
   const handleOptionClick = (option: T) => {
     onOptionClick(option);
     setText('');
-    setIsShowOptions(false);
+    inputEl?.current?.focus();
   };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,80 +43,91 @@ const Autocomplete = <T extends { _id: string; name: string }>({
   };
 
   return (
-    <SAutocompleteContainer
-      className={className}
-      onMouseLeave={() => {
-        setIsShowOptions(false);
-        inputEl?.current?.blur();
-      }}
-    >
+    <SAutocompleteContainer className={className}>
       <InputShell>
-        <InputLabel>{label}</InputLabel>
-        <SInputWrapper isEmpty={list.length < 1}>
-          {list.map(({ _id, name }) => (
-            <SChip
-              color="primary"
-              key={_id}
-              isDeletable
-              onDelete={() => onChipDelete(list, _id)}
-              size="small"
-              text={name}
-              variant="rectangle"
+        <SInputLabel>{label}</SInputLabel>
+        <ClickAwayListener
+          onClickAway={() => {
+            setIsShowOptions(false);
+            inputEl?.current?.blur();
+          }}
+        >
+          <SInputWrapper isEmpty={list.length < 1}>
+            {list.map(({ _id, name }) => (
+              <SChip
+                color="primary"
+                key={_id}
+                isDeletable
+                onDelete={() => {
+                  onChipDelete(list, _id);
+                  inputEl?.current?.focus();
+                }}
+                size="small"
+                text={name}
+                variant="rectangle"
+              />
+            ))}
+            <input
+              type="text"
+              ref={inputEl}
+              placeholder="Add NFT Categories"
+              onChange={onChange}
+              onFocus={() => setIsShowOptions(true)}
+              name="categories"
+              value={text}
             />
-          ))}
-          <input
-            type="text"
-            ref={inputEl}
-            placeholder="Add NFT Categories"
-            onChange={onChange}
-            onFocus={() => setIsShowOptions(true)}
-            name="categories"
-            value={text}
-          />
-          <SInputBorderWrapper id="borderWrapper" />
-        </SInputWrapper>
-      </InputShell>
-      {(text || isShowOptions) && (
-        <SOptions>
-          <>
-            {options
-              .filter(filterTextMatching)
-              .slice(0, maxOptionsShowed)
-              .map((option) => (
-                <SOption
-                  key={option._id}
-                  onClick={() => {
-                    const index = list.findIndex(
-                      ({ _id }) => _id === option._id
-                    );
+            <SInputBorderWrapper
+              id="borderWrapper"
+              isShowOptions={isShowOptions}
+            />
+            {(text || isShowOptions) && (
+              <SOptions>
+                <>
+                  {options
+                    .filter(filterTextMatching)
+                    .slice(0, maxOptionsShowed)
+                    .map((option) => (
+                      <SOption
+                        key={option._id}
+                        onClick={() => {
+                          const index = list.findIndex(
+                            ({ _id }) => _id === option._id
+                          );
 
-                    if (index === -1) {
-                      handleOptionClick(option);
-                    }
-                  }}
-                >
-                  <span>{option.name}</span>
-                </SOption>
-              ))}
-            {isMoreOptions ? (
-              text &&
-              options.filter(filterTextMatching).length === 0 && (
-                <SEmptyLabel>
-                  No matching, this category does not exist.
-                </SEmptyLabel>
-              )
-            ) : (
-              <SEmptyLabel>All available categories are set</SEmptyLabel>
+                          if (index === -1) {
+                            handleOptionClick(option);
+                          }
+                        }}
+                      >
+                        <span>{option.name}</span>
+                      </SOption>
+                    ))}
+                  {isMoreOptions ? (
+                    text &&
+                    options.filter(filterTextMatching).length === 0 && (
+                      <SEmptyLabel>
+                        No matching, this category does not exist.
+                      </SEmptyLabel>
+                    )
+                  ) : (
+                    <SEmptyLabel>All available categories are set</SEmptyLabel>
+                  )}
+                </>
+              </SOptions>
             )}
-          </>
-        </SOptions>
-      )}
+          </SInputWrapper>
+        </ClickAwayListener>
+      </InputShell>
     </SAutocompleteContainer>
   );
 };
 
 const SAutocompleteContainer = styled.div`
   position: relative;
+`;
+
+const SInputLabel = styled(InputLabel)`
+  margin-bottom: 1.6rem;
 `;
 
 const SInputWrapper = styled.div<{ isEmpty: boolean }>`
@@ -126,7 +138,6 @@ const SInputWrapper = styled.div<{ isEmpty: boolean }>`
   width: 100%;
   background: ${({ theme }) => theme.colors.neutral500};
   border-radius: 0.8rem;
-  margin-top: 1.6rem;
   outline: none;
   padding: 1.6rem;
   position: relative;
@@ -157,17 +168,18 @@ const SInputWrapper = styled.div<{ isEmpty: boolean }>`
   }
 `;
 
-const SInputBorderWrapper = styled.div`
+const SInputBorderWrapper = styled.div<{ isShowOptions: boolean }>`
   width: 100%;
   height: 100%;
   background: transparent;
   border: 0.2rem solid;
-  border-color: rgba(0, 0, 0, 0);
+  border-color: ${({ isShowOptions, theme }) =>
+    isShowOptions ? theme.colors.primary : 'rgba(0, 0, 0, 0)'};
   border-radius: 0.8rem;
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 0;
+  z-index: 8;
 `;
 
 const SChip = styled(Chip)`
@@ -178,7 +190,8 @@ const SChip = styled(Chip)`
 const SOptions = styled.ul`
   width: 100%;
   background: ${({ theme }) => theme.colors.neutral500};
-  border-radius: 0 0.8rem;
+  border-radius: 0 0 0.8rem 0.8rem;
+  box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.15);
   list-style-type: none;
   margin: 0;
   max-height: 8.8rem;
@@ -186,7 +199,9 @@ const SOptions = styled.ul`
   padding: 1.6rem;
   position: absolute;
   top: calc(100% - 0.3rem);
-  left: 0;
+  left: 50%;
+  transform: translateX(calc(-50% + 0px));
+  z-index: 5;
 `;
 
 const SEmptyLabel = styled.span`

@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import styled from 'styled-components';
 import { Container, Wrapper } from 'components/layout';
 import Button from 'components/ui/Button';
@@ -19,12 +20,15 @@ const Error = ({ description, title, variant }: ErrorProps) => (
       <SIcon name={variant} />
       <STitle>{title}</STitle>
       {description && <SDescription>{description}</SDescription>}
-      <SButtonWrapper>
-        <Button
-          color={variant === 'error500' ? 'secondary' : 'primary'}
-          text="Return to home"
-        />
-      </SButtonWrapper>
+      <SLinkWrapper>
+        <Link href="/">
+          <Button
+            color={variant === 'error500' ? 'secondary' : 'primary'}
+            href="/"
+            text="Return to home"
+          />
+        </Link>
+      </SLinkWrapper>
     </SWrapper>
   </Container>
 );
@@ -68,7 +72,7 @@ const SDescription = styled.span`
   }
 `;
 
-const SButtonWrapper = styled.div`
+const SLinkWrapper = styled.div`
   margin-top: 5.6rem;
 
   ${({ theme }) => theme.mediaQueries.md} {

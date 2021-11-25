@@ -40,10 +40,6 @@ const SWrapper = styled(Wrapper)`
 const SIcon = styled(Icon)`
   height: 24rem;
   width: auto;
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    height: 40rem;
-  }
 `;
 
 const STitle = styled.span`
@@ -53,9 +49,9 @@ const STitle = styled.span`
   margin-top: 6.4rem;
   text-align: center;
 
-  ${({ theme }) => theme.mediaQueries.md} {
-    font-size: 4.8rem;
-    margin-top: 8.8rem;
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    font-size: 4rem;
+    margin-top: 7.2rem;
   }
 `;
 
@@ -65,18 +61,18 @@ const SDescription = styled.span`
   margin-top: 2.4rem;
   text-align: center;
 
-  ${({ theme }) => theme.mediaQueries.md} {
-    font-size: 2.4rem;
-    margin-top: 4rem;
-    max-width: 56rem;
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    font-size: 2rem;
+    margin-top: 3.2rem;
+    max-width: 40rem;
   }
 `;
 
 const SLinkWrapper = styled.div`
   margin-top: 5.6rem;
 
-  ${({ theme }) => theme.mediaQueries.md} {
-    margin-top: 8rem;
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    margin-top: 6.4rem;
   }
 `;
 

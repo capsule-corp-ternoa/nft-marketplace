@@ -18,7 +18,7 @@ export interface SuccessProps {
 const SuccessPage = ({ user }: SuccessProps) => {
   const [modalExpand, setModalExpand] = useState(false);
   const router = useRouter();
-  const {title, text, buttonText, returnUrl, isRedirect} = router.query
+  const {title, text, buttonText, returnUrl, isRedirect, subText} = router.query
   useEffect(() => {
     if (!(title && buttonText && returnUrl && isRedirect!==undefined)){
       router.push("/")
@@ -50,6 +50,7 @@ const SuccessPage = ({ user }: SuccessProps) => {
         buttonText={String(buttonText)}
         returnUrl={String(returnUrl)}
         setModalExpand={setModalExpand}
+        subText={subText ? String(subText) : undefined}
       />
     </>
   );

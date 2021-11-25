@@ -79,7 +79,7 @@ const NftPage = ({ user, NFT, capsValue }: NFTPageProps) => {
           user={walletUser}
         />
       )}
-      {exp === 3 && <ModalBuy setModalExpand={() => setExp(0)} id={nftToBuy.id} />}
+      {exp === 3 && <ModalBuy setModalExpand={() => setExp(0)} id={nftToBuy.id} seriesId={nftToBuy.serieId}/>}
       {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
 
       <BetaBanner />

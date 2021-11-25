@@ -123,11 +123,12 @@ const ModalMint: React.FC<ModalProps> = ({
         setError('Please try again.');
       }
     });
-    socket.once('MINTING_NFT', ({ success }: { success: boolean }) => {
+    socket.once('MINTING_NFT', ({ success, nftIds }: { success: boolean, nftIds: string[] }) => {
       socket.emit('MINTING_NFT_RECEIVED')
       socket.close();
       setMintResponse(success)
       if (success){
+        const { seriesId } = runNFTMintData
         setTimeout(() => {
           setModalCreate(false);
           navigateToSuccess(
@@ -136,7 +137,12 @@ const ModalMint: React.FC<ModalProps> = ({
             "Go back to your profile page", 
             "/profile", 
             false, 
-            "The NFT(s) will soon appear in your profile page")
+            "The NFT(s) will soon appear in your profile page",
+            `
+             ${nftIds && nftIds.length > 0 ? `NFT id(s) : ${nftIds.join(', ')}` : ""},
+             ${seriesId ? `Series id : ${seriesId}` : ""}
+            `
+          )
         }, 1000)
       }
     });

@@ -12,8 +12,6 @@ import { getNFTs } from 'actions/nft';
 import { NftType, UserType } from 'interfaces';
 import { NextPageContext } from 'next';
 import { decryptCookie, setUserFromDApp } from 'utils/cookie';
-import { navigateToSuccess } from 'utils/functions';
-import { useRouter } from 'next/router';
 
 export interface LandingProps {
   user: UserType;
@@ -37,7 +35,6 @@ const LandingPage = ({
   useEffect(() => {
     setUserFromDApp(setWalletUser)
   }, []);
-  const router = useRouter();
   
   return (
     <>
@@ -59,16 +56,6 @@ const LandingPage = ({
         user={walletUser as UserType}
         setModalExpand={setModalExpand}
       />
-      <div onClick={() => navigateToSuccess(
-            router, 
-            "NFT(s) created !", 
-            "Go back to your profile page", 
-            "/profile", 
-            false, 
-            "The NFT(s) will soon appear in your profile page",
-            "NFT id : 123,series id : 456"
-          )
-      }>azeazeaze</div>
       <Landing
         setModalExpand={setModalExpand}
         user={walletUser as UserType}

@@ -13,6 +13,7 @@ import { Circle } from 'rc-progress';
 import { v4 as uuidv4 } from 'uuid';
 import { NFTProps } from 'pages/create';
 import { navigateToSuccess } from 'utils/functions';
+import { addNFTsToCategories } from 'actions/nft';
 
 export interface ModalProps {
   error: string;
@@ -123,29 +124,7 @@ const ModalMint: React.FC<ModalProps> = ({
         setError('Please try again.');
       }
     });
-    socket.once('MINTING_NFT', ({ success, nftIds }: { success: boolean, nftIds: string[] }) => {
-      socket.emit('MINTING_NFT_RECEIVED')
-      socket.close();
-      setMintResponse(success)
-      if (success){
-        const { seriesId } = runNFTMintData
-        setTimeout(() => {
-          setModalCreate(false);
-          navigateToSuccess(
-            router, 
-            "NFT(s) created !", 
-            "Go back to your profile page", 
-            "/profile", 
-            false, 
-            "The NFT(s) will soon appear in your profile page",
-            `
-             ${nftIds && nftIds.length > 0 ? `NFT id(s) : ${nftIds.join(', ')}` : ""},
-             ${seriesId ? `Series id : ${seriesId}` : ""}
-            `
-          )
-        }, 1000)
-      }
-    });
+    
     socket.once('disconnect', () => {
       setModalCreate(false);
     });
@@ -155,6 +134,41 @@ const ModalMint: React.FC<ModalProps> = ({
       }
     };
   }
+
+  useEffect(() => {
+    if (stateSocket && runNFTMintData) {
+      stateSocket.once('WALLET_READY', () => {
+        stateSocket.emit('RUN_NFT_MINT', runNFTMintData)
+        setShowQR(false)
+      })
+      stateSocket.once('MINTING_NFT', ({ success, nftIds }: { success: boolean, nftIds: string[] }) => {
+        stateSocket.emit('MINTING_NFT_RECEIVED')
+        stateSocket.close();
+        setMintResponse(success)
+        if (success){
+          const { seriesId } = runNFTMintData
+          setTimeout(() => {
+            setModalCreate(false);
+            if (nftIds?.length > 0 && categories?.length > 0) {
+              addCategories(walletId, nftIds, categories.map(x => x.code))
+            }
+            navigateToSuccess(
+              router, 
+              "NFT(s) created !", 
+              "Go back to your profile page", 
+              "/profile", 
+              false, 
+              "The NFT(s) will soon appear in your profile page",
+              `
+               ${nftIds && nftIds.length > 0 ? `NFT id(s) : ${nftIds.join(', ')}` : ""},
+               ${seriesId ? `Series id : ${seriesId}` : ""}
+              `
+            )
+          }, 1000)
+        }
+      });
+    }
+  }, [runNFTMintData])
 
   async function uploadNFT(publicPGPs: string[], setProgressData?: Function) {
     try {
@@ -208,6 +222,14 @@ const ModalMint: React.FC<ModalProps> = ({
     }
   }
 
+  const addCategories = async (creator: string, chainIds: string[], categories: string[]) => {
+    try{
+      await addNFTsToCategories(creator, chainIds, categories) 
+    }catch(err){
+      console.log(err)
+    }
+  }
+
   useEffect(() => {
     setIsRN(window.isRNApp);
   }, []);
@@ -217,15 +239,6 @@ const ModalMint: React.FC<ModalProps> = ({
       handleMintSocketProcess();
     }
   }, [output])
-
-  useEffect(() => {
-    if (stateSocket && runNFTMintData) {
-      stateSocket.once('WALLET_READY', () => {
-        stateSocket.emit('RUN_NFT_MINT', runNFTMintData)
-        setShowQR(false)
-      })
-    }
-  }, [runNFTMintData])
 
   useEffect(() => {
     if (!alreadySentSocketTimeout && speed && stateSocket && stateSocket.connected && elapsedUploadTime>5000) {

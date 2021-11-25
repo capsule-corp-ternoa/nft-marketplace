@@ -25,11 +25,12 @@ interface Props {
   className?: string;
   effect: NftEffectType;
   isRN?: boolean;
+  processedNFTMap: Map<NftEffectType, File | null>;
   secretNFT: File | null;
   setEffect: (effect: NftEffectType) => void;
   setError: (err: string) => void;
   setIsLoading: (b: boolean) => void;
-  setNFT: (f: File | null) => void;
+  setProcessedNFTMap: (m: Map<NftEffectType, File | null>) => void;
   setSecretNFT: (f: File | null) => void;
 }
 
@@ -44,11 +45,12 @@ const NftPreview = ({
   className,
   effect,
   isRN,
+  processedNFTMap,
   secretNFT,
   setEffect,
   setError,
   setIsLoading,
-  setNFT,
+  setProcessedNFTMap,
   setSecretNFT,
 }: Props) => {
   const [blurValue, setBlurValue] = useState<number>(DEFAULT_BLUR_VALUE);
@@ -90,7 +92,7 @@ const NftPreview = ({
       setIsLoading(true);
       const timer = setTimeout(() => {
         processFile(secretNFT, effect, setError, blurValue).then((file) => {
-          setNFT(file);
+          setProcessedNFTMap(processedNFTMap.set(effect, file));
           setIsLoading(false);
         });
       }, 1000);
@@ -136,11 +138,12 @@ const NftPreview = ({
               blurValue={blurValue}
               effect={effect}
               isRN={isRN}
+              processedNFTMap={processedNFTMap}
               secretNFT={secretNFT}
               setBlurValue={setBlurValue}
               setEffect={setEffect}
               setError={setError}
-              setNFT={setNFT}
+              setProcessedNFTMap={setProcessedNFTMap}
             />
           </SMobileCardWrapper>
           <SSelect text={effect}>
@@ -182,11 +185,12 @@ const NftPreview = ({
                     blurValue={blurValue}
                     effect={effectType}
                     isRN={isRN}
+                    processedNFTMap={processedNFTMap}
                     secretNFT={secretNFT}
                     setBlurValue={setBlurValue}
                     setEffect={setEffect}
                     setError={setError}
-                    setNFT={setNFT}
+                    setProcessedNFTMap={setProcessedNFTMap}
                   />
                 </SCardWrapper>
 

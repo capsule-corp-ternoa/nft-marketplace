@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
-import Icon from 'components/ui/Icon'
+import Icon from 'components/ui/Icon';
 import { NftUpload } from 'components/base/NftPreview';
 import { updateFile } from 'components/base/NftPreview/components/NftUpload';
 import {
@@ -20,11 +20,12 @@ interface Props {
   className?: string;
   effect: NftEffectType;
   isRN?: boolean;
+  processedNFTMap: Map<NftEffectType, File | null>;
   secretNFT: File;
   setBlurValue: (v: number) => void;
   setEffect: (effect: NftEffectType) => void;
   setError: (err: string) => void;
-  setNFT: (f: File | null) => void;
+  setProcessedNFTMap: (m: Map<NftEffectType, File | null>) => void;
 }
 
 const DefaultEffect = css`
@@ -78,11 +79,12 @@ const NftCardWithEffects = ({
   className,
   effect,
   isRN,
+  processedNFTMap,
   secretNFT,
   setBlurValue,
   setEffect,
   setError,
-  setNFT,
+  setProcessedNFTMap,
 }: Props) => {
   const [coverNFT, setCoverNFT] = useState<File | null>(null);
 
@@ -96,15 +98,19 @@ const NftCardWithEffects = ({
   const handleBlurredProcess = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { target } = event;
     const newBlur = Number(target.value);
-    processFile(secretNFT, effect, setError, newBlur).then(setNFT);
+    processFile(secretNFT, effect, setError, newBlur).then((file) =>
+      setProcessedNFTMap(processedNFTMap.set(effect, file))
+    );
   };
 
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSecretFileUpload = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     updateFile(
       event,
       setError,
       (file: File) => {
-        setNFT(file);
+        setProcessedNFTMap(processedNFTMap.set(NFT_EFFECT_SECRET, file));
         setCoverNFT(file);
         setEffect(NFT_EFFECT_SECRET);
       },
@@ -145,7 +151,7 @@ const NftCardWithEffects = ({
               isRN={isRN}
               isSecretOption
               note={`PNG, GIF, WEBP, MP4 or MP3. Max 30mb.`}
-              onChange={handleFileUpload}
+              onChange={handleSecretFileUpload}
             />
           ) : (
             <SCoverWrapper>
@@ -155,7 +161,7 @@ const NftCardWithEffects = ({
                 isMinimal
                 isRN={isRN}
                 isSecretOption
-                onChange={handleFileUpload}
+                onChange={handleSecretFileUpload}
               />
             </SCoverWrapper>
           )}

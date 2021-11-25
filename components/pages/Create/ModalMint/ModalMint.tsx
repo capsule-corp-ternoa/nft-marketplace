@@ -160,7 +160,7 @@ const ModalMint: React.FC<ModalProps> = ({
               false, 
               "The NFT(s) will soon appear in your profile page",
               `
-               ${nftIds && nftIds.length > 0 ? `NFT id(s) : ${nftIds.join(', ')}` : ""},
+               ${nftIds && nftIds.length > 0 ? `NFT id(s) : ${nftIds.join(' - ')}` : ""},
                ${seriesId ? `Series id : ${seriesId}` : ""}
               `
             )
@@ -224,7 +224,7 @@ const ModalMint: React.FC<ModalProps> = ({
 
   const addCategories = async (creator: string, chainIds: string[], categories: string[]) => {
     try{
-      await addNFTsToCategories(creator, chainIds, categories) 
+      await addNFTsToCategories(creator, chainIds, categories)
     }catch(err){
       console.log(err)
     }

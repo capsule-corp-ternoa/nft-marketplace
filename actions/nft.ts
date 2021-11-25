@@ -112,7 +112,7 @@ export const canAddToSeries = async (seriesId: string, walletId: string) => {
 
 export const addNFTsToCategories = async (creator: string, chainIds: string[], categories: string[]) => {
   const nftsAuthToken = encryptCookie(`${creator},${chainIds.join('-')},${categories.join('-')}`)
-  const res = await fetch(`${NODE_API_URL}/api/api/nfts/add-nfts-categories`, {
+  const res = await fetch(`${NODE_API_URL}/api/nfts/add-nfts-categories`, {
       method: 'POST',
       body:JSON.stringify({creator, chainIds, categories, nftsAuthToken}),
   });

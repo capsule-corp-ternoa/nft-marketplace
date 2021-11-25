@@ -11,6 +11,7 @@ import { NftType, UserType } from 'interfaces/index';
 import { computeCaps, computeTiime } from 'utils/strings';
 import { likeNFT, unlikeNFT } from 'actions/user';
 import { getNFT } from 'actions/nft';
+import { breakpointMap } from 'style/theme/base';
 
 export interface NftCardProps {
   item: NftType;
@@ -87,7 +88,7 @@ const NftCard: React.FC<NftCardProps> = ({
     }
   }
 
-  const isMobile = useMediaQuery({ query: '(max-device-width: 720px)' });
+  const isMobile = useMediaQuery({ query: `(max-device-width: ${breakpointMap.md}px)` });
 
   const handleLikeDislike = async (nftId: string, serieId: string) => {
     try{
@@ -269,9 +270,14 @@ const SMediaWrapper = styled.div`
   height: ${({theme}) => theme.sizes.cardHeight.xs};
   width: ${({theme}) => theme.sizes.cardWidth.xs};
 
-  ${({ theme }) => theme.mediaQueries.lg} {
+  ${({ theme }) => theme.mediaQueries.md} {
     height: ${({theme}) => theme.sizes.cardHeight.sm};
     width: ${({theme}) => theme.sizes.cardWidth.sm};
+  }
+
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    height: ${({theme}) => theme.sizes.cardHeight.md};
+    width: ${({theme}) => theme.sizes.cardWidth.md};
   }
 `
 

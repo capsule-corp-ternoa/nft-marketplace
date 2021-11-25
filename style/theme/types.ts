@@ -33,11 +33,13 @@ export type Sizes = {
     sm: string;
     md: string;
     lg: string;
+    xl: string;
   };
   cardWidth: {
     xs: string;
     sm: string;
     md: string;
     lg: string;
+    xl: string;
   };
 };

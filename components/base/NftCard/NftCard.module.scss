@@ -230,26 +230,9 @@
     margin-right: 12px;
     margin-top: 0px;
   }
-  .NFT,
-  .NFTGrid {
-    width: 220px;
-    height: 330px;
-  }
 }
 
-@media (max-width: 720px) {
-  .SecretLabel {
-    padding: 2.5px 16px;
-    font-size: 16px;
-    top: 12px;
-    right: 12px;
-  }
-  .NFT,
-  .NFTGrid,
-  .NFTProfile {
-    width: 190px;
-    height: 280px;
-  }
+@media (max-width: 768px) {
   .Favorite {
     padding: 7px 6px;
     top: 12px;

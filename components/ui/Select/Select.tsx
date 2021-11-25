@@ -60,7 +60,7 @@ const SelectRoot = styled.button<{ color?: string }>`
   outline: none;
   padding: 1.6rem 2.4rem;
   text-transform: capitalize;
-  z-index: 2;
+  z-index: 20;
 
   &:disabled {
     border: 2px solid;
@@ -92,6 +92,7 @@ const SelectOptions = styled.ul`
   top: 5.2rem;
   left: 50%;
   transform: translateX(calc(-50% + 0px));
+  z-index: 10;
 
   > li {
     color: #b1b1b1;

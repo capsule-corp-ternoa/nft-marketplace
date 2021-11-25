@@ -3,6 +3,7 @@ import Switch from 'react-switch';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import { useMediaQuery } from 'react-responsive';
+import { breakpointMap } from 'style/theme/base';
 
 import style from './Showcase.module.scss';
 
@@ -14,32 +15,20 @@ import { NftType, UserType } from 'interfaces/index';
 
 const responsive = {
   desktop: {
-    breakpoint: { max: 3000, min: 1330 },
+    breakpoint: { max: 3000, min: breakpointMap.xxl },
     items: 4.2,
   },
-  desktop2: {
-    breakpoint: { max: 1330, min: 950 },
-    items: 3.8,
-  },
   tablet: {
-    breakpoint: { max: 950, min: 830 },
+    breakpoint: { max: breakpointMap.xxl, min: breakpointMap.md },
     items: 3.5,
   },
-  tablet2: {
-    breakpoint: { max: 830, min: 600 },
-    items: 3,
-  },
   mobile2: {
-    breakpoint: { max: 600, min: 530 },
+    breakpoint: { max: breakpointMap.md, min: breakpointMap.sm },
     items: 2.4,
   },
   mobile3: {
-    breakpoint: { max: 530, min: 450 },
-    items: 2,
-  },
-  mobile4: {
-    breakpoint: { max: 450, min: 0 },
-    items: 1.5,
+    breakpoint: { max: breakpointMap.sm, min: 0 },
+    items: 1.8,
   },
 };
 
@@ -54,7 +43,7 @@ const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category, user, setUser }) =>
   const [isFiltered, setIsFiltered] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
 
-  const isMobile = useMediaQuery({ query: '(max-width: 720px)' });
+  const isMobile = useMediaQuery({ query: `(max-device-width: ${breakpointMap.md}px)` });
 
   let carousel: Carousel | null = new Carousel({
     responsive: {},

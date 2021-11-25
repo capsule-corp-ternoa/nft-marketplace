@@ -270,9 +270,14 @@ const SMediaWrapper = styled.div`
   height: ${({theme}) => theme.sizes.cardHeight.xs};
   width: ${({theme}) => theme.sizes.cardWidth.xs};
 
-  ${({ theme }) => theme.mediaQueries.lg} {
+  ${({ theme }) => theme.mediaQueries.md} {
     height: ${({theme}) => theme.sizes.cardHeight.sm};
     width: ${({theme}) => theme.sizes.cardWidth.sm};
+  }
+
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    height: ${({theme}) => theme.sizes.cardHeight.md};
+    width: ${({theme}) => theme.sizes.cardWidth.md};
   }
 `
 

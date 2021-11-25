@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
 import Eye from 'components/assets/eye';
@@ -28,6 +28,7 @@ interface Props {
   secretNFT: File | null;
   setEffect: (effect: NftEffectType) => void;
   setError: (err: string) => void;
+  setIsLoading: (b: boolean) => void;
   setNFT: (f: File | null) => void;
   setSecretNFT: (f: File | null) => void;
 }
@@ -46,6 +47,7 @@ const NftPreview = ({
   secretNFT,
   setEffect,
   setError,
+  setIsLoading,
   setNFT,
   setSecretNFT,
 }: Props) => {
@@ -68,13 +70,6 @@ const NftPreview = ({
     }
   };
 
-  const handleCardSelect = (file: File, effect: NftEffectType) => {
-    setEffect(effect);
-    if (effect === NFT_EFFECT_BLUR || effect === NFT_EFFECT_PROTECT) {
-      processFile(file, effect, setError, blurValue).then(setNFT);
-    }
-  };
-
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     updateFile(
       event,
@@ -86,6 +81,22 @@ const NftPreview = ({
       isRN
     );
   };
+
+  useEffect(() => {
+    if (
+      secretNFT !== null &&
+      (effect === NFT_EFFECT_BLUR || effect === NFT_EFFECT_PROTECT)
+    ) {
+      setIsLoading(true);
+      const timer = setTimeout(() => {
+        processFile(secretNFT, effect, setError, blurValue).then((file) => {
+          setNFT(file);
+          setIsLoading(false);
+        });
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [effect]);
 
   if (secretNFT === null) {
     return (
@@ -182,7 +193,7 @@ const NftPreview = ({
                 <SRadio
                   checked={effect === effectType}
                   label={effectType}
-                  onChange={() => handleCardSelect(secretNFT, effectType)}
+                  onChange={() => setEffect(effectType)}
                 />
               </SLabel>
 
@@ -191,7 +202,7 @@ const NftPreview = ({
                   type="radio"
                   id={`NftType_${effectType}`}
                   name={`NftType_${effectType}`}
-                  onClick={() => handleCardSelect(secretNFT, effectType)}
+                  onClick={() => setEffect(effectType)}
                   value={effectType}
                 />
               </HiddenShell>

@@ -187,6 +187,7 @@ const Create = ({
             secretNFT={secretNFT}
             setEffect={setEffect}
             setError={setError}
+            setIsLoading={setIsLoading}
             setNFT={setNFT}
             setSecretNFT={setSecretNFT}
           />

@@ -10,7 +10,7 @@ import { connect as connectIo, socketWaitForEvent } from 'utils/socket/socket.he
 import { SOCKET_URL } from 'utils/constant';
 import { cryptAndUploadNFT, uploadIPFS } from 'utils/nftEncryption';
 import { Circle } from 'rc-progress';
-
+import { v4 as uuidv4 } from 'uuid';
 import { NFTProps } from 'pages/create';
 import { navigateToSuccess } from 'utils/functions';
 
@@ -193,7 +193,7 @@ const ModalMint: React.FC<ModalProps> = ({
       return {
         categories: categories.map((x) => x.code),
         nftUrls: JSONHASHES as any[],
-        seriesId: seriesId ? seriesId : null,
+        seriesId: seriesId ? seriesId : uuidv4(),
       };
     } catch (err) {
       if (setError !== undefined) setError('Please try again.');

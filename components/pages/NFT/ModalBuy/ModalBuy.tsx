@@ -12,9 +12,10 @@ import { useRouter } from 'next/router';
 export interface ModalBuyProps {
   setModalExpand: (b: boolean) => void;
   id: string;
+  seriesId: string;
 }
 
-const ModalBuy: React.FC<ModalBuyProps> = ({ setModalExpand, id }) => {
+const ModalBuy: React.FC<ModalBuyProps> = ({ setModalExpand, id, seriesId }) => {
   const [session] = useState(randomstring.generate());
   const router = useRouter()
   const [error, setError] = useState('');
@@ -60,7 +61,12 @@ const ModalBuy: React.FC<ModalBuyProps> = ({ setModalExpand, id }) => {
             "Go back to your profile page", 
             "/profile", 
             false, 
-            "The NFT(s) will soon appear in your profile page")
+            "The NFT(s) will soon appear in your profile page",
+            `
+             ${id ? `NFT id : ${id}` : ""},
+             ${seriesId ? `Series id : ${seriesId}` : ""}
+            `
+          )
         }, 1000)
       }
     });

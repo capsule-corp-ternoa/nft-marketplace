@@ -24,6 +24,7 @@ export const navigateToSuccess = (
   returnUrl: string,
   isRedirect: boolean,
   text?: string,
+  subText?: string,
 ) => {
   router.push(
     {
@@ -34,6 +35,7 @@ export const navigateToSuccess = (
         buttonText,
         returnUrl,
         isRedirect,
+        subText
       }
     }, 
     "/success"

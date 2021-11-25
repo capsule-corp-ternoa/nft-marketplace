@@ -13,8 +13,9 @@ export interface SuccessProps {
   title: string;
   text?: string;
   buttonText: string;
-  returnUrl: string
+  returnUrl: string;
   setModalExpand: (b: boolean) => void;
+  subText?: string;
 }
 
 const Success = ({ 
@@ -24,6 +25,7 @@ const Success = ({
   buttonText,
   returnUrl,
   setModalExpand,
+  subText,
 }: SuccessProps) => {
   return (
     <div className={style.Container}>
@@ -31,6 +33,7 @@ const Success = ({
         <SuccessImage className={style.Image}/>
         <h1 className={style.Title}>{title}</h1>
         {text && <div className={style.Text}>{text}</div>}
+        {subText && subText.split(',').filter(x => x.length > 0).map((x,i) => <div className={style.SubText} key={i}>{x}</div>)}
         <Link href={returnUrl}>
           <a className={style.Button}>{buttonText}</a>
         </Link>

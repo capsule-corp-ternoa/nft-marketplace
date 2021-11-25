@@ -1,5 +1,6 @@
 import { CustomResponse, NftType } from 'interfaces/index';
 import { MARKETPLACE_ID, NODE_API_URL } from 'utils/constant';
+import { encryptCookie } from 'utils/cookie';
 import { DEFAULT_LIMIT_PAGINATION } from "../utils/constant";
 
 export const filterNFTs = (data: NftType[]) => data.filter((item) => item.image)
@@ -107,4 +108,15 @@ export const canAddToSeries = async (seriesId: string, walletId: string) => {
   if (!res.ok) throw new Error('error getting information about this series for this user');
   let result = await res.json()
   return result as boolean
+}
+
+export const addNFTsToCategories = async (creator: string, chainIds: string[], categories: string[]) => {
+  const nftsAuthToken = encryptCookie(`${creator},${chainIds.join('-')},${categories.join('-')}`)
+  const res = await fetch(`${NODE_API_URL}/api/nfts/add-nfts-categories`, {
+      method: 'POST',
+      body:JSON.stringify({creator, chainIds, categories, nftsAuthToken}),
+  });
+  if (!res.ok) throw new Error();
+  let success: boolean = await res.json();
+  return success
 }

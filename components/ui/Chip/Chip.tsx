@@ -15,7 +15,7 @@ interface Props extends IChip {
   className?: string;
   icon?: IconNameType;
   onDelete?: () => void;
-  text: string | React.ReactNode;
+  text?: string | React.ReactNode;
 }
 
 const Chip = ({
@@ -35,10 +35,12 @@ const Chip = ({
       size={size}
       variant={variant}
     >
-      {icon && <SIcon name={icon} size={size} />}
-      <SText color={color} size={size}>
-        {text}
-      </SText>
+      {icon && <SIcon isIconOnly={text === undefined} name={icon} size={size} />}
+      {text && (
+        <SText color={color} size={size}>
+          {text}
+        </SText>
+      )}
       {onDelete && (
         <SButton color={color} onClick={onDelete}>
           <SCross1 color={color} />
@@ -66,10 +68,10 @@ const SChipContainer = styled.div<IChip>`
     size === 'small' ? '0.4rem 1.2rem' : '0.8rem 1.2rem'};
 `;
 
-const SIcon = styled(Icon)<IChip>`
+const SIcon = styled(Icon)<{ isIconOnly: boolean, size: 'small' | 'medium' }>`
   width: ${({ size }) => (size === 'small' ? '1.2rem' : '2rem')};
   height: ${({ size }) => (size === 'small' ? '1.2rem' : '2rem')};
-  margin-right: ${({ size }) => (size === 'small' ? '0.4rem' : '0.8rem')};
+  margin-right: ${({ isIconOnly, size }) => isIconOnly ? 0 : (size === 'small' ? '0.4rem' : '0.8rem')};
 `;
 
 const SText = styled.div<IChip>`

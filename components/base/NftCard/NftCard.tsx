@@ -11,6 +11,7 @@ import { NftType, UserType } from 'interfaces/index';
 import { computeCaps, computeTiime } from 'utils/strings';
 import { likeNFT, unlikeNFT } from 'actions/user';
 import { getNFT } from 'actions/nft';
+import { breakpointMap } from 'style/theme/base';
 
 export interface NftCardProps {
   item: NftType;
@@ -86,8 +87,8 @@ const NftCard: React.FC<NftCardProps> = ({
       return style.NFT;
     }
   }
-
-  const isMobile = useMediaQuery({ query: '(max-device-width: 720px)' });
+  const isMobileXS = useMediaQuery({ query: `(max-device-width: ${breakpointMap.sm}px)` });
+  const isMobile = useMediaQuery({ query: `(max-device-width: ${breakpointMap.md}px)` });
 
   const handleLikeDislike = async (nftId: string, serieId: string) => {
     try{
@@ -143,7 +144,7 @@ const NftCard: React.FC<NftCardProps> = ({
           <Chip
             color="whiteBlur"
             size="small"
-            text={`Available : ${displayQuantity()} of ${item.totalNft}`}
+            text={`${isMobile ? '' : 'Available : '}${displayQuantity()} of ${item.totalNft}`}
             variant="round"
           />
         </SAvailableChipWrapper>
@@ -155,7 +156,7 @@ const NftCard: React.FC<NftCardProps> = ({
               color="whiteBlur"
               icon="secretCards"
               size="small"
-              text="Secret"
+              text={isMobileXS ? undefined : "Secret"}
               variant="round"
             />
           </SSecretChipWrapper>

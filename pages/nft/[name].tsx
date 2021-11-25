@@ -127,10 +127,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
   await Promise.all(promises);
   if (!NFT) {
     return {
-      redirect: {
-        permanent: false,
-        destination: '/',
-      },
+      notFound: true,
     };
   }
   return {

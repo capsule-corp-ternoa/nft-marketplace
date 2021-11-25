@@ -1,25 +1,25 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import { Colors } from 'style/theme/types';
 
-interface Props {
+interface IButton {
+  color?: keyof Colors;
+}
+interface Props extends IButton {
   className?: string;
   disabled?: boolean;
+  href?: string;
   onClick?: () => void;
   text?: string;
 }
 
-const Button = ({ className, disabled, onClick, text }: Props) => (
-  <SButton className={className} disabled={disabled} onClick={onClick}>
-    {text}
-  </SButton>
-);
-
-const SButton = styled.button`
+const ButtonStyle = css<IButton>`
   display: flex;
   justify-content: center;
   align-items: center;
   align-self: center;
-  background: #7417ea;
+  background: ${({ theme, color }) =>
+    color ? theme.colors[`${color}`] : theme.colors.primary};
   border: none;
   border-radius: 4rem;
   color: white;
@@ -39,6 +39,35 @@ const SButton = styled.button`
     opacity: 0.4;
     pointer-events: none;
   }
+`;
+
+const Button = ({ className, color, disabled, href, onClick, text }: Props) => {
+  if (href !== null && href !== undefined) {
+    return (
+      <SAnchor className={className} color={color} href={href}>
+        {text}
+      </SAnchor>
+    );
+  }
+
+  return (
+    <SButton
+      className={className}
+      color={color}
+      disabled={disabled}
+      onClick={onClick}
+    >
+      {text}
+    </SButton>
+  );
+};
+
+const SAnchor = styled.a<IButton>`
+  ${ButtonStyle}
+`;
+
+const SButton = styled.button<IButton>`
+  ${ButtonStyle}
 `;
 
 export default Button;

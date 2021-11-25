@@ -110,6 +110,11 @@ export async function getServerSideProps(ctx: NextPageContext) {
     })
   );
   await Promise.all(promises);
+  if (!data) {
+    return {
+      notFound: true,
+    };
+  }
   return {
     props: { user, data, dataHasNextPage },
   };

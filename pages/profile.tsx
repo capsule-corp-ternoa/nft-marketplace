@@ -328,10 +328,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
   await Promise.all(promises);
   if (!user) {
     return {
-      redirect: {
-        permanent: false,
-        destination: '/',
-      },
+      notFound: true,
     };
   }
   return {

@@ -40,7 +40,7 @@ const NftPage = ({ user, NFT, capsValue }: NFTPageProps) => {
   useEffect(() => {
     async function callBack() {
       try {
-        let res = await fetch(NFT.image!, { method: 'HEAD' });
+        let res = await fetch(NFT.properties?.preview.ipfs!, { method: 'HEAD' });
         setType(res.headers.get('Content-Type'));
         return res;
       } catch (err) {
@@ -66,8 +66,8 @@ const NftPage = ({ user, NFT, capsValue }: NFTPageProps) => {
         <title>{NFT.title} - {process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : "SecretNFT"}</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta name="description" content={NFT.description} />
-        <meta name="og:image" content={NFT.image} />
-        <meta property="og:image" content={NFT.image} />
+        <meta name="og:image" content={NFT.properties?.preview.ipfs} />
+        <meta property="og:image" content={NFT.properties?.preview.ipfs} />
       </Head>
       {(exp===1 || exp===2) && (
         <ModalShowcase

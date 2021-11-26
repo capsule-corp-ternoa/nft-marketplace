@@ -3,7 +3,7 @@ import { MARKETPLACE_ID, NODE_API_URL } from 'utils/constant';
 import { encryptCookie } from 'utils/cookie';
 import { DEFAULT_LIMIT_PAGINATION } from "../utils/constant";
 
-export const filterNFTs = (data: NftType[]) => data.filter((item) => item.image)
+export const filterNFTs = (data: NftType[]) => data.filter((item) => item.properties?.preview.ipfs)
 
 export const getOwnedNFTS = async (id: string, onlyFromMpId: boolean, listed? :boolean,  page: string="1", limit: string=DEFAULT_LIMIT_PAGINATION, noSeriesData: boolean = false, nftIdsFilter: string[] = []) => {
   const paginationOptions = {page, limit}
@@ -50,7 +50,7 @@ export const getNFT = async (id: string, incViews: boolean = false, viewerWallet
   const res = await fetch(`${NODE_API_URL}/api/NFTs/${id}?filter=${JSON.stringify(filterOptions)}&incViews=${incViews}&viewerWalletId=${viewerWalletId}&viewerIp=${ip}`);
   if (!res.ok) throw new Error('error fetching NFT');
   let data: NftType = await res.json();
-  if (!data.image) throw new Error();
+  if (!data.properties?.preview.ipfs) throw new Error();
   return data;
 };
 

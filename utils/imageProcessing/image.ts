@@ -76,3 +76,45 @@ export const processFile = async (
     return null;
   }
 };
+
+const timer = (ms:number) => new Promise(res => setTimeout(res, ms));
+
+export const generateVideoThumbnail = (file: File) => {
+  return new Promise((resolve, reject) => {
+    const canvas = document.createElement("canvas");
+    const video = document.createElement("video");
+    video.autoplay = true;
+    video.muted = true;
+    video.src = URL.createObjectURL(file);
+    video.onloadeddata = async () => {
+      video.play()
+      let ctx = canvas.getContext("2d");
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      if (ctx){
+        const waitTime = video.duration > 2 ? 2000 : (video.duration > 1 ? 1000 : 0)
+        await timer(waitTime)
+        video.pause();
+        ctx.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
+        canvas.toBlob(async (imgBlob) => {
+          if (imgBlob){
+            const imgFile = new File([imgBlob], "preview_image");
+            return resolve(imgFile);
+          }else{
+            return reject("Could not generate thumbnail")
+          }
+        },'image/png', 1)
+      }else{
+        return reject("No canvas context found to generate thumbnail")
+      }
+    };
+  });
+}
+
+export function blobToDataURL(blob: Blob, callback: Function) {
+  var a = new FileReader();
+  a.onload = function(e) {if (e?.target) callback(e.target.result);}
+  a.readAsDataURL(blob);
+}
+
+

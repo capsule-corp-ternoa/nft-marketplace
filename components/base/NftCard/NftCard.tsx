@@ -42,8 +42,6 @@ const NftCard: React.FC<NftCardProps> = ({
   setLikedNfts,
   scope,
 }) => {
-  console.log({mode})
-
   const [isHovering, setIsHovering] = useState(false);
   const [type, setType] = useState<string | null>(null);
   const [likeLoading, setLikeLoading] = useState(false)

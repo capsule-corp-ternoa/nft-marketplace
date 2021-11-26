@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useMediaQuery } from 'react-responsive';
 import styled, { css } from 'styled-components';
 import Icon from 'components/ui/Icon';
 import { NftUpload } from 'components/base/NftPreview';
@@ -14,6 +15,7 @@ import {
 import Chip from 'components/ui/Chip';
 import Slider from 'components/ui/Slider';
 import { processFile } from 'utils/imageProcessing/image';
+import { breakpointMap } from 'style/theme/base';
 
 interface Props {
   blurValue: number;
@@ -88,6 +90,8 @@ const NftCardWithEffects = ({
 }: Props) => {
   const [coverNFT, setCoverNFT] = useState<File | null>(null);
 
+  const isTablet = useMediaQuery({ minWidth: breakpointMap.md, maxWidth: breakpointMap.lg });
+
   const handleBlurredChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { target } = event;
     const newBlur = Number(target.value);
@@ -142,9 +146,9 @@ const NftCardWithEffects = ({
                   <SecretUploadTopDescription>
                     Drag your the preview of your secret.
                   </SecretUploadTopDescription>
-                  <span>
+                  {!isTablet && <span>
                     Once purchased, the owner will be able to see your NFT
-                  </span>
+                  </span>}
                 </SecretUploadDescription>
               }
               inputId="uploadSecretNft"
@@ -165,13 +169,13 @@ const NftCardWithEffects = ({
               />
             </SCoverWrapper>
           )}
-          <SChip
+          {!isTablet && <SChip
             color="whiteBlur"
             icon="whiteWaterMark"
             size="medium"
             text="Secret"
             variant="round"
-          />
+          />}
         </SSecretWrapper>
       )}
     </SWrapper>
@@ -184,6 +188,14 @@ const SWrapper = styled.div`
   max-width: 250px;
   height: ${({ theme }) => theme.sizes.cardHeight.md};
   overflow: hidden;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    height: ${({ theme }) => theme.sizes.cardHeight.sm};
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    height: ${({ theme }) => theme.sizes.cardHeight.md};
+  }
 `;
 
 const SCoverWrapper = styled.div`
@@ -211,7 +223,7 @@ const SIcon = styled(Icon)`
   left: 1.6rem;
   z-index: 10;
 
-  ${({ theme }) => theme.mediaQueries.md} {
+  ${({ theme }) => theme.mediaQueries.lg} {
     width: 14rem;
   }
 `;
@@ -226,6 +238,18 @@ const SSecretWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   padding: 3.2rem 3.2rem 0;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    padding: 2rem 2rem 0;
+  }
+
+  @media (min-width: 830px) {
+    padding: 2.4rem 2.4rem 0;
+  }
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    padding: 3.2rem 3.2rem 0;
+  }
 `;
 
 const SecretUploadDescription = styled.div`

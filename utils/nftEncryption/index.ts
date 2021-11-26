@@ -11,6 +11,16 @@ const cryptFilePgp = async (file: File, publicPGP: string) => {
   const content = buffer.toString("base64");
   const message = await openpgp.Message.fromText(content)
   const publicKey = await openpgp.readKey({ armoredKey: publicPGP })
+  /*console.log(publicKey)
+  console.log(publicKey.getCreationTime())
+  console.log(await publicKey.getExpirationTime())
+  console.log(publicKey.toPublic())
+  console.log(publicKey.getUserIds())
+  console.log(publicKey.getKeyIds())
+  console.log(publicKey.isPublic())
+  console.log(publicKey.isPrivate())
+  console.log(publicKey.toPublic())
+  console.log(await publicKey.getPrimaryUser())*/
   const encrypted = await openpgp.encrypt({
     message,
     publicKeys: publicKey

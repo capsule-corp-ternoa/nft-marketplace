@@ -75,6 +75,7 @@ const Create = ({
   >(new Map());
   const [isLoading, setIsLoading] = useState(false);
 
+
   const { categories, description, name, quantity, seriesId } = nftData;
 
   useEffect(() => {
@@ -152,7 +153,6 @@ const Create = ({
 
   function initMintingNFT() {
     if (!user) throw new Error('Please login to create an NFT.');
-
     if (!(effect === NFT_EFFECT_DEFAULT)) {
       const processedNFT = processedNFTMap.get(effect);
       if (processedNFT === undefined || processedNFT === null)
@@ -176,6 +176,8 @@ const Create = ({
       console.error(err);
       if (err instanceof Error) {
         setError(err.message);
+      }else{
+        setError(err as string)
       }
     }
   }

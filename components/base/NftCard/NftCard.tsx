@@ -14,6 +14,7 @@ import { getNFT } from 'actions/nft';
 import { breakpointMap } from 'style/theme/base';
 
 export interface NftCardProps {
+  className?: string;
   item: NftType;
   mode: string;
   isDragging?: boolean;
@@ -33,6 +34,7 @@ function manageRouting(
 }
 
 const NftCard: React.FC<NftCardProps> = ({
+  className,
   item,
   mode,
   isDragging,
@@ -124,7 +126,7 @@ const NftCard: React.FC<NftCardProps> = ({
   return (
     <SMediaWrapper
       onClick={() => !isDragging && Router.push(`/nft/${item.id}`)}
-      className={manageClass()}
+      className={`${className} ${manageClass()}`}
       onFocus={() => false}
       onBlur={() => false}
       onMouseOver={() => !isMobile && setIsHovering(true)}

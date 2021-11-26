@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import styled from 'styled-components';
 import style from './Profile.module.scss';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
@@ -251,8 +252,8 @@ const Profile = ({
         break;
     }
     return displayNFTs.map((item: NftType) => (
-      <div key={item.id} className={style.NFTShell}>
-        <NFTCard
+      <SNFTShell key={item.id} className={style.NFTShell}>
+        <SNFTCard
           mode="grid"
           item={item}
           user={user}
@@ -261,7 +262,7 @@ const Profile = ({
           setLikedNfts={setLikedNfts}
           scope={scope}
         />
-      </div>
+      </SNFTShell>
     ));
   }
 
@@ -535,5 +536,24 @@ const Profile = ({
     </div>
   );
 };
+const SNFTShell = styled.div`
+  margin-bottom: 3.2rem;
+`;
+
+
+const SNFTCard = styled(NFTCard)`
+  height: ${({theme}) => theme.sizes.cardHeight.md};
+  width: ${({theme}) => theme.sizes.cardWidth.md};
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    height: ${({theme}) => theme.sizes.cardHeight.sm};
+    width: ${({theme}) => theme.sizes.cardWidth.sm};
+  }
+
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    height: ${({theme}) => theme.sizes.cardHeight.md};
+    width: ${({theme}) => theme.sizes.cardWidth.md};
+  }
+`;
 
 export default Profile;

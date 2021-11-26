@@ -286,6 +286,8 @@ const Create = ({
           onClick={() => isDataValid && user && uploadFiles()}
           text="Create NFT"
         />
+        <div>{"isDataValid " + isDataValid}</div>
+        <div>{"user " + JSON.stringify(user)}</div>
       </Wrapper>
       <Footer />
       <FloatingHeader user={user} setModalExpand={setModalExpand} />

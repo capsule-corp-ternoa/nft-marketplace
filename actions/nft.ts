@@ -11,7 +11,8 @@ export const getOwnedNFTS = async (id: string, onlyFromMpId: boolean, listed? :b
   if (listed !== undefined) filterOptions.listed = listed
   if (onlyFromMpId) filterOptions.marketplaceId = MARKETPLACE_ID
   if (nftIdsFilter.length > 0) filterOptions.ids = nftIdsFilter
-  const res = await fetch(`${NODE_API_URL}/api/NFTs/?pagination=${JSON.stringify(paginationOptions)}&filter=${JSON.stringify(filterOptions)}`);
+  const sortOptions = "created_at:desc"
+  const res = await fetch(`${NODE_API_URL}/api/NFTs/?pagination=${JSON.stringify(paginationOptions)}&filter=${JSON.stringify(filterOptions)}&sort=${sortOptions}`);
   if (!res.ok) throw new Error('error fetching owned NFTs');
   let result: CustomResponse<NftType> = await res.json();
   result.data = filterNFTs(result.data)

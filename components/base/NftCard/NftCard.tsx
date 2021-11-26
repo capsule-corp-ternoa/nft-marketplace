@@ -42,6 +42,8 @@ const NftCard: React.FC<NftCardProps> = ({
   setLikedNfts,
   scope,
 }) => {
+  console.log({mode})
+
   const [isHovering, setIsHovering] = useState(false);
   const [type, setType] = useState<string | null>(null);
   const [likeLoading, setLikeLoading] = useState(false)
@@ -87,8 +89,8 @@ const NftCard: React.FC<NftCardProps> = ({
       return style.NFT;
     }
   }
-  const isMobileXS = useMediaQuery({ query: `(max-width: ${breakpointMap.sm}px)` });
   const isMobile = useMediaQuery({ query: `(max-width: ${breakpointMap.md}px)` });
+  const isLargeDesktop = useMediaQuery({ query: `(min-width: ${breakpointMap.xxl}px)` });
 
   const handleLikeDislike = async (nftId: string, serieId: string) => {
     try{
@@ -144,7 +146,9 @@ const NftCard: React.FC<NftCardProps> = ({
           <Chip
             color="whiteBlur"
             size="small"
-            text={`${isMobile ? '' : 'Available : '}${displayQuantity()} of ${item.totalNft}`}
+            text={`${
+              !isLargeDesktop ? '' : 'Available : '
+            }${displayQuantity()} of ${item.totalNft}`}
             variant="round"
           />
         </SAvailableChipWrapper>
@@ -156,7 +160,7 @@ const NftCard: React.FC<NftCardProps> = ({
               color="whiteBlur"
               icon="secretCards"
               size="small"
-              text={isMobileXS ? undefined : "Secret"}
+              text={isMobile ? undefined : "Secret"}
               variant="round"
             />
           </SSecretChipWrapper>

@@ -109,7 +109,8 @@ const ModalMint: React.FC<ModalProps> = ({
           await socketWaitForEvent(socket, 'RUN_NFT_MINT_RECEIVED')
           // all ok
         } catch (err) {
-          //The wallet timeout
+          //The wallet timeout, we need retry
+          console.log(err)
           setQrAction('MINT_RETRY')
           setQrRetry(true)
           if (isRN || window.isRNApp) {

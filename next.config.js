@@ -9,6 +9,7 @@ const moduleExports = {
         ...config.resolve.fallback,
         fs: false
       }
+      //config.optimization.minimizer = []
     }
 
     return config

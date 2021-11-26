@@ -28,8 +28,7 @@ function timeoutPromise(mainPromise: Promise<any>, timeout: number=SOCKET_WAIT_T
       new Promise((_resolve, reject) => {
         clearTimeout(timeoutId);
         timeoutId = setTimeout(() => {
-          console.log('socket timeout limit exceded')
-          reject();
+          reject('socket timeout limit exceded');
         }, timeout);
       }),
     ]);

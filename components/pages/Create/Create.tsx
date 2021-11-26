@@ -71,7 +71,6 @@ const Create = ({
   const [nftData, setNFTData] = useState(initalValue);
   const [canAddToSeriesValue, setCanAddToSeriesValue] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const [test, setTest] = useState("no data");
 
 
   const { categories, description, name, quantity, seriesId } = nftData;
@@ -163,15 +162,11 @@ const Create = ({
   async function uploadFiles() {
     try {
       setOutput([]);
-      setTest("start")
       setError('');
-      setTest("start init")
       initMintingNFT();
-      setTest("start modalCreate")
       setModalCreate(true);
     } catch (err) {
       console.error(err);
-      setTest(err instanceof Error ? err.message : err as string)
       if (err instanceof Error) {
         setError(err.message);
       }else{
@@ -294,8 +289,6 @@ const Create = ({
           onClick={() => isDataValid && user && uploadFiles()}
           text="Create NFT"
         />
-        <div>{"isDataValid " + isDataValid}</div>
-        <div>{"test " + test}</div>
       </Wrapper>
       <Footer />
       <FloatingHeader user={user} setModalExpand={setModalExpand} />

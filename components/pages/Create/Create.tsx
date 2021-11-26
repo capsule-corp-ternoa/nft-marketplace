@@ -152,7 +152,7 @@ const Create = ({
   function initMintingNFT() {
     if (!user) throw new Error('Please login to create an NFT.');
     if (!NFT && !(effect === NFT_EFFECT_DEFAULT))
-      throw new Error('Elements are undefined');
+      throw new Error(`Elements are undefined NFT: ${JSON.stringify(NFT)} - effect: ${effect}`);
     setQRData!({
       ...QRData,
       quantity,
@@ -174,6 +174,8 @@ const Create = ({
       setTest(err instanceof Error ? err.message : err as string)
       if (err instanceof Error) {
         setError(err.message);
+      }else{
+        setError(err as string)
       }
     }
   }

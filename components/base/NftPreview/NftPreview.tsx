@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
 import Eye from 'components/assets/eye';
@@ -25,10 +25,12 @@ interface Props {
   className?: string;
   effect: NftEffectType;
   isRN?: boolean;
+  processedNFTMap: Map<NftEffectType, File | null>;
   secretNFT: File | null;
   setEffect: (effect: NftEffectType) => void;
   setError: (err: string) => void;
-  setNFT: (f: File | null) => void;
+  setIsLoading: (b: boolean) => void;
+  setProcessedNFTMap: (m: Map<NftEffectType, File | null>) => void;
   setSecretNFT: (f: File | null) => void;
 }
 
@@ -43,10 +45,12 @@ const NftPreview = ({
   className,
   effect,
   isRN,
+  processedNFTMap,
   secretNFT,
   setEffect,
   setError,
-  setNFT,
+  setIsLoading,
+  setProcessedNFTMap,
   setSecretNFT,
 }: Props) => {
   const [blurValue, setBlurValue] = useState<number>(DEFAULT_BLUR_VALUE);
@@ -68,13 +72,6 @@ const NftPreview = ({
     }
   };
 
-  const handleCardSelect = (file: File, effect: NftEffectType) => {
-    setEffect(effect);
-    if (effect === NFT_EFFECT_BLUR || effect === NFT_EFFECT_PROTECT) {
-      processFile(file, effect, setError, blurValue).then(setNFT);
-    }
-  };
-
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     updateFile(
       event,
@@ -86,6 +83,22 @@ const NftPreview = ({
       isRN
     );
   };
+
+  useEffect(() => {
+    if (
+      secretNFT !== null &&
+      (effect === NFT_EFFECT_BLUR || effect === NFT_EFFECT_PROTECT)
+    ) {
+      setIsLoading(true);
+      const timer = setTimeout(() => {
+        processFile(secretNFT, effect, setError, blurValue).then((file) => {
+          setProcessedNFTMap(processedNFTMap.set(effect, file));
+          setIsLoading(false);
+        });
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [effect]);
 
   if (secretNFT === null) {
     return (
@@ -125,11 +138,12 @@ const NftPreview = ({
               blurValue={blurValue}
               effect={effect}
               isRN={isRN}
+              processedNFTMap={processedNFTMap}
               secretNFT={secretNFT}
               setBlurValue={setBlurValue}
               setEffect={setEffect}
               setError={setError}
-              setNFT={setNFT}
+              setProcessedNFTMap={setProcessedNFTMap}
             />
           </SMobileCardWrapper>
           <SSelect text={effect}>
@@ -171,18 +185,19 @@ const NftPreview = ({
                     blurValue={blurValue}
                     effect={effectType}
                     isRN={isRN}
+                    processedNFTMap={processedNFTMap}
                     secretNFT={secretNFT}
                     setBlurValue={setBlurValue}
                     setEffect={setEffect}
                     setError={setError}
-                    setNFT={setNFT}
+                    setProcessedNFTMap={setProcessedNFTMap}
                   />
                 </SCardWrapper>
 
                 <SRadio
                   checked={effect === effectType}
                   label={effectType}
-                  onChange={() => handleCardSelect(secretNFT, effectType)}
+                  onChange={() => setEffect(effectType)}
                 />
               </SLabel>
 
@@ -191,7 +206,7 @@ const NftPreview = ({
                   type="radio"
                   id={`NftType_${effectType}`}
                   name={`NftType_${effectType}`}
-                  onClick={() => handleCardSelect(secretNFT, effectType)}
+                  onClick={() => setEffect(effectType)}
                   value={effectType}
                 />
               </HiddenShell>

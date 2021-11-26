@@ -70,17 +70,20 @@ const Create = ({
   const [isRN, setRN] = useState(false);
   const [nftData, setNFTData] = useState(initalValue);
   const [canAddToSeriesValue, setCanAddToSeriesValue] = useState(true);
+  const [processedNFTMap, setProcessedNFTMap] = useState<
+    Map<NftEffectType, File | null>
+  >(new Map());
   const [isLoading, setIsLoading] = useState(false);
 
 
   const { categories, description, name, quantity, seriesId } = nftData;
 
   useEffect(() => {
-    setIsLoading(true)
+    setIsLoading(true);
     const timer = setTimeout(() => {
       if (!seriesId || seriesId === '') {
         setCanAddToSeriesValue(true);
-        setIsLoading(false)
+        setIsLoading(false);
       } else {
         checkAddToSerie();
       }
@@ -89,18 +92,18 @@ const Create = ({
   }, [seriesId, user]);
 
   const checkAddToSerie = async () => {
-    try{
+    try {
       if (user) {
         const canAdd = await canAddToSeries(seriesId, user.walletId);
         setCanAddToSeriesValue(canAdd);
       } else {
         setCanAddToSeriesValue(true);
       }
-      setIsLoading(false)
-    }catch(err){
+      setIsLoading(false);
+    } catch (err) {
       setCanAddToSeriesValue(false);
-      setIsLoading(false)
-      console.log(err)
+      setIsLoading(false);
+      console.log(err);
     }
   };
 
@@ -150,8 +153,12 @@ const Create = ({
 
   function initMintingNFT() {
     if (!user) throw new Error('Please login to create an NFT.');
-    if (!NFT && !(effect === NFT_EFFECT_DEFAULT))
-      throw new Error(`Elements are undefined NFT: ${JSON.stringify(NFT)} - effect: ${effect}`);
+    if (!(effect === NFT_EFFECT_DEFAULT)) {
+      const processedNFT = processedNFTMap.get(effect);
+      if (processedNFT === undefined || processedNFT === null)
+        throw new Error('Elements are undefined for the selected effect');
+      setNFT(processedNFT);
+    }
     setQRData!({
       ...QRData,
       quantity,
@@ -187,10 +194,12 @@ const Create = ({
           <NftPreview
             effect={effect}
             isRN={isRN}
+            processedNFTMap={processedNFTMap}
             secretNFT={secretNFT}
             setEffect={setEffect}
             setError={setError}
-            setNFT={setNFT}
+            setIsLoading={setIsLoading}
+            setProcessedNFTMap={setProcessedNFTMap}
             setSecretNFT={setSecretNFT}
           />
         </SNftPreviewWrapper>

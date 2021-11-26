@@ -171,7 +171,7 @@ const Create = ({
       setModalCreate(true);
     } catch (err) {
       console.error(err);
-      setTest(JSON.stringify(err))
+      setTest(err instanceof Error ? err.message : err as string)
       if (err instanceof Error) {
         setError(err.message);
       }

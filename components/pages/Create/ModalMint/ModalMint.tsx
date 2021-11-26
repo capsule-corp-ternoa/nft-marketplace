@@ -99,7 +99,6 @@ const ModalMint: React.FC<ModalProps> = ({
     });
     socket.once('PGPS_READY', async ({ publicPgpKeys }: { publicPgpKeys: string[] }) => {
       socket.emit('PGPS_READY_RECEIVED')
-      console.log(publicPgpKeys)
       setShowQR(false)
       setShowProgress(true)
       setStartUploadTime(new Date())

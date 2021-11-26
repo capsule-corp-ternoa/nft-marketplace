@@ -14,6 +14,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { NFTProps } from 'pages/create';
 import { navigateToSuccess } from 'utils/functions';
 import { addNFTsToCategories } from 'actions/nft';
+import { generateVideoThumbnail } from 'utils/imageProcessing/image';
 
 export interface ModalProps {
   error: string;
@@ -56,7 +57,10 @@ const ModalMint: React.FC<ModalProps> = ({
   const [stateSocket, setStateSocket] = useState<any>(null)
   const router = useRouter();
   const { categories, description, name, seriesId } = NFTData;
-  const progressQuantity = 1 + Number(quantity)
+  const progressQuantity = 1 + Number(quantity) + ((
+      (NFT && mime.lookup(NFT.name).toString().indexOf("video") !== -1) || 
+      (!NFT && secretNFT && mime.lookup(secretNFT.name).toString().indexOf("video") !== -1)
+    ) ? 1 : 0)
   const elapsedUploadTime = (startUploadTime && startUploadTime instanceof Date) ? (+new Date() - +startUploadTime) : 0
   const generalPercentage = () => {
     let percentage = 0
@@ -174,11 +178,26 @@ const ModalMint: React.FC<ModalProps> = ({
   async function uploadNFT(publicPGPs: string[], setProgressData?: Function) {
     try {
       if (!secretNFT) throw new Error();
-      const { hashOrURL: previewHash, mediaType } = await uploadIPFS(NFT ? NFT : secretNFT, setProgressData, 0);
+      let uploadIndex = 0
+      let videoThumbnailHash = ""
+      //Upload preview
+      const { hashOrURL: previewHash, mediaType } = await uploadIPFS(NFT ? NFT : secretNFT, setProgressData, uploadIndex);
+      //Upload thumbnail if video
+      if (mediaType.toString().indexOf("video") !== -1){
+        try{
+          uploadIndex += 1
+          const videoThumbnailFile =  await generateVideoThumbnail(NFT ? NFT : secretNFT);
+          const result = await uploadIPFS(videoThumbnailFile as File, setProgressData, uploadIndex);
+          videoThumbnailHash = result.hashOrURL
+        }catch(err){
+          console.log(err)
+        }
+      }
       const cryptedMediaType = mime.lookup(secretNFT.name)
+      //Encrypt and upload secrets
       //Parallel
       const cryptPromises = Array.from({ length: quantity ?? 0 }).map((_x, i) => {
-        return cryptAndUploadNFT(secretNFT, cryptedMediaType as string, publicPGPs[i] as string, setProgressData, 1 + i)
+        return cryptAndUploadNFT(secretNFT, cryptedMediaType as string, publicPGPs[i] as string, setProgressData, uploadIndex + 1 + i)
       })
       const cryptResults = await Promise.all(cryptPromises);
       /* SEQUENTIAL
@@ -193,7 +212,7 @@ const ModalMint: React.FC<ModalProps> = ({
         const data = {
           title: name,
           description,
-          image: previewHash,
+          image: videoThumbnailHash !== "" ? videoThumbnailHash : previewHash,
           properties: {
             publicPGP: publicPGPsIPFS[i].hashOrURL,
             preview: {

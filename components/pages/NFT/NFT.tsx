@@ -212,7 +212,7 @@ const NFTPage = ({
         <div className={style.Wrapper}>
           <SMediaWrapper className={style.NFT}>
             <Media
-              src={NFT.image!}
+              src={NFT.properties?.preview.ipfs!}
               type={type}
               alt="imgnft"
               draggable="false"

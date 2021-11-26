@@ -67,7 +67,7 @@ const NftCard: React.FC<NftCardProps> = ({
   useEffect(() => {
     async function callBack() {
       try {
-        let res = await fetch(item.image!, { method: 'HEAD' });
+        let res = await fetch(item.properties?.preview.ipfs!, { method: 'HEAD' });
         setType(res.headers.get('Content-Type'));
         return res;
       } catch (err) {
@@ -131,7 +131,7 @@ const NftCard: React.FC<NftCardProps> = ({
       onMouseOut={() => !isMobile && setIsHovering(false)}
     >
       <Media
-        src={item.image!}
+        src={item.properties?.preview.ipfs!}
         type={type}
         alt="imgnft"
         draggable="false"

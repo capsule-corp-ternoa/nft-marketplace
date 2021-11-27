@@ -19,15 +19,19 @@ const responsive = {
     items: 4.2,
   },
   tablet: {
-    breakpoint: { max: breakpointMap.xxl, min: breakpointMap.md },
+    breakpoint: { max: (breakpointMap.xxl - 1), min: breakpointMap.lg },
+    items: 3.8,
+  },
+  tablet2: {
+    breakpoint: { max: (breakpointMap.lg - 1), min: breakpointMap.md },
     items: 3.5,
   },
   mobile: {
-    breakpoint: { max: breakpointMap.md, min: breakpointMap.sm },
+    breakpoint: { max: (breakpointMap.md - 1), min: breakpointMap.sm },
     items: 2.4,
   },
   mobile2: {
-    breakpoint: { max: breakpointMap.sm, min: 0 },
+    breakpoint: { max: (breakpointMap.sm - 1), min: 0 },
     items: 1.8,
   },
 };
@@ -43,7 +47,7 @@ const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category, user, setUser }) =>
   const [isFiltered, setIsFiltered] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
 
-  const isMobile = useMediaQuery({ query: `(max-width: ${breakpointMap.md}px)` });
+  const isMobile = useMediaQuery({ query: `(max-width: ${breakpointMap.md - 1}px)` });
 
   let carousel: Carousel | null = new Carousel({
     responsive: {},

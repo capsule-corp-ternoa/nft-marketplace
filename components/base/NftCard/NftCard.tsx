@@ -89,7 +89,7 @@ const NftCard: React.FC<NftCardProps> = ({
       return style.NFT;
     }
   }
-  const isMobile = useMediaQuery({ query: `(max-width: ${breakpointMap.md}px)` });
+  const isMobile = useMediaQuery({ query: `(max-width: ${breakpointMap.md - 1}px)` });
   const isLargeDesktop = useMediaQuery({ query: `(min-width: ${breakpointMap.xxl}px)` });
 
   const handleLikeDislike = async (nftId: string, serieId: string) => {

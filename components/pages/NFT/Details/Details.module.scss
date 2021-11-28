@@ -279,6 +279,15 @@
     color: white;
   }
 }
+
+.loaderContainer{
+  text-align: center;
+}
+
+.loader{
+  width: 15%;
+}
+
 @media (max-width: 1300px) {
   .detailsMain {
     margin: 15px 60px;

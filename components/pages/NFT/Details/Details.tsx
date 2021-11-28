@@ -32,12 +32,14 @@ const Details: React.FC<DetailsProps> = ({
   isVR,
   canUserBuyAgain,
 }) => {
+  const loader = '/loader_theme.svg'
   const tabs = ["infos", "owners", "history", "bid"]
   const [currentTab, setCurrentTab] = useState(tabs[0]);
   const [usersData, setUsersData] = useState({} as any);
   const [serieDataGrouped, setSerieDataGrouped] = useState([] as NftType[]);
   const [serieDataCount, setSerieDataCount] = useState({} as any);
   const [historyData, setHistoryData] = useState<NFTTransferType[]>([])
+  const [historyLoading, setHistoryLoading] = useState(false)
   const serieData = NFT?.serieData || [];
   
   useEffect(() => {
@@ -137,10 +139,13 @@ const Details: React.FC<DetailsProps> = ({
 
   const loadHistoryData = async () => {
     try{
+      setHistoryLoading(true)
       const data:CustomResponse<NFTTransferType> = await getHistory(NFT.id, NFT.serieId, true)
       if (!data || !data.data) throw new Error("No data found")
       setHistoryData(data.data)
+      setHistoryLoading(false)
     }catch(err){
+      setHistoryLoading(false)
       console.log(err);
     }
   }
@@ -415,23 +420,29 @@ const Details: React.FC<DetailsProps> = ({
               </AutoSizer>
             </div>
           )}
-          {currentTab === 'history' && (
-            <div className={styleDetails.rowsContainers}>
-              <AutoSizer>
-                {({ width, height }) => (
-                  <List
-                    width={width}
-                    height={height}
-                    itemCount={historyData.length}
-                    itemSize={75}
-                    onItemsRendered={onRowRenderedHistory}
-                  >
-                    {historyRowData}
-                  </List>
-                )}
-              </AutoSizer>
-            </div>
-          )}
+          {currentTab === 'history' && 
+            (!historyLoading ? 
+              <div className={styleDetails.rowsContainers}>
+                <AutoSizer>
+                  {({ width, height }) => (
+                    <List
+                      width={width}
+                      height={height}
+                      itemCount={historyData.length}
+                      itemSize={75}
+                      onItemsRendered={onRowRenderedHistory}
+                    >
+                      {historyRowData}
+                    </List>
+                  )}
+                </AutoSizer>
+              </div>
+            :
+              <div className={styleDetails.loaderContainer}>
+                <img src={loader} className={styleDetails.loader}/>
+              </div>
+            )
+          }
           {currentTab === 'bid' && <div></div>}
         </div>
       </div>

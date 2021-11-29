@@ -37,7 +37,7 @@ const Chip = ({
     >
       {icon && <SIcon isIconOnly={text === undefined} name={icon} size={size} />}
       {text && (
-        <SText color={color} size={size}>
+        <SText color={color} size={size} suppressHydrationWarning>
           {text}
         </SText>
       )}

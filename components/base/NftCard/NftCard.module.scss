@@ -1,41 +1,5 @@
 @import "style/colors.scss";
 
-.NFT {
-  display: flex;
-  position: relative;
-  box-sizing: border-box;
-  border-radius: 12px;
-  background: linear-gradient(180deg, #f29fff 0%, #878cff 100%);
-  box-shadow: 0px 0px 14.5243px 5.0835px rgba(0, 0, 0, 0.15);
-  cursor: pointer;
-  overflow: hidden;
-  transform: translateZ(0);
-}
-
-.NFTGrid {
-  display: flex;
-  position: relative;
-  box-sizing: border-box;
-  border-radius: 12px;
-  background: linear-gradient(180deg, #f29fff 0%, #878cff 100%);
-  box-shadow: 0px 0px 14.5243px 5.0835px rgba(0, 0, 0, 0.15);
-  cursor: pointer;
-  overflow: hidden;
-  transform: translateZ(0);
-}
-
-.NFTProfile {
-  display: flex;
-  position: relative;
-  box-sizing: border-box;
-  border-radius: 12px;
-  background: linear-gradient(180deg, #f29fff 0%, #878cff 100%);
-  box-shadow: 0px 0px 14.5243px 5.0835px rgba(0, 0, 0, 0.15);
-  cursor: pointer;
-  overflow: hidden;
-  transform: translateZ(0);
-}
-
 .Container {
   display: flex;
   justify-content: space-between;

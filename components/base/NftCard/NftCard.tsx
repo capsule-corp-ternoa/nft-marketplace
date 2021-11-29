@@ -13,10 +13,11 @@ import { likeNFT, unlikeNFT } from 'actions/user';
 import { getNFT } from 'actions/nft';
 import { breakpointMap } from 'style/theme/base';
 
+export type ModeType = 'grid';
 export interface NftCardProps {
   className?: string;
   item: NftType;
-  mode: string;
+  mode?: ModeType;
   isDragging?: boolean;
   user?: UserType;
   setUser?: (u: UserType) => void
@@ -80,15 +81,6 @@ const NftCard: React.FC<NftCardProps> = ({
     callBack();
   }, []);
 
-  function manageClass() {
-    if (mode === 'grid') {
-      return style.NFTGrid;
-    } else if (mode === 'profile') {
-      return style.NFTProfile;
-    } else {
-      return style.NFT;
-    }
-  }
   const isMobile = useMediaQuery({ query: `(max-width: ${breakpointMap.md - 1}px)` });
   const isLargeDesktop = useMediaQuery({ query: `(min-width: ${breakpointMap.xxl}px)` });
 
@@ -126,7 +118,8 @@ const NftCard: React.FC<NftCardProps> = ({
   return (
     <SMediaWrapper
       onClick={() => !isDragging && Router.push(`/nft/${item.id}`)}
-      className={`${className} ${manageClass()}`}
+      className={className}
+      mode={mode}
       onFocus={() => false}
       onBlur={() => false}
       onMouseOver={() => !isMobile && setIsHovering(true)}
@@ -137,9 +130,9 @@ const NftCard: React.FC<NftCardProps> = ({
         type={type}
         alt="imgnft"
         draggable="false"
-        className={
-          `${style.NFTIMG} ${(type?.substr(0, 5) === 'image' && isHovering) ? style.ImgScaling : ""}`
-        }
+        className={`${style.NFTIMG} ${
+          type?.substr(0, 5) === 'image' && isHovering ? style.ImgScaling : ''
+        }`}
       />
       {Number(displayQuantity()) > 1 && (
         <SAvailableChipWrapper>
@@ -160,7 +153,7 @@ const NftCard: React.FC<NftCardProps> = ({
               color="whiteBlur"
               icon="secretCards"
               size="small"
-              text={isMobile ? undefined : "Secret"}
+              text={isMobile && mode !== 'grid' ? undefined : 'Secret'}
               variant="round"
             />
           </SSecretChipWrapper>
@@ -199,24 +192,26 @@ const NftCard: React.FC<NftCardProps> = ({
         }
       />
       <div className={isHovering ? `${style.Container}` : style.Hide}>
-        {isLiked!==undefined ? 
-          <div 
+        {isLiked !== undefined ? (
+          <div
             className={
-              isHovering ? 
-                `${style.Favorite} 
+              isHovering
+                ? `${style.Favorite} 
                  ${style.FadeSimple} 
-                 ${isLiked ? style.Favorited : ""} 
-                 ${likeLoading ? style.Disabled : ""}`
-              : 
-                style.Hide
+                 ${isLiked ? style.Favorited : ''} 
+                 ${likeLoading ? style.Disabled : ''}`
+                : style.Hide
             }
-            onClick={(e) => {e.stopPropagation(); handleLikeDislike(item.id, item.serieId);}}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleLikeDislike(item.id, item.serieId);
+            }}
           >
             <Heart className={style.HeartSVG} />
           </div>
-        :
-            <div></div>
-        }
+        ) : (
+          <div></div>
+        )}
         <div className={style.Infos}>
           <div
             onClick={(e) => manageRouting(e, item.creator)}
@@ -235,10 +230,11 @@ const NftCard: React.FC<NftCardProps> = ({
                 isHovering ? `${style.Author} ${style.Fade}` : style.Author
               }
             >
-              {item.creatorData?.name || `Ternoa #${item.creator.slice(0,5)}`}
+              {item.creatorData?.name || `Ternoa #${item.creator.slice(0, 5)}`}
             </div>
           </div>
-          {((item.smallestPrice && Number(item.smallestPrice)) || (item.smallestPriceTiime && Number(item.smallestPriceTiime))) &&
+          {((item.smallestPrice && Number(item.smallestPrice)) ||
+            (item.smallestPriceTiime && Number(item.smallestPriceTiime))) && (
             <SPriceWrapper className={isHovering ? style.FadeLong : ''}>
               <Chip
                 color="whiteBlur"
@@ -255,35 +251,67 @@ const NftCard: React.FC<NftCardProps> = ({
                       ` / `}
                     {item.smallestPriceTiime &&
                       Number(item.smallestPriceTiime) > 0 &&
-                      `${computeTiime(
-                        Number(item.smallestPriceTiime)
-                      )} TIIME`}
+                      `${computeTiime(Number(item.smallestPriceTiime))} TIIME`}
                   </>
                 }
                 variant="round"
               />
             </SPriceWrapper>
-          }
-      </div>
+          )}
+        </div>
       </div>
     </SMediaWrapper>
   );
 };
 
-const SMediaWrapper = styled.div`
-  height: ${({theme}) => theme.sizes.cardHeight.xs};
-  width: ${({theme}) => theme.sizes.cardWidth.xs};
+const SMediaWrapper = styled.div<{ mode?: ModeType }>`
+  display: flex;
+  position: relative;
+  box-sizing: border-box;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #f29fff 0%, #878cff 100%);
+  box-shadow: 0px 0px 14.5243px 5.0835px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  overflow: hidden;
+  transform: translateZ(0);
 
-  ${({ theme }) => theme.mediaQueries.md} {
-    height: ${({theme}) => theme.sizes.cardHeight.sm};
-    width: ${({theme}) => theme.sizes.cardWidth.sm};
-  }
+  ${({ mode, theme }) => {
+    switch (mode) {
+      case 'grid': {
+        return `
+          height: ${theme.sizes.cardHeight.md};
+          width: ${theme.sizes.cardWidth.md};
 
-  ${({ theme }) => theme.mediaQueries.xxl} {
-    height: ${({theme}) => theme.sizes.cardHeight.md};
-    width: ${({theme}) => theme.sizes.cardWidth.md};
-  }
-`
+          ${theme.mediaQueries.sm} {
+            height: ${theme.sizes.cardHeight.sm};
+            width: ${theme.sizes.cardWidth.sm};
+          }
+
+          ${theme.mediaQueries.xxl} {
+            height: ${theme.sizes.cardHeight.md};
+            width: ${theme.sizes.cardWidth.md};
+          }
+        `;
+      }
+      default: {
+        return `
+          height: ${theme.sizes.cardHeight.xs};
+          width: ${theme.sizes.cardWidth.xs};
+
+          ${theme.mediaQueries.md} {
+            height: ${theme.sizes.cardHeight.sm};
+            width: ${theme.sizes.cardWidth.sm};
+          }
+
+          ${theme.mediaQueries.xxl} {
+            height: ${theme.sizes.cardHeight.md};
+            width: ${theme.sizes.cardWidth.md};
+          }
+        `;
+      }
+    }
+  }}
+`;
 
 const SChipWrapper = styled.div`
   background: transparent;

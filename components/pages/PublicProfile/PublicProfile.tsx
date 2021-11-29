@@ -35,7 +35,7 @@ const PublicProfile = ({
   function returnNFTs() {
     return NFTS.map((item: NftType) => (
       <div key={item.id} className={style.NFTShell}>
-        <NFTCard mode="profile" item={item} user={user} setUser={setUser} />
+        <NFTCard mode="grid" item={item} user={user} setUser={setUser} />
       </div>
     ));
   }

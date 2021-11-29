@@ -16,33 +16,8 @@ export interface ArtCreatorsProps {
   setUser?: (u: UserType) => void
 }
 
-const ArtCreators: React.FC<ArtCreatorsProps> = ({
-  creators,
-  NFTs,
-  user, 
-  setUser
-}) => {
+const ArtCreators = ({ creators, NFTs, user, setUser }: ArtCreatorsProps) => {
   const [isFiltered, setIsFiltered] = useState(false);
-  function returnCreators() {
-    return creators.slice(0, 9).map((item, index) => (
-     <div key={index} className={style.CreatorItem}>
-          <Creator user={item} walletId={item.walletId} size="small"/>
-      </div>
-    ));
-  }
-
-  function returnNFTs() {
-    return NFTs.map((item) => (
-      <div key={item.id} className={style.NFTShell}>
-        <NFTCard 
-          mode="show" 
-          item={item} 
-          user={user}
-          setUser={setUser}
-        />
-      </div>
-    ));
-  }
 
   return (
     <>
@@ -69,9 +44,21 @@ const ArtCreators: React.FC<ArtCreatorsProps> = ({
           </div>
         </div>
         <div className={style.Bottom}>
-          <div className={style.NFTS}>{returnNFTs()}</div>
+          <div className={style.NFTS}>
+            {NFTs.map((item) => (
+              <div key={item.id} className={style.NFTShell}>
+                <NFTCard item={item} user={user} setUser={setUser} />
+              </div>
+            ))}
+          </div>
           <div className={style.CreatorsContainer}>
-            <div className={style.CreatorsInner}>{returnCreators()}</div>
+            <div className={style.CreatorsInner}>
+              {creators.slice(0, 9).map((item, index) => (
+                <div key={index} className={style.CreatorItem}>
+                  <Creator user={item} walletId={item.walletId} size="small" />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

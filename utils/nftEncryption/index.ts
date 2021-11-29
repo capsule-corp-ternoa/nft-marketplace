@@ -10,17 +10,29 @@ const cryptFilePgp = async (file: File, publicPGP: string) => {
   const buffer = Buffer.from(arrayBuffer);
   const content = buffer.toString("base64");
   const message = await openpgp.Message.fromText(content)
+//   const publicPGP = `-----BEGIN PGP PRIVATE KEY BLOCK-----
+
+// xVgEWxpFkRYJKwYBBAHaRw8BAQdAYjjZLkp4qG7KAqJeVQlxQT6uCPq6rylV02nC
+// c6D/a8YAAP0YtS4UeLzeJGSgjGTlvSd3TWEsjxdGyzwfHCOejXMRbg2+zSFVbmJv
+// dW5kIFVJRCA8dW5ib3VuZEBleGFtcGxlLm9yZz7HXQRbGkWREgorBgEEAZdVAQUB
+// AQdAfxbFuoNlm5KfoqaWICETfMljzVTDAtiSM0TYSHzGAz8DAQoJAAD/cuu7bxUE
+// goBAhIyVH+pmvWpuDJbfu1Vaj5KiQxsKxJgP/MJ+BBgWCgAwApsMBYJbGkWRBYkB
+// 3+IAFqEE30YL4fxJBMTm8ONLPOiTkVxEIS8JkDzok5FcRCEvAABb+gEAnQb/rMLO
+// Vz/bMCJoAShgybW1r6kRWejybzIjFSLnx/YA/iLZeo5UNdlXRJco+15RbFiNSAbw
+// VYGdb3eNlV8CfoEC
+// =FYbP
+// -----END PGP PRIVATE KEY BLOCK-----`;
   const publicKey = await openpgp.readKey({ armoredKey: publicPGP })
-  console.log(publicPGP)
-  /*console.log(publicKey)
+  /*console.log(publicPGP)
+  console.log(publicKey)
   console.log(publicKey.getCreationTime())
-  console.log(await publicKey.getExpirationTime())
   console.log(publicKey.toPublic())
   console.log(publicKey.getUserIds())
   console.log(publicKey.getKeyIds())
   console.log(publicKey.isPublic())
   console.log(publicKey.isPrivate())
   console.log(publicKey.toPublic())
+  console.log(await publicKey.getSigningKey())
   console.log(await publicKey.getPrimaryUser())*/
   const encrypted = await openpgp.encrypt({
     message,

@@ -209,6 +209,10 @@ const Create = ({
   };
 
   useEffect(() => {
+    setCoverNFT(null);
+  }, [secretNFT]);
+
+  useEffect(() => {
     setRN(window.isRNApp);
   }, []);
 

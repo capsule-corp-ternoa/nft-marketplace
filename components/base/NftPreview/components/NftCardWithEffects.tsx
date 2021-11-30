@@ -167,7 +167,7 @@ const NftCardWithEffects = ({
           {(!isTablet || coverNFT) && (
             <SChip
               color="whiteBlur"
-              icon="whiteWaterMark"
+              icon="fingerMark"
               size="medium"
               text="Secret"
               variant="round"

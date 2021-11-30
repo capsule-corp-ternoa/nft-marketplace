@@ -41,33 +41,33 @@ type QRDataType = {
 export interface CreateProps {
   categoriesOptions: CategoryType[];
   NFTData: NFTProps;
+  originalNFT: File | null;
   QRData: QRDataType;
-  secretNFT: File | null;
   user: UserType;
   setError: (err: string) => void;
   setModalExpand: (b: boolean) => void;
   setModalCreate: (b: boolean) => void;
-  setNFT: (f: File | null) => void;
   setNFTData: (o: NFTProps) => void;
+  setOriginalNFT: (f: File | null) => void;
   setOutput: (s: string[]) => void;
+  setPreviewNFT: (f: File | null) => void;
   setQRData: (data: QRDataType) => void;
-  setSecretNFT: (f: File | null) => void;
 }
 
 const Create = ({
   categoriesOptions,
   NFTData: initalValue,
+  originalNFT,
   QRData,
-  secretNFT,
   user,
   setError,
   setModalExpand,
   setModalCreate,
-  setNFT,
   setNFTData: setNftDataToParent,
+  setOriginalNFT,
   setOutput,
+  setPreviewNFT,
   setQRData,
-  setSecretNFT,
 }: CreateProps) => {
   const [blurValue, setBlurValue] = useState<number>(DEFAULT_BLUR_VALUE);
   const [coverNFT, setCoverNFT] = useState<File | null>(null); // Cover NFT used for secret effect
@@ -116,7 +116,7 @@ const Create = ({
     name &&
     description &&
     validateQuantity(quantity, 10) &&
-    secretNFT &&
+    originalNFT &&
     (effect !== NFT_EFFECT_SECRET || coverNFT) &&
     canAddToSeriesValue &&
     !isLoading;
@@ -157,10 +157,10 @@ const Create = ({
       if (!user) throw new Error('Please login to create an NFT.');
       setModalCreate(true);
 
-      if (secretNFT !== null) {
+      if (originalNFT !== null) {
         if (effect === NFT_EFFECT_BLUR || effect === NFT_EFFECT_PROTECT) {
           const processedNFT = await processFile(
-            secretNFT,
+            originalNFT,
             effect,
             setError,
             blurValue
@@ -169,11 +169,11 @@ const Create = ({
             throw new Error(
               `Elements are undefined after file processing using ${effect} effect.`
             );
-          setNFT(processedNFT);
+          setPreviewNFT(processedNFT);
         } else if (effect === NFT_EFFECT_SECRET) {
           if (coverNFT === null)
             throw new Error('Please add a cover NFT using a secret effect.');
-          setNFT(coverNFT);
+          setPreviewNFT(coverNFT);
         }
       }
 
@@ -210,7 +210,7 @@ const Create = ({
 
   useEffect(() => {
     setCoverNFT(null);
-  }, [secretNFT]);
+  }, [originalNFT]);
 
   useEffect(() => {
     setRN(window.isRNApp);
@@ -226,13 +226,13 @@ const Create = ({
             coverNFT={coverNFT}
             effect={effect}
             isRN={isRN}
-            secretNFT={secretNFT}
+            originalNFT={originalNFT}
             setBlurValue={setBlurValue}
             setCoverNFT={setCoverNFT}
             setEffect={setEffect}
             setError={setError}
             setIsLoading={setIsLoading}
-            setSecretNFT={setSecretNFT}
+            setOriginalNFT={setOriginalNFT}
           />
         </SNftPreviewWrapper>
         <SForm>

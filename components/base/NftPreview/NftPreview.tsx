@@ -24,13 +24,13 @@ interface Props {
   coverNFT: File | null;
   effect: NftEffectType;
   isRN?: boolean;
-  secretNFT: File | null;
+  originalNFT: File | null;
   setBlurValue: (n: number) => void;
   setCoverNFT: (f: File | null) => void;
   setEffect: (effect: NftEffectType) => void;
   setError: (err: string) => void;
   setIsLoading: (b: boolean) => void;
-  setSecretNFT: (f: File | null) => void;
+  setOriginalNFT: (f: File | null) => void;
 }
 
 const NFT_EFFECTS_ORDERED: NftEffectType[] = [
@@ -46,12 +46,12 @@ const NftPreview = ({
   coverNFT,
   effect,
   isRN,
-  secretNFT,
+  originalNFT,
   setBlurValue,
   setCoverNFT,
   setEffect,
   setError,
-  setSecretNFT,
+  setOriginalNFT,
 }: Props) => {
   const isMobile = useMediaQuery({
     query: `(max-width: ${breakpointMap.md}px)`,
@@ -75,14 +75,14 @@ const NftPreview = ({
       event,
       setError,
       (file: File) => {
-        setSecretNFT(file);
+        setOriginalNFT(file);
         setEffect(NFT_EFFECT_DEFAULT);
       },
       isRN
     );
   };
 
-  if (secretNFT === null) {
+  if (originalNFT === null) {
     return (
       <NftUpload
         className={className}
@@ -102,10 +102,10 @@ const NftPreview = ({
           <SEyeIcon />
           NFT Preview
         </Subtitle>
-        {secretNFT.name && (
+        {originalNFT.name && (
           <SReuploadWrapper>
             <NftUpload
-              content={secretNFT.name}
+              content={originalNFT.name}
               inputId="reUploadNft"
               isMinimal
               onChange={handleFileUpload}
@@ -121,7 +121,7 @@ const NftPreview = ({
               coverNFT={coverNFT}
               effect={effect}
               isRN={isRN}
-              secretNFT={secretNFT}
+              originalNFT={originalNFT}
               setBlurValue={setBlurValue}
               setCoverNFT={setCoverNFT}
               setEffect={setEffect}
@@ -132,7 +132,7 @@ const NftPreview = ({
             {(setSelectExpanded) => (
               <>
                 {NFT_EFFECTS_ORDERED.filter((effectType) =>
-                  handleAllowedEffect(secretNFT, effectType)
+                  handleAllowedEffect(originalNFT, effectType)
                 ).map(
                   (effectType, id) =>
                     effectType !== effect && (
@@ -155,7 +155,7 @@ const NftPreview = ({
       ) : (
         <SFieldset>
           {NFT_EFFECTS_ORDERED.filter((effectType) =>
-            handleAllowedEffect(secretNFT, effectType)
+            handleAllowedEffect(originalNFT, effectType)
           ).map((effectType) => (
             <SLabelWrapper key={effectType}>
               <SLabel
@@ -168,7 +168,7 @@ const NftPreview = ({
                     coverNFT={coverNFT}
                     effect={effectType}
                     isRN={isRN}
-                    secretNFT={secretNFT}
+                    originalNFT={originalNFT}
                     setBlurValue={setBlurValue}
                     setCoverNFT={setCoverNFT}
                     setEffect={setEffect}

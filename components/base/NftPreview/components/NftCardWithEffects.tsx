@@ -22,7 +22,7 @@ interface Props {
   className?: string;
   effect: NftEffectType;
   isRN?: boolean;
-  secretNFT: File;
+  originalNFT: File;
   setBlurValue: (v: number) => void;
   setCoverNFT: (f: File | null) => void;
   setEffect: (effect: NftEffectType) => void;
@@ -81,7 +81,7 @@ const NftCardWithEffects = ({
   coverNFT,
   effect,
   isRN,
-  secretNFT,
+  originalNFT,
   setBlurValue,
   setCoverNFT,
   setEffect,
@@ -116,7 +116,7 @@ const NftCardWithEffects = ({
 
   return (
     <SWrapper className={className}>
-      {returnType(secretNFT, effect === NFT_EFFECT_BLUR ? blurValue : 0)}
+      {returnType(originalNFT, effect === NFT_EFFECT_BLUR ? blurValue : 0)}
       {effect === NFT_EFFECT_BLUR && (
         <SSlider
           id="blurredSlider"
@@ -145,7 +145,7 @@ const NftCardWithEffects = ({
                     )}
                   </SecretUploadDescription>
                 }
-                inputId="uploadSecretNft"
+                inputId="uploadOriginalNft"
                 isRN={isRN}
                 isSecretOption
                 note={`JPEG, JPG, PNG, GIF ${
@@ -156,7 +156,7 @@ const NftCardWithEffects = ({
             ) : (
               <NftUpload
                 content={returnType(coverNFT)}
-                inputId="reUploadSecretNft"
+                inputId="reUploadOriginalNft"
                 isMinimal
                 isRN={isRN}
                 isSecretOption

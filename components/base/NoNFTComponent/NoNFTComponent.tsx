@@ -1,27 +1,44 @@
 import React from 'react';
-import style from './NoNFTComponent.module.scss';
-import NoNFTImage from 'components/assets/NoNFTImage';
+import styled from 'styled-components';
+import { Container, Wrapper } from 'components/layout';
+import Icon from 'components/ui/Icon';
 
-interface NoNFTComponentProps {
-}
-
-const Code: React.FC<NoNFTComponentProps> = () => {
+const Code = () => {
   return (
-    <div className={style.SoldOutWrapper}>
-    <div className={style.SoldOutContainer}>
-        <NoNFTImage className={style.SoldOutImage}/>
-        <div className={style.SoldOutTitle}>
-            All NFTs are sold !
-        </div>
-        <div className={style.SoldOutLabel}>
-            Come later to discover new NFTs.
-        </div>
-        <div className={style.SoldOutLabel}>
-            Thanks !
-        </div>
-    </div>
-    </div>
+    <Container>
+      <Wrapper>
+        <SIcon name="noNFTImage" />
+        <STitle>All NFTs are sold !</STitle>
+        <SBody>
+          Come later to discover new NFTs.
+          <br />
+          <br />
+          Thanks !
+        </SBody>
+      </Wrapper>
+    </Container>
   );
 };
+
+const SIcon = styled(Icon)`
+  width: 16rem;
+  height: auto;
+  margin: 0 auto;
+`;
+
+const STitle = styled.span`
+  color: ${({ theme }) => theme.colors.primary};
+  font-family: ${({ theme }) => theme.fonts.bold};
+  font-size: 1.6rem;
+  margin-top: 2.4rem;
+  text-align: center;
+`;
+
+const SBody = styled.span`
+  color: ${({ theme }) => theme.colors.contrast};
+  font-family: ${({ theme }) => theme.fonts.light};
+  font-size: 1.4rem;
+  text-align: center;
+`;
 
 export default Code;

@@ -135,7 +135,7 @@ const NftCardWithEffects = ({
               content={
                 <SecretUploadDescription>
                   <SecretUploadTopDescription>
-                    Drag your the preview of your secret.
+                    Upload the preview of your secret.
                   </SecretUploadTopDescription>
                   {!isTablet && <span>
                     Once purchased, the owner will be able to see your NFT
@@ -145,7 +145,7 @@ const NftCardWithEffects = ({
               inputId="uploadSecretNft"
               isRN={isRN}
               isSecretOption
-              note={`PNG, GIF, WEBP, MP4 or MP3. Max 30mb.`}
+              note={`JPEG, JPG, PNG, GIF ${!isRN ? ', MP4 or MOV' : ''}. Max 30mb.`}
               onChange={handleSecretFileUpload}
             />
           ) : (

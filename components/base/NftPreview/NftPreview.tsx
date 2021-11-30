@@ -53,7 +53,6 @@ const NftPreview = ({
   setError,
   setSecretNFT,
 }: Props) => {
-
   const isMobile = useMediaQuery({
     query: `(max-width: ${breakpointMap.md}px)`,
   });
@@ -261,14 +260,6 @@ const SFieldset = styled.fieldset`
   gap: 1.2rem;
   border: none;
   padding: 0;
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    gap: 0;
-  }
-
-  @media (min-width: 830px) {
-    gap: 1.2rem;
-  }
 `;
 
 const SLabelWrapper = styled.label<{ isSelected?: boolean }>`
@@ -278,10 +269,6 @@ const SLabelWrapper = styled.label<{ isSelected?: boolean }>`
   flex-direction: column;
 
   ${({ theme }) => theme.mediaQueries.md} {
-    width: 18rem;
-  }
-
-  @media (min-width: 830px) {
     flex: 1 1 0;
     max-width: 280px;
   }

@@ -87,7 +87,7 @@ const NftCardWithEffects = ({
   setEffect,
   setError,
 }: Props) => {
-
+  
   const isTablet = useMediaQuery({
     minWidth: breakpointMap.md,
     maxWidth: breakpointMap.lg - 1,
@@ -130,26 +130,30 @@ const NftCardWithEffects = ({
       {effect === NFT_EFFECT_PROTECT && <SIcon name="whiteWaterMark" />}
       {effect === NFT_EFFECT_SECRET && (
         <SSecretWrapper>
-          {coverNFT === null ? (
-            <NftUpload
-              content={
-                <SecretUploadDescription>
-                  <SecretUploadTopDescription>
-                    Upload the preview of your secret.
-                  </SecretUploadTopDescription>
-                  {!isTablet && <span>
-                    Once purchased, the owner will be able to see your NFT
-                  </span>}
-                </SecretUploadDescription>
-              }
-              inputId="uploadSecretNft"
-              isRN={isRN}
-              isSecretOption
-              note={`JPEG, JPG, PNG, GIF ${!isRN ? ', MP4 or MOV' : ''}. Max 30mb.`}
-              onChange={handleSecretFileUpload}
-            />
-          ) : (
-            <SCoverWrapper>
+          <SCoverWrapper>
+            {coverNFT === null ? (
+              <NftUpload
+                content={
+                  <SecretUploadDescription>
+                    <SecretUploadTopDescription>
+                      Upload the preview of your secret.
+                    </SecretUploadTopDescription>
+                    {!isTablet && (
+                      <span>
+                        Once purchased, the owner will be able to see your NFT
+                      </span>
+                    )}
+                  </SecretUploadDescription>
+                }
+                inputId="uploadSecretNft"
+                isRN={isRN}
+                isSecretOption
+                note={`JPEG, JPG, PNG, GIF ${
+                  !isRN ? ', MP4 or MOV' : ''
+                }. Max 30mb.`}
+                onChange={handleSecretFileUpload}
+              />
+            ) : (
               <NftUpload
                 content={returnType(coverNFT)}
                 inputId="reUploadSecretNft"
@@ -158,15 +162,17 @@ const NftCardWithEffects = ({
                 isSecretOption
                 onChange={handleSecretFileUpload}
               />
-            </SCoverWrapper>
+            )}
+          </SCoverWrapper>
+          {(!isTablet || coverNFT) && (
+            <SChip
+              color="whiteBlur"
+              icon="whiteWaterMark"
+              size="medium"
+              text="Secret"
+              variant="round"
+            />
           )}
-          {!isTablet && <SChip
-            color="whiteBlur"
-            icon="whiteWaterMark"
-            size="medium"
-            text="Secret"
-            variant="round"
-          />}
         </SSecretWrapper>
       )}
     </SWrapper>
@@ -177,10 +183,12 @@ const SWrapper = styled.div`
   width: 100%;
   border-radius: 1.2rem;
   max-width: 250px;
+  width: ${({ theme }) => theme.sizes.cardWidth.md};
   height: ${({ theme }) => theme.sizes.cardHeight.md};
   overflow: hidden;
 
   ${({ theme }) => theme.mediaQueries.md} {
+    width: auto;
     height: ${({ theme }) => theme.sizes.cardHeight.sm};
   }
 
@@ -191,11 +199,17 @@ const SWrapper = styled.div`
 
 const SCoverWrapper = styled.div`
   position: relative;
-  width: 100%;
-  height: 320px;
+  width: ${({ theme }) => theme.sizes.cardWidth.sm};
+  height: ${({ theme }) => theme.sizes.cardHeight.sm};
 
   ${({ theme }) => theme.mediaQueries.md} {
-    height: 290px;
+    width: ${({ theme }) => theme.sizes.cardWidth.xs};
+    height: ${({ theme }) => theme.sizes.cardHeight.xs};
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    width: ${({ theme }) => theme.sizes.cardWidth.sm};
+    height: ${({ theme }) => theme.sizes.cardHeight.sm};
   }
 `;
 
@@ -227,19 +241,16 @@ const SSecretWrapper = styled.div`
   height: auto;
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
-  padding: 3.2rem 3.2rem 0;
+  padding: 2.4rem 0 0;
 
   ${({ theme }) => theme.mediaQueries.md} {
-    padding: 2rem 2rem 0;
-  }
-
-  @media (min-width: 830px) {
-    padding: 2.4rem 2.4rem 0;
+    padding: 2rem 0 0;
   }
 
   ${({ theme }) => theme.mediaQueries.xl} {
-    padding: 3.2rem 3.2rem 0;
+    padding: 2.4rem 0 0;
   }
 `;
 
@@ -258,7 +269,7 @@ const SecretUploadTopDescription = styled.span`
 
 const SChip = styled(Chip)`
   width: fit-content;
-  margin: 2.4rem auto 0;
+  margin: 1.6rem auto 0;
 `;
 
 export default React.memo(NftCardWithEffects);

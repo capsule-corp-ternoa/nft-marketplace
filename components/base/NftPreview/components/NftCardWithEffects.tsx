@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useMediaQuery } from 'react-responsive';
 import styled, { css } from 'styled-components';
 import Icon from 'components/ui/Icon';
@@ -14,20 +14,19 @@ import {
 } from 'interfaces';
 import Chip from 'components/ui/Chip';
 import Slider from 'components/ui/Slider';
-import { processFile } from 'utils/imageProcessing/image';
 import { breakpointMap } from 'style/theme/base';
 
 interface Props {
   blurValue: number;
+  coverNFT: File | null;
   className?: string;
   effect: NftEffectType;
   isRN?: boolean;
-  processedNFTMap: Map<NftEffectType, File | null>;
   secretNFT: File;
   setBlurValue: (v: number) => void;
+  setCoverNFT: (f: File | null) => void;
   setEffect: (effect: NftEffectType) => void;
   setError: (err: string) => void;
-  setProcessedNFTMap: (m: Map<NftEffectType, File | null>) => void;
 }
 
 const DefaultEffect = css`
@@ -79,32 +78,26 @@ function returnType(NFTarg: File, blurredValue: number = 0) {
 const NftCardWithEffects = ({
   blurValue,
   className,
+  coverNFT,
   effect,
   isRN,
-  processedNFTMap,
   secretNFT,
   setBlurValue,
+  setCoverNFT,
   setEffect,
   setError,
-  setProcessedNFTMap,
 }: Props) => {
-  const [coverNFT, setCoverNFT] = useState<File | null>(null);
 
-  const isTablet = useMediaQuery({ minWidth: breakpointMap.md, maxWidth: breakpointMap.lg });
+  const isTablet = useMediaQuery({
+    minWidth: breakpointMap.md,
+    maxWidth: breakpointMap.lg - 1,
+  });
 
   const handleBlurredChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { target } = event;
     const newBlur = Number(target.value);
     setEffect(NFT_EFFECT_BLUR);
     setBlurValue(newBlur);
-  };
-
-  const handleBlurredProcess = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { target } = event;
-    const newBlur = Number(target.value);
-    processFile(secretNFT, effect, setError, newBlur).then((file) =>
-      setProcessedNFTMap(processedNFTMap.set(effect, file))
-    );
   };
 
   const handleSecretFileUpload = (
@@ -114,7 +107,6 @@ const NftCardWithEffects = ({
       event,
       setError,
       (file: File) => {
-        setProcessedNFTMap(processedNFTMap.set(NFT_EFFECT_SECRET, file));
         setCoverNFT(file);
         setEffect(NFT_EFFECT_SECRET);
       },
@@ -130,7 +122,6 @@ const NftCardWithEffects = ({
           id="blurredSlider"
           max={15}
           min={1}
-          onBlur={handleBlurredProcess}
           onChange={handleBlurredChange}
           step={1}
           value={blurValue}

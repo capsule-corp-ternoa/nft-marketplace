@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
 import Eye from 'components/assets/eye';
@@ -17,20 +17,19 @@ import {
   NFT_FILE_TYPE_VIDEO,
 } from 'interfaces';
 import { breakpointMap } from 'style/theme/base';
-import { processFile } from 'utils/imageProcessing/image';
-
-const DEFAULT_BLUR_VALUE = 5;
 
 interface Props {
+  blurValue: number;
   className?: string;
+  coverNFT: File | null;
   effect: NftEffectType;
   isRN?: boolean;
-  processedNFTMap: Map<NftEffectType, File | null>;
   secretNFT: File | null;
+  setBlurValue: (n: number) => void;
+  setCoverNFT: (f: File | null) => void;
   setEffect: (effect: NftEffectType) => void;
   setError: (err: string) => void;
   setIsLoading: (b: boolean) => void;
-  setProcessedNFTMap: (m: Map<NftEffectType, File | null>) => void;
   setSecretNFT: (f: File | null) => void;
 }
 
@@ -42,18 +41,18 @@ const NFT_EFFECTS_ORDERED: NftEffectType[] = [
 ];
 
 const NftPreview = ({
+  blurValue,
   className,
+  coverNFT,
   effect,
   isRN,
-  processedNFTMap,
   secretNFT,
+  setBlurValue,
+  setCoverNFT,
   setEffect,
   setError,
-  setIsLoading,
-  setProcessedNFTMap,
   setSecretNFT,
 }: Props) => {
-  const [blurValue, setBlurValue] = useState<number>(DEFAULT_BLUR_VALUE);
 
   const isMobile = useMediaQuery({
     query: `(max-width: ${breakpointMap.md}px)`,
@@ -83,22 +82,6 @@ const NftPreview = ({
       isRN
     );
   };
-
-  useEffect(() => {
-    if (
-      secretNFT !== null &&
-      (effect === NFT_EFFECT_BLUR || effect === NFT_EFFECT_PROTECT)
-    ) {
-      setIsLoading(true);
-      const timer = setTimeout(() => {
-        processFile(secretNFT, effect, setError, blurValue).then((file) => {
-          setProcessedNFTMap(processedNFTMap.set(effect, file));
-          setIsLoading(false);
-        });
-      }, 1000);
-      return () => clearTimeout(timer);
-    }
-  }, [effect]);
 
   if (secretNFT === null) {
     return (
@@ -136,14 +119,14 @@ const NftPreview = ({
           <SMobileCardWrapper>
             <NftCardWithEffects
               blurValue={blurValue}
+              coverNFT={coverNFT}
               effect={effect}
               isRN={isRN}
-              processedNFTMap={processedNFTMap}
               secretNFT={secretNFT}
               setBlurValue={setBlurValue}
+              setCoverNFT={setCoverNFT}
               setEffect={setEffect}
               setError={setError}
-              setProcessedNFTMap={setProcessedNFTMap}
             />
           </SMobileCardWrapper>
           <SSelect text={effect}>
@@ -183,14 +166,14 @@ const NftPreview = ({
                 <SCardWrapper isSelected={effect === effectType}>
                   <NftCardWithEffects
                     blurValue={blurValue}
+                    coverNFT={coverNFT}
                     effect={effectType}
                     isRN={isRN}
-                    processedNFTMap={processedNFTMap}
                     secretNFT={secretNFT}
                     setBlurValue={setBlurValue}
+                    setCoverNFT={setCoverNFT}
                     setEffect={setEffect}
                     setError={setError}
-                    setProcessedNFTMap={setProcessedNFTMap}
                   />
                 </SCardWrapper>
 

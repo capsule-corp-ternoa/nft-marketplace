@@ -36,9 +36,9 @@ const CreatePage = ({ categories, user }: CreatePageProps) => {
   const [error, setError] = useState('');
   const [modalExpand, setModalExpand] = useState(false);
   const [modalCreate, setModalCreate] = useState(false);
-  const [NFT, setNFT] = useState<File | null>(null);
+  const [NFT, setNFT] = useState<File | null>(null); //Crypted NFT
   const [output, setOutput] = useState<string[]>([]);
-  const [secretNFT, setSecretNFT] = useState<File | null>(null);
+  const [secretNFT, setSecretNFT] = useState<File | null>(null); //Public NFT
   const [uploadSize, setUploadSize] = useState(0);
   const [NFTData, setNFTData] = useState<NFTProps>({
     categories: [],
@@ -103,7 +103,6 @@ const CreatePage = ({ categories, user }: CreatePageProps) => {
         {isNftCreationEnabled && (
           <Create
             categoriesOptions={categories}
-            NFT={NFT}
             NFTData={NFTData}
             QRData={QRData}
             secretNFT={secretNFT}

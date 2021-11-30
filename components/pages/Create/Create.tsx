@@ -15,7 +15,9 @@ import {
 } from 'components/layout';
 import NftPreview from 'components/base/NftPreview';
 import {
+  NFT_EFFECT_BLUR,
   NFT_EFFECT_DEFAULT,
+  NFT_EFFECT_PROTECT,
   NFT_EFFECT_SECRET,
   CategoryType,
   NftEffectType,
@@ -27,6 +29,9 @@ import Tooltip from 'components/ui/Tooltip';
 
 import { NFTProps } from 'pages/create';
 import { canAddToSeries } from 'actions/nft';
+import { processFile } from 'utils/imageProcessing/image';
+
+const DEFAULT_BLUR_VALUE = 5;
 
 type QRDataType = {
   walletId: string;
@@ -35,7 +40,6 @@ type QRDataType = {
 
 export interface CreateProps {
   categoriesOptions: CategoryType[];
-  NFT: File | null;
   NFTData: NFTProps;
   QRData: QRDataType;
   secretNFT: File | null;
@@ -52,7 +56,6 @@ export interface CreateProps {
 
 const Create = ({
   categoriesOptions,
-  NFT,
   NFTData: initalValue,
   QRData,
   secretNFT,
@@ -66,15 +69,13 @@ const Create = ({
   setQRData,
   setSecretNFT,
 }: CreateProps) => {
+  const [blurValue, setBlurValue] = useState<number>(DEFAULT_BLUR_VALUE);
+  const [coverNFT, setCoverNFT] = useState<File | null>(null); // Cover NFT used for secret effect
   const [effect, setEffect] = useState<NftEffectType>(NFT_EFFECT_DEFAULT);
   const [isRN, setRN] = useState(false);
   const [nftData, setNFTData] = useState(initalValue);
   const [canAddToSeriesValue, setCanAddToSeriesValue] = useState(true);
-  const [processedNFTMap, setProcessedNFTMap] = useState<
-    Map<NftEffectType, File | null>
-  >(new Map());
   const [isLoading, setIsLoading] = useState(false);
-
 
   const { categories, description, name, quantity, seriesId } = nftData;
 
@@ -116,7 +117,7 @@ const Create = ({
     description &&
     validateQuantity(quantity, 10) &&
     secretNFT &&
-    (effect !== NFT_EFFECT_SECRET || NFT) &&
+    (effect !== NFT_EFFECT_SECRET || coverNFT) &&
     canAddToSeriesValue &&
     !isLoading;
 
@@ -151,36 +152,52 @@ const Create = ({
     setNftDataToParent(nextNftData);
   };
 
-  function initMintingNFT() {
+  const initMintingNFT = async () => {
     if (!user) throw new Error('Please login to create an NFT.');
-    if (!(effect === NFT_EFFECT_DEFAULT)) {
-      const processedNFT = processedNFTMap.get(effect);
-      if (processedNFT === undefined || processedNFT === null)
-        throw new Error('Elements are undefined for the selected effect');
-      setNFT(processedNFT);
+    setModalCreate(true);
+
+    if (secretNFT !== null) {
+      if (effect === NFT_EFFECT_BLUR || effect === NFT_EFFECT_PROTECT) {
+        const processedNFT = await processFile(
+          secretNFT,
+          effect,
+          setError,
+          blurValue
+        );
+        if (processedNFT === undefined || processedNFT === null)
+          throw new Error(
+            `Elements are undefined after file processing using ${effect} effect.`
+          );
+        setNFT(processedNFT);
+      } else if (effect === NFT_EFFECT_SECRET) {
+        if (coverNFT === null)
+          throw new Error('Please add a cover NFT using a secret effect.');
+        setNFT(coverNFT);
+      }
     }
-    setQRData!({
+
+    setQRData({
       ...QRData,
       quantity,
     });
-    setOutput!([quantity.toString()]);
-  }
+    setOutput([quantity.toString()]);
+  };
 
-  async function uploadFiles() {
+  const uploadFiles = async () => {
+    setOutput([]);
+    setError('');
+
     try {
-      setOutput([]);
-      setError('');
       initMintingNFT();
-      setModalCreate(true);
     } catch (err) {
       console.error(err);
       if (err instanceof Error) {
         setError(err.message);
-      }else{
-        setError(err as string)
+      } else {
+        setError(err as string);
       }
     }
-  }
+  };
 
   useEffect(() => {
     setRN(window.isRNApp);
@@ -192,14 +209,16 @@ const Create = ({
         <Title>Create your NFT</Title>
         <SNftPreviewWrapper>
           <NftPreview
+            blurValue={blurValue}
+            coverNFT={coverNFT}
             effect={effect}
             isRN={isRN}
-            processedNFTMap={processedNFTMap}
             secretNFT={secretNFT}
+            setBlurValue={setBlurValue}
+            setCoverNFT={setCoverNFT}
             setEffect={setEffect}
             setError={setError}
             setIsLoading={setIsLoading}
-            setProcessedNFTMap={setProcessedNFTMap}
             setSecretNFT={setSecretNFT}
           />
         </SNftPreviewWrapper>
@@ -295,7 +314,7 @@ const Create = ({
         </SAdvice>
         <SButton
           disabled={!(isDataValid && user)}
-          onClick={() => isDataValid && user && uploadFiles()}
+          onClick={uploadFiles}
           text="Create NFT"
         />
       </Wrapper>

@@ -153,34 +153,43 @@ const Create = ({
   };
 
   const initMintingNFT = async () => {
-    if (!user) throw new Error('Please login to create an NFT.');
-    setModalCreate(true);
+    try {
+      if (!user) throw new Error('Please login to create an NFT.');
+      setModalCreate(true);
 
-    if (secretNFT !== null) {
-      if (effect === NFT_EFFECT_BLUR || effect === NFT_EFFECT_PROTECT) {
-        const processedNFT = await processFile(
-          secretNFT,
-          effect,
-          setError,
-          blurValue
-        );
-        if (processedNFT === undefined || processedNFT === null)
-          throw new Error(
-            `Elements are undefined after file processing using ${effect} effect.`
+      if (secretNFT !== null) {
+        if (effect === NFT_EFFECT_BLUR || effect === NFT_EFFECT_PROTECT) {
+          const processedNFT = await processFile(
+            secretNFT,
+            effect,
+            setError,
+            blurValue
           );
-        setNFT(processedNFT);
-      } else if (effect === NFT_EFFECT_SECRET) {
-        if (coverNFT === null)
-          throw new Error('Please add a cover NFT using a secret effect.');
-        setNFT(coverNFT);
+          if (processedNFT === undefined || processedNFT === null)
+            throw new Error(
+              `Elements are undefined after file processing using ${effect} effect.`
+            );
+          setNFT(processedNFT);
+        } else if (effect === NFT_EFFECT_SECRET) {
+          if (coverNFT === null)
+            throw new Error('Please add a cover NFT using a secret effect.');
+          setNFT(coverNFT);
+        }
+      }
+
+      setQRData({
+        ...QRData,
+        quantity,
+      });
+      setOutput([quantity.toString()]);
+    } catch (err) {
+      console.error(err);
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError(err as string);
       }
     }
-
-    setQRData({
-      ...QRData,
-      quantity,
-    });
-    setOutput([quantity.toString()]);
   };
 
   const uploadFiles = async () => {

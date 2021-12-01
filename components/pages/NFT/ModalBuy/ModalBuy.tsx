@@ -34,7 +34,7 @@ const ModalBuy: React.FC<ModalBuyProps> = ({ setModalExpand, id, seriesId }) => 
 
     socket.on('CONNECTION_SUCCESS', () => {
       if (window.isRNApp) {
-        const data = { session, socketUrl: SOCKET_URL, nft_id: id };
+        const data = { session, socketUrl: SOCKET_URL, nft_id: id, series_id: seriesId };
         setLoading(true)
         setTimeout(function () {
           window.ReactNativeWebView.postMessage(JSON.stringify({ action: 'BUY', data }));
@@ -88,7 +88,7 @@ const ModalBuy: React.FC<ModalBuyProps> = ({ setModalExpand, id, seriesId }) => 
         </div>
         <div className={style.QR}>
           {showQR &&
-            <QRCode data={{ session, socketUrl: SOCKET_URL, nft_id: id }} action={'BUY'} />
+            <QRCode data={{ session, socketUrl: SOCKET_URL, nft_id: id, series_id: seriesId }} action={'BUY'} />
           }
           {loading && (
             <div className={style.Loading}>

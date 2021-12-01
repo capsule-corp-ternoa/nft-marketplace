@@ -18,12 +18,12 @@ import { generateVideoThumbnail } from 'utils/imageProcessing/image';
 
 export interface ModalProps {
   error: string;
-  NFT: File | null;
   NFTData: NFTProps;
+  originalNFT: File | null;
   output: string[];
+  previewNFT: File | null;
   QRData: any;
   runNFTMintData: any,
-  secretNFT: File | null;
   uploadSize: number;
   setError: (s: string) => void;
   setModalCreate: (b: boolean) => void;
@@ -32,12 +32,12 @@ export interface ModalProps {
 
 const ModalMint: React.FC<ModalProps> = ({
   error,
-  NFT,
   NFTData,
+  originalNFT,
   output,
+  previewNFT,
   QRData,
   runNFTMintData,
-  secretNFT,
   uploadSize,
   setError,
   setModalCreate,
@@ -58,8 +58,8 @@ const ModalMint: React.FC<ModalProps> = ({
   const router = useRouter();
   const { categories, description, name, seriesId } = NFTData;
   const progressQuantity = 1 + Number(quantity) + ((
-      (NFT && mime.lookup(NFT.name).toString().indexOf("video") !== -1) || 
-      (!NFT && secretNFT && mime.lookup(secretNFT.name).toString().indexOf("video") !== -1)
+      (previewNFT && mime.lookup(previewNFT.name).toString().indexOf("video") !== -1) || 
+      (!previewNFT && originalNFT && mime.lookup(originalNFT.name).toString().indexOf("video") !== -1)
     ) ? 1 : 0)
   const elapsedUploadTime = (startUploadTime && startUploadTime instanceof Date) ? (+new Date() - +startUploadTime) : 0
   const generalPercentage = () => {
@@ -102,30 +102,36 @@ const ModalMint: React.FC<ModalProps> = ({
       setShowQR(false)
       setShowProgress(true)
       setStartUploadTime(new Date())
-      const { categories, nftUrls, seriesId } = await uploadNFT(publicPgpKeys, setProgressData)
-      if (nftUrls.length > 0){
-        setRunNFTMintData({ categories, nftUrls, seriesId })
-        socket.emit('RUN_NFT_MINT', { categories, nftUrls, seriesId })
-        setShowProgress(false)
-        setProgressData([])
-        try {
-          await socketWaitForEvent(socket, 'RUN_NFT_MINT_RECEIVED')
-          // all ok
-        } catch (err) {
-          //The wallet timeout, we need retry
-          console.log(err)
-          setQrAction('MINT_RETRY')
-          setQrRetry(true)
-          if (isRN || window.isRNApp) {
-            setTimeout(function () {
-              window.ReactNativeWebView.postMessage(JSON.stringify({ action: qrAction, data: { session, socketUrl: SOCKET_URL, walletId, quantity, uploadSize } }));
-            }, 2000);
-          } else {
-            setShowQR(true);
+      try{
+        const { categories, nftUrls, seriesId } = await uploadNFT(publicPgpKeys, setProgressData)
+        if (nftUrls.length > 0){
+          setRunNFTMintData({ categories, nftUrls, seriesId })
+          socket.emit('RUN_NFT_MINT', { categories, nftUrls, seriesId })
+          setShowProgress(false)
+          setProgressData([])
+          try {
+            await socketWaitForEvent(socket, 'RUN_NFT_MINT_RECEIVED')
+            // all ok
+          } catch (err) {
+            //The wallet timeout, we need retry
+            console.log(err)
+            setQrAction('MINT_RETRY')
+            setQrRetry(true)
+            if (isRN || window.isRNApp) {
+              setTimeout(function () {
+                window.ReactNativeWebView.postMessage(JSON.stringify({ action: qrAction, data: { session, socketUrl: SOCKET_URL, walletId, quantity, uploadSize } }));
+              }, 2000);
+            } else {
+              setShowQR(true);
+            }
           }
+        }else{
+          throw new Error("no nfts url")
         }
-      }else{
+      } catch (err) {
+        socket.emit('RUN_NFT_MINT_ERROR')
         setError('Please try again.');
+        console.log(err);
       }
     });
     
@@ -175,70 +181,64 @@ const ModalMint: React.FC<ModalProps> = ({
   }, [runNFTMintData])
 
   async function uploadNFT(publicPGPs: string[], setProgressData?: Function) {
-    try {
-      if (!secretNFT) throw new Error();
-      let uploadIndex = 0
-      let videoThumbnailHash = ""
-      //Upload preview
-      const { hashOrURL: previewHash, mediaType } = await uploadIPFS(NFT ? NFT : secretNFT, setProgressData, uploadIndex);
-      //Upload thumbnail if video
-      if (mediaType.toString().indexOf("video") !== -1){
-        try{
-          uploadIndex += 1
-          const videoThumbnailFile =  await generateVideoThumbnail(NFT ? NFT : secretNFT);
-          const result = await uploadIPFS(videoThumbnailFile as File, setProgressData, uploadIndex);
-          videoThumbnailHash = result.hashOrURL
-        }catch(err){
-          console.log(err)
-        }
+    if (!originalNFT) throw new Error();
+    let uploadIndex = 0
+    let videoThumbnailHash = ""
+    //Upload preview
+    const { hashOrURL: previewHash, mediaType } = await uploadIPFS(previewNFT ?? originalNFT, setProgressData, uploadIndex);
+    //Upload thumbnail if video
+    if (mediaType.toString().indexOf("video") !== -1){
+      try{
+        uploadIndex += 1
+        const videoThumbnailFile =  await generateVideoThumbnail(previewNFT ?? originalNFT);
+        const result = await uploadIPFS(videoThumbnailFile as File, setProgressData, uploadIndex);
+        videoThumbnailHash = result.hashOrURL
+      }catch(err){
+        console.log(err)
       }
-      const cryptedMediaType = mime.lookup(secretNFT.name)
-      //Encrypt and upload secrets
-      //Parallel
-      const cryptPromises = Array.from({ length: quantity ?? 0 }).map((_x, i) => {
-        return cryptAndUploadNFT(secretNFT, cryptedMediaType as string, publicPGPs[i] as string, setProgressData, uploadIndex + 1 + i)
-      })
-      const cryptResults = await Promise.all(cryptPromises);
-      /* SEQUENTIAL
-      const cryptResults = [] as any
-      for (let i=0; i<quantity; i++){
-        const singleResult = await cryptAndUploadNFT(secretNFT, cryptedMediaType as string, publicPGPs[i] as string, setProgressData, 1+i)
-        cryptResults.push(singleResult)
-      }*/
-      const cryptNFTsJSONs = cryptResults.map((r: any) => r[0]);
-      const publicPGPsIPFS = cryptResults.map((r: any) => r[1]);
-      const results = cryptNFTsJSONs.map((result: any, i: number) => {
-        const data = {
-          title: name,
-          description,
-          image: videoThumbnailHash !== "" ? videoThumbnailHash : previewHash,
-          properties: {
-            publicPGP: publicPGPsIPFS[i].hashOrURL,
-            preview: {
-              ipfs: previewHash,
-              mediaType
-            },
-            cryptedMedia: {
-              ipfs: result.hashOrURL,
-              cryptedMediaType
-            }
-          },
-        }
-        const finalBlob = new Blob([JSON.stringify(data)], { type: 'application/json' })
-        const finalFile = new File([finalBlob], "final json")
-        return uploadIPFS(finalFile);
-      });
-      const JSONHASHES = (await Promise.all(results));
-      return {
-        categories: categories.map((x) => x.code),
-        nftUrls: JSONHASHES as any[],
-        seriesId: seriesId ? seriesId : uuidv4(),
-      };
-    } catch (err) {
-      if (setError !== undefined) setError('Please try again.');
-      console.log(err);
-      return { categories: [] as string[], nftUrls: [] as any[], seriesId: 0 };
     }
+    const cryptedMediaType = mime.lookup(originalNFT.name)
+    //Encrypt and upload secrets
+    //Parallel
+    const cryptPromises = Array.from({ length: quantity ?? 0 }).map((_x, i) => {
+      return cryptAndUploadNFT(originalNFT, cryptedMediaType as string, publicPGPs[i] as string, setProgressData, uploadIndex + 1 + i)
+    })
+    const cryptResults = await Promise.all(cryptPromises);
+    /* SEQUENTIAL
+    const cryptResults = [] as any
+    for (let i=0; i<quantity; i++){
+      const singleResult = await cryptAndUploadNFT(originalNFT, cryptedMediaType as string, publicPGPs[i] as string, setProgressData, 1+i)
+      cryptResults.push(singleResult)
+    }*/
+    const cryptNFTsJSONs = cryptResults.map((r: any) => r[0]);
+    const publicPGPsIPFS = cryptResults.map((r: any) => r[1]);
+    const results = cryptNFTsJSONs.map((result: any, i: number) => {
+      const data = {
+        title: name,
+        description,
+        image: videoThumbnailHash !== "" ? videoThumbnailHash : previewHash,
+        properties: {
+          publicPGP: publicPGPsIPFS[i].hashOrURL,
+          preview: {
+            ipfs: previewHash,
+            mediaType
+          },
+          cryptedMedia: {
+            ipfs: result.hashOrURL,
+            cryptedMediaType
+          }
+        },
+      }
+      const finalBlob = new Blob([JSON.stringify(data)], { type: 'application/json' })
+      const finalFile = new File([finalBlob], "final json")
+      return uploadIPFS(finalFile);
+    });
+    const JSONHASHES = (await Promise.all(results));
+    return {
+      categories: categories.map((x) => x.code),
+      nftUrls: JSONHASHES as any[],
+      seriesId: seriesId ? seriesId : uuidv4(),
+    };
   }
 
   const addCategories = async (creator: string, chainIds: string[], categories: string[]) => {

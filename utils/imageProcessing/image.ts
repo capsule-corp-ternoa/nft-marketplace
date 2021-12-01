@@ -24,11 +24,15 @@ export async function imgToWatermark(NFT: File | null) {
   const coeff = (ratio > 1 ? 1 / ratio : ratio) * NFT_CARD_SIZE_RATIO;
   const bgColor = '#ffffff';
   const protectedImage = new Jimp(imageWidth, imageHeight, bgColor);
-  const waterMarkSize = (ratio > 1 ? imageWidth / ratio : imageHeight) / 5;
+  const waterMarkSize =
+    ((ratio > 1 ? imageWidth / ratio : imageHeight) * NFT_CARD_SIZE_RATIO) / 4;
   const waterMarkMargin = waterMarkSize * NFT_CARD_SIZE_RATIO;
   const waterMarkMarginFromCenter = (ratio > 1 ? imageWidth : imageHeight) / 4;
 
   watermark = watermark.resize(waterMarkSize, waterMarkSize);
+  if (ratio < 0.4) {
+    watermark = watermark.resize(waterMarkSize / 2, waterMarkSize / 2);
+  }
 
   const xPos =
     imageWidth / 2 +
@@ -38,7 +42,7 @@ export async function imgToWatermark(NFT: File | null) {
   if (ratio > 1) {
     yPos = yPos + waterMarkMarginFromCenter * coeff;
   } else {
-    yPos = yPos + waterMarkMarginFromCenter * coeff * 2;
+    yPos = yPos + (waterMarkMarginFromCenter - waterMarkMargin) * coeff * 2;
   }
 
   protectedImage.composite(image, 0, 0);

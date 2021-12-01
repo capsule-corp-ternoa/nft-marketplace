@@ -253,7 +253,7 @@ const Profile = ({
     }
     return displayNFTs.map((item: NftType) => (
       <SNFTShell key={item.id} className={style.NFTShell}>
-        <SNFTCard
+        <NFTCard
           mode="grid"
           item={item}
           user={user}
@@ -536,24 +536,9 @@ const Profile = ({
     </div>
   );
 };
+
 const SNFTShell = styled.div`
   margin-bottom: 3.2rem;
-`;
-
-
-const SNFTCard = styled(NFTCard)`
-  height: ${({theme}) => theme.sizes.cardHeight.md};
-  width: ${({theme}) => theme.sizes.cardWidth.md};
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    height: ${({theme}) => theme.sizes.cardHeight.sm};
-    width: ${({theme}) => theme.sizes.cardWidth.sm};
-  }
-
-  ${({ theme }) => theme.mediaQueries.xxl} {
-    height: ${({theme}) => theme.sizes.cardHeight.md};
-    width: ${({theme}) => theme.sizes.cardWidth.md};
-  }
 `;
 
 export default Profile;

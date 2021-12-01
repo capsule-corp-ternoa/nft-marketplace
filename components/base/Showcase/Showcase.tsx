@@ -53,23 +53,10 @@ const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category, user, setUser }) =>
     responsive: {},
     children: <></>,
   });
-  function returnNFTs(key: string = 'show') {
-    return NFTs.map((item) => (
-      <div key={item.id} className={style.NFTShell}>
-        <NFTCard
-          mode={key}
-          isDragging={isDragging}
-          item={item}
-          user={user}
-          setUser={setUser}
-        />
-      </div>
-    ));
-  }
 
   return (
     <>
-      {NFTs?.length > 0 &&
+      {NFTs?.length > 0 && (
         <div className={style.Showcase}>
           <div className={style.Top}>
             <div className={style.Infos}>
@@ -122,28 +109,44 @@ const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category, user, setUser }) =>
               onTouchMove={() => setIsDragging(true)}
             >
               {isMobile ? (
-                <>{returnNFTs('show')}</>
+                NFTs.map((item) => (
+                  <div key={item.id} className={style.NFTShell}>
+                    <NFTCard
+                      isDragging={isDragging}
+                      item={item}
+                      user={user}
+                      setUser={setUser}
+                    />
+                  </div>
+                ))
               ) : (
-                  <>
-                    <Carousel
-                      ref={(el) => {
-                        carousel = el;
-                      }}
-                      responsive={responsive}
-                      infinite
-                      ssr={false}
-                      arrows={false}
-                      className={style.CarouselContainer}
-                      swipeable={true}
-                    >
-                      {returnNFTs('Carousel')}
-                    </Carousel>
-                  </>
-                )}
+                <Carousel
+                  ref={(el) => {
+                    carousel = el;
+                  }}
+                  responsive={responsive}
+                  infinite
+                  ssr={false}
+                  arrows={false}
+                  className={style.CarouselContainer}
+                  swipeable={true}
+                >
+                  {NFTs.map((item) => (
+                    <div key={item.id} className={style.NFTShell}>
+                      <NFTCard
+                        isDragging={isDragging}
+                        item={item}
+                        user={user}
+                        setUser={setUser}
+                      />
+                    </div>
+                  ))}
+                </Carousel>
+              )}
             </div>
           </div>
         </div>
-      }
+      )}
     </>
   );
 };

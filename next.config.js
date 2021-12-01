@@ -14,8 +14,6 @@ const moduleExports = {
 
     return config
   },
-
-  //target: 'experimental-serverless-trace'
 }
 
 const SentryWebpackPluginOptions = {

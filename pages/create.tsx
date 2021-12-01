@@ -36,9 +36,9 @@ const CreatePage = ({ categories, user }: CreatePageProps) => {
   const [error, setError] = useState('');
   const [modalExpand, setModalExpand] = useState(false);
   const [modalCreate, setModalCreate] = useState(false);
-  const [NFT, setNFT] = useState<File | null>(null);
+  const [previewNFT, setPreviewNFT] = useState<File | null>(null); // Public NFT media
   const [output, setOutput] = useState<string[]>([]);
-  const [secretNFT, setSecretNFT] = useState<File | null>(null);
+  const [originalNFT, setOriginalNFT] = useState<File | null>(null); // Crypted NFT media
   const [uploadSize, setUploadSize] = useState(0);
   const [NFTData, setNFTData] = useState<NFTProps>({
     categories: [],
@@ -61,12 +61,12 @@ const CreatePage = ({ categories, user }: CreatePageProps) => {
   }, [isNftCreationEnabled]);
 
   useEffect(() => {
-    if (secretNFT && quantity && Number(quantity) > 0) {
-      const previewSize = NFT ? NFT.size : secretNFT.size;
-      const secretsSize = secretNFT.size * Number(quantity);
-      setUploadSize(previewSize + secretsSize);
+    if (originalNFT && quantity && Number(quantity) > 0) {
+      const previewSize = previewNFT ? previewNFT.size : originalNFT.size;
+      const originalSize = originalNFT.size * Number(quantity);
+      setUploadSize(previewSize + originalSize);
     }
-  }, [quantity, NFT, secretNFT]);
+  }, [quantity, previewNFT, originalNFT]);
 
   return (
     <>
@@ -86,12 +86,12 @@ const CreatePage = ({ categories, user }: CreatePageProps) => {
         {modalCreate && (
           <ModalMint
             error={error}
-            NFT={NFT}
+            previewNFT={previewNFT}
             NFTData={NFTData}
             output={output}
             QRData={QRData}
             runNFTMintData={runNFTMintData}
-            secretNFT={secretNFT}
+            originalNFT={originalNFT}
             uploadSize={uploadSize}
             setError={setError}
             setModalCreate={setModalCreate}
@@ -103,19 +103,18 @@ const CreatePage = ({ categories, user }: CreatePageProps) => {
         {isNftCreationEnabled && (
           <Create
             categoriesOptions={categories}
-            NFT={NFT}
             NFTData={NFTData}
+            originalNFT={originalNFT}
             QRData={QRData}
-            secretNFT={secretNFT}
             user={user}
             setError={setError}
             setModalExpand={setModalExpand}
             setModalCreate={setModalCreate}
-            setNFT={setNFT}
             setNFTData={setNFTData}
             setOutput={setOutput}
+            setOriginalNFT={setOriginalNFT}
+            setPreviewNFT={setPreviewNFT}
             setQRData={setQRData}
-            setSecretNFT={setSecretNFT}
           />
         )}
       </>

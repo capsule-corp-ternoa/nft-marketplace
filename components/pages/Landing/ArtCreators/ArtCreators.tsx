@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Switch from 'react-switch';
 import style from './ArtCreators.module.scss';
 import Creator from 'components/base/Creator';
-import NFTCard from 'components/base/NftCard';
+import { NftCardWithHover } from 'components/base/NftCard';
 
 import Blaze from 'components/assets/blaze';
 
@@ -47,7 +47,7 @@ const ArtCreators = ({ creators, NFTs, user, setUser }: ArtCreatorsProps) => {
           <div className={style.NFTS}>
             {NFTs.map((item) => (
               <div key={item.id} className={style.NFTShell}>
-                <NFTCard item={item} user={user} setUser={setUser} />
+                <NftCardWithHover item={item} user={user} setUser={setUser} />
               </div>
             ))}
           </div>

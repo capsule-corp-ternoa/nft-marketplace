@@ -7,7 +7,7 @@ import { breakpointMap } from 'style/theme/base';
 
 import style from './Showcase.module.scss';
 
-import NFTCard from 'components/base/NftCard';
+import { NftCardWithHover } from 'components/base/NftCard';
 import ArrowLeft from 'components/assets/arrowLeft';
 import ArrowRight from 'components/assets/arrowRight';
 
@@ -111,7 +111,7 @@ const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category, user, setUser }) =>
               {isMobile ? (
                 NFTs.map((item) => (
                   <div key={item.id} className={style.NFTShell}>
-                    <NFTCard
+                    <NftCardWithHover
                       isDragging={isDragging}
                       item={item}
                       user={user}
@@ -133,7 +133,7 @@ const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category, user, setUser }) =>
                 >
                   {NFTs.map((item) => (
                     <div key={item.id} className={style.NFTShell}>
-                      <NFTCard
+                      <NftCardWithHover
                         isDragging={isDragging}
                         item={item}
                         user={user}

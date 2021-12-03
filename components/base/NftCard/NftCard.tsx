@@ -7,7 +7,7 @@ import { NftType } from 'interfaces/index';
 import style from './NftCard.module.scss';
 import Media from '../Media';
 
-export type ModeType = 'grid';
+export type ModeType = 'carousel' | 'grid';
 
 export interface NftCardProps {
   children?: React.ReactNode;
@@ -85,6 +85,17 @@ const SMediaWrapper = styled.div<{ mode?: ModeType }>`
 
   ${({ mode, theme }) => {
     switch (mode) {
+      case 'carousel': {
+        return `
+          height: ${theme.sizes.cardHeight.sm};
+          width: ${theme.sizes.cardWidth.sm};
+
+          ${theme.mediaQueries.xxl} {
+            height: ${theme.sizes.cardHeight.md};
+            width: ${theme.sizes.cardWidth.md};
+          }
+        `;
+      }
       case 'grid': {
         return `
           height: ${theme.sizes.cardHeight.md};

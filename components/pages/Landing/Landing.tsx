@@ -6,6 +6,7 @@ import ArtCreators from './ArtCreators';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
 import NoNFTComponent from 'components/base/NoNFTComponent';
+import { Container, Wrapper } from 'components/layout';
 import { UserType, NftType } from 'interfaces/index';
 import dynamic from 'next/dynamic';
 const Showcase = dynamic(() => import('../../base/Showcase'), {
@@ -16,6 +17,7 @@ export interface LandingProps {
   user: UserType;
   users: UserType[];
   setModalExpand: (b: boolean) => void;
+  heroNFTs: NftType[];
   popularNfts: NftType[];
   bestSellingNfts: NftType[];
   NFTCreators: NftType[];
@@ -26,25 +28,44 @@ const Landing = ({
   setModalExpand,
   user,
   users,
+  heroNFTs,
   popularNfts,
   bestSellingNfts,
   NFTCreators,
   totalCountNFT,
 }: LandingProps) => {
   const [walletUser, setWalletUser] = useState(user);
+
   return (
-    <div className={style.Container}>
-      <Hero users={users} />
-      {totalCountNFT === 0 && <NoNFTComponent/>}
-      <Showcase category="Most popular" NFTs={popularNfts} user={walletUser} setUser={setWalletUser} />
-      <Showcase category="Best sellers" NFTs={bestSellingNfts} user={walletUser} setUser={setWalletUser}/>
-      <ArtCreators NFTs={NFTCreators} creators={users} user={walletUser} setUser={setWalletUser}/>
-      <Link href="/explore">
-        <a className={style.Button}>See more</a>
-      </Link>
+    <Container>
+      <Wrapper>
+        {heroNFTs.length === 3 && <Hero NFTs={heroNFTs} />}
+        {totalCountNFT === 0 && <NoNFTComponent />}
+        <Showcase
+          category="Most popular"
+          NFTs={popularNfts}
+          user={walletUser}
+          setUser={setWalletUser}
+        />
+        <Showcase
+          category="Best sellers"
+          NFTs={bestSellingNfts}
+          user={walletUser}
+          setUser={setWalletUser}
+        />
+        <ArtCreators
+          NFTs={NFTCreators}
+          creators={users}
+          user={walletUser}
+          setUser={setWalletUser}
+        />
+        <Link href="/explore">
+          <a className={style.Button}>See more</a>
+        </Link>
+      </Wrapper>
       <Footer />
       <FloatingHeader user={walletUser} setModalExpand={setModalExpand} />
-    </div>
+    </Container>
   );
 };
 

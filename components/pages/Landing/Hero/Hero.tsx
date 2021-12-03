@@ -77,7 +77,7 @@ const SHeroContainer = styled.div`
     padding: 0 3.2rem 0 6.4rem;
   }
 
-  ${({ theme }) => theme.mediaQueries.xl} {
+  ${({ theme }) => theme.mediaQueries.xxl} {
     padding: 0 4rem 0 10.4rem;
   }
 `;

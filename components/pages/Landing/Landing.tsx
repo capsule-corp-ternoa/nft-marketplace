@@ -41,18 +41,24 @@ const Landing = ({
       <Wrapper>
         {heroNFTs.length === 3 && <Hero NFTs={heroNFTs} />}
         {totalCountNFT === 0 && <NoNFTComponent />}
+      </Wrapper>
+      <Wrapper>
         <Showcase
           category="Most popular"
           NFTs={popularNfts}
           user={walletUser}
           setUser={setWalletUser}
         />
+      </Wrapper>
+      <Wrapper>
         <Showcase
           category="Best sellers"
           NFTs={bestSellingNfts}
           user={walletUser}
           setUser={setWalletUser}
         />
+      </Wrapper>
+      <Wrapper>
         <ArtCreators
           NFTs={NFTCreators}
           creators={users}

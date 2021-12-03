@@ -13,20 +13,30 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  padding: 3.2rem 2.4rem;
+  padding: 3.2rem;
+
+  &:not(:first-child) {
+    padding-top: 5.4rem;
+  }
 
   ${({ theme }) => theme.mediaQueries.md} {
-    padding: 6.4rem 3.2rem;
+    padding: 6.4rem 4rem 0;
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    &:not(:first-child) {
+      padding-top: 8.8rem;
+    }
   }
 
   ${({ theme }) => theme.mediaQueries.xl} {
-    padding: 9.6rem 4.8rem;
-  }
-
-  ${({ theme }) => theme.mediaQueries.xxl} {
     max-width: 1440px;
     // TODO: Use xxl breakpoint when its value is 1440px
     // max-width: ${breakpointMap.xxl}px;
-    padding: 9.6rem;
+    padding: 9.6rem 6.4rem 0;
+
+    &:not(:first-child) {
+      padding-top: 16rem;
+    }
   }
 `;

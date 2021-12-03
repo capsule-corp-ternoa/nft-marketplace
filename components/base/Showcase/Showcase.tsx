@@ -20,7 +20,7 @@ const responsive = {
   },
   tablet: {
     breakpoint: { max: (breakpointMap.xxl - 1), min: breakpointMap.lg },
-    items: 3.8,
+    items: 4.2,
   },
   tablet2: {
     breakpoint: { max: (breakpointMap.lg - 1), min: breakpointMap.md },

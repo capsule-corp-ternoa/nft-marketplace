@@ -380,7 +380,16 @@ const NFTPage = ({
           />
         </div>
       </div>
-      {byTheSameArtistNFTs.length>0 && <Showcase category="By the same artist" NFTs={byTheSameArtistNFTs} user={user} setUser={setUser} />}
+      {byTheSameArtistNFTs.length > 0 && (
+        <SShowcaseWrapper>
+          <Showcase
+            category="By the same artist"
+            NFTs={byTheSameArtistNFTs}
+            user={user}
+            setUser={setUser}
+          />
+        </SShowcaseWrapper>
+      )}
       <Footer />
       <FloatingHeader user={user} setModalExpand={setModalExpand} />
       {modalShareOpen && (
@@ -434,6 +443,21 @@ const SCategoriesWrapper = styled.div`
   ${({ theme }) => theme.mediaQueries.md} {
     justify-content: start;
     margin: 0;
+  }
+`
+
+const SShowcaseWrapper = styled.div`
+  width: 100%;
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 3.2rem 4rem 6.4rem;
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    padding: 3.2rem 9.6rem 6.4rem;
+  }
+
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    padding: 3.2rem 2.4rem 6.4rem;
   }
 `
 

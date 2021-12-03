@@ -138,7 +138,7 @@ const SWrapper = styled.div`
       })`};
   }
 
-  ${({ theme }) => theme.mediaQueries.xl} {
+  ${({ theme }) => theme.mediaQueries.xxl} {
     > #input-0:checked ~ #nft-2,
     #input-1:checked ~ #nft-0,
     #input-2:checked ~ #nft-1 {
@@ -150,13 +150,7 @@ const SWrapper = styled.div`
     #input-2:checked ~ #nft-0 {
       transform: translatex(${OFFSET_LG * 100}%) scale(0.9);
     }
-    width: ${({ theme }) =>
-      `calc(${theme.sizes.cardWidth.sm} + ${theme.sizes.cardWidth.sm} * ${
-        OFFSET_LG * 2
-      })`};
-  }
 
-  ${({ theme }) => theme.mediaQueries.xxl} {
     height: ${({ theme }) =>
       `calc(${
         theme.sizes.cardHeight.md

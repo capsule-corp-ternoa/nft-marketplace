@@ -2,10 +2,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-left: auto;
-  margin-right: auto;
   box-sizing: border-box;
-  padding: 60px 0px;
   align-items: center;
   justify-content: center;
 }
@@ -110,11 +107,6 @@
     line-height: 16px;
   }
 
-  .Showcase {
-    width: 900px;
-    padding: 35px 0px;
-  }
-
   .CarouselContainer {
     overflow-y: visible;
     padding: 20px 0px;
@@ -130,10 +122,6 @@
   .Label {
     font-size: 12px;
     line-height: 15px;
-  }
-  .Showcase {
-    width: auto;
-    margin: 0 24px;
   }
 }
 

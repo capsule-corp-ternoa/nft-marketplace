@@ -33,11 +33,14 @@ const Chip = ({
       color={color}
       isDeletable={!!onDelete}
       size={size}
+      suppressHydrationWarning
       variant={variant}
     >
-      {icon && <SIcon isIconOnly={text === undefined} name={icon} size={size} />}
+      {icon && (
+        <SIcon isIconOnly={text === undefined} name={icon} size={size} />
+      )}
       {text && (
-        <SText color={color} size={size} suppressHydrationWarning>
+        <SText color={color} size={size}>
           {text}
         </SText>
       )}
@@ -68,10 +71,11 @@ const SChipContainer = styled.div<IChip>`
     size === 'small' ? '0.4rem 1.2rem' : '0.8rem 1.2rem'};
 `;
 
-const SIcon = styled(Icon)<{ isIconOnly: boolean, size: 'small' | 'medium' }>`
+const SIcon = styled(Icon)<{ isIconOnly: boolean; size: 'small' | 'medium' }>`
   width: ${({ size }) => (size === 'small' ? '1.2rem' : '2rem')};
   height: ${({ size }) => (size === 'small' ? '1.2rem' : '2rem')};
-  margin-right: ${({ isIconOnly, size }) => isIconOnly ? 0 : (size === 'small' ? '0.4rem' : '0.8rem')};
+  margin-right: ${({ isIconOnly, size }) =>
+    isIconOnly ? 0 : size === 'small' ? '0.4rem' : '0.8rem'};
 `;
 
 const SText = styled.div<IChip>`

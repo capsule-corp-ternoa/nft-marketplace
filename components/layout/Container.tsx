@@ -10,13 +10,14 @@ export const Container = styled.div`
 
 export const Wrapper = styled.div`
   width: 100%;
+  max-width: 128rem;
   display: flex;
   flex-direction: column;
   margin: 0 auto;
   padding: 3.2rem;
 
   &:not(:first-child) {
-    padding-top: 5.4rem;
+    padding-top: 5.6rem;
   }
 
   ${({ theme }) => theme.mediaQueries.md} {
@@ -30,7 +31,6 @@ export const Wrapper = styled.div`
   }
 
   ${({ theme }) => theme.mediaQueries.xl} {
-    max-width: 1440px;
     // TODO: Use xxl breakpoint when its value is 1440px
     // max-width: ${breakpointMap.xxl}px;
     padding: 9.6rem 6.4rem 0;

@@ -182,7 +182,8 @@ const SWrapper = styled.div`
   position: relative;
   width: 100%;
   border-radius: 1.2rem;
-  max-width: 250px;
+  margin: 0 auto;
+  max-width: 25rem;
   width: ${({ theme }) => theme.sizes.cardWidth.md};
   height: ${({ theme }) => theme.sizes.cardHeight.md};
   overflow: hidden;

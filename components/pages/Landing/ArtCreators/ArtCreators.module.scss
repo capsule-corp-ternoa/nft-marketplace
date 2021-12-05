@@ -67,6 +67,7 @@
 .NFTS {
   display: flex;
   box-sizing: border-box;
+  gap: 2.4rem;
 }
 
 .SwitchShell {
@@ -83,6 +84,7 @@
   padding: 14px;
   box-sizing: border-box;
   flex: 1;
+  margin-left: 2.4rem;
 }
 
 .CreatorsInner {
@@ -96,10 +98,6 @@
 .CreatorItem {
   box-sizing: border-box;
   margin: 0px 6px;
-}
-
-.NFTShell {
-  margin-right: 40px;
 }
 
 .Hide {
@@ -118,6 +116,7 @@
     padding: 24px 32px;
     height: auto;
     margin-top: 40px;
+    margin-left: 0;
   }
 
   .CreatorsInner {
@@ -129,10 +128,7 @@
     width: 100%;
     align-items: center;
     display: flex;
-  }
-
-  .NFTShell {
-    margin: 0px 18px;
+    gap: 3.2rem;
   }
 
   .Title {
@@ -176,16 +172,8 @@
     padding: 24px 0px;
   }
 
-  .NFTShell {
-    margin: 0px 16px;
-  }
-
-  .NFTShell:nth-child(1) {
-    margin-left: 0px;
-  }
-
   .CreatorsInner {
-    justify-content: flex-start;
+    justify-content: center;
   }
 }
 

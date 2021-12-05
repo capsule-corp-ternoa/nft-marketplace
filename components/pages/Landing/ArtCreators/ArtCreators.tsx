@@ -44,13 +44,15 @@ const ArtCreators = ({ creators, NFTs, user, setUser }: ArtCreatorsProps) => {
           </div>
         </div>
         <div className={style.Bottom}>
-          <div className={style.NFTS}>
-            {NFTs.map((item) => (
-              <div key={item.id} className={style.NFTShell}>
-                <NftCardWithHover item={item} user={user} setUser={setUser} />
+          {NFTs?.length > 0 && (
+              <div className={style.NFTS}>
+                {NFTs.map((item) => (
+                  <div key={item.id} className={style.NFTShell}>
+                    <NftCardWithHover item={item} user={user} setUser={setUser} />
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+            )}
           <div className={style.CreatorsContainer}>
             <div className={style.CreatorsInner}>
               {creators.slice(0, 9).map((item, index) => (

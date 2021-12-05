@@ -42,33 +42,39 @@ const Landing = ({
         {heroNFTs.length === 3 && <Hero NFTs={heroNFTs} />}
         {totalCountNFT === 0 && <NoNFTComponent />}
       </Wrapper>
-      <Wrapper>
-        <Showcase
-          category="Most popular"
-          NFTs={popularNfts}
-          user={walletUser}
-          setUser={setWalletUser}
-        />
-      </Wrapper>
-      <Wrapper>
-        <Showcase
-          category="Best sellers"
-          NFTs={bestSellingNfts}
-          user={walletUser}
-          setUser={setWalletUser}
-        />
-      </Wrapper>
-      <Wrapper>
-        <ArtCreators
-          NFTs={NFTCreators}
-          creators={users}
-          user={walletUser}
-          setUser={setWalletUser}
-        />
-        <Link href="/explore">
-          <a className={style.Button}>See more</a>
-        </Link>
-      </Wrapper>
+      {popularNfts?.length > 0 && (
+        <Wrapper>
+          <Showcase
+            category="Most popular"
+            NFTs={popularNfts}
+            user={walletUser}
+            setUser={setWalletUser}
+          />
+        </Wrapper>
+      )}
+      {bestSellingNfts?.length > 0 && (
+        <Wrapper>
+          <Showcase
+            category="Best sellers"
+            NFTs={bestSellingNfts}
+            user={walletUser}
+            setUser={setWalletUser}
+          />
+        </Wrapper>
+      )}
+      {users?.length > 0 && (
+        <Wrapper>
+          <ArtCreators
+            NFTs={NFTCreators}
+            creators={users}
+            user={walletUser}
+            setUser={setWalletUser}
+          />
+          <Link href="/explore">
+            <a className={style.Button}>See more</a>
+          </Link>
+        </Wrapper>
+      )}
       <Footer />
       <FloatingHeader user={walletUser} setModalExpand={setModalExpand} />
     </Container>

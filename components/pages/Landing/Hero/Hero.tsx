@@ -113,7 +113,6 @@ const STitle = styled.span`
   color: ${({ theme }) => theme.colors.contrast};
   font-family: ${({ theme }) => theme.fonts.bold};
   font-size: 2.4rem;
-  min-height: 6.4rem;
   text-align: center;
 
   ${({ theme }) => theme.mediaQueries.sm} {
@@ -125,7 +124,6 @@ const STitle = styled.span`
   }
 
   ${({ theme }) => theme.mediaQueries.lg} {
-    min-height: 13.2rem;
     text-align: left;
   }
 `;

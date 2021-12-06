@@ -7,7 +7,7 @@ import { useMediaQuery } from 'react-responsive';
 import Media from '../Media';
 import Heart from 'components/assets/heart';
 import Chip from 'components/ui/Chip';
-import { NftType, UserType } from 'interfaces/index';
+import { INFTLike, NftType, UserType } from 'interfaces/index';
 import { computeCaps, computeTiime } from 'utils/strings';
 import { likeNFT, unlikeNFT } from 'actions/user';
 import { getNFT } from 'actions/nft';
@@ -86,25 +86,34 @@ const NftCard: React.FC<NftCardProps> = ({
 
   const handleLikeDislike = async (nftId: string, serieId: string) => {
     try{
-      let res = null
+      let res: INFTLike | null = null
       if (!likeLoading && isLiked !== undefined && user){
         setLikeLoading(true)
         if (!isLiked){
-          res = await likeNFT(user.walletId, nftId, serieId)
+          res = await likeNFT(user.walletId, nftId, serieId) as INFTLike
         }else{
-          res = await unlikeNFT(user.walletId, nftId, serieId)
+          res = await unlikeNFT(user.walletId, nftId, serieId) as INFTLike
         }
       }
-      if (res !== null && setUser){
-        setUser({...user, ...res})
+      console.log(res)
+      if (res !== null && setUser && user){
+        let newUser = user
+        if (newUser.likedNFTs){
+          if (!isLiked){
+            newUser.likedNFTs.push(res)
+          }else{
+            newUser.likedNFTs = newUser?.likedNFTs.filter(x => x.walletId !== res?.walletId && x.nftId !== res?.nftId && x.serieId !== res?.serieId)
+          }
+          setUser(newUser)
+        }
         if (likedNfts && setLikedNfts){
-          if (isLiked){
+          if (!isLiked){
+            let newlyLikedNFT = await getNFT(nftId)
+            if (newlyLikedNFT) setLikedNfts([...likedNfts, newlyLikedNFT])
+          }else{
             setLikedNfts(
               likedNfts.filter(x => x.id !== nftId)
             )
-          }else{
-            let newlyLikedNFT = await getNFT(nftId)
-            if (newlyLikedNFT) setLikedNfts([...likedNfts, newlyLikedNFT])
           }
         }
       }

@@ -1,10 +1,10 @@
 import React from 'react';
 
 interface SoundOnProps {
-  className: string;
+  className?: string;
 }
 
-const SoundOn: React.FC<SoundOnProps> = ({ className }) => (
+const SoundOn = ({ className }: SoundOnProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     className={className}

@@ -15,7 +15,7 @@
   margin-right: auto;
   justify-content: center;
   box-sizing: border-box;
-  padding: 60px 0;
+  padding: 60px 0 20px 0;
 }
 
 .Wrapper {
@@ -32,8 +32,6 @@
   display: flex;
   position: relative;
   box-sizing: border-box;
-  width: 420px;
-  height: 672px;
   overflow: hidden;
   background: linear-gradient(180deg, #f29fff 0%, #878cff 100%);
   box-shadow: 0px 0px 14.5243px 5.0835px rgba(0, 0, 0, 0.15);
@@ -266,19 +264,21 @@
 .AvailbleText {
   color: #b1b1b1;
   background-color: white;
-  border: solid 1px white;
   font-size: 16px;
   padding: 0 10px;
   font-family: 'Airbnb Cereal App book';
   display: flex;
+  height: 25px;
 }
 .AvailbleCards {
   width: 15px;
   margin-right: 5px;
 }
+.AvailableTextContent{
+  align-self: center;
+}
 .AvailableBackLine {
   width: 50%;
-  margin: 10px 0;
   border-bottom: solid 1px #b1b1b1;
   position: absolute;
   z-index: -1;
@@ -319,7 +319,7 @@
 @media (max-width: 1300px) {
   .MainWrapper {
     width: 980px;
-    padding: 40px 0;
+    padding: 40px 0 20px 0;
   }
   .Wrapper {
     width: 980px;
@@ -327,15 +327,6 @@
   }
 
   .NFT {
-    display: flex;
-    position: relative;
-    box-sizing: border-box;
-    width: 300px;
-    height: 480px;
-    overflow: hidden;
-    background: linear-gradient(180deg, #f29fff 0%, #878cff 100%);
-    box-shadow: 0px 0px 14.5243px 5.0835px rgba(0, 0, 0, 0.15);
-    border-radius: 12px;
     margin-right: 60px;
   }
 
@@ -344,12 +335,6 @@
     flex-direction: column;
     box-sizing: border-box;
     width: 500px;
-  }
-
-  .Title {
-    font-size: 34px;
-    line-height: 38px;
-    max-width: 350px;
   }
 
   .Views {
@@ -396,7 +381,7 @@
 @media (max-width: 1000px) {
   .MainWrapper {
     width: 100%;
-    padding: 30px 24px;
+    padding: 30px 24px 20px 24px;
   }
   .Wrapper {
     width: 100%;

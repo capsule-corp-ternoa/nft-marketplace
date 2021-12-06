@@ -36,7 +36,7 @@ const Modal: React.FC<ModalProps> = ({
             <ClickAwayListener onClickAway={() => setExp(0)}>
               <div className={style.NFT}>
                 <Media
-                  src={NFT.media.url}
+                  src={NFT.properties?.preview.ipfs!}
                   type={type}
                   alt="imgnft"
                   draggable="false"
@@ -60,7 +60,7 @@ const Modal: React.FC<ModalProps> = ({
 
               <div className={style.Section}>
                 <div className={style.Insight}>You are about to purchase :</div>
-                <div className={style.Infos}>{NFT.name}</div>
+                <div className={style.Infos}>{NFT.title}</div>
               </div>
 
               <div className={style.PricingContainer}>

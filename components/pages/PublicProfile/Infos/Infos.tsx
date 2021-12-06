@@ -7,23 +7,25 @@ import gradient from 'random-gradient';
 import { middleEllipsis } from 'utils/strings';
 import { UserType } from 'interfaces';
 import { follow, unfollow, isUserFollowing, getFollowedCount, getFollowersCount } from 'actions/follower';
+import { clipboardCopy } from 'utils/functions';
 
 export interface InfosProps {
   profile: UserType;
   setProfile: (u: UserType) => void;
+  profileWalletId: string;
   user: UserType;
 }
 
-const Infos: React.FC<InfosProps> = ({ profile, setProfile, user }) => {
+const Infos: React.FC<InfosProps> = ({ profile, setProfile, profileWalletId,  user }) => {
   const [isUserFollowingProfile, setIsUserFollowingProfile] = useState<boolean | null>(null)
   const [followLoading, setFollowLoading] = useState(false)
   const [profileFollowersCount, setProfileFollowersCount] = useState(0)
   const [profileFollowedCount, setProfileFollowedCount] = useState(0)
-  const bgGradient = profile ? { background: gradient(profile.name) } : {};
+  const bgGradient = { background: gradient(profile?.name || profileWalletId) };
 
   const handleFollowUnfollow = async (isUnfollow:boolean=false) => {
     try {
-      if (!followLoading){
+      if (profile && !followLoading){
         setFollowLoading(true)
         let res = !isUnfollow ? await follow(profile.walletId, user.walletId) : await unfollow(profile.walletId, user.walletId);
         if (res) {
@@ -41,7 +43,7 @@ const Infos: React.FC<InfosProps> = ({ profile, setProfile, user }) => {
 
   const getIsUserFollowingProfile = async () => {
     try{
-      let res = await isUserFollowing(profile.walletId, user.walletId)
+      let res = await isUserFollowing(profileWalletId, user.walletId)
       if (res) {
         setIsUserFollowingProfile(res.isFollowing)
       }
@@ -84,7 +86,7 @@ const Infos: React.FC<InfosProps> = ({ profile, setProfile, user }) => {
       <div className={style.Container}>
         <div className={style.AvatarShell}>
           <div className={style.Avatar}>
-            {profile.picture ? (
+            {profile?.picture ? (
               <img
                 src={profile.picture}
                 draggable="false"
@@ -92,32 +94,32 @@ const Infos: React.FC<InfosProps> = ({ profile, setProfile, user }) => {
               />
             ) : (
               <div style={bgGradient} className={style.AvatarIMG}>
-                <div className={style.CreatorLetter}>{profile.name.charAt(0)}</div>
+                <div className={style.CreatorLetter}>{profile?.name.charAt(0) || 'T'}</div>
               </div>
             )}
-            {profile.verified && <Badge className={style.Badge} />}
+            {profile?.verified && <Badge className={style.Badge} />}
           </div>
         </div>
         <div className={style.ContainerInner}>
           <div className={style.Left}>
-            <h1 className={style.Name}>{profile.name}</h1>
-            {profile.twitterName && (
+            <h1 className={style.Name}>{profile?.name || `Ternoa #${profileWalletId.slice(0,5)}`}</h1>
+            {profile?.twitterName && (
               <a href={"https://twitter.com/"+profile.twitterName.substring(1)} target="_blank" className={style.Twitter}>
                 <Twitter onClick={() => true} className={style.TwitterSVG} />
                 {profile.twitterName}
               </a>
             )}
-            <div className={style.Description}>{profile.bio}</div>
+            <div className={style.Description}>{profile?.bio}</div>
           </div>
           <div className={style.Right}>
             <div className={style.Top}>
               <div
                 className={style.Address}
                 onClick={() => {
-                  navigator.clipboard.writeText(profile.walletId);
+                  clipboardCopy(profileWalletId);
                 }}
               >
-                {middleEllipsis(profile.walletId, 20)}
+                {middleEllipsis(profileWalletId, 20)}
                 <CopyPaste className={style.CopyPaste} />
               </div>
               {(user?.walletId && profile?.walletId && user.walletId!==profile.walletId && isUserFollowingProfile!==null) &&
@@ -126,13 +128,15 @@ const Infos: React.FC<InfosProps> = ({ profile, setProfile, user }) => {
                 </div>
               }
             </div>
-            <div className={style.Bottom}>
-              <span className={style.Bold}>{profileFollowersCount}</span>followers
-              <span className={style.Separator}>·</span>
-              <span className={style.Bold}>{profileFollowedCount}</span>following
-              <span className={style.Separator}>·</span>
-              <span className={style.Bold}>{profile.viewsCount}</span>views
-            </div>
+            {profile &&
+              <div className={style.Bottom}>
+                <span className={style.Bold}>{profileFollowersCount}</span>followers
+                <span className={style.Separator}>·</span>
+                <span className={style.Bold}>{profileFollowedCount}</span>following
+                <span className={style.Separator}>·</span>
+                <span className={style.Bold}>{profile.viewsCount}</span>views
+              </div>
+            }
           </div>
         </div>
       </div>

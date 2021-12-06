@@ -17,6 +17,7 @@ import {
   TwitterIcon,
   WhatsappIcon
 } from 'react-share';
+import { clipboardCopy } from 'utils/functions';
 
 export interface ModalWalletProps {
   setModalExpand: (b: boolean) => void;
@@ -85,7 +86,7 @@ const ModalShare: React.FC<ModalWalletProps> = ({ setModalExpand, title, subject
         </WhatsappShareButton>
       </div>
       <div className={style.UrlCopyContainer} onClick={() => {
-        navigator.clipboard.writeText(url);
+        clipboardCopy(url);
       }}>
         <div className={style.Url}>{url}</div>
         <div className={style.CopyPaste}>

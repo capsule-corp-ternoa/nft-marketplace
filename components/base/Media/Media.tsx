@@ -44,10 +44,12 @@ const Media: React.FC<MediaProps & Record<string,any>> = ({
   } 
   useEffect(()=>{
     checkSrcAvailable()
-  }, [])
+  }, [src])
   useEffect(()=>{
-    if (fetchStatusOk) 
+    if (fetchStatusOk){
       setMediaSrc(src)
+      setFetchStatusOk(false)
+    }
   }, [fetchStatusOk])
   return (
     <>

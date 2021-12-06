@@ -1,11 +1,11 @@
 import React from 'react';
 
 interface FranceProps {
-  className: string;
-  onClick: React.MouseEventHandler<SVGSVGElement>;
+  className?: string;
+  onClick?: React.MouseEventHandler<SVGSVGElement>;
 }
 
-const France: React.FC<FranceProps> = ({ className, onClick }) => (
+const France = ({ className, onClick }: FranceProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     className={className}

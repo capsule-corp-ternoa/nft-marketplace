@@ -8,7 +8,7 @@ import FloatingHeader from 'components/base/FloatingHeader';
 import NoNFTComponent from 'components/base/NoNFTComponent';
 import { UserType, NftType } from 'interfaces/index';
 import dynamic from 'next/dynamic';
-const Showcase = dynamic(() => import('./Showcase'), {
+const Showcase = dynamic(() => import('../../base/Showcase'), {
   ssr: false,
 });
 
@@ -16,23 +16,21 @@ export interface LandingProps {
   user: UserType;
   users: UserType[];
   setModalExpand: (b: boolean) => void;
-  setNotAvailable: (b: boolean) => void;
   popularNfts: NftType[];
   bestSellingNfts: NftType[];
   NFTCreators: NftType[];
   totalCountNFT: number;
 }
 
-const Landing: React.FC<LandingProps> = ({
+const Landing = ({
   setModalExpand,
-  setNotAvailable,
   user,
   users,
   popularNfts,
   bestSellingNfts,
   NFTCreators,
   totalCountNFT,
-}) => {
+}: LandingProps) => {
   const [walletUser, setWalletUser] = useState(user);
   return (
     <div className={style.Container}>
@@ -44,7 +42,7 @@ const Landing: React.FC<LandingProps> = ({
       <Link href="/explore">
         <a className={style.Button}>See more</a>
       </Link>
-      <Footer setNotAvailable={setNotAvailable} />
+      <Footer />
       <FloatingHeader user={walletUser} setModalExpand={setModalExpand} />
     </div>
   );

@@ -3,6 +3,7 @@ import Switch from 'react-switch';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import { useMediaQuery } from 'react-responsive';
+import { breakpointMap } from 'style/theme/base';
 
 import style from './Showcase.module.scss';
 
@@ -14,32 +15,24 @@ import { NftType, UserType } from 'interfaces/index';
 
 const responsive = {
   desktop: {
-    breakpoint: { max: 3000, min: 1330 },
+    breakpoint: { max: 3000, min: breakpointMap.xxl },
     items: 4.2,
   },
-  desktop2: {
-    breakpoint: { max: 1330, min: 950 },
+  tablet: {
+    breakpoint: { max: (breakpointMap.xxl - 1), min: breakpointMap.lg },
     items: 3.8,
   },
-  tablet: {
-    breakpoint: { max: 950, min: 830 },
+  tablet2: {
+    breakpoint: { max: (breakpointMap.lg - 1), min: breakpointMap.md },
     items: 3.5,
   },
-  tablet2: {
-    breakpoint: { max: 830, min: 600 },
-    items: 3,
-  },
-  mobile2: {
-    breakpoint: { max: 600, min: 530 },
+  mobile: {
+    breakpoint: { max: (breakpointMap.md - 1), min: breakpointMap.sm },
     items: 2.4,
   },
-  mobile3: {
-    breakpoint: { max: 530, min: 450 },
-    items: 2,
-  },
-  mobile4: {
-    breakpoint: { max: 450, min: 0 },
-    items: 1.5,
+  mobile2: {
+    breakpoint: { max: (breakpointMap.sm - 1), min: 0 },
+    items: 1.8,
   },
 };
 
@@ -54,29 +47,16 @@ const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category, user, setUser }) =>
   const [isFiltered, setIsFiltered] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
 
-  const isMobile = useMediaQuery({ query: '(max-width: 720px)' });
+  const isMobile = useMediaQuery({ query: `(max-width: ${breakpointMap.md - 1}px)` });
 
   let carousel: Carousel | null = new Carousel({
     responsive: {},
     children: <></>,
   });
-  function returnNFTs(key: string = 'show') {
-    return NFTs.map((item) => (
-      <div key={item.id} className={style.NFTShell}>
-        <NFTCard
-          mode={key}
-          isDragging={isDragging}
-          item={item}
-          user={user}
-          setUser={setUser}
-        />
-      </div>
-    ));
-  }
 
   return (
     <>
-      { NFTs?.length > 0 &&
+      {NFTs?.length > 0 && (
         <div className={style.Showcase}>
           <div className={style.Top}>
             <div className={style.Infos}>
@@ -129,28 +109,44 @@ const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category, user, setUser }) =>
               onTouchMove={() => setIsDragging(true)}
             >
               {isMobile ? (
-                <>{returnNFTs('show')}</>
+                NFTs.map((item) => (
+                  <div key={item.id} className={style.NFTShell}>
+                    <NFTCard
+                      isDragging={isDragging}
+                      item={item}
+                      user={user}
+                      setUser={setUser}
+                    />
+                  </div>
+                ))
               ) : (
-                  <>
-                    <Carousel
-                      ref={(el) => {
-                        carousel = el;
-                      }}
-                      responsive={responsive}
-                      infinite
-                      ssr={false}
-                      arrows={false}
-                      className={style.CarouselContainer}
-                      swipeable={true}
-                    >
-                      {returnNFTs('Carousel')}
-                    </Carousel>
-                  </>
-                )}
+                <Carousel
+                  ref={(el) => {
+                    carousel = el;
+                  }}
+                  responsive={responsive}
+                  infinite
+                  ssr={false}
+                  arrows={false}
+                  className={style.CarouselContainer}
+                  swipeable={true}
+                >
+                  {NFTs.map((item) => (
+                    <div key={item.id} className={style.NFTShell}>
+                      <NFTCard
+                        isDragging={isDragging}
+                        item={item}
+                        user={user}
+                        setUser={setUser}
+                      />
+                    </div>
+                  ))}
+                </Carousel>
+              )}
             </div>
           </div>
         </div>
-      }
+      )}
     </>
   );
 };

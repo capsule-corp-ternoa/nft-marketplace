@@ -1,5 +1,3 @@
-import crypto from 'crypto'
-import gen from 'random-seed'
 import * as openpgp from 'openpgp'
 import mime from 'mime-types'
 import TernoaIpfsApi from './ipfs.helper'
@@ -7,27 +5,23 @@ import { ipfsGatewayUri } from './ipfs.const';
 
 const ipfsApi = new TernoaIpfsApi();
 
-export const generateSeriesId = (fileHash: string) => {
-  const serieGen = gen.create(fileHash)
-  const serieId = serieGen.intBetween(0, 4294967295)
-  return serieId
-}
-
-export const getFilehash = async (file: File) => {
-  const hash = crypto.createHash('sha256');
-  const arrayBuffer = await file.arrayBuffer()
-  const buffer = Buffer.from(arrayBuffer)
-  hash.update(buffer)
-  const fileHash = hash.digest('hex');
-  return fileHash;
-}
-
 const cryptFilePgp = async (file: File, publicPGP: string) => {
   const arrayBuffer = await file.arrayBuffer()
   const buffer = Buffer.from(arrayBuffer);
   const content = buffer.toString("base64");
   const message = await openpgp.Message.fromText(content)
   const publicKey = await openpgp.readKey({ armoredKey: publicPGP })
+  /*console.log(publicPGP)
+  console.log(publicKey)
+  console.log(publicKey.getCreationTime())
+  console.log(publicKey.toPublic())
+  console.log(publicKey.getUserIds())
+  console.log(publicKey.getKeyIds())
+  console.log(publicKey.isPublic())
+  console.log(publicKey.isPrivate())
+  console.log(publicKey.toPublic())
+  console.log(await publicKey.getSigningKey())
+  console.log(await publicKey.getPrimaryUser())*/
   const encrypted = await openpgp.encrypt({
     message,
     publicKeys: publicKey
@@ -62,13 +56,13 @@ export const cryptAndUploadNFT = async (
   })
 }
 
-export const uploadIPFS = async(file: File, setProgressData?: Function, progressIndex?:number) => {
+export const uploadIPFS = async(file: File, setProgressData?: Function, progressIndex?:number, getLink: boolean=false) => {
   try{
     const mediaType = mime.lookup(file.name);
     const result = await ipfsApi.addFile(file, setProgressData, progressIndex);
     if (result && (result as any).Hash) {
       return {
-        url: `${ipfsGatewayUri}/${(result as any).Hash}`,
+        hashOrURL: getLink ? `${ipfsGatewayUri}/${(result as any).Hash}` : (result as any).Hash,
         mediaType
       };
     } else {

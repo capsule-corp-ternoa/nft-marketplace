@@ -4,16 +4,14 @@ import BetaBanner from 'components/base/BetaBanner';
 import MainHeader from 'components/base/MainHeader';
 import Landing from 'components/pages/Landing';
 import TernoaWallet from 'components/base/TernoaWallet';
-import NotAvailableModal from 'components/base/NotAvailable';
-import Cookies from 'js-cookie';
 import arrayShuffle from 'array-shuffle';
 import cookies from 'next-cookies';
 
 import { getUser, getUsers } from 'actions/user';
-import { getCategoryNFTs } from 'actions/nft';
+import { getNFTs } from 'actions/nft';
 import { NftType, UserType } from 'interfaces';
 import { NextPageContext } from 'next';
-import { encryptCookie, decryptCookie } from 'utils/cookie';
+import { decryptCookie, setUserFromDApp } from 'utils/cookie';
 
 export interface LandingProps {
   user: UserType;
@@ -23,49 +21,21 @@ export interface LandingProps {
   NFTCreators: NftType[];
   totalCountNFT: number;
 }
-const LandingPage: React.FC<LandingProps> = ({
+const LandingPage = ({
   user,
   users,
   popularNfts,
   bestSellingNfts,
   NFTCreators,
   totalCountNFT,
-}) => {
+}: LandingProps) => {
   const [modalExpand, setModalExpand] = useState(false);
-  const [notAvailable, setNotAvailable] = useState(false);
-  const [walletUser, setWalletUser] = useState<UserType | null>(user);
+  const [walletUser, setWalletUser] = useState(user);
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    if (
-      window.isRNApp &&
-      window.walletId &&
-      (!Cookies.get('token') ||
-        decryptCookie(Cookies.get('token') as string) !== window.walletId)
-    ) {
-      if (
-        params.get('walletId') &&
-        params.get('walletId') !== window.walletId
-      ) {
-        resetUser();
-      }
-      Cookies.remove('token');
-      setUser();
-      Cookies.set('token', encryptCookie(window.walletId), { expires: 1 });
-    }
-    if (!window.isRNApp && params.get('walletId')) {
-      resetUser();
-    }
+    setUserFromDApp(setWalletUser)
   }, []);
-
-  const resetUser = () => {
-    setWalletUser(null);
-  }
-  const setUser = async () => {
-    const user = await getUser(window.walletId);
-    setWalletUser(user);
-  };
-
+  
   return (
     <>
       <Head>
@@ -81,7 +51,6 @@ const LandingPage: React.FC<LandingProps> = ({
         <meta property="og:image" content="ternoa-social-banner.jpg" />
       </Head>
       {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
-      {notAvailable && <NotAvailableModal setNotAvailable={setNotAvailable} />}
       <BetaBanner />
       <MainHeader
         user={walletUser as UserType}
@@ -89,7 +58,6 @@ const LandingPage: React.FC<LandingProps> = ({
       />
       <Landing
         setModalExpand={setModalExpand}
-        setNotAvailable={setNotAvailable}
         user={walletUser as UserType}
         users={users}
         popularNfts={popularNfts}
@@ -110,7 +78,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
   const promises = [];
   promises.push(
     new Promise<void>((success) => {
-      getUsers()
+      getUsers(undefined,true)
         .then((result) => {
           users = result.data;
           success();
@@ -132,7 +100,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
   }
   promises.push(
     new Promise<void>((success) => {
-      getCategoryNFTs(undefined, '1', '19', true)
+      getNFTs(undefined, '1', '19', true, true)
         .then((result) => {
           regularNfts = result.data;
           success();

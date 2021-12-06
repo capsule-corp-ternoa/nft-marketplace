@@ -12,30 +12,30 @@ export interface PublicProfileProps {
   setUser?: (u: UserType) => void;
   profile: UserType;
   setProfile: (u: UserType) => void;
+  profileWalletId: string;
   NFTS: NftType[];
-  setNotAvailable: (b: boolean) => void;
   setModalExpand: (b: boolean) => void;
   loadMore: () => void;
   hasNextPage: boolean;
   loading: boolean;
 }
 
-const PublicProfile: React.FC<PublicProfileProps> = ({
+const PublicProfile = ({
   user,
   setUser,
   profile,
   setProfile,
+  profileWalletId,
   NFTS,
   setModalExpand,
-  setNotAvailable,
   loadMore,
   hasNextPage,
   loading,
-}) => {
+}: PublicProfileProps) => {
   function returnNFTs() {
     return NFTS.map((item: NftType) => (
       <div key={item.id} className={style.NFTShell}>
-        <NFTCard mode="profile" item={item} user={user} setUser={setUser} />
+        <NFTCard mode="grid" item={item} user={user} setUser={setUser} />
       </div>
     ));
   }
@@ -49,7 +49,7 @@ const PublicProfile: React.FC<PublicProfileProps> = ({
           alt="banner"
         />
       </div>
-      <Infos profile={profile} setProfile={setProfile} user={user} />
+      <Infos profile={profile} setProfile={setProfile} profileWalletId={profileWalletId} user={user} />
         <div className={style.NFTWrapper}>{returnNFTs()}</div>
         {hasNextPage && (
           <>
@@ -63,7 +63,7 @@ const PublicProfile: React.FC<PublicProfileProps> = ({
           </>
         )}
       <FloatingHeader user={user} setModalExpand={setModalExpand} />
-      <Footer setNotAvailable={setNotAvailable} />
+      <Footer />
     </div>
   );
 };

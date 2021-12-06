@@ -5,7 +5,7 @@
   flex-direction: column;
   width: 100%;
   background-color: black;
-  height: 450px;
+  height: auto;
   box-sizing: border-box;
   justify-content: space-between;
   align-items: center;
@@ -13,17 +13,17 @@
 }
 
 .WaterMark {
-  width: 260px;
+  width: 11.2rem;
   position: absolute;
   left: 25%;
-  top: 60px;
+  top: 2rem;
   z-index: 1;
 }
 
 .Container {
   display: flex;
   flex-direction: column;
-  margin-top: 100px;
+  margin-top: 8rem;
   width: 100%;
   box-sizing: border-box;
   z-index: 2;
@@ -79,7 +79,7 @@
 
 .SocialMedias {
   display: flex;
-  margin-top: 24px;
+  margin: 2.4rem 0;
   align-items: center;
   justify-content: space-around;
   width: 400px;

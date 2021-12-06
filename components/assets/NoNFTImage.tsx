@@ -1,10 +1,10 @@
 import React from 'react';
 
 interface NoNFTImageProps {
-  className: string;
+  className?: string;
 }
 
-const NoNFTImage: React.FC<NoNFTImageProps> = ({ className }) => (
+const NoNFTImage = ({ className }: NoNFTImageProps) => (
   <svg 
     xmlns="http://www.w3.org/2000/svg"
     className={className}

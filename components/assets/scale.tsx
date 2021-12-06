@@ -1,10 +1,10 @@
 import React from 'react';
 
 interface ScaleProps {
-  className: string;
+  className?: string;
 }
 
-const Scale: React.FC<ScaleProps> = ({ className }) => (
+const Scale = ({ className }: ScaleProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     className={className}

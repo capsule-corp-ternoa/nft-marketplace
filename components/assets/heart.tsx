@@ -1,10 +1,10 @@
 import React from 'react';
 
 interface HeartProps {
-  className: string;
+  className?: string;
 }
 
-const Heart: React.FC<HeartProps> = ({ className }) => (
+const Heart = ({ className }: HeartProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     className={className}

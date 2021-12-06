@@ -1,11 +1,11 @@
 import React from 'react';
 
 interface DiscordProps {
-  className: string;
-  onClick: React.MouseEventHandler<SVGSVGElement>;
+  className?: string;
+  onClick?: React.MouseEventHandler<SVGSVGElement>;
 }
 
-const Discord: React.FC<DiscordProps> = ({ className, onClick }) => (
+const Discord = ({ className, onClick }: DiscordProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     className={className}

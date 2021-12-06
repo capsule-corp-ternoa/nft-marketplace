@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import styled from 'styled-components';
 import style from './Profile.module.scss';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
@@ -17,7 +18,6 @@ import { getUserNFTsStat } from 'actions/nft';
 
 export interface ProfileProps {
   setModalExpand: (b: boolean) => void;
-  setNotAvailable: (b: boolean) => void;
   setSuccessPopup: (b: boolean) => void;
   user: UserType;
   setUser: (u: UserType) => void;
@@ -58,9 +58,8 @@ export interface ProfileProps {
   loadMoreFollowed: (forceLoad?: boolean)=>void;
 }
 
-const Profile: React.FC<ProfileProps> = ({
+const Profile = ({
   setModalExpand,
-  setNotAvailable,
   setSuccessPopup,
   user,
   setUser,
@@ -92,7 +91,7 @@ const Profile: React.FC<ProfileProps> = ({
   followedUsersHasNextPage,
   loadMoreFollowed,
   setFollowed,
-}) => {
+}: ProfileProps) => {
   const router = useRouter();
   const [scope, setScope] = useState(
     router.query?.scope === 'edit' ? 'edit' : 'My NFTs'
@@ -221,8 +220,7 @@ const Profile: React.FC<ProfileProps> = ({
     const timer = setTimeout(() => {
       loadMoreFollowers(true)
       loadMoreFollowed(true)
-    }, 1500)
-
+    }, 1000)
     return () => clearTimeout(timer)
   }, [searchValue, isFiltered])
 
@@ -254,7 +252,7 @@ const Profile: React.FC<ProfileProps> = ({
         break;
     }
     return displayNFTs.map((item: NftType) => (
-      <div key={item.id} className={style.NFTShell}>
+      <SNFTShell key={item.id} className={style.NFTShell}>
         <NFTCard
           mode="grid"
           item={item}
@@ -264,7 +262,7 @@ const Profile: React.FC<ProfileProps> = ({
           setLikedNfts={setLikedNfts}
           scope={scope}
         />
-      </div>
+      </SNFTShell>
     ));
   }
 
@@ -459,7 +457,7 @@ const Profile: React.FC<ProfileProps> = ({
     return creators.map((item: UserType, i: number) => {
       return (
         <div key={item._id} className={style.CreatorShell}>
-              <Creator user={item} size="small" showTooltip={false}/>
+              <Creator user={item} walletId={item.walletId} size="small" showTooltip={false}/>
           <div className={style.CreatorInfos}>
             <Link href={`/${item.walletId}`}>
               <a>
@@ -517,7 +515,7 @@ const Profile: React.FC<ProfileProps> = ({
         {returnCategory()}
       </div>
       <FloatingHeader user={user} setModalExpand={setModalExpand} />
-      <Footer setNotAvailable={setNotAvailable} />
+      <Footer />
       {expand && (
         <FloatingMenu
           setScope={setScope}
@@ -538,5 +536,9 @@ const Profile: React.FC<ProfileProps> = ({
     </div>
   );
 };
+
+const SNFTShell = styled.div`
+  margin-bottom: 3.2rem;
+`;
 
 export default Profile;

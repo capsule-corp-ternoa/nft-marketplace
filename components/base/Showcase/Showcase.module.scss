@@ -100,7 +100,7 @@
   display: none;
 }
 
-@media (max-width: 1300px) {
+@media (max-width: 1299px) {
   .Title {
     font-size: 26px;
   }
@@ -112,7 +112,7 @@
 
   .Showcase {
     width: 900px;
-    padding: 40px 0px;
+    padding: 35px 0px;
   }
 
   .CarouselContainer {
@@ -132,15 +132,12 @@
     line-height: 15px;
   }
   .Showcase {
-    width: 100%;
-    padding: 32px 24px;
+    width: auto;
+    margin: 0 24px;
   }
 }
 
-@media (max-width: 720px) {
-  .Showcase {
-    padding: 50px 16px;
-  }
+@media (max-width: 767px) {
   .Infos {
     flex-direction: column;
     align-items: flex-start;

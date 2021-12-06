@@ -1,10 +1,10 @@
 import React from 'react';
 
 interface ArrowLeftProps {
-  className: string;
+  className?: string;
 }
 
-const ArrowLeft: React.FC<ArrowLeftProps> = ({ className }) => (
+const ArrowLeft = ({ className }: ArrowLeftProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     className={className}

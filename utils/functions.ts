@@ -1,4 +1,5 @@
 import { IncomingMessage } from "http"
+import { NextRouter } from "next/router"
 
 export const getUserIp = (req: IncomingMessage | undefined) => {
   let ip: string | undefined = ""
@@ -9,3 +10,38 @@ export const getUserIp = (req: IncomingMessage | undefined) => {
   return ip
 }
 export const appLog = (...args: any) => window.ReactNativeWebView ? window.ReactNativeWebView.postMessage(JSON.stringify({ action: 'console.log', args })) : console.log(...args);
+
+export const clipboardCopy = (str: string) => {
+  if (navigator && navigator.clipboard){
+    navigator.clipboard.writeText(str)
+  }
+}
+
+export const navigateToSuccess = (
+  router: NextRouter,
+  title: string,
+  buttonText: string,
+  returnUrl: string,
+  isRedirect: boolean,
+  text?: string,
+  subText?: string,
+) => {
+  router.push(
+    {
+      pathname: '/success',
+      query: {
+        title,
+        text,
+        buttonText,
+        returnUrl,
+        isRedirect,
+        subText
+      }
+    }, 
+    "/success"
+  )
+}
+
+export const getRandomNFTFromArray = (array: any[]) => {
+  return array[Math.floor(Math.random() * array.length)]
+}

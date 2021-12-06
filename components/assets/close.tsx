@@ -1,11 +1,11 @@
 import React from 'react';
 
 interface CloseProps {
-  className: string;
-  onClick: React.MouseEventHandler<SVGSVGElement>;
+  className?: string;
+  onClick?: React.MouseEventHandler<SVGSVGElement>;
 }
 
-const Close: React.FC<CloseProps> = ({ className, onClick }) => (
+const Close = ({ className, onClick }: CloseProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     className={className}

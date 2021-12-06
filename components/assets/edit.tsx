@@ -1,10 +1,10 @@
 import React from 'react';
 
 interface EditProps {
-  className: string;
+  className?: string;
 }
 
-const Edit: React.FC<EditProps> = ({ className }) => (
+const Edit = ({ className }: EditProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     className={className}

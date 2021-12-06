@@ -9,20 +9,19 @@ import Badge from 'components/assets/badge';
 
 import { computeCaps, computeTiime, middleEllipsis } from 'utils/strings';
 import { UserType } from 'interfaces';
+import { clipboardCopy } from 'utils/functions';
 
 export interface WalletProps {
-  setNotAvailable: (b: boolean) => void;
   setModalExpand: (b: boolean) => void;
   user: UserType;
 }
 
-const Wallet: React.FC<WalletProps> = ({
+const Wallet = ({
   user,
   setModalExpand,
-  setNotAvailable,
-}) => {
+}: WalletProps) => {
   const bgGradient = {
-    background: user.name ? gradient(user.name) : gradient('ternoa'),
+    background:  gradient(user?.name || 'ternoa'),
   };
   return (
     <div className={style.Container}>
@@ -54,7 +53,7 @@ const Wallet: React.FC<WalletProps> = ({
         <div
           className={style.Address}
           onClick={() => {
-            navigator.clipboard.writeText(user.walletId);
+            clipboardCopy(user.walletId);
           }}
         >
           {middleEllipsis(user.walletId, 20)}
@@ -72,7 +71,7 @@ const Wallet: React.FC<WalletProps> = ({
           Buy CAPS
         </a>
       </div>
-      <Footer setNotAvailable={setNotAvailable} />
+      <Footer />
       <FloatingHeader user={user} setModalExpand={setModalExpand} />
     </div>
   );

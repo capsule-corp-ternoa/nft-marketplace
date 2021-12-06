@@ -1,10 +1,10 @@
 import React from 'react';
 
 interface MetamaskProps {
-  className: string;
+  className?: string;
 }
 
-const Metamask: React.FC<MetamaskProps> = ({ className }) => (
+const Metamask = ({ className }: MetamaskProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     className={className}

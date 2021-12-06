@@ -1,11 +1,11 @@
 import React from 'react';
 
 interface JapanProps {
-  className: string;
-  onClick: React.MouseEventHandler<SVGSVGElement>;
+  className?: string;
+  onClick?: React.MouseEventHandler<SVGSVGElement>;
 }
 
-const Japan: React.FC<JapanProps> = ({ className, onClick }) => (
+const Japan = ({ className, onClick }: JapanProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     className={className}

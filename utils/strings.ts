@@ -86,36 +86,6 @@ export function middleEllipsis(s: string, n: number = 10): string {
   return start + '...' + end;
 }
 
-export function envStringToCondition(left: number){
-  if (process.env.NFT_FILTER_OPERATOR === undefined || process.env.NFT_FILTER_OPERATOR === "" ) return true
-  if (process.env.NFT_FILTER_RIGHT_OPERAND === undefined || process.env.NFT_FILTER_RIGHT_OPERAND === "") return true
-  if (left===null || left===undefined || isNaN(left)) return true
-  let right = Number(process.env.NFT_FILTER_RIGHT_OPERAND)
-  if (right===null || right===undefined || isNaN(right)) return true
-  switch(process.env.NFT_FILTER_OPERATOR){
-    case "==":
-      return (left == right)
-    case "===":
-      return (left === right)
-    case "!=":
-      return (left != right)
-    case "!==":
-      return (left !== right)
-    case ">":
-      return (left > right)
-    case ">=":
-      return (left >= right)
-    case "<":
-      return (left < right)
-    case "<=":
-      return (left <= right)
-    case undefined:
-      return true;
-    default:
-      return true;
-  }
-}
-
 export const removeURLSlash = (url: string) => {
   if (url.length === 0) return url
   const lastChar = url.charAt(url.length -1)
@@ -124,4 +94,9 @@ export const removeURLSlash = (url: string) => {
   }else{
       return url
   }
+}
+
+export const formatDate = (d: Date) => {
+  //06/08/2021, 13:21
+  return `${d.getDate()}/${d.getMonth()}/${d.getFullYear()}, ${d.getHours()}:${d.getMinutes()}`
 }

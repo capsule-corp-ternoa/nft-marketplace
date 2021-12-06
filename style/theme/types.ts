@@ -4,6 +4,7 @@ export interface Colors {
   contrast: string;
   invertedContrast: string;
   neutral200: string;
+  neutral300: string;
   neutral400: string;
   neutral500: string;
   primary: string;

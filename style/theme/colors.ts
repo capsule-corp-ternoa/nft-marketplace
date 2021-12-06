@@ -10,6 +10,7 @@ export const colors: Colors = {
   contrast: '#0C0B0B',
 
   neutral200: '#686464',
+  neutral300: '#b1b1b1',
   neutral400: '#c1c1c1',
   neutral500: '#f7f7f7',
 }

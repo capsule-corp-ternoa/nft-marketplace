@@ -54,7 +54,7 @@ const NftPreview = ({
   setOriginalNFT,
 }: Props) => {
   const isMobile = useMediaQuery({
-    query: `(max-width: ${breakpointMap.md}px)`,
+    query: `(max-width: ${breakpointMap.md - 1}px)`,
   });
 
   const handleAllowedEffect = (file: File, effect: NftEffectType) => {

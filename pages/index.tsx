@@ -7,6 +7,7 @@ import TernoaWallet from 'components/base/TernoaWallet';
 import arrayShuffle from 'array-shuffle';
 import cookies from 'next-cookies';
 
+import { getCapsValue } from 'actions/caps';
 import { getUser, getUsers } from 'actions/user';
 import { getNFTs } from 'actions/nft';
 import { NftType, UserType } from 'interfaces';
@@ -16,6 +17,7 @@ import { decryptCookie, setUserFromDApp } from 'utils/cookie';
 export interface LandingProps {
   user: UserType;
   users: UserType[];
+  capsValue?: number;
   heroNFTs: NftType[];
   popularNfts: NftType[];
   bestSellingNfts: NftType[];
@@ -25,6 +27,7 @@ export interface LandingProps {
 const LandingPage = ({
   user,
   users,
+  capsValue,
   heroNFTs,
   popularNfts,
   bestSellingNfts,
@@ -62,6 +65,7 @@ const LandingPage = ({
         setModalExpand={setModalExpand}
         user={walletUser as UserType}
         users={users}
+        capsValue={capsValue}
         heroNFTs={heroNFTs}
         popularNfts={popularNfts}
         bestSellingNfts={bestSellingNfts}
@@ -77,7 +81,8 @@ export async function getServerSideProps(ctx: NextPageContext) {
     (cookies(ctx).token && decryptCookie(cookies(ctx).token as string));
   let users: UserType[] = [],
     user: UserType | null = null,
-    regularNfts: NftType[] = [];
+    regularNfts: NftType[] = [],
+    capsValue: number | undefined = undefined;
   const promises = [];
   promises.push(
     new Promise<void>((success) => {
@@ -111,6 +116,12 @@ export async function getServerSideProps(ctx: NextPageContext) {
         .catch(success);
     })
   );
+  promises.push(new Promise<void>((success) => {
+    getCapsValue().then(_value => {
+      capsValue = _value
+      success();
+    }).catch(success);
+  }));
   await Promise.all(promises);
   users = arrayShuffle(users);
   let popularNfts = arrayShuffle((regularNfts || []).slice(0, 8));
@@ -122,6 +133,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
     props: {
       user,
       users,
+      capsValue,
       heroNFTs,
       popularNfts,
       bestSellingNfts,

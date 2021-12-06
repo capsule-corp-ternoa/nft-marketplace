@@ -49,20 +49,7 @@ const NFTPage = ({
   const [modalShareOpen, setModalShareOpen] = useState(false);
   const [byTheSameArtistNFTs, setByTheSameArtistNFTs] = useState<NftType[]>([])
   const [canUserBuyAgain, setCanUserBuyAgain] = useState(true)
-  const isVR = (NFT.categories.findIndex(x => x.code === "vr") !== -1 || 
-    NFT.serieId === "1390370908" || 
-    NFT.serieId === "3350596370" ||
-    NFT.serieId === "1001" ||
-    NFT.serieId === "1002" ||
-    NFT.serieId === "1003" ||
-    NFT.serieId === "1004" ||
-    NFT.serieId === "1005" ||
-    NFT.serieId === "1006" ||
-    NFT.serieId === "1007" ||
-    NFT.serieId === "1008" ||
-    NFT.serieId === "1009" ||
-    NFT.serieId === "1010"
-  ) && NFT.creator === NFT.owner
+  const isVR = (NFT.categories.findIndex(x => x.code === "vr") !== -1) && NFT.creator === NFT.owner
   const shareSubject = 'Check out this Secret NFT';
   const shareText = `Check out ${NFT.title ? NFT.title : 'this nft'} on ${
     process.env.NEXT_PUBLIC_APP_LINK

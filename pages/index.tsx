@@ -16,6 +16,7 @@ import { decryptCookie, setUserFromDApp } from 'utils/cookie';
 export interface LandingProps {
   user: UserType;
   users: UserType[];
+  heroNFTs: NftType[];
   popularNfts: NftType[];
   bestSellingNfts: NftType[];
   NFTCreators: NftType[];
@@ -24,6 +25,7 @@ export interface LandingProps {
 const LandingPage = ({
   user,
   users,
+  heroNFTs,
   popularNfts,
   bestSellingNfts,
   NFTCreators,
@@ -60,6 +62,7 @@ const LandingPage = ({
         setModalExpand={setModalExpand}
         user={walletUser as UserType}
         users={users}
+        heroNFTs={heroNFTs}
         popularNfts={popularNfts}
         bestSellingNfts={bestSellingNfts}
         NFTCreators={NFTCreators}
@@ -111,6 +114,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
   await Promise.all(promises);
   users = arrayShuffle(users);
   let popularNfts = arrayShuffle((regularNfts || []).slice(0, 8));
+  let heroNFTs = popularNfts.length > 3 ? arrayShuffle(popularNfts).slice(0, 3) : popularNfts; // TODO: Fetch dedicated data
   let bestSellingNfts = arrayShuffle((regularNfts || []).slice(8, 16));
   let NFTCreators = arrayShuffle((regularNfts || []).slice(16, 19));
   let totalCountNFT = (regularNfts || []).length;
@@ -118,6 +122,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
     props: {
       user,
       users,
+      heroNFTs,
       popularNfts,
       bestSellingNfts,
       NFTCreators,

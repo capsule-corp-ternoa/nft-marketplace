@@ -427,7 +427,11 @@ const SAdvice = styled(Advice)`
 `;
 
 const SButton = styled(Button)`
-  margin-top: 4.8rem;
+  margin: 4.8rem 0;
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    margin: 4.8rem 0 9.6rem;
+  }
 `;
 
 export default Create;

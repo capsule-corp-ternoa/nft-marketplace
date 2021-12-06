@@ -9,6 +9,7 @@ export const colors: Colors = {
   invertedContrast: '#fff',
   contrast: '#0C0B0B',
 
+  neutral200: '#686464',
   neutral400: '#c1c1c1',
   neutral500: '#f7f7f7',
 }

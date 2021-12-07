@@ -40,13 +40,15 @@ const Countdown = ({ date }: Props) => {
 
   return (
     <SContainer>
-      <SGroup>
-        <STimeGroup>
-          <SUnit>{countdown.days.split('')[0]}</SUnit>
-          <SUnit>{countdown.days.split('')[1]}</SUnit>
-        </STimeGroup>
-        <SLabel>DAYS</SLabel>
-      </SGroup>
+      {countdown.days !== '00' && countdown.days !== '31' && (
+        <SGroup>
+          <STimeGroup>
+            <SUnit>{countdown.days.split('')[0]}</SUnit>
+            <SUnit>{countdown.days.split('')[1]}</SUnit>
+          </STimeGroup>
+          <SLabel>DAYS</SLabel>
+        </SGroup>
+      )}
       <SGroup>
         <STimeGroup>
           <SUnit>{countdown.hours.split('')[0]}</SUnit>

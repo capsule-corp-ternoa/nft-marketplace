@@ -128,7 +128,7 @@ const NftPreview = ({
               setError={setError}
             />
           </SMobileCardWrapper>
-          <SSelect text={effect}>
+          <SSelect color="primary" text={effect}>
             {(setSelectExpanded) => (
               <>
                 {NFT_EFFECTS_ORDERED.filter((effectType) =>

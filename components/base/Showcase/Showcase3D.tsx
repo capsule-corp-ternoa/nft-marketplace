@@ -55,7 +55,7 @@ const Showcase3D = ({ list, selectedIdx, setSelectedItem }: Props) => {
           htmlFor={`input-${idx}`}
           id={`nft-${idx}`}
         >
-          <NftCard mode="carousel" item={item} isDragging />
+          <NftCard mode="carousel" item={item} isDragging={selectedIdx !== idx} />
         </SLabel>
       ))}
     </SWrapper>

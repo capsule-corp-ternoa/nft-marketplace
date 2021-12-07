@@ -1,18 +1,24 @@
 import React, { useState } from 'react';
+import Link from 'next/link';
 import styled from 'styled-components';
 
 import Countdown from 'components/base/Countdown';
-import Creator from 'components/base/Creator';
 import { Showcase3D } from 'components/base/Showcase';
+import Avatar from 'components/ui/Avatar';
+import Button from 'components/ui/Button';
 import { NftType } from 'interfaces/index';
 import { computeCaps } from 'utils/strings';
-import Button from 'components/ui/Button';
+
+export const HERO_MODE_AUCTION = 'auction';
+export const HERO_MODE_SELL = 'sell';
 
 export interface HeroProps {
+  capsValue?: number;
   NFTs: NftType[];
+  mode: typeof HERO_MODE_AUCTION | typeof HERO_MODE_SELL;
 }
 
-const Hero = ({ NFTs }: HeroProps) => {
+const Hero = ({ capsValue, NFTs, mode }: HeroProps) => {
   const [selectedNFT, setSelectedNFT] = useState<NftType>(NFTs[1]);
 
   return (
@@ -23,40 +29,48 @@ const Hero = ({ NFTs }: HeroProps) => {
         setSelectedItem={setSelectedNFT}
       />
       <SDetailsWrapper>
-        <STitle>{selectedNFT.title}</STitle>
-        <SCreatorWrapper>
-          <Creator
-            user={selectedNFT.creatorData}
-            walletId={selectedNFT.creatorData.walletId}
-            size="small"
-          />
-          <span>{selectedNFT.creatorData.name}</span>
-          <span>(Creator)</span>
-        </SCreatorWrapper>
-        <SBidWrapper>
-          <SBidLeft>
-            <SBidLabel>Current Bid</SBidLabel>
-            <SBidCapsPrice>{`${computeCaps(
-              Number(25000000)
-            )} CAPS`}</SBidCapsPrice>
-            <SBidDollarsPrice>$3,417.09</SBidDollarsPrice>
-          </SBidLeft>
-          <SBidRight>
-            <SBidLabel>Auction ending in</SBidLabel>
-            <SBidCountdown>
-              {/* TODO: Use real date */}
-              <Countdown date={new Date('2021-12-17T03:24:00')} />
-            </SBidCountdown>
-          </SBidRight>
-        </SBidWrapper>
+        <Link href={`/nft/${selectedNFT.id}`} passHref>
+          <STitle>{selectedNFT.title}</STitle>
+        </Link>
+        <SAvatar
+          isClickable
+          isVerified={selectedNFT.creatorData.verified}
+          label="(Creator)"
+          name={selectedNFT.creatorData.name}
+          picture={selectedNFT.creatorData.picture}
+          walletId={selectedNFT.creatorData.walletId}
+        />
+        <SSellWrapper>
+          <SSell mode={mode}>
+            <SBidLabel>{mode === HERO_MODE_AUCTION ? 'Current bid' : 'Price'}</SBidLabel>
+            {/* TODO: Use real price */}
+            <SBidCapsPrice>
+              {`${computeCaps(Number(selectedNFT.price))} CAPS`}
+            </SBidCapsPrice>
+            {capsValue && (
+              <SBidDollarsPrice>{`${
+                Math.round(capsValue * computeCaps(Number(selectedNFT.price)) * 100) / 100
+              }$`}</SBidDollarsPrice>
+            )}
+          </SSell>
+          {mode === HERO_MODE_AUCTION && (
+            <SBid mode={mode}>
+              <SBidLabel>Auction ending in</SBidLabel>
+              <SBidCountdown>
+                {/* TODO: Use real date */}
+                <Countdown date={new Date('2021-12-17T03:24:00')} />
+              </SBidCountdown>
+            </SBid>
+          )}
+        </SSellWrapper>
         <SButtonWrapper>
           <Button
             color="primary"
             href={`/nft/${selectedNFT.id}`}
-            text="Place a bid"
+            text={mode === HERO_MODE_AUCTION ? 'Place a bid' : 'Buy'}
           />
           {/* TODO: When notification are implemented */}
-          {/* <Button color="primary" text="Notification" /> */}
+          {/* <Button color="invertedContrast" icon="bell" variant='outlined' /> */}
         </SButtonWrapper>
       </SDetailsWrapper>
     </SHeroContainer>
@@ -109,10 +123,13 @@ const SDetailsWrapper = styled.div`
   }
 `;
 
-const STitle = styled.span`
+const STitle = styled.a`
+  width: fit-content;
   color: ${({ theme }) => theme.colors.contrast};
+  cursor: pointer;
   font-family: ${({ theme }) => theme.fonts.bold};
   font-size: 2.4rem;
+  margin: 0 auto;
   text-align: center;
 
   ${({ theme }) => theme.mediaQueries.sm} {
@@ -124,43 +141,56 @@ const STitle = styled.span`
   }
 
   ${({ theme }) => theme.mediaQueries.lg} {
+    margin: 0;
     text-align: left;
   }
 `;
 
-const SCreatorWrapper = styled.div`
-  margin-top: 0.8rem;
+const SAvatar = styled(Avatar)`
+  justify-content: center;
+  margin-top: 1.6rem;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    justify-content: flex-start;
+  }
 `;
 
-const SBidWrapper = styled.div`
+const SSellWrapper = styled.div`
   width: 100%;
   display: flex;
   align-items: flex-start;
   margin-top: 2.4rem;
 `;
 
-const BidSideLayout = styled.div`
-  width: 50%;
+const SellSideLayout = styled.div<{
+  mode: typeof HERO_MODE_AUCTION | typeof HERO_MODE_SELL;
+}>`
+  width: ${({ mode }) => (mode === HERO_MODE_SELL ? '100%' : '50%')};
   height: 100%;
   display: flex;
+  align-items: ${({ mode }) =>
+    mode === HERO_MODE_SELL ? 'center' : 'flex-start'};
   flex-direction: column;
-  align-items: flex-start;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    align-items: flex-start;
+  }
 `;
 
-const SBidLeft = styled(BidSideLayout)`
-  border-right: 1px solid #e0e0e0;
-  padding-right: 1.2rem;
+const SSell = styled(SellSideLayout)`
+  padding-right: ${({ mode }) => (mode === HERO_MODE_AUCTION ? '1.2rem' : 0)};
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    padding-right: 4.8rem;
+    padding-right: ${({ mode }) => (mode === HERO_MODE_AUCTION ? '4.8rem' : 0)};
   }
 
   ${({ theme }) => theme.mediaQueries.lg} {
-    padding-right: 3.2rem;
+    padding-right: ${({ mode }) => (mode === HERO_MODE_AUCTION ? '3.2rem' : 0)};
   }
 `;
 
-const SBidRight = styled(BidSideLayout)`
+const SBid = styled(SellSideLayout)`
+  border-left: 1px solid #e0e0e0;
   padding-left: 1.2rem;
 
   ${({ theme }) => theme.mediaQueries.sm} {
@@ -174,7 +204,7 @@ const SBidRight = styled(BidSideLayout)`
 
 const SBidLabel = styled.span`
   color: ${({ theme }) => theme.colors.neutral200};
-  font-size: 1.2rem;
+  font-size: 1.4rem;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     font-size: 1.6rem;
@@ -194,7 +224,7 @@ const SBidCapsPrice = styled.span`
 
 const SBidDollarsPrice = styled.span`
   color: ${({ theme }) => theme.colors.contrast};
-  font-size: 1.2rem;
+  font-size: 1.4rem;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     font-size: 1.6rem;
@@ -212,6 +242,12 @@ const SButtonWrapper = styled.div`
   align-items: center;
   justify-content: center;
   margin-top: 3.2rem;
+
+  > button {
+    &:not(:first-child) {
+      margin-left: 5.6rem;
+    }
+  }
 
   ${({ theme }) => theme.mediaQueries.sm} {
     margin-top: 4.8rem;

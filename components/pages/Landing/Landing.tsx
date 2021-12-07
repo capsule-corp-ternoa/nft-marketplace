@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import style from './Landing.module.scss';
-import Hero from './Hero';
+import Hero, { HERO_MODE_SELL } from './Hero';
 import ArtCreators from './ArtCreators';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
@@ -17,6 +17,7 @@ export interface LandingProps {
   user: UserType;
   users: UserType[];
   setModalExpand: (b: boolean) => void;
+  capsValue?: number;
   heroNFTs: NftType[];
   popularNfts: NftType[];
   bestSellingNfts: NftType[];
@@ -28,6 +29,7 @@ const Landing = ({
   setModalExpand,
   user,
   users,
+  capsValue,
   heroNFTs,
   popularNfts,
   bestSellingNfts,
@@ -39,7 +41,9 @@ const Landing = ({
   return (
     <Container>
       <Wrapper>
-        {heroNFTs.length === 3 && <Hero NFTs={heroNFTs} />}
+        {heroNFTs?.length === 3 && (
+          <Hero capsValue={capsValue} NFTs={heroNFTs} mode={HERO_MODE_SELL} />
+        )}
         {totalCountNFT === 0 && <NoNFTComponent />}
       </Wrapper>
       {popularNfts?.length > 0 && (

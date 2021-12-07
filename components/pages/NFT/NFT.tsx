@@ -49,20 +49,7 @@ const NFTPage = ({
   const [modalShareOpen, setModalShareOpen] = useState(false);
   const [byTheSameArtistNFTs, setByTheSameArtistNFTs] = useState<NftType[]>([])
   const [canUserBuyAgain, setCanUserBuyAgain] = useState(true)
-  const isVR = (NFT.categories.findIndex(x => x.code === "vr") !== -1 || 
-    NFT.serieId === "1390370908" || 
-    NFT.serieId === "3350596370" ||
-    NFT.serieId === "1001" ||
-    NFT.serieId === "1002" ||
-    NFT.serieId === "1003" ||
-    NFT.serieId === "1004" ||
-    NFT.serieId === "1005" ||
-    NFT.serieId === "1006" ||
-    NFT.serieId === "1007" ||
-    NFT.serieId === "1008" ||
-    NFT.serieId === "1009" ||
-    NFT.serieId === "1010"
-  ) && NFT.creator === NFT.owner
+  const isVR = (NFT.categories.findIndex(x => x.code === "vr") !== -1) && NFT.creator === NFT.owner
   const shareSubject = 'Check out this Secret NFT';
   const shareText = `Check out ${NFT.title ? NFT.title : 'this nft'} on ${
     process.env.NEXT_PUBLIC_APP_LINK
@@ -390,7 +377,16 @@ const NFTPage = ({
           />
         </div>
       </div>
-      {byTheSameArtistNFTs.length>0 && <Showcase category="By the same artist" NFTs={byTheSameArtistNFTs} user={user} setUser={setUser} />}
+      {byTheSameArtistNFTs.length > 0 && (
+        <SShowcaseWrapper>
+          <Showcase
+            category="By the same artist"
+            NFTs={byTheSameArtistNFTs}
+            user={user}
+            setUser={setUser}
+          />
+        </SShowcaseWrapper>
+      )}
       <Footer />
       <FloatingHeader user={user} setModalExpand={setModalExpand} />
       {modalShareOpen && (
@@ -444,6 +440,21 @@ const SCategoriesWrapper = styled.div`
   ${({ theme }) => theme.mediaQueries.md} {
     justify-content: start;
     margin: 0;
+  }
+`
+
+const SShowcaseWrapper = styled.div`
+  width: 100%;
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 3.2rem 4rem 6.4rem;
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    padding: 3.2rem 9.6rem 6.4rem;
+  }
+
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    padding: 3.2rem 2.4rem 6.4rem;
   }
 `
 

@@ -1,12 +1,5 @@
 @import "style/colors.scss";
 
-.Container {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-}
-
 .Button {
   align-items: center;
   border: 2px solid $primary;

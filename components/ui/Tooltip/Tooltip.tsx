@@ -40,11 +40,11 @@ const InformationIcon = styled(Information)`
 `;
 
 const Popover = styled.span`
-  background: white;
+  background: ${({ theme }) => theme.colors.invertedContrast};
   border-radius: 0.8rem;
   box-shadow: 0px 0px 14.5243px 5.0835px rgb(0 0 0 / 10%);
-  color: #686464;
-  font-family: 'Airbnb Cereal App Light';
+  color: ${({ theme }) => theme.colors.neutral200};
+  font-family: ${({ theme }) => theme.fonts.light};
   font-size: 1.2rem;
   min-width: 24rem;
   max-width: 32rem;

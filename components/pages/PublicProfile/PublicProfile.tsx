@@ -4,7 +4,7 @@ import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
 import Infos from './Infos';
 
-import NFTCard from 'components/base/NftCard';
+import { NftCardWithHover } from 'components/base/NftCard';
 import { NftType, UserType } from 'interfaces';
 
 export interface PublicProfileProps {
@@ -35,7 +35,7 @@ const PublicProfile = ({
   function returnNFTs() {
     return NFTS.map((item: NftType) => (
       <div key={item.id} className={style.NFTShell}>
-        <NFTCard mode="grid" item={item} user={user} setUser={setUser} />
+        <NftCardWithHover mode="grid" item={item} user={user} setUser={setUser} />
       </div>
     ));
   }

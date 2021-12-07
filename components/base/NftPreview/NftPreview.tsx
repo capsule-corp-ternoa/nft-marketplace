@@ -54,7 +54,7 @@ const NftPreview = ({
   setOriginalNFT,
 }: Props) => {
   const isMobile = useMediaQuery({
-    query: `(max-width: ${breakpointMap.md}px)`,
+    query: `(max-width: ${breakpointMap.md - 1}px)`,
   });
 
   const handleAllowedEffect = (file: File, effect: NftEffectType) => {
@@ -128,7 +128,7 @@ const NftPreview = ({
               setError={setError}
             />
           </SMobileCardWrapper>
-          <SSelect text={effect}>
+          <SSelect color="primary" text={effect}>
             {(setSelectExpanded) => (
               <>
                 {NFT_EFFECTS_ORDERED.filter((effectType) =>

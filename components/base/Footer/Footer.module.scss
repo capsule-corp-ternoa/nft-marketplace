@@ -81,7 +81,7 @@
   display: flex;
   margin: 2.4rem 0;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-evenly;
   width: 400px;
   align-self: center;
 }
@@ -137,18 +137,6 @@
 }
 
 @media (max-width: 1300px) {
-  .Footer {
-    height: 400px;
-  }
-
-  .WaterMark {
-    width: 180px;
-    position: absolute;
-    left: 20%;
-    top: 90px;
-    z-index: 1;
-  }
-
   .InputContainer {
     width: 500px;
   }
@@ -199,7 +187,7 @@
   }
 }
 
-@media (max-width: 950px) {
+@media (max-width: 992px) {
   .InputContainer {
     width: 420px;
   }
@@ -225,19 +213,14 @@
   .SVGMediaTwitter {
     width: 16px;
   }
+
   .SocialMedias {
     width: 360px;
+    margin: 2.4rem 0 8rem;
   }
 }
 
 @media (max-width: 720px) {
-  .WaterMark {
-    width: 140px;
-    position: absolute;
-    left: 10%;
-    top: 90px;
-    z-index: 1;
-  }
   .InputContainer {
     width: 340px;
     align-self: center;
@@ -272,7 +255,7 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: center;
+    padding: 0 2.4rem;
   }
 
   .SVGMedia {

@@ -1,6 +1,6 @@
 import React from 'react';
 import style from './Explore.module.scss';
-import NFTCard from 'components/base/NftCard';
+import { NftCardWithHover } from 'components/base/NftCard';
 import NoNFTComponent from 'components/base/NoNFTComponent';
 import { NftType, UserType } from 'interfaces/index';
 export interface ExploreProps {
@@ -23,7 +23,7 @@ const Explore: React.FC<ExploreProps> = ({
   function returnNFTs() {
     return NFTS.map((item) => (
       <div key={item.id} className={style.NFTShell}>
-        <NFTCard mode="grid" item={item} user={user} setUser={setUser} />
+        <NftCardWithHover mode="grid" item={item} user={user} setUser={setUser} />
       </div>
     ));
   }

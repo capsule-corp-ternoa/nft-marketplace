@@ -1,13 +1,9 @@
 import React from 'react';
+import  styled from 'styled-components';
+
+import Icon from 'components/ui/Icon';
 
 import style from './Footer.module.scss';
-import WaterMark from 'components/assets/Watermark';
-import Telegram from 'components/assets/SocialMedias/Telegram';
-import Twitter from 'components/assets/SocialMedias/Twitter';
-import LinkedIn from 'components/assets/SocialMedias/LinkedIn';
-import Instagram from 'components/assets/SocialMedias/Instagram';
-import Github from 'components/assets/SocialMedias/Github';
-import Youtube from 'components/assets/SocialMedias/Youtube';
 
 const Footer = () => {
   const telegramLink = process.env.NEXT_PUBLIC_TELEGRAM_LINK ? process.env.NEXT_PUBLIC_TELEGRAM_LINK : "https://t.me/ternoa"
@@ -18,26 +14,26 @@ const Footer = () => {
   const youtubeLink = process.env.NEXT_PUBLIC_YOUTUBE_LINK ? process.env.NEXT_PUBLIC_YOUTUBE_LINK : "https://www.youtube.com/channel/UCUYvbtRE5HoWPz7z88V7Khw"
   return (
     <div className={style.Footer}>
-      <WaterMark className={style.WaterMark} />
+      <SIcon name="waterMark" />
       <div className={style.Container}>
         <div className={style.SocialMedias}>
           {telegramLink!=="false" && <a href={telegramLink} target="_blank">
-            <Telegram onClick={() => true} className={style.SVGMedia} />
+            <SMediaIcon name="socialTelegram" />
           </a>}
           {twitterLink!=="false" && <a href={twitterLink} target="_blank">
-            <Twitter onClick={() => true} className={style.SVGMediaTwitter} />
+            <SMediaIcon name="socialTwitter" />
           </a>}
           {linkedinLink!=="false" && <a href={linkedinLink} target="_blank">
-            <LinkedIn onClick={() => true} className={style.SVGMedia} />
+            <SMediaIcon name="socialLinkedIn" />
           </a>}
           {instagramLink!=="false" && <a href={instagramLink} target="_blank">
-            <Instagram onClick={() => true} className={style.SVGMedia} />
+            <SMediaIcon name="socialInstagram" />
           </a>}
           {githubLink!=="false" && <a href={githubLink} target="_blank">
-            <Github onClick={() => true} className={style.SVGMedia} />
+            <SMediaIcon name="socialGithub" />
           </a>}
           {youtubeLink!=="false" && <a href={youtubeLink} target="_blank">
-            <Youtube onClick={() => true} className={style.SVGMedia} />
+            <SMediaIcon name="socialYoutube" />
           </a>}
         </div>
       </div>
@@ -67,5 +63,28 @@ const Footer = () => {
     </div>
   );
 };
+
+const SIcon = styled(Icon)`
+  width: 16rem;
+  position: absolute;
+  left: 25%;
+  top: 2rem;
+  z-index: 1;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    width: 11.2rem;
+  }
+`;
+
+const SMediaIcon = styled(Icon)`
+  width: 1.6rem;
+  cursor: pointer;
+  fill: white;
+  z-index: 10;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    width: 2.4rem;
+  }
+`;
 
 export default Footer;

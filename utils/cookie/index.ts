@@ -30,7 +30,7 @@ export const setUserFromDApp = async (setWalletUser:Function, setIsUserFromDappQ
             setWalletUser(null);
         }
         Cookies.remove('token');
-        const user = await getUser(window.walletId);
+        const user = await getUser(window.walletId, undefined, true);
         setWalletUser(user);
         Cookies.set('token', encryptCookie(window.walletId), { expires: 1 });
     }

@@ -6,6 +6,7 @@ export type IconNameType =
   | 'arrowLeft'
   | 'arrowRight'
   | 'badge'
+  | 'bell'
   | 'blaze'
   | 'check'
   | 'checkMark'
@@ -75,6 +76,10 @@ const Icon = ({ className, name }: Props) => {
     case 'badge': {
       const Badge = dynamic(() => import('components/assets/badge'));
       return <Badge className={className} />;
+    }
+    case 'bell': {
+      const Bell = dynamic(() => import('components/assets/Bell'));
+      return <Bell className={className} />;
     }
     case 'blaze': {
       const Blaze = dynamic(() => import('components/assets/blaze'));

@@ -14,7 +14,7 @@ export type UserType = {
   capsAmount?: string;
   tiimeAmount?: string;
   reviewRequested?:boolean
-  likedNFTs?: { serieId: string, nftId: string }[];
+  likedNFTs?: { serieId: string, nftId: string, walletId?: string }[];
 };
 
 export type NftType = {
@@ -101,6 +101,12 @@ export type NFTTransferType = {
   extrinsic: {
     id: string;
   };
+}
+
+export interface INFTLike {
+  nftId: string;
+  serieId: string;
+  walletId: string;
 }
 
 export type CustomResponse<DataType> = {

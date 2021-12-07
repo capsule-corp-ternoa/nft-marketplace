@@ -10,7 +10,7 @@ import Share from 'components/assets/share';
 import Like from 'components/assets/heart';
 import Eye from 'components/assets/eye';
 import { computeCaps, computeTiime, middleEllipsis } from 'utils/strings';
-import { UserType, NftType } from 'interfaces';
+import { UserType, NftType, INFTLike } from 'interfaces';
 import { likeNFT, unlikeNFT } from 'actions/user';
 import ModalShare from 'components/base/ModalShare';
 import NoNFTImage from '../../assets/NoNFTImage';
@@ -149,7 +149,7 @@ const NFTPage = ({
 
   const handleLikeDislike = async () => {
     try {
-      let res = null;
+      let res: INFTLike | null = null;
       if (!likeLoading && user) {
         setLikeLoading(true);
         if (!isLiked) {
@@ -158,7 +158,17 @@ const NFTPage = ({
           res = await unlikeNFT(user.walletId, NFT.id, NFT.serieId);
         }
       }
-      if (res !== null) setUser({ ...user, ...res });
+      if (res !== null){
+        let newUser = user
+        if (newUser.likedNFTs){
+          if (!isLiked){
+            newUser.likedNFTs.push(res)
+          }else{
+            newUser.likedNFTs = newUser?.likedNFTs.filter(x => x.nftId !== res?.nftId && x.serieId !== res?.serieId)
+          }
+          setUser(newUser)
+        }
+      }
       setLikeLoading(false);
     } catch (err) {
       console.error(err);

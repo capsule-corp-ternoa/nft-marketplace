@@ -2,9 +2,9 @@ import { CustomResponse, UserType } from 'interfaces/index';
 import { DEFAULT_LIMIT_PAGINATION, NODE_API_URL } from "../utils/constant";
 import Cookies from 'js-cookie';
 
-export const getUser = async (token: string, ignoreCache=false) => {
+export const getUser = async (token: string, ignoreCache=false, populateLikes=false) => {
   const res = await fetch(
-    `${NODE_API_URL}/api/users/${token}?ignoreCache=${ignoreCache}`
+    `${NODE_API_URL}/api/users/${token}?ignoreCache=${ignoreCache}&populateLikes=${populateLikes}`
   );
 
   if (!res.ok) throw new Error();
@@ -77,8 +77,8 @@ export const likeNFT = async (walletId: string, nftId: string, serieId: string) 
       body:JSON.stringify({cookie}),
     })
     if (!res.ok) throw new Error();
-    const user = await res.json()
-    return user
+    const NFTLike = await res.json()
+    return NFTLike
   }else{
     throw new Error("Unvalid authentication");
   }
@@ -92,8 +92,8 @@ export const unlikeNFT = async (walletId: string, nftId: string, serieId: string
       body:JSON.stringify({cookie}),
     })
     if (!res.ok) throw new Error();
-    const user = await res.json()
-    return user
+    const NFTLike = await res.json()
+    return NFTLike
   }else{
     throw new Error("Unvalid authentication");
   }

@@ -8,7 +8,7 @@ import { getNFT } from 'actions/nft';
 import Heart from 'components/assets/heart';
 import Creator from 'components/base/Creator';
 import Chip from 'components/ui/Chip';
-import { NftType, UserType } from 'interfaces/index';
+import { INFTLike, NftType, UserType } from 'interfaces/index';
 import { computeCaps, computeTiime } from 'utils/strings';
 import { breakpointMap } from 'style/theme/base';
 
@@ -100,33 +100,44 @@ const NftCardWithHover = ({
   };
 
   const handleLikeDislike = async (nftId: string, serieId: string) => {
-    try {
-      let res = null;
-      if (!likeLoading && isLiked !== undefined && user) {
-        setLikeLoading(true);
-        if (!isLiked) {
-          res = await likeNFT(user.walletId, nftId, serieId);
-        } else {
-          res = await unlikeNFT(user.walletId, nftId, serieId);
+    try{
+      let res: INFTLike | null = null
+      if (!likeLoading && isLiked !== undefined && user){
+        setLikeLoading(true)
+        if (!isLiked){
+          res = await likeNFT(user.walletId, nftId, serieId) as INFTLike
+        }else{
+          res = await unlikeNFT(user.walletId, nftId, serieId) as INFTLike
         }
       }
-      if (res !== null && setUser) {
-        setUser({ ...user, ...res });
-        if (likedNfts && setLikedNfts) {
-          if (isLiked) {
-            setLikedNfts(likedNfts.filter((x) => x.id !== nftId));
-          } else {
-            let newlyLikedNFT = await getNFT(nftId);
-            if (newlyLikedNFT) setLikedNfts([...likedNfts, newlyLikedNFT]);
+      console.log(res)
+      if (res !== null && setUser && user){
+        let newUser = user
+        if (newUser.likedNFTs){
+          if (!isLiked){
+            newUser.likedNFTs.push(res)
+          }else{
+            newUser.likedNFTs = newUser?.likedNFTs.filter(x => x.walletId !== res?.walletId && x.nftId !== res?.nftId && x.serieId !== res?.serieId)
+          }
+          setUser(newUser)
+        }
+        if (likedNfts && setLikedNfts){
+          if (!isLiked){
+            let newlyLikedNFT = await getNFT(nftId)
+            if (newlyLikedNFT) setLikedNfts([...likedNfts, newlyLikedNFT])
+          }else{
+            setLikedNfts(
+              likedNfts.filter(x => x.id !== nftId)
+            )
           }
         }
       }
-      setLikeLoading(false);
-    } catch (err) {
-      setLikeLoading(false);
-      console.error(err);
+      setLikeLoading(false)
+    }catch(err){
+      setLikeLoading(false)
+      console.error(err)
     }
-  };
+  }
 
   return (
     <NftCard

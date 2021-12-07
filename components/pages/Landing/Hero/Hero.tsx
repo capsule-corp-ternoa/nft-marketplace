@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import Countdown from 'components/base/Countdown';
 import { Showcase3D } from 'components/base/Showcase';
-import Avatar from 'components/ui/Avatar';
+import Avatar from 'components/base/Avatar';
 import Button from 'components/ui/Button';
 import { NftType } from 'interfaces/index';
 import { computeCaps } from 'utils/strings';

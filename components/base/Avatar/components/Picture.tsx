@@ -3,7 +3,7 @@ import Router from 'next/router';
 import styled, { css } from 'styled-components';
 import gradient from 'random-gradient';
 
-import Icon from '../../Icon';
+import Icon from '../../../ui/Icon';
 
 interface Props {
   className?: string;

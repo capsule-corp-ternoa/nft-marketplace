@@ -2,8 +2,9 @@ import React from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
 
-import Button from '../Button';
-import Icon from '../Icon';
+import Button from 'components/ui/Button';
+import Icon from 'components/ui/Icon';
+
 import Picture from './components/Picture';
 
 interface Props {

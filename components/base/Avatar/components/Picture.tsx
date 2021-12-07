@@ -35,7 +35,7 @@ const Picture = ({
       {picture ? (
         <SImage draggable="false" isClickable={isClickable} src={picture} />
       ) : (
-        <SInitials name={name}>
+        <SInitials isClickable={isClickable} name={name}>
           <SLetter>{name?.charAt(0) ?? 'T'}</SLetter>
         </SInitials>
       )}
@@ -98,11 +98,11 @@ const ImageStyle = css<{ isClickable?: boolean }>`
   ${({ isClickable, theme }) =>
     isClickable &&
     `
-    &:hover {
-      border: 3px solid;
-      border-color: ${theme.colors.primary};
-  }
-  }
+      &:hover {
+        border: 3px solid;
+        border-color: ${theme.colors.primary};
+      }
+    }
   `}
 `;
 
@@ -110,7 +110,7 @@ const SImage = styled.img`
   ${ImageStyle}
 `;
 
-const SInitials = styled.div<{ name: string }>`
+const SInitials = styled.div<{ isClickable?: boolean; name: string }>`
   ${ImageStyle}
 
   background: ${({ name }) => gradient(name)};

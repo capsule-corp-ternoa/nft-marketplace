@@ -108,14 +108,13 @@ const SDetailsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-top: 2.4rem;
+  margin-top: 3.2rem;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     padding: 0 6.4rem;
   }
 
   ${({ theme }) => theme.mediaQueries.md} {
-    margin-top: 3.2rem;
     padding: 0 6.4rem;
   }
 

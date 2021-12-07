@@ -32,7 +32,7 @@ const Showcase3D = ({ list, selectedIdx, setSelectedItem }: Props) => {
   };
 
   return (
-    <SWrapper {...bind()}>
+    <SWrapper>
       <SInput
         type="radio"
         name="input-0"
@@ -63,6 +63,7 @@ const Showcase3D = ({ list, selectedIdx, setSelectedItem }: Props) => {
           className="cards"
           htmlFor={`input-${idx}`}
           id={`nft-${idx}`}
+          {...bind()}
         >
           <NftCard
             mode="carousel"
@@ -80,9 +81,8 @@ const SWrapper = styled.div`
   height: 100%;
   display: flex;
   justify-content: center;
-  align-items: end;
+  align-items: flex-end;
   position: relative;
-  touch-action: none;
 
   > #input-0:checked ~ #nft-2,
   #input-1:checked ~ #nft-0,
@@ -196,11 +196,13 @@ const SInput = styled.input`
 const SLabel = styled.label`
   width: fit-content;
   position: absolute;
+  top: 0;
   left: 0;
   right: 0;
   margin: 0 auto 4rem;
   transition: transform 0.4s ease;
   cursor: pointer;
+  touch-action: none;
 `;
 
 export default Showcase3D;

@@ -49,7 +49,7 @@ const Hero = ({ capsValue, NFTs, mode }: HeroProps) => {
             </SBidCapsPrice>
             {capsValue && (
               <SBidDollarsPrice>{`${
-                Math.round(capsValue * computeCaps(Number(selectedNFT.price)) * 100) / 100
+                Math.round(capsValue * (Number(selectedNFT.price) / 1000000000000000000) * 100) / 100
               }$`}</SBidDollarsPrice>
             )}
           </SSell>

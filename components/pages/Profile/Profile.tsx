@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import style from './Profile.module.scss';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
-import NFTCard from 'components/base/NftCard';
+import { NftCardWithHover } from 'components/base/NftCard';
 import Creator from 'components/base/Creator';
 import TwitterErrorModal from './TwitterErrorModal';
 import Sidebar from './Sidebar';
@@ -253,7 +253,7 @@ const Profile = ({
     }
     return displayNFTs.map((item: NftType) => (
       <SNFTShell key={item.id} className={style.NFTShell}>
-        <NFTCard
+        <NftCardWithHover
           mode="grid"
           item={item}
           user={user}

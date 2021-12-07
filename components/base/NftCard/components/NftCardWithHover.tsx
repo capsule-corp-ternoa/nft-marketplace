@@ -110,7 +110,6 @@ const NftCardWithHover = ({
           res = await unlikeNFT(user.walletId, nftId, serieId) as INFTLike
         }
       }
-      console.log(res)
       if (res !== null && setUser && user){
         let newUser = user
         if (newUser.likedNFTs){

@@ -7,7 +7,7 @@ import { Showcase3D } from 'components/base/Showcase';
 import Avatar from 'components/base/Avatar';
 import Button from 'components/ui/Button';
 import { NftType } from 'interfaces/index';
-import { computeCaps } from 'utils/strings';
+import { computeCaps, formatPrice } from 'utils/strings';
 
 export const HERO_MODE_AUCTION = 'auction';
 export const HERO_MODE_SELL = 'sell';
@@ -42,15 +42,22 @@ const Hero = ({ capsValue, NFTs, mode }: HeroProps) => {
         />
         <SSellWrapper>
           <SSell mode={mode}>
-            <SBidLabel>{mode === HERO_MODE_AUCTION ? 'Current bid' : 'Price'}</SBidLabel>
-            {/* TODO: Use real price */}
+            <SBidLabel>
+              {mode === HERO_MODE_AUCTION ? 'Current bid' : 'Price'}
+            </SBidLabel>
             <SBidCapsPrice>
               {`${computeCaps(Number(selectedNFT.price))} CAPS`}
             </SBidCapsPrice>
             {capsValue && (
-              <SBidDollarsPrice>{`${
-                Math.round(capsValue * (Number(selectedNFT.price) / 1000000000000000000) * 100) / 100
-              }$`}</SBidDollarsPrice>
+              <SBidDollarsPrice>
+                {formatPrice(
+                  Math.round(
+                    capsValue *
+                      (Number(selectedNFT.price) / 1000000000000000000) *
+                      100
+                  ) / 100
+                )}
+              </SBidDollarsPrice>
             )}
           </SSell>
           {mode === HERO_MODE_AUCTION && (

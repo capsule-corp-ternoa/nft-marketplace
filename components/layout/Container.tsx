@@ -36,7 +36,7 @@ export const Wrapper = styled.div`
     padding: 9.6rem 6.4rem 0;
 
     &:not(:first-child) {
-      padding-top: 16rem;
+      padding-top: 11.2rem;
     }
   }
 `;

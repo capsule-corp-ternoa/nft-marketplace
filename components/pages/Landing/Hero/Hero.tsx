@@ -42,14 +42,14 @@ const Hero = ({ capsValue, NFTs, mode }: HeroProps) => {
         />
         <SSellWrapper>
           <SSell mode={mode}>
-            <SBidLabel>Current Bid</SBidLabel>
+            <SBidLabel>{mode === HERO_MODE_AUCTION ? 'Current bid' : 'Price'}</SBidLabel>
             {/* TODO: Use real price */}
-            <SBidCapsPrice>{`${computeCaps(
-              Number(25000)
-            )} CAPS`}</SBidCapsPrice>
+            <SBidCapsPrice>
+              {`${computeCaps(Number(selectedNFT.price))} CAPS`}
+            </SBidCapsPrice>
             {capsValue && (
               <SBidDollarsPrice>{`${
-                Math.round(capsValue * 25000 * 100) / 100
+                Math.round(capsValue * computeCaps(Number(selectedNFT.price)) * 100) / 100
               }$`}</SBidDollarsPrice>
             )}
           </SSell>

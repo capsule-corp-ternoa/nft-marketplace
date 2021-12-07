@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import style from './Landing.module.scss';
-import Hero, { HERO_MODE_AUCTION } from './Hero';
+import Hero, { HERO_MODE_SELL } from './Hero';
 import ArtCreators from './ArtCreators';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
@@ -42,7 +42,7 @@ const Landing = ({
     <Container>
       <Wrapper>
         {heroNFTs?.length === 3 && (
-          <Hero capsValue={capsValue} NFTs={heroNFTs} mode={HERO_MODE_AUCTION} />
+          <Hero capsValue={capsValue} NFTs={heroNFTs} mode={HERO_MODE_SELL} />
         )}
         {totalCountNFT === 0 && <NoNFTComponent />}
       </Wrapper>

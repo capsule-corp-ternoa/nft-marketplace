@@ -15,6 +15,7 @@ import Switch from 'react-switch';
 import { NftType, UserType } from 'interfaces';
 import { follow, unfollow, isUserFollowing, getFollowersCount } from 'actions/follower';
 import { getUserNFTsStat } from 'actions/nft';
+import Button from 'components/ui/Button';
 
 export interface ProfileProps {
   setModalExpand: (b: boolean) => void;
@@ -300,43 +301,27 @@ const Profile = ({
             </div>
           </div>
           <div className={style.FollowsContainer}>{returnFollowers()}</div>
-            {scope === 'Followers' && (
-              <>
-                {followersUsersHasNextPage && (
-                  <>
-                    {!loading ? (
-                      <div
-                        onClick={() => loadMoreFollowers()}
-                        className={style.Button}
-                      >
-                        Load more
-                      </div>
-                    ) : (
-                      <div className={style.DisabledButton}>Loading...</div>
-                    )}
-                  </>
-                )}
-              </>
-            )}
-            {scope === 'Followed' && (
-              <>
-                {followedUsersHasNextPage && (
-                  <>
-                    {!loading ? (
-                      <div
-                        onClick={() => loadMoreFollowed()}
-                        className={style.Button}
-                      >
-                        Load more
-                      </div>
-                    ) : (
-                      <div className={style.DisabledButton}>Loading...</div>
-                    )}
-                  </>
-                )}
-              </>
-            )}
-          </div>
+          {scope === 'Followers' && followersUsersHasNextPage && (
+            <Button
+              color="invertedContrast"
+              disabled={loading}
+              onClick={() => loadMoreFollowers()}
+              size="medium"
+              text={loading ? 'Loading...' : 'Load more'}
+              variant="outlined"
+            />
+          )}
+          {scope === 'Followed' && followedUsersHasNextPage && (
+            <Button
+              color="invertedContrast"
+              disabled={loading}
+              onClick={() => loadMoreFollowed()}
+              size="medium"
+              text={loading ? 'Loading...' : 'Load more'}
+              variant="outlined"
+            />
+          )}
+        </div>
       
       );
     }
@@ -350,104 +335,62 @@ const Profile = ({
       );
     } else {
       return (
-        <div>
+        <SContentWrapper>
           <div className={style.NFTs}>
             <h3 className={style.NFTTitle}>{returnTitle()}</h3>
             <div className={style.NFTsContainer}>{returnNFTs()}</div>
           </div>
-          <div>
-            {scope === 'My creations' && (
-              <>
-                {createdNftsHasNextPage && (
-                  <>
-                    {!loading ? (
-                      <div
-                        onClick={() => loadMoreCreatedNfts()}
-                        className={style.Button}
-                      >
-                        Load more
-                      </div>
-                    ) : (
-                      <div className={style.DisabledButton}>Loading...</div>
-                    )}
-                  </>
-                )}
-              </>
-            )}
-            {scope === 'My NFTs' && (
-              <>
-                {ownedNftsHasNextPage && (
-                  <>
-                    {!loading ? (
-                      <div
-                        onClick={() => loadMoreOwnedNfts()}
-                        className={style.Button}
-                      >
-                        Load more
-                      </div>
-                    ) : (
-                      <div className={style.DisabledButton}>Loading...</div>
-                    )}
-                  </>
-                )}
-              </>
-            )}
-            {scope === 'Liked' && (
-              <>
-                {likedNftsHasNextPage && (
-                  <>
-                    {!loading ? (
-                      <div
-                        onClick={() => loadMoreLikedNfts()}
-                        className={style.Button}
-                      >
-                        Load more
-                      </div>
-                    ) : (
-                      <div className={style.DisabledButton}>Loading...</div>
-                    )}
-                  </>
-                )}
-              </>
-            )}
-            {scope === 'My NFTs on sale' && (
-              <>
-                {ownedNftsListedHasNextPage && (
-                  <>
-                    {!loading ? (
-                      <div
-                        onClick={() => loadMoreOwnedListedNfts()}
-                        className={style.Button}
-                      >
-                        Load more
-                      </div>
-                    ) : (
-                      <div className={style.DisabledButton}>Loading...</div>
-                    )}
-                  </>
-                )}
-              </>
-            )}
-            {scope === 'My NFTs not for sale' && (
-              <>
-                {ownedNftsUnlistedHasNextPage && (
-                  <>
-                    {!loading ? (
-                      <div
-                        onClick={() => loadMoreOwnedUnlistedNfts()}
-                        className={style.Button}
-                      >
-                        Load more
-                      </div>
-                    ) : (
-                      <div className={style.DisabledButton}>Loading...</div>
-                    )}
-                  </>
-                )}
-              </>
-            )}
-          </div>
-        </div>
+          {scope === 'My creations' && createdNftsHasNextPage && (
+            <Button
+              color="invertedContrast"
+              disabled={loading}
+              onClick={() => loadMoreCreatedNfts()}
+              size="medium"
+              text={loading ? 'Loading...' : 'Load more'}
+              variant="outlined"
+            />
+          )}
+          {scope === 'My NFTs' && ownedNftsHasNextPage && (
+            <Button
+              color="invertedContrast"
+              disabled={loading}
+              onClick={() => loadMoreOwnedNfts()}
+              size="medium"
+              text={loading ? 'Loading...' : 'Load more'}
+              variant="outlined"
+            />
+          )}
+          {scope === 'Liked' && likedNftsHasNextPage && (
+            <Button
+              color="invertedContrast"
+              disabled={loading}
+              onClick={() => loadMoreLikedNfts()}
+              size="medium"
+              text={loading ? 'Loading...' : 'Load more'}
+              variant="outlined"
+            />
+          )}
+          {scope === 'My NFTs on sale' && ownedNftsListedHasNextPage && (
+            <Button
+              color="invertedContrast"
+              disabled={loading}
+              onClick={() => loadMoreOwnedListedNfts()}
+              size="medium"
+              text={loading ? 'Loading...' : 'Load more'}
+              variant="outlined"
+            />
+          )}
+          {scope === 'My NFTs not for sale' && ownedNftsUnlistedHasNextPage && (
+            <Button
+              color="invertedContrast"
+              disabled={loading}
+              onClick={() => loadMoreOwnedUnlistedNfts()}
+              size="medium"
+              text={loading ? 'Loading...' : 'Load more'}
+              variant="outlined"
+            />
+          )}
+        </SContentWrapper>
       );
     }
   }
@@ -536,6 +479,13 @@ const Profile = ({
     </div>
   );
 };
+
+const SContentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
 
 const SNFTShell = styled.div`
   margin-bottom: 3.2rem;

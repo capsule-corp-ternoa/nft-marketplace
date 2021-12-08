@@ -27,7 +27,7 @@ const ButtonStyle = css<IButton>`
   background: ${({ theme, color }) =>
     color ? theme.colors[`${color}`] : theme.colors.primary};
   border: ${({ variant }) =>
-    variant === 'outlined' ? '1px solid' : 'none'};
+    variant === 'outlined' ? '2px solid' : 'none'};
   border-radius: 4rem;
   cursor: pointer;
   font-family: ${({ theme }) => theme.fonts.bold};
@@ -56,6 +56,7 @@ const ButtonStyle = css<IButton>`
   border-color: ${({ theme, color }) => {
     switch (color) {
       case 'invertedContrast':
+        return theme.colors.contrast;
       case 'whiteBlur':
       default:
         return theme.colors.neutral300;

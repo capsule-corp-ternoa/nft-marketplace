@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import styled from 'styled-components';
 import style from './Profile.module.scss';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
@@ -15,6 +14,7 @@ import Switch from 'react-switch';
 import { NftType, UserType } from 'interfaces';
 import { follow, unfollow, isUserFollowing, getFollowersCount } from 'actions/follower';
 import { getUserNFTsStat } from 'actions/nft';
+import { Wrapper } from 'components/layout/Container';
 import Button from 'components/ui/Button';
 
 export interface ProfileProps {
@@ -225,54 +225,79 @@ const Profile = ({
     return () => clearTimeout(timer)
   }, [searchValue, isFiltered])
 
-
-  function returnTitle() {
-    return scope;
-  }
-
   function returnNFTs() {
     let displayNFTs: NftType[] = [];
+    let isLoadMore = false;
+    let loadMore = () => {};
+
     switch (scope) {
       case 'My NFTs':
         displayNFTs = ownedNFTS;
+        isLoadMore = ownedNftsHasNextPage;
+        loadMore = loadMoreOwnedNfts;
         break;
       case 'My creations':
         displayNFTs = createdNFTS;
+        isLoadMore = createdNftsHasNextPage;
+        loadMore = loadMoreCreatedNfts;
         break;
       case 'Liked':
         displayNFTs = likedNfts;
+        isLoadMore = likedNftsHasNextPage;
+        loadMore = loadMoreLikedNfts;
         break;
       case 'My NFTs on sale':
         displayNFTs = ownedNftsListed;
+        isLoadMore = ownedNftsListedHasNextPage;
+        loadMore = loadMoreOwnedListedNfts;
         break;
       case 'My NFTs not for sale':
         displayNFTs = ownedNftsUnlisted;
+        isLoadMore = ownedNftsUnlistedHasNextPage;
+        loadMore = loadMoreOwnedUnlistedNfts;
         break;
       default:
         displayNFTs = ownedNFTS;
+        isLoadMore = ownedNftsHasNextPage;
+        loadMore = loadMoreOwnedNfts;
         break;
     }
-    return displayNFTs.map((item: NftType) => (
-      <SNFTShell key={item.id} className={style.NFTShell}>
-        <NftCardWithHover
-          mode="grid"
-          item={item}
-          user={user}
-          setUser={setUser}
-          likedNfts={likedNfts}
-          setLikedNfts={setLikedNfts}
-          scope={scope}
-        />
-      </SNFTShell>
-    ));
+    return (
+      <>
+        <div className={style.NFTsContainer}>
+          {displayNFTs.map((item: NftType) => (
+            <NftCardWithHover
+              key={item.id}
+              mode="grid"
+              item={item}
+              user={user}
+              setUser={setUser}
+              likedNfts={likedNfts}
+              setLikedNfts={setLikedNfts}
+              scope={scope}
+            />
+          ))}
+        </div>
+        {isLoadMore && (
+          <Button
+            color="invertedContrast"
+            disabled={loading}
+            onClick={() => loadMore()}
+            size="medium"
+            text={loading ? 'Loading...' : 'Load more'}
+            variant="outlined"
+          />
+        )}
+      </>
+    );
   }
 
-  function returnCategory() {
+  function returnContent() {
     if (scope === 'Followed' || scope === 'Followers') {
       return (
         <div className={style.NFTs}>
           <div className={style.Top}>
-            <h3 className={style.NFTTitle}>{returnTitle()}</h3>
+            <h3 className={style.NFTTitle}>{scope}</h3>
             <div className={style.SearchContainer}>
               <div className={style.SearchBar}>
                 <input
@@ -334,64 +359,7 @@ const Profile = ({
         />
       );
     } else {
-      return (
-        <SContentWrapper>
-          <div className={style.NFTs}>
-            <h3 className={style.NFTTitle}>{returnTitle()}</h3>
-            <div className={style.NFTsContainer}>{returnNFTs()}</div>
-          </div>
-          {scope === 'My creations' && createdNftsHasNextPage && (
-            <Button
-              color="invertedContrast"
-              disabled={loading}
-              onClick={() => loadMoreCreatedNfts()}
-              size="medium"
-              text={loading ? 'Loading...' : 'Load more'}
-              variant="outlined"
-            />
-          )}
-          {scope === 'My NFTs' && ownedNftsHasNextPage && (
-            <Button
-              color="invertedContrast"
-              disabled={loading}
-              onClick={() => loadMoreOwnedNfts()}
-              size="medium"
-              text={loading ? 'Loading...' : 'Load more'}
-              variant="outlined"
-            />
-          )}
-          {scope === 'Liked' && likedNftsHasNextPage && (
-            <Button
-              color="invertedContrast"
-              disabled={loading}
-              onClick={() => loadMoreLikedNfts()}
-              size="medium"
-              text={loading ? 'Loading...' : 'Load more'}
-              variant="outlined"
-            />
-          )}
-          {scope === 'My NFTs on sale' && ownedNftsListedHasNextPage && (
-            <Button
-              color="invertedContrast"
-              disabled={loading}
-              onClick={() => loadMoreOwnedListedNfts()}
-              size="medium"
-              text={loading ? 'Loading...' : 'Load more'}
-              variant="outlined"
-            />
-          )}
-          {scope === 'My NFTs not for sale' && ownedNftsUnlistedHasNextPage && (
-            <Button
-              color="invertedContrast"
-              disabled={loading}
-              onClick={() => loadMoreOwnedUnlistedNfts()}
-              size="medium"
-              text={loading ? 'Loading...' : 'Load more'}
-              variant="outlined"
-            />
-          )}
-        </SContentWrapper>
-      );
+      return returnNFTs();
     }
   }
 
@@ -441,7 +409,7 @@ const Profile = ({
           alt="banner"
         />
       </div>
-      <div className={style.Wrapper}>
+      <Wrapper>
         <Sidebar
           user={user}
           scope={scope}
@@ -455,8 +423,11 @@ const Profile = ({
           followersAmount={countFollowers}
           followedAmount={countFollowed}
         />
-        {returnCategory()}
-      </div>
+      </Wrapper>
+      <Wrapper>
+        <h3 className={style.NFTTitle}>{scope}</h3>
+        {returnContent()}
+      </Wrapper>
       <FloatingHeader user={user} setModalExpand={setModalExpand} />
       <Footer />
       {expand && (
@@ -479,16 +450,5 @@ const Profile = ({
     </div>
   );
 };
-
-const SContentWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
-const SNFTShell = styled.div`
-  margin-bottom: 3.2rem;
-`;
 
 export default Profile;

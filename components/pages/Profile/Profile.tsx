@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useMediaQuery } from 'react-responsive';
+import styled from 'styled-components'
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import style from './Profile.module.scss';
@@ -7,15 +9,33 @@ import FloatingHeader from 'components/base/FloatingHeader';
 import { NftCardWithHover } from 'components/base/NftCard';
 import Creator from 'components/base/Creator';
 import TwitterErrorModal from './TwitterErrorModal';
-import Sidebar from './Sidebar';
 import FloatingMenu from './FloatingMenu';
-import Edit from './Edit';
 import Switch from 'react-switch';
 import { NftType, UserType } from 'interfaces';
 import { follow, unfollow, isUserFollowing, getFollowersCount } from 'actions/follower';
 import { getUserNFTsStat } from 'actions/nft';
 import { Wrapper } from 'components/layout/Container';
 import Button from 'components/ui/Button';
+import Tabs from 'components/ui/Tabs';
+import { breakpointMap } from 'style/theme/base';
+
+const NFT_OWNED_TAB = 'My NFTs'
+const NFT_ON_SALE_TAB = 'On sale';
+const NFT_NOT_FOR_SALE_TAB = 'Not for sale';
+const NFT_CREATED_TAB = 'Created';
+const NFT_LIKED_TAB = 'Liked';
+const FOLLOWERS_TAB = 'Followers';
+const FOLLOWED_TAB = 'Following';
+
+const ORDERED_TABS_ID = [NFT_OWNED_TAB,
+  NFT_ON_SALE_TAB,
+  NFT_NOT_FOR_SALE_TAB,
+  NFT_CREATED_TAB,
+  NFT_LIKED_TAB,
+  FOLLOWERS_TAB,
+  FOLLOWED_TAB] as const;
+
+type TabsIdType = typeof ORDERED_TABS_ID[number];
 
 export interface ProfileProps {
   setModalExpand: (b: boolean) => void;
@@ -28,32 +48,39 @@ export interface ProfileProps {
   searchValue: string;
   setSearchValue:(s: string)=>void;
   //Owned
-  ownedNFTS: NftType[];
+  ownedNfts: NftType[];
+  ownedNftsTotal: number;
   loadMoreOwnedNfts: () => void;
   ownedNftsHasNextPage: boolean;
   //Owned listed
   ownedNftsListed: NftType[];
+  ownedNftsListedTotal: number;
   ownedNftsListedHasNextPage: boolean;
   loadMoreOwnedListedNfts: () => void;
   //Owned not listed
   ownedNftsUnlisted: NftType[];
+  ownedNftsUnlistedTotal: number;
   ownedNftsUnlistedHasNextPage: boolean;
   loadMoreOwnedUnlistedNfts: () => void;
   //created
-  createdNFTS: NftType[];
+  createdNfts: NftType[];
+  createdNftsTotal: number;
   loadMoreCreatedNfts: () => void;
   createdNftsHasNextPage: boolean;
   //liked
   likedNfts: NftType[];
+  likedNftsTotal: number;
   setLikedNfts: (nfts: NftType[]) => void;
   likedNftsHasNextPage: boolean;
   loadMoreLikedNfts: () => void;
   //followers
   followers: UserType[];
+  followersTotal: number;
   followersUsersHasNextPage: boolean;
   loadMoreFollowers: (forceLoad?: boolean)=>void;
   //followed
   followed: UserType[];
+  followedTotal: number;
   setFollowed: (users: UserType[]) => void;
   followedUsersHasNextPage: boolean;
   loadMoreFollowed: (forceLoad?: boolean)=>void;
@@ -61,7 +88,6 @@ export interface ProfileProps {
 
 const Profile = ({
   setModalExpand,
-  setSuccessPopup,
   user,
   setUser,
   loading,
@@ -69,26 +95,33 @@ const Profile = ({
   setIsFiltered,
   searchValue,
   setSearchValue,
-  ownedNFTS,
+  ownedNfts,
+  ownedNftsTotal,
   loadMoreOwnedNfts,
   ownedNftsHasNextPage,
   ownedNftsListed,
+  ownedNftsListedTotal,
   ownedNftsListedHasNextPage,
   loadMoreOwnedListedNfts,
   ownedNftsUnlisted,
+  ownedNftsUnlistedTotal,
   ownedNftsUnlistedHasNextPage,
   loadMoreOwnedUnlistedNfts,
-  createdNFTS,
+  createdNfts,
+  createdNftsTotal,
   createdNftsHasNextPage,
   loadMoreCreatedNfts,
   likedNfts,
+  likedNftsTotal,
   setLikedNfts,
   likedNftsHasNextPage,
   loadMoreLikedNfts,
   followers,
+  followersTotal,
   followersUsersHasNextPage,
   loadMoreFollowers,
   followed,
+  followedTotal,
   followedUsersHasNextPage,
   loadMoreFollowed,
   setFollowed,
@@ -99,7 +132,7 @@ const Profile = ({
   );
   const [expand, setExpand] = useState(false);
   const [twitterErrorModal, setTwitterErrorModal] = useState(false);
-  const [banner, setBanner] = useState(
+  const [banner, _setBanner] = useState(
     user.banner ??
       'https://images.unsplash.com/photo-1579546929518-9e396f3cc809?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2250&q=80'
   );
@@ -111,6 +144,10 @@ const Profile = ({
   const [countFollowers, setCountFollowers] = useState(0)
   const [countFollowed, setCountFollowed] = useState(0)
   const [followersNbFollowers, setFollowersNbFollowers] = useState({} as any)
+
+  const isTablet = useMediaQuery({
+    query: `(max-width: ${breakpointMap.lg - 1}px)`,
+  });
 
   const setCounts = async () => {
     try{
@@ -225,43 +262,40 @@ const Profile = ({
     return () => clearTimeout(timer)
   }, [searchValue, isFiltered])
 
-  function returnNFTs() {
+  const returnNFTs = (tabId: TabsIdType) => {
     let displayNFTs: NftType[] = [];
     let isLoadMore = false;
     let loadMore = () => {};
 
-    switch (scope) {
-      case 'My NFTs':
-        displayNFTs = ownedNFTS;
-        isLoadMore = ownedNftsHasNextPage;
-        loadMore = loadMoreOwnedNfts;
-        break;
-      case 'My creations':
-        displayNFTs = createdNFTS;
+    switch (tabId) {
+      case NFT_CREATED_TAB:
+        displayNFTs = createdNfts;
         isLoadMore = createdNftsHasNextPage;
         loadMore = loadMoreCreatedNfts;
         break;
-      case 'Liked':
+      case NFT_LIKED_TAB:
         displayNFTs = likedNfts;
         isLoadMore = likedNftsHasNextPage;
         loadMore = loadMoreLikedNfts;
         break;
-      case 'My NFTs on sale':
+      case NFT_ON_SALE_TAB:
         displayNFTs = ownedNftsListed;
         isLoadMore = ownedNftsListedHasNextPage;
         loadMore = loadMoreOwnedListedNfts;
         break;
-      case 'My NFTs not for sale':
+      case NFT_NOT_FOR_SALE_TAB:
         displayNFTs = ownedNftsUnlisted;
         isLoadMore = ownedNftsUnlistedHasNextPage;
         loadMore = loadMoreOwnedUnlistedNfts;
         break;
+      case NFT_OWNED_TAB:
       default:
-        displayNFTs = ownedNFTS;
+        displayNFTs = ownedNfts;
         isLoadMore = ownedNftsHasNextPage;
         loadMore = loadMoreOwnedNfts;
         break;
     }
+    
     return (
       <>
         <div className={style.NFTsContainer}>
@@ -279,21 +313,43 @@ const Profile = ({
           ))}
         </div>
         {isLoadMore && (
-          <Button
-            color="invertedContrast"
-            disabled={loading}
-            onClick={() => loadMore()}
-            size="medium"
-            text={loading ? 'Loading...' : 'Load more'}
-            variant="outlined"
-          />
+          <SLoadButtonWrapper>
+            <Button
+              color="invertedContrast"
+              disabled={loading}
+              onClick={() => loadMore()}
+              size="medium"
+              text={loading ? 'Loading...' : 'Load more'}
+              variant="outlined"
+            />
+          </SLoadButtonWrapper>
         )}
       </>
     );
   }
 
-  function returnContent() {
-    if (scope === 'Followed' || scope === 'Followers') {
+  const returnQuantity = (tabId: TabsIdType) => {
+    switch (tabId) {
+      case NFT_CREATED_TAB:
+        return createdNftsTotal;
+      case NFT_LIKED_TAB:
+        return likedNftsTotal;
+      case NFT_ON_SALE_TAB:
+        return ownedNftsListedTotal;
+      case NFT_NOT_FOR_SALE_TAB:
+        return ownedNftsUnlistedTotal;
+      case FOLLOWERS_TAB:
+        return followersTotal;
+      case FOLLOWED_TAB:
+        return followedTotal;
+      case NFT_OWNED_TAB:
+      default:
+        return ownedNftsTotal;
+    }
+  }
+
+  const returnContent = (tabId: TabsIdType) => {
+    if (tabId === FOLLOWERS_TAB || tabId === FOLLOWED_TAB) {
       return (
         <div className={style.NFTs}>
           <div className={style.Top}>
@@ -350,17 +406,8 @@ const Profile = ({
       
       );
     }
-    if (scope === 'edit') {
-      return (
-        <Edit
-          user={user}
-          setBanner={setBanner}
-          setSuccessPopup={setSuccessPopup}
-        />
-      );
-    } else {
-      return returnNFTs();
-    }
+    
+    return returnNFTs(tabId);
   }
 
   const returnFollowers = () => {
@@ -410,23 +457,20 @@ const Profile = ({
         />
       </div>
       <Wrapper>
-        <Sidebar
-          user={user}
-          scope={scope}
-          setScope={setScope}
-          setExpand={setExpand}
-          ownedAmount={countOwned}
-          createdAmount={countCreated}
-          listedOwnedAmount={countOwnedListed}
-          unlistedOwnedAmount={countOwnedUnlisted}
-          likedAmount={user.likedNFTs?.length || 0}
-          followersAmount={countFollowers}
-          followedAmount={countFollowed}
-        />
-      </Wrapper>
-      <Wrapper>
-        <h3 className={style.NFTTitle}>{scope}</h3>
-        {returnContent()}
+        <Tabs
+            isTabsSelect={isTablet}
+            tabs={ORDERED_TABS_ID.reduce(
+              (acc, id) => ({
+                ...acc,
+                [id]: {
+                  badge: returnQuantity(id),
+                  content: returnContent(id),
+                  label: id,
+                },
+              }),
+              {}
+            )}
+          />
       </Wrapper>
       <FloatingHeader user={user} setModalExpand={setModalExpand} />
       <Footer />
@@ -450,5 +494,11 @@ const Profile = ({
     </div>
   );
 };
+
+const SLoadButtonWrapper = styled.div`
+  button {
+    margin: 0 auto;
+  }
+`;
 
 export default Profile;

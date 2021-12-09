@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import ArrowBottom from 'components/assets/arrowBottom';
 import styled from 'styled-components';
+
+import Icon from '../Icon'
 
 import { Colors } from 'style/theme/types';
 
@@ -26,10 +27,15 @@ const Select = ({
   };
 
   return (
-    <SelectContainer className={className}>
-      <SelectRoot color={color} disabled={disabled} onClick={toggleSelect}>
+    <SelectContainer className={className} suppressHydrationWarning>
+      <SelectRoot
+        color={color}
+        disabled={disabled}
+        onClick={toggleSelect}
+        suppressHydrationWarning
+      >
         {text}
-        <ArrowIcon isExpanded={isExpanded} />
+        <SIcon isExpanded={isExpanded} name="arrowBottom" />
       </SelectRoot>
       {isExpanded && <SelectOptions>{children(toggleSelect)}</SelectOptions>}
     </SelectContainer>
@@ -45,7 +51,7 @@ const SelectContainer = styled.div`
   min-width: 23rem;
 `;
 
-const SelectRoot = styled.button<{ color?: keyof Colors; }>`
+const SelectRoot = styled.button<{ color?: keyof Colors }>`
   width: 100%;
   display: flex;
   align-items: center;
@@ -84,7 +90,7 @@ const SelectRoot = styled.button<{ color?: keyof Colors; }>`
   }};
 `;
 
-const ArrowIcon = styled(ArrowBottom)<{ isExpanded?: boolean }>`
+const SIcon = styled(Icon)<{ isExpanded?: boolean }>`
   fill: white;
   position: absolute;
   right: 2.4rem;

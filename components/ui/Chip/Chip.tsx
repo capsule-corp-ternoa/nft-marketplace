@@ -6,6 +6,7 @@ import { Colors } from 'style/theme/types';
 interface IChip {
   color?: keyof Colors;
   isDeletable?: boolean;
+  noBorder?: boolean;
   size?: 'small' | 'medium';
   variant?: 'rectangle' | 'round';
 }
@@ -21,6 +22,7 @@ const Chip = ({
   className,
   color,
   icon,
+  noBorder = false,
   onDelete,
   size = 'medium',
   text,
@@ -31,6 +33,7 @@ const Chip = ({
       className={className}
       color={color}
       isDeletable={!!onDelete}
+      noBorder={noBorder}
       size={size}
       suppressHydrationWarning
       variant={variant}
@@ -62,8 +65,8 @@ const SChipContainer = styled.div<IChip>`
     color ? theme.colors[`${color}`] : 'transparent'};
   backdrop-filter: ${({ color }) =>
     color === 'whiteBlur' ? 'blur(2.8rem)' : 'blur(0)'};
-  border: ${({ color }) =>
-    color === 'invertedContrast' ? '2px dashed #E0E0E0' : 'none'};
+  border: ${({ color, noBorder }) =>
+    !noBorder && color === 'invertedContrast' ? '2px dashed #E0E0E0' : 'none'};
   border-radius: ${({ isDeletable, variant }) =>
     isDeletable || variant === 'rectangle' ? '0.8rem' : '6.4rem'};
   padding: ${({ size }) =>

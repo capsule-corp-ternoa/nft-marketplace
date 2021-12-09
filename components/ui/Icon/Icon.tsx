@@ -281,4 +281,4 @@ const Icon = ({ className, name }: Props) => {
   }
 };
 
-export default Icon;
+export default React.memo(Icon);

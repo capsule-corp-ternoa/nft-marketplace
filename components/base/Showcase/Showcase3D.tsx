@@ -1,4 +1,5 @@
 import React from 'react';
+import { useDrag } from '@use-gesture/react';
 import styled from 'styled-components';
 
 import NftCard from 'components/base/NftCard';
@@ -16,6 +17,14 @@ interface Props {
 }
 
 const Showcase3D = ({ list, selectedIdx, setSelectedItem }: Props) => {
+  const bind = useDrag(({ movement: [x], last }) => {
+    if (last && x < 0) {
+      setSelectedItem(list[selectedIdx === 2 ? 0 : selectedIdx + 1]);
+    } else if (last && x > 0) {
+      setSelectedItem(list[selectedIdx === 0 ? 2 : selectedIdx - 1]);
+    }
+  });
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { target } = event;
     const idx = Number(target.name.replace(/[^0-9\.]+/g, ''));
@@ -54,8 +63,13 @@ const Showcase3D = ({ list, selectedIdx, setSelectedItem }: Props) => {
           className="cards"
           htmlFor={`input-${idx}`}
           id={`nft-${idx}`}
+          {...bind()}
         >
-          <NftCard mode="carousel" item={item} isDragging={selectedIdx !== idx} />
+          <NftCard
+            mode="carousel"
+            item={item}
+            isDragging={selectedIdx !== idx}
+          />
         </SLabel>
       ))}
     </SWrapper>
@@ -67,7 +81,7 @@ const SWrapper = styled.div`
   height: 100%;
   display: flex;
   justify-content: center;
-  align-items: end;
+  align-items: flex-end;
   position: relative;
 
   > #input-0:checked ~ #nft-2,
@@ -182,11 +196,13 @@ const SInput = styled.input`
 const SLabel = styled.label`
   width: fit-content;
   position: absolute;
+  top: 0;
   left: 0;
   right: 0;
   margin: 0 auto 4rem;
   transition: transform 0.4s ease;
   cursor: pointer;
+  touch-action: none;
 `;
 
 export default Showcase3D;

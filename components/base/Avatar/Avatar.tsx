@@ -2,13 +2,16 @@ import React from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
 
-import Button from '../Button';
-import Icon from '../Icon';
+import Button from 'components/ui/Button';
+import Icon from 'components/ui/Icon';
+import { middleEllipsis } from 'utils/strings';
+
 import Picture from './components/Picture';
 
 interface Props {
   className?: string;
   followers?: number;
+  isAddressDisplayed?: string;
   isClickable?: boolean;
   isDiscoverButton?: boolean;
   isPictureOnly?: boolean;
@@ -19,7 +22,6 @@ interface Props {
   nickname?: string;
   personalUrl?: string;
   picture?: string;
-  shortWalletId?: string;
   twitterName?: string;
   walletId?: string;
 }
@@ -27,6 +29,7 @@ interface Props {
 const Avatar = ({
   className,
   followers,
+  isAddressDisplayed,
   isClickable,
   isDiscoverButton,
   isPictureOnly,
@@ -37,7 +40,6 @@ const Avatar = ({
   nickname,
   personalUrl,
   picture,
-  shortWalletId,
   twitterName,
   walletId,
 }: Props) => {
@@ -102,13 +104,13 @@ const Avatar = ({
               {personalUrl.replace(/(^\w+:|^)\/\//, '')}
             </SLink>
           )}
-          {walletId && shortWalletId && (
+          {isAddressDisplayed && walletId && (
             <SAddress
               onClick={() => {
                 clipboardCopy(walletId);
               }}
             >
-              {shortWalletId}
+              {middleEllipsis(walletId, 20)}
               <SCopyPasteIcon name="copyPaste" />
             </SAddress>
           )}

@@ -74,7 +74,7 @@ const STabContainer = styled.button<{ isActive?: boolean; isBadge?: boolean }>`
 
   ${({ theme }) => theme.mediaQueries.lg} {
     width: auto;
-    min-width: 20rem;
+    min-width: 19rem;
     min-height: 6.4rem;
     background: ${({ theme }) => theme.colors.primary};
     border: 2px solid;
@@ -82,7 +82,7 @@ const STabContainer = styled.button<{ isActive?: boolean; isBadge?: boolean }>`
     border-radius: 1.2rem;
     box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.15);
     color: ${({ theme }) => theme.colors.invertedContrast};
-    padding: ${({ isBadge }) => isBadge ? '0.8rem 2rem' : '1.6rem 2rem'};
+    padding: ${({ isBadge }) => isBadge ? '0.8rem 1.6rem' : '1.6rem'};
 
     ${({ isActive, theme }) =>
       !isActive &&

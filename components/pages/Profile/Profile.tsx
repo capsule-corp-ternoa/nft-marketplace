@@ -30,7 +30,7 @@ const NFT_LIKED_TAB = 'Liked';
 const FOLLOWERS_TAB = 'Followers';
 const FOLLOWED_TAB = 'Following';
 
-const ORDERED_TABS_ID = [
+const ALL_TABS_ID = [
   NFT_OWNED_TAB,
   NFT_ON_SALE_TAB,
   NFT_NOT_FOR_SALE_TAB,
@@ -40,7 +40,16 @@ const ORDERED_TABS_ID = [
   FOLLOWED_TAB,
 ] as const;
 
-type TabsIdType = typeof ORDERED_TABS_ID[number];
+const ORDERED_TABS_ID = [
+  NFT_ON_SALE_TAB,
+  NFT_NOT_FOR_SALE_TAB,
+  NFT_CREATED_TAB,
+  NFT_LIKED_TAB,
+  FOLLOWERS_TAB,
+  FOLLOWED_TAB,
+] as const;
+
+type TabsIdType = typeof ALL_TABS_ID[number];
 
 export interface ProfileProps {
   setModalExpand: (b: boolean) => void;

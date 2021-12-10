@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDrag } from '@use-gesture/react';
 import styled from 'styled-components';
 
-import NftCard from 'components/base/NftCard';
+import NftCard, { CAROUSEL_MODE } from 'components/base/NftCard';
 import { NftType } from 'interfaces/index';
 import { timer } from 'utils/functions' 
 
@@ -76,7 +76,7 @@ const Showcase3D = ({ list, selectedIdx, setSelectedItem }: Props) => {
           {...bind()}
         >
           <NftCard
-            mode="carousel"
+            mode={CAROUSEL_MODE}
             item={item}
             isDragging={isDragging || selectedIdx !== idx}
           />

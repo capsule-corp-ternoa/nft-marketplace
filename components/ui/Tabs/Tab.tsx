@@ -90,7 +90,7 @@ const STabContainer = styled.button<{ isActive?: boolean; isBadge?: boolean }>`
         background: ${theme.colors.neutral500};
         border-color: rgba(0, 0, 0, 0);
         box-shadow: none;
-        color: ${theme.colors.neutral400};
+        color: ${theme.colors.neutral300};
         opacity: 0.6;
 
         &:hover {

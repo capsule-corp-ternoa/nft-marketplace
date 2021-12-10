@@ -45,3 +45,5 @@ export const navigateToSuccess = (
 export const getRandomNFTFromArray = (array: any[]) => {
   return array[Math.floor(Math.random() * array.length)]
 }
+
+export const timer = (ms:number) => new Promise(res => setTimeout(res, ms));

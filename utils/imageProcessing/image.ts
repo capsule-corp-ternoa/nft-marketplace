@@ -1,6 +1,6 @@
 import Jimp from 'jimp';
 import { NftEffectType, NFT_EFFECT_BLUR, NFT_EFFECT_PROTECT } from 'interfaces';
-
+import { timer } from 'utils/functions';
 const NFT_CARD_SIZE_RATIO = 0.625;
 
 export async function imgToBlur(NFT: File | null, blurredValue: number) {
@@ -80,8 +80,6 @@ export const processFile = async (
     return null;
   }
 };
-
-const timer = (ms:number) => new Promise(res => setTimeout(res, ms));
 
 export const generateVideoThumbnail = (file: File) => {
   return new Promise((resolve, reject) => {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-
+import { timer } from 'utils/functions';
 export interface MediaProps {
   src: string;
   type: string | null;
@@ -8,7 +8,6 @@ export interface MediaProps {
 }
 
 const loader = '/loader.svg'
-const timer = (ms:number) => new Promise(res => setTimeout(res, ms));
 const defaultFallback = './media-placeholder.svg'
 const totalRetries = 5
 

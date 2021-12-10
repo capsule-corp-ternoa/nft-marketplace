@@ -7,6 +7,7 @@ import { Banner } from 'components/base/Avatar';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
 import { NftCardWithHover } from 'components/base/NftCard';
+import NoNFTComponent from 'components/base/NoNFTComponent';
 import Creator from 'components/base/Creator';
 import TwitterErrorModal from './TwitterErrorModal';
 import FloatingMenu from './FloatingMenu';
@@ -269,33 +270,60 @@ const Profile = ({
     let isLoadMore = false;
     let loadMore = () => {};
 
+    let noNftTitle = "Nothing to display";
+    let noNftBody;
+    let noNftHref;
+    let noNftLinkLabel;
+
     switch (tabId) {
       case NFT_CREATED_TAB:
         displayNFTs = createdNfts;
         isLoadMore = createdNftsHasNextPage;
         loadMore = loadMoreCreatedNfts;
+        noNftHref = "/create";
+        noNftLinkLabel = "Create your NFT";
         break;
       case NFT_LIKED_TAB:
         displayNFTs = likedNfts;
         isLoadMore = likedNftsHasNextPage;
         loadMore = loadMoreLikedNfts;
+        noNftBody="The NFTs you liked are displayed here"
         break;
       case NFT_ON_SALE_TAB:
         displayNFTs = ownedNftsListed;
         isLoadMore = ownedNftsListedHasNextPage;
         loadMore = loadMoreOwnedListedNfts;
+        noNftHref = "/";
+        noNftLinkLabel = "Sell your NFT";
         break;
       case NFT_NOT_FOR_SALE_TAB:
         displayNFTs = ownedNftsUnlisted;
         isLoadMore = ownedNftsUnlistedHasNextPage;
         loadMore = loadMoreOwnedUnlistedNfts;
+        noNftBody="The NFTs you owned and are not for sale are displayed here"
         break;
       case NFT_OWNED_TAB:
       default:
         displayNFTs = ownedNfts;
         isLoadMore = ownedNftsHasNextPage;
         loadMore = loadMoreOwnedNfts;
+        noNftBody="The NFTs you owned are displayed here"
+        noNftHref = "/explore";
+        noNftLinkLabel = "Explore NFTs";
         break;
+    }
+
+    if (displayNFTs.length < 1) {
+      return (
+        <SNoNFTContainer>
+          <NoNFTComponent
+            body={noNftBody}
+            href={noNftHref}
+            linkLabel={noNftLinkLabel}
+            title={noNftTitle}
+          />
+        </SNoNFTContainer>
+      );
     }
     
     return (
@@ -414,6 +442,18 @@ const Profile = ({
 
   const returnFollowers = () => {
     const creators = scope === 'Followers' ? followers : followed;
+
+    if (creators.length < 1) {
+      return (
+        <SNoNFTContainer>
+          <NoNFTComponent
+            body={scope === 'Followers' ? undefined : 'Discover new artists and start following them!'}
+            title="Nothing to display"
+          />
+        </SNoNFTContainer>
+      );
+    }
+
     return creators.map((item: UserType, i: number) => {
       return (
         <div key={item._id} className={style.CreatorShell}>
@@ -524,6 +564,14 @@ const SBannerContainer = styled.div`
     align-items: center;
     justify-content: space-between;
     margin-top: 0;
+  }
+`;
+
+const SNoNFTContainer = styled.div`
+  margin-top: 8rem;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    margin-top: 15.4rem;
   }
 `;
 

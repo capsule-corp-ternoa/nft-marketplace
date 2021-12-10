@@ -27,7 +27,7 @@ const NoNFTComponent = ({ body, className, href, linkLabel, title, variant }: Pr
         {body && <SBody>{body}</SBody>}
         {href && (
           <SLinkWrapper>
-            <Link href="/">
+            <Link href={href} passHref>
               <>
                 <Button
                   color="invertedContrast"

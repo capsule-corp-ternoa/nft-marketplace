@@ -39,4 +39,8 @@ export const Wrapper = styled.div`
       padding-top: 5.6rem;
     }
   }
+
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    max-width: 144rem;
+  }
 `;

@@ -8,10 +8,13 @@ import Icon from 'components/ui/Icon';
 
 import Picture from './components/Picture';
 
+export const AVATAR_VARIANT_BANNER = 'banner';
+export type AVATAR_VARIANT_TYPE = typeof AVATAR_VARIANT_BANNER;
+
 interface Props {
   className?: string;
   followers?: number;
-  isAddressDisplayed?: string;
+  isAddressDisplayed?: boolean;
   isClickable?: boolean;
   isDiscoverButton?: boolean;
   isPictureOnly?: boolean;
@@ -23,6 +26,7 @@ interface Props {
   personalUrl?: string;
   picture?: string;
   twitterName?: string;
+  variant?: AVATAR_VARIANT_TYPE;
   walletId?: string;
 }
 
@@ -41,6 +45,7 @@ const Avatar = ({
   personalUrl,
   picture,
   twitterName,
+  variant,
   walletId,
 }: Props) => {
   if (isPictureOnly) {
@@ -52,12 +57,13 @@ const Avatar = ({
         link={walletId}
         name={name}
         picture={picture}
+        variant={variant}
       />
     );
   }
 
   return (
-    <SAvatarContainer className={className}>
+    <SAvatarContainer className={className} variant={variant}>
       <Picture
         isClickable={isClickable}
         isTooltip={isTooltip}
@@ -65,14 +71,15 @@ const Avatar = ({
         link={walletId}
         name={name}
         picture={picture}
+        variant={variant}
       />
-      <SDetailsContainer>
+      <SDetailsContainer variant={variant}>
         <STopDetails>
           <Link href={`/${walletId}`} passHref>
-            <SName>{name}</SName>
+            <SName variant={variant}>{name}</SName>
           </Link>
           {followers && <SLabel>{`${followers} followers`}</SLabel>}
-          {nickname && <SNickname>@{nickname}</SNickname>}
+          {nickname && <SNickname>{nickname}</SNickname>}
         </STopDetails>
 
         <SBottomDetails>
@@ -115,16 +122,28 @@ const Avatar = ({
   );
 };
 
-const SAvatarContainer = styled.div`
+const SAvatarContainer = styled.div<{ variant?: AVATAR_VARIANT_TYPE }>`
   display: flex;
+  flex-direction: ${({variant}) => variant === AVATAR_VARIANT_BANNER ? 'column' : 'row'};
   align-items: center;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    flex-direction: row;
+  }
 `;
 
-const SDetailsContainer = styled.div`
+const SDetailsContainer = styled.div<{ variant?: AVATAR_VARIANT_TYPE }>`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  margin-left: 1.6rem;
+  align-items: ${({ variant }) => variant === AVATAR_VARIANT_BANNER ? 'center' : 'flex-start'};
+  margin-top: ${({ variant }) => variant === AVATAR_VARIANT_BANNER ? '1.6rem' : 0};
+  margin-left: ${({ variant }) => variant === AVATAR_VARIANT_BANNER ? 0 : '1.6rem'};
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    align-items: flex-start;
+    margin-top: 0;
+    margin-left: ${({ variant }) => variant === AVATAR_VARIANT_BANNER ? '3.2rem' : '1.6rem'};
+  }
 `;
 
 const STopDetails = styled.div`
@@ -150,10 +169,10 @@ const SBottomDetails = styled.div`
   }
 `;
 
-const SName = styled.a`
-  color: ${({ theme }) => theme.colors.contrast};
+const SName = styled.a<{ variant?: AVATAR_VARIANT_TYPE }>`
+  color: ${({ theme, variant }) => variant === AVATAR_VARIANT_BANNER ? theme.colors.primary : theme.colors.contrast};
   font-family: ${({ theme }) => theme.fonts.bold};
-  font-size: 1.6rem;
+  font-size: ${({ variant }) => variant === AVATAR_VARIANT_BANNER ? '3.2rem' : '1.6rem'};
 
   &:hover {
     color: ${({ theme }) => theme.colors.primary};
@@ -161,7 +180,7 @@ const SName = styled.a`
   }
 `;
 
-const SLabel = styled.span`
+const SLabel = styled.span<{ variant?: AVATAR_VARIANT_TYPE }>`
   color: ${({ theme }) => theme.colors.contrast};
   font-size: 1.6rem;
 `;

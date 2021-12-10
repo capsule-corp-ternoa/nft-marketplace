@@ -3,16 +3,20 @@ import Router from 'next/router';
 import styled, { css } from 'styled-components';
 import gradient from 'random-gradient';
 
-import Icon from '../../../ui/Icon';
+import Icon from 'components/ui/Icon';
+
+import { AVATAR_VARIANT_BANNER, AVATAR_VARIANT_TYPE } from '../Avatar';
 
 interface Props {
   className?: string;
+  isBanner?: boolean;
   isClickable?: boolean;
   isTooltip?: boolean;
   isVerified?: boolean;
   link?: string;
   name: string;
   picture?: string;
+  variant?: AVATAR_VARIANT_TYPE;
 }
 
 const Picture = ({
@@ -23,6 +27,7 @@ const Picture = ({
   link,
   name,
   picture,
+  variant,
 }: Props) => (
   <SPictureContainer
     className={className}
@@ -30,7 +35,7 @@ const Picture = ({
     isTooltip={isTooltip}
     onClick={() => isClickable && link && Router.push(link)}
   >
-    <SPictureWrapper>
+    <SPictureWrapper variant={variant}>
       {isVerified && <SIcon name="badge" />}
       {picture ? (
         <SImage draggable="false" isClickable={isClickable} src={picture} />
@@ -66,12 +71,12 @@ const SPictureContainer = styled.div<{
   `}
 `;
 
-const SPictureWrapper = styled.div`
-  width: 5.6rem;
-  height: 5.6rem;
+const SPictureWrapper = styled.div<{ variant?: AVATAR_VARIANT_TYPE }>`
+  width: ${({ variant }) => variant === AVATAR_VARIANT_BANNER ? '12rem' : '5.6rem'};
+  height: ${({ variant }) => variant === AVATAR_VARIANT_BANNER ? '12rem' : '5.6rem'};
   position: relative;
   border-radius: 50%;
-  box-shadow: 0 0.4rem 0.4rem rgba(0, 0, 0, 0.25);
+  box-shadow: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.25);
   z-index: 5;
 `;
 

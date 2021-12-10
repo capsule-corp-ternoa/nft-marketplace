@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useMediaQuery } from 'react-responsive';
-import styled from 'styled-components'
+import styled from 'styled-components';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { Banner } from 'components/base/Avatar';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
-import { NftCardWithHover } from 'components/base/NftCard';
+import NftCard, { NftChips } from 'components/base/NftCard';
 import NoNFTComponent from 'components/base/NoNFTComponent';
 import Creator from 'components/base/Creator';
 import TwitterErrorModal from './TwitterErrorModal';
@@ -30,13 +30,15 @@ const NFT_LIKED_TAB = 'Liked';
 const FOLLOWERS_TAB = 'Followers';
 const FOLLOWED_TAB = 'Following';
 
-const ORDERED_TABS_ID = [NFT_OWNED_TAB,
+const ORDERED_TABS_ID = [
+  NFT_OWNED_TAB,
   NFT_ON_SALE_TAB,
   NFT_NOT_FOR_SALE_TAB,
   NFT_CREATED_TAB,
   NFT_LIKED_TAB,
   FOLLOWERS_TAB,
-  FOLLOWED_TAB] as const;
+  FOLLOWED_TAB,
+] as const;
 
 type TabsIdType = typeof ORDERED_TABS_ID[number];
 
@@ -92,7 +94,6 @@ export interface ProfileProps {
 const Profile = ({
   setModalExpand,
   user,
-  setUser,
   loading,
   isFiltered,
   setIsFiltered,
@@ -116,7 +117,6 @@ const Profile = ({
   loadMoreCreatedNfts,
   likedNfts,
   likedNftsTotal,
-  setLikedNfts,
   likedNftsHasNextPage,
   loadMoreLikedNfts,
   followers,
@@ -203,7 +203,7 @@ const Profile = ({
       console.log(err)
     }
   }
-  
+
   const updateKeywordSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.currentTarget.value);
   };
@@ -247,7 +247,7 @@ const Profile = ({
       router.query = {};
     }
   }, [router.query]);
-  
+
   useEffect(() => {
     setCounts()
     initFollowerStat()
@@ -325,21 +325,20 @@ const Profile = ({
         </SNoNFTContainer>
       );
     }
-    
+
     return (
       <>
         <div className={style.NFTsContainer}>
           {displayNFTs.map((item: NftType) => (
-            <NftCardWithHover
-              key={item.id}
-              mode="grid"
-              item={item}
-              user={user}
-              setUser={setUser}
-              likedNfts={likedNfts}
-              setLikedNfts={setLikedNfts}
-              scope={scope}
-            />
+            <NftCard key={item.id} mode="profile" item={item}>
+              <NftChips
+                NFT={item}
+                mode="profile"
+                noAvailableChip={tabId !== NFT_ON_SALE_TAB}
+                noPriceChip={tabId !== NFT_ON_SALE_TAB}
+                quantity={returnQuantityNFTsAvailable(item, tabId)}
+              />
+            </NftCard>
           ))}
         </div>
         {isLoadMore && (
@@ -356,7 +355,33 @@ const Profile = ({
         )}
       </>
     );
-  }
+  };
+
+  const returnQuantityNFTsAvailable = (NFT: NftType, tabId: TabsIdType) => {
+    const { serieData, totalNft, totalOwnedByRequestingUser } = NFT;
+
+    switch (tabId) {
+      case NFT_CREATED_TAB:
+        return totalNft ?? 1;
+      case NFT_LIKED_TAB:
+        return 0;
+      case NFT_ON_SALE_TAB:
+        return (
+          serieData?.filter(
+            ({ listed, owner }) => owner === user?.walletId && listed === 1
+          ).length ?? 1
+        );
+      case NFT_NOT_FOR_SALE_TAB:
+        return (
+          serieData?.filter(
+            ({ listed, owner }) => owner === user?.walletId && listed === 0
+          ).length ?? 1
+        );
+      case NFT_OWNED_TAB:
+      default:
+        return totalOwnedByRequestingUser ?? 1;
+    }
+  };
 
   const returnQuantity = (tabId: TabsIdType) => {
     switch (tabId) {
@@ -519,19 +544,19 @@ const Profile = ({
       </Wrapper>
       <Wrapper>
         <Tabs
-            isTabsSelect={isTablet}
-            tabs={ORDERED_TABS_ID.reduce(
-              (acc, id) => ({
-                ...acc,
-                [id]: {
-                  badge: returnQuantity(id),
-                  content: returnContent(id),
-                  label: id,
-                },
-              }),
-              {}
-            )}
-          />
+          isTabsSelect={isTablet}
+          tabs={ORDERED_TABS_ID.reduce(
+            (acc, id) => ({
+              ...acc,
+              [id]: {
+                badge: returnQuantity(id),
+                content: returnContent(id),
+                label: id,
+              },
+            }),
+            {}
+          )}
+        />
       </Wrapper>
       <FloatingHeader user={user} setModalExpand={setModalExpand} />
       <Footer />

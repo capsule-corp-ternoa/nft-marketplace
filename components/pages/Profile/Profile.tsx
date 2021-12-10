@@ -3,7 +3,7 @@ import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components'
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import style from './Profile.module.scss';
+import { Banner } from 'components/base/Avatar';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
 import { NftCardWithHover } from 'components/base/NftCard';
@@ -18,6 +18,8 @@ import { Wrapper } from 'components/layout/Container';
 import Button from 'components/ui/Button';
 import Tabs from 'components/ui/Tabs';
 import { breakpointMap } from 'style/theme/base';
+
+import style from './Profile.module.scss';
 
 const NFT_OWNED_TAB = 'My NFTs'
 const NFT_ON_SALE_TAB = 'On sale';
@@ -457,6 +459,25 @@ const Profile = ({
         />
       </div>
       <Wrapper>
+        <SBannerContainer>
+          <Banner
+            bio={user.bio}
+            isVerified={user.verified}
+            name={user.name}
+            picture={user.picture}
+            twitterName={user.twitterName}
+            walletId={user.walletId}
+          />
+          {!isTablet && <Button
+            color="whiteBlur"
+            icon='edit'
+            text="Edit profile"
+            size="small"
+            variant="outlined"
+          />}
+        </SBannerContainer>
+      </Wrapper>
+      <Wrapper>
         <Tabs
             isTabsSelect={isTablet}
             tabs={ORDERED_TABS_ID.reduce(
@@ -494,6 +515,17 @@ const Profile = ({
     </div>
   );
 };
+
+const SBannerContainer = styled.div`
+  margin-top: -12rem;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 0;
+  }
+`;
 
 const SLoadButtonWrapper = styled.div`
   button {

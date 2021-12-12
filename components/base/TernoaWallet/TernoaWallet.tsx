@@ -34,13 +34,13 @@ const TernoaWallet: React.FC<TernoaWalletProps> = ({ setModalExpand }) => {
       setModalExpand(false);
     });
     socket.on('disconnect', (data) => {
-      console.log('deco', data);
+      console.log('socket disconnect', data);
       setModalExpand(false);
     });
 
     socket.on('CONNECTION_FAILURE', (data) => setError(data.msg));
     socket.on('RECEIVE_WALLET_ID', async (data) => {
-      console.log('SEND_WALLET_ID', data);
+      //console.log('SEND_WALLET_ID', data);
       const walletId = data.walletId as string;
       let isUserCreated = false
       try {

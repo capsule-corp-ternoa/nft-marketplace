@@ -28,6 +28,7 @@ export interface ModalProps {
   setError: (s: string) => void;
   setModalCreate: (b: boolean) => void;
   setRunNFTMintData: (data: any) => void;
+  thumbnailTimecode: number;
 }
 
 const ModalMint: React.FC<ModalProps> = ({
@@ -41,7 +42,8 @@ const ModalMint: React.FC<ModalProps> = ({
   uploadSize,
   setError,
   setModalCreate,
-  setRunNFTMintData
+  setRunNFTMintData,
+  thumbnailTimecode
 }) => {
   const [session] = useState(randomstring.generate());
   const { walletId, quantity } = QRData;
@@ -188,14 +190,10 @@ const ModalMint: React.FC<ModalProps> = ({
     const { hashOrURL: previewHash, mediaType } = await uploadIPFS(previewNFT ?? originalNFT, setProgressData, uploadIndex);
     //Upload thumbnail if video
     if (mediaType.toString().indexOf("video") !== -1){
-      try{
-        uploadIndex += 1
-        const videoThumbnailFile =  await generateVideoThumbnail(previewNFT ?? originalNFT);
-        const result = await uploadIPFS(videoThumbnailFile as File, setProgressData, uploadIndex);
-        videoThumbnailHash = result.hashOrURL
-      }catch(err){
-        console.log(err)
-      }
+      uploadIndex += 1
+      const videoThumbnailFile =  await generateVideoThumbnail(previewNFT ?? originalNFT, thumbnailTimecode);
+      const result = await uploadIPFS(videoThumbnailFile as File, setProgressData, uploadIndex);
+      videoThumbnailHash = result.hashOrURL
     }
     const cryptedMediaType = mime.lookup(originalNFT.name)
     //Encrypt and upload secrets

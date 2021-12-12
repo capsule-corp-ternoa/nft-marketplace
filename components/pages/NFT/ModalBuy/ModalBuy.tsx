@@ -47,7 +47,7 @@ const ModalBuy: React.FC<ModalBuyProps> = ({ setModalExpand, id, seriesId }) => 
     socket.on('CONNECTION_FAILURE', (data) => setError(data.msg));
     socket.on('NFT_BUY', (data) => {
       setLoading(false)
-      console.log('NFT_BUY:' + data.success);
+      //console.log('NFT_BUY:' + data.success);
       if (!data.success){
         setError('Something went wrong. Please try again.');
       }

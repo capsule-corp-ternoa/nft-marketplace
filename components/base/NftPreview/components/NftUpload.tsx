@@ -25,15 +25,11 @@ export const updateFile = (
   let isError = false;
 
   if (file !== null && file !== undefined) {
-    if (!isError && isRN && file!.type.substr(0, 5) === 'video') {
-      setError("You can't select video type on mobile DApp yet.");
-      isError = true;
-    }
     if (
       !isError &&
       !(
-        file!.type.substr(0, 5) === 'video' ||
-        file!.type.substr(0, 5) === 'image'
+        file!.type.indexOf('video') !== -1 ||
+        file!.type.indexOf('image') !== -1
       )
     ) {
       setError(

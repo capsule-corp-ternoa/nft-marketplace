@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import Upload from 'components/assets/upload';
 import { HiddenInput, HiddenShell, InsightLight } from 'components/layout';
@@ -9,7 +9,6 @@ interface Props {
   content?: string | React.ReactNode;
   inputId: string;
   isMinimal?: boolean;
-  isRN?: boolean;
   isSecretOption?: boolean;
   note?: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -59,25 +58,19 @@ const NftUpload = ({
   content,
   inputId,
   isMinimal = false,
-  isRN,
   isSecretOption = false,
   note,
   onChange,
 }: Props) => {
-  const [acceptedFileTypes, setAcceptedFileTypes] = useState([
+
+  const acceptedFileTypes = [
     '.jpg',
     '.jpeg',
     '.png',
     '.gif',
     '.mp4',
     '.mov',
-  ]);
-
-  useEffect(() => {
-    if (isRN) {
-      setAcceptedFileTypes(['.jpg', '.jpeg', '.png', '.gif']);
-    }
-  }, [isRN]);
+  ]
 
   if (isMinimal) {
     return (

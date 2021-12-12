@@ -146,11 +146,8 @@ const NftCardWithEffects = ({
                   </SecretUploadDescription>
                 }
                 inputId="uploadOriginalNft"
-                isRN={isRN}
                 isSecretOption
-                note={`JPEG, JPG, PNG, GIF ${
-                  !isRN ? ', MP4 or MOV' : ''
-                }. Max 30mb.`}
+                note={`JPEG, JPG, PNG, GIF, MP4 or MOV. Max 30mb.`}
                 onChange={handleSecretFileUpload}
               />
             ) : (
@@ -158,7 +155,6 @@ const NftCardWithEffects = ({
                 content={returnType(coverNFT)}
                 inputId="reUploadOriginalNft"
                 isMinimal
-                isRN={isRN}
                 isSecretOption
                 onChange={handleSecretFileUpload}
               />

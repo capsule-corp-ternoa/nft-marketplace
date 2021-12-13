@@ -92,7 +92,7 @@ const ModalMint: React.FC<ModalProps> = ({
     });
     socket.once('connect_error', (e: any) => {
       console.error('connection error socket', e);
-      setModalCreate(false);
+      setError("Connection error, please try again")
     });
 
     socket.once('CONNECTION_FAILURE', (data: any) => {
@@ -138,7 +138,7 @@ const ModalMint: React.FC<ModalProps> = ({
     });
     
     socket.once('disconnect', () => {
-      setModalCreate(false);
+      setError("Wallet disconnected")
     });
     return () => {
       if (socket && socket.connected) {
@@ -304,7 +304,7 @@ const ModalMint: React.FC<ModalProps> = ({
               <>
                 <Circle percent={generalPercentage()} strokeWidth={3} strokeColor="#7417ea" className={style.ProgressBar} />
                 <div className={style.Text}>{`Progress : ${generalPercentage()}%`}</div>
-                <div className={style.Text}>{`Speed : ${speed} kb/sec`}</div>
+                <div className={style.Text}>{`Speed : ${isNaN(speed) ? 0 : speed} kb/sec`}</div>
               </>
             )}
           </>

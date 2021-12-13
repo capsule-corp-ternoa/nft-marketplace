@@ -23,7 +23,6 @@ const ThumbnailSelector = ({
 }: Props) => {
   const [thumbnailDuration, setThumbnailDuration] = useState(0)
   const [thumbnailSrc, setThumbnailSrc] = useState("")
-  const [thumbnailReady, setThumbnailReady] = useState(false)
   const thumbnailRef = useRef(null);
   
   /* If NFT (original or cover) changes, we reset thumbnail source, timecode and duration */
@@ -42,29 +41,20 @@ const ThumbnailSelector = ({
     if (thumbnailRef && thumbnailRef.current){
       const videoElem = (thumbnailRef.current as HTMLVideoElement)
       try{
-        videoElem.onplay = () => {
-          videoElem.pause()
-          setThumbnailReady(true)
+        if (navigator?.userAgent?.match(/iPhone|iPad|iPod/i)){
+          videoElem.onplay = () => {
+            videoElem.pause()
+          }
+        }else{
+          videoElem.onplaying = () => {
+            videoElem.pause()
+          }
         }
-        videoElem.onplaying = () => {
-          videoElem.pause()
-          setThumbnailReady(true)
-        }
-        videoElem.play().catch((err) => console.log(err))
       }catch(err){
         console.log(err)
       }
     }
   }, [thumbnailSrc])
-
-  /* When thumbnail is ready, we reset the current time (for android) */
-  //TODO : Find better implementation working on IOS webview and android web View
-  useEffect(() => {
-    if (thumbnailRef && thumbnailRef.current){
-      const videoElem = (thumbnailRef.current as HTMLVideoElement)
-      videoElem.currentTime = 0
-    }
-  }, [thumbnailReady])
 
   /* Get video duration to set slider */
   const getThumbnailDuration = () => {
@@ -89,10 +79,10 @@ const ThumbnailSelector = ({
   return (
     <SThumbnailSelectorContainer className={className}>
       {thumbnailSrc !== "" && <SThumbnailVideo
-        autoPlay={false}
+        autoPlay={true}
         muted={true}
         controls={false}
-        playsInline={true}
+        playsInline
         ref={thumbnailRef}
         src={thumbnailSrc}
       />}

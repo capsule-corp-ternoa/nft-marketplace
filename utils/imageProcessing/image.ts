@@ -102,7 +102,6 @@ export const generateVideoThumbnail = (file: File, thumbnailTimecode: number) =>
         canvas.toBlob(async (imgBlob) => {
           if (imgBlob){
             const imgFile = new File([imgBlob], "preview_image");
-            blobToDataURL(imgBlob, (r: any) => console.log(r))
             window.URL.revokeObjectURL(video.src);
             return resolve(imgFile);
           }else{

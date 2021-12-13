@@ -1,25 +1,32 @@
 import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+
+import { MediaStyle } from 'components/layout/Media';
+import Icon from 'components/ui/Icon';
+import { NFT_FILE_TYPE_IMAGE, NFT_FILE_TYPE_VIDEO } from 'interfaces/index';
 import { timer } from 'utils/functions';
 export interface MediaProps {
+  isHovering?: boolean;
   src: string;
   type: string | null;
   fallbackSrc?: string;
   retries?: number;
 }
 
-const loader = '/loader.svg'
 const defaultFallback = './media-placeholder.svg'
 const totalRetries = 5
 
-const Media: React.FC<MediaProps & Record<string,any>> = ({ 
+const Media: React.FC<MediaProps & Record<string,any>> = ({
+  isHovering,
   src, 
   type,
   fallbackSrc=defaultFallback,
   ...rest 
 }) => {
-  const [mediaSrc, setMediaSrc] = useState(loader)
+  const [mediaSrc, setMediaSrc] = useState<string | undefined>(undefined);
+  const [isLoading, setIsLoading] = useState(false);
   const [fetchStatusOk, setFetchStatusOk] = useState<boolean | null>(null)
-  const mediaType = type?.substr(0, 5)
+  const mediaType = type?.slice(0, 5);
   const fetchRetry = async (url:string, retries:number = totalRetries, delay:number = 5000):Promise<Response | void> => {
     const res = await fetch(url).catch(()=>{})
     if (res && res.status === 200) return res
@@ -42,35 +49,47 @@ const Media: React.FC<MediaProps & Record<string,any>> = ({
     }
   } 
   useEffect(()=>{
+    setIsLoading(true);
     checkSrcAvailable()
   }, [src])
   useEffect(()=>{
     if (fetchStatusOk){
       setMediaSrc(src)
+      setIsLoading(false);
       setFetchStatusOk(false)
     }
   }, [fetchStatusOk])
 
-  if (mediaSrc === loader) {
-    return <img src={mediaSrc} alt="animated-loader" />;
+  if (mediaSrc === undefined || isLoading) {
+    return <Icon name='animatedLoader' />;
   }
 
   return (
     <>
       {type !== null &&
-        (mediaSrc === fallbackSrc || mediaType === 'image') ?
-          <img 
-            src={mediaSrc}
-            {...rest}
-          />
-        :
-          mediaType === 'video' &&
-            <video playsInline autoPlay muted loop {...rest}>
-              <source id="outputVideo" src={mediaSrc} />
-            </video>
-      }
+      (mediaSrc === fallbackSrc || mediaType === NFT_FILE_TYPE_IMAGE) ? (
+        <SImage
+          src={mediaSrc}
+          isHovering={isHovering}
+          {...rest}
+        />
+      ) : (
+        mediaType === NFT_FILE_TYPE_VIDEO && (
+          <SVideo playsInline autoPlay muted loop {...rest}>
+            <source id="outputVideo" src={mediaSrc} />
+          </SVideo>
+        )
+      )}
     </>
-  )
+  );
 };
+
+const SImage = styled.img`
+  ${MediaStyle}
+`;
+
+const SVideo = styled.video`
+  ${MediaStyle}
+`;
 
 export default Media;

@@ -53,7 +53,7 @@ const ThumbnailSelector = ({
   useEffect(() => {
     if (thumbnailRef && thumbnailRef.current){
       const videoElem = (thumbnailRef.current as HTMLVideoElement)
-      videoElem.currentTime = 5
+      videoElem.currentTime = 0
     }
   }, [thumbnailReady])
 

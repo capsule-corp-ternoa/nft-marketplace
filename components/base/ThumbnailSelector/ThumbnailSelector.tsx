@@ -38,6 +38,7 @@ const ThumbnailSelector = ({
     if (thumbnailRef?.current!==null){
       const newVideoElement = (thumbnailRef.current) as HTMLVideoElement
       if (!videoElement || videoElement.currentSrc !== newVideoElement.currentSrc){
+        newVideoElement.load()
         setVideoElement(newVideoElement)
       }
     }
@@ -66,7 +67,6 @@ const ThumbnailSelector = ({
         autoPlay={false}
         muted={true}
         controls={false}
-        poster={undefined}
         ref={thumbnailRef}
         src={thumbnailSrc}
       />

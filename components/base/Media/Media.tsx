@@ -50,10 +50,15 @@ const Media: React.FC<MediaProps & Record<string,any>> = ({
       setFetchStatusOk(false)
     }
   }, [fetchStatusOk])
+
+  if (mediaSrc === loader) {
+    return <img src={mediaSrc} alt="animated-loader" />;
+  }
+
   return (
     <>
       {type !== null &&
-        (mediaSrc === fallbackSrc || mediaSrc === loader || mediaType === 'image') ?
+        (mediaSrc === fallbackSrc || mediaType === 'image') ?
           <img 
             src={mediaSrc}
             {...rest}

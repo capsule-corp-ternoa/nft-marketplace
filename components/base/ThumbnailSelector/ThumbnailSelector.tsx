@@ -36,7 +36,8 @@ const ThumbnailSelector = ({
   }, [originalNFT, coverNFT])
 
   useEffect(() => {
-    if (videoElement) videoElement.play()
+    //if (videoElement) videoElement.play()
+    if (videoElement) videoElement.load()
   }, [thumbnailSrc])
 
   useEffect(() => {

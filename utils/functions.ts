@@ -12,8 +12,10 @@ export const getUserIp = (req: IncomingMessage | undefined) => {
 export const appLog = (...args: any) => window.ReactNativeWebView ? window.ReactNativeWebView.postMessage(JSON.stringify({ action: 'console.log', args })) : console.log(...args);
 
 export const clipboardCopy = (str: string) => {
-  if (navigator && navigator.clipboard){
+  try{
     navigator.clipboard.writeText(str)
+  }catch(err){
+    console.log(err)
   }
 }
 

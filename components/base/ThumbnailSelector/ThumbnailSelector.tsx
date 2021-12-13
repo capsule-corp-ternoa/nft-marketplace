@@ -23,8 +23,10 @@ const ThumbnailSelector = ({
 }: Props) => {
   const [thumbnailDuration, setThumbnailDuration] = useState(0)
   const [thumbnailSrc, setThumbnailSrc] = useState("")
+  const [thumbnailReady, setThumbnailReady] = useState(false)
   const thumbnailRef = useRef(null);
   
+  /* If NFT (original or cover) changes, we reset thumbnail source, timecode and duration */
   useEffect(() => {
     if (showThumbnailSelector) {
       setThumbnailSrc(URL.createObjectURL((coverNFT || originalNFT) as File))
@@ -33,18 +35,29 @@ const ThumbnailSelector = ({
     }
   }, [originalNFT, coverNFT])
 
+  /* If source change, we reload the video (for IOS) */
+  //TODO : Find better implementation working on IOS webview and android web View
   useEffect(() => {
     if (thumbnailRef && thumbnailRef.current){
       const videoElem = (thumbnailRef.current as HTMLVideoElement)
-      //TODO : Find better implementation working on IOS webview
-      videoElem.onplay = () => {
-        //videoElem.pause()
-        videoElem.currentTime = 0
+      videoElem.onplaying = () => {
+        videoElem.pause()
+        setThumbnailReady(true)
       }
       videoElem.play()
     }
   }, [thumbnailSrc])
 
+  /* When thumbnail is ready, we reset the current time (for android) */
+  //TODO : Find better implementation working on IOS webview and android web View
+  useEffect(() => {
+    if (thumbnailRef && thumbnailRef.current){
+      const videoElem = (thumbnailRef.current as HTMLVideoElement)
+      videoElem.currentTime = 5
+    }
+  }, [thumbnailReady])
+
+  /* Get video duration to set slider */
   const getThumbnailDuration = () => {
     const video = document.createElement('video')
     video.preload = 'metadata';
@@ -56,6 +69,7 @@ const ThumbnailSelector = ({
     video.src = URL.createObjectURL((coverNFT || originalNFT) as File)
   }
 
+  /* Set video time depending on slider */
   useEffect(() => {
     if (thumbnailRef && thumbnailRef.current){
       const videoElem = (thumbnailRef.current as HTMLVideoElement)

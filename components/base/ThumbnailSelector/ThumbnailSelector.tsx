@@ -31,14 +31,18 @@ const ThumbnailSelector = ({
       setThumbnailSrc(URL.createObjectURL((coverNFT || originalNFT) as File))
       setThumbnailTimecode(0)
       getThumbnailDuration()
+      
     }
   }, [originalNFT, coverNFT])
+
+  useEffect(() => {
+    if (videoElement) videoElement.play()
+  }, [thumbnailSrc])
 
   useEffect(() => {
     if (thumbnailRef?.current!==null){
       const newVideoElement = (thumbnailRef.current) as HTMLVideoElement
       if (!videoElement || videoElement.currentSrc !== newVideoElement.currentSrc){
-        newVideoElement.load()
         setVideoElement(newVideoElement)
       }
     }

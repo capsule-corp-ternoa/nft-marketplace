@@ -66,7 +66,7 @@ const ThumbnailSelector = ({
         autoPlay={false}
         muted={true}
         controls={false}
-
+        poster={undefined}
         ref={thumbnailRef}
         src={thumbnailSrc}
       />

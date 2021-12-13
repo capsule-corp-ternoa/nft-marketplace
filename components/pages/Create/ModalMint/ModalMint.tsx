@@ -177,6 +177,8 @@ const ModalMint: React.FC<ModalProps> = ({
               `
             )
           }, 1000)
+        }else{
+          setError("An error has occured, please check your account has enough caps to pay for the transaction and try again.")
         }
       });
     }

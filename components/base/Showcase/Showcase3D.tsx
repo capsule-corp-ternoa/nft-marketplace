@@ -22,13 +22,15 @@ const Showcase3D = ({ list, selectedIdx, setSelectedItem }: Props) => {
   const [isDragging, setIsDragging] = useState(false);
 
   const bind = useDrag(({ movement: [x], last }) => {
-    setIsDragging(true);
-    if (last && x < -DRAGGING_OFFSET) {
-      setSelectedItem(list[selectedIdx === 2 ? 0 : selectedIdx + 1]);
-      setIsDragging(false);
-    } else if (last && x > DRAGGING_OFFSET) {
-      setSelectedItem(list[selectedIdx === 0 ? 2 : selectedIdx - 1]);
-      setIsDragging(false);
+    if (Math.abs(x) > DRAGGING_OFFSET) {
+      setIsDragging(true);
+      if (last && x < 0) {
+        setSelectedItem(list[selectedIdx === 2 ? 0 : selectedIdx + 1]);
+        setIsDragging(false);
+      } else if (last && x > 0) {
+        setSelectedItem(list[selectedIdx === 0 ? 2 : selectedIdx - 1]);
+        setIsDragging(false);
+      }
     }
   });
 

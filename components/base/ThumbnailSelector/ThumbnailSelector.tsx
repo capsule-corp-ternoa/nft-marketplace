@@ -23,7 +23,6 @@ const ThumbnailSelector = ({
 }: Props) => {
   const [thumbnailDuration, setThumbnailDuration] = useState(0)
   const [thumbnailSrc, setThumbnailSrc] = useState("")
-  const [videoElement, setVideoElement] = useState<HTMLVideoElement | null>(null)
   const thumbnailRef = useRef(null);
   
   useEffect(() => {
@@ -31,23 +30,19 @@ const ThumbnailSelector = ({
       setThumbnailSrc(URL.createObjectURL((coverNFT || originalNFT) as File))
       setThumbnailTimecode(0)
       getThumbnailDuration()
-      
     }
   }, [originalNFT, coverNFT])
 
   useEffect(() => {
-    //if (videoElement) videoElement.play()
-    if (videoElement) videoElement.load()
-  }, [thumbnailSrc])
-
-  useEffect(() => {
-    if (thumbnailRef?.current!==null){
-      const newVideoElement = (thumbnailRef.current) as HTMLVideoElement
-      if (!videoElement || videoElement.currentSrc !== newVideoElement.currentSrc){
-        setVideoElement(newVideoElement)
+    if (thumbnailRef && thumbnailRef.current){
+      const videoElem = (thumbnailRef.current as HTMLVideoElement)
+      //TODO : Find better implementation working on IOS webview
+      videoElem.onplay = () => {
+        videoElem.pause()
       }
+      videoElem.play()
     }
-  }, [thumbnailRef?.current]);
+  }, [thumbnailSrc])
 
   const getThumbnailDuration = () => {
     const video = document.createElement('video')
@@ -61,20 +56,22 @@ const ThumbnailSelector = ({
   }
 
   useEffect(() => {
-    if (videoElement){
-      videoElement.currentTime = thumbnailTimecode
+    if (thumbnailRef && thumbnailRef.current){
+      const videoElem = (thumbnailRef.current as HTMLVideoElement)
+      videoElem.currentTime = thumbnailTimecode
     }
   }, [thumbnailTimecode]);
 
   return (
     <SThumbnailSelectorContainer className={className}>
-      <SThumbnailVideo
+      {thumbnailSrc !== "" && <SThumbnailVideo
         autoPlay={false}
         muted={true}
         controls={false}
+        playsInline={true}
         ref={thumbnailRef}
         src={thumbnailSrc}
-      />
+      />}
       <SThumbnailSelector>
         <SThumbnailTime>{secToMn(thumbnailTimecode)}</SThumbnailTime>
         <SSlider

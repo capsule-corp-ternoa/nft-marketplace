@@ -69,6 +69,18 @@ const CreatePage = ({ categories, user }: CreatePageProps) => {
     }
   }, [quantity, previewNFT, originalNFT]);
 
+  useEffect(()=> {
+    if (error !== ''){
+      setModalCreate(true)
+    }
+  }, [error])
+
+  useEffect(()=> {
+    if (!modalCreate){
+      setError('')
+    }
+  }, [modalCreate])
+
   return (
     <>
       <Head>

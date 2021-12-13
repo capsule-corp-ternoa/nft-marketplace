@@ -29,6 +29,7 @@ const ThumbnailSelector = ({
   /* If NFT (original or cover) changes, we reset thumbnail source, timecode and duration */
   useEffect(() => {
     if (showThumbnailSelector) {
+      if (thumbnailSrc) URL.revokeObjectURL(thumbnailSrc)
       setThumbnailSrc(URL.createObjectURL((coverNFT || originalNFT) as File))
       setThumbnailTimecode(0)
       getThumbnailDuration()
@@ -40,11 +41,15 @@ const ThumbnailSelector = ({
   useEffect(() => {
     if (thumbnailRef && thumbnailRef.current){
       const videoElem = (thumbnailRef.current as HTMLVideoElement)
-      videoElem.onplaying = () => {
-        videoElem.pause()
-        setThumbnailReady(true)
+      try{
+        videoElem.onplay = () => {
+          videoElem.pause()
+          setThumbnailReady(true)
+        }
+        videoElem.play().catch((err) => console.log(err))
+      }catch(err){
+        console.log(err)
       }
-      videoElem.play()
     }
   }, [thumbnailSrc])
 

@@ -40,7 +40,6 @@ const Modal: React.FC<ModalProps> = ({
                   type={type}
                   alt="imgnft"
                   draggable="false"
-                  className={style.NFTIMG}
                 />
               </div>
             </ClickAwayListener>

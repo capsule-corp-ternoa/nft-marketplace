@@ -38,7 +38,7 @@ const ThumbnailSelector = ({
       const videoElem = (thumbnailRef.current as HTMLVideoElement)
       //TODO : Find better implementation working on IOS webview
       videoElem.onplay = () => {
-        videoElem.pause()
+        //videoElem.pause()
         videoElem.currentTime = 0
       }
       videoElem.play()

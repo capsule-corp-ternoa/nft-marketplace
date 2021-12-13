@@ -46,6 +46,10 @@ const ThumbnailSelector = ({
           videoElem.pause()
           setThumbnailReady(true)
         }
+        videoElem.onplaying = () => {
+          videoElem.pause()
+          setThumbnailReady(true)
+        }
         videoElem.play().catch((err) => console.log(err))
       }catch(err){
         console.log(err)

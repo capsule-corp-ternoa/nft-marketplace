@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDrag } from '@use-gesture/react';
 import styled from 'styled-components';
 
@@ -7,8 +7,10 @@ import { NftType } from 'interfaces/index';
 
 const INPUT_HEIGHT_REM = 0.6;
 
-const OFFSET_SM = 0.3;
-const OFFSET_LG = 0.55;
+const CARD_OFFSET_SM = 0.3;
+const CARD_OFFSET_LG = 0.55;
+
+const DRAGGING_OFFSET = 40;
 
 interface Props {
   list: NftType[];
@@ -17,11 +19,16 @@ interface Props {
 }
 
 const Showcase3D = ({ list, selectedIdx, setSelectedItem }: Props) => {
+  const [isDragging, setIsDragging] = useState(false);
+
   const bind = useDrag(({ movement: [x], last }) => {
-    if (last && x < 0) {
+    setIsDragging(true);
+    if (last && x < -DRAGGING_OFFSET) {
       setSelectedItem(list[selectedIdx === 2 ? 0 : selectedIdx + 1]);
-    } else if (last && x > 0) {
+      setIsDragging(false);
+    } else if (last && x > DRAGGING_OFFSET) {
       setSelectedItem(list[selectedIdx === 0 ? 2 : selectedIdx - 1]);
+      setIsDragging(false);
     }
   });
 
@@ -68,7 +75,7 @@ const Showcase3D = ({ list, selectedIdx, setSelectedItem }: Props) => {
           <NftCard
             mode="carousel"
             item={item}
-            isDragging={selectedIdx !== idx}
+            isDragging={isDragging || selectedIdx !== idx}
           />
         </SLabel>
       ))}
@@ -87,7 +94,7 @@ const SWrapper = styled.div`
   > #input-0:checked ~ #nft-2,
   #input-1:checked ~ #nft-0,
   #input-2:checked ~ #nft-1 {
-    transform: translatex(-${OFFSET_SM * 100}%) scale(0.9);
+    transform: translatex(-${CARD_OFFSET_SM * 100}%) scale(0.9);
     opacity: 0.4;
     z-index: 0;
   }
@@ -95,7 +102,7 @@ const SWrapper = styled.div`
   > #input-0:checked ~ #nft-1,
   #input-1:checked ~ #nft-2,
   #input-2:checked ~ #nft-0 {
-    transform: translatex(${OFFSET_SM * 100}%) scale(0.9);
+    transform: translatex(${CARD_OFFSET_SM * 100}%) scale(0.9);
     opacity: 0.4;
     z-index: 0;
   }
@@ -112,25 +119,25 @@ const SWrapper = styled.div`
     `calc(${theme.sizes.cardHeight.sm} + ${`${INPUT_HEIGHT_REM}rem`} + 4rem)`};
   width: ${({ theme }) =>
     `calc(${theme.sizes.cardWidth.sm} + ${theme.sizes.cardWidth.sm} * ${
-      OFFSET_SM * 2
+      CARD_OFFSET_SM * 2
     })`};
 
   ${({ theme }) => theme.mediaQueries.md} {
     > #input-0:checked ~ #nft-2,
     #input-1:checked ~ #nft-0,
     #input-2:checked ~ #nft-1 {
-      transform: translatex(-${OFFSET_LG * 100}%) scale(0.9);
+      transform: translatex(-${CARD_OFFSET_LG * 100}%) scale(0.9);
     }
 
     > #input-0:checked ~ #nft-1,
     #input-1:checked ~ #nft-2,
     #input-2:checked ~ #nft-0 {
-      transform: translatex(${OFFSET_LG * 100}%) scale(0.9);
+      transform: translatex(${CARD_OFFSET_LG * 100}%) scale(0.9);
     }
 
     width: ${({ theme }) =>
       `calc(${theme.sizes.cardWidth.sm} + ${theme.sizes.cardWidth.sm} * ${
-        OFFSET_LG * 2
+        CARD_OFFSET_LG * 2
       })`};
   }
 
@@ -138,17 +145,17 @@ const SWrapper = styled.div`
     > #input-0:checked ~ #nft-2,
     #input-1:checked ~ #nft-0,
     #input-2:checked ~ #nft-1 {
-      transform: translatex(-${OFFSET_SM * 100}%) scale(0.9);
+      transform: translatex(-${CARD_OFFSET_SM * 100}%) scale(0.9);
     }
 
     > #input-0:checked ~ #nft-1,
     #input-1:checked ~ #nft-2,
     #input-2:checked ~ #nft-0 {
-      transform: translatex(${OFFSET_SM * 100}%) scale(0.9);
+      transform: translatex(${CARD_OFFSET_SM * 100}%) scale(0.9);
     }
     width: ${({ theme }) =>
       `calc(${theme.sizes.cardWidth.sm} + ${theme.sizes.cardWidth.sm} * ${
-        OFFSET_SM * 2
+        CARD_OFFSET_SM * 2
       })`};
   }
 
@@ -156,13 +163,13 @@ const SWrapper = styled.div`
     > #input-0:checked ~ #nft-2,
     #input-1:checked ~ #nft-0,
     #input-2:checked ~ #nft-1 {
-      transform: translatex(-${OFFSET_LG * 100}%) scale(0.9);
+      transform: translatex(-${CARD_OFFSET_LG * 100}%) scale(0.9);
     }
 
     > #input-0:checked ~ #nft-1,
     #input-1:checked ~ #nft-2,
     #input-2:checked ~ #nft-0 {
-      transform: translatex(${OFFSET_LG * 100}%) scale(0.9);
+      transform: translatex(${CARD_OFFSET_LG * 100}%) scale(0.9);
     }
 
     height: ${({ theme }) =>
@@ -171,7 +178,7 @@ const SWrapper = styled.div`
       } + ${`${INPUT_HEIGHT_REM}rem`} + 4rem)`};
     width: ${({ theme }) =>
       `calc(${theme.sizes.cardWidth.md} + ${theme.sizes.cardWidth.sm} * ${
-        OFFSET_LG * 2
+        CARD_OFFSET_LG * 2
       })`};
   }
 `;

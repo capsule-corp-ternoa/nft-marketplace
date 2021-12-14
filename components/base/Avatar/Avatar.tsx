@@ -2,9 +2,9 @@ import React from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
 
+import Clipboard from 'components/base/Clipboard';
 import Button from 'components/ui/Button';
 import Icon from 'components/ui/Icon';
-import { middleEllipsis } from 'utils/strings';
 
 import Picture from './components/Picture';
 
@@ -43,12 +43,6 @@ const Avatar = ({
   twitterName,
   walletId,
 }: Props) => {
-  const clipboardCopy = (str: string) => {
-    if (navigator?.clipboard) {
-      navigator.clipboard.writeText(str);
-    }
-  };
-
   if (isPictureOnly) {
     return (
       <Picture
@@ -105,14 +99,7 @@ const Avatar = ({
             </SLink>
           )}
           {isAddressDisplayed && walletId && (
-            <SAddress
-              onClick={() => {
-                clipboardCopy(walletId);
-              }}
-            >
-              {middleEllipsis(walletId, 20)}
-              <SCopyPasteIcon name="copyPaste" />
-            </SAddress>
+            <Clipboard address={walletId} isEllipsis />
           )}
         </SBottomDetails>
       </SDetailsContainer>
@@ -197,19 +184,6 @@ const STwitterIcon = styled(Icon)`
 `;
 
 const STwitterNickname = styled.span`
-  margin-left: 0.4rem;
-`;
-
-const SAddress = styled.div`
-  display: flex;
-  align-items: center;
-  color: ${({ theme }) => theme.colors.neutral200};
-  font-size: 1.6rem;
-`;
-
-const SCopyPasteIcon = styled(Icon)`
-  width: 1.4rem;
-  height: 1.4rem;
   margin-left: 0.4rem;
 `;
 

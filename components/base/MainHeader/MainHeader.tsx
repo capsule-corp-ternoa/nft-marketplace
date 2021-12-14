@@ -2,15 +2,14 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 
 import Logo from 'components/assets/LogoTernoaBlack';
+import Clipboard from 'components/base/Clipboard';
 import Creator from '../Creator';
-import CopyPaste from 'components/assets/copypaste';
 
 import style from './MainHeader.module.scss';
-import { computeCaps, computeTiime, middleEllipsis } from 'utils/strings';
+import { computeCaps, computeTiime } from 'utils/strings';
 import gradient from 'random-gradient';
 
 import { UserType } from 'interfaces/index';
-import { clipboardCopy } from 'utils/functions';
 
 export interface HeaderProps {
   user: UserType;
@@ -126,15 +125,7 @@ const MainHeader: React.FC<HeaderProps> = ({ setModalExpand, user }) => {
                       Wallet
                     </a>
                   </Link>
-                  <span 
-                    className={style.SectionWallet}
-                    onClick={() => {
-                      clipboardCopy(user.walletId);
-                    }}
-                  >
-                    {middleEllipsis(user.walletId, 20)}
-                    <CopyPaste className={style.CopyPaste} />
-                  </span>
+                  <Clipboard address={user.walletId} isEllipsis />
                 </div>
               </div>
               <Link href="/profile">

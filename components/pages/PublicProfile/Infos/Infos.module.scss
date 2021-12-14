@@ -94,13 +94,6 @@
   margin-top: 1px;
 }
 
-.CopyPaste {
-  width: 13px;
-  fill: #cbc9c9;
-  margin-left: 4px;
-  transform: translateY(2px);
-}
-
 .Description {
   font-family: "Airbnb Cereal App Book";
   font-size: 16px;
@@ -121,19 +114,6 @@
   justify-content: center;
 }
 
-.Address {
-  font-family: "Airbnb Cereal App Bold";
-  font-size: 12px;
-  line-height: 15px;
-  margin: 0px;
-  cursor: pointer;
-  color: #b1b1b1;
-  margin-right: 24px;
-}
-
-.Address:active {
-  color: black;
-}
 
 .Button {
   cursor: pointer;
@@ -215,13 +195,6 @@
     line-height: 20px;
     margin-top: 8px;
     max-width: 250px;
-  }
-
-  .Address {
-    font-size: 10px;
-    line-height: 13px;
-    margin: 0px;
-    margin-right: 18px;
   }
 
   .Button {

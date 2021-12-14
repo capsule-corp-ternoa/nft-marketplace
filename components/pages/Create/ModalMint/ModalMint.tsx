@@ -26,6 +26,7 @@ export interface ModalProps {
   runNFTMintData: any,
   uploadSize: number;
   setError: (s: string) => void;
+  modalCreate: boolean;
   setModalCreate: (b: boolean) => void;
   setRunNFTMintData: (data: any) => void;
   thumbnailTimecode: number;
@@ -41,6 +42,7 @@ const ModalMint: React.FC<ModalProps> = ({
   runNFTMintData,
   uploadSize,
   setError,
+  modalCreate,
   setModalCreate,
   setRunNFTMintData,
   thumbnailTimecode
@@ -78,7 +80,6 @@ const ModalMint: React.FC<ModalProps> = ({
   const speed = Math.floor((uploadSize * (generalPercentage() / 100)) / elapsedUploadTime)
   const remainingTime = Math.ceil(((elapsedUploadTime / generalPercentage()) * (100 - generalPercentage())))
   const handleMintSocketProcess = () => {
-    console.log("handleMintSocketProcess")
     const socket = connectIo(`/socket/createNft`, { session, socketUrl: SOCKET_URL }, undefined, 20 * 60 * 1000);
     setStateSocket(socket)
     socket.once('CONNECTION_SUCCESS', () => {
@@ -94,16 +95,13 @@ const ModalMint: React.FC<ModalProps> = ({
     socket.once('connect_error', (e: any) => {
       console.error('connection error socket', e);
       setError("Connection error, please try again")
-      console.log("connect_error")
     });
 
     socket.once('CONNECTION_FAILURE', (data: any) => {
       console.error('connection failure socket', data)
       setError(data.msg)
-      console.log("qsdqsd")
     });
     socket.once('PGPS_READY', async ({ publicPgpKeys }: { publicPgpKeys: string[] }) => {
-      console.log("PGPS_READY")
       socket.emit('PGPS_READY_RECEIVED')
       setShowQR(false)
       setShowProgress(true)
@@ -140,10 +138,8 @@ const ModalMint: React.FC<ModalProps> = ({
         console.log(err);
       }
     });
-    
     socket.once('disconnect', () => {
       setModalCreate(false);
-      console.log("disconnect")
     });
     return () => {
       if (socket && socket.connected) {
@@ -151,23 +147,25 @@ const ModalMint: React.FC<ModalProps> = ({
       }
     };
   }
-
   useEffect(() => {
-    if (stateSocket && runNFTMintData) {
-      console.log("set socket in useeffect")
+    if (!modalCreate && stateSocket){
+      stateSocket.close();
+    }
+  }, [modalCreate])
+  useEffect(() => {
+    if (stateSocket) {
       stateSocket.once('WALLET_READY', () => {
         stateSocket.emit('RUN_NFT_MINT', runNFTMintData)
         setShowQR(false)
       })
       stateSocket.once('MINTING_NFT', ({ success, nftIds }: { success: boolean, nftIds: string[] }) => {
-        console.log("in MINTING_NFT socket code", { success, nftIds })
         stateSocket.emit('MINTING_NFT_RECEIVED')
-        stateSocket.close();
         setMintResponse(success)
         if (success){
           const { seriesId } = runNFTMintData
           setTimeout(() => {
             setModalCreate(false);
+            stateSocket.close();
             if (nftIds?.length > 0 && categories?.length > 0) {
               addCategories(walletId, nftIds, categories.map(x => x.code))
             }
@@ -189,7 +187,7 @@ const ModalMint: React.FC<ModalProps> = ({
         }
       });
     }
-  }, [runNFTMintData])
+  }, [runNFTMintData, stateSocket])
 
   async function uploadNFT(publicPGPs: string[], setProgressData?: Function) {
     if (!originalNFT) throw new Error();
@@ -320,6 +318,9 @@ const ModalMint: React.FC<ModalProps> = ({
         )}
         {(mintReponse === false) && <div className={style.Text}>
           Mint was not added to the blockchain.
+        </div>}
+        {(mintReponse === true) && <div className={style.Text}>
+          Mint was added to the blockchain.
         </div>}
       </>
     );

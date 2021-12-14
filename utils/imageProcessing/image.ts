@@ -91,9 +91,10 @@ export const generateVideoThumbnail = (file: File, thumbnailTimecode: number) =>
     const video = document.createElement("video");
     video.autoplay = false;
     video.muted = true;
+    video.playsInline = true
     video.src = URL.createObjectURL(file);
-    video.currentTime = 0.01
-    video.onseeked = async () => {
+    video.currentTime = thumbnailTimecode
+    video.onloadeddata = async () => {
       if (video.currentTime === thumbnailTimecode){
         let ctx = canvas.getContext("2d");
         canvas.width = video.videoWidth;
@@ -114,8 +115,6 @@ export const generateVideoThumbnail = (file: File, thumbnailTimecode: number) =>
           window.URL.revokeObjectURL(video.src);
           return reject("No canvas context found to generate thumbnail")
         }
-      }else{
-        video.currentTime = thumbnailTimecode
       }
     };
   });

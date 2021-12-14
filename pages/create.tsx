@@ -107,6 +107,7 @@ const CreatePage = ({ categories, user }: CreatePageProps) => {
             originalNFT={originalNFT}
             uploadSize={uploadSize}
             setError={setError}
+            modalCreate={modalCreate}
             setModalCreate={setModalCreate}
             setRunNFTMintData={setRunNFTMintData}
             thumbnailTimecode={thumbnailTimecode}

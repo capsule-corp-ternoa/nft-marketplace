@@ -40,14 +40,17 @@ const NftChips = ({
     query: `(min-width: ${breakpointMap.xxl}px)`,
   });
 
-  const isPrice =
-    (smallestPrice && Number(smallestPrice)) ||
-    (smallestPriceTiime && Number(smallestPriceTiime));
+  const isPrice = !!Number(smallestPrice) || !!Number(smallestPriceTiime);
   const isSecret = properties?.cryptedMedia.ipfs !== properties?.preview.ipfs;
 
   const defaultQuantityAvailable =
     totalListedInMarketplace ?? totalListedNft ?? 1;
   const quantityAvailable = quantity ?? defaultQuantityAvailable;
+
+  // Filter gradients flags
+  const isTopFilter =
+    (quantityAvailable > 1 && !noAvailableChip) || (isSecret && !noSecretChip);
+  const isBottomFilter = isPrice && !noPriceChip;
 
   return (
     <>
@@ -57,7 +60,7 @@ const NftChips = ({
             color="whiteBlur"
             size="small"
             text={`${
-              (!isLargeDesktop || mode === PROFILE_MODE ) ? '' : 'Available : '
+              !isLargeDesktop || mode === PROFILE_MODE ? '' : 'Available : '
             }${quantityAvailable} of ${NFT.totalNft}`}
             variant="round"
           />
@@ -98,6 +101,7 @@ const NftChips = ({
           />
         </SPriceChipWrapper>
       )}
+      <SFilter isTopFilter={isTopFilter} isBottomFilter={isBottomFilter} />
     </>
   );
 };
@@ -124,6 +128,24 @@ const SPriceChipWrapper = styled(SChipWrapper)`
   left: 0;
   right: 0;
   margin: 0 auto;
+`;
+
+const SFilter = styled.div<{ isTopFilter?: boolean; isBottomFilter?: boolean }>`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background: ${({ isTopFilter, isBottomFilter }) => `${
+    isTopFilter
+      ? 'linear-gradient(0deg, rgba(57, 57, 57, 0) 70%, #0303039e 100%)'
+      : 'none'
+  },
+  ${
+    isBottomFilter
+      ? 'linear-gradient(180deg, rgba(57, 57, 57, 0) 70%, #0303039e 100%)'
+      : 'none'
+  }`};
+  border-radius: 1.2rem;
 `;
 
 export default NftChips;

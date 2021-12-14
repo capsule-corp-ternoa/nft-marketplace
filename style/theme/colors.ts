@@ -4,7 +4,7 @@ export const colors: Colors = {
   primary: '#7417ea',
   primaryLight: 'rgba(116, 23, 234, 0.1)',
   secondary: '#ec7b62',
-  whiteBlur: 'rgba(255, 255, 255, 0.4)',
+  whiteBlur: 'rgba(255, 255, 255, 0.55)',
 
   invertedContrast: '#fff',
   contrast: '#0C0B0B',

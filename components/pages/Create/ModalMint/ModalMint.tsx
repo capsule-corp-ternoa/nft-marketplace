@@ -102,11 +102,9 @@ const ModalMint: React.FC<ModalProps> = ({
       setError(data.msg)
     });
     socket.once('MINTING_NFT_ERROR', ({ reason }: { success: boolean, reason: string }) => {
-      console.log("azeaze")
-      console.log({ reason })
       setMintResponse(false)
       if (reason==="fees"){
-        setError("An error has occured, please check your account has enough caps to pay for the transaction and try again.")
+        setError("Process was cancelled, please check your account has enough caps to pay for the transaction and try again.")
       }else{
         setError("An error has occured.")
       }

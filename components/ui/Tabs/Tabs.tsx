@@ -74,13 +74,18 @@ const Tabs = ({ className, isTabsSelect, tabs }: Props) => {
 };
 
 const STabsListContainer = styled.div`
-  width: 100%;
+  width: 80%;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: center;
   gap: 2.4rem;
-  margin-bottom: 8rem;
+  margin: 0 auto 8rem;
+
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    width: 100%;
+    justify-content: space-evenly;
+  }
 `;
 
 const SSelectContainer = styled.div`

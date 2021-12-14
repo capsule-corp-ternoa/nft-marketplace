@@ -25,8 +25,9 @@ export interface ModalProps {
   QRData: any;
   runNFTMintData: any,
   uploadSize: number;
+  stateSocket: any;
+  setStateSocket: (x: any) => void
   setError: (s: string) => void;
-  modalCreate: boolean;
   setModalCreate: (b: boolean) => void;
   setRunNFTMintData: (data: any) => void;
   thumbnailTimecode: number;
@@ -41,8 +42,9 @@ const ModalMint: React.FC<ModalProps> = ({
   QRData,
   runNFTMintData,
   uploadSize,
+  stateSocket,
+  setStateSocket,
   setError,
-  modalCreate,
   setModalCreate,
   setRunNFTMintData,
   thumbnailTimecode
@@ -58,7 +60,6 @@ const ModalMint: React.FC<ModalProps> = ({
   const [mintReponse, setMintResponse] = useState<boolean | null>(null)
   const [startUploadTime, setStartUploadTime] = useState<any>(null)
   const [alreadySentSocketTimeout, setAlreadySentSocketTimeout] = useState(false)
-  const [stateSocket, setStateSocket] = useState<any>(null)
   const router = useRouter();
   const { categories, description, name, seriesId } = NFTData;
   const progressQuantity = 1 + Number(quantity) + ((
@@ -82,6 +83,7 @@ const ModalMint: React.FC<ModalProps> = ({
   const handleMintSocketProcess = () => {
     const socket = connectIo(`/socket/createNft`, { session, socketUrl: SOCKET_URL }, undefined, 20 * 60 * 1000);
     setStateSocket(socket)
+    socket.disconnect()
     socket.once('CONNECTION_SUCCESS', () => {
       if (isRN || window.isRNApp) {
         const data = { session, socketUrl: SOCKET_URL, walletId, quantity, uploadSize };
@@ -147,13 +149,9 @@ const ModalMint: React.FC<ModalProps> = ({
       }
     };
   }
+  
   useEffect(() => {
-    if (!modalCreate && stateSocket){
-      stateSocket.close();
-    }
-  }, [modalCreate])
-  useEffect(() => {
-    if (stateSocket) {
+    if (stateSocket && runNFTMintData) {
       stateSocket.once('WALLET_READY', () => {
         stateSocket.emit('RUN_NFT_MINT', runNFTMintData)
         setShowQR(false)
@@ -184,6 +182,16 @@ const ModalMint: React.FC<ModalProps> = ({
           }, 1000)
         }else{
           setError("An error has occured, please check your account has enough caps to pay for the transaction and try again.")
+        }
+      });
+    }
+    if (stateSocket) {
+      stateSocket.once('MINTING_NFT_ERROR', ({ reason }: { success: boolean, reason: string }) => {
+        setMintResponse(false)
+        if (reason==="fees"){
+          setError("An error has occured, please check your account has enough caps to pay for the transaction and try again.")
+        }else{
+          setError("An error has occured.")
         }
       });
     }

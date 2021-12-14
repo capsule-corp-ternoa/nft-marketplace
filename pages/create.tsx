@@ -40,6 +40,7 @@ const CreatePage = ({ categories, user }: CreatePageProps) => {
   const [output, setOutput] = useState<string[]>([]);
   const [originalNFT, setOriginalNFT] = useState<File | null>(null); // Crypted NFT media
   const [uploadSize, setUploadSize] = useState(0);
+  const [stateSocket, setStateSocket] = useState<any>(null)
   const [thumbnailTimecode, setThumbnailTimecode] = useState(0)
   const [NFTData, setNFTData] = useState<NFTProps>({
     categories: [],
@@ -78,6 +79,7 @@ const CreatePage = ({ categories, user }: CreatePageProps) => {
   useEffect(()=> {
     if (!modalCreate){
       setError('')
+      if (stateSocket) stateSocket.close();
     }
   }, [modalCreate])
 
@@ -106,8 +108,9 @@ const CreatePage = ({ categories, user }: CreatePageProps) => {
             runNFTMintData={runNFTMintData}
             originalNFT={originalNFT}
             uploadSize={uploadSize}
+            stateSocket={stateSocket}
+            setStateSocket={setStateSocket}
             setError={setError}
-            modalCreate={modalCreate}
             setModalCreate={setModalCreate}
             setRunNFTMintData={setRunNFTMintData}
             thumbnailTimecode={thumbnailTimecode}

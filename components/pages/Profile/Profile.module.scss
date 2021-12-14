@@ -110,124 +110,6 @@
   transition: all 0.3s ease-out;
 }
 
-.FollowsContainer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  box-sizing: border-box;
-  padding: 52px 0px;
-  padding-left: 20px;
-  width: 100%;
-}
-
-.Top {
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  align-items: center;
-  box-sizing: border-box;
-}
-
-.SwitchShell {
-  margin-top: 7px;
-  margin-left: 16px;
-  outline: none;
-}
-
-.Toggle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 24px;
-}
-
-.Label {
-  font-family: 'Airbnb Cereal App Medium';
-  color: #686464;
-  font-size: 14px;
-  line-height: 18px;
-  display: flex;
-  align-items: center;
-  text-align: right;
-  margin-top: 3px;
-  margin-left: 16px;
-}
-
-.Input {
-  background: rgba(0, 0, 0, 0.05);
-  border-radius: 30px;
-  font-size: 16px;
-  border: none;
-  width: 330px;
-  padding: 10px 24px;
-  margin-left: 40px;
-  outline: none;
-  font-family: 'Airbnb Cereal App Light';
-}
-
-.SearchContainer {
-  display: flex;
-}
-
-.CreatorShell {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  box-sizing: border-box;
-  margin-left: 20px;
-  margin-right: 20px;
-  margin-bottom: 28px;
-  width: 210px;
-}
-.CreatorInfos {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  margin-left: 16px;
-  text-align: left;
-}
-
-.CreatorName {
-  margin: 0px;
-  margin-bottom: 3px;
-  font-family: 'Airbnb Cereal App Medium';
-  font-style: normal;
-  font-size: 14px;
-}
-
-.CreatorFollowers {
-  font-family: 'Airbnb Cereal App Book';
-  font-style: normal;
-  font-size: 12px;
-  display: flex;
-  align-items: center;
-  color: #b1b1b1;
-}
-
-.Unfollow {
-  font-size: 11px;
-  line-height: 14px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid $primary;
-  color: $primary;
-  font-family: 'Airbnb Cereal App Bold';
-  border-radius: 25px;
-  padding: 6px 16px;
-  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-  margin-top: 8px;
-  cursor: pointer;
-
-  &:hover {
-    color: white;
-    background-color: $primary;
-    border: 1px solid $primary;
-  }
-}
-
 @media (max-width: 1300px) {
   .Banner {
     height: 220px;
@@ -235,18 +117,6 @@
 
   .NFTs {
     width: 100%;
-  }
-
-  .FollowsContainer {
-    justify-content: space-around;
-  }
-
-  .Top {
-    flex-direction: column;
-  }
-
-  .SearchContainer {
-    margin-top: 32px;
   }
 }
 
@@ -262,19 +132,6 @@
     width: 100%;
     margin: 0px;
     padding: 40px 16px;
-  }
-
-  .FollowsContainer {
-    padding-left: 0px;
-  }
-
-  .SearchContainer {
-    flex-direction: column;
-  }
-
-  .Toggle {
-    margin: 0px;
-    margin-top: 10px;
   }
 
   .NFTs {
@@ -299,11 +156,6 @@
     margin-bottom: 20px;
     width: 50%;
     padding: 15px;
-  }
-
-  .Input {
-    margin: 0px;
-    width: 280px;
   }
 
   .EditButton {

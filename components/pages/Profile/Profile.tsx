@@ -3,17 +3,21 @@ import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { Banner } from 'components/base/Avatar';
+import Avatar, { Banner } from 'components/base/Avatar';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
 import NftCard, { NftChips } from 'components/base/NftCard';
 import NoNFTComponent from 'components/base/NoNFTComponent';
-import Creator from 'components/base/Creator';
 import TwitterErrorModal from './TwitterErrorModal';
 import FloatingMenu from './FloatingMenu';
 import Switch from 'react-switch';
 import { NftType, UserType } from 'interfaces';
-import { follow, unfollow, isUserFollowing, getFollowersCount } from 'actions/follower';
+import {
+  follow,
+  unfollow,
+  isUserFollowing,
+  getFollowersCount,
+} from 'actions/follower';
 import { getUserNFTsStat } from 'actions/nft';
 import { Wrapper } from 'components/layout/Container';
 import Button from 'components/ui/Button';
@@ -22,7 +26,7 @@ import { breakpointMap } from 'style/theme/base';
 
 import style from './Profile.module.scss';
 
-const NFT_OWNED_TAB = 'My NFTs'
+const NFT_OWNED_TAB = 'My NFTs';
 const NFT_ON_SALE_TAB = 'On sale';
 const NFT_NOT_FOR_SALE_TAB = 'Not for sale';
 const NFT_CREATED_TAB = 'Created';
@@ -58,9 +62,9 @@ export interface ProfileProps {
   setUser: (u: UserType) => void;
   loading: boolean;
   isFiltered: boolean;
-  setIsFiltered:(b: boolean) => void;
+  setIsFiltered: (b: boolean) => void;
   searchValue: string;
-  setSearchValue:(s: string)=>void;
+  setSearchValue: (s: string) => void;
   //Owned
   ownedNfts: NftType[];
   ownedNftsTotal: number;
@@ -91,13 +95,13 @@ export interface ProfileProps {
   followers: UserType[];
   followersTotal: number;
   followersUsersHasNextPage: boolean;
-  loadMoreFollowers: (forceLoad?: boolean)=>void;
+  loadMoreFollowers: (forceLoad?: boolean) => void;
   //followed
   followed: UserType[];
   followedTotal: number;
   setFollowed: (users: UserType[]) => void;
   followedUsersHasNextPage: boolean;
-  loadMoreFollowed: (forceLoad?: boolean)=>void;
+  loadMoreFollowed: (forceLoad?: boolean) => void;
 }
 
 const Profile = ({
@@ -148,70 +152,74 @@ const Profile = ({
     user.banner ??
       'https://images.unsplash.com/photo-1579546929518-9e396f3cc809?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2250&q=80'
   );
-  const [followBacks, setFollowBacks] = useState(Array(followers.length).fill(false))
-  const [countOwned, setCountOwned] = useState(0)
-  const [countOwnedListed, setCountOwnedListed] = useState(0)
-  const [countOwnedUnlisted, setCountOwnedUnlisted] = useState(0)
-  const [countCreated, setCountOwnedCreated] = useState(0)
-  const [countFollowers, setCountFollowers] = useState(0)
-  const [countFollowed, setCountFollowed] = useState(0)
-  const [followersNbFollowers, setFollowersNbFollowers] = useState({} as any)
+  const [followBacks, setFollowBacks] = useState(
+    Array(followers.length).fill(false)
+  );
+  const [countOwned, setCountOwned] = useState(0);
+  const [countOwnedListed, setCountOwnedListed] = useState(0);
+  const [countOwnedUnlisted, setCountOwnedUnlisted] = useState(0);
+  const [countCreated, setCountOwnedCreated] = useState(0);
+  const [countFollowers, setCountFollowers] = useState(0);
+  const [countFollowed, setCountFollowed] = useState(0);
+  const [followersNbFollowers, setFollowersNbFollowers] = useState({} as any);
 
   const isTablet = useMediaQuery({
     query: `(max-width: ${breakpointMap.lg - 1}px)`,
   });
 
   const setCounts = async () => {
-    try{
-      if (user){
-        let userStat = await getUserNFTsStat(user.walletId, true)
-        if (userStat){
-          userStat.countOwned && setCountOwned(userStat.countOwned)
-          userStat.countOwnedListed && setCountOwnedListed(userStat.countOwnedListed)
-          userStat.countOwnedUnlisted && setCountOwnedUnlisted(userStat.countOwnedUnlisted)
-          userStat.countCreated && setCountOwnedCreated(userStat.countCreated)
-          userStat.countFollowers && setCountFollowers(userStat.countFollowers)
-          userStat.countFollowed && setCountFollowed(userStat.countFollowed)
+    try {
+      if (user) {
+        let userStat = await getUserNFTsStat(user.walletId, true);
+        if (userStat) {
+          userStat.countOwned && setCountOwned(userStat.countOwned);
+          userStat.countOwnedListed &&
+            setCountOwnedListed(userStat.countOwnedListed);
+          userStat.countOwnedUnlisted &&
+            setCountOwnedUnlisted(userStat.countOwnedUnlisted);
+          userStat.countCreated && setCountOwnedCreated(userStat.countCreated);
+          userStat.countFollowers && setCountFollowers(userStat.countFollowers);
+          userStat.countFollowed && setCountFollowed(userStat.countFollowed);
         }
       }
-    }catch(err){
-      console.log(err)
+    } catch (err) {
+      console.log(err);
     }
-  }
+  };
 
   const getFollowBacks = async () => {
-    try{
-      const followBacksTemp = [...followBacks]
-      const promises = [] as Promise<{ isFollowing: boolean }>[]
-      followers.forEach((x)=>{
-        promises.push(isUserFollowing(x.walletId, user.walletId))
-      })
-      const results = await Promise.all(promises)
-      results.forEach((res,i)=>{
-        followBacksTemp[i] = res.isFollowing
-      })
-      setFollowBacks(followBacksTemp)
-    }catch(err){
-      console.log(err)
+    try {
+      const followBacksTemp = [...followBacks];
+      const promises = [] as Promise<{ isFollowing: boolean }>[];
+      followers.forEach((x) => {
+        promises.push(isUserFollowing(x.walletId, user.walletId));
+      });
+      const results = await Promise.all(promises);
+      results.forEach((res, i) => {
+        followBacksTemp[i] = res.isFollowing;
+      });
+      setFollowBacks(followBacksTemp);
+    } catch (err) {
+      console.log(err);
     }
-  }
+  };
 
   const initFollowerStat = async () => {
-    try{
-      const followersCountTemp = {...followersNbFollowers}
-      followers.forEach(async (x)=>{
-        const followersCount = await getFollowersCount(x.walletId)
-        followersCountTemp[x.walletId] = followersCount ? followersCount : 0
-      })
-      followed.forEach(async (x)=>{
-        const followersCount = await getFollowersCount(x.walletId)
-        followersCountTemp[x.walletId] = followersCount ? followersCount : 0
-      })
-      setFollowersNbFollowers(followersCountTemp)
-    }catch(err){
-      console.log(err)
+    try {
+      const followersCountTemp = { ...followersNbFollowers };
+      followers.forEach(async (x) => {
+        const followersCount = await getFollowersCount(x.walletId);
+        followersCountTemp[x.walletId] = followersCount ? followersCount : 0;
+      });
+      followed.forEach(async (x) => {
+        const followersCount = await getFollowersCount(x.walletId);
+        followersCountTemp[x.walletId] = followersCount ? followersCount : 0;
+      });
+      setFollowersNbFollowers(followersCountTemp);
+    } catch (err) {
+      console.log(err);
     }
-  }
+  };
 
   const updateKeywordSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.currentTarget.value);
@@ -228,21 +236,23 @@ const Profile = ({
       if (res) {
         if (isUnfollow) {
           setFollowed(followed.filter((x) => x.walletId !== res.walletId));
-          setCountFollowed(countFollowed-1)
+          setCountFollowed(countFollowed - 1);
         } else {
           setFollowed(
             followed.findIndex((x) => x.walletId === res.walletId) !== -1
               ? followed.map((x) => (x.walletId === res.walletId ? res : x))
               : [...followed, res]
           );
-          setCountFollowed(countFollowed+1)
+          setCountFollowed(countFollowed + 1);
         }
-        await getFollowBacks()
-        if (res.walletId){
-          const newNbFollowers = await getFollowersCount(res.walletId)
-          const newFollowersNbFollowers = {...followersNbFollowers }
-          newFollowersNbFollowers[res.walletId] = !isNaN(newNbFollowers) ? newNbFollowers : 0
-          setFollowersNbFollowers(newFollowersNbFollowers)
+        await getFollowBacks();
+        if (res.walletId) {
+          const newNbFollowers = await getFollowersCount(res.walletId);
+          const newFollowersNbFollowers = { ...followersNbFollowers };
+          newFollowersNbFollowers[res.walletId] = !isNaN(newNbFollowers)
+            ? newNbFollowers
+            : 0;
+          setFollowersNbFollowers(newFollowersNbFollowers);
         }
       }
     } catch (err) {
@@ -258,28 +268,28 @@ const Profile = ({
   }, [router.query]);
 
   useEffect(() => {
-    setCounts()
-    initFollowerStat()
+    setCounts();
+    initFollowerStat();
   }, []);
 
   useEffect(() => {
-    getFollowBacks()
+    getFollowBacks();
   }, [followers]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      loadMoreFollowers(true)
-      loadMoreFollowed(true)
-    }, 1000)
-    return () => clearTimeout(timer)
-  }, [searchValue, isFiltered])
+      loadMoreFollowers(true);
+      loadMoreFollowed(true);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [searchValue, isFiltered]);
 
   const returnNFTs = (tabId: TabsIdType) => {
     let displayNFTs: NftType[] = [];
     let isLoadMore = false;
     let loadMore = () => {};
 
-    let noNftTitle = "Nothing to display";
+    let noNftTitle = 'Nothing to display';
     let noNftBody;
     let noNftHref;
     let noNftLinkLabel;
@@ -289,36 +299,37 @@ const Profile = ({
         displayNFTs = createdNfts;
         isLoadMore = createdNftsHasNextPage;
         loadMore = loadMoreCreatedNfts;
-        noNftHref = "/create";
-        noNftLinkLabel = "Create your NFT";
+        noNftHref = '/create';
+        noNftLinkLabel = 'Create your NFT';
         break;
       case NFT_LIKED_TAB:
         displayNFTs = likedNfts;
         isLoadMore = likedNftsHasNextPage;
         loadMore = loadMoreLikedNfts;
-        noNftBody="The NFTs you liked are displayed here"
+        noNftBody = 'The NFTs you liked are displayed here';
         break;
       case NFT_ON_SALE_TAB:
         displayNFTs = ownedNftsListed;
         isLoadMore = ownedNftsListedHasNextPage;
         loadMore = loadMoreOwnedListedNfts;
-        noNftHref = "/";
-        noNftLinkLabel = "Sell your NFT";
+        noNftHref = '/';
+        noNftLinkLabel = 'Sell your NFT';
         break;
       case NFT_NOT_FOR_SALE_TAB:
         displayNFTs = ownedNftsUnlisted;
         isLoadMore = ownedNftsUnlistedHasNextPage;
         loadMore = loadMoreOwnedUnlistedNfts;
-        noNftBody="The NFTs you owned and are not for sale are displayed here"
+        noNftBody =
+          'The NFTs you owned and are not for sale are displayed here';
         break;
       case NFT_OWNED_TAB:
       default:
         displayNFTs = ownedNfts;
         isLoadMore = ownedNftsHasNextPage;
         loadMore = loadMoreOwnedNfts;
-        noNftBody="The NFTs you owned are displayed here"
-        noNftHref = "/explore";
-        noNftLinkLabel = "Explore NFTs";
+        noNftBody = 'The NFTs you owned are displayed here';
+        noNftHref = '/explore';
+        noNftLinkLabel = 'Explore NFTs';
         break;
     }
 
@@ -342,7 +353,9 @@ const Profile = ({
             <Link href="/" passHref>
               <>
                 <SSaleContainer href="/">
-                  <SSaleIcon><span>+</span></SSaleIcon>
+                  <SSaleIcon>
+                    <span>+</span>
+                  </SSaleIcon>
                   <SSaleLabel>Sell your NFT</SSaleLabel>
                 </SSaleContainer>
               </>
@@ -366,7 +379,9 @@ const Profile = ({
               <Link href="/" passHref>
                 <>
                   <SSaleContainer href="/">
-                    <SSaleIcon><span>+</span></SSaleIcon>
+                    <SSaleIcon>
+                      <span>+</span>
+                    </SSaleIcon>
                     <SSaleLabel>Sell your NFT</SSaleLabel>
                   </SSaleContainer>
                 </>
@@ -434,117 +449,115 @@ const Profile = ({
       default:
         return ownedNftsTotal;
     }
-  }
+  };
+
+  const returnFollowers = (tabId: TabsIdType) => {
+    let users: UserType[] = [];
+    let isLoadMore = false;
+    let loadMore = () => {};
+
+    let noNftTitle = 'Nothing to display';
+    let noNftBody;
+
+    switch (tabId) {
+      case FOLLOWERS_TAB:
+        users = followers;
+        isLoadMore = followersUsersHasNextPage;
+        loadMore = loadMoreFollowers;
+        noNftBody = 'Discover new artists and start following them!';
+        break;
+      case FOLLOWED_TAB:
+        users = followed;
+        isLoadMore = followedUsersHasNextPage;
+        loadMore = loadMoreFollowed;
+        break;
+    }
+
+    return (
+      <>
+        <SSearchContainer>
+          <SSearchLabel>
+            <SSearchInput
+              type="search"
+              onChange={updateKeywordSearch}
+              className={style.Input}
+              placeholder="Search"
+            />
+          </SSearchLabel>
+          <SToggle>
+            <SCertifiedLabel>Verified only</SCertifiedLabel>
+            <label>
+              <Switch
+                checked={isFiltered}
+                onChange={() => setIsFiltered(!isFiltered)}
+                offColor="#000000"
+                onColor="#7417ea"
+                uncheckedIcon={false}
+                checkedIcon={false}
+                width={46}
+                handleDiameter={23}
+              />
+            </label>
+          </SToggle>
+        </SSearchContainer>
+
+        {users.length < 1 ? (
+          <SNoNFTContainer>
+            <NoNFTComponent body={noNftBody} title={noNftTitle} />
+          </SNoNFTContainer>
+        ) : (
+          <>
+            <SFollowersContainer>
+              {users.map(
+                (
+                  { _id, name, picture, verified, walletId }: UserType,
+                  idx: number
+                ) => {
+                  const isUnfollow =
+                    tabId === FOLLOWERS_TAB ? followBacks[idx] : true;
+
+                  return (
+                    <Avatar
+                      key={_id}
+                      followers={followersNbFollowers[walletId] ?? 0}
+                      handleFollow={() => handleFollow(walletId, isUnfollow)}
+                      isClickable
+                      isFollowButton
+                      isUnfollow
+                      isVerified={verified}
+                      name={name}
+                      picture={picture}
+                      walletId={walletId}
+                    />
+                  );
+                }
+              )}
+            </SFollowersContainer>
+            {isLoadMore && (
+              <SLoadButtonWrapper>
+                <Button
+                  color="invertedContrast"
+                  disabled={loading}
+                  onClick={() => loadMore()}
+                  size="medium"
+                  text={loading ? 'Loading...' : 'Load more'}
+                  variant="outlined"
+                />
+              </SLoadButtonWrapper>
+            )}
+          </>
+        )}
+      </>
+    );
+  };
 
   const returnContent = (tabId: TabsIdType) => {
     if (tabId === FOLLOWERS_TAB || tabId === FOLLOWED_TAB) {
-      return (
-        <div className={style.NFTs}>
-          <div className={style.Top}>
-            <h3 className={style.NFTTitle}>{scope}</h3>
-            <div className={style.SearchContainer}>
-              <div className={style.SearchBar}>
-                <input
-                  type="search"
-                  onChange={updateKeywordSearch}
-                  className={style.Input}
-                  placeholder="Search"
-                />
-              </div>
-              <div className={style.Toggle}>
-                <label>
-                  <Switch
-                    checked={isFiltered}
-                    onChange={() => setIsFiltered(!isFiltered)}
-                    offColor="#000000"
-                    onColor="#7417ea"
-                    uncheckedIcon={false}
-                    checkedIcon={false}
-                    width={46}
-                    handleDiameter={23}
-                    className={style.SwitchShell}
-                  />
-                </label>
-                <span className={style.Label}>Certified only</span>
-              </div>
-            </div>
-          </div>
-          <div className={style.FollowsContainer}>{returnFollowers()}</div>
-          {scope === 'Followers' && followersUsersHasNextPage && (
-            <Button
-              color="invertedContrast"
-              disabled={loading}
-              onClick={() => loadMoreFollowers()}
-              size="medium"
-              text={loading ? 'Loading...' : 'Load more'}
-              variant="outlined"
-            />
-          )}
-          {scope === 'Followed' && followedUsersHasNextPage && (
-            <Button
-              color="invertedContrast"
-              disabled={loading}
-              onClick={() => loadMoreFollowed()}
-              size="medium"
-              text={loading ? 'Loading...' : 'Load more'}
-              variant="outlined"
-            />
-          )}
-        </div>
-      
-      );
+      return returnFollowers(tabId);
     }
-    
+
     return returnNFTs(tabId);
-  }
-
-  const returnFollowers = () => {
-    const creators = scope === 'Followers' ? followers : followed;
-
-    if (creators.length < 1) {
-      return (
-        <SNoNFTContainer>
-          <NoNFTComponent
-            body={scope === 'Followers' ? undefined : 'Discover new artists and start following them!'}
-            title="Nothing to display"
-          />
-        </SNoNFTContainer>
-      );
-    }
-
-    return creators.map((item: UserType, i: number) => {
-      return (
-        <div key={item._id} className={style.CreatorShell}>
-              <Creator user={item} walletId={item.walletId} size="small" showTooltip={false}/>
-          <div className={style.CreatorInfos}>
-            <Link href={`/${item.walletId}`}>
-              <a>
-                <h2 className={style.CreatorName}>{item.name}</h2>
-              </a>
-            </Link>
-            <span className={style.CreatorFollowers}>
-              {followersNbFollowers[item.walletId] ? followersNbFollowers[item.walletId] : 0} followers
-            </span>
-            {scope === 'Followers' ? (
-              <div
-                onClick={() => handleFollow(item.walletId, followBacks[i])}
-                className={style.Unfollow}
-              >
-                {followBacks[i] ? 'Unfollow' : 'Follow'}
-              </div>
-            ) : (
-              <div
-                onClick={() => handleFollow(item.walletId, true)}
-                className={style.Unfollow}
-              >
-                Unfollow
-              </div>
-            )}
-          </div>
-        </div>
-      );
-    });
-  }
+  };
 
   return (
     <div className={style.Container}>
@@ -566,13 +579,15 @@ const Profile = ({
             twitterName={user.twitterName}
             walletId={user.walletId}
           />
-          {!isTablet && <Button
-            color="whiteBlur"
-            icon='edit'
-            text="Edit profile"
-            size="small"
-            variant="outlined"
-          />}
+          {!isTablet && (
+            <Button
+              color="whiteBlur"
+              icon="edit"
+              text="Edit profile"
+              size="small"
+              variant="outlined"
+            />
+          )}
         </SBannerContainer>
       </Wrapper>
       <Wrapper>
@@ -690,9 +705,110 @@ const SSaleLabel = styled.span`
   }
 `;
 
+const SSearchContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5.6rem;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    flex-direction: row;
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    justify-content: flex-start;
+  }
+`;
+
+const SSearchLabel = styled.label`
+  position: relative;
+
+  :before {
+    content: '';
+    position: absolute;
+    left: 2.4rem;
+    top: 0;
+    bottom: 0;
+    width: 2rem;
+    background: url("data:image/svg+xml,%3Csvg width='15' height='15' viewBox='0 0 15 15' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M6.3 10.8C8.78528 10.8 10.8 8.78528 10.8 6.3C10.8 3.81472 8.78528 1.8 6.3 1.8C3.81472 1.8 1.8 3.81472 1.8 6.3C1.8 8.78528 3.81472 10.8 6.3 10.8ZM6.3 12.6C9.77939 12.6 12.6 9.77939 12.6 6.3C12.6 2.82061 9.77939 0 6.3 0C2.82061 0 0 2.82061 0 6.3C0 9.77939 2.82061 12.6 6.3 12.6Z' fill='%23686464'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M14.3712 14.3712C14.024 14.7185 13.461 14.7185 13.1137 14.3712L9.62877 10.8863C9.28151 10.539 9.28151 9.97603 9.62877 9.62877C9.97603 9.28151 10.539 9.28151 10.8863 9.62877L14.3712 13.1137C14.7185 13.461 14.7185 14.024 14.3712 14.3712Z' fill='%23686464'/%3E%3C/svg%3E%0A")
+      center / contain no-repeat;
+  }
+`;
+
+const SSearchInput = styled.input`
+  width: 28rem;
+  background: rgba(0, 0, 0, 0.05);
+  border: none;
+  border-radius: 3.2rem;
+  font-family: ${({ theme }) => theme.fonts.light};
+  font-size: 1.6rem;
+  outline: none;
+  padding: 1.2rem 5.6rem;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    width: 32rem;
+  }
+`;
+
+const SToggle = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1.2rem 0 0;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    margin: 0 0 0 1.6rem;
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    margin: 0 0 0 2.4rem;
+  }
+`;
+
+const SCertifiedLabel = styled.span`
+  font-family: ${({ theme }) => theme.fonts.medium};
+  color: ${({ theme }) => theme.colors.neutral200};
+  font-size: 1.6rem;
+  display: flex;
+  align-items: center;
+  text-align: right;
+  margin-right: 0.8rem;
+`;
+
+const SFollowersContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  width: 100%;
+  gap: 3.2rem;
+  max-width: 40rem;
+  margin: 5.6rem auto;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: none;
+    gap: 2.4rem 4.8rem;
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4.8rem;
+    margin-top: 8.8rem;
+  }
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    grid-template-columns: repeat(5, 1fr);
+  }
+`;
+
 const SLoadButtonWrapper = styled.div`
   button {
-    margin: 0 auto;
+    margin: 5.6rem auto 11.6rem;
   }
 `;
 

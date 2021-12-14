@@ -89,29 +89,33 @@ export const generateVideoThumbnail = (file: File, thumbnailTimecode: number) =>
   return new Promise((resolve, reject) => {
     const canvas = document.createElement("canvas");
     const video = document.createElement("video");
-    video.autoplay = true;
+    video.autoplay = false;
     video.muted = true;
     video.src = URL.createObjectURL(file);
-    video.currentTime = thumbnailTimecode || 0
+    video.currentTime = 0.01
     video.onseeked = async () => {
-      let ctx = canvas.getContext("2d");
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      if (ctx){
-        ctx.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
-        canvas.toBlob(async (imgBlob) => {
-          if (imgBlob){
-            const imgFile = new File([imgBlob], "preview_image");
-            window.URL.revokeObjectURL(video.src);
-            return resolve(imgFile);
-          }else{
-            window.URL.revokeObjectURL(video.src);
-            return reject("Could not generate thumbnail")
-          }
-        },'image/png', 1)
+      if (video.currentTime === thumbnailTimecode){
+        let ctx = canvas.getContext("2d");
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        if (ctx){
+          ctx.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
+          canvas.toBlob(async (imgBlob) => {
+            if (imgBlob){
+              const imgFile = new File([imgBlob], "preview_image");
+              window.URL.revokeObjectURL(video.src);
+              return resolve(imgFile);
+            }else{
+              window.URL.revokeObjectURL(video.src);
+              return reject("Could not generate thumbnail")
+            }
+          },'image/png', 1)
+        }else{
+          window.URL.revokeObjectURL(video.src);
+          return reject("No canvas context found to generate thumbnail")
+        }
       }else{
-        window.URL.revokeObjectURL(video.src);
-        return reject("No canvas context found to generate thumbnail")
+        video.currentTime = thumbnailTimecode
       }
     };
   });

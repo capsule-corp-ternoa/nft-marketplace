@@ -138,7 +138,7 @@ const ModalMint: React.FC<ModalProps> = ({
     });
     
     socket.once('disconnect', () => {
-      setError("Wallet disconnected")
+      setModalCreate(false);
     });
     return () => {
       if (socket && socket.connected) {

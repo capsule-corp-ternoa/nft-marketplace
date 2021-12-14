@@ -32,6 +32,7 @@ export type IconNameType =
   | 'noNFTImage'
   | 'powerOff'
   | 'scale'
+  | 'search'
   | 'secretCards'
   | 'share'
   | 'socialDiscord'
@@ -189,6 +190,10 @@ const Icon = ({ className, name }: Props) => {
     case 'scale': {
       const Scale = dynamic(() => import('components/assets/scale'));
       return <Scale className={className} />;
+    }
+    case 'search': {
+      const Search = dynamic(() => import('components/assets/Search'));
+      return <Search className={className} />;
     }
     case 'secretCards': {
       const SecretCards = dynamic(

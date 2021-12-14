@@ -61,7 +61,7 @@ const Media: React.FC<MediaProps & Record<string,any>> = ({
   }, [fetchStatusOk])
 
   if (mediaSrc === undefined || isLoading) {
-    return <Icon name='animatedLoader' />;
+    return <SLoaderIcon name='animatedLoader' />;
   }
 
   return (
@@ -83,6 +83,10 @@ const Media: React.FC<MediaProps & Record<string,any>> = ({
     </>
   );
 };
+
+const SLoaderIcon = styled(Icon)`
+  margin: 0 auto;
+`;
 
 const SImage = styled.img`
   ${MediaStyle}

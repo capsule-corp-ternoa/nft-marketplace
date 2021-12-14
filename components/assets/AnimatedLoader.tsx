@@ -1,8 +1,13 @@
 import React from 'react';
 
-const AnimatedLoader = () => (
+interface Props {
+  className?: string;
+}
+
+const AnimatedLoader = ({ className }: Props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
+    className={className}
     width="200px"
     height="200px"
     viewBox="0 0 100 100"

@@ -64,7 +64,7 @@ const Icon = ({ className, name }: Props) => {
       const AnimatedLoader = dynamic(
         () => import('components/assets/AnimatedLoader')
       );
-      return <AnimatedLoader />;
+      return <AnimatedLoader className={className} />;
     }
     case 'arrowRight': {
       const ArrowBottom = dynamic(

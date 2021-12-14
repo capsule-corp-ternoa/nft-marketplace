@@ -78,6 +78,7 @@ const ModalMint: React.FC<ModalProps> = ({
   const speed = Math.floor((uploadSize * (generalPercentage() / 100)) / elapsedUploadTime)
   const remainingTime = Math.ceil(((elapsedUploadTime / generalPercentage()) * (100 - generalPercentage())))
   const handleMintSocketProcess = () => {
+    console.log("handleMintSocketProcess")
     const socket = connectIo(`/socket/createNft`, { session, socketUrl: SOCKET_URL }, undefined, 20 * 60 * 1000);
     setStateSocket(socket)
     socket.once('CONNECTION_SUCCESS', () => {
@@ -93,13 +94,16 @@ const ModalMint: React.FC<ModalProps> = ({
     socket.once('connect_error', (e: any) => {
       console.error('connection error socket', e);
       setError("Connection error, please try again")
+      console.log("connect_error")
     });
 
     socket.once('CONNECTION_FAILURE', (data: any) => {
       console.error('connection failure socket', data)
       setError(data.msg)
+      console.log("qsdqsd")
     });
     socket.once('PGPS_READY', async ({ publicPgpKeys }: { publicPgpKeys: string[] }) => {
+      console.log("PGPS_READY")
       socket.emit('PGPS_READY_RECEIVED')
       setShowQR(false)
       setShowProgress(true)
@@ -139,6 +143,7 @@ const ModalMint: React.FC<ModalProps> = ({
     
     socket.once('disconnect', () => {
       setModalCreate(false);
+      console.log("disconnect")
     });
     return () => {
       if (socket && socket.connected) {
@@ -149,11 +154,13 @@ const ModalMint: React.FC<ModalProps> = ({
 
   useEffect(() => {
     if (stateSocket && runNFTMintData) {
+      console.log("set socket in useeffect")
       stateSocket.once('WALLET_READY', () => {
         stateSocket.emit('RUN_NFT_MINT', runNFTMintData)
         setShowQR(false)
       })
       stateSocket.once('MINTING_NFT', ({ success, nftIds }: { success: boolean, nftIds: string[] }) => {
+        console.log("in MINTING_NFT socket code", { success, nftIds })
         stateSocket.emit('MINTING_NFT_RECEIVED')
         stateSocket.close();
         setMintResponse(success)

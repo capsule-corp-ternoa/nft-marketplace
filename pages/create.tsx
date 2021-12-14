@@ -79,6 +79,7 @@ const CreatePage = ({ categories, user }: CreatePageProps) => {
   useEffect(()=> {
     if (!modalCreate){
       setError('')
+      console.log("stateSocket", stateSocket === null)
       if (stateSocket) stateSocket.close();
     }
   }, [modalCreate])

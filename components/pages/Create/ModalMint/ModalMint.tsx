@@ -83,7 +83,6 @@ const ModalMint: React.FC<ModalProps> = ({
   const handleMintSocketProcess = () => {
     const socket = connectIo(`/socket/createNft`, { session, socketUrl: SOCKET_URL }, undefined, 20 * 60 * 1000);
     setStateSocket(socket)
-    socket.disconnect()
     socket.once('CONNECTION_SUCCESS', () => {
       if (isRN || window.isRNApp) {
         const data = { session, socketUrl: SOCKET_URL, walletId, quantity, uploadSize };

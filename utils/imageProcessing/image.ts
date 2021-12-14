@@ -93,9 +93,10 @@ export const generateVideoThumbnail = (file: File, thumbnailTimecode: number) =>
     video.muted = true;
     video.playsInline = true
     video.src = URL.createObjectURL(file);
-    video.currentTime = thumbnailTimecode < 0.1 ? 0.1 : thumbnailTimecode
+    const timecode = thumbnailTimecode < 0.1 ? 0.1 : thumbnailTimecode
+    video.currentTime = timecode
     video.onloadeddata = async () => {
-      if (video.currentTime === thumbnailTimecode){
+      if (video.currentTime === timecode){
         let ctx = canvas.getContext("2d");
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;

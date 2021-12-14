@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import NftCard from 'components/base/NftCard';
 import { NftType } from 'interfaces/index';
+import { timer } from 'utils/functions' 
 
 const INPUT_HEIGHT_REM = 0.6;
 
@@ -21,13 +22,15 @@ interface Props {
 const Showcase3D = ({ list, selectedIdx, setSelectedItem }: Props) => {
   const [isDragging, setIsDragging] = useState(false);
 
-  const bind = useDrag(({ movement: [x], last }) => {
-    setIsDragging(true);
-    if (last && x < -DRAGGING_OFFSET) {
-      setSelectedItem(list[selectedIdx === 2 ? 0 : selectedIdx + 1]);
-      setIsDragging(false);
-    } else if (last && x > DRAGGING_OFFSET) {
-      setSelectedItem(list[selectedIdx === 0 ? 2 : selectedIdx - 1]);
+  const bind = useDrag(async ({ movement: [x], last }) => {
+    if (Math.abs(x) > DRAGGING_OFFSET) {
+      setIsDragging(true);
+      if (last && x < 0) {
+        setSelectedItem(list[selectedIdx === 2 ? 0 : selectedIdx + 1]);
+      } else if (last && x > 0) {
+        setSelectedItem(list[selectedIdx === 0 ? 2 : selectedIdx - 1]);
+      }
+      await timer(500);
       setIsDragging(false);
     }
   });
@@ -35,7 +38,7 @@ const Showcase3D = ({ list, selectedIdx, setSelectedItem }: Props) => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { target } = event;
     const idx = Number(target.name.replace(/[^0-9\.]+/g, ''));
-    setSelectedItem(list[idx]);
+    if (!isDragging) setSelectedItem(list[idx]);
   };
 
   return (

@@ -88,7 +88,8 @@ const NftPreview = ({
         className={className}
         content="Click here to upload your file."
         inputId="uploadNft"
-        note={`JPEG, JPG, PNG, GIF, MP4 or MOV. Max 30mb.`}
+        isRN={isRN}
+        note={`JPEG, JPG, PNG, GIF ${!isRN ? ', MP4 or MOV' : ''}. Max 30mb.`}
         onChange={handleFileUpload}
       />
     );

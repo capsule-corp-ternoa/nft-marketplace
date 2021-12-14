@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Upload from 'components/assets/upload';
 import { HiddenInput, HiddenShell, InsightLight } from 'components/layout';
@@ -11,6 +11,7 @@ interface Props {
   isMinimal?: boolean;
   isSecretOption?: boolean;
   note?: string;
+  isRN?: boolean;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -25,6 +26,10 @@ export const updateFile = (
   let isError = false;
 
   if (file !== null && file !== undefined) {
+    if (!isError && isRN && file!.type.indexOf('video') !== -1) {
+      setError("You can't select video type on mobile DApp yet.");
+      isError = true;
+    }
     if (
       !isError &&
       !(
@@ -54,19 +59,26 @@ const NftUpload = ({
   content,
   inputId,
   isMinimal = false,
+  isRN,
   isSecretOption = false,
   note,
   onChange,
 }: Props) => {
 
-  const acceptedFileTypes = [
+  const [acceptedFileTypes, setAcceptedFileTypes] = useState([
     '.jpg',
     '.jpeg',
     '.png',
     '.gif',
     '.mp4',
     '.mov',
-  ]
+  ]);
+
+  useEffect(() => {
+    if (isRN) {
+      setAcceptedFileTypes(['.jpg', '.jpeg', '.png', '.gif']);
+    }
+  }, [isRN]);
 
   if (isMinimal) {
     return (

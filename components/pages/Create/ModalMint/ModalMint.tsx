@@ -97,10 +97,19 @@ const ModalMint: React.FC<ModalProps> = ({
       console.error('connection error socket', e);
       setError("Connection error, please try again")
     });
-
     socket.once('CONNECTION_FAILURE', (data: any) => {
       console.error('connection failure socket', data)
       setError(data.msg)
+    });
+    socket.once('MINTING_NFT_ERROR', ({ reason }: { success: boolean, reason: string }) => {
+      console.log("azeaze")
+      console.log({ reason })
+      setMintResponse(false)
+      if (reason==="fees"){
+        setError("An error has occured, please check your account has enough caps to pay for the transaction and try again.")
+      }else{
+        setError("An error has occured.")
+      }
     });
     socket.once('PGPS_READY', async ({ publicPgpKeys }: { publicPgpKeys: string[] }) => {
       socket.emit('PGPS_READY_RECEIVED')
@@ -180,17 +189,7 @@ const ModalMint: React.FC<ModalProps> = ({
             )
           }, 1000)
         }else{
-          setError("An error has occured, please check your account has enough caps to pay for the transaction and try again.")
-        }
-      });
-    }
-    if (stateSocket) {
-      stateSocket.once('MINTING_NFT_ERROR', ({ reason }: { success: boolean, reason: string }) => {
-        setMintResponse(false)
-        if (reason==="fees"){
-          setError("An error has occured, please check your account has enough caps to pay for the transaction and try again.")
-        }else{
-          setError("An error has occured.")
+          setError("Transaction was canceled.")
         }
       });
     }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-//import emojiRegex from 'emoji-regex';
+import emojiRegex from 'emoji-regex';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
 import {
@@ -104,9 +104,9 @@ const Create = ({
 
   const checkAddToSerie = async () => {
     try {
-      //const regex = emojiRegex()
+      const regex = emojiRegex()
       if (user) {
-        //if (regex.test(seriesId)) throw new Error("Invalid character")
+        if (regex.test(seriesId)) throw new Error("Invalid character")
         const canAdd = await canAddToSeries(seriesId, user.walletId);
         setCanAddToSeriesValue(canAdd);
       } else {

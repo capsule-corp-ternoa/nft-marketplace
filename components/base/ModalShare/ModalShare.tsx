@@ -2,7 +2,7 @@ import React from 'react';
 
 import style from './ModalShare.module.scss';
 import Close from 'components/assets/close';
-import CopyPaste from 'components/assets/copypaste';
+import Clipboard from 'components/base/Clipboard';
 import { 
   FacebookShareButton,
   LinkedinShareButton,
@@ -17,7 +17,7 @@ import {
   TwitterIcon,
   WhatsappIcon
 } from 'react-share';
-import { clipboardCopy } from 'utils/functions';
+import styled from 'styled-components';
 
 export interface ModalWalletProps {
   setModalExpand: (b: boolean) => void;
@@ -85,16 +85,24 @@ const ModalShare: React.FC<ModalWalletProps> = ({ setModalExpand, title, subject
           <WhatsappIcon size={40} round={true}/>
         </WhatsappShareButton>
       </div>
-      <div className={style.UrlCopyContainer} onClick={() => {
-        clipboardCopy(url);
-      }}>
-        <div className={style.Url}>{url}</div>
-        <div className={style.CopyPaste}>
-          <CopyPaste className={style.CopyPasteSvg}/>
-        </div>
-      </div>
+      <SClipboard address={url} />
     </div>
   </div>
 );
+
+const SClipboard = styled(Clipboard)`
+  border: solid 1px rgb(0, 0, 0, 0);
+  border-radius: 0.8rem;
+  color: ${({theme}) => theme.colors.invertedContrast};
+  margin-top: 1.6rem;
+  padding: 0.8rem 1.6rem;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    &:hover {
+      color: ${({theme}) => theme.colors.invertedContrast};
+      border-color: ${({theme}) => theme.colors.invertedContrast};
+    }
+  }
+`;
 
 export default ModalShare;

@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import style from './Infos.module.scss';
 import Badge from 'components/assets/badge';
-import CopyPaste from 'components/assets/copypaste';
 import Twitter from 'components/assets/SocialMedias/Twitter';
+import Clipboard from 'components/base/Clipboard';
 import gradient from 'random-gradient';
-import { middleEllipsis } from 'utils/strings';
 import { UserType } from 'interfaces';
 import { follow, unfollow, isUserFollowing, getFollowedCount, getFollowersCount } from 'actions/follower';
-import { clipboardCopy } from 'utils/functions';
 
 export interface InfosProps {
   profile: UserType;
@@ -113,15 +111,7 @@ const Infos: React.FC<InfosProps> = ({ profile, setProfile, profileWalletId,  us
           </div>
           <div className={style.Right}>
             <div className={style.Top}>
-              <div
-                className={style.Address}
-                onClick={() => {
-                  clipboardCopy(profileWalletId);
-                }}
-              >
-                {middleEllipsis(profileWalletId, 20)}
-                <CopyPaste className={style.CopyPaste} />
-              </div>
+              <Clipboard address={profileWalletId} isEllipsis />
               {(user?.walletId && profile?.walletId && user.walletId!==profile.walletId && isUserFollowingProfile!==null) &&
                 <div className={`${style.Button} ${followLoading ? style.ButtonDisabled : ""}`} onClick={()=>handleFollowUnfollow(isUserFollowingProfile)}>
                   {!isUserFollowingProfile ? "Follow" : "Unfollow"}

@@ -49,7 +49,11 @@
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  margin-left: 14px;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0.8rem;
+  height: 4.8rem;
+  width: 3.2rem;
 }
 
 .Line {
@@ -233,22 +237,6 @@
   display: flex;
   border-bottom: 1px solid #ebebeb;
   cursor: pointer;
-}
-
-.SectionWallet {
-  color: #686464;
-  margin-left: 8px;
-  font-family: "Airbnb Cereal App Light";
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.CopyPaste {
-  width: 11px;
-  fill: #cbc9c9;
-  margin-left: 7px;
-  margin-top: -2px;
 }
 
 .Section:last-child {

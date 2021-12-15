@@ -2,13 +2,16 @@ import React from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
 
-import Button from '../Button';
-import Icon from '../Icon';
+import Clipboard from 'components/base/Clipboard';
+import Button from 'components/ui/Button';
+import Icon from 'components/ui/Icon';
+
 import Picture from './components/Picture';
 
 interface Props {
   className?: string;
   followers?: number;
+  isAddressDisplayed?: string;
   isClickable?: boolean;
   isDiscoverButton?: boolean;
   isPictureOnly?: boolean;
@@ -19,7 +22,6 @@ interface Props {
   nickname?: string;
   personalUrl?: string;
   picture?: string;
-  shortWalletId?: string;
   twitterName?: string;
   walletId?: string;
 }
@@ -27,6 +29,7 @@ interface Props {
 const Avatar = ({
   className,
   followers,
+  isAddressDisplayed,
   isClickable,
   isDiscoverButton,
   isPictureOnly,
@@ -37,16 +40,9 @@ const Avatar = ({
   nickname,
   personalUrl,
   picture,
-  shortWalletId,
   twitterName,
   walletId,
 }: Props) => {
-  const clipboardCopy = (str: string) => {
-    if (navigator?.clipboard) {
-      navigator.clipboard.writeText(str);
-    }
-  };
-
   if (isPictureOnly) {
     return (
       <Picture
@@ -102,15 +98,8 @@ const Avatar = ({
               {personalUrl.replace(/(^\w+:|^)\/\//, '')}
             </SLink>
           )}
-          {walletId && shortWalletId && (
-            <SAddress
-              onClick={() => {
-                clipboardCopy(walletId);
-              }}
-            >
-              {shortWalletId}
-              <SCopyPasteIcon name="copyPaste" />
-            </SAddress>
+          {isAddressDisplayed && walletId && (
+            <Clipboard address={walletId} isEllipsis />
           )}
         </SBottomDetails>
       </SDetailsContainer>
@@ -195,19 +184,6 @@ const STwitterIcon = styled(Icon)`
 `;
 
 const STwitterNickname = styled.span`
-  margin-left: 0.4rem;
-`;
-
-const SAddress = styled.div`
-  display: flex;
-  align-items: center;
-  color: ${({ theme }) => theme.colors.neutral200};
-  font-size: 1.6rem;
-`;
-
-const SCopyPasteIcon = styled(Icon)`
-  width: 1.4rem;
-  height: 1.4rem;
   margin-left: 0.4rem;
 `;
 

@@ -245,26 +245,6 @@
   }
 }
 
-.SectionWallet {
-  color: #686464;
-  margin-left: 8px;
-  font-family: "Airbnb Cereal App Light";
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  fill: #cbc9c9;
-  &:hover {
-    color: $primary;
-    fill: $primary;
-  }
-}
-
-.CopyPaste {
-  width: 11px;
-  margin-left: 7px;
-  margin-top: -2px;
-}
-
 .Section:last-child {
   border-bottom: none;
   padding-bottom: 4px;

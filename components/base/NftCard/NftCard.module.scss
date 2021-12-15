@@ -23,16 +23,6 @@
   border-radius: 12px;
 }
 
-.NFTIMG {
-  object-fit: cover;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  box-sizing: border-box;
-  border-radius: 12px;
-  animation: scaleOut 0.8s cubic-bezier(0.25, 1, 0.5, 1);
-}
-
 .Favorite {
   background-color: white;
   align-self: flex-end;
@@ -113,11 +103,6 @@
 
   animation-fill-mode: forwards;
 }
-.ImgScaling {
-  animation: scale 1.1s cubic-bezier(0.25, 1, 0.5, 1);
-
-  animation-fill-mode: forwards;
-}
 
 .Hide {
   display: none;
@@ -160,24 +145,6 @@
   }
   100% {
     transform: translateY(0px);
-  }
-}
-
-@keyframes scale {
-  0% {
-    transform: scale(1);
-  }
-  100% {
-    transform: scale(1.08);
-  }
-}
-
-@keyframes scaleOut {
-  0% {
-    transform: scale(1.08);
-  }
-  100% {
-    transform: scale(1);
   }
 }
 

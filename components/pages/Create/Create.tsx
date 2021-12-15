@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import emojiRegex from 'emoji-regex';
+import { checkMark, errorMark, loadingSpinner500 } from 'components/assets';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
 import {
@@ -10,6 +11,7 @@ import {
   InputLabel,
   InputShell,
   Insight,
+  Label,
   Textarea,
   Title,
   Wrapper,
@@ -249,7 +251,7 @@ const Create = ({
         </SNftPreviewWrapper>
         <SForm>
           <SLeft>
-            {showThumbnailSelector &&
+          {showThumbnailSelector &&
               <InputShell>
                 <InputLabel>
                   Thumbnail
@@ -338,14 +340,26 @@ const Create = ({
                 <STooltip text="Specified your own series id. Series must be locked (never listed / transferred) and owned by you." />
                 <SInsight>(optional)</SInsight>
               </InputLabel>
-              <Input
-                type="text"
-                placeholder="Enter ID"
-                onChange={handleChange}
-                name="seriesId"
-                value={seriesId}
-                isError={!canAddToSeriesValue}
-              />
+              <Label
+                endIcon={
+                  seriesId !== ''
+                    ? isLoading
+                      ? loadingSpinner500
+                      : canAddToSeriesValue
+                      ? checkMark
+                      : errorMark
+                    : undefined
+                }
+              >
+                <SSeriesIdInput
+                  type="text"
+                  placeholder="Enter ID"
+                  onChange={handleChange}
+                  name="seriesId"
+                  value={seriesId}
+                  isError={!canAddToSeriesValue}
+                />
+              </Label>
             </InputShell>
           </SRight>
         </SForm>
@@ -459,6 +473,10 @@ const SButton = styled(Button)`
   ${({ theme }) => theme.mediaQueries.xl} {
     margin: 4.8rem 0 9.6rem;
   }
+`;
+
+const SSeriesIdInput = styled(Input)`
+  padding: 1.6rem 5.6rem 1.6rem 1.6rem;
 `;
 
 export default Create;

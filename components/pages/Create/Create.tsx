@@ -350,7 +350,7 @@ const Create = ({
           </SRight>
         </SForm>
         <SAdvice>
-          Once the information is entered, it will be impossible to modify it !
+          Information cannot be modified after NFT is created !
         </SAdvice>
         <SButton
           disabled={!(isDataValid && user)}

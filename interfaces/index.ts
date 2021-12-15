@@ -55,7 +55,7 @@ export type NftType = {
   categories: CategoryType[];
   viewsCount?: number;
   marketplaceId?: string;
-  locked?: boolean;
+  seriesLocked?: boolean;
 };
 
 export const NFT_EFFECT_BLUR = 'blur';

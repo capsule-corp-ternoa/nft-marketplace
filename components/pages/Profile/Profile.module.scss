@@ -56,18 +56,6 @@
   padding-left: 20px;
 }
 
-.NFTsContainer {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  flex-wrap: wrap;
-  box-sizing: border-box;
-  padding: 3.2rem 0;
-  width: 100%;
-  gap: 3.2rem;
-  margin-bottom: 3.2rem;
-}
-
 .Button {
   display: block;
   margin-left: auto;
@@ -120,19 +108,7 @@
   }
 }
 
-@media (max-width: 1150px) {
-  .NFTsContainer {
-    justify-content: center;
-    align-items: center;
-  }
-}
-
 @media (max-width: 870px) {
-  .NFTsContainer {
-    width: 100%;
-    margin: 0px;
-    padding: 40px 16px;
-  }
 
   .NFTs {
     width: 100%;

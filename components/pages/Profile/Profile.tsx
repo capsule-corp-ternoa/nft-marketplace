@@ -362,9 +362,9 @@ const Profile = ({
             </Link>
           </SSaleLinkWrapper>
         )}
-        <div className={style.NFTsContainer}>
+        <SNFTsContainer>
           {displayNFTs.map((item: NftType) => (
-            <NftCard key={item.id} mode="profile" item={item}>
+            <SNftCard key={item.id} mode="profile" item={item}>
               <NftChips
                 NFT={item}
                 mode="profile"
@@ -372,7 +372,7 @@ const Profile = ({
                 noPriceChip={tabId !== NFT_ON_SALE_TAB}
                 quantity={returnQuantityNFTsAvailable(item, tabId)}
               />
-            </NftCard>
+            </SNftCard>
           ))}
           {tabId === NFT_ON_SALE_TAB && !isTablet && (
             <SSaleLinkWrapper>
@@ -388,7 +388,7 @@ const Profile = ({
               </Link>
             </SSaleLinkWrapper>
           )}
-        </div>
+        </SNFTsContainer>
         {isLoadMore && (
           <SLoadButtonWrapper>
             <Button
@@ -775,6 +775,40 @@ const SCertifiedLabel = styled.span`
   align-items: center;
   text-align: right;
   margin-right: 0.8rem;
+`;
+
+const SNFTsContainer = styled.div`
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  padding: 3.2rem 0;
+  width: 100%;
+  margin-bottom: 3.2rem;
+  gap: 3.2rem;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.4rem 0;
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 3.2rem 0;
+    margin-top: 4.8rem;
+  }
+
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    grid-template-columns: repeat(6, 1fr);
+    gap: 3.2rem;
+  }
+`;
+
+const SNftCard = styled(NftCard)`
+  margin: 0 auto;
 `;
 
 const SFollowersContainer = styled.div`

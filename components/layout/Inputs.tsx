@@ -61,6 +61,25 @@ const InputStyle = css<{
   }
 `;
 
+export const Label = styled.label<{ endIcon?: string }>`
+  position: relative;
+
+  ${({ endIcon }) =>
+    endIcon &&
+    `
+      &:after {
+        content: '';
+        position: absolute;
+        right: 1.6rem;
+        top: 1.6rem;
+        bottom: 0;
+        width: 3.2rem;
+        background: url("${endIcon}")
+          center / contain no-repeat;
+      }
+    `};
+`;
+
 export const Input = styled.input<{ isError?: boolean }>`
   ${InputStyle}
 `;
@@ -68,6 +87,6 @@ export const Input = styled.input<{ isError?: boolean }>`
 export const Textarea = styled.textarea`
   flex: 1;
   resize: none;
-  
+
   ${InputStyle}
 `;

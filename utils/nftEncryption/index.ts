@@ -2,6 +2,7 @@ import * as openpgp from 'openpgp'
 import mime from 'mime-types'
 import TernoaIpfsApi from './ipfs.helper'
 import { ipfsGatewayUri } from './ipfs.const';
+import { timer } from '../functions' 
 
 const ipfsApi = new TernoaIpfsApi();
 
@@ -11,17 +12,10 @@ const cryptFilePgp = async (file: File, publicPGP: string) => {
   const content = buffer.toString("base64");
   const message = await openpgp.Message.fromText(content)
   const publicKey = await openpgp.readKey({ armoredKey: publicPGP })
-  /*console.log(publicPGP)
-  console.log(publicKey)
-  console.log(publicKey.getCreationTime())
-  console.log(publicKey.toPublic())
-  console.log(publicKey.getUserIds())
-  console.log(publicKey.getKeyIds())
-  console.log(publicKey.isPublic())
-  console.log(publicKey.isPrivate())
-  console.log(publicKey.toPublic())
-  console.log(await publicKey.getSigningKey())
-  console.log(await publicKey.getPrimaryUser())*/
+  if (new Date() < publicKey.getCreationTime()){
+    const waitTime = (publicKey.getCreationTime().getTime() - new Date().getTime()) + 10
+    await timer(waitTime)
+  }
   const encrypted = await openpgp.encrypt({
     message,
     publicKeys: publicKey

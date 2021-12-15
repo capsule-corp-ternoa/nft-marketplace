@@ -1,6 +1,6 @@
 {
   "name": "nft-marketplace",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "scripts": {
     "dev": "next",
     "build": "next build",
@@ -11,12 +11,14 @@
   "dependencies": {
     "@polkadot/util-crypto": "^7.8.2",
     "@sentry/nextjs": "^6.14.1",
+    "@use-gesture/react": "^10.2.2",
     "array-shuffle": "^3.0.0",
     "asmcrypto-lite": "^1.1.0",
     "axios": "^0.24.0",
     "bufferutil": "^4.0.5",
     "crypto-js": "^4.1.1",
     "dayjs": "^1.10.7",
+    "emoji-regex": "^10.0.0",
     "eslint": "^7.32.0",
     "file-to-array-buffer": "^1.0.0",
     "i18next": "^21.4.1",
@@ -26,7 +28,7 @@
     "json-stringify-safe": "^5.0.1",
     "jszip": "^3.7.1",
     "mime-types": "^2.1.33",
-    "next": "12.0.3",
+    "next": "12.0.5",
     "next-cookies": "^2.0.3",
     "nprogress": "^0.2.0",
     "openpgp": "5.0.0-1",

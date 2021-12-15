@@ -100,3 +100,12 @@ export const formatDate = (d: Date) => {
   //06/08/2021, 13:21
   return `${d.getDate()}/${d.getMonth()}/${d.getFullYear()}, ${d.getHours()}:${d.getMinutes()}`
 }
+
+export const formatPrice = (n: number) => {
+  const formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  });
+
+  return formatter.format(n);
+}

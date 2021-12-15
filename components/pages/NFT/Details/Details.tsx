@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import styled from 'styled-components'
 import { FixedSizeList as List, ListOnItemsRenderedProps } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { UserType, NftType, NFTTransferType, CustomResponse } from 'interfaces';
@@ -9,8 +10,8 @@ import { middleEllipsis } from '../../../../utils/strings';
 import { getUsers } from 'actions/user';
 import Creator from 'components/base/Creator';
 import { EXPLORER_URL, MARKETPLACE_ID } from 'utils/constant';
-import CopyPaste from 'components/assets/copypaste';
-import { clipboardCopy, getRandomNFTFromArray } from 'utils/functions';
+import Clipboard from 'components/base/Clipboard';
+import { getRandomNFTFromArray } from 'utils/functions';
 import { getHistory } from 'actions/nft';
 
 export interface DetailsProps {
@@ -287,10 +288,7 @@ const Details: React.FC<DetailsProps> = ({
                       </a>
                     </Link>
                   </div>
-                  <span className={styleDetails.HistoryAddress} onClick={() => clipboardCopy(NFTTransferRow.to)}>
-                    {toData?.name ? middleEllipsis(NFTTransferRow.to, 15) : "copy to clipboard"}
-                    <CopyPaste className={styleDetails.SmallCopyPaste}/>
-                  </span>
+                  <Clipboard address={NFTTransferRow.to} isEllipsis />
                 </>
               :
                 <>
@@ -301,14 +299,11 @@ const Details: React.FC<DetailsProps> = ({
                         </a>
                       </Link>
                   </div>
-                  <span className={styleDetails.HistoryAddress} onClick={() => clipboardCopy(NFTTransferRow.from)}>
-                    {fromData?.name ? middleEllipsis(NFTTransferRow.from, 15) : "copy to clipboard"}
-                    <CopyPaste className={styleDetails.SmallCopyPaste}/>
-                  </span>
+                  <Clipboard address={NFTTransferRow.from} isEllipsis />
                 </>
               }
             </div>
-            <div>
+            <SDatasDetails>
               <div className={styleDetails.rowDatasDetails}>
                 {NFTTransferRow.typeOfTransaction === "creation" &&
                   `Created ${NFTTransferRow.quantity} edition${NFTTransferRow.quantity > 1 ? "s" : ""}`
@@ -331,7 +326,7 @@ const Details: React.FC<DetailsProps> = ({
                     {formatDate(new Date(NFTTransferRow.timestamp))}
                 </div>
               }
-            </div>
+            </SDatasDetails>
           </div>
         </div>
         <div className={styleDetails.TernoaChainButton + " " + (EXPLORER_URL ? "" : styleDetails.disabled)}>
@@ -449,5 +444,13 @@ const Details: React.FC<DetailsProps> = ({
     </div>
   );
 };
+
+const SDatasDetails = styled.div`
+  margin-top: 0.4rem;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    margin-top: 0;
+  }
+`;
 
 export default Details;

@@ -57,7 +57,7 @@
 
 .creatorWrapper {
   display: flex;
-  min-height: 70px;
+  min-height: 8rem;
   align-items: center;
 }
 .infoDatasWrapper {
@@ -252,18 +252,6 @@
   margin-left: 10px;
 }
 
-.HistoryAddress{
-  cursor: pointer;
-  font-size: 11px;  
-}
-
-.SmallCopyPaste{
-  width: 1.2rem;
-  fill: #cbc9c9;
-  vertical-align: middle;
-  margin-left: 2px;
-}
-
 .TernoaChainButton {
   color: $primary;
   padding: 10px 2%;
@@ -314,9 +302,6 @@
   }
   .rowDatasName {
     display: flex;
-  }
-  .HistoryAddress {
-    display: none;
   }
 }
 @media (max-width: 840px) {

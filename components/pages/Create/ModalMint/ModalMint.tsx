@@ -25,9 +25,12 @@ export interface ModalProps {
   QRData: any;
   runNFTMintData: any,
   uploadSize: number;
+  stateSocket: any;
+  setStateSocket: (x: any) => void
   setError: (s: string) => void;
   setModalCreate: (b: boolean) => void;
   setRunNFTMintData: (data: any) => void;
+  thumbnailTimecode: number;
 }
 
 const ModalMint: React.FC<ModalProps> = ({
@@ -39,9 +42,12 @@ const ModalMint: React.FC<ModalProps> = ({
   QRData,
   runNFTMintData,
   uploadSize,
+  stateSocket,
+  setStateSocket,
   setError,
   setModalCreate,
-  setRunNFTMintData
+  setRunNFTMintData,
+  thumbnailTimecode
 }) => {
   const [session] = useState(randomstring.generate());
   const { walletId, quantity } = QRData;
@@ -54,7 +60,6 @@ const ModalMint: React.FC<ModalProps> = ({
   const [mintReponse, setMintResponse] = useState<boolean | null>(null)
   const [startUploadTime, setStartUploadTime] = useState<any>(null)
   const [alreadySentSocketTimeout, setAlreadySentSocketTimeout] = useState(false)
-  const [stateSocket, setStateSocket] = useState<any>(null)
   const router = useRouter();
   const { categories, description, name, seriesId } = NFTData;
   const progressQuantity = 1 + Number(quantity) + ((
@@ -90,12 +95,19 @@ const ModalMint: React.FC<ModalProps> = ({
     });
     socket.once('connect_error', (e: any) => {
       console.error('connection error socket', e);
-      setModalCreate(false);
+      setError("Connection error, please try again")
     });
-
     socket.once('CONNECTION_FAILURE', (data: any) => {
       console.error('connection failure socket', data)
       setError(data.msg)
+    });
+    socket.once('MINTING_NFT_ERROR', ({ reason }: { success: boolean, reason: string }) => {
+      setMintResponse(false)
+      if (reason==="fees"){
+        setError("Process was cancelled, please check your account has enough caps to pay for the transaction and try again.")
+      }else{
+        setError("An error has occured.")
+      }
     });
     socket.once('PGPS_READY', async ({ publicPgpKeys }: { publicPgpKeys: string[] }) => {
       socket.emit('PGPS_READY_RECEIVED')
@@ -134,7 +146,6 @@ const ModalMint: React.FC<ModalProps> = ({
         console.log(err);
       }
     });
-    
     socket.once('disconnect', () => {
       setModalCreate(false);
     });
@@ -144,7 +155,7 @@ const ModalMint: React.FC<ModalProps> = ({
       }
     };
   }
-
+  
   useEffect(() => {
     if (stateSocket && runNFTMintData) {
       stateSocket.once('WALLET_READY', () => {
@@ -153,12 +164,12 @@ const ModalMint: React.FC<ModalProps> = ({
       })
       stateSocket.once('MINTING_NFT', ({ success, nftIds }: { success: boolean, nftIds: string[] }) => {
         stateSocket.emit('MINTING_NFT_RECEIVED')
-        stateSocket.close();
         setMintResponse(success)
         if (success){
           const { seriesId } = runNFTMintData
           setTimeout(() => {
             setModalCreate(false);
+            stateSocket.close();
             if (nftIds?.length > 0 && categories?.length > 0) {
               addCategories(walletId, nftIds, categories.map(x => x.code))
             }
@@ -175,10 +186,12 @@ const ModalMint: React.FC<ModalProps> = ({
               `
             )
           }, 1000)
+        }else{
+          setError("Transaction was canceled.")
         }
       });
     }
-  }, [runNFTMintData])
+  }, [runNFTMintData, stateSocket])
 
   async function uploadNFT(publicPGPs: string[], setProgressData?: Function) {
     if (!originalNFT) throw new Error();
@@ -188,14 +201,10 @@ const ModalMint: React.FC<ModalProps> = ({
     const { hashOrURL: previewHash, mediaType } = await uploadIPFS(previewNFT ?? originalNFT, setProgressData, uploadIndex);
     //Upload thumbnail if video
     if (mediaType.toString().indexOf("video") !== -1){
-      try{
-        uploadIndex += 1
-        const videoThumbnailFile =  await generateVideoThumbnail(previewNFT ?? originalNFT);
-        const result = await uploadIPFS(videoThumbnailFile as File, setProgressData, uploadIndex);
-        videoThumbnailHash = result.hashOrURL
-      }catch(err){
-        console.log(err)
-      }
+      uploadIndex += 1
+      const videoThumbnailFile =  await generateVideoThumbnail(previewNFT ?? originalNFT, thumbnailTimecode);
+      const result = await uploadIPFS(videoThumbnailFile as File, setProgressData, uploadIndex);
+      videoThumbnailHash = result.hashOrURL
     }
     const cryptedMediaType = mime.lookup(originalNFT.name)
     //Encrypt and upload secrets
@@ -306,13 +315,16 @@ const ModalMint: React.FC<ModalProps> = ({
               <>
                 <Circle percent={generalPercentage()} strokeWidth={3} strokeColor="#7417ea" className={style.ProgressBar} />
                 <div className={style.Text}>{`Progress : ${generalPercentage()}%`}</div>
-                <div className={style.Text}>{`Speed : ${speed} kb/sec`}</div>
+                <div className={style.Text}>{`Speed : ${isNaN(speed) ? 0 : speed} kb/sec`}</div>
               </>
             )}
           </>
         )}
         {(mintReponse === false) && <div className={style.Text}>
           Mint was not added to the blockchain.
+        </div>}
+        {(mintReponse === true) && <div className={style.Text}>
+          Mint was added to the blockchain.
         </div>}
       </>
     );

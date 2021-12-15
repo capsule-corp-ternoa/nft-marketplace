@@ -226,7 +226,6 @@ const NFTPage = ({
               type={type}
               alt="imgnft"
               draggable="false"
-              className={style.NFTIMG}
             />
             <div onClick={() => setExp(1)} className={style.Scale}>
               <Scale className={style.ScaleSVG} />

@@ -353,6 +353,7 @@ const Create = ({
           Information cannot be modified after NFT is created !
         </SAdvice>
         <SButton
+          color='primary'
           disabled={!(isDataValid && user)}
           onClick={uploadFiles}
           text="Create NFT"

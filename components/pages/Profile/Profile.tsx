@@ -551,6 +551,7 @@ const Profile = ({
             <Button
               color="whiteBlur"
               icon="edit"
+              href="/edit"
               text="Edit profile"
               size="small"
               variant="outlined"

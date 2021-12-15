@@ -346,7 +346,6 @@ const Create = ({
                 value={seriesId}
                 isError={!canAddToSeriesValue}
               />
-              <div>aze</div>
             </InputShell>
           </SRight>
         </SForm>

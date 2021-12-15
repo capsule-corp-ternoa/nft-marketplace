@@ -157,8 +157,8 @@ const NftCardWithEffects = ({
               <NftUpload
                 content={returnType(coverNFT)}
                 inputId="reUploadOriginalNft"
-                isMinimal
                 isRN={isRN}
+                isMinimal
                 isSecretOption
                 onChange={handleSecretFileUpload}
               />

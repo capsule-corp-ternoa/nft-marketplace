@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import emojiRegex from 'emoji-regex';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
 import {
@@ -30,6 +31,8 @@ import Tooltip from 'components/ui/Tooltip';
 import { NFTProps } from 'pages/create';
 import { canAddToSeries } from 'actions/nft';
 import { processFile } from 'utils/imageProcessing/image';
+import mime from 'mime-types'
+import ThumbnailSelector from 'components/base/ThumbnailSelector';
 
 const DEFAULT_BLUR_VALUE = 5;
 
@@ -52,6 +55,8 @@ export interface CreateProps {
   setOutput: (s: string[]) => void;
   setPreviewNFT: (f: File | null) => void;
   setQRData: (data: QRDataType) => void;
+  thumbnailTimecode: number;
+  setThumbnailTimecode: (x: number) => void;
 }
 
 const Create = ({
@@ -68,6 +73,8 @@ const Create = ({
   setOutput,
   setPreviewNFT,
   setQRData,
+  thumbnailTimecode,
+  setThumbnailTimecode,
 }: CreateProps) => {
   const [blurValue, setBlurValue] = useState<number>(DEFAULT_BLUR_VALUE);
   const [coverNFT, setCoverNFT] = useState<File | null>(null); // Cover NFT used for secret effect
@@ -76,8 +83,11 @@ const Create = ({
   const [nftData, setNFTData] = useState(initalValue);
   const [canAddToSeriesValue, setCanAddToSeriesValue] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-
   const { categories, description, name, quantity, seriesId } = nftData;
+  const showThumbnailSelector = (
+    (coverNFT && mime.lookup(coverNFT.name).toString().indexOf("video")!==-1) || 
+    (effect===NFT_EFFECT_DEFAULT && originalNFT && mime.lookup(originalNFT.name).toString().indexOf("video")!==-1)
+  )
 
   useEffect(() => {
     setIsLoading(true);
@@ -94,17 +104,19 @@ const Create = ({
 
   const checkAddToSerie = async () => {
     try {
+      const regex = emojiRegex()
       if (user) {
+        if (regex.test(seriesId)) throw new Error("Invalid character")
         const canAdd = await canAddToSeries(seriesId, user.walletId);
         setCanAddToSeriesValue(canAdd);
       } else {
         setCanAddToSeriesValue(true);
       }
       setIsLoading(false);
-    } catch (err) {
+    } catch (err: any) {
       setCanAddToSeriesValue(false);
       setIsLoading(false);
-      console.log(err);
+      console.log(err.message ? err.message : err);
     }
   };
 
@@ -237,6 +249,21 @@ const Create = ({
         </SNftPreviewWrapper>
         <SForm>
           <SLeft>
+            {showThumbnailSelector &&
+              <InputShell>
+                <InputLabel>
+                  Thumbnail
+                  <STooltip text="Your preview is a video. You have to chose a thumbnail by using the timeline." />
+                </InputLabel>
+                <ThumbnailSelector
+                  originalNFT = {originalNFT as File}
+                  coverNFT = {coverNFT as File}
+                  showThumbnailSelector = {showThumbnailSelector}
+                  thumbnailTimecode = {thumbnailTimecode}
+                  setThumbnailTimecode = {setThumbnailTimecode}
+                />
+              </InputShell>
+            }
             <InputShell>
               <InputLabel>Name</InputLabel>
               <Input
@@ -323,7 +350,7 @@ const Create = ({
           </SRight>
         </SForm>
         <SAdvice>
-          Once the information is entered, it will be impossible to modify it !
+          Information cannot be modified after NFT is created !
         </SAdvice>
         <SButton
           disabled={!(isDataValid && user)}

@@ -89,30 +89,6 @@
   margin-bottom: 16px;
 }
 
-.Address {
-  font-family: 'Airbnb Cereal App Bold';
-  font-size: 15px;
-  line-height: 18px;
-  margin: 0px;
-  cursor: pointer;
-  color: #b1b1b1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  align-self: center;
-}
-
-.Address:active {
-  color: white;
-}
-
-.CopyPaste {
-  width: 16px;
-  fill: #cbc9c9;
-  margin-left: 8px;
-  transform: translateY(-1px);
-}
-
 .Separator {
   border-bottom: 1px solid #b1b1b1;
   margin-top: 28px;
@@ -186,14 +162,6 @@
     margin-bottom: 14px;
   }
 
-  .Address {
-    font-size: 14px;
-    line-height: 18px;
-  }
-  .CopyPaste {
-    width: 14px;
-  }
-
   .Caps {
     font-family: 'Airbnb Cereal App Bold';
     font-size: 40px;
@@ -239,12 +207,6 @@
     line-height: 24px;
     margin-top: 16px;
     margin-bottom: 8px;
-  }
-
-  .Address {
-    font-family: 'Airbnb Cereal App Medium';
-    font-size: 15px;
-    line-height: 18px;
   }
 
   .Separator {

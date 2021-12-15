@@ -3,13 +3,13 @@ import style from './Wallet.module.scss';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
 import gradient from 'random-gradient';
-import CopyPaste from 'components/assets/copypaste';
 import WalletSVG from 'components/assets/wallet';
 import Badge from 'components/assets/badge';
+import Clipboard from 'components/base/Clipboard';
 
-import { computeCaps, computeTiime, middleEllipsis } from 'utils/strings';
+import { computeCaps, computeTiime } from 'utils/strings';
 import { UserType } from 'interfaces';
-import { clipboardCopy } from 'utils/functions';
+import styled from 'styled-components';
 
 export interface WalletProps {
   setModalExpand: (b: boolean) => void;
@@ -50,15 +50,7 @@ const Wallet = ({
         </div>
 
         <h1 className={style.Name}>{user.name}</h1>
-        <div
-          className={style.Address}
-          onClick={() => {
-            clipboardCopy(user.walletId);
-          }}
-        >
-          {middleEllipsis(user.walletId, 20)}
-          <CopyPaste className={style.CopyPaste} />
-        </div>
+        <SClipboard address={user.walletId} isEllipsis />
 
         <div className={style.Separator} />
         <div className={style.Caps}>
@@ -76,5 +68,12 @@ const Wallet = ({
     </div>
   );
 };
+
+const SClipboard = styled(Clipboard)`
+  color: ${({ theme }) => theme.colors.neutral400};
+  flex-wrap: wrap;
+  font-family: ${({ theme }) => theme.fonts.bold};
+  font-size: 1.6rem;
+`;
 
 export default Wallet;

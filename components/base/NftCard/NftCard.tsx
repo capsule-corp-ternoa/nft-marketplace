@@ -4,7 +4,6 @@ import Router from 'next/router';
 
 import { NftType } from 'interfaces/index';
 
-import style from './NftCard.module.scss';
 import Media from '../Media';
 
 export type ModeType = 'carousel' | 'grid';
@@ -63,9 +62,7 @@ const NftCard: React.FC<NftCardProps> = ({
         type={type}
         alt="imgnft"
         draggable="false"
-        className={`${style.NFTIMG} ${
-          type?.substr(0, 5) === 'image' && isHovering ? style.ImgScaling : ''
-        }`}
+        isHovering={isHovering}
       />
       {children}
     </SMediaWrapper>
@@ -74,6 +71,7 @@ const NftCard: React.FC<NftCardProps> = ({
 
 const SMediaWrapper = styled.div<{ mode?: ModeType }>`
   display: flex;
+  align-items: center;
   position: relative;
   box-sizing: border-box;
   border-radius: 12px;

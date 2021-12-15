@@ -3,15 +3,14 @@ import Link from 'next/link';
 
 import style from './FloatingHeader.module.scss';
 import Creator from 'components/base/Creator';
-import CopyPaste from 'components/assets/copypaste';
+import Clipboard from 'components/base/Clipboard';
 
-import { computeCaps, computeTiime, middleEllipsis } from 'utils/strings';
+import { computeCaps, computeTiime } from 'utils/strings';
 import gradient from 'random-gradient';
 
 import { UserType } from 'interfaces/index';
 
 import { onModelOpen } from '../../../utils/model-helpers';
-import { clipboardCopy } from 'utils/functions';
 export interface FloatingHeaderProps {
   user: UserType;
   setModalExpand: (b: boolean) => void;
@@ -164,15 +163,7 @@ const FloatingHeader: React.FC<FloatingHeaderProps> = ({
                     Wallet
                   </a>
                 </Link>
-                <span 
-                  className={style.SectionWallet}
-                  onClick={() => {
-                    clipboardCopy(user.walletId);
-                  }}
-                >
-                  {middleEllipsis(user.walletId, 20)}
-                  <CopyPaste className={style.CopyPaste} />
-                </span>
+                <Clipboard address={user.walletId} isEllipsis />
               </div>
             </div>
             <Link href="/profile">

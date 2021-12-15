@@ -9,7 +9,6 @@ import FloatingHeader from 'components/base/FloatingHeader';
 import NftCard, { NftChips } from 'components/base/NftCard';
 import NoNFTComponent from 'components/base/NoNFTComponent';
 import TwitterErrorModal from './TwitterErrorModal';
-import FloatingMenu from './FloatingMenu';
 import Switch from 'react-switch';
 import { NftType, UserType } from 'interfaces';
 import {
@@ -18,7 +17,6 @@ import {
   isUserFollowing,
   getFollowersCount,
 } from 'actions/follower';
-import { getUserNFTsStat } from 'actions/nft';
 import { Wrapper } from 'components/layout/Container';
 import Button from 'components/ui/Button';
 import Tabs from 'components/ui/Tabs';
@@ -143,10 +141,6 @@ const Profile = ({
   setFollowed,
 }: ProfileProps) => {
   const router = useRouter();
-  const [scope, setScope] = useState(
-    router.query?.scope === 'edit' ? 'edit' : 'My NFTs'
-  );
-  const [expand, setExpand] = useState(false);
   const [twitterErrorModal, setTwitterErrorModal] = useState(false);
   const [banner, _setBanner] = useState(
     user.banner ??
@@ -155,37 +149,12 @@ const Profile = ({
   const [followBacks, setFollowBacks] = useState(
     Array(followers.length).fill(false)
   );
-  const [countOwned, setCountOwned] = useState(0);
-  const [countOwnedListed, setCountOwnedListed] = useState(0);
-  const [countOwnedUnlisted, setCountOwnedUnlisted] = useState(0);
-  const [countCreated, setCountOwnedCreated] = useState(0);
-  const [countFollowers, setCountFollowers] = useState(0);
   const [countFollowed, setCountFollowed] = useState(0);
   const [followersNbFollowers, setFollowersNbFollowers] = useState({} as any);
 
   const isTablet = useMediaQuery({
     query: `(max-width: ${breakpointMap.lg - 1}px)`,
   });
-
-  const setCounts = async () => {
-    try {
-      if (user) {
-        let userStat = await getUserNFTsStat(user.walletId, true);
-        if (userStat) {
-          userStat.countOwned && setCountOwned(userStat.countOwned);
-          userStat.countOwnedListed &&
-            setCountOwnedListed(userStat.countOwnedListed);
-          userStat.countOwnedUnlisted &&
-            setCountOwnedUnlisted(userStat.countOwnedUnlisted);
-          userStat.countCreated && setCountOwnedCreated(userStat.countCreated);
-          userStat.countFollowers && setCountFollowers(userStat.countFollowers);
-          userStat.countFollowed && setCountFollowed(userStat.countFollowed);
-        }
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   const getFollowBacks = async () => {
     try {
@@ -268,7 +237,6 @@ const Profile = ({
   }, [router.query]);
 
   useEffect(() => {
-    setCounts();
     initFollowerStat();
   }, []);
 
@@ -608,20 +576,6 @@ const Profile = ({
       </Wrapper>
       <FloatingHeader user={user} setModalExpand={setModalExpand} />
       <Footer />
-      {expand && (
-        <FloatingMenu
-          setScope={setScope}
-          scope={scope}
-          setExpand={setExpand}
-          ownedAmount={countOwned}
-          createdAmount={countCreated}
-          listedOwnedAmount={countOwnedListed}
-          unlistedOwnedAmount={countOwnedUnlisted}
-          likedAmount={user.likedNFTs?.length || 0}
-          followersAmount={countFollowers}
-          followedAmount={countFollowed}
-        />
-      )}
       {twitterErrorModal && (
         <TwitterErrorModal setModalExpand={setTwitterErrorModal} />
       )}

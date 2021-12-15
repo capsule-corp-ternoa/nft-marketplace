@@ -1,6 +1,7 @@
 import { Colors } from './types'
 
 export const colors: Colors = {
+  danger: '#ff5555',
   primary: '#7417ea',
   primaryLight: 'rgba(116, 23, 234, 0.1)',
   secondary: '#ec7b62',

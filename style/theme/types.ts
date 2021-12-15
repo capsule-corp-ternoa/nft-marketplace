@@ -2,6 +2,7 @@ export type Breakpoints = string[];
 
 export interface Colors {
   contrast: string;
+  danger: string;
   invertedContrast: string;
   neutral200: string;
   neutral300: string;

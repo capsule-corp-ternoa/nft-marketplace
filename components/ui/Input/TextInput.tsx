@@ -1,30 +1,38 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 
-import { InputLabel, InputShell, Insight } from 'components/layout';
+import { InputLabel, InputShell, Insight, Label } from 'components/layout';
 
 import Tooltip from '../Tooltip';
 
 interface Props {
   className?: string;
+  disabled?: boolean;
+  endIcon?: string;
   insight?: string;
   isError?: boolean;
-  label?: string;
+  label?: string | React.ReactNode;
   name?: string;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
   placeholder?: string;
+  startIcon?: string;
+  tag?: string;
   tooltipText?: string;
   value?: string | number | readonly string[];
 }
 
 const TextInput = ({
   className,
+  disabled,
+  endIcon,
   insight,
   isError,
   label,
   name,
   onChange,
   placeholder,
+  startIcon,
+  tag,
   tooltipText,
   value,
 }: Props) => {
@@ -37,14 +45,24 @@ const TextInput = ({
           {insight && <SInsight>{insight}</SInsight>}
         </InputLabel>
       )}
-      <Input
-        type="text"
-        placeholder={placeholder}
-        onChange={onChange}
-        name={name}
-        value={value}
-        isError={isError}
-      />
+      <Label endIcon={endIcon} startIcon={startIcon}>
+        {tag && <STagInput
+          type="text"
+          disabled
+          placeholder={tag}
+          name="tag"
+          readOnly
+        />}
+        <Input
+          type="text"
+          disabled={disabled}
+          placeholder={placeholder}
+          onChange={onChange}
+          name={name}
+          value={value}
+          isError={isError}
+        />
+      </Label>
     </InputShell>
   );
 };
@@ -76,6 +94,11 @@ export const InputStyle = css<{
 
 export const Input = styled.input<{ isError?: boolean }>`
   ${InputStyle}
+`;
+
+const STagInput = styled(Input)`
+  width: 5.2rem;
+  margin-right: 0.8rem;
 `;
 
 const STooltip = styled(Tooltip)`

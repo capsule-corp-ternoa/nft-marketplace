@@ -14,6 +14,8 @@ export const colors: Colors = {
   neutral300: '#b1b1b1',
   neutral400: '#e0e0e0',
   neutral500: '#f7f7f7',
+
+  success: '#83B46C',
 }
 
 export default {

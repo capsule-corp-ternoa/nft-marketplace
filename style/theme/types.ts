@@ -11,6 +11,7 @@ export interface Colors {
   primary: string;
   primaryLight: string;
   secondary: string;
+  success: string;
   whiteBlur: string;
 }
 

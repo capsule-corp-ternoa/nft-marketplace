@@ -29,7 +29,6 @@ const Banner = ({
   <SBannerContainer className={className}>
     <Avatar
       isAddressDisplayed
-      isClickable
       isVerified={isVerified}
       name={name}
       nickname={nickname}

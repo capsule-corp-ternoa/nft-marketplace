@@ -5,7 +5,11 @@ import gradient from 'random-gradient';
 
 import Icon from 'components/ui/Icon';
 
-import { AVATAR_VARIANT_BANNER, AVATAR_VARIANT_TYPE } from '../Avatar';
+import {
+  AVATAR_VARIANT_BANNER,
+  AVATAR_VARIANT_EDIT,
+  AVATAR_VARIANT_TYPE,
+} from '../Avatar';
 
 interface Props {
   className?: string;
@@ -18,6 +22,28 @@ interface Props {
   picture?: string;
   variant?: AVATAR_VARIANT_TYPE;
 }
+
+const pictureSize = (variant?: AVATAR_VARIANT_TYPE) => {
+  switch (variant) {
+    case AVATAR_VARIANT_BANNER:
+      return '12rem';
+    case AVATAR_VARIANT_EDIT:
+      return '9.6rem';
+    default:
+      return '5.6rem';
+  }
+};
+
+const fontSize = (variant?: AVATAR_VARIANT_TYPE) => {
+  switch (variant) {
+    case AVATAR_VARIANT_BANNER:
+      return '5.6rem';
+    case AVATAR_VARIANT_EDIT:
+      return '3.2rem';
+    default:
+      return '2.4rem';
+  }
+};
 
 const Picture = ({
   className,
@@ -41,7 +67,7 @@ const Picture = ({
         <SImage draggable="false" isClickable={isClickable} src={picture} />
       ) : (
         <SInitials isClickable={isClickable} name={name}>
-          <SLetter>{name?.charAt(0) ?? 'T'}</SLetter>
+          <SLetter variant={variant}>{name?.charAt(0) ?? 'T'}</SLetter>
         </SInitials>
       )}
     </SPictureWrapper>
@@ -72,8 +98,8 @@ const SPictureContainer = styled.div<{
 `;
 
 const SPictureWrapper = styled.div<{ variant?: AVATAR_VARIANT_TYPE }>`
-  width: ${({ variant }) => variant === AVATAR_VARIANT_BANNER ? '12rem' : '5.6rem'};
-  height: ${({ variant }) => variant === AVATAR_VARIANT_BANNER ? '12rem' : '5.6rem'};
+  width: ${({ variant }) => pictureSize(variant)};
+  height: ${({ variant }) => pictureSize(variant)};
   position: relative;
   border-radius: 50%;
   box-shadow: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.25);
@@ -121,10 +147,10 @@ const SInitials = styled.div<{ isClickable?: boolean; name: string }>`
   background: ${({ name }) => gradient(name)};
 `;
 
-const SLetter = styled.div`
+const SLetter = styled.div<{ variant?: AVATAR_VARIANT_TYPE }>`
   color: ${({ theme }) => theme.colors.invertedContrast};
   font-family: ${({ theme }) => theme.fonts.medium};
-  font-size: 2.4rem;
+  font-size: ${({ variant }) => fontSize(variant)};
   text-transform: uppercase;
 `;
 

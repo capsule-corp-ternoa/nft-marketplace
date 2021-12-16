@@ -11,7 +11,10 @@ import { breakpointMap } from 'style/theme/base';
 import Picture from './components/Picture';
 
 export const AVATAR_VARIANT_BANNER = 'banner';
-export type AVATAR_VARIANT_TYPE = typeof AVATAR_VARIANT_BANNER;
+export const AVATAR_VARIANT_EDIT = 'edit';
+export type AVATAR_VARIANT_TYPE =
+  | typeof AVATAR_VARIANT_BANNER
+  | typeof AVATAR_VARIANT_EDIT;
 
 interface Props {
   className?: string;

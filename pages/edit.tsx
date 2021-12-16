@@ -41,7 +41,7 @@ const EditPage = ({ user }: EditPageProps) => {
       {successPopup && <SuccessPopup setSuccessPopup={setSuccessPopup} />}
       <BetaBanner />
       <MainHeader user={user} setModalExpand={setModalExpand} />
-      <Edit />
+      <Edit user={user} setSuccessPopup={setSuccessPopup} />
       <FloatingHeader user={user} setModalExpand={setModalExpand} />
       <Footer />
     </>
@@ -53,6 +53,11 @@ export async function getServerSideProps(ctx: NextPageContext) {
   const token =
     cookies(ctx).token && decryptCookie(cookies(ctx).token as string);
   if (token) user = await getUser(token).catch(() => null);
+  if (!user) {
+    return {
+      notFound: true,
+    };
+  }
   return {
     props: { user },
   };

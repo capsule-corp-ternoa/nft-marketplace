@@ -26,10 +26,11 @@ export const updateFile = (
   let isError = false;
 
   if (file !== null && file !== undefined) {
-    if (!isError && isRN && file!.type.indexOf('video') !== -1) {
+    //HERE
+    /*if (!isError && isRN && file!.type.indexOf('video') !== -1) {
       setError("You can't select video type on mobile DApp yet.");
       isError = true;
-    }
+    }*/
     if (
       !isError &&
       !(
@@ -76,7 +77,8 @@ const NftUpload = ({
 
   useEffect(() => {
     if (isRN) {
-      setAcceptedFileTypes(['.jpg', '.jpeg', '.png', '.gif']);
+      //HERE
+      setAcceptedFileTypes(['.jpg', '.jpeg', '.png', '.gif', '.mp4', '.mov']);
     }
   }, [isRN]);
 

@@ -95,6 +95,7 @@ export const generateVideoThumbnail = (file: File, thumbnailTimecode: number) =>
     video.src = URL.createObjectURL(file);
     const timecode = thumbnailTimecode < 0.1 ? 0.1 : thumbnailTimecode
     video.currentTime = timecode
+    video.preload = "metadata"
     video.onloadeddata = async () => {
       if (video.currentTime === timecode){
         let ctx = canvas.getContext("2d");

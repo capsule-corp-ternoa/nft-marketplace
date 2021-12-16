@@ -3,7 +3,7 @@ import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import Avatar, { Banner } from 'components/base/Avatar';
+import Avatar, { Banner as AvatarBanner } from 'components/base/Avatar';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
 import NftCard, { NftChips } from 'components/base/NftCard';
@@ -17,12 +17,10 @@ import {
   isUserFollowing,
   getFollowersCount,
 } from 'actions/follower';
-import { Wrapper } from 'components/layout/Container';
+import { Container, Wrapper } from 'components/layout/Container';
 import Button from 'components/ui/Button';
 import Tabs from 'components/ui/Tabs';
 import { breakpointMap } from 'style/theme/base';
-
-import style from './Profile.module.scss';
 
 const NFT_OWNED_TAB = 'My NFTs';
 const NFT_ON_SALE_TAB = 'On sale';
@@ -448,7 +446,6 @@ const Profile = ({
             <SSearchInput
               type="search"
               onChange={updateKeywordSearch}
-              className={style.Input}
               placeholder="Search"
             />
           </SSearchLabel>
@@ -528,18 +525,27 @@ const Profile = ({
   };
 
   return (
-    <div className={style.Container}>
-      <div className={style.Banner}>
-        <img
-          className={style.BannerIMG}
+    <Container>
+      <SBannerContainer>
+        <SBannerIMG
           src={banner}
           draggable="false"
           alt="banner"
         />
-      </div>
+        {isTablet && (
+          <SEditButtonMobile
+            color="invertedContrast"
+            icon="edit"
+            href="/edit"
+            noHover
+            size="small"
+            variant="contained"
+          />
+        )}
+      </SBannerContainer>
       <Wrapper>
-        <SBannerContainer>
-          <Banner
+        <SAvatarBannerContainer>
+          <AvatarBanner
             bio={user.bio}
             isVerified={user.verified}
             name={user.name}
@@ -557,7 +563,7 @@ const Profile = ({
               variant="outlined"
             />
           )}
-        </SBannerContainer>
+        </SAvatarBannerContainer>
       </Wrapper>
       <Wrapper>
         <Tabs
@@ -580,11 +586,35 @@ const Profile = ({
       {twitterErrorModal && (
         <TwitterErrorModal setModalExpand={setTwitterErrorModal} />
       )}
-    </div>
+    </Container>
   );
 };
 
 const SBannerContainer = styled.div`
+  display: flex;
+  width: 100%;
+  height: 22rem;
+  position: relative;
+
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    height: 28rem;
+  }
+`;
+
+const SBannerIMG = styled.img`
+  position: absolute;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+`;
+
+const SEditButtonMobile = styled(Button)`
+  position: absolute;
+  top: 2.4rem;
+  right: 2.4rem;
+`;
+
+const SAvatarBannerContainer = styled.div`
   margin-top: -12rem;
 
   ${({ theme }) => theme.mediaQueries.lg} {

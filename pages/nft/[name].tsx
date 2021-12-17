@@ -113,7 +113,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
     }));
   }
   promises.push(new Promise<void>((success) => {
-    getNFT(ctx.query.name as string, true, token ? token : null, ip, false, MARKETPLACE_ID).then(_nft => {
+    getNFT(ctx.query.name as string, true, token ? token : null, ip, false, MARKETPLACE_ID, true).then(_nft => {
       NFT = _nft
       success();
     }).catch(success);

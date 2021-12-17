@@ -26,11 +26,10 @@ const ButtonStyle = css<IButton>`
   align-self: center;
   background: ${({ theme, color }) =>
     color ? theme.colors[`${color}`] : theme.colors.primary};
-  border: ${({ variant }) =>
-    variant === 'outlined' ? '2px solid' : 'none'};
+  border: ${({ variant }) => (variant === 'outlined' ? '2px solid' : 'none')};
   border-radius: 4rem;
   box-shadow: 0 0 0.8rem 0.4rem rgba(0, 0, 0, 0.05);
-  cursor: pointer;
+  cursor: ${({ noHover }) => (noHover ? 'default' : 'pointer')};
   font-family: ${({ theme }) => theme.fonts.bold};
   font-size: 1.6rem;
   padding: ${({ isIconOnly, size }) =>
@@ -39,6 +38,7 @@ const ButtonStyle = css<IButton>`
       : size === 'small'
       ? '0.8rem 2.4rem'
       : '1.2rem 4.8rem'};
+  pointer-events: ${({ noHover }) => (noHover ? 'none' : 'auto')};
   transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
   z-index: 1;
 

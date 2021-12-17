@@ -122,7 +122,7 @@ const NftCardWithHover = ({
         }
         if (likedNfts && setLikedNfts){
           if (!isLiked){
-            let newlyLikedNFT = await getNFT(nftId)
+            let newlyLikedNFT = await getNFT(nftId, undefined, undefined, undefined, true, undefined, true)
             if (newlyLikedNFT) setLikedNfts([...likedNfts, newlyLikedNFT])
           }else{
             setLikedNfts(

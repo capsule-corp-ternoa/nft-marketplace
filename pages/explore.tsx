@@ -42,6 +42,7 @@ const ExplorePage = ({
           (currentPage + 1).toString(),
           undefined,
           true,
+          true,
           true
         );
         setCurrentPage(currentPage + 1);
@@ -89,7 +90,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
   if (token) {
     promises.push(
       new Promise<void>((success) => {
-        getUser(token, undefined, true)
+        getUser(token, true)
           .then((_user) => {
             user = _user;
             success();
@@ -100,7 +101,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
   }
   promises.push(
     new Promise<void>((success) => {
-      getNFTs(undefined, undefined, undefined, true, true)
+      getNFTs(undefined, undefined, undefined, true, true, true)
         .then((result) => {
           data = result.data;
           dataHasNextPage = result.hasNextPage || false;

@@ -108,7 +108,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
   if (token) {
     promises.push(
       new Promise<void>((success) => {
-        getUser(token, undefined, true)
+        getUser(token, true)
           .then((_user) => {
             user = _user;
             success();

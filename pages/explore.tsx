@@ -101,7 +101,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
   }
   promises.push(
     new Promise<void>((success) => {
-      getNFTs(undefined, undefined, undefined, true, true,true)
+      getNFTs(undefined, undefined, undefined, true, true, true)
         .then((result) => {
           data = result.data;
           dataHasNextPage = result.hasNextPage || false;

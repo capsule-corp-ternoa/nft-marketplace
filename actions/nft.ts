@@ -37,7 +37,7 @@ export const getNFTs = async (codes?: string[], page: string="1", limit: string=
   if (codes) filterOptions.categories = codes
   if (listed !== undefined) filterOptions.listed = listed
   const res = await fetch(
-    `${NODE_API_URL}/api/NFTs/?pagination=${JSON.stringify(paginationOptions)}&filter=${JSON.stringify(filterOptions)}&useCache=${useCache}`
+    `${NODE_API_URL}/api/NFTs/?pagination=${JSON.stringify(paginationOptions)}&filter=${JSON.stringify(filterOptions)}&useCache300=${useCache}`
   );
   if (!res.ok) throw new Error('error fetching NFTs by categories');
   let result: CustomResponse<NftType> = await res.json();
@@ -71,7 +71,7 @@ export const getByTheSameArtistNFTs = async (walletId: string, page: string="1",
   const filterOptions: any = {creator: walletId, noSeriesData}
   const sortOptions: string = "created_at:desc"
   const res = await fetch(
-    `${NODE_API_URL}/api/NFTs/?pagination=${JSON.stringify(paginationOptions)}&filter=${JSON.stringify(filterOptions)}&sort=${sortOptions}&useCache=true`
+    `${NODE_API_URL}/api/NFTs/?pagination=${JSON.stringify(paginationOptions)}&filter=${JSON.stringify(filterOptions)}&sort=${sortOptions}&useCache300=true`
   );
   if (!res.ok) throw new Error();
   let result: CustomResponse<NftType> = await res.json();
@@ -98,7 +98,7 @@ export const getUserNFTsStat = async (id: string, onlyFromMpId: boolean): Promis
 export const getHistory = async (nftId: string, seriesId: string, grouped: boolean=false) => {
   const sortOptions: string = "timestamp:desc"
   const filterOptions: any = { seriesId, nftId, grouped }
-  const res = await fetch(`${NODE_API_URL}/api/nfts/history/?sort=${sortOptions}&filter=${JSON.stringify(filterOptions)}&useCache=true`);
+  const res = await fetch(`${NODE_API_URL}/api/nfts/history/?sort=${sortOptions}&filter=${JSON.stringify(filterOptions)}&useCache300=true`);
   if (!res.ok) throw new Error('error fetching NFT history');
   let result = await res.json()
   return result;

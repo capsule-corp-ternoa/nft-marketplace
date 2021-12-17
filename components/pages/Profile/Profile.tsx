@@ -533,7 +533,6 @@ const Profile = ({
             color="invertedContrast"
             icon="edit"
             href="/edit"
-            noHover
             size="medium"
             variant="contained"
           />
@@ -608,6 +607,7 @@ const SEditButtonMobile = styled(Button)`
   position: absolute;
   top: 2.4rem;
   right: 2.4rem;
+  z-index: 10;
 `;
 
 const SAvatarBannerContainer = styled.div`

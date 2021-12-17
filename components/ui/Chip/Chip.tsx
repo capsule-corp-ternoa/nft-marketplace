@@ -70,7 +70,7 @@ const SChipContainer = styled.div<IChip>`
   border-radius: ${({ isDeletable, variant }) =>
     isDeletable || variant === 'rectangle' ? '0.8rem' : '6.4rem'};
   padding: ${({ size }) =>
-    size === 'small' ? '0.4rem 1.2rem' : '0.8rem 1.2rem'};
+    size === 'small' ? '0.4rem 1.2rem' : '0.8rem 1.6rem'};
 `;
 
 const SIcon = styled(Icon)<{ isIconOnly: boolean; size: 'small' | 'medium' }>`

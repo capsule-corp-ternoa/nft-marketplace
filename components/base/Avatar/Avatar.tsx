@@ -125,7 +125,7 @@ const Avatar = ({
               </SLink>
             )}
             {isAddressDisplayed && walletId && (
-              <Clipboard address={walletId} isEllipsis />
+              <Clipboard address={walletId} isEllipsis variant={variant} />
             )}
             {!isTablet && isFollowButton && (
               <SFollowButton

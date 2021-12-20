@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
+// import Link from 'next/link';
 import Avatar, { Banner as AvatarBanner } from 'components/base/Avatar';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
@@ -310,7 +310,8 @@ const Profile = ({
 
     return (
       <>
-        {tabId === NFT_ON_SALE_TAB && isTablet && (
+        {/* TODO: Add this when sell modal is implemented */}
+        {/* {tabId === NFT_ON_SALE_TAB && isTablet && (
           <SSaleLinkWrapper>
             <Link href="/" passHref>
               <>
@@ -323,7 +324,7 @@ const Profile = ({
               </>
             </Link>
           </SSaleLinkWrapper>
-        )}
+        )} */}
         <SNFTsContainer>
           {displayNFTs.map((item: NftType) => (
             <SNftCard key={item.id} mode="profile" item={item}>
@@ -336,7 +337,7 @@ const Profile = ({
               />
             </SNftCard>
           ))}
-          {tabId === NFT_ON_SALE_TAB && !isTablet && (
+          {/* {tabId === NFT_ON_SALE_TAB && !isTablet && (
             <SSaleLinkWrapper>
               <Link href="/" passHref>
                 <>
@@ -349,7 +350,7 @@ const Profile = ({
                 </>
               </Link>
             </SSaleLinkWrapper>
-          )}
+          )} */}
         </SNFTsContainer>
         {isLoadMore && (
           <SLoadButtonWrapper>
@@ -629,62 +630,62 @@ const SNoNFTContainer = styled.div`
   }
 `;
 
-const SSaleLinkWrapper = styled.div`
-  max-width: 26rem;
-  border: 0.2rem dashed;
-  border-color: ${({ theme }) => theme.colors.contrast};
-  border-radius: 1.2rem;
-  margin: 6.4rem auto 0;
+// const SSaleLinkWrapper = styled.div`
+//   max-width: 26rem;
+//   border: 0.2rem dashed;
+//   border-color: ${({ theme }) => theme.colors.contrast};
+//   border-radius: 1.2rem;
+//   margin: 6.4rem auto 0;
 
-  ${({ theme }) => theme.mediaQueries.lg} {
-    border-radius: 2.4rem;
-    max-width: none;
-    margin: 0 0 0 -0.8rem;
-    padding: 0.8rem;
-  }
-`;
+//   ${({ theme }) => theme.mediaQueries.lg} {
+//     border-radius: 2.4rem;
+//     max-width: none;
+//     margin: 0 0 0 -0.8rem;
+//     padding: 0.8rem;
+//   }
+// `;
 
-const SSaleContainer = styled.a`
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-  margin: 1.6rem 0;
+// const SSaleContainer = styled.a`
+//   cursor: pointer;
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-evenly;
+//   margin: 1.6rem 0;
 
-  ${({ theme }) => theme.mediaQueries.lg} {
-    height: ${({ theme }) => theme.sizes.cardHeight.sm};
-    width: ${({ theme }) => theme.sizes.cardWidth.sm};
-    flex-direction: column;
-    justify-content: center;
-    margin: 0;
-  }
-`;
+//   ${({ theme }) => theme.mediaQueries.lg} {
+//     height: ${({ theme }) => theme.sizes.cardHeight.sm};
+//     width: ${({ theme }) => theme.sizes.cardWidth.sm};
+//     flex-direction: column;
+//     justify-content: center;
+//     margin: 0;
+//   }
+// `;
 
-const SSaleIcon = styled.div`
-  width: 5rem;
-  height: 5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: ${({ theme }) => theme.colors.contrast};
-  border-radius: 50%;
-  padding: 1rem;
+// const SSaleIcon = styled.div`
+//   width: 5rem;
+//   height: 5rem;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   background: ${({ theme }) => theme.colors.contrast};
+//   border-radius: 50%;
+//   padding: 1rem;
 
-  > span {
-    color: ${({ theme }) => theme.colors.invertedContrast};
-    font-size: 5.4rem;
-    transform: translate(4%, -5%);
-  }
-`;
+//   > span {
+//     color: ${({ theme }) => theme.colors.invertedContrast};
+//     font-size: 5.4rem;
+//     transform: translate(4%, -5%);
+//   }
+// `;
 
-const SSaleLabel = styled.span`
-  color: ${({ theme }) => theme.colors.contrast};
-  font-size: 1.6rem;
+// const SSaleLabel = styled.span`
+//   color: ${({ theme }) => theme.colors.contrast};
+//   font-size: 1.6rem;
 
-  ${({ theme }) => theme.mediaQueries.lg} {
-    margin-top: 2.4rem;
-  }
-`;
+//   ${({ theme }) => theme.mediaQueries.lg} {
+//     margin-top: 2.4rem;
+//   }
+// `;
 
 const SSearchContainer = styled.div`
   width: 100%;

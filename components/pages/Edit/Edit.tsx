@@ -481,7 +481,7 @@ const SClaimTwitterContainer = styled.div`
   align-self: flex-start;
   color: ${({ theme }) => theme.colors.primary};
   font-size: 1.2rem;
-  margin: 1.2rem 0 0 1.6rem;
+  margin: 1.2rem 0 0;
 `;
 
 const STwitterNotVerified = styled.div`

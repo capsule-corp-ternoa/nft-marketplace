@@ -69,7 +69,7 @@ const SInfosContainer = styled.div`
   margin-top: 1.6rem;
 
   ${({ theme }) => theme.mediaQueries.lg} {
-    align-iems: flex-start;
+    align-items: flex-start;
     border-left: ${({theme}) => `1px solid ${theme.colors.neutral400}`};
     height: 100%;
     margin: 0 0 0 8rem;

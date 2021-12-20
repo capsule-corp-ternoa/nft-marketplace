@@ -21,7 +21,7 @@ const Error = ({ description, title, variant }: ErrorProps) => (
       <STitle>{title}</STitle>
       {description && <SDescription>{description}</SDescription>}
       <SLinkWrapper>
-        <Link href="/">
+        <Link href="/" passHref>
           <>
             <Button
               color={variant === 'error500' ? 'secondary' : 'primary'}

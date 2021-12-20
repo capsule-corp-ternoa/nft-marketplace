@@ -1,20 +1,45 @@
 import React from 'react';
+import Link from 'next/link';
 import styled from 'styled-components';
 import { Container, Wrapper } from 'components/layout';
 import Icon from 'components/ui/Icon';
+import Button from 'components/ui/Button';
+import { Colors } from 'style/theme/types';
 
-const Code = () => {
+export const NO_NFT_VARIANT_SOLD_OUT = 'sold_out';
+export type NO_NFT_VARIANT_TYPE = typeof NO_NFT_VARIANT_SOLD_OUT;
+
+interface Props {
+  body?: string | React.ReactNode;
+  className?: string;
+  href?: string;
+  linkLabel?: string;
+  title: string;
+  variant?: NO_NFT_VARIANT_TYPE;
+}
+
+const NoNFTComponent = ({ body, className, href, linkLabel, title, variant }: Props) => {
   return (
-    <Container>
+    <Container className={className}>
       <Wrapper>
         <SIcon name="noNFTImage" />
-        <STitle>All NFTs are sold !</STitle>
-        <SBody>
-          Come later to discover new NFTs.
-          <br />
-          <br />
-          Thanks !
-        </SBody>
+        <STitle color={variant === NO_NFT_VARIANT_SOLD_OUT ? 'primary' : 'contrast'}>{title}</STitle>
+        {body && <SBody>{body}</SBody>}
+        {href && (
+          <SLinkWrapper>
+            <Link href={href} passHref>
+              <>
+                <Button
+                  color="invertedContrast"
+                  href={href}
+                  text={linkLabel}
+                  size="medium"
+                  variant="outlined"
+                />
+              </>
+            </Link>
+          </SLinkWrapper>
+        )}
       </Wrapper>
     </Container>
   );
@@ -26,8 +51,8 @@ const SIcon = styled(Icon)`
   margin: 0 auto;
 `;
 
-const STitle = styled.span`
-  color: ${({ theme }) => theme.colors.primary};
+const STitle = styled.span<{ color: keyof Colors }>`
+  color: ${({ color, theme }) => theme.colors[color]};
   font-family: ${({ theme }) => theme.fonts.bold};
   font-size: 1.6rem;
   margin-top: 2.4rem;
@@ -41,4 +66,13 @@ const SBody = styled.span`
   text-align: center;
 `;
 
-export default Code;
+const SLinkWrapper = styled.div`
+  width: fit-content;
+  margin: 3.2rem auto 0;
+
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    margin-top: 6.4rem;
+  }
+`;
+
+export default NoNFTComponent;

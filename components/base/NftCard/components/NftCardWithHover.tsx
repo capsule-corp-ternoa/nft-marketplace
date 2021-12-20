@@ -15,15 +15,17 @@ import { breakpointMap } from 'style/theme/base';
 import NftCard, { ModeType } from '../NftCard';
 import style from '../NftCard.module.scss';
 
+import NftChips from './NftChips';
+
 interface Props {
   className?: string;
   isDragging?: boolean;
   item: NftType;
   likedNfts?: NftType[];
   mode?: ModeType;
+  noCreator?: boolean;
   setLikedNfts?: (nfts: NftType[]) => void;
   setUser?: (u: UserType) => void;
-  scope?: string;
   user?: UserType;
 }
 
@@ -40,9 +42,9 @@ const NftCardWithHover = ({
   item,
   likedNfts,
   mode,
+  noCreator = false,
   setLikedNfts,
   setUser,
-  scope,
   user,
 }: Props) => {
   const [isHovering, setIsHovering] = useState(false);
@@ -56,48 +58,6 @@ const NftCardWithHover = ({
   const isMobile = useMediaQuery({
     query: `(max-width: ${breakpointMap.md - 1}px)`,
   });
-  const isLargeDesktop = useMediaQuery({
-    query: `(min-width: ${breakpointMap.xxl}px)`,
-  });
-
-  const displayQuantity = () => {
-    const defaultValue = `${
-      typeof item.totalListedInMarketplace !== 'undefined'
-        ? item.totalListedInMarketplace
-        : typeof item.totalListedNft !== 'undefined'
-        ? item.totalListedNft
-        : 1
-    }`;
-    if (!scope) return defaultValue;
-    switch (scope) {
-      case 'My NFTs':
-        return `${
-          item.totalOwnedByRequestingUser ? item.totalOwnedByRequestingUser : 1
-        }`;
-      case 'My creations':
-        return `${typeof item.totalNft !== 'undefined' ? item.totalNft : 1}`;
-      case 'My NFTs on sale':
-        return `${
-          item.serieData
-            ? item.serieData.filter(
-                (x) => x.owner === user?.walletId && x.listed === 1
-              ).length
-            : 1
-        }`;
-      case 'My NFTs not for sale':
-        return `${
-          item.serieData
-            ? item.serieData.filter(
-                (x) => x.owner === user?.walletId && x.listed === 0
-              ).length
-            : 1
-        }`;
-      case 'Liked':
-        return 0;
-      default:
-        return defaultValue;
-    }
-  };
 
   const handleLikeDislike = async (nftId: string, serieId: string) => {
     try{
@@ -147,56 +107,12 @@ const NftCardWithHover = ({
       onMouseOut={() => !isMobile && setIsHovering(false)}
       onMouseOver={() => !isMobile && setIsHovering(true)}
     >
-      {Number(displayQuantity()) > 1 && (
-        <SAvailableChipWrapper>
-          <Chip
-            color="whiteBlur"
-            size="small"
-            text={`${
-              !isLargeDesktop ? '' : 'Available : '
-            }${displayQuantity()} of ${item.totalNft}`}
-            variant="round"
-          />
-        </SAvailableChipWrapper>
-      )}
-      {item.properties?.cryptedMedia.ipfs !== item.properties?.preview.ipfs &&
-        !isHovering && (
-          <SSecretChipWrapper>
-            <Chip
-              color="whiteBlur"
-              icon="secretCards"
-              size="small"
-              text={isMobile && mode !== 'grid' ? undefined : 'Secret'}
-              variant="round"
-            />
-          </SSecretChipWrapper>
-        )}
-      {((item.smallestPrice && Number(item.smallestPrice)) ||
-        (item.smallestPriceTiime && Number(item.smallestPriceTiime))) &&
-        !isHovering && (
-          <SPriceChipWrapper>
-            <Chip
-              color="whiteBlur"
-              size="small"
-              text={
-                <>
-                  {item.smallestPrice &&
-                    Number(item.smallestPrice) > 0 &&
-                    `${computeCaps(Number(item.smallestPrice))} CAPS`}
-                  {item.smallestPrice &&
-                    Number(item.smallestPrice) &&
-                    item.smallestPriceTiime &&
-                    Number(item.smallestPriceTiime) &&
-                    ` / `}
-                  {item.smallestPriceTiime &&
-                    Number(item.smallestPriceTiime) > 0 &&
-                    `${computeTiime(Number(item.smallestPriceTiime))} TIIME`}
-                </>
-              }
-              variant="round"
-            />
-          </SPriceChipWrapper>
-        )}
+      <NftChips
+        NFT={item}
+        mode={mode}
+        noPriceChip={isHovering}
+        noSecretChip={isHovering}
+      />
       <div
         className={
           isHovering
@@ -226,7 +142,7 @@ const NftCardWithHover = ({
           <div></div>
         )}
         <div className={style.Infos}>
-          <div
+          {!noCreator && <div
             onClick={(e) => manageRouting(e, item.creator)}
             className={style.Auth}
           >
@@ -245,7 +161,7 @@ const NftCardWithHover = ({
             >
               {item.creatorData?.name || `Ternoa #${item.creator.slice(0, 5)}`}
             </div>
-          </div>
+          </div>}
           {((item.smallestPrice && Number(item.smallestPrice)) ||
             (item.smallestPriceTiime && Number(item.smallestPriceTiime))) && (
             <SPriceWrapper className={isHovering ? style.FadeLong : ''}>
@@ -276,30 +192,6 @@ const NftCardWithHover = ({
     </NftCard>
   );
 };
-
-const SChipWrapper = styled.div`
-  background: transparent;
-  position: absolute;
-  z-index: 4;
-`;
-
-const SAvailableChipWrapper = styled(SChipWrapper)`
-  top: 1.6rem;
-  left: 1.6rem;
-`;
-
-const SSecretChipWrapper = styled(SChipWrapper)`
-  top: 1.6rem;
-  right: 1.6rem;
-`;
-
-const SPriceChipWrapper = styled(SChipWrapper)`
-  width: fit-content;
-  bottom: 1.6rem;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-`;
 
 const SPriceWrapper = styled.div`
   margin-top: 0.8rem;

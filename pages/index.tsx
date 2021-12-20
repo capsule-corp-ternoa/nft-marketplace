@@ -82,7 +82,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
   let users: UserType[] = [],
     user: UserType | null = null,
     regularNfts: NftType[] = [],
-    capsValue: number | undefined = undefined;
+    capsValue: number | null = null;
   const promises = [];
   promises.push(
     new Promise<void>((success) => {

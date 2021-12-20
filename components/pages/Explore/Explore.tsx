@@ -1,7 +1,7 @@
 import React from 'react';
 import style from './Explore.module.scss';
 import { NftCardWithHover } from 'components/base/NftCard';
-import NoNFTComponent from 'components/base/NoNFTComponent';
+import NoNFTComponent, { NO_NFT_VARIANT_SOLD_OUT } from 'components/base/NoNFTComponent';
 import { NftType, UserType } from 'interfaces/index';
 export interface ExploreProps {
   NFTS: NftType[];
@@ -72,7 +72,18 @@ const Explore: React.FC<ExploreProps> = ({
           </div>
         </div>
         {NFTS.length === 0 ? (
-          <NoNFTComponent />
+          <NoNFTComponent
+            body={
+              <>
+                Come later to discover new NFTs.
+                <br />
+                <br />
+                Thanks !
+              </>
+            }
+            title="All NFTs are sold !"
+            variant={NO_NFT_VARIANT_SOLD_OUT}
+          />
         ) : (
           <div className={style.NFTWrapper}>{returnNFTs()}</div>
         )}

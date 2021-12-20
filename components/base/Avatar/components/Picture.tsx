@@ -3,17 +3,47 @@ import Router from 'next/router';
 import styled, { css } from 'styled-components';
 import gradient from 'random-gradient';
 
-import Icon from '../../../ui/Icon';
+import Icon from 'components/ui/Icon';
+
+import {
+  AVATAR_VARIANT_BANNER,
+  AVATAR_VARIANT_EDIT,
+  AVATAR_VARIANT_TYPE,
+} from '../Avatar';
 
 interface Props {
   className?: string;
+  isBanner?: boolean;
   isClickable?: boolean;
   isTooltip?: boolean;
   isVerified?: boolean;
   link?: string;
   name: string;
   picture?: string;
+  variant?: AVATAR_VARIANT_TYPE;
 }
+
+const pictureSize = (variant?: AVATAR_VARIANT_TYPE) => {
+  switch (variant) {
+    case AVATAR_VARIANT_BANNER:
+      return '12rem';
+    case AVATAR_VARIANT_EDIT:
+      return '9.6rem';
+    default:
+      return '5.6rem';
+  }
+};
+
+const fontSize = (variant?: AVATAR_VARIANT_TYPE) => {
+  switch (variant) {
+    case AVATAR_VARIANT_BANNER:
+      return '5.6rem';
+    case AVATAR_VARIANT_EDIT:
+      return '3.2rem';
+    default:
+      return '2.4rem';
+  }
+};
 
 const Picture = ({
   className,
@@ -23,6 +53,7 @@ const Picture = ({
   link,
   name,
   picture,
+  variant,
 }: Props) => (
   <SPictureContainer
     className={className}
@@ -30,13 +61,13 @@ const Picture = ({
     isTooltip={isTooltip}
     onClick={() => isClickable && link && Router.push(link)}
   >
-    <SPictureWrapper>
+    <SPictureWrapper variant={variant}>
       {isVerified && <SIcon name="badge" />}
       {picture ? (
         <SImage draggable="false" isClickable={isClickable} src={picture} />
       ) : (
         <SInitials isClickable={isClickable} name={name}>
-          <SLetter>{name?.charAt(0) ?? 'T'}</SLetter>
+          <SLetter variant={variant}>{name?.charAt(0) ?? 'T'}</SLetter>
         </SInitials>
       )}
     </SPictureWrapper>
@@ -66,12 +97,12 @@ const SPictureContainer = styled.div<{
   `}
 `;
 
-const SPictureWrapper = styled.div`
-  width: 5.6rem;
-  height: 5.6rem;
+const SPictureWrapper = styled.div<{ variant?: AVATAR_VARIANT_TYPE }>`
+  width: ${({ variant }) => pictureSize(variant)};
+  height: ${({ variant }) => pictureSize(variant)};
   position: relative;
   border-radius: 50%;
-  box-shadow: 0 0.4rem 0.4rem rgba(0, 0, 0, 0.25);
+  box-shadow: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.25);
   z-index: 5;
 `;
 
@@ -116,10 +147,10 @@ const SInitials = styled.div<{ isClickable?: boolean; name: string }>`
   background: ${({ name }) => gradient(name)};
 `;
 
-const SLetter = styled.div`
+const SLetter = styled.div<{ variant?: AVATAR_VARIANT_TYPE }>`
   color: ${({ theme }) => theme.colors.invertedContrast};
   font-family: ${({ theme }) => theme.fonts.medium};
-  font-size: 2.4rem;
+  font-size: ${({ variant }) => fontSize(variant)};
   text-transform: uppercase;
 `;
 

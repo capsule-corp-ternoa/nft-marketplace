@@ -624,10 +624,6 @@ const SAvatarBannerContainer = styled.div`
 
 const SNoNFTContainer = styled.div`
   margin-top: 8rem;
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    margin-top: 15.4rem;
-  }
 `;
 
 // const SSaleLinkWrapper = styled.div`

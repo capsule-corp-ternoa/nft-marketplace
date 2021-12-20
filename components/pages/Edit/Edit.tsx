@@ -218,6 +218,7 @@ of at least 120x120. Gifs work too."
         <Form>
           <FormSideLeft>
             <STextInput
+              isError={data.name === ''}
               label="Display name"
               onChange={(e) => handleChange(e.target.value, 'name')}
               placeholder="Your name"
@@ -252,6 +253,12 @@ of at least 120x120. Gifs work too."
           </FormSideLeft>
           <FormSideRight>
             <STextInput
+              isError={
+                data.twitterName !== undefined &&
+                data.twitterName !== '' &&
+                data.twitterName !== null &&
+                !validateTwitter(data.twitterName)
+              }
               label={
                 <STwitterInputLabel>
                   <STwitterLabel>Twitter username</STwitterLabel>
@@ -286,6 +293,12 @@ of at least 120x120. Gifs work too."
               )}
             </SClaimTwitterContainer>
             <STextInput
+              isError={
+                data.personalUrl !== undefined &&
+                data.personalUrl !== '' &&
+                data.personalUrl !== null &&
+                !validateUrl(data.personalUrl)
+              }
               label="Personal site or portfolio"
               placeholder="https://"
               onChange={(e) => handleChange(e.target.value, 'personalUrl')}

@@ -32,6 +32,7 @@ export type IconNameType =
   | 'noNFTImage'
   | 'powerOff'
   | 'scale'
+  | 'search'
   | 'secretCards'
   | 'share'
   | 'socialDiscord'
@@ -66,7 +67,7 @@ const Icon = ({ className, name }: Props) => {
       );
       return <AnimatedLoader className={className} />;
     }
-    case 'arrowRight': {
+    case 'arrowBottom': {
       const ArrowBottom = dynamic(
         () => import('components/assets/arrowBottom')
       );
@@ -190,6 +191,10 @@ const Icon = ({ className, name }: Props) => {
       const Scale = dynamic(() => import('components/assets/scale'));
       return <Scale className={className} />;
     }
+    case 'search': {
+      const Search = dynamic(() => import('components/assets/Search'));
+      return <Search className={className} />;
+    }
     case 'secretCards': {
       const SecretCards = dynamic(
         () => import('components/assets/SecretCards')
@@ -281,4 +286,4 @@ const Icon = ({ className, name }: Props) => {
   }
 };
 
-export default Icon;
+export default React.memo(Icon);

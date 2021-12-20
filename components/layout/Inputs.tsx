@@ -21,6 +21,64 @@ export const HiddenInput = styled.input`
   cursor: pointer;
 `;
 
+export const Form = styled.form`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 4rem;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    align-items: normal;
+    flex-direction: row;
+    margin-top: 9.6rem;
+  }
+`;
+
+const FormSideLayout = styled.div`
+  width: 100%;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  > * {
+    margin-top: 4rem;
+
+    ${({ theme }) => theme.mediaQueries.md} {
+      margin-top: 6.4rem;
+    }
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+`;
+
+export const FormSideLeft = styled(FormSideLayout)`
+  ${({ theme }) => theme.mediaQueries.md} {
+    border-right: 1px solid #e0e0e0;
+    padding-right: 4.8rem;
+  }
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    padding-right: 13.6rem;
+  }
+`;
+
+export const FormSideRight = styled(FormSideLayout)`
+  margin-top: 4rem;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    padding-left: 4.8rem;
+    margin-top: 0;
+  }
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    padding-left: 13.6rem;
+  }
+`;
+
 export const InputShell = styled.div`
   display: flex;
   flex-direction: column;
@@ -61,8 +119,24 @@ const InputStyle = css<{
   }
 `;
 
-export const Label = styled.label<{ endIcon?: string }>`
+export const Label = styled.label<{ endIcon?: string, startIcon?: string }>`
   position: relative;
+  display: flex;
+
+  ${({ startIcon }) =>
+    startIcon &&
+    `
+      &:before {
+        content: '';
+        position: absolute;
+        left: 1.6rem;
+        top: 1.6rem;
+        bottom: 0;
+        width: 3.2rem;
+        background: url("${startIcon}")
+          center / contain no-repeat;
+      }
+    `};
 
   ${({ endIcon }) =>
     endIcon &&

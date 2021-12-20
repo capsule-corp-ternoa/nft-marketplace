@@ -5,7 +5,7 @@ import Hero, { HERO_MODE_SELL } from './Hero';
 import ArtCreators from './ArtCreators';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
-import NoNFTComponent from 'components/base/NoNFTComponent';
+import NoNFTComponent, { NO_NFT_VARIANT_SOLD_OUT } from 'components/base/NoNFTComponent';
 import { Container, Wrapper } from 'components/layout';
 import { UserType, NftType } from 'interfaces/index';
 import dynamic from 'next/dynamic';
@@ -44,7 +44,20 @@ const Landing = ({
         {heroNFTs?.length === 3 && (
           <Hero capsValue={capsValue} NFTs={heroNFTs} mode={HERO_MODE_SELL} />
         )}
-        {totalCountNFT === 0 && <NoNFTComponent />}
+        {totalCountNFT === 0 && (
+          <NoNFTComponent
+            body={
+              <>
+                Come later to discover new NFTs.
+                <br />
+                <br />
+                Thanks !
+              </>
+            }
+            title="All NFTs are sold !"
+            variant={NO_NFT_VARIANT_SOLD_OUT}
+          />
+        )}
       </Wrapper>
       {popularNfts?.length > 0 && (
         <Wrapper>

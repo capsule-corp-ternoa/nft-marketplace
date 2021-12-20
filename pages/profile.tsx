@@ -21,11 +21,7 @@ export interface ProfilePageProps {
   loading: boolean;
 }
 
-const ProfilePage = ({
-  user,
-  owned,
-  ownedHasNextPage,
-}: ProfilePageProps) => {
+const ProfilePage = ({ user, owned, ownedHasNextPage }: ProfilePageProps) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [successPopup, setSuccessPopup] = useState(false);
   const [walletUser, setWalletUser] = useState(user);
@@ -34,67 +30,102 @@ const ProfilePage = ({
   const [searchValue, setSearchValue] = useState('');
   //Owned NFTs
   const [ownedNfts, setOwnedNfts] = useState(owned);
-  const [ownedNftsHasNextPage, setOwnedNftsHasNextPage] = useState(ownedHasNextPage);
+  const [ownedNftsTotal, setOwnedNftsTotal] = useState<number>(0);
+  const [ownedNftsHasNextPage, setOwnedNftsHasNextPage] =
+    useState(ownedHasNextPage);
   const [ownedCurrentPage, setOwnedCurrentPage] = useState(1);
   //Created NFTs
   const [createdNfts, setCreatedNfts] = useState([] as NftType[]);
+  const [createdNftsTotal, setCreatedNftsTotal] = useState<number>(0);
   const [createdNftsHasNextPage, setCreatedNftsHasNextPage] = useState(false);
   const [createdCurrentPage, setCreatedCurrentPage] = useState(1);
   //Owned listed NFTs
   const [ownedNftsListed, setOwnedNftsListed] = useState([] as NftType[]);
-  const [ownedNftsListedHasNextPage, setOwnedNftsListedHasNextPage] = useState(false);
-  const [ownedNftsListedCurrentPage, setOwnedNftsListedCurrentPage] = useState(1);
+  const [ownedNftsListedTotal, setOwnedNftsListedTotal] = useState<number>(0);
+  const [ownedNftsListedHasNextPage, setOwnedNftsListedHasNextPage] =
+    useState(false);
+  const [ownedNftsListedCurrentPage, setOwnedNftsListedCurrentPage] =
+    useState(1);
   //Owned not listed NFTs
   const [ownedNftsUnlisted, setOwnedNftsUnlisted] = useState([] as NftType[]);
-  const [ownedNftsUnlistedHasNextPage, setOwnedNftsUnlistedHasNextPage] = useState(false);
-  const [ownedNftsUnlistedCurrentPage, setOwnedNftsUnlistedCurrentPage] = useState(1);
+  const [ownedNftsUnlistedTotal, setOwnedNftsUnlistedTotal] =
+    useState<number>(0);
+  const [ownedNftsUnlistedHasNextPage, setOwnedNftsUnlistedHasNextPage] =
+    useState(false);
+  const [ownedNftsUnlistedCurrentPage, setOwnedNftsUnlistedCurrentPage] =
+    useState(1);
   //Liked NFTs
   const [likedNfts, setLikedNfts] = useState([] as NftType[]);
+  const [likedNftsTotal, setLikedNftsTotal] = useState<number>(0);
   const [likedNftsHasNextPage, setLikedNftsHasNextPage] = useState(false);
   const [likedCurrentPage, setLikedCurrentPage] = useState(1);
   //profile followers
   const [followersUsers, setFollowersUsers] = useState([] as UserType[]);
-  const [followersUsersHasNextPage, setFollowersUsersHasNextPage] = useState(false);
+  const [followersUsersTotal, setFollowersUsersTotal] = useState<number>(0);
+  const [followersUsersHasNextPage, setFollowersUsersHasNextPage] =
+    useState(false);
   const [followersCurrentPage, setFollowersCurrentPage] = useState(1);
   //profile followed
   const [followedUsers, setFollowedUsers] = useState([] as UserType[]);
-  const [followedUsersHasNextPage, setFollowedUsersHasNextPage] = useState(false);
+  const [followedUsersTotal, setFollowedUsersTotal] = useState<number>(0);
+  const [followedUsersHasNextPage, setFollowedUsersHasNextPage] =
+    useState(false);
   const [followedCurrentPage, setFollowedCurrentPage] = useState(1);
 
   useEffect(() => {
-    try{
-      populateProfileData(user.walletId)
-    }catch(err){
-      console.log(err)
+    try {
+      populateProfileData(user.walletId);
+    } catch (err) {
+      console.log(err);
     }
-  }, [])
+  }, []);
 
   const populateProfileData = async (token: string) => {
     //created nfts
-    const createdNfts = await getCreatorNFTS(token, undefined, undefined, true)
-    setCreatedNfts(createdNfts.data)
-    setCreatedNftsHasNextPage(createdNfts.hasNextPage)
+    const createdNfts = await getCreatorNFTS(token, undefined, undefined, true);
+    setCreatedNfts(createdNfts.data);
+    setCreatedNftsTotal(createdNfts.totalCount ?? 0);
+    setCreatedNftsHasNextPage(createdNfts.hasNextPage);
     //Liked NFTs
-    const liked = await getLikedNFTs(token, undefined, undefined, true)
-    setLikedNfts(liked.data)
-    setLikedNftsHasNextPage(liked.hasNextPage)
+    const liked = await getLikedNFTs(token, undefined, undefined, true);
+    setLikedNfts(liked.data);
+    setLikedNftsTotal(liked.totalCount ?? 0);
+    setLikedNftsHasNextPage(liked.hasNextPage);
     //Owned listed NFTs
-    const ownedListed = await getOwnedNFTS(token, true, true, undefined, undefined, true)
-    setOwnedNftsListed(ownedListed.data)
-    setOwnedNftsListedHasNextPage(ownedListed.hasNextPage)
+    const ownedListed = await getOwnedNFTS(
+      token,
+      true,
+      true,
+      undefined,
+      undefined,
+      true
+    );
+    setOwnedNftsListed(ownedListed.data);
+    setOwnedNftsListedTotal(ownedListed.totalCount ?? 0);
+    setOwnedNftsListedHasNextPage(ownedListed.hasNextPage);
     //Owned not listed NFTs
-    const ownedUnlisted = await getOwnedNFTS(token, false, false, undefined, undefined, true)
-    setOwnedNftsUnlisted(ownedUnlisted.data)
-    setOwnedNftsUnlistedHasNextPage(ownedUnlisted.hasNextPage)
+    const ownedUnlisted = await getOwnedNFTS(
+      token,
+      false,
+      false,
+      undefined,
+      undefined,
+      true
+    );
+    setOwnedNftsUnlisted(ownedUnlisted.data);
+    setOwnedNftsUnlistedTotal(ownedUnlisted.totalCount ?? 0);
+    setOwnedNftsUnlistedHasNextPage(ownedUnlisted.hasNextPage);
     //profile followers
-    const followers = await getFollowers(token)
-    setFollowersUsers(followers.data)
-    setFollowersUsersHasNextPage(followers.hasNextPage)
+    const followers = await getFollowers(token);
+    setFollowersUsers(followers.data);
+    setFollowersUsersTotal(followers.totalCount ?? 0);
+    setFollowersUsersHasNextPage(followers.hasNextPage);
     //profile followed
-    const followed = await getFollowed(token)
-    setFollowedUsers(followed.data)
-    setFollowedUsersHasNextPage(followed.hasNextPage)
-  } 
+    const followed = await getFollowed(token);
+    setFollowedUsers(followed.data);
+    setFollowedUsersTotal(followed.totalCount ?? 0);
+    setFollowedUsersHasNextPage(followed.hasNextPage);
+  };
 
   const loadMoreCreatedNfts = async () => {
     setIsLoading(true);
@@ -128,6 +159,7 @@ const ProfilePage = ({
           true
         );
         setOwnedCurrentPage(ownedCurrentPage + 1);
+        setOwnedNftsTotal(result.totalCount ?? 0);
         setOwnedNftsHasNextPage(result.hasNextPage || false);
         setOwnedNfts([...ownedNfts, ...result.data]);
         setIsLoading(false);
@@ -197,11 +229,11 @@ const ProfilePage = ({
       console.log(err);
     }
   };
-  const loadMoreFollowers = async (forceLoad: boolean=false) => {
+  const loadMoreFollowers = async (forceLoad: boolean = false) => {
     setIsLoading(true);
     try {
       if (followersUsersHasNextPage || forceLoad) {
-        let pageToLoad = !forceLoad ? followersCurrentPage : 0 
+        let pageToLoad = !forceLoad ? followersCurrentPage : 0;
         let result = await getFollowers(
           walletUser.walletId,
           (pageToLoad + 1).toString(),
@@ -211,9 +243,9 @@ const ProfilePage = ({
         );
         setFollowersCurrentPage(pageToLoad + 1);
         setFollowersUsersHasNextPage(result.hasNextPage || false);
-        if (!forceLoad){
+        if (!forceLoad) {
           setFollowersUsers([...followersUsers, ...result.data]);
-        }else{
+        } else {
           setFollowersUsers([...result.data]);
         }
         setIsLoading(false);
@@ -222,11 +254,11 @@ const ProfilePage = ({
       console.log(err);
     }
   };
-  const loadMoreFollowed = async (forceLoad: boolean=false) => {
+  const loadMoreFollowed = async (forceLoad: boolean = false) => {
     setIsLoading(true);
     try {
       if (followedUsersHasNextPage || forceLoad) {
-        let pageToLoad = !forceLoad ? followedCurrentPage : 0 
+        let pageToLoad = !forceLoad ? followedCurrentPage : 0;
         let result = await getFollowed(
           walletUser.walletId,
           (pageToLoad + 1).toString(),
@@ -236,9 +268,9 @@ const ProfilePage = ({
         );
         setFollowedCurrentPage(pageToLoad + 1);
         setFollowedUsersHasNextPage(result.hasNextPage || false);
-        if (!forceLoad){
+        if (!forceLoad) {
           setFollowedUsers([...followedUsers, ...result.data]);
-        }else{
+        } else {
           setFollowedUsers([...result.data]);
         }
         setIsLoading(false);
@@ -251,7 +283,12 @@ const ProfilePage = ({
   return (
     <>
       <Head>
-        <title>{process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : "SecretNFT"} - My account</title>
+        <title>
+          {process.env.NEXT_PUBLIC_APP_NAME
+            ? process.env.NEXT_PUBLIC_APP_NAME
+            : 'SecretNFT'}{' '}
+          - My account
+        </title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta name="description" content="Ternoa - Your profile." />
         <meta name="og:image" content="ternoa-social-banner.jpg" />
@@ -263,30 +300,37 @@ const ProfilePage = ({
       <Profile
         user={walletUser}
         setUser={setWalletUser}
-        createdNFTS={createdNfts}
+        createdNfts={createdNfts}
+        createdNftsTotal={createdNftsTotal}
         createdNftsHasNextPage={createdNftsHasNextPage}
         loadMoreCreatedNfts={loadMoreCreatedNfts}
         isFiltered={isFiltered}
         setIsFiltered={setIsFiltered}
         searchValue={searchValue}
         setSearchValue={setSearchValue}
-        ownedNFTS={ownedNfts}
+        ownedNfts={ownedNfts}
+        ownedNftsTotal={ownedNftsTotal}
         ownedNftsHasNextPage={ownedNftsHasNextPage}
         loadMoreOwnedNfts={loadMoreOwnedNfts}
         ownedNftsListed={ownedNftsListed}
+        ownedNftsListedTotal={ownedNftsListedTotal}
         ownedNftsListedHasNextPage={ownedNftsListedHasNextPage}
         loadMoreOwnedListedNfts={loadMoreOwnedListedNfts}
         ownedNftsUnlisted={ownedNftsUnlisted}
+        ownedNftsUnlistedTotal={ownedNftsUnlistedTotal}
         ownedNftsUnlistedHasNextPage={ownedNftsUnlistedHasNextPage}
         loadMoreOwnedUnlistedNfts={loadMoreOwnedUnlistedNfts}
         likedNfts={likedNfts}
+        likedNftsTotal={likedNftsTotal}
         likedNftsHasNextPage={likedNftsHasNextPage}
         loadMoreLikedNfts={loadMoreLikedNfts}
         setLikedNfts={setLikedNfts}
         followers={followersUsers}
+        followersTotal={followersUsersTotal}
         followersUsersHasNextPage={followersUsersHasNextPage}
         loadMoreFollowers={loadMoreFollowers}
         followed={followedUsers}
+        followedTotal={followedUsersTotal}
         setFollowed={setFollowedUsers}
         followedUsersHasNextPage={followedUsersHasNextPage}
         loadMoreFollowed={loadMoreFollowed}
@@ -299,8 +343,11 @@ const ProfilePage = ({
 };
 
 export async function getServerSideProps(ctx: NextPageContext) {
-  const token = cookies(ctx).token && decryptCookie(cookies(ctx).token as string);
-  let user = null, owned: NftType[] = [], ownedHasNextPage: boolean = false
+  const token =
+    cookies(ctx).token && decryptCookie(cookies(ctx).token as string);
+  let user = null,
+    owned: NftType[] = [],
+    ownedHasNextPage: boolean = false;
   const promises = [];
   if (token) {
     promises.push(

@@ -51,6 +51,7 @@ const ImageBlock = ({
         <Chip color="primaryLight" size={isSmallDesktop ? "small" : "medium"} text={chipLabel} />
         <HiddenShell>
           <HiddenInput
+            accept='.jpg, .jpeg, .png, .gif'
             type="file"
             id={id}
             onChange={(event) => {

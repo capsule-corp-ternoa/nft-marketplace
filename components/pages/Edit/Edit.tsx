@@ -197,6 +197,7 @@ const Edit = ({ user, setSuccessPopup }: Props) => {
               chipLabel="Upload avatar"
               description="We recommend an image
 of at least 120x120. Gifs work too."
+              id="uploadPicture"
               name={name}
               onChange={(file: File) =>
                 handleChange(URL.createObjectURL(file), 'picture')
@@ -209,6 +210,7 @@ of at least 120x120. Gifs work too."
               chipLabel="Upload banner"
               description="We recommend an image
           of at least 1800x280"
+              id="uploadBanner"
               onChange={(file: File) =>
                 handleChange(URL.createObjectURL(file), 'banner')
               }
@@ -310,6 +312,7 @@ of at least 120x120. Gifs work too."
                   chipLabel="Upload avatar"
                   description="We recommend an image
 of at least 120x120. Gifs work too."
+                  id="uploadPicture"
                   name={name}
                   onChange={(file: File) =>
                     handleChange(URL.createObjectURL(file), 'picture')
@@ -322,6 +325,7 @@ of at least 120x120. Gifs work too."
                   chipLabel="Upload banner"
                   description="We recommend an image
           of at least 1800x280"
+                  id="uploadBanner"
                   onChange={(file: File) =>
                     handleChange(URL.createObjectURL(file), 'banner')
                   }

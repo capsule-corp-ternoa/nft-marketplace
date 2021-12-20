@@ -11,6 +11,7 @@ import { getUsers } from 'actions/user';
 import Creator from 'components/base/Creator';
 import { EXPLORER_URL, MARKETPLACE_ID } from 'utils/constant';
 import Clipboard from 'components/base/Clipboard';
+import { Loader } from 'components/ui/Icon';
 import { getRandomNFTFromArray } from 'utils/functions';
 import { getHistory } from 'actions/nft';
 
@@ -33,7 +34,6 @@ const Details: React.FC<DetailsProps> = ({
   isVR,
   canUserBuyAgain,
 }) => {
-  const loader = '/loader_theme.svg'
   const tabs = ["infos", "owners", "history", "bid"]
   const [currentTab, setCurrentTab] = useState(tabs[0]);
   const [usersData, setUsersData] = useState({} as any);
@@ -434,7 +434,7 @@ const Details: React.FC<DetailsProps> = ({
               </div>
             :
               <div className={styleDetails.loaderContainer}>
-                <img src={loader} className={styleDetails.loader}/>
+                <Loader color="primary" />
               </div>
             )
           }

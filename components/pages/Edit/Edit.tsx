@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
 
@@ -15,6 +16,7 @@ import {
   Wrapper,
 } from 'components/layout';
 import ModalEdit from 'components/pages/Profile/ModalEdit/ModalEdit';
+import TwitterErrorModal from 'components/pages/Profile/TwitterErrorModal/TwitterErrorModal';
 import Button from 'components/ui/Button';
 import Icon from 'components/ui/Icon';
 import { TextArea, TextInput } from 'components/ui/Input';
@@ -32,6 +34,7 @@ interface Props {
 }
 
 const Edit = ({ user, setSuccessPopup }: Props) => {
+  const router = useRouter();
   const {
     banner,
     bio,
@@ -62,6 +65,7 @@ const Edit = ({ user, setSuccessPopup }: Props) => {
     verified,
   });
   const [modalEditOpen, setModalEditOpen] = useState(false);
+  const [twitterErrorModal, setTwitterErrorModal] = useState(false);
 
   const isDataValid =
     data &&
@@ -140,6 +144,13 @@ const Edit = ({ user, setSuccessPopup }: Props) => {
       console.log(err);
     }
   };
+
+  useEffect(() => {
+    if (router.query?.twitterValidated === 'false') {
+      setTwitterErrorModal(true);
+      router.query = {};
+    }
+  }, [router.query]);
 
   return (
     <Container>
@@ -347,6 +358,9 @@ of at least 120x120. Gifs work too."
         {modalEditOpen && (
           <ModalEdit setModalExpand={setModalEditOpen} data={data} />
         )}
+        {twitterErrorModal && (
+          <TwitterErrorModal setModalExpand={setTwitterErrorModal} />
+        )}
       </SWrapper>
     </Container>
   );
@@ -453,6 +467,7 @@ const STwitterInputLabel = styled.div`
   ${({ theme }) => theme.mediaQueries.sm} {
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
   }
 `;
 
@@ -505,7 +520,7 @@ const STwitterVerified = styled.div`
 const STwitterVerificationLink = styled.a`
   color: ${({ theme }) => theme.colors.primary};
   font-size: 1.2rem;
-  margin: 0.4rem 0 0 1.6rem;
+  margin: 0.4rem 0 0;
   text-align: left;
 
   ${({ theme }) => theme.mediaQueries.sm} {

@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
-import { useRouter } from 'next/router';
 // import Link from 'next/link';
 import Avatar, { Banner as AvatarBanner } from 'components/base/Avatar';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
 import NftCard, { NftChips } from 'components/base/NftCard';
 import NoNFTComponent from 'components/base/NoNFTComponent';
-import TwitterErrorModal from './TwitterErrorModal';
 import Switch from 'react-switch';
 import { NftType, UserType } from 'interfaces';
 import {
@@ -138,8 +136,6 @@ const Profile = ({
   loadMoreFollowed,
   setFollowed,
 }: ProfileProps) => {
-  const router = useRouter();
-  const [twitterErrorModal, setTwitterErrorModal] = useState(false);
   const [followBacks, setFollowBacks] = useState(
     Array(followers.length).fill(false)
   );
@@ -222,13 +218,6 @@ const Profile = ({
       console.error(err);
     }
   };
-
-  useEffect(() => {
-    if (router.query?.twitterValidated === 'false') {
-      setTwitterErrorModal(true);
-      router.query = {};
-    }
-  }, [router.query]);
 
   useEffect(() => {
     initFollowerStat();
@@ -579,9 +568,6 @@ const Profile = ({
       </Wrapper>
       <FloatingHeader user={user} setModalExpand={setModalExpand} />
       <Footer />
-      {twitterErrorModal && (
-        <TwitterErrorModal setModalExpand={setTwitterErrorModal} />
-      )}
     </Container>
   );
 };

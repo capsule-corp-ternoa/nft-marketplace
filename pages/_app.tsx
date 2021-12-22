@@ -12,7 +12,7 @@ import NProgress from 'nprogress';
 import 'style/nprogress.scss';
 import { AppProps } from 'next/dist/shared/lib/router/router';
 import { actions } from 'redux/rn/actions';
-import { useAppDispatch, useAppSelector } from 'redux/hooks';
+import { useAppDispatch } from 'redux/hooks';
 
 Router.events.on('routeChangeStart', () => NProgress.start());
 Router.events.on('routeChangeComplete', () => NProgress.done());
@@ -30,15 +30,12 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
   const [cookiesConsent, setCookiesConsent] = useState<string | null>(null);
   const [hide, setHide] = useState(false);
   const dispatch = useAppDispatch()
-  const isRN = useAppSelector((state) => state.rn.isRN)
-
 
   useEffect(() => {
     setCookiesConsent(localStorage.getItem('cookiesConsent'));
   }, []);
 
   useEffect(() => {
-    console.log(window.isRNApp)
     dispatch(actions.setIsRN(window.isRNApp))
   }, []);
 
@@ -68,7 +65,6 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
       </Head>
 
       <GlobalStyle />
-      <div>{isRN === true ? "true "+isRN : isRN===undefined ? "undefined" : "false " + isRN}</div>
       <Component {...pageProps} />
 
       {!cookiesConsent && !hide && (

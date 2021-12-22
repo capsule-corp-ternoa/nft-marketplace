@@ -17,13 +17,13 @@ import {
   NFT_FILE_TYPE_VIDEO,
 } from 'interfaces';
 import { breakpointMap } from 'style/theme/base';
+import { useAppSelector } from 'redux/hooks';
 
 interface Props {
   blurValue: number;
   className?: string;
   coverNFT: File | null;
   effect: NftEffectType;
-  isRN?: boolean;
   originalNFT: File | null;
   setBlurValue: (n: number) => void;
   setCoverNFT: (f: File | null) => void;
@@ -45,7 +45,6 @@ const NftPreview = ({
   className,
   coverNFT,
   effect,
-  isRN,
   originalNFT,
   setBlurValue,
   setCoverNFT,
@@ -53,6 +52,7 @@ const NftPreview = ({
   setError,
   setOriginalNFT,
 }: Props) => {
+  const isRN = useAppSelector((state) => state.rn.isRN)
   const isMobile = useMediaQuery({
     query: `(max-width: ${breakpointMap.md - 1}px)`,
   });
@@ -88,7 +88,6 @@ const NftPreview = ({
         className={className}
         content="Click here to upload your file."
         inputId="uploadNft"
-        isRN={isRN}
         note={`JPEG, JPG, PNG, GIF ${!isRN ? ', MP4 or MOV' : ''}. Max 30mb.`}
         onChange={handleFileUpload}
       />
@@ -120,7 +119,6 @@ const NftPreview = ({
               blurValue={blurValue}
               coverNFT={coverNFT}
               effect={effect}
-              isRN={isRN}
               originalNFT={originalNFT}
               setBlurValue={setBlurValue}
               setCoverNFT={setCoverNFT}
@@ -167,7 +165,6 @@ const NftPreview = ({
                     blurValue={blurValue}
                     coverNFT={coverNFT}
                     effect={effectType}
-                    isRN={isRN}
                     originalNFT={originalNFT}
                     setBlurValue={setBlurValue}
                     setCoverNFT={setCoverNFT}

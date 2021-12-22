@@ -25,7 +25,11 @@ const Tabs = ({ className, isTabsSelect, tabs }: Props) => {
     return (
       <div className={className}>
         <SSelectContainer suppressHydrationWarning>
-          <Select badge={tabs[activeTab].badge} color="primary" text={activeTab}>
+          <Select
+            badge={tabs[activeTab].badge}
+            color="primary"
+            text={activeTab}
+          >
             {(setSelectExpanded) => (
               <>
                 {Object.entries(tabs)
@@ -66,9 +70,12 @@ const Tabs = ({ className, isTabsSelect, tabs }: Props) => {
           />
         ))}
       </STabsListContainer>
-      {Object.entries(tabs).map(([id, { content }]) => (
-        <div key={id}>{activeTab === id && content}</div>
-      ))}
+      {Object.entries(tabs).map(
+        ([id, { content }]) =>
+          activeTab === id && (
+            <SContentContainer key={id}>{content}</SContentContainer>
+          )
+      )}
     </div>
   );
 };
@@ -91,6 +98,12 @@ const STabsListContainer = styled.div`
 const SSelectContainer = styled.div`
   max-width: 26rem;
   margin: 0 auto;
+`;
+
+const SContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 56rem;
 `;
 
 export default Tabs;

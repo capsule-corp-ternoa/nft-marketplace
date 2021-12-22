@@ -2,7 +2,6 @@ import React from 'react';
 import dynamic from 'next/dynamic';
 
 export type IconNameType =
-  | 'animatedLoader'
   | 'arrowBottom'
   | 'arrowLeft'
   | 'arrowRight'
@@ -61,12 +60,6 @@ interface Props {
 
 const Icon = ({ className, name }: Props) => {
   switch (name) {
-    case 'animatedLoader': {
-      const AnimatedLoader = dynamic(
-        () => import('components/assets/AnimatedLoader')
-      );
-      return <AnimatedLoader className={className} />;
-    }
     case 'arrowBottom': {
       const ArrowBottom = dynamic(
         () => import('components/assets/arrowBottom')

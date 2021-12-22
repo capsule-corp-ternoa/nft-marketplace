@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
 
@@ -15,6 +16,7 @@ import {
   Wrapper,
 } from 'components/layout';
 import ModalEdit from 'components/pages/Profile/ModalEdit/ModalEdit';
+import TwitterErrorModal from 'components/pages/Profile/TwitterErrorModal/TwitterErrorModal';
 import Button from 'components/ui/Button';
 import Icon from 'components/ui/Icon';
 import { TextArea, TextInput } from 'components/ui/Input';
@@ -32,6 +34,7 @@ interface Props {
 }
 
 const Edit = ({ user, setSuccessPopup }: Props) => {
+  const router = useRouter();
   const {
     banner,
     bio,
@@ -62,6 +65,7 @@ const Edit = ({ user, setSuccessPopup }: Props) => {
     verified,
   });
   const [modalEditOpen, setModalEditOpen] = useState(false);
+  const [twitterErrorModal, setTwitterErrorModal] = useState(false);
 
   const isDataValid =
     data &&
@@ -83,9 +87,9 @@ const Edit = ({ user, setSuccessPopup }: Props) => {
   });
 
   const isVerificationAvailable =
-    data.twitterName &&
-    data.twitterName.length > 2 &&
-    !data.twitterVerified &&
+    twitterName &&
+    twitterName.length > 2 &&
+    !twitterVerified &&
     MARKETPLACE_ID === '0';
   const verificationLabel = data.verified
     ? 'Certified'
@@ -140,6 +144,13 @@ const Edit = ({ user, setSuccessPopup }: Props) => {
       console.log(err);
     }
   };
+
+  useEffect(() => {
+    if (router.query?.twitterValidated === 'false') {
+      setTwitterErrorModal(true);
+      router.query = {};
+    }
+  }, [router.query]);
 
   return (
     <Container>
@@ -197,6 +208,7 @@ const Edit = ({ user, setSuccessPopup }: Props) => {
               chipLabel="Upload avatar"
               description="We recommend an image
 of at least 120x120. Gifs work too."
+              id="uploadPicture"
               name={name}
               onChange={(file: File) =>
                 handleChange(URL.createObjectURL(file), 'picture')
@@ -209,6 +221,7 @@ of at least 120x120. Gifs work too."
               chipLabel="Upload banner"
               description="We recommend an image
           of at least 1800x280"
+              id="uploadBanner"
               onChange={(file: File) =>
                 handleChange(URL.createObjectURL(file), 'banner')
               }
@@ -218,6 +231,7 @@ of at least 120x120. Gifs work too."
         <Form>
           <FormSideLeft>
             <STextInput
+              isError={data.name === ''}
               label="Display name"
               onChange={(e) => handleChange(e.target.value, 'name')}
               placeholder="Your name"
@@ -252,6 +266,12 @@ of at least 120x120. Gifs work too."
           </FormSideLeft>
           <FormSideRight>
             <STextInput
+              isError={
+                data.twitterName !== undefined &&
+                data.twitterName !== '' &&
+                data.twitterName !== null &&
+                !validateTwitter(data.twitterName)
+              }
               label={
                 <STwitterInputLabel>
                   <STwitterLabel>Twitter username</STwitterLabel>
@@ -264,10 +284,10 @@ of at least 120x120. Gifs work too."
                     isVerificationAvailable && (
                       <STwitterVerificationLink
                         href={`${NODE_API_URL}/api/users/verifyTwitter/${data.walletId}`}
-                        target="_blank"
+                        target="_self"
                         rel="noreferrer noopener"
                       >
-                        Verify your Twitter account ({data.twitterName})
+                        Verify your Twitter account ({twitterName})
                       </STwitterVerificationLink>
                     )
                   )}
@@ -286,6 +306,12 @@ of at least 120x120. Gifs work too."
               )}
             </SClaimTwitterContainer>
             <STextInput
+              isError={
+                data.personalUrl !== undefined &&
+                data.personalUrl !== '' &&
+                data.personalUrl !== null &&
+                !validateUrl(data.personalUrl)
+              }
               label="Personal site or portfolio"
               placeholder="https://"
               onChange={(e) => handleChange(e.target.value, 'personalUrl')}
@@ -297,6 +323,7 @@ of at least 120x120. Gifs work too."
                   chipLabel="Upload avatar"
                   description="We recommend an image
 of at least 120x120. Gifs work too."
+                  id="uploadPicture"
                   name={name}
                   onChange={(file: File) =>
                     handleChange(URL.createObjectURL(file), 'picture')
@@ -309,6 +336,7 @@ of at least 120x120. Gifs work too."
                   chipLabel="Upload banner"
                   description="We recommend an image
           of at least 1800x280"
+                  id="uploadBanner"
                   onChange={(file: File) =>
                     handleChange(URL.createObjectURL(file), 'banner')
                   }
@@ -329,6 +357,9 @@ of at least 120x120. Gifs work too."
         />
         {modalEditOpen && (
           <ModalEdit setModalExpand={setModalEditOpen} data={data} />
+        )}
+        {twitterErrorModal && (
+          <TwitterErrorModal setModalExpand={setTwitterErrorModal} />
         )}
       </SWrapper>
     </Container>
@@ -436,6 +467,7 @@ const STwitterInputLabel = styled.div`
   ${({ theme }) => theme.mediaQueries.sm} {
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
   }
 `;
 
@@ -464,7 +496,7 @@ const SClaimTwitterContainer = styled.div`
   align-self: flex-start;
   color: ${({ theme }) => theme.colors.primary};
   font-size: 1.2rem;
-  margin: 1.2rem 0 0 1.6rem;
+  margin: 1.2rem 0 0;
 `;
 
 const STwitterNotVerified = styled.div`
@@ -488,7 +520,7 @@ const STwitterVerified = styled.div`
 const STwitterVerificationLink = styled.a`
   color: ${({ theme }) => theme.colors.primary};
   font-size: 1.2rem;
-  margin: 0.4rem 0 0 1.6rem;
+  margin: 0.4rem 0 0;
   text-align: left;
 
   ${({ theme }) => theme.mediaQueries.sm} {

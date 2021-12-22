@@ -87,9 +87,9 @@ const Edit = ({ user, setSuccessPopup }: Props) => {
   });
 
   const isVerificationAvailable =
-    data.twitterName &&
-    data.twitterName.length > 2 &&
-    !data.twitterVerified &&
+    twitterName &&
+    twitterName.length > 2 &&
+    !twitterVerified &&
     MARKETPLACE_ID === '0';
   const verificationLabel = data.verified
     ? 'Certified'
@@ -284,10 +284,10 @@ of at least 120x120. Gifs work too."
                     isVerificationAvailable && (
                       <STwitterVerificationLink
                         href={`${NODE_API_URL}/api/users/verifyTwitter/${data.walletId}`}
-                        target="_blank"
+                        target="_self"
                         rel="noreferrer noopener"
                       >
-                        Verify your Twitter account ({data.twitterName})
+                        Verify your Twitter account ({twitterName})
                       </STwitterVerificationLink>
                     )
                   )}

@@ -353,7 +353,6 @@ const ProfilePage = ({ user, owned, ownedHasNextPage }: ProfilePageProps) => {
         followedUsersHasNextPage={followedUsersHasNextPage}
         loadMoreFollowed={loadMoreFollowed}
         setModalExpand={setModalExpand}
-        setSuccessPopup={setSuccessPopup}
         loading={isLoading}
         canEditProfile
         tabs={ORDERED_TABS_ID}

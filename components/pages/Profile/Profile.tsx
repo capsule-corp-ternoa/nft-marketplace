@@ -33,7 +33,6 @@ import NftsProfileBlock from './components/NftsProfileBlock';
 
 export interface ProfileProps {
   setModalExpand: (b: boolean) => void;
-  setSuccessPopup: (b: boolean) => void;
   user: UserType;
   setUser: (u: UserType) => void;
   loading: boolean;
@@ -42,10 +41,10 @@ export interface ProfileProps {
   searchValue: string;
   setSearchValue: (s: string) => void;
   //Owned
-  ownedNfts: NftType[];
-  ownedNftsTotal: number;
-  loadMoreOwnedNfts: () => void;
-  ownedNftsHasNextPage: boolean;
+  ownedNfts?: NftType[];
+  ownedNftsTotal?: number;
+  loadMoreOwnedNfts?: () => void;
+  ownedNftsHasNextPage?: boolean;
   //Owned listed
   ownedNftsListed: NftType[];
   ownedNftsListedTotal: number;
@@ -57,16 +56,16 @@ export interface ProfileProps {
   ownedNftsUnlistedHasNextPage: boolean;
   loadMoreOwnedUnlistedNfts: () => void;
   //created
-  createdNfts: NftType[];
-  createdNftsTotal: number;
-  loadMoreCreatedNfts: () => void;
-  createdNftsHasNextPage: boolean;
+  createdNfts?: NftType[];
+  createdNftsTotal?: number;
+  loadMoreCreatedNfts?: () => void;
+  createdNftsHasNextPage?: boolean;
   //liked
-  likedNfts: NftType[];
-  likedNftsTotal: number;
-  setLikedNfts: (nfts: NftType[]) => void;
-  likedNftsHasNextPage: boolean;
-  loadMoreLikedNfts: () => void;
+  likedNfts?: NftType[];
+  likedNftsTotal?: number;
+  setLikedNfts?: (nfts: NftType[]) => void;
+  likedNftsHasNextPage?: boolean;
+  loadMoreLikedNfts?: () => void;
   //followers
   followers: UserType[];
   followersTotal: number;
@@ -212,7 +211,7 @@ const Profile = ({
           <NftsProfileBlock
             NFTs={createdNfts}
             isLoading={loading}
-            isLoadMore={createdNftsHasNextPage}
+            isLoadMore={!!createdNftsHasNextPage}
             loadMore={loadMoreCreatedNfts}
             noNftHref="/create"
             noNftLinkLabel="Create your NFT"
@@ -226,7 +225,7 @@ const Profile = ({
           <NftsProfileBlock
             NFTs={likedNfts}
             isLoading={loading}
-            isLoadMore={likedNftsHasNextPage}
+            isLoadMore={!!likedNftsHasNextPage}
             loadMore={loadMoreLikedNfts}
             noNftBody="The NFTs you liked are displayed here"
             noNftTitle="Nothing to display"
@@ -267,7 +266,7 @@ const Profile = ({
           <NftsProfileBlock
             NFTs={ownedNfts}
             isLoading={loading}
-            isLoadMore={ownedNftsHasNextPage}
+            isLoadMore={!!ownedNftsHasNextPage}
             loadMore={loadMoreOwnedNfts}
             noNftBody="The NFTs you owned are displayed here"
             noNftHref="/explore"

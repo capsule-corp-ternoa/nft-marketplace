@@ -91,7 +91,7 @@ const STabsListContainer = styled.div`
 
   ${({ theme }) => theme.mediaQueries.xxl} {
     width: 100%;
-    justify-content: space-evenly;
+    justify-content: flex-start;
   }
 `;
 

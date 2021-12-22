@@ -16,10 +16,10 @@ import {
 } from 'interfaces';
 
 interface Props {
-  NFTs: NftType[];
+  NFTs?: NftType[];
   isLoading: boolean;
   isLoadMore: boolean;
-  loadMore: () => void;
+  loadMore?: () => void;
   noNftBody?: string;
   noNftHref?: string;
   noNftLinkLabel?: string;
@@ -66,7 +66,7 @@ const NftsProfileBlock = ({
     }
   };
 
-  if (NFTs.length < 1) {
+  if (NFTs == undefined || NFTs.length < 1) {
     return (
       <SNoNFTContainer>
         <NoNFTComponent
@@ -123,7 +123,7 @@ const NftsProfileBlock = ({
           </SSaleLinkWrapper>
         )} */}
       </SNFTsContainer>
-      {isLoadMore && (
+      {isLoadMore && loadMore && (
         <SLoadButtonWrapper>
           <Button
             color="invertedContrast"

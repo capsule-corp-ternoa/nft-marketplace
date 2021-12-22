@@ -1,27 +1,47 @@
 import { useEffect, useState } from 'react';
 import { ThemeProvider } from 'styled-components';
 import Head from 'next/head';
+import { Provider } from 'react-redux'
 import Close from 'components/assets/close';
 import GlobalStyle from 'style/Global';
 import theme from 'style/theme';
 import 'style/base.scss';
-
+import { store } from 'redux/store'
 import Router from 'next/router';
 import NProgress from 'nprogress';
 import 'style/nprogress.scss';
 import { AppProps } from 'next/dist/shared/lib/router/router';
+import { actions } from 'redux/rn/actions';
+import { useAppDispatch, useAppSelector } from 'redux/hooks';
 
 Router.events.on('routeChangeStart', () => NProgress.start());
 Router.events.on('routeChangeComplete', () => NProgress.done());
 Router.events.on('routeChangeError', () => NProgress.done());
 
+const AppWrapper: React.FC<AppProps> = (props) => {
+  return (
+    <Provider store={store}>
+      <App {...props}/>
+    </Provider>
+  )
+}
+
 const App: React.FC<AppProps> = ({ Component, pageProps }) => {
   const [cookiesConsent, setCookiesConsent] = useState<string | null>(null);
   const [hide, setHide] = useState(false);
+  const dispatch = useAppDispatch()
+  const isRN = useAppSelector((state) => state.rn.isRN)
+
 
   useEffect(() => {
     setCookiesConsent(localStorage.getItem('cookiesConsent'));
   }, []);
+
+  useEffect(() => {
+    console.log(window.isRNApp)
+    dispatch(actions.setIsRN(window.isRNApp))
+  }, []);
+
   return (
     <ThemeProvider theme={theme}>
       <Head>
@@ -48,6 +68,7 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
       </Head>
 
       <GlobalStyle />
+      <div>{isRN === true ? "true "+isRN : isRN===undefined ? "undefined" : "false " + isRN}</div>
       <Component {...pageProps} />
 
       {!cookiesConsent && !hide && (
@@ -72,4 +93,4 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
   );
 };
 
-export default App;
+export default AppWrapper;

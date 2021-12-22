@@ -9,6 +9,7 @@ import { connect as connectIo } from 'utils/socket/socket.helper';
 import Link from 'next/link';
 import CheckMark from 'components/assets/checkmark';
 import { SOCKET_URL } from 'utils/constant';
+import { useAppSelector } from 'redux/hooks';
 
 export interface ModalEditProps {
   setModalExpand: (b: boolean) => void;
@@ -20,11 +21,10 @@ const ModalEdit: React.FC<ModalEditProps> = ({ setModalExpand, data }) => {
   const [error, setError] = useState('');
   const [showQR, setShowQR] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [isRN, setIsRN] = useState(false);
+  const isRN = useAppSelector((state) => state.rn.isRN)
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    setIsRN(window.isRNApp);
     console.log('socket connect on session',session);
     const socket = connectIo(`/socket/updateProfile`, { session, socketUrl: SOCKET_URL });
     socket.on('connect_error', (e) => {

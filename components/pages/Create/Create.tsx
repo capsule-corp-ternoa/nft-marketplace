@@ -81,7 +81,6 @@ const Create = ({
   const [blurValue, setBlurValue] = useState<number>(DEFAULT_BLUR_VALUE);
   const [coverNFT, setCoverNFT] = useState<File | null>(null); // Cover NFT used for secret effect
   const [effect, setEffect] = useState<NftEffectType>(NFT_EFFECT_DEFAULT);
-  const [isRN, setRN] = useState(false);
   const [nftData, setNFTData] = useState(initalValue);
   const [canAddToSeriesValue, setCanAddToSeriesValue] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -226,10 +225,6 @@ const Create = ({
     setCoverNFT(null);
   }, [originalNFT]);
 
-  useEffect(() => {
-    setRN(window.isRNApp);
-  }, []);
-
   return (
     <Container>
       <Wrapper>
@@ -239,7 +234,6 @@ const Create = ({
             blurValue={blurValue}
             coverNFT={coverNFT}
             effect={effect}
-            isRN={isRN}
             originalNFT={originalNFT}
             setBlurValue={setBlurValue}
             setCoverNFT={setCoverNFT}

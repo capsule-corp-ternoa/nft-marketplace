@@ -8,6 +8,7 @@ import { connect as connectIo } from 'utils/socket/socket.helper';
 import { SOCKET_URL } from 'utils/constant';
 import { navigateToSuccess } from 'utils/functions';
 import { useRouter } from 'next/router';
+import { useAppSelector } from 'redux/hooks';
 
 export interface ModalBuyProps {
   setModalExpand: (b: boolean) => void;
@@ -20,11 +21,10 @@ const ModalBuy: React.FC<ModalBuyProps> = ({ setModalExpand, id, seriesId }) => 
   const router = useRouter()
   const [error, setError] = useState('');
   const [showQR, setShowQR] = useState(false);
-  const [isRN, setIsRN] = useState(false);
+  const isRN = useAppSelector((state) => state.rn.isRN)
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    setIsRN(window.isRNApp);
     console.log('socket connect on session',session);
     const socket = connectIo(`/socket/buyNft`, { session, socketUrl: SOCKET_URL });
     socket.on('connect_error', (e) => {

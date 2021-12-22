@@ -7,22 +7,23 @@ export interface TwitterErrorModalProps {
   setModalExpand: (b: boolean) => void;
 }
 
-const TwitterErrorModal: React.FC<TwitterErrorModalProps> = ({setModalExpand}) => {
-  const router = useRouter()
+const TwitterErrorModal = ({ setModalExpand }: TwitterErrorModalProps) => {
+  const router = useRouter();
   const handleClose = () => {
-    setModalExpand(false)
-    router.push('/profile?scope=edit')
-  }
+    setModalExpand(false);
+    router.push('/edit');
+  };
+
   return (
     <div className={style.Background}>
       <div className={style.Container}>
-        <Close onClick={() => handleClose()} className={style.Close} />
+        <Close onClick={() => setModalExpand(false)} className={style.Close} />
         <div className={style.Title}>Twitter validation</div>
         <div className={style.Text}>
           Twitter validation failed, please check your information and try again
         </div>
-        <div onClick={()=>handleClose()}>
-          <a className={style.Button}>Back to profile</a>
+        <div onClick={() => handleClose()}>
+          <a className={style.Button}>Back to profile edit</a>
         </div>
       </div>
     </div>

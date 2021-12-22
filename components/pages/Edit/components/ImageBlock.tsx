@@ -12,6 +12,7 @@ interface Props {
   chipLabel: string;
   className?: string;
   description?: string;
+  id: string;
   name?: string;
   onChange: (f: File) => void;
   picture?: string;
@@ -22,6 +23,7 @@ const ImageBlock = ({
   chipLabel,
   className,
   description,
+  id,
   name,
   onChange,
   picture,
@@ -32,7 +34,7 @@ const ImageBlock = ({
 
   return (
     <SBlockContainer className={className}>
-      <label htmlFor="uploadImage">
+      <label htmlFor={id}>
         {name && (
           <SPicture
             name={name}
@@ -45,12 +47,13 @@ const ImageBlock = ({
         )}
       </label>
       {description && <SDescription>{description}</SDescription>}
-      <SUploadLabel htmlFor="uploadImage">
+      <SUploadLabel htmlFor={id}>
         <Chip color="primaryLight" size={isSmallDesktop ? "small" : "medium"} text={chipLabel} />
         <HiddenShell>
           <HiddenInput
+            accept='.jpg, .jpeg, .png, .gif'
             type="file"
-            id="uploadImage"
+            id={id}
             onChange={(event) => {
               const { target } = event;
               const file = target?.files?.[0];

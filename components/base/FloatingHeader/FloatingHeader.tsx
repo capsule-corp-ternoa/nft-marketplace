@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
+import styled from 'styled-components';
 
-import style from './FloatingHeader.module.scss';
-import Creator from 'components/base/Creator';
-import Clipboard from 'components/base/Clipboard';
+import ProfileMenuDropdown from 'components/base/ProfileMenu';
 
 import { computeCaps, computeTiime } from 'utils/strings';
 import gradient from 'random-gradient';
@@ -11,6 +10,7 @@ import gradient from 'random-gradient';
 import { UserType } from 'interfaces/index';
 
 import { onModelOpen } from '../../../utils/model-helpers';
+import style from './FloatingHeader.module.scss';
 export interface FloatingHeaderProps {
   user: UserType;
   setModalExpand: (b: boolean) => void;
@@ -148,39 +148,29 @@ const FloatingHeader: React.FC<FloatingHeaderProps> = ({
           </div>
         )}
       </div>
-      {user && fullProfile && (
-        <div className={style.Dropdown}>
-          <div className={style.DropdownContainer}>
-            <div className={style.DropdownProfile}>
-              <Creator user={user} walletId={user.walletId} size="xsmall" showTooltip={false}/>
-              <div className={style.Name}>{user.name}</div>
-            </div>
-
-            <div className={style.Section}>
-              <div className={style.SectionTitle}>
-                <Link href="/wallet">
-                  <a>
-                    Wallet
-                  </a>
-                </Link>
-                <Clipboard address={user.walletId} isEllipsis />
-              </div>
-            </div>
-            <Link href="/profile">
-              <a className={style.Section}>
-                <div className={style.SectionTitle}> My Account</div>
-              </a>
-            </Link>
-          </div>
-          <Link href={`/${user.walletId}`}>
-            <a className={style.CapsSection}>
-              <div className={style.SectionTitle}>My artist profile</div>
-            </a>
-          </Link>
-        </div>
-      )}
+      {user && fullProfile && <SProfileMenuDropdown user={user} />}
     </div>
   );
 };
+
+const SProfileMenuDropdown = styled(ProfileMenuDropdown)`
+  top: -22rem;
+  right: 0;
+
+  &::after {
+    width: 0;
+    height: 0;
+    border-left: 2.4rem solid transparent;
+    border-right: 2.4rem solid transparent;
+    z-index: 101;
+    border-top: ${({ theme }) =>
+      `1.2rem solid ${theme.colors.contrast}`};
+    content: "";
+    position: absolute;
+    bottom: 0;
+    right: 3.2rem;
+    transform: translateY(0.8rem);
+  }
+`;
 
 export default FloatingHeader;

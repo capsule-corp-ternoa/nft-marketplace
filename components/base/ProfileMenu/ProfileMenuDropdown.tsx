@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import Cookies from 'js-cookie';
 import styled from 'styled-components';
+import { useAppSelector } from 'redux/hooks';
 
 import Avatar from 'components/base/Avatar';
 import Clipboard from 'components/base/Clipboard';
@@ -15,11 +16,8 @@ interface Props {
 
 const ProfileMenuDropdown = ({ className, user }: Props) => {
   const { name, picture, verified, walletId } = user;
-  const [isRN, setIsRN] = useState(false);
 
-  useEffect(() => {
-    setIsRN(window.isRNApp);
-  }, []);
+  const isRN = useAppSelector((state) => state.rn.isRN);
 
   const handleLogout = () => {
     Cookies.remove('token');

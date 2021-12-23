@@ -21,7 +21,7 @@ const FloatingHeader: React.FC<FloatingHeaderProps> = ({
 }) => {
   const [, setSearchValue] = useState('' as string);
   const [isExpanded, setIsExpanded] = useState(false);
-  const [fullProfile, setFullProfile] = useState(false);
+  const [isProfileMenuExpanded, setIsProfileMenuExpanded] = useState(false);
 
   const updateKeywordSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.currentTarget.value);
@@ -77,7 +77,7 @@ const FloatingHeader: React.FC<FloatingHeaderProps> = ({
         </div>
         {user ? (
           <SProfileMenuBadge
-            onClick={() => setFullProfile(!fullProfile)}
+            onClick={() => setIsProfileMenuExpanded(prevState => !prevState)}
             tokenAmount={
               user?.capsAmount ? computeCaps(Number(user.capsAmount)) : 0
             }
@@ -98,14 +98,19 @@ const FloatingHeader: React.FC<FloatingHeaderProps> = ({
           />
         )}
       </div>
-      {user && fullProfile && <SProfileMenuDropdown user={user} />}
+      {user && isProfileMenuExpanded && (
+        <SProfileMenuDropdown
+          onClose={() => setIsProfileMenuExpanded(false)}
+          user={user}
+        />
+      )}
     </div>
   );
 };
 
 const SProfileMenuBadge = styled(ProfileMenuBadge)`
   background-color: transparent;
-  border-color: ${({theme}) => theme.colors.invertedContrast}
+  border-color: ${({theme}) => theme.colors.invertedContrast};
 `;
 
 const SProfileMenuDropdown = styled(ProfileMenuDropdown)`

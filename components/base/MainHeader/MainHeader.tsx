@@ -18,7 +18,7 @@ export interface HeaderProps {
 
 const MainHeader: React.FC<HeaderProps> = ({ setModalExpand, user }) => {
   const [, setSearchValue] = useState('' as string);
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isProfileMenuExpanded, setIsProfileMenuExpanded] = useState(false);
   const isNftCreationEnabled = process.env.NEXT_PUBLIC_IS_NFT_CREATION_ENABLED===undefined ? true : process.env.NEXT_PUBLIC_IS_NFT_CREATION_ENABLED === 'true'
   const updateKeywordSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.currentTarget.value);
@@ -65,7 +65,9 @@ const MainHeader: React.FC<HeaderProps> = ({ setModalExpand, user }) => {
             )}
             {user ? (
               <ProfileMenuBadge
-                onClick={() => setIsExpanded(!isExpanded)}
+                onClick={() =>
+                  setIsProfileMenuExpanded((prevState) => !prevState)
+                }
                 tokenAmount={
                   user?.capsAmount ? computeCaps(Number(user.capsAmount)) : 0
                 }
@@ -83,7 +85,12 @@ const MainHeader: React.FC<HeaderProps> = ({ setModalExpand, user }) => {
             )}
           </SNavButtonsCointainer>
         </div>
-        {user && isExpanded && <SProfileMenuDropdown user={user} />}
+        {user && isProfileMenuExpanded && (
+          <SProfileMenuDropdown
+            onClose={() => setIsProfileMenuExpanded(false)}
+            user={user}
+          />
+        )}
       </div>
     </div>
   );

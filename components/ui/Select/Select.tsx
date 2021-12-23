@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ClickAwayListener from 'react-click-away-listener';
 import styled from 'styled-components';
 
 import Chip from '../Chip';
@@ -44,32 +45,38 @@ const Select = ({
   };
 
   return (
-    <SelectContainer className={className} suppressHydrationWarning>
-      <SelectRoot
-        color={color}
-        disabled={disabled}
-        isBadge={isBadge}
-        onClick={toggleSelect}
-        suppressHydrationWarning
-      >
-        <SLabelContainer>
-          {text}
-          {isBadge && (
-            <Chip
-              color={invertedColor(color)}
-              noBorder
-              size="medium"
-              text={badge}
-              variant="rectangle"
-            />
-          )}
-        </SLabelContainer>
-        <SIconContainer isExpanded={isExpanded}>
-          <Icon name="arrowBottom" />
-        </SIconContainer>
-      </SelectRoot>
-      {isExpanded && <SelectOptions>{children(toggleSelect)}</SelectOptions>}
-    </SelectContainer>
+    <ClickAwayListener
+      onClickAway={() => {
+        setSelectExpanded(false);
+      }}
+    >
+      <SelectContainer className={className} suppressHydrationWarning>
+        <SelectRoot
+          color={color}
+          disabled={disabled}
+          isBadge={isBadge}
+          onClick={toggleSelect}
+          suppressHydrationWarning
+        >
+          <SLabelContainer>
+            {text}
+            {isBadge && (
+              <Chip
+                color={invertedColor(color)}
+                noBorder
+                size="medium"
+                text={badge}
+                variant="rectangle"
+              />
+            )}
+          </SLabelContainer>
+          <SIconContainer isExpanded={isExpanded}>
+            <Icon name="arrowBottom" />
+          </SIconContainer>
+        </SelectRoot>
+        {isExpanded && <SelectOptions>{children(toggleSelect)}</SelectOptions>}
+      </SelectContainer>
+    </ClickAwayListener>
   );
 };
 
@@ -92,9 +99,6 @@ const SelectRoot = styled.button<{ color?: keyof Colors; isBadge?: boolean }>`
   border-radius: 1.2rem;
   box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.25);
   cursor: pointer;
-  font-family: ${({ theme }) => theme.fonts.bold};
-  font-size: 1.6rem;
-  line-height: 1.3;
   outline: none;
   padding: ${({ isBadge }) => (isBadge ? '1.2rem 2.4rem' : '2rem 2.4rem')};
   text-transform: capitalize;
@@ -114,6 +118,8 @@ const SLabelContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  font-family: ${({ theme }) => theme.fonts.bold};
+  font-size: 1.6rem;
 `;
 
 const SIconContainer = styled.div<{ isExpanded?: boolean }>`

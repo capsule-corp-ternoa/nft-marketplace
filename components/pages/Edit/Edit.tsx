@@ -15,8 +15,8 @@ import {
   Title,
   Wrapper,
 } from 'components/layout';
-import ModalEdit from 'components/pages/Profile/ModalEdit/ModalEdit';
-import TwitterErrorModal from 'components/pages/Profile/TwitterErrorModal/TwitterErrorModal';
+import ModalEdit from 'components/pages/Edit/components/ModalEdit/ModalEdit';
+import TwitterErrorModal from 'components/pages/Edit/components/TwitterErrorModal/TwitterErrorModal';
 import Button from 'components/ui/Button';
 import Icon from 'components/ui/Icon';
 import { TextArea, TextInput } from 'components/ui/Input';

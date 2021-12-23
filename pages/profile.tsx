@@ -10,7 +10,16 @@ import { getUser } from 'actions/user';
 import { getOwnedNFTS, getCreatorNFTS } from 'actions/nft';
 import { getFollowers, getFollowed } from 'actions/follower';
 import { getLikedNFTs } from 'actions/nft';
-import { NftType, UserType } from 'interfaces';
+import {
+  NftType,
+  UserType,
+  FOLLOWERS_TAB,
+  FOLLOWED_TAB,
+  NFT_ON_SALE_TAB,
+  NFT_NOT_FOR_SALE_TAB,
+  NFT_CREATED_TAB,
+  NFT_LIKED_TAB,
+} from 'interfaces';
 import { NextPageContext } from 'next';
 import { decryptCookie } from 'utils/cookie';
 
@@ -20,6 +29,15 @@ export interface ProfilePageProps {
   ownedHasNextPage: boolean;
   loading: boolean;
 }
+
+const ORDERED_TABS_ID = [
+  NFT_ON_SALE_TAB,
+  NFT_NOT_FOR_SALE_TAB,
+  NFT_CREATED_TAB,
+  NFT_LIKED_TAB,
+  FOLLOWERS_TAB,
+  FOLLOWED_TAB,
+] as const;
 
 const ProfilePage = ({ user, owned, ownedHasNextPage }: ProfilePageProps) => {
   const [modalExpand, setModalExpand] = useState(false);
@@ -335,8 +353,9 @@ const ProfilePage = ({ user, owned, ownedHasNextPage }: ProfilePageProps) => {
         followedUsersHasNextPage={followedUsersHasNextPage}
         loadMoreFollowed={loadMoreFollowed}
         setModalExpand={setModalExpand}
-        setSuccessPopup={setSuccessPopup}
         loading={isLoading}
+        canEditProfile
+        tabs={ORDERED_TABS_ID}
       />
     </>
   );

@@ -13,12 +13,12 @@ export const HERO_MODE_AUCTION = 'auction';
 export const HERO_MODE_SELL = 'sell';
 
 export interface HeroProps {
-  capsValue?: number;
+  capsDollarValue?: number;
   NFTs: NftType[];
   mode: typeof HERO_MODE_AUCTION | typeof HERO_MODE_SELL;
 }
 
-const Hero = ({ capsValue, NFTs, mode }: HeroProps) => {
+const Hero = ({ capsDollarValue, NFTs, mode }: HeroProps) => {
   const [selectedNFT, setSelectedNFT] = useState<NftType>(NFTs[1]);
 
   return (
@@ -48,11 +48,11 @@ const Hero = ({ capsValue, NFTs, mode }: HeroProps) => {
             <SBidCapsPrice>
               {`${computeCaps(Number(selectedNFT.price))} CAPS`}
             </SBidCapsPrice>
-            {capsValue && (
+            {capsDollarValue && (
               <SBidDollarsPrice>
                 {formatPrice(
                   Math.round(
-                    capsValue *
+                    capsDollarValue *
                       (Number(selectedNFT.price) / 1000000000000000000) *
                       100
                   ) / 100

@@ -17,7 +17,7 @@ import { decryptCookie, setUserFromDApp } from 'utils/cookie';
 export interface LandingProps {
   user: UserType;
   users: UserType[];
-  capsValue?: number;
+  capsDollarValue?: number;
   heroNFTs: NftType[];
   popularNfts: NftType[];
   bestSellingNfts: NftType[];
@@ -27,7 +27,7 @@ export interface LandingProps {
 const LandingPage = ({
   user,
   users,
-  capsValue,
+  capsDollarValue,
   heroNFTs,
   popularNfts,
   bestSellingNfts,
@@ -65,7 +65,7 @@ const LandingPage = ({
         setModalExpand={setModalExpand}
         user={walletUser as UserType}
         users={users}
-        capsValue={capsValue}
+        capsDollarValue={capsDollarValue}
         heroNFTs={heroNFTs}
         popularNfts={popularNfts}
         bestSellingNfts={bestSellingNfts}
@@ -82,7 +82,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
   let users: UserType[] = [],
     user: UserType | null = null,
     regularNfts: NftType[] = [],
-    capsValue: number | null = null;
+    capsDollarValue: number | null = null;
   const promises = [];
   promises.push(
     new Promise<void>((success) => {
@@ -118,7 +118,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
   );
   promises.push(new Promise<void>((success) => {
     getCapsValue().then(_value => {
-      capsValue = _value
+      capsDollarValue = _value
       success();
     }).catch(success);
   }));
@@ -133,7 +133,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
     props: {
       user,
       users,
-      capsValue,
+      capsDollarValue,
       heroNFTs,
       popularNfts,
       bestSellingNfts,

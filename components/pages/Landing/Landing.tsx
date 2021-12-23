@@ -17,7 +17,7 @@ export interface LandingProps {
   user: UserType;
   users: UserType[];
   setModalExpand: (b: boolean) => void;
-  capsValue?: number;
+  capsDollarValue?: number;
   heroNFTs: NftType[];
   popularNfts: NftType[];
   bestSellingNfts: NftType[];
@@ -29,7 +29,7 @@ const Landing = ({
   setModalExpand,
   user,
   users,
-  capsValue,
+  capsDollarValue,
   heroNFTs,
   popularNfts,
   bestSellingNfts,
@@ -42,7 +42,7 @@ const Landing = ({
     <Container>
       <Wrapper>
         {heroNFTs?.length === 3 && (
-          <Hero capsValue={capsValue} NFTs={heroNFTs} mode={HERO_MODE_SELL} />
+          <Hero capsDollarValue={capsDollarValue} NFTs={heroNFTs} mode={HERO_MODE_SELL} />
         )}
         {totalCountNFT === 0 && (
           <NoNFTComponent

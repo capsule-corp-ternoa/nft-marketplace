@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
+import styled from 'styled-components';
 
 import Logo from 'components/assets/LogoTernoaBlack';
-import Clipboard from 'components/base/Clipboard';
-import Creator from '../Creator';
+import ProfileMenuDropdown from 'components/base/ProfileMenu';
 
 import style from './MainHeader.module.scss';
 import { computeCaps, computeTiime } from 'utils/strings';
@@ -24,6 +24,7 @@ const MainHeader: React.FC<HeaderProps> = ({ setModalExpand, user }) => {
   const updateKeywordSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.currentTarget.value);
   };
+
   return (
     <div className={style.Header}>
       <div className={style.HeaderContainer}>
@@ -108,42 +109,30 @@ const MainHeader: React.FC<HeaderProps> = ({ setModalExpand, user }) => {
             )}
           </div>
         </div>
-        {user && isExpanded && (
-          <div className={style.Dropdown}>
-            <div className={style.DropdownContainer}>
-              <div className={style.DropdownProfile}>
-                <Creator user={user} walletId={user.walletId} size="xsmall" showTooltip={false}/>
-                <div className={style.Name}>{user.name}</div>
-              </div>
-
-              <div className={`${style.Section} ${style.NoHover}`}>
-                <div
-                  className={style.SectionTitle}
-                >
-                  <Link href="/wallet">
-                    <a className={style.SectionWalletTitle}>
-                      Wallet
-                    </a>
-                  </Link>
-                  <Clipboard address={user.walletId} isEllipsis />
-                </div>
-              </div>
-              <Link href="/profile">
-                <a className={style.Section}>
-                  <div className={style.SectionTitle}> My Account</div>
-                </a>
-              </Link>
-            </div>
-            <Link href={`/${user.walletId}`}>
-              <a className={style.CapsSection}>
-                <div className={style.SectionTitle}>My artist profile</div>
-              </a>
-            </Link>
-          </div>
-        )}
+        {user && isExpanded && <SProfileMenuDropdown user={user} />}
       </div>
     </div>
   );
 };
+
+const SProfileMenuDropdown = styled(ProfileMenuDropdown)`
+  top: 10rem;
+  right: 4.8rem;
+
+  &::before {
+    width: 0;
+    height: 0;
+    border-left: 2.4rem solid transparent;
+    border-right: 2.4rem solid transparent;
+    z-index: 101;
+    border-top: ${({ theme }) =>
+      `1.2rem solid ${theme.colors.invertedContrast}`};
+    content: '';
+    position: absolute;
+    top: -1.6rem;
+    right: 3.2rem;
+    transform: translateY(0.8rem) rotate(180deg);
+  }
+`;
 
 export default MainHeader;

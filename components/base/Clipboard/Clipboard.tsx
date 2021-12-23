@@ -59,7 +59,6 @@ const SAddressWrapper = styled.span`
   cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: center;
   color: ${({ theme }) => theme.colors.neutral200};
   font-family: ${({ theme }) => theme.fonts.light};
   font-size: 1.2rem;

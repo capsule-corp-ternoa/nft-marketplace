@@ -2,12 +2,11 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
 
-import ProfileMenuDropdown from 'components/base/ProfileMenu';
-
-import { computeCaps, computeTiime } from 'utils/strings';
-import gradient from 'random-gradient';
+import { ProfileMenuBadge, ProfileMenuDropdown } from 'components/base/ProfileMenu';
+import Button from 'components/ui/Button';
 
 import { UserType } from 'interfaces/index';
+import { computeCaps } from 'utils/strings';
 
 import { onModelOpen } from '../../../utils/model-helpers';
 import style from './FloatingHeader.module.scss';
@@ -23,8 +22,6 @@ const FloatingHeader: React.FC<FloatingHeaderProps> = ({
   const [, setSearchValue] = useState('' as string);
   const [isExpanded, setIsExpanded] = useState(false);
   const [fullProfile, setFullProfile] = useState(false);
-
-  const bgGradient = user ? { background: gradient(user.name) } : {};
 
   const updateKeywordSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.currentTarget.value);
@@ -79,73 +76,26 @@ const FloatingHeader: React.FC<FloatingHeaderProps> = ({
           )}
         </div>
         {user ? (
-          <div
-            className={
-              fullProfile
-                ? `${style.Profile} ${style.ProfileSelect}`
-                : style.Profile
-            }
+          <SProfileMenuBadge
             onClick={() => setFullProfile(!fullProfile)}
-          >
-            <div
-              className={
-                fullProfile
-                  ? `${style.Caps} ${style.ProfileSelect}`
-                  : style.Caps
-              }
-            >
-              <span>
-                <span
-                  className={
-                    fullProfile
-                      ? `${style.NumberCaps} ${style.ProfileSelect}`
-                      : style.NumberCaps
-                  }
-                >
-                  {user.capsAmount ? computeCaps(Number(user.capsAmount)) : 0}{' '}
-                </span>
-                CAPS
-              </span>
-              <span style={{display: "none"}}>
-                <span
-                  className={
-                    fullProfile
-                      ? `${style.NumberCaps} ${style.ProfileSelect}`
-                      : style.NumberCaps
-                  }
-                >
-                  {user.tiimeAmount ? computeTiime(Number(user.tiimeAmount)) : 0}{' '}
-                </span>
-                TIIME
-              </span>
-            </div>
-            <div className={style.ProfileImageContainer}>
-              {user.picture ? (
-                <img
-                  src={user.picture}
-                  draggable="false"
-                  className={style.ProfileImage}
-                />
-              ) : (
-                <div style={bgGradient} className={style.ProfileImage}>
-                  <div className={style.CreatorLetter}>
-                    {user.name.charAt(0)}
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
+            tokenAmount={
+              user?.capsAmount ? computeCaps(Number(user.capsAmount)) : 0
+            }
+            tokenSymbol="CAPS"
+            user={user}
+          />
         ) : (
-          <div
-            className={style.Connect}
+          <Button
+            color="contrast"
             onClick={() => {
               onModelOpen();
               setModalExpand(true);
               setIsExpanded(false);
             }}
-          >
-            Connect Wallet
-          </div>
+            size="medium"
+            text="Connect Wallet"
+            variant="outlined"
+          />
         )}
       </div>
       {user && fullProfile && <SProfileMenuDropdown user={user} />}
@@ -153,8 +103,13 @@ const FloatingHeader: React.FC<FloatingHeaderProps> = ({
   );
 };
 
+const SProfileMenuBadge = styled(ProfileMenuBadge)`
+  background-color: transparent;
+  border-color: ${({theme}) => theme.colors.invertedContrast}
+`;
+
 const SProfileMenuDropdown = styled(ProfileMenuDropdown)`
-  top: -22rem;
+  top: -23rem;
   right: 0;
 
   &::after {

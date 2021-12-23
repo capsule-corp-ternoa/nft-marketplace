@@ -3,13 +3,13 @@ import Link from 'next/link';
 import styled from 'styled-components';
 
 import Logo from 'components/assets/LogoTernoaBlack';
-import ProfileMenuDropdown from 'components/base/ProfileMenu';
-
-import style from './MainHeader.module.scss';
-import { computeCaps, computeTiime } from 'utils/strings';
-import gradient from 'random-gradient';
+import { ProfileMenuBadge, ProfileMenuDropdown } from 'components/base/ProfileMenu';
+import Button from 'components/ui/Button';
 
 import { UserType } from 'interfaces/index';
+import { computeCaps } from 'utils/strings';
+
+import style from './MainHeader.module.scss';
 
 export interface HeaderProps {
   user: UserType;
@@ -19,7 +19,6 @@ export interface HeaderProps {
 const MainHeader: React.FC<HeaderProps> = ({ setModalExpand, user }) => {
   const [, setSearchValue] = useState('' as string);
   const [isExpanded, setIsExpanded] = useState(false);
-  const bgGradient = user ? { background: gradient(user.name) } : {};
   const isNftCreationEnabled = process.env.NEXT_PUBLIC_IS_NFT_CREATION_ENABLED===undefined ? true : process.env.NEXT_PUBLIC_IS_NFT_CREATION_ENABLED === 'true'
   const updateKeywordSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.currentTarget.value);
@@ -50,70 +49,56 @@ const MainHeader: React.FC<HeaderProps> = ({ setModalExpand, user }) => {
               <a className={style.LinkItem}>How it works</a>
             </Link>
           </div>
-          <div className={style.Wallet}>
-            {user ? (
-              <div className={style.Regular}>
-                {isNftCreationEnabled && <Link href="/create">
-                  <a className={style.Create}>Create NFT</a>
-                </Link>}
-                <div
-                  onClick={() => setIsExpanded(!isExpanded)}
-                  className={style.Profile}
-                >
-                  <div className={style.Caps}>
-                    <span className={style.NumberCaps}>
-                      {user && user.capsAmount
-                        ? computeCaps(Number(user.capsAmount))
-                        : 0}
-                    </span>
-                    CAPS
-                  </div>
-                  <div className={style.Caps} style={{display: "none"}}>
-                    <span className={style.NumberCaps}>
-                      {user && user.tiimeAmount
-                        ? computeTiime(Number(user.tiimeAmount))
-                        : 0}
-                    </span>
-                    TIIME
-                  </div>
-                  
-                  <div className={style.ProfileImageContainer}>
-                    {user.picture ? (
-                      <img
-                        src={user.picture}
-                        draggable="false"
-                        className={style.ProfileImage}
-                      />
-                    ) : (
-                      <div style={bgGradient} className={style.ProfileImage}>
-                        <div className={style.CreatorLetter}>
-                          {user.name.charAt(0)}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className={style.Regular}>
-                {isNftCreationEnabled && <Link href="/create">
-                  <a className={style.Create}>Create NFT</a>
-                </Link>}
-                <div
-                  onClick={() => setModalExpand(true)}
-                  className={style.Connect}
-                >
-                  Connect
-                </div>
-              </div>
+          <SNavButtonsCointainer>
+            {isNftCreationEnabled && (
+              <Link href="/create" passHref>
+                <>
+                  <Button
+                    color="invertedContrast"
+                    href="/create"
+                    size="medium"
+                    text="Create NFT"
+                    variant="outlined"
+                  />
+                </>
+              </Link>
             )}
-          </div>
+            {user ? (
+              <ProfileMenuBadge
+                onClick={() => setIsExpanded(!isExpanded)}
+                tokenAmount={
+                  user?.capsAmount ? computeCaps(Number(user.capsAmount)) : 0
+                }
+                tokenSymbol="CAPS"
+                user={user}
+              />
+            ) : (
+              <Button
+                color="contrast"
+                onClick={() => setModalExpand(true)}
+                size="medium"
+                text="Connect"
+                variant="outlined"
+              />
+            )}
+          </SNavButtonsCointainer>
         </div>
         {user && isExpanded && <SProfileMenuDropdown user={user} />}
       </div>
     </div>
   );
 };
+
+const SNavButtonsCointainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2.4rem;
+
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    margin-left: 5.6rem;
+  }
+`;
 
 const SProfileMenuDropdown = styled(ProfileMenuDropdown)`
   top: 10rem;

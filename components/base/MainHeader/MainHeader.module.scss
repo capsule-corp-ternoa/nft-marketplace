@@ -54,141 +54,9 @@
   font-family: "Airbnb Cereal App Medium";
   font-style: normal;
   font-weight: bold;
-  font-size: 14px;
-  line-height: 17px;
+  font-size: 1.6rem;
   color: black;
   text-decoration: none;
-}
-
-.Wallet {
-  display: flex;
-  margin-left: 60px;
-}
-
-.Regular {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.Create {
-  margin-right: 24px;
-  font-family: "Airbnb Cereal App Medium";
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 20px;
-  display: flex;
-  align-items: center;
-  text-align: center;
-  border-radius: 28px;
-  padding: 10px 28px;
-  border: 2px solid black;
-  cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-
-  &:hover {
-    color: white;
-    background-color: $primary;
-    border: 2px solid $primary;
-  }
-}
-
-.Connect {
-  margin-right: 24px;
-  font-family: "Airbnb Cereal App Medium";
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 20px;
-  display: flex;
-  align-items: center;
-  text-align: center;
-  border-radius: 28px;
-  padding: 10px 28px;
-  border: 2px solid black;
-  color: white;
-  background-color: black;
-  cursor: pointer;
-  transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
-
-  &:hover {
-    color: black;
-    background-color: white;
-  }
-}
-
-.Profile {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-radius: 28px;
-  padding: 2px 2px;
-  border: 2px solid black;
-  box-sizing: border-box;
-  background-color: black;
-  cursor: pointer;
-}
-
-.ProfileImageContainer {
-  border-radius: 50%;
-  display: flex;
-  width: 38px;
-  height: 38px;
-  box-sizing: border-box;
-  position: relative;
-}
-
-.ProfileImage {
-  object-fit: cover;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.CreatorLetter {
-  font-size: 18px;
-  font-family: "Airbnb Cereal App Medium";
-  text-transform: uppercase;
-  color: white;
-}
-
-.Caps {
-  margin-left: 16px;
-  margin-right: 16px;
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: "Airbnb Cereal App Light";
-  text-transform: uppercase;
-  font-size: 11px;
-  letter-spacing: 1.05px;
-}
-
-.NumberCaps {
-  font-family: "Airbnb Cereal App Bold";
-  letter-spacing: 0.5px;
-  font-size: 13px;
-  margin-right: 6px;
-  margin-top: -1px;
-}
-
-.Name {
-  font-family: "Airbnb Cereal App Bold";
-  margin-left: 16px;
-  font-size: 16px;
-  line-height: 24px;
-}
-
-.CapsPrice {
-  font-family: "Airbnb Cereal App Bold";
-  font-size: 15px;
-  margin-left: 10px;
 }
 
 @media (max-width: 1300px) {
@@ -200,10 +68,6 @@
     justify-content: space-around;
     width: 100%;
     width: 950px;
-  }
-
-  .Wallet {
-    margin-left: 0px;
   }
 
   .Logo {

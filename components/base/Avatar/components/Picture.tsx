@@ -6,6 +6,7 @@ import gradient from 'random-gradient';
 import Icon from 'components/ui/Icon';
 
 import {
+  AVATAR_VARIANT_BADGE,
   AVATAR_VARIANT_BANNER,
   AVATAR_VARIANT_EDIT,
   AVATAR_VARIANT_TYPE,
@@ -29,6 +30,8 @@ const pictureSize = (variant?: AVATAR_VARIANT_TYPE) => {
       return '12rem';
     case AVATAR_VARIANT_EDIT:
       return '9.6rem';
+    case AVATAR_VARIANT_BADGE:
+      return '3.6rem';
     default:
       return '5.6rem';
   }
@@ -40,6 +43,8 @@ const fontSize = (variant?: AVATAR_VARIANT_TYPE) => {
       return '5.6rem';
     case AVATAR_VARIANT_EDIT:
       return '3.2rem';
+    case AVATAR_VARIANT_BADGE:
+      return '2rem';
     default:
       return '2.4rem';
   }

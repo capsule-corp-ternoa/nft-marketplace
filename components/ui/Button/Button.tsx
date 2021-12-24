@@ -37,7 +37,7 @@ const ButtonStyle = css<IButton>`
       ? '1.2rem'
       : size === 'small'
       ? '0.8rem 2.4rem'
-      : '1.2rem 4.8rem'};
+      : '1.2rem 3.2rem'};
   pointer-events: ${({ noHover }) => (noHover ? 'none' : 'auto')};
   transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
   z-index: 1;
@@ -62,6 +62,7 @@ const ButtonStyle = css<IButton>`
 
   border-color: ${({ theme, color }) => {
     switch (color) {
+      case 'contrast':
       case 'invertedContrast':
         return theme.colors.contrast;
       case 'whiteBlur':
@@ -71,6 +72,7 @@ const ButtonStyle = css<IButton>`
   }};
   color: ${({ theme, color }) => {
     switch (color) {
+      case 'contrast':
       case 'primary':
         return theme.colors.invertedContrast;
       case 'primaryLight':

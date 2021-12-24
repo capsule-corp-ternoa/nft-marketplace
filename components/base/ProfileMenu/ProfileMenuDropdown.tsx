@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import Cookies from 'js-cookie';
 import styled from 'styled-components';
+import ClickAwayListener from 'react-click-away-listener';
 import { useAppSelector } from 'redux/hooks';
 
 import Avatar from 'components/base/Avatar';
@@ -11,10 +12,11 @@ import { UserType } from 'interfaces';
 
 interface Props {
   className?: string;
+  onClose: () => void;
   user: UserType;
 }
 
-const ProfileMenuDropdown = ({ className, user }: Props) => {
+const ProfileMenuDropdown = ({ className, onClose, user }: Props) => {
   const { name, picture, verified, walletId } = user;
 
   const isRN = useAppSelector((state) => state.rn.isRN);
@@ -25,44 +27,46 @@ const ProfileMenuDropdown = ({ className, user }: Props) => {
   };
 
   return (
-    <SDropdownContainer className={className}>
-      <SDropdownWrapper>
-        <SProfileContainer>
-          <Avatar
-            isVerified={verified}
-            name={name}
-            picture={picture}
-            walletId={walletId}
-          />
-          {!isRN && (
-            <Button
-              color="whiteBlur"
-              icon="powerOff"
-              onClick={handleLogout}
-              size="small"
-              variant="outlined"
+    <ClickAwayListener onClickAway={onClose}>
+      <SDropdownContainer className={className}>
+        <SDropdownWrapper>
+          <SProfileContainer>
+            <Avatar
+              isVerified={verified}
+              name={name}
+              picture={picture}
+              walletId={walletId}
             />
-          )}
-        </SProfileContainer>
+            {!isRN && (
+              <Button
+                color="whiteBlur"
+                icon="powerOff"
+                onClick={handleLogout}
+                size="small"
+                variant="outlined"
+              />
+            )}
+          </SProfileContainer>
 
-        <SLinkSection>
-          <div>
-            <Link href="/wallet" passHref>
-              <SAnchor>Wallet</SAnchor>
-            </Link>
-            <Clipboard address={walletId} isEllipsis />
-          </div>
-          <div>
-            <Link href="/profile" passHref>
-              <SAnchor>My Account</SAnchor>
-            </Link>
-          </div>
-        </SLinkSection>
-      </SDropdownWrapper>
-      <Link href={`/${walletId}`} passHref>
-        <SCapsAnchor>My artist profile</SCapsAnchor>
-      </Link>
-    </SDropdownContainer>
+          <SLinkSection>
+            <div>
+              <Link href="/wallet" passHref>
+                <SAnchor>Wallet</SAnchor>
+              </Link>
+              <Clipboard address={walletId} isEllipsis />
+            </div>
+            <div>
+              <Link href="/profile" passHref>
+                <SAnchor>My Account</SAnchor>
+              </Link>
+            </div>
+          </SLinkSection>
+        </SDropdownWrapper>
+        <Link href={`/${walletId}`} passHref>
+          <SCapsAnchor>My artist profile</SCapsAnchor>
+        </Link>
+      </SDropdownContainer>
+    </ClickAwayListener>
   );
 };
 
@@ -125,7 +129,7 @@ const SCapsAnchor = styled.a`
   border-radius: 0 0 1.6rem 1.6rem;
   color: ${({ theme }) => theme.colors.invertedContrast};
   padding: 1.6rem;
-  font-family: ${({theme}) => theme.fonts.bold};
+  font-family: ${({ theme }) => theme.fonts.bold};
   font-size: 1.2rem;
 `;
 

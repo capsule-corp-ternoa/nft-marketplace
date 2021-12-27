@@ -7,12 +7,9 @@ import FloatingHeader from 'components/base/FloatingHeader';
 import {
   Advice,
   Container,
-  Input,
   InputLabel,
   InputShell,
   Insight,
-  Label,
-  Textarea,
   Title,
   Wrapper,
 } from 'components/layout';
@@ -28,6 +25,7 @@ import {
 } from 'interfaces';
 import Autocomplete from 'components/ui/Autocomplete';
 import Button from 'components/ui/Button';
+import { TextArea, TextInput } from 'components/ui/Input';
 import Tooltip from 'components/ui/Tooltip';
 
 import { NFTProps } from 'pages/create';
@@ -86,8 +84,8 @@ const Create = ({
   const [isLoading, setIsLoading] = useState(false);
   const { categories, description, name, quantity, seriesId } = nftData;
   const showThumbnailSelector = (
-    (coverNFT && mime.lookup(coverNFT.name).toString().indexOf("video")!==-1) || 
-    (effect===NFT_EFFECT_DEFAULT && originalNFT && mime.lookup(originalNFT.name).toString().indexOf("video")!==-1)
+    (coverNFT && mime.lookup(coverNFT.name).toString().indexOf("video") !== -1) ||
+    (effect === NFT_EFFECT_DEFAULT && originalNFT && mime.lookup(originalNFT.name).toString().indexOf("video") !== -1)
   )
 
   useEffect(() => {
@@ -245,7 +243,7 @@ const Create = ({
         </SNftPreviewWrapper>
         <SForm>
           <SLeft>
-          {showThumbnailSelector &&
+            {showThumbnailSelector &&
               <InputShell>
                 <InputLabel>
                   Thumbnail
@@ -261,26 +259,21 @@ const Create = ({
                 />
               </InputShell>
             }
-            <InputShell>
-              <InputLabel>Name</InputLabel>
-              <Input
-                type="text"
-                placeholder="Enter name"
-                onChange={handleChange}
-                name="name"
-                value={name}
-              />
-            </InputShell>
+            <TextInput
+              label="Name"
+              name="name"
+              onChange={handleChange}
+              placeholder="Enter name"
+              value={name}
+            />
 
-            <SInputShellDescription>
-              <InputLabel>Description</InputLabel>
-              <Textarea
-                placeholder="Tell about the NFT in a few words..."
-                name="description"
-                value={description}
-                onChange={handleChange}
-              />
-            </SInputShellDescription>
+            <STextArea
+              label="Description"
+              name="description"
+              onChange={handleChange}
+              placeholder="Tell about the NFT in a few words..."
+              value={description}
+            />
           </SLeft>
           <SRight>
             <Autocomplete<CategoryType>
@@ -302,60 +295,44 @@ const Create = ({
             />
 
             {/* TODO in the future */}
-            {/* <InputShell>
-              <InputLabel>
-                Royalties<SInsight>(max: 10%)</SInsight>
-              </InputLabel>
-              <Input
-                type="text"
-                placeholder="Enter royalties"
-                onChange={handleChange}
+            {/* <TextInput
+                insight="(max: 10%)"
+                label="Royalties"
                 name="royalties"
-                value={royalties}
-              />
-            </InputShell> */}
-
-            <InputShell>
-              <InputLabel>
-                Quantity<SInsight>(max: 10)</SInsight>
-              </InputLabel>
-              <Input
-                type="text"
-                name="quantity"
-                value={quantity}
                 onChange={handleChange}
-                placeholder="1"
-                isError={!validateQuantity(quantity, 10)}
-              />
-            </InputShell>
+                placeholder="Enter royalties"
+                value={royalties}
+              />*/}
 
-            <InputShell>
-              <InputLabel>
-                Series ID
-                <STooltip text="Specified your own series id. Series must be locked (never listed / transferred) and owned by you." />
-                <SInsight>(optional)</SInsight>
-              </InputLabel>
-              <Label
-                endIcon={
-                  seriesId !== ''
-                    ? isLoading
-                      ? loadingSpinner500
-                      : canAddToSeriesValue
+            <TextInput
+              insight="(max: 10)"
+              isError={!validateQuantity(quantity, 10)}
+              label="Quantity"
+              name="quantity"
+              onChange={handleChange}
+              placeholder="1"
+              value={quantity}
+            />
+
+            <TextInput
+              endIcon={
+                seriesId !== ''
+                  ? isLoading
+                    ? loadingSpinner500
+                    : canAddToSeriesValue
                       ? checkMark
                       : errorMark
-                    : undefined
-                }
-              >
-                <SSeriesIdInput
-                  type="text"
-                  placeholder="Enter ID"
-                  onChange={handleChange}
-                  name="seriesId"
-                  value={seriesId}
-                  isError={!canAddToSeriesValue}
-                />
-              </Label>
-            </InputShell>
+                  : undefined
+              }
+              insight="(optional)"
+              isError={!canAddToSeriesValue}
+              label="Series ID"
+              name="seriesId"
+              onChange={handleChange}
+              placeholder="Enter ID"
+              tooltipText="Specified your own series id. Series must be locked (never listed / transferred) and owned by you."
+              value={seriesId}
+            />
           </SRight>
         </SForm>
         <SAdvice>
@@ -442,7 +419,7 @@ const SRight = styled(FormSideLayout)`
   }
 `;
 
-const SInputShellDescription = styled(InputShell)`
+const STextArea = styled(TextArea)`
   flex: 1;
 `;
 
@@ -469,10 +446,6 @@ const SButton = styled(Button)`
   ${({ theme }) => theme.mediaQueries.xl} {
     margin: 4.8rem 0 9.6rem;
   }
-`;
-
-const SSeriesIdInput = styled(Input)`
-  padding: 1.6rem 5.6rem 1.6rem 1.6rem;
 `;
 
 export default Create;

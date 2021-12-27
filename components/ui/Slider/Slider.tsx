@@ -3,13 +3,13 @@ import styled from 'styled-components';
 
 interface Props {
   className?: string;
-  id?: string | undefined;
-  max?: string | number | undefined;
-  min?: string | number | undefined;
+  id?: string;
+  max?: string | number;
+  min?: string | number;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
   onChange: React.ChangeEventHandler<HTMLInputElement>;
-  step?: string | number | undefined;
-  value: string | number | readonly string[] | undefined;
+  step?: string | number;
+  value: string | number | readonly string[];
 }
 
 const Slider = ({
@@ -78,7 +78,7 @@ const SliderInput = styled.input`
     height: 1.2rem;
     -webkit-appearance: none;
     appearance: none;
-    background: #7417ea;
+    background: ${({ theme }) => theme.colors.primary};
     border-radius: 50%;
     cursor: pointer;
     transition: box-shadow 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
@@ -95,7 +95,7 @@ const SliderInput = styled.input`
     height: 1.2rem;
     -webkit-appearance: none;
     appearance: none;
-    background: #7417ea;
+    background: ${({ theme }) => theme.colors.primary};
     border: none;
     border-radius: 50%;
     cursor: pointer;
@@ -113,7 +113,7 @@ const SliderInput = styled.input`
   }
 
   ::-moz-range-progress {
-    background-color: #7417ea;
+    background-color: ${({ theme }) => theme.colors.primary};
   }
 `;
 

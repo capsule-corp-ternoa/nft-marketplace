@@ -42,7 +42,7 @@ const RadioContainer = styled.label`
   cursor: pointer;
   justify-content: center;
   gap: 0.8rem;
-  font-family: 'Airbnb Cereal App Bold';
+  font-family: ${({ theme }) => theme.fonts.bold};
   font-size: 1.6rem;
   line-height: 1.2;
   text-transform: capitalize;
@@ -53,7 +53,7 @@ const RadioInput = styled.input`
   height: 2.4rem;
   -webkit-appearance: none;
   appearance: none;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.invertedContrast};
   border: 0.2rem solid currentColor;
   border-radius: 50%;
   cursor: pointer;
@@ -66,7 +66,7 @@ const RadioInput = styled.input`
     width: 1.2rem;
     height: 1.2rem;
     border-radius: 50%;
-    background: #7417ea;
+    background: ${({ theme }) => theme.colors.primary};
     transform: scale(0);
     transition: 120ms transform ease-in-out;
     box-shadow: inset 1.2rem 1.2rem var(--form-control-color);

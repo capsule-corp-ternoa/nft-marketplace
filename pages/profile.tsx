@@ -19,6 +19,7 @@ import {
   NFT_NOT_FOR_SALE_TAB,
   NFT_CREATED_TAB,
   NFT_LIKED_TAB,
+  NFT_OWNED_TAB,
 } from 'interfaces';
 import { NextPageContext } from 'next';
 import { decryptCookie } from 'utils/cookie';
@@ -31,6 +32,7 @@ export interface ProfilePageProps {
 }
 
 const ORDERED_TABS_ID = [
+  NFT_OWNED_TAB,
   NFT_ON_SALE_TAB,
   NFT_NOT_FOR_SALE_TAB,
   NFT_CREATED_TAB,

@@ -7,7 +7,6 @@ import Button from 'components/ui/Button';
 import {
   NftType,
   TabsIdType,
-  UserType,
   NFT_OWNED_TAB,
   NFT_ON_SALE_TAB,
   NFT_NOT_FOR_SALE_TAB,
@@ -25,7 +24,6 @@ interface Props {
   noNftLinkLabel?: string;
   noNftTitle: string;
   tabId: TabsIdType;
-  user: UserType;
 }
 
 const NftsProfileBlock = ({
@@ -38,28 +36,18 @@ const NftsProfileBlock = ({
   noNftLinkLabel,
   noNftTitle,
   tabId,
-  user,
 }: Props) => {
   const returnQuantityNFTsAvailable = (NFT: NftType, tabId: TabsIdType) => {
-    const { serieData, totalNft, totalOwnedByRequestingUser } = NFT;
-
+    const { totalNft, totalOwnedByRequestingUser, totalOwnedListedInMarketplaceByRequestingUser } = NFT;
     switch (tabId) {
       case NFT_CREATED_TAB:
         return totalNft ?? 1;
       case NFT_LIKED_TAB:
         return 0;
       case NFT_ON_SALE_TAB:
-        return (
-          serieData?.filter(
-            ({ listed, owner }) => owner === user?.walletId && listed === 1
-          ).length ?? 1
-        );
+        return totalOwnedListedInMarketplaceByRequestingUser;
       case NFT_NOT_FOR_SALE_TAB:
-        return (
-          serieData?.filter(
-            ({ listed, owner }) => owner === user?.walletId && listed === 0
-          ).length ?? 1
-        );
+        return totalOwnedByRequestingUser ? totalOwnedByRequestingUser - (totalOwnedListedInMarketplaceByRequestingUser ?? 0) : 0
       case NFT_OWNED_TAB:
       default:
         return totalOwnedByRequestingUser ?? 1;

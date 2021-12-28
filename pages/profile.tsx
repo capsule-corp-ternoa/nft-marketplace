@@ -100,12 +100,12 @@ const ProfilePage = ({ user, owned, ownedHasNextPage }: ProfilePageProps) => {
 
   const populateProfileData = async (token: string) => {
     //created nfts
-    const createdNfts = await getCreatorNFTS(token, undefined, undefined, true);
+    const createdNfts = await getCreatorNFTS(token, undefined, undefined);
     setCreatedNfts(createdNfts.data);
     setCreatedNftsTotal(createdNfts.totalCount ?? 0);
     setCreatedNftsHasNextPage(createdNfts.hasNextPage);
     //Liked NFTs
-    const liked = await getLikedNFTs(token, undefined, undefined, true);
+    const liked = await getLikedNFTs(token, undefined, undefined);
     setLikedNfts(liked.data);
     setLikedNftsTotal(liked.totalCount ?? 0);
     setLikedNftsHasNextPage(liked.hasNextPage);
@@ -116,7 +116,6 @@ const ProfilePage = ({ user, owned, ownedHasNextPage }: ProfilePageProps) => {
       true,
       undefined,
       undefined,
-      true
     );
     setOwnedNftsListed(ownedListed.data);
     setOwnedNftsListedTotal(ownedListed.totalCount ?? 0);
@@ -128,7 +127,6 @@ const ProfilePage = ({ user, owned, ownedHasNextPage }: ProfilePageProps) => {
       false,
       undefined,
       undefined,
-      true
     );
     setOwnedNftsUnlisted(ownedUnlisted.data);
     setOwnedNftsUnlistedTotal(ownedUnlisted.totalCount ?? 0);
@@ -153,7 +151,6 @@ const ProfilePage = ({ user, owned, ownedHasNextPage }: ProfilePageProps) => {
           walletUser.walletId,
           (createdCurrentPage + 1).toString(),
           undefined,
-          true
         );
         setCreatedCurrentPage(createdCurrentPage + 1);
         setCreatedNftsHasNextPage(result.hasNextPage || false);
@@ -174,7 +171,6 @@ const ProfilePage = ({ user, owned, ownedHasNextPage }: ProfilePageProps) => {
           undefined,
           (ownedCurrentPage + 1).toString(),
           undefined,
-          true
         );
         setOwnedCurrentPage(ownedCurrentPage + 1);
         setOwnedNftsTotal(result.totalCount ?? 0);
@@ -196,7 +192,6 @@ const ProfilePage = ({ user, owned, ownedHasNextPage }: ProfilePageProps) => {
           true,
           (ownedNftsListedCurrentPage + 1).toString(),
           undefined,
-          true
         );
         setOwnedNftsListedCurrentPage(ownedNftsListedCurrentPage + 1);
         setOwnedNftsListedHasNextPage(result.hasNextPage || false);
@@ -217,7 +212,6 @@ const ProfilePage = ({ user, owned, ownedHasNextPage }: ProfilePageProps) => {
           false,
           (ownedNftsUnlistedCurrentPage + 1).toString(),
           undefined,
-          true
         );
         setOwnedNftsUnlistedCurrentPage(ownedNftsUnlistedCurrentPage + 1);
         setOwnedNftsUnlistedHasNextPage(result.hasNextPage || false);
@@ -236,7 +230,6 @@ const ProfilePage = ({ user, owned, ownedHasNextPage }: ProfilePageProps) => {
           walletUser.walletId,
           (likedCurrentPage + 1).toString(),
           undefined,
-          true
         );
         setLikedCurrentPage(likedCurrentPage + 1);
         setLikedNftsHasNextPage(result.hasNextPage || false);
@@ -381,7 +374,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
     );
     promises.push(
       new Promise<void>((success) => {
-        getOwnedNFTS(token, false, undefined, undefined, undefined, true)
+        getOwnedNFTS(token, false, undefined, undefined, undefined)
           .then((result) => {
             owned = result.data;
             ownedHasNextPage = result.hasNextPage || false;

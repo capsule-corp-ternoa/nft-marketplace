@@ -79,7 +79,6 @@ const PublicProfilePage = ({
       true,
       undefined,
       undefined,
-      true
     );
     setOwnedNftsListed(ownedListed.data);
     setOwnedNftsListedTotal(ownedListed.totalCount ?? 0);
@@ -91,7 +90,6 @@ const PublicProfilePage = ({
       false,
       undefined,
       undefined,
-      true
     );
     setOwnedNftsUnlisted(ownedUnlisted.data);
     setOwnedNftsUnlistedTotal(ownedUnlisted.totalCount ?? 0);
@@ -118,7 +116,6 @@ const PublicProfilePage = ({
           true,
           (ownedNftsListedCurrentPage + 1).toString(),
           undefined,
-          true
         );
         setOwnedNftsListedCurrentPage(ownedNftsListedCurrentPage + 1);
         setOwnedNftsListedHasNextPage(result.hasNextPage || false);
@@ -140,7 +137,6 @@ const PublicProfilePage = ({
           false,
           (ownedNftsUnlistedCurrentPage + 1).toString(),
           undefined,
-          true
         );
         setOwnedNftsUnlistedCurrentPage(ownedNftsUnlistedCurrentPage + 1);
         setOwnedNftsUnlistedHasNextPage(result.hasNextPage || false);

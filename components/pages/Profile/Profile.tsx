@@ -217,7 +217,6 @@ const Profile = ({
             noNftLinkLabel="Create your NFT"
             noNftTitle="Nothing to display"
             tabId={tabId}
-            user={user}
           />
         );
       case NFT_LIKED_TAB:
@@ -230,7 +229,6 @@ const Profile = ({
             noNftBody="The NFTs you liked are displayed here"
             noNftTitle="Nothing to display"
             tabId={tabId}
-            user={user}
           />
         );
       case NFT_ON_SALE_TAB:
@@ -244,7 +242,6 @@ const Profile = ({
             noNftLinkLabel="Sell your NFT"
             noNftTitle="Nothing to display"
             tabId={tabId}
-            user={user}
           />
         );
       case NFT_NOT_FOR_SALE_TAB:
@@ -257,7 +254,6 @@ const Profile = ({
             noNftBody="The NFTs you owned and are not for sale are displayed here"
             noNftTitle="Nothing to display"
             tabId={tabId}
-            user={user}
           />
         );
       case NFT_OWNED_TAB:
@@ -273,7 +269,6 @@ const Profile = ({
             noNftLinkLabel="Explore NFTs"
             noNftTitle="Nothing to display"
             tabId={tabId}
-            user={user}
           />
         );
     }

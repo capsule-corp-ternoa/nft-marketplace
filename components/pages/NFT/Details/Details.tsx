@@ -17,6 +17,7 @@ import { getHistory } from 'actions/nft';
 
 export interface DetailsProps {
   NFT: NftType;
+  seriesData: NftType[]
   user: UserType;
   setNftToBuy: (NFT: NftType) => void;
   setExp: (n: number) => void;
@@ -27,6 +28,7 @@ export interface DetailsProps {
 
 const Details: React.FC<DetailsProps> = ({
   NFT,
+  seriesData,
   user,
   setNftToBuy,
   setExp,
@@ -41,7 +43,6 @@ const Details: React.FC<DetailsProps> = ({
   const [serieDataCount, setSerieDataCount] = useState({} as any);
   const [historyData, setHistoryData] = useState<NFTTransferType[]>([])
   const [historyLoading, setHistoryLoading] = useState(false)
-  const serieData = NFT?.serieData || [];
   
   useEffect(() => {
     loadHistoryData()
@@ -50,7 +51,7 @@ const Details: React.FC<DetailsProps> = ({
   useEffect(() => {
     const serieDataGroupedArray = [] as NftType[];
     const serieDataCountObject = {} as any;
-    serieData.forEach((x) => {
+    seriesData.forEach((x) => {
       // Compute rows to display && count number of listed / unlisted for each row
       const key = `${x.owner}-${x.listed}-${x.price}-${x.marketplaceId}-${x.isCapsule}`;
       if (!serieDataCountObject[key]) {
@@ -71,11 +72,11 @@ const Details: React.FC<DetailsProps> = ({
     });
     setSerieDataGrouped(serieDataGroupedArray);
     setSerieDataCount(serieDataCountObject);
-  }, [serieData]);
+  }, [seriesData]);
 
   const handleCustomBuy = (NFT: NftType) => {
     const key = `${NFT.owner}-${NFT.listed}-${NFT.price}-${NFT.marketplaceId}-${NFT.isCapsule}`;
-    const NFTToBuy = serieData.find(x => x.id === getRandomNFTFromArray(serieDataCount[key])) || NFT
+    const NFTToBuy = seriesData.find(x => x.id === getRandomNFTFromArray(serieDataCount[key])) || NFT
     setNftToBuy(NFTToBuy);
     setExp(2);
   };
@@ -413,6 +414,9 @@ const Details: React.FC<DetailsProps> = ({
                   </List>
                 )}
               </AutoSizer>
+              {NFT.totalNft && seriesData.length < NFT.totalNft && <div className={styleDetails.loaderContainer}>
+                <Loader color="primary" />
+              </div>}
             </div>
           )}
           {currentTab === 'history' && 

@@ -128,6 +128,7 @@
 .rowsContainers {
   height: 29vh;
   width: auto;
+  display: flex;
 }
 .rows {
   display: flex;
@@ -270,6 +271,8 @@
 
 .loaderContainer{
   text-align: center;
+  align-self: center;
+  width: 100%;
 }
 
 .loader{

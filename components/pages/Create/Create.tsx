@@ -257,6 +257,7 @@ const Create = ({
                   showThumbnailSelector = {showThumbnailSelector}
                   thumbnailTimecode = {thumbnailTimecode}
                   setThumbnailTimecode = {setThumbnailTimecode}
+                  effect={effect}
                 />
               </InputShell>
             }

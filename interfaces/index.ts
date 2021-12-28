@@ -44,11 +44,12 @@ export type NftType = {
   creatorData: UserType;
   serieId: string;
   itemTotal: string;
-  serieData?: NftType[];
   totalNft?: number;
   totalListedNft?: number;
   totalListedInMarketplace?: number;
   totalOwnedByRequestingUser?: number;
+  totalOwnedListedByRequestingUser?: number;
+  totalOwnedListedInMarketplaceByRequestingUser?: number;
   smallestPrice?: string;
   smallestPriceTiime?: string;
   itemId: string;

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import Slider from 'components/ui/Slider';
+import { NftEffectType, NFT_EFFECT_DEFAULT } from 'interfaces';
 
 interface Props {
   className?: string;
@@ -8,7 +9,8 @@ interface Props {
   coverNFT: File;
   showThumbnailSelector: boolean;
   thumbnailTimecode: number;
-  setThumbnailTimecode: (x: number) => void
+  setThumbnailTimecode: (x: number) => void;
+  effect: NftEffectType;
 }
 
 const secToMn = (n: number) => `${(n/60)<10?'0':''}${Math.floor(n/60)}:${(n%60)<10?'0':''}${Math.floor(n%60)}`
@@ -19,24 +21,27 @@ const ThumbnailSelector = ({
   coverNFT,
   showThumbnailSelector,
   thumbnailTimecode,
-  setThumbnailTimecode
+  setThumbnailTimecode,
+  effect
 }: Props) => {
   const [thumbnailDuration, setThumbnailDuration] = useState(0)
   const [thumbnailSrc, setThumbnailSrc] = useState("")
   const thumbnailRef = useRef(null);
-  
+  const thumbnailNFT = effect === NFT_EFFECT_DEFAULT ? originalNFT : (coverNFT || originalNFT) as File
+
   /* If NFT (original or cover) changes, we reset thumbnail source, timecode and duration */
   useEffect(() => {
     if (showThumbnailSelector) {
       if (thumbnailSrc) URL.revokeObjectURL(thumbnailSrc)
-      setThumbnailSrc(URL.createObjectURL((coverNFT || originalNFT) as File))
+      setThumbnailSrc(URL.createObjectURL(thumbnailNFT))
       setThumbnailTimecode(0)
       getThumbnailDuration()
     }
-  }, [originalNFT, coverNFT])
+  }, [thumbnailNFT])
 
   /* If source change, we reload the video (for IOS) */
-  //TODO : Find better implementation working on IOS webview and android web View
+  //TODO : Find better implementation working on IOS webview and android web View 
+  // OR add link to directly import thumbnail, display both on desktop, only link in mobile
   useEffect(() => {
     if (thumbnailRef && thumbnailRef.current){
       const videoElem = (thumbnailRef.current as HTMLVideoElement)
@@ -65,7 +70,7 @@ const ThumbnailSelector = ({
       const duration = video.duration;
       setThumbnailDuration(duration)
     }
-    video.src = URL.createObjectURL((coverNFT || originalNFT) as File)
+    video.src = URL.createObjectURL(thumbnailNFT)
   }
 
   /* Set video time depending on slider */

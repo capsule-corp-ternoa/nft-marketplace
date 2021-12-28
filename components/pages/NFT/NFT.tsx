@@ -20,7 +20,7 @@ import { MARKETPLACE_ID } from 'utils/constant';
 import { Title } from 'components/layout'
 import Chip from 'components/ui/Chip';
 import Showcase from 'components/base/Showcase';
-import { getByTheSameArtistNFTs, getOwnedNFTS } from 'actions/nft';
+import { getByTheSameArtistNFTs, getOwnedNFTS, getSeriesData } from 'actions/nft';
 import { getRandomNFTFromArray } from 'utils/functions';
 
 export interface NFTPageProps {
@@ -49,6 +49,7 @@ const NFTPage = ({
   const [modalShareOpen, setModalShareOpen] = useState(false);
   const [byTheSameArtistNFTs, setByTheSameArtistNFTs] = useState<NftType[]>([])
   const [canUserBuyAgain, setCanUserBuyAgain] = useState(true)
+  const [seriesData, setSeriesData] = useState([NFT])
   const isVR = (NFT.categories.findIndex(x => x.code === "vr") !== -1) && NFT.creator === NFT.owner
   const shareSubject = 'Check out this Secret NFT';
   const shareText = `Check out ${NFT.title ? NFT.title : 'this nft'} on ${
@@ -68,38 +69,24 @@ const NFTPage = ({
     : NFT.serieId === '0'
     ? user.likedNFTs?.map((x) => x.nftId).includes(NFT.id)
     : user.likedNFTs?.map((x) => x.serieId).includes(NFT.serieId);
-  const numberListedOnThisMarketplace = NFT.totalListedInMarketplace 
-    ? NFT.totalListedInMarketplace 
-    : !NFT.serieData
-    ? 0
-    : NFT.serieData.reduce(
-        (prev, current) =>
-          prev +
-          (current?.listed === 1 && current.marketplaceId === MARKETPLACE_ID
-            ? 1
-            : 0),
-        0
-      );
   const smallestPriceRow =
-    (!NFT.serieData || NFT.serieData.length <= 1)
-      ? NFT
-      : NFT.serieData
-          .filter((x) => x.marketplaceId === MARKETPLACE_ID)
-          .sort(
-            (a, b) =>
-              (a.owner === b.owner
-                ? 0
-                : !user
-                ? 0
-                : a.owner === user.walletId
-                ? 1
-                : b.owner === user.walletId
-                ? -1
-                : 0) || // take nft which i'm not owner first
-              b.listed - a.listed || //listed first
-              Number(a.price) - Number(b.price) || //lowest price first
-              Number(a.priceTiime) - Number(b.priceTiime) // lower pricetiime first
-          )[0];
+    seriesData
+      .filter((x) => x.marketplaceId === MARKETPLACE_ID)
+      .sort(
+        (a, b) =>
+          (a.owner === b.owner
+            ? 0
+            : !user
+            ? 0
+            : a.owner === user.walletId
+            ? 1
+            : b.owner === user.walletId
+            ? -1
+            : 0) || // take nft which i'm not owner first
+          b.listed - a.listed || //listed first
+          Number(a.price) - Number(b.price) || //lowest price first
+          Number(a.priceTiime) - Number(b.priceTiime) // lower pricetiime first
+      )[0];
   const userCanBuy = (!isVR || (isVR && isUserFromDappQR && canUserBuyAgain)) && (user
     ? user.capsAmount &&
       smallestPriceRow &&
@@ -114,6 +101,10 @@ const NFTPage = ({
       smallestPriceRow.marketplaceId === MARKETPLACE_ID
     : false);
 
+  useEffect(() => {
+    loadSeriesData(NFT.serieId);
+  }, []);
+  
   useEffect(() => {
     setNftToBuy(smallestPriceRow);
   }, [smallestPriceRow]);
@@ -130,9 +121,18 @@ const NFTPage = ({
     }
   }, [isVR])
 
+  const loadSeriesData = async (seriesId: string) => {
+    try{
+      const result = await getSeriesData(seriesId)
+      setSeriesData(result.data)
+    }catch(err){
+      console.log(err)
+    }
+  }
+
   const loadCanUserBuyAgain = async () => {
     try{
-      const res = await getOwnedNFTS(user.walletId,false, undefined, undefined, undefined, true, NFT.serieData?.map(x => x.id))
+      const res = await getOwnedNFTS(user.walletId,false, undefined, undefined, undefined, seriesData?.map(x => x.id))
       const canUserBuyAgainValue = res.totalCount === 0
       setCanUserBuyAgain(canUserBuyAgainValue)
       return canUserBuyAgainValue
@@ -143,7 +143,7 @@ const NFTPage = ({
   }
 
   const loadByTheSameArtistNFTs = async () => {
-    const NFTs = await getByTheSameArtistNFTs(NFT.creator, "1", "7", true)
+    const NFTs = await getByTheSameArtistNFTs(NFT.creator, "1", "7")
     setByTheSameArtistNFTs(NFTs.data.filter(x => x.serieId !== NFT.serieId))
   }
 
@@ -193,10 +193,7 @@ const NFTPage = ({
 
   const handleBuy = async () => {
     //get a random row to buy if same price
-    const smallestPriceRows = (!NFT.serieData || NFT.serieData.length <= 1) ? 
-      [NFT]
-    : 
-      NFT.serieData
+    const smallestPriceRows = seriesData
         .filter((x) => x.marketplaceId === MARKETPLACE_ID && x.listed===1 && (!user || (x.owner !== user.walletId)))
         .sort(
           (a, b) =>
@@ -354,8 +351,8 @@ const NFTPage = ({
               <div className={style.AvailbleText}>
                 <NoNFTImage className={style.AvailbleCards} />
                 <div className={style.AvailableTextContent}>
-                  {`${numberListedOnThisMarketplace} of ${
-                    NFT.serieData ? NFT.serieData.length : 1
+                  {`${NFT.totalListedInMarketplace ?? 0} of ${
+                    NFT.totalNft ?? 0
                   }`}{' '}
                   Available
                 </div>
@@ -367,6 +364,7 @@ const NFTPage = ({
         <div>
           <Details
             NFT={NFT}
+            seriesData={seriesData}
             user={user}
             setNftToBuy={setNftToBuy}
             setExp={setExp}

@@ -1,11 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import NftCard, { NftChips, GRID_MODE } from 'components/base/NftCard';
+import { NftCardWithHover, GRID_MODE } from 'components/base/NftCard';
 import NoNFTComponent from 'components/base/NoNFTComponent';
 import Button from 'components/ui/Button';
 import {
   NftType,
+  UserType,
   TabsIdType,
   NFT_OWNED_TAB,
   NFT_ON_SALE_TAB,
@@ -23,7 +24,9 @@ interface Props {
   noNftHref?: string;
   noNftLinkLabel?: string;
   noNftTitle: string;
+  setUser?: (u: UserType) => void;
   tabId: TabsIdType;
+  user: UserType;
 }
 
 const NftsProfileBlock = ({
@@ -35,24 +38,26 @@ const NftsProfileBlock = ({
   noNftHref,
   noNftLinkLabel,
   noNftTitle,
+  setUser,
+  user,
   tabId,
 }: Props) => {
-  const returnQuantityNFTsAvailable = (NFT: NftType, tabId: TabsIdType) => {
-    const { totalNft, totalOwnedByRequestingUser, totalOwnedListedInMarketplaceByRequestingUser } = NFT;
-    switch (tabId) {
-      case NFT_CREATED_TAB:
-        return totalNft ?? 1;
-      case NFT_LIKED_TAB:
-        return 0;
-      case NFT_ON_SALE_TAB:
-        return totalOwnedListedInMarketplaceByRequestingUser;
-      case NFT_NOT_FOR_SALE_TAB:
-        return totalOwnedByRequestingUser ? totalOwnedByRequestingUser - (totalOwnedListedInMarketplaceByRequestingUser ?? 0) : 0
-      case NFT_OWNED_TAB:
-      default:
-        return totalOwnedByRequestingUser ?? 1;
-    }
-  };
+  // const returnQuantityNFTsAvailable = (NFT: NftType, tabId: TabsIdType) => {
+  //   const { totalNft, totalOwnedByRequestingUser, totalOwnedListedInMarketplaceByRequestingUser } = NFT;
+  //   switch (tabId) {
+  //     case NFT_CREATED_TAB:
+  //       return totalNft ?? 1;
+  //     case NFT_LIKED_TAB:
+  //       return 0;
+  //     case NFT_ON_SALE_TAB:
+  //       return totalOwnedListedInMarketplaceByRequestingUser;
+  //     case NFT_NOT_FOR_SALE_TAB:
+  //       return totalOwnedByRequestingUser ? totalOwnedByRequestingUser - (totalOwnedListedInMarketplaceByRequestingUser ?? 0) : 0
+  //     case NFT_OWNED_TAB:
+  //     default:
+  //       return totalOwnedByRequestingUser ?? 1;
+  //   }
+  // };
 
   if (NFTs == undefined || NFTs.length < 1) {
     return (
@@ -86,15 +91,14 @@ const NftsProfileBlock = ({
       )} */}
       <SNFTsContainer>
         {NFTs.map((item: NftType) => (
-          <SNftCard key={item.id} mode={GRID_MODE} item={item}>
-            <NftChips
-              NFT={item}
-              mode={GRID_MODE}
-              noAvailableChip={tabId !== NFT_ON_SALE_TAB}
-              noPriceChip={tabId !== NFT_ON_SALE_TAB}
-              quantity={returnQuantityNFTsAvailable(item, tabId)}
-            />
-          </SNftCard>
+          <SNftCardWithHover
+            key={item.id}
+            item={item}
+            mode={GRID_MODE}
+            quantity={0}
+            setUser={setUser}
+            user={user}
+          />
         ))}
         {/* {tabId === NFT_ON_SALE_TAB && !isTablet && (
           <SSaleLinkWrapper>
@@ -156,7 +160,7 @@ const SNFTsContainer = styled.div`
   }
 `;
 
-const SNftCard = styled(NftCard)`
+const SNftCardWithHover = styled(NftCardWithHover)`
   margin: 0 auto;
 `;
 

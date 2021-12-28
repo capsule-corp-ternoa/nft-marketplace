@@ -42,22 +42,22 @@ const NftsProfileBlock = ({
   user,
   tabId,
 }: Props) => {
-  // const returnQuantityNFTsAvailable = (NFT: NftType, tabId: TabsIdType) => {
-  //   const { totalNft, totalOwnedByRequestingUser, totalOwnedListedInMarketplaceByRequestingUser } = NFT;
-  //   switch (tabId) {
-  //     case NFT_CREATED_TAB:
-  //       return totalNft ?? 1;
-  //     case NFT_LIKED_TAB:
-  //       return 0;
-  //     case NFT_ON_SALE_TAB:
-  //       return totalOwnedListedInMarketplaceByRequestingUser;
-  //     case NFT_NOT_FOR_SALE_TAB:
-  //       return totalOwnedByRequestingUser ? totalOwnedByRequestingUser - (totalOwnedListedInMarketplaceByRequestingUser ?? 0) : 0
-  //     case NFT_OWNED_TAB:
-  //     default:
-  //       return totalOwnedByRequestingUser ?? 1;
-  //   }
-  // };
+  const returnQuantityNFTsAvailable = (NFT: NftType, tabId: TabsIdType) => {
+    const { totalNft, totalOwnedByRequestingUser, totalOwnedListedInMarketplaceByRequestingUser } = NFT;
+    switch (tabId) {
+      case NFT_CREATED_TAB:
+        return totalNft ?? 1;
+      case NFT_LIKED_TAB:
+        return 0;
+      case NFT_ON_SALE_TAB:
+        return totalOwnedListedInMarketplaceByRequestingUser;
+      case NFT_NOT_FOR_SALE_TAB:
+        return totalOwnedByRequestingUser ? totalOwnedByRequestingUser - (totalOwnedListedInMarketplaceByRequestingUser ?? 0) : 0
+      case NFT_OWNED_TAB:
+      default:
+        return totalOwnedByRequestingUser ?? 1;
+    }
+  };
 
   if (NFTs == undefined || NFTs.length < 1) {
     return (
@@ -95,7 +95,7 @@ const NftsProfileBlock = ({
             key={item.id}
             item={item}
             mode={GRID_MODE}
-            quantity={0}
+            quantity={returnQuantityNFTsAvailable(item, tabId)}
             setUser={setUser}
             user={user}
           />

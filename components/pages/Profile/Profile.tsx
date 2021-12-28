@@ -11,6 +11,7 @@ import {
   isUserFollowing,
   getFollowersCount,
 } from 'actions/follower';
+import { getUserNFTsStat } from 'actions/nft';
 import { Container, Wrapper } from 'components/layout/Container';
 import Button from 'components/ui/Button';
 import Tabs from 'components/ui/Tabs';
@@ -42,38 +43,31 @@ export interface ProfileProps {
   setSearchValue: (s: string) => void;
   //Owned
   ownedNfts?: NftType[];
-  ownedNftsTotal?: number;
   loadMoreOwnedNfts?: () => void;
   ownedNftsHasNextPage?: boolean;
   //Owned listed
   ownedNftsListed: NftType[];
-  ownedNftsListedTotal: number;
   ownedNftsListedHasNextPage: boolean;
   loadMoreOwnedListedNfts: () => void;
   //Owned not listed
   ownedNftsUnlisted: NftType[];
-  ownedNftsUnlistedTotal: number;
   ownedNftsUnlistedHasNextPage: boolean;
   loadMoreOwnedUnlistedNfts: () => void;
   //created
   createdNfts?: NftType[];
-  createdNftsTotal?: number;
   loadMoreCreatedNfts?: () => void;
   createdNftsHasNextPage?: boolean;
   //liked
   likedNfts?: NftType[];
-  likedNftsTotal?: number;
   setLikedNfts?: (nfts: NftType[]) => void;
   likedNftsHasNextPage?: boolean;
   loadMoreLikedNfts?: () => void;
   //followers
   followers: UserType[];
-  followersTotal: number;
   followersUsersHasNextPage: boolean;
   loadMoreFollowers: (forceLoad?: boolean) => void;
   //followed
   followed: UserType[];
-  followedTotal: number;
   setFollowed: (users: UserType[]) => void;
   followedUsersHasNextPage: boolean;
   loadMoreFollowed: (forceLoad?: boolean) => void;
@@ -92,31 +86,24 @@ const Profile = ({
   searchValue,
   setSearchValue,
   ownedNfts,
-  ownedNftsTotal,
   loadMoreOwnedNfts,
   ownedNftsHasNextPage,
   ownedNftsListed,
-  ownedNftsListedTotal,
   ownedNftsListedHasNextPage,
   loadMoreOwnedListedNfts,
   ownedNftsUnlisted,
-  ownedNftsUnlistedTotal,
   ownedNftsUnlistedHasNextPage,
   loadMoreOwnedUnlistedNfts,
   createdNfts,
-  createdNftsTotal,
   createdNftsHasNextPage,
   loadMoreCreatedNfts,
   likedNfts,
-  likedNftsTotal,
   likedNftsHasNextPage,
   loadMoreLikedNfts,
   followers,
-  followersTotal,
   followersUsersHasNextPage,
   loadMoreFollowers,
   followed,
-  followedTotal,
   followedUsersHasNextPage,
   loadMoreFollowed,
   setFollowed,
@@ -127,12 +114,35 @@ const Profile = ({
   const [followBacks, setFollowBacks] = useState(
     Array(followers.length).fill(false)
   );
-  const [countFollowed, setCountFollowed] = useState(0);
   const [followersNbFollowers, setFollowersNbFollowers] = useState({} as any);
+  const [countOwned, setCountOwned] = useState(0);
+  const [countOwnedListed, setCountOwnedListed] = useState(0);
+  const [countOwnedUnlisted, setCountOwnedUnlisted] = useState(0);
+  const [countCreated, setCountOwnedCreated] = useState(0);
+  const [countFollowers, setCountFollowers] = useState(0);
+  const [countFollowed, setCountFollowed] = useState(0);
 
   const isTablet = useMediaQuery({
     query: `(max-width: ${breakpointMap.lg - 1}px)`,
   });
+
+  const setCounts = async () => {
+    try{
+      if (user){
+        let userStat = await getUserNFTsStat(user.walletId, true)
+        if (userStat){
+          setCountOwned(userStat.countOwned)
+          setCountOwnedListed(userStat.countOwnedListed)
+          setCountOwnedUnlisted(userStat.countOwnedUnlisted)
+          setCountOwnedCreated(userStat.countCreated)
+          setCountFollowers(userStat.countFollowers)
+          setCountFollowed(userStat.countFollowed)
+        }
+      }
+    }catch(err){
+      console.log(err)
+    }
+  }
 
   const getFollowBacks = async () => {
     try {
@@ -290,20 +300,20 @@ const Profile = ({
   const returnQuantity = (tabId: TabsIdType) => {
     switch (tabId) {
       case NFT_CREATED_TAB:
-        return createdNftsTotal;
+        return countCreated;
       case NFT_LIKED_TAB:
-        return likedNftsTotal;
+        return user.likedNFTs?.length || 0;
       case NFT_ON_SALE_TAB:
-        return ownedNftsListedTotal;
+        return countOwnedListed;
       case NFT_NOT_FOR_SALE_TAB:
-        return ownedNftsUnlistedTotal;
+        return countOwnedUnlisted;
       case FOLLOWERS_TAB:
-        return followersTotal;
+        return countFollowers;
       case FOLLOWED_TAB:
-        return followedTotal;
+        return countFollowed;
       case NFT_OWNED_TAB:
       default:
-        return ownedNftsTotal;
+        return countOwned;
     }
   };
 
@@ -360,6 +370,10 @@ const Profile = ({
       initFollowerStat();
     }
   }, [profileDataLoaded]);
+
+  useEffect(() => {
+    setCounts();
+  }, []);
 
   useEffect(() => {
     getFollowBacks();

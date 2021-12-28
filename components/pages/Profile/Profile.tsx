@@ -223,7 +223,7 @@ const Profile = ({
         return (
           <NftsProfileBlock
             NFTs={createdNfts}
-            isLoading={loading}
+            isLoading={!profileDataLoaded || loading}
             isLoadMore={!!createdNftsHasNextPage}
             loadMore={loadMoreCreatedNfts}
             noNftHref="/create"
@@ -238,7 +238,7 @@ const Profile = ({
         return (
           <NftsProfileBlock
             NFTs={likedNfts}
-            isLoading={loading}
+            isLoading={!profileDataLoaded || loading}
             isLoadMore={!!likedNftsHasNextPage}
             loadMore={loadMoreLikedNfts}
             noNftBody="The NFTs you liked are displayed here"
@@ -252,7 +252,7 @@ const Profile = ({
         return (
           <NftsProfileBlock
             NFTs={ownedNftsListed}
-            isLoading={loading}
+            isLoading={!profileDataLoaded || loading}
             isLoadMore={ownedNftsListedHasNextPage}
             loadMore={loadMoreOwnedListedNfts}
             noNftHref="/"
@@ -267,7 +267,7 @@ const Profile = ({
         return (
           <NftsProfileBlock
             NFTs={ownedNftsUnlisted}
-            isLoading={loading}
+            isLoading={!profileDataLoaded || loading}
             isLoadMore={ownedNftsUnlistedHasNextPage}
             loadMore={loadMoreOwnedUnlistedNfts}
             noNftBody="The NFTs you owned and are not for sale are displayed here"
@@ -282,7 +282,7 @@ const Profile = ({
         return (
           <NftsProfileBlock
             NFTs={ownedNfts}
-            isLoading={loading}
+            isLoading={!profileDataLoaded || loading}
             isLoadMore={!!ownedNftsHasNextPage}
             loadMore={loadMoreOwnedNfts}
             noNftBody="The NFTs you owned are displayed here"
@@ -327,7 +327,7 @@ const Profile = ({
             followersNbFollowers={followersNbFollowers}
             handleFollow={handleFollow}
             isFiltered={isFiltered}
-            isLoading={loading}
+            isLoading={!profileDataLoaded || loading}
             isLoadMore={followersUsersHasNextPage}
             loadMore={loadMoreFollowers}
             noContentBody="Discover new artists and start following them!"
@@ -345,7 +345,7 @@ const Profile = ({
             followersNbFollowers={followersNbFollowers}
             handleFollow={handleFollow}
             isFiltered={isFiltered}
-            isLoading={loading}
+            isLoading={!profileDataLoaded || loading}
             isLoadMore={followedUsersHasNextPage}
             loadMore={loadMoreFollowed}
             noContentTitle="Nothing to display"

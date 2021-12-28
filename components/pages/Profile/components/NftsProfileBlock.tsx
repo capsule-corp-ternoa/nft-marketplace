@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { NftCardWithHover, GRID_MODE } from 'components/base/NftCard';
 import NoNFTComponent from 'components/base/NoNFTComponent';
 import Button from 'components/ui/Button';
+import { Loader } from 'components/ui/Icon';
 import {
   NftType,
   UserType,
@@ -62,12 +63,16 @@ const NftsProfileBlock = ({
   if (NFTs == undefined || NFTs.length < 1) {
     return (
       <SNoNFTContainer>
-        <NoNFTComponent
-          body={noNftBody}
-          href={noNftHref}
-          linkLabel={noNftLinkLabel}
-          title={noNftTitle}
-        />
+        {isLoading ? (
+          <SLoader color="primary" />
+        ) : (
+          <NoNFTComponent
+            body={noNftBody}
+            href={noNftHref}
+            linkLabel={noNftLinkLabel}
+            title={noNftTitle}
+          />
+        )}
       </SNoNFTContainer>
     );
   }
@@ -132,7 +137,13 @@ const NftsProfileBlock = ({
 };
 
 const SNoNFTContainer = styled.div`
+  display: flex;
+  align-items; center;
   margin-top: 8rem;
+`;
+
+const SLoader = styled(Loader)`
+  margin: 8rem auto;
 `;
 
 const SLoadButtonWrapper = styled.div`

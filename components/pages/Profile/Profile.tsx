@@ -79,6 +79,7 @@ export interface ProfileProps {
   loadMoreFollowed: (forceLoad?: boolean) => void;
   canEditProfile: boolean;
   tabs: readonly TabsIdType[];
+  profileDataLoaded: boolean;
 }
 
 const Profile = ({
@@ -120,6 +121,7 @@ const Profile = ({
   setFollowed,
   canEditProfile,
   tabs,
+  profileDataLoaded,
 }: ProfileProps) => {
   const [followBacks, setFollowBacks] = useState(
     Array(followers.length).fill(false)
@@ -343,8 +345,10 @@ const Profile = ({
   };
 
   useEffect(() => {
-    initFollowerStat();
-  }, []);
+    if (profileDataLoaded){
+      initFollowerStat();
+    }
+  }, [profileDataLoaded]);
 
   useEffect(() => {
     getFollowBacks();

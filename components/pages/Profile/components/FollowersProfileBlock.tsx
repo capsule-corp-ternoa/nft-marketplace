@@ -94,7 +94,7 @@ const FollowersProfileBlock = ({
                     handleFollow={() => handleFollow(walletId, isUnfollow)}
                     isClickable
                     isFollowButton
-                    isUnfollow
+                    isUnfollow={isUnfollow}
                     isVerified={verified}
                     name={name}
                     picture={picture}

@@ -86,9 +86,9 @@ const ProfilePage = ({ user, owned, ownedHasNextPage }: ProfilePageProps) => {
   //profile followed
   const [followedUsers, setFollowedUsers] = useState([] as UserType[]);
   const [followedUsersTotal, setFollowedUsersTotal] = useState<number>(0);
-  const [followedUsersHasNextPage, setFollowedUsersHasNextPage] =
-    useState(false);
+  const [followedUsersHasNextPage, setFollowedUsersHasNextPage] = useState(false);
   const [followedCurrentPage, setFollowedCurrentPage] = useState(1);
+  const [profileDataLoaded, setProfileDataLoaded] = useState(false)
 
   useEffect(() => {
     try {
@@ -141,6 +141,7 @@ const ProfilePage = ({ user, owned, ownedHasNextPage }: ProfilePageProps) => {
     setFollowedUsers(followed.data);
     setFollowedUsersTotal(followed.totalCount ?? 0);
     setFollowedUsersHasNextPage(followed.hasNextPage);
+    setProfileDataLoaded(true)
   };
 
   const loadMoreCreatedNfts = async () => {
@@ -349,6 +350,7 @@ const ProfilePage = ({ user, owned, ownedHasNextPage }: ProfilePageProps) => {
         loading={isLoading}
         canEditProfile
         tabs={ORDERED_TABS_ID}
+        profileDataLoaded={profileDataLoaded}
       />
     </>
   );

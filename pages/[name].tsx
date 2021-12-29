@@ -39,38 +39,34 @@ const PublicProfilePage = ({
   profile,
 }: PublicProfileProps) => {
   const [modalExpand, setModalExpand] = useState(false);
+  const [connectedUser, setConnectedUser] = useState(user);
   const [viewProfile, setViewProfile] = useState(profile);
   const [isLoading, setIsLoading] = useState(false);
   const [isFiltered, setIsFiltered] = useState(false);
   const [searchValue, setSearchValue] = useState('');
   //Owned listed NFTs
   const [ownedNftsListed, setOwnedNftsListed] = useState([] as NftType[]);
-  const [ownedNftsListedTotal, setOwnedNftsListedTotal] = useState<number>(0);
   const [ownedNftsListedHasNextPage, setOwnedNftsListedHasNextPage] =
     useState(false);
   const [ownedNftsListedCurrentPage, setOwnedNftsListedCurrentPage] =
     useState(1);
   //Owned not listed NFTs
   const [ownedNftsUnlisted, setOwnedNftsUnlisted] = useState([] as NftType[]);
-  const [ownedNftsUnlistedTotal, setOwnedNftsUnlistedTotal] =
-    useState<number>(0);
   const [ownedNftsUnlistedHasNextPage, setOwnedNftsUnlistedHasNextPage] =
     useState(false);
   const [ownedNftsUnlistedCurrentPage, setOwnedNftsUnlistedCurrentPage] =
     useState(1);
   //profile followers
   const [followersUsers, setFollowersUsers] = useState([] as UserType[]);
-  const [followersUsersTotal, setFollowersUsersTotal] = useState<number>(0);
   const [followersUsersHasNextPage, setFollowersUsersHasNextPage] =
     useState(false);
   const [followersCurrentPage, setFollowersCurrentPage] = useState(1);
   //profile followed
   const [followedUsers, setFollowedUsers] = useState([] as UserType[]);
-  const [followedUsersTotal, setFollowedUsersTotal] = useState<number>(0);
-  const [followedUsersHasNextPage, setFollowedUsersHasNextPage] = useState(false);
+  const [followedUsersHasNextPage, setFollowedUsersHasNextPage] =
+    useState(false);
   const [followedCurrentPage, setFollowedCurrentPage] = useState(1);
-  const [profileDataLoaded, setProfileDataLoaded] = useState(false)
-
+  const [profileDataLoaded, setProfileDataLoaded] = useState(false);
 
   const populateProfileData = async (token: string) => {
     //Owned listed NFTs
@@ -82,7 +78,6 @@ const PublicProfilePage = ({
       undefined,
     );
     setOwnedNftsListed(ownedListed.data);
-    setOwnedNftsListedTotal(ownedListed.totalCount ?? 0);
     setOwnedNftsListedHasNextPage(ownedListed.hasNextPage);
     //Owned not listed NFTs
     const ownedUnlisted = await getOwnedNFTS(
@@ -93,17 +88,14 @@ const PublicProfilePage = ({
       undefined,
     );
     setOwnedNftsUnlisted(ownedUnlisted.data);
-    setOwnedNftsUnlistedTotal(ownedUnlisted.totalCount ?? 0);
     setOwnedNftsUnlistedHasNextPage(ownedUnlisted.hasNextPage);
     //profile followers
     const followers = await getFollowers(token);
     setFollowersUsers(followers.data);
-    setFollowersUsersTotal(followers.totalCount ?? 0);
     setFollowersUsersHasNextPage(followers.hasNextPage);
     //profile followed
     const followed = await getFollowed(token);
     setFollowedUsers(followed.data);
-    setFollowedUsersTotal(followed.totalCount ?? 0);
     setFollowedUsersHasNextPage(followed.hasNextPage);
     setProfileDataLoaded(true)
   };
@@ -113,7 +105,7 @@ const PublicProfilePage = ({
     try {
       if (ownedNftsListedHasNextPage) {
         let result = await getOwnedNFTS(
-          profile.walletId,
+          viewProfile.walletId,
           true,
           true,
           (ownedNftsListedCurrentPage + 1).toString(),
@@ -134,7 +126,7 @@ const PublicProfilePage = ({
     try {
       if (ownedNftsUnlistedHasNextPage) {
         let result = await getOwnedNFTS(
-          profile.walletId,
+          viewProfile.walletId,
           false,
           false,
           (ownedNftsUnlistedCurrentPage + 1).toString(),
@@ -156,7 +148,7 @@ const PublicProfilePage = ({
       if (followersUsersHasNextPage || forceLoad) {
         let pageToLoad = !forceLoad ? followersCurrentPage : 0;
         let result = await getFollowers(
-          profile.walletId,
+          viewProfile.walletId,
           (pageToLoad + 1).toString(),
           undefined,
           searchValue,
@@ -182,7 +174,7 @@ const PublicProfilePage = ({
       if (followedUsersHasNextPage || forceLoad) {
         let pageToLoad = !forceLoad ? followedCurrentPage : 0;
         let result = await getFollowed(
-          profile.walletId,
+          viewProfile.walletId,
           (pageToLoad + 1).toString(),
           undefined,
           searchValue,
@@ -204,7 +196,7 @@ const PublicProfilePage = ({
 
   useEffect(() => {
     try {
-      populateProfileData(user.walletId);
+      populateProfileData(viewProfile.walletId);
     } catch (err) {
       console.log(err);
     }
@@ -230,16 +222,16 @@ const PublicProfilePage = ({
       </Head>
       {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
       <BetaBanner />
-      <MainHeader user={user} setModalExpand={setModalExpand} />
+      <MainHeader user={connectedUser} setModalExpand={setModalExpand} />
       <Profile
-        user={viewProfile}
-        setUser={setViewProfile}
+        artist={viewProfile}
+        setArtist={setViewProfile}
+        user={connectedUser}
+        setUser={setConnectedUser}
         ownedNftsListed={ownedNftsListed}
-        ownedNftsListedTotal={ownedNftsListedTotal}
         ownedNftsListedHasNextPage={ownedNftsListedHasNextPage}
         loadMoreOwnedListedNfts={loadMoreOwnedListedNfts}
         ownedNftsUnlisted={ownedNftsUnlisted}
-        ownedNftsUnlistedTotal={ownedNftsUnlistedTotal}
         ownedNftsUnlistedHasNextPage={ownedNftsUnlistedHasNextPage}
         loadMoreOwnedUnlistedNfts={loadMoreOwnedUnlistedNfts}
         isFiltered={isFiltered}
@@ -247,11 +239,9 @@ const PublicProfilePage = ({
         searchValue={searchValue}
         setSearchValue={setSearchValue}
         followers={followersUsers}
-        followersTotal={followersUsersTotal}
         followersUsersHasNextPage={followersUsersHasNextPage}
         loadMoreFollowers={loadMoreFollowers}
         followed={followedUsers}
-        followedTotal={followedUsersTotal}
         setFollowed={setFollowedUsers}
         followedUsersHasNextPage={followedUsersHasNextPage}
         loadMoreFollowed={loadMoreFollowed}

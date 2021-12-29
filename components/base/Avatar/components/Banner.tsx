@@ -98,9 +98,11 @@ const SBio = styled.span`
   font-size: 1.6rem;
   margin-top: 2.4rem;
   max-width: 28rem;
+  text-align: center;
 
   ${({ theme }) => theme.mediaQueries.lg} {
     margin-top: 0.4rem;
+    text-align: left;
   }
 `;
 

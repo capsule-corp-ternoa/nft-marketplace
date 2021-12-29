@@ -34,6 +34,8 @@ import NftsProfileBlock from './components/NftsProfileBlock';
 
 export interface ProfileProps {
   setModalExpand: (b: boolean) => void;
+  artist?: UserType;
+  setArtist: (u: UserType) => void;
   user: UserType;
   setUser: (u: UserType) => void;
   loading: boolean;
@@ -78,6 +80,8 @@ export interface ProfileProps {
 
 const Profile = ({
   setModalExpand,
+  artist,
+  setArtist,
   user,
   setUser,
   loading,
@@ -111,6 +115,8 @@ const Profile = ({
   tabs,
   profileDataLoaded,
 }: ProfileProps) => {
+  const [isUserFollowingProfile, setIsUserFollowingProfile] = useState<boolean | null>(null);
+  const [followLoading, setFollowLoading] = useState(false);
   const [followBacks, setFollowBacks] = useState(
     Array(followers.length).fill(false)
   );
@@ -127,19 +133,21 @@ const Profile = ({
   });
 
   const setCounts = async () => {
-    try{
-      if (user){
-        let userStat = await getUserNFTsStat(user.walletId, true)
-        if (userStat){
-          setCountOwned(userStat.countOwned)
-          setCountOwnedListed(userStat.countOwnedListed)
-          setCountOwnedUnlisted(userStat.countOwnedUnlisted)
-          setCountOwnedCreated(userStat.countCreated)
-          setCountFollowers(userStat.countFollowers)
-          setCountFollowed(userStat.countFollowed)
+    const { walletId } = artist ?? user;
+    try {
+      if (walletId) {
+        const stats = await getUserNFTsStat(walletId, true);
+        console.log({walletId, stats})
+        if (stats) {
+          setCountOwned(stats.countOwned)
+          setCountOwnedListed(stats.countOwnedListed)
+          setCountOwnedUnlisted(stats.countOwnedUnlisted)
+          setCountOwnedCreated(stats.countCreated)
+          setCountFollowers(stats.countFollowers)
+          setCountFollowed(stats.countFollowed)
         }
       }
-    }catch(err){
+    } catch (err) {
       console.log(err)
     }
   }
@@ -230,7 +238,7 @@ const Profile = ({
             noNftLinkLabel="Create your NFT"
             noNftTitle="Nothing to display"
             tabId={tabId}
-            user={user}
+            user={artist ?? user}
             setUser={setUser}
           />
         );
@@ -244,7 +252,7 @@ const Profile = ({
             noNftBody="The NFTs you liked are displayed here"
             noNftTitle="Nothing to display"
             tabId={tabId}
-            user={user}
+            user={artist ?? user}
             setUser={setUser}
           />
         );
@@ -259,7 +267,7 @@ const Profile = ({
             noNftLinkLabel="Sell your NFT"
             noNftTitle="Nothing to display"
             tabId={tabId}
-            user={user}
+            user={artist ?? user}
             setUser={setUser}
           />
         );
@@ -273,7 +281,7 @@ const Profile = ({
             noNftBody="The NFTs you owned and are not for sale are displayed here"
             noNftTitle="Nothing to display"
             tabId={tabId}
-            user={user}
+            user={artist ?? user}
             setUser={setUser}
           />
         );
@@ -290,7 +298,7 @@ const Profile = ({
             noNftLinkLabel="Explore NFTs"
             noNftTitle="Nothing to display"
             tabId={tabId}
-            user={user}
+            user={artist ?? user}
             setUser={setUser}
           />
         );
@@ -365,8 +373,42 @@ const Profile = ({
     return returnNFTs(tabId);
   };
 
+  const handleFollowUnfollow = async (isUnfollow:boolean=false) => {
+    try {
+      if (artist && !followLoading){
+        setFollowLoading(true)
+        let res = !isUnfollow ? await follow(artist.walletId, user.walletId) : await unfollow(artist.walletId, user.walletId);
+        if (res) {
+          const views = artist.viewsCount
+          setArtist({...res, viewsCount: views})
+          getIsUserFollowingProfile(artist.walletId, user.walletId);
+        }
+        setFollowLoading(false)
+      }
+    } catch (err) {
+      setFollowLoading(false)
+      console.error(err);
+    }
+  }
+    const getIsUserFollowingProfile = async (artistWalletId: string, userWalletId: string) => {
+      try{
+        let res = await isUserFollowing(artistWalletId, userWalletId)
+        if (res) {
+          setIsUserFollowingProfile(res.isFollowing)
+        }
+      }catch(err){
+        console.error(err);
+      }
+    }
+  
+    useEffect(()=>{
+      if (artist?.walletId && user?.walletId){
+        getIsUserFollowingProfile(artist?.walletId, user?.walletId);
+      }
+    }, []);
+
   useEffect(() => {
-    if (profileDataLoaded){
+    if (profileDataLoaded) {
       initFollowerStat();
     }
   }, [profileDataLoaded]);
@@ -387,11 +429,13 @@ const Profile = ({
     return () => clearTimeout(timer);
   }, [searchValue, isFiltered]);
 
+  const { banner, bio, name, picture, twitterName, verified, walletId } = artist ?? user;
+
   return (
     <Container>
       <SBannerContainer>
         <SBannerIMG
-          src={user.banner ?? '/defaultBanner.jpeg'}
+          src={banner ?? '/defaultBanner.jpeg'}
           draggable="false"
           alt="banner"
         />
@@ -408,12 +452,12 @@ const Profile = ({
       <Wrapper>
         <SAvatarBannerContainer>
           <AvatarBanner
-            bio={user.bio}
-            isVerified={user.verified}
-            name={user.name}
-            picture={user.picture}
-            twitterName={user.twitterName}
-            walletId={user.walletId}
+            bio={bio}
+            isVerified={verified}
+            name={name}
+            picture={picture}
+            twitterName={twitterName}
+            walletId={walletId}
           />
           {!isTablet && canEditProfile && (
             <Button
@@ -424,6 +468,34 @@ const Profile = ({
               size="small"
               variant="outlined"
             />
+          )}
+          {artist && (
+            <SArtistStatsBannerContainer>
+              {user?.walletId &&
+                artist.walletId &&
+                user.walletId !== artist.walletId &&
+                isUserFollowingProfile !== null && (
+                  <Button
+                    color={
+                      !isUserFollowingProfile ? 'invertedContrast' : 'contrast'
+                    }
+                    disabled={followLoading}
+                    onClick={() => handleFollowUnfollow(isUserFollowingProfile)}
+                    size="medium"
+                    text={!isUserFollowingProfile ? 'Follow' : 'Unfollow'}
+                    variant={
+                      !isUserFollowingProfile ? 'outlined' : 'contained'
+                    }
+                  />
+                )}
+              <SArtistStatsContainer>
+                <SArtistStatsValue>{countFollowers}</SArtistStatsValue>followers
+                <SArtistStatsSeparator>·</SArtistStatsSeparator>
+                <SArtistStatsValue>{countFollowed}</SArtistStatsValue>following
+                <SArtistStatsSeparator>·</SArtistStatsSeparator>
+                <SArtistStatsValue>{artist.viewsCount}</SArtistStatsValue>views
+              </SArtistStatsContainer>
+            </SArtistStatsBannerContainer>
           )}
         </SAvatarBannerContainer>
       </Wrapper>
@@ -483,6 +555,43 @@ const SAvatarBannerContainer = styled.div`
     justify-content: space-between;
     margin-top: 0;
   }
+`;
+
+const SArtistStatsBannerContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 2.4rem;
+
+  > * {
+    align-self: center;
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    margin-top: 0;
+
+    > * {
+      align-self: flex-end;
+    }
+  }
+`;
+
+const SArtistStatsContainer = styled.div`
+  display: flex;
+  align-items: center;
+  font-family: ${({theme}) => theme.fonts.light};
+  font-size: 1.6rem;
+  margin-top: 1.2rem;
+`;
+
+const SArtistStatsSeparator = styled.div`
+  font-family: ${({theme}) => theme.fonts.bold};
+  margin: 0 1.2rem;
+  font-size: 2.4rem;
+`;
+
+const SArtistStatsValue = styled.div`
+  font-family: ${({theme}) => theme.fonts.bold};
+  margin-right: 0.4rem;
 `;
 
 export default Profile;

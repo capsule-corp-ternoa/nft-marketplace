@@ -6,6 +6,9 @@
     "build": "next build",
     "start": "next start",
     "type-check": "tsc",
+    "lint": "eslint \"./**/*.{js,jsx,ts,tsx}\"",
+    "lint-fix": "eslint --fix \"./**/*.{js,jsx,ts,tsx}\"",
+    "prettier": "prettier --write \"./**/*.{js,jsx,ts,tsx,json,css,scss,md,html}\"",
     "export": "next build && next export"
   },
   "dependencies": {
@@ -19,7 +22,6 @@
     "crypto-js": "^4.1.1",
     "dayjs": "^1.10.7",
     "emoji-regex": "^10.0.0",
-    "eslint": "^7.32.0",
     "file-to-array-buffer": "^1.0.0",
     "i18next": "^21.4.1",
     "i18next-browser-languagedetector": "^6.1.2",
@@ -72,7 +74,15 @@
     "@types/react-window": "^1.8.5",
     "@types/styled-components": "^5.1.15",
     "@types/uuid": "^8.3.1",
-    "typescript": "4.4",
+    "@typescript-eslint/eslint-plugin": "^4.33.0",
+    "eslint": "^7.32.0",
+    "eslint-config-standard-with-typescript": "^21.0.1",
+    "eslint-import-resolver-typescript": "^2.5.0",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-promise": "^5.2.0",
+    "typescript": "^4.5.4",
     "webpack-node-externals": "^3.0.0"
   },
   "license": "MIT"

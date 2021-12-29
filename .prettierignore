@@ -1,0 +1,7 @@
+.cache
+.next
+.vscode
+package.json
+package-lock.json
+public
+node_modules

@@ -1,87 +1,89 @@
 {
   "plugins": ["prettier", "@typescript-eslint"],
-  "extends": ["airbnb-typescript", "react-app", "prettier"],
+  "extends": "standard-with-typescript",
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": "./tsconfig.json"
+    "project": "./tsconfig.json",
+    "warnOnUnsupportedTypeScriptVersion": false
   },
   "settings": {
     "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      },
       "typescript": {
         "alwaysTryTypes": true
       }
     }
   },
   "rules": {
-    "jsx-a11y/label-has-associated-control": "warn",
-    "jsx-a11y/click-events-have-key-events": 0,
-    "import/no-named-as-default": 0,
-    "object-curly-spacing": ["warn", "always"],
-    "no-unused-vars": [
-      "warn",
-      {
-        "vars": "all",
-        "args": "none"
-      }
-    ],
-    "@typescript-eslint/no-unused-vars": [
-      "warn",
-      {
-        "vars": "all",
-        "args": "none"
-      }
-    ],
-    "@typescript-eslint/no-explicit-any": [
-      "warn",
-      {
-        "ignoreRestArgs": true
-      }
-    ],
-    "max-len": [
-      "warn",
-      {
-        "code": 80,
-        "ignoreStrings": true,
-        "ignoreTemplateLiterals": true,
-        "ignoreComments": true
-      }
-    ],
-    "no-plusplus": [
-      "error",
-      {
-        "allowForLoopAfterthoughts": true
-      }
-    ],
-    "react/jsx-key": "error",
-    "import/no-extraneous-dependencies": [
-      "error",
-      {
-        "devDependencies": [
-          "**/*.test.js",
-          "**/*.test.jsx",
-          "**/*.test.ts",
-          "**/*.test.tsx",
-          "src/tests/**/*"
-        ]
-      }
-    ],
-    "react/jsx-props-no-spreading": "off",
-    "import/prefer-default-export": "off",
-    "react/jsx-boolean-value": "off",
-    "react/prop-types": "off",
-    "react/no-unescaped-entities": "off",
-    "react/jsx-one-expression-per-line": "off",
-    "react/jsx-wrap-multilines": "off",
-    "react/destructuring-assignment": "off",
-    "@typescript-eslint/comma-dangle": [
-      "error",
-      {
-        "arrays": "only-multiline",
-        "objects": "only-multiline",
-        "imports": "only-multiline",
-        "exports": "only-multiline",
-        "functions": "never"
-      }
-    ]
+    "multiline-ternary": "off",
+    "@typescript-eslint/indent": "off",
+
+    // Remove all rules above
+    "comma-dangle": "off",
+    "eqeqeq": "off",
+    "prefer-const": "off",
+    "no-multi-spaces": "off",
+    "no-useless-escape": "off",
+    "no-useless-catch": "off",
+    "spaced-comment": "off",
+    "padded-blocks": "off",
+    "eol-last": "off",
+    "one-var": "off",
+    "no-var": "off",
+    "curly": "off",
+    "arrow-spacing": "off",
+    "block-spacing": "off",
+    "semi": "off",
+    "quotes": "off",
+    "import/no-duplicates": "off",
+    "indent": "off",
+    "operator-linebreak": "off",
+    "object-curly-spacing": "off",
+    "key-spacing": "off",
+    "no-unneeded-ternary": "off",
+    "space-before-blocks": "off",
+    "space-before-function-paren": "off",
+    "no-multiple-empty-lines": "off",
+    "@typescript-eslint/no-unnecessary-boolean-literal-compare": "off",
+    "@typescript-eslint/prefer-includes": "off",
+    "@typescript-eslint/array-type": "off",
+    "@typescript-eslint/comma-spacing": "off",
+    "@typescript-eslint/lines-between-class-members": "off",
+    "@typescript-eslint/lines-between-class-member": "off",
+    "@typescript-eslint/no-unnecessary-type-assertion": "off",
+    "@typescript-eslint/no-redeclare": "off",
+    "no-async-promise-executor": "off",
+    "no-tabs": "off",
+    "prefer-promise-reject-errors": "off",
+    "promise/param-names": "off",
+    "no-trailing-spaces": "off",
+    "space-infix-ops": "off",
+    "jsx-a11y/no-static-element-interactions": "off",
+    "@typescript-eslint/return-await": "off",
+    "@typescript-eslint/type-annotation-spacing": "off",
+    "@typescript-eslint/promise-function-async": "off",
+    "@typescript-eslint/restrict-plus-operands": "off",
+    "@typescript-eslint/semi": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/member-delimiter-style": "off",
+    "@typescript-eslint/no-misused-promises": "off",
+    "@typescript-eslint/no-non-null-asserted-optional-chain": "off",
+    "@typescript-eslint/quotes": "off",
+    "@typescript-eslint/no-useless-constructor": "off",
+    "@typescript-eslint/consistent-type-definitions": "off",
+    "@typescript-eslint/strict-boolean-expressions": "off",
+    "@typescript-eslint/space-before-function-paren": "off", // use arrow functions
+    "@typescript-eslint/prefer-nullish-coalescing": "off",
+    "@typescript-eslint/restrict-template-expressions": "off",
+    "@typescript-eslint/no-floating-promises": "off",
+    "@typescript-eslint/triple-slash-reference": "off",
+    "@typescript-eslint/no-invalid-void-type": "off",
+    "@typescript-eslint/keyword-spacing": "off",
+    "@typescript-eslint/prefer-optional-chain": "off",
+    "@typescript-eslint/no-base-to-string": "off",
+    "@typescript-eslint/consistent-type-assertions": "off",
+    "@typescript-eslint/explicit-function-return-type": "off"
   }
 }

@@ -86,7 +86,7 @@ const NftCardWithHover = ({
                 x.serieId !== res?.serieId
             );
           }
-          setUser(newUser);
+          setUser({...newUser});
         }
         if (likedNfts && setLikedNfts) {
           if (!isLiked) {

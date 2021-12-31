@@ -3,7 +3,7 @@ import Head from 'next/head';
 import BetaBanner from 'components/base/BetaBanner';
 import MainHeader from 'components/base/MainHeader';
 import TernoaWallet from 'components/base/TernoaWallet';
-import Profile from 'components/pages/Profile';
+import Profile, { USER_PERSONNAL_PROFILE_VARIANT } from 'components/pages/Profile';
 import SuccessPopup from 'components/base/SuccessPopup';
 import cookies from 'next-cookies';
 import { getUser } from 'actions/user';
@@ -86,11 +86,11 @@ const ProfilePage = ({ user, owned, ownedHasNextPage }: ProfilePageProps) => {
 
   useEffect(() => {
     try {
-      populateProfileData(user.walletId);
+      populateProfileData(walletUser.walletId);
     } catch (err) {
       console.log(err);
     }
-  }, []);
+  }, [walletUser]);
 
   const populateProfileData = async (token: string) => {
     //created nfts
@@ -320,6 +320,7 @@ const ProfilePage = ({ user, owned, ownedHasNextPage }: ProfilePageProps) => {
         loadMoreLikedNfts={loadMoreLikedNfts}
         setLikedNfts={setLikedNfts}
         followers={followersUsers}
+        setFollowers={setFollowersUsers}
         followersUsersHasNextPage={followersUsersHasNextPage}
         loadMoreFollowers={loadMoreFollowers}
         followed={followedUsers}
@@ -331,6 +332,7 @@ const ProfilePage = ({ user, owned, ownedHasNextPage }: ProfilePageProps) => {
         canEditProfile
         tabs={ORDERED_TABS_ID}
         profileDataLoaded={profileDataLoaded}
+        variant={USER_PERSONNAL_PROFILE_VARIANT}
       />
     </>
   );

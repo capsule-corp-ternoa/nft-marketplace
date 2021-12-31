@@ -5,19 +5,19 @@ import styled from 'styled-components';
 import Avatar from 'components/base/Avatar';
 import NoNFTComponent from 'components/base/NoNFTComponent';
 import Button from 'components/ui/Button';
+import { UserType } from 'interfaces';
 import {
-  TabsIdType,
-  UserType,
-  FOLLOWERS_TAB,
-} from 'interfaces';
+  FOLLOW_ACTION,
+  UNFOLLOW_ACTION,
+  FOLLOW_ACTION_TYPE,
+} from 'utils/profile/follow';
 
 interface Props {
-  followBacks: boolean[],
-  followersNbFollowers: any,
-  handleFollow: (
-    profileWalletId: string,
-    isUnfollow: boolean,
-  ) => void;
+  followingStatus: {
+    [key: string]: boolean;
+  };
+  followersNbFollowers: any;
+  handleFollow: (profileWalletId: string, action: FOLLOW_ACTION_TYPE) => void;
   isFiltered: boolean;
   isLoading: boolean;
   isLoadMore: boolean;
@@ -25,13 +25,13 @@ interface Props {
   noContentBody?: string;
   noContentTitle: string;
   setIsFiltered: (b: boolean) => void;
-  tabId: TabsIdType;
   updateKeywordSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  user: UserType;
   users: UserType[];
 }
 
 const FollowersProfileBlock = ({
-  followBacks,
+  followingStatus,
   followersNbFollowers,
   handleFollow,
   isFiltered,
@@ -41,8 +41,8 @@ const FollowersProfileBlock = ({
   noContentBody,
   noContentTitle,
   setIsFiltered,
-  tabId,
   updateKeywordSearch,
+  user,
   users,
 }: Props) => {
   return (
@@ -80,28 +80,27 @@ const FollowersProfileBlock = ({
         <>
           <SFollowersContainer>
             {users.map(
-              (
-                { _id, name, picture, verified, walletId }: UserType,
-                idx: number
-              ) => {
-                const isUnfollow =
-                  tabId === FOLLOWERS_TAB ? followBacks[idx] : true;
-
-                return (
-                  <Avatar
-                    key={_id}
-                    followers={followersNbFollowers[walletId] ?? 0}
-                    handleFollow={() => handleFollow(walletId, isUnfollow)}
-                    isClickable
-                    isFollowButton
-                    isUnfollow={isUnfollow}
-                    isVerified={verified}
-                    name={name}
-                    picture={picture}
-                    walletId={walletId}
-                  />
-                );
-              }
+              ({ _id, name, picture, verified, walletId }: UserType) => (
+                <Avatar
+                  key={_id}
+                  followers={followersNbFollowers[walletId] ?? 0}
+                  handleFollow={() =>
+                    handleFollow(
+                      walletId,
+                      followingStatus[walletId]
+                        ? UNFOLLOW_ACTION
+                        : FOLLOW_ACTION
+                    )
+                  }
+                  isClickable
+                  isFollowButton={user && walletId !== user.walletId}
+                  isUnfollow={followingStatus[walletId]}
+                  isVerified={verified}
+                  name={name}
+                  picture={picture}
+                  walletId={walletId}
+                />
+              )
             )}
           </SFollowersContainer>
           {isLoadMore && (

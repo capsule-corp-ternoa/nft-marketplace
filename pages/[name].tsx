@@ -9,7 +9,7 @@ import { getUser, getProfile } from 'actions/user';
 import BetaBanner from 'components/base/BetaBanner';
 import MainHeader from 'components/base/MainHeader';
 import TernoaWallet from 'components/base/TernoaWallet';
-import Profile from 'components/pages/Profile';
+import Profile, { ARTIST_PROFILE_VARIANT } from 'components/pages/Profile';
 import {
   NftType,
   UserType,
@@ -200,7 +200,7 @@ const PublicProfilePage = ({
     } catch (err) {
       console.log(err);
     }
-  }, []);
+  }, [viewProfile]);
 
   return (
     <>
@@ -242,6 +242,7 @@ const PublicProfilePage = ({
         followersUsersHasNextPage={followersUsersHasNextPage}
         loadMoreFollowers={loadMoreFollowers}
         followed={followedUsers}
+        setFollowers={setFollowersUsers}
         setFollowed={setFollowedUsers}
         followedUsersHasNextPage={followedUsersHasNextPage}
         loadMoreFollowed={loadMoreFollowed}
@@ -250,6 +251,7 @@ const PublicProfilePage = ({
         canEditProfile={false}
         tabs={ORDERED_TABS_ID}
         profileDataLoaded={profileDataLoaded}
+        variant={ARTIST_PROFILE_VARIANT}
       />
     </>
   );

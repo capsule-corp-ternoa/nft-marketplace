@@ -19,10 +19,10 @@ interface Props {
   isClickable?: boolean;
   isTooltip?: boolean;
   isVerified?: boolean;
-  link?: string;
   name?: string;
   picture?: string;
   variant?: AVATAR_VARIANT_TYPE;
+  walletId?: string;
 }
 
 const pictureSize = (variant?: AVATAR_VARIANT_TYPE) => {
@@ -60,16 +60,16 @@ const Picture = ({
   isClickable,
   isTooltip,
   isVerified,
-  link,
   name = 'Ternoa',
   picture,
   variant,
+  walletId,
 }: Props) => (
   <SPictureContainer
     className={className}
     isClickable={isClickable}
     isTooltip={isTooltip}
-    onClick={() => isClickable && link && Router.push(link)}
+    onClick={() => isClickable && walletId && Router.push(`/${walletId}`)}
   >
     <SPictureWrapper variant={variant}>
       {isVerified && <SIcon name="badge" />}

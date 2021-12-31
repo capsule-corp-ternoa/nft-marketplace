@@ -1,5 +1,5 @@
 import React from 'react';
-import Link from 'next/link';
+import Router from 'next/router';
 import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
 
@@ -96,9 +96,7 @@ const Avatar = ({
         />
         <SDetailsContainer variant={variant}>
           <STopDetails>
-            <Link href={`/${walletId}`} passHref>
-              <SName variant={variant}>{name}</SName>
-            </Link>
+            <SName href={`/${walletId}`} variant={variant}>{name}</SName>
             {nickname !== undefined && <SNickname>{nickname}</SNickname>}
           </STopDetails>
 
@@ -145,7 +143,9 @@ const Avatar = ({
       {isDiscoverButton && (
         <SDiscoverButton
           color="primaryLight"
-          href={`/${walletId}`}
+          onClick={() =>
+            walletId && Router.push(`/${walletId}`)
+          }
           size="small"
           text="Discover"
         />

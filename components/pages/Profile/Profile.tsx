@@ -133,12 +133,19 @@ const Profile = ({
   const [profilesFollowersCount, setProfilesFollowersCount] = useState<{
     [key: string]: number;
   }>({});
-  const [countOwned, setCountOwned] = useState(0);
-  const [countOwnedListed, setCountOwnedListed] = useState(0);
-  const [countOwnedUnlisted, setCountOwnedUnlisted] = useState(0);
-  const [countCreated, setCountOwnedCreated] = useState(0);
-  const [countFollowers, setCountFollowers] = useState(0);
-  const [countFollowed, setCountFollowed] = useState<number>(0);
+  const [counts, setCounts] = useState<{
+    [key in TabsIdType]: number;
+  }>(
+    tabs.reduce(
+      (acc, id) => ({
+        ...acc,
+        [id]: 0,
+      }),
+      {} as {
+        [key in TabsIdType]: number;
+      }
+    )
+  );
 
   const isTablet = useMediaQuery({
     query: `(max-width: ${breakpointMap.lg - 1}px)`,
@@ -147,18 +154,31 @@ const Profile = ({
     variant === USER_PERSONNAL_PROFILE_VARIANT ||
     (variant === ARTIST_PROFILE_VARIANT && artist?.walletId === user?.walletId);
 
-  const setCounts = async () => {
+  const initCounts = async () => {
     const { walletId } = artist ?? user;
     try {
       if (walletId) {
         const stats = await getUserNFTsStat(walletId, true);
         if (stats) {
-          setCountOwned(stats.countOwned);
-          setCountOwnedListed(stats.countOwnedListed);
-          setCountOwnedUnlisted(stats.countOwnedUnlisted);
-          setCountOwnedCreated(stats.countCreated);
-          setCountFollowers(stats.countFollowers);
-          setCountFollowed(stats.countFollowed);
+          const {
+            countOwned,
+            countOwnedListed,
+            countOwnedUnlisted,
+            countCreated,
+            countFollowers,
+            countFollowed,
+          } = stats;
+
+          setCounts((prevCounts) => ({
+            ...prevCounts,
+            [NFT_OWNED_TAB]: countOwned,
+            [NFT_ON_SALE_TAB]: countOwnedListed,
+            [NFT_NOT_FOR_SALE_TAB]: countOwnedUnlisted,
+            [NFT_CREATED_TAB]: countCreated,
+            [NFT_LIKED_TAB]: user?.likedNFTs?.length || 0,
+            [FOLLOWERS_TAB]: countFollowers,
+            [FOLLOWED_TAB]: countFollowed,
+          }));
         }
       }
     } catch (err) {
@@ -203,12 +223,18 @@ const Profile = ({
             follow(profileWalletId, user.walletId).then((res) => {
               if (isMyProfile) {
                 setFollowed([...followed, res]);
-                setCountFollowed((prevCount) => prevCount + 1);
+                setCounts((prevCounts) => ({
+                  ...prevCounts,
+                  [FOLLOWED_TAB]: prevCounts[FOLLOWED_TAB] + 1,
+                }));
               } else {
                 if (artist && setArtist)
                   setArtist({ ...res, viewsCount: artist.viewsCount ?? 0 });
                 setFollowers([...followers, res]);
-                setCountFollowers((prevCount) => prevCount + 1);
+                setCounts((prevCounts) => ({
+                  ...prevCounts,
+                  [FOLLOWERS_TAB]: prevCounts[FOLLOWERS_TAB] + 1,
+                }));
               }
 
               setProfilesFollowersCount((prevState) => ({
@@ -227,7 +253,10 @@ const Profile = ({
                     ({ walletId }) => walletId !== profileWalletId
                   )
                 );
-                setCountFollowed((prevCount) => prevCount - 1);
+                setCounts((prevCounts) => ({
+                  ...prevCounts,
+                  [FOLLOWED_TAB]: prevCounts[FOLLOWED_TAB] - 1,
+                }));
               } else {
                 if (artist && setArtist)
                   setArtist({ ...res, viewsCount: artist.viewsCount ?? 0 });
@@ -236,7 +265,10 @@ const Profile = ({
                     ({ walletId }) => walletId !== profileWalletId
                   )
                 );
-                setCountFollowers((prevCount) => prevCount - 1);
+                setCounts((prevCounts) => ({
+                  ...prevCounts,
+                  [FOLLOWERS_TAB]: prevCounts[FOLLOWERS_TAB] - 1,
+                }));
               }
 
               setProfilesFollowersCount((prevState) => ({
@@ -343,26 +375,6 @@ const Profile = ({
     }
   };
 
-  const returnQuantity = (tabId: TabsIdType) => {
-    switch (tabId) {
-      case NFT_CREATED_TAB:
-        return countCreated;
-      case NFT_LIKED_TAB:
-        return user.likedNFTs?.length || 0;
-      case NFT_ON_SALE_TAB:
-        return countOwnedListed;
-      case NFT_NOT_FOR_SALE_TAB:
-        return countOwnedUnlisted;
-      case FOLLOWERS_TAB:
-        return countFollowers;
-      case FOLLOWED_TAB:
-        return countFollowed;
-      case NFT_OWNED_TAB:
-      default:
-        return countOwned;
-    }
-  };
-
   const returnFollowers = (tabId: TabsIdType) => {
     switch (tabId) {
       case FOLLOWERS_TAB:
@@ -418,7 +430,7 @@ const Profile = ({
   }, [profileDataLoaded]);
 
   useEffect(() => {
-    setCounts();
+    initCounts();
   }, [artist, user]);
 
   useEffect(() => {
@@ -498,9 +510,9 @@ const Profile = ({
                   />
                 )}
               <SArtistStatsContainer>
-                <SArtistStatsValue>{countFollowers}</SArtistStatsValue>followers
+                <SArtistStatsValue>{counts[FOLLOWERS_TAB]}</SArtistStatsValue>followers
                 <SArtistStatsSeparator>·</SArtistStatsSeparator>
-                <SArtistStatsValue>{countFollowed}</SArtistStatsValue>following
+                <SArtistStatsValue>{counts[FOLLOWED_TAB]}</SArtistStatsValue>following
                 <SArtistStatsSeparator>·</SArtistStatsSeparator>
                 <SArtistStatsValue>{artist.viewsCount}</SArtistStatsValue>views
               </SArtistStatsContainer>
@@ -515,7 +527,7 @@ const Profile = ({
             (acc, id) => ({
               ...acc,
               [id]: {
-                badge: returnQuantity(id),
+                badge: counts[id],
                 content: returnContent(id),
                 label: id,
               },

@@ -71,10 +71,7 @@
   justify-content: space-between;
   width: 100%;
 }
-.TopInfosCreator {
-  display: flex;
-  align-items: center;
-}
+
 .TopInfosCreatorPicture {
   width: 45px;
   height: 45px;
@@ -402,8 +399,8 @@
     flex-direction: column;
   }
 
-  .TopInfosCreator {
-    margin-bottom: 20px;
+  .TopInfos {
+    margin-top: 2.4rem;
   }
 
   .Title {

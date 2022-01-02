@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
 import styled from 'styled-components'
 import style from './NFT.module.scss';
 import Footer from 'components/base/Footer';
@@ -9,13 +8,13 @@ import Scale from 'components/assets/scale';
 import Share from 'components/assets/share';
 import Like from 'components/assets/heart';
 import Eye from 'components/assets/eye';
-import { computeCaps, computeTiime, middleEllipsis } from 'utils/strings';
+import { computeCaps, computeTiime } from 'utils/strings';
 import { UserType, NftType, INFTLike } from 'interfaces';
 import { likeNFT, unlikeNFT } from 'actions/user';
 import ModalShare from 'components/base/ModalShare';
 import NoNFTImage from '../../assets/NoNFTImage';
 import Details from './Details';
-import Creator from 'components/base/Creator';
+import Avatar from 'components/base/Avatar';
 import { MARKETPLACE_ID } from 'utils/constant';
 import { Title } from 'components/layout'
 import Chip from 'components/ui/Chip';
@@ -230,24 +229,13 @@ const NFTPage = ({
           </SMediaWrapper>
           <div className={style.Text}>
             <div className={style.Top}>
-              <div className={style.TopInfosCreator}>
-                <div className={style.TopInfosCreatorPicture}>
-                  <Creator
-                    className={style.TopInfosCreatorPictureIMG}
-                    size={'fullwidth'}
-                    user={NFT.creatorData}
-                    walletId={NFT.creator}
-                  />
-                </div>
-                <div className={style.TopInfosCreatorName}>
-                  <Link href={`/${NFT.creator}`}>
-                    <a>{NFT.creatorData?.name || middleEllipsis(NFT.creator, 20)}</a>
-                  </Link>
-                  <span className={style.creatorTwitterUsername}>
-                    {NFT.creatorData?.twitterName || null}
-                  </span>
-                </div>
-              </div>
+              <Avatar
+                isVerified={NFT.creatorData?.verified}
+                name={NFT.creatorData?.name}
+                picture={NFT.creatorData?.picture}
+                twitterName={NFT.creatorData?.twitterName}
+                walletId={NFT.creatorData?.walletId}
+              />
               <div className={style.TopInfos}>
                 <div className={style.Views}>
                   <Eye className={style.EyeSVG} />

@@ -13,10 +13,12 @@ import Picture from './components/Picture';
 export const AVATAR_VARIANT_BADGE = 'badge';
 export const AVATAR_VARIANT_BANNER = 'banner';
 export const AVATAR_VARIANT_EDIT = 'edit';
+export const AVATAR_VARIANT_MOSAIC = 'mosaic';
 export type AVATAR_VARIANT_TYPE =
   | typeof AVATAR_VARIANT_BADGE
   | typeof AVATAR_VARIANT_BANNER
-  | typeof AVATAR_VARIANT_EDIT;
+  | typeof AVATAR_VARIANT_EDIT
+  | typeof AVATAR_VARIANT_MOSAIC;
 
 interface Props {
   className?: string;
@@ -109,11 +111,11 @@ const Avatar = ({
               <SLink
                 href={`https://twitter.com/${twitterName}`}
                 target="_blank"
-                title="twitterPage"
+                title={`${twitterName}'s twitter account`}
                 rel="noopener noreferrer"
               >
                 <STwitterIcon name="socialTwitter" />
-                <STwitterNickname>@{twitterName}</STwitterNickname>
+                <STwitterNickname>{twitterName}</STwitterNickname>
               </SLink>
             )}
             {personalUrl !== undefined && (

@@ -8,9 +8,8 @@ import { computeCaps, formatDate } from 'utils/strings';
 import Link from 'next/link';
 import { middleEllipsis } from '../../../../utils/strings';
 import { getUsers } from 'actions/user';
-import Creator from 'components/base/Creator';
+import Avatar from 'components/base/Avatar';
 import { EXPLORER_URL, MARKETPLACE_ID } from 'utils/constant';
-import Clipboard from 'components/base/Clipboard';
 import { Loader } from 'components/ui/Icon';
 import { getRandomNFTFromArray } from 'utils/functions';
 import { getHistory } from 'actions/nft';
@@ -193,28 +192,15 @@ const Details: React.FC<DetailsProps> = ({
       >
         <div className={styleDetails.row}>
           <div className={styleDetails.rowBadge}>Owner</div>
-          <div className={styleDetails.CreatorPicture}>
-            <Creator
-              className={styleDetails.CreatorPictureIMG}
-              size={'fullwidth'}
-              user={ownerData}
-              walletId={NFTRowOwner}
-              showTooltip={false}
-            />
-          </div>
           <div className={styleDetails.rowDatas}>
-            <div className={styleDetails.rowDatasName}>
-              <div>
-                <Link href={`/${NFTRowOwner}`}>
-                  <a>
-                    {ownerData?.name || middleEllipsis(NFTRowOwner, 15)}
-                  </a>
-                </Link>
-              </div>
-              <span className={styleDetails.rowTwitterUsername}>
-                {ownerData?.twitterName ? ownerData.twitterName : null}
-              </span>
-            </div>
+          <Avatar
+            isClickable
+            isVerified={ownerData?.verified}
+            name={ownerData?.name}
+            picture={ownerData?.picture}
+            twitterName={ownerData?.twitterName}
+            walletId={NFTRowOwner}
+          />
             <Link href={`/nft/${NFTRowId}`}>
               <a className={styleDetails.rowDatasDetails}>
                 {NFTRowListed === 0
@@ -253,6 +239,7 @@ const Details: React.FC<DetailsProps> = ({
   }) => {
     const GUTTER_SIZE = 5;
     const NFTTransferRow = historyData[index]
+    const isTransactionCreationOrSale = (NFTTransferRow.typeOfTransaction === "creation" || NFTTransferRow.typeOfTransaction === "sale");
     const fromData = (
       usersData[NFTTransferRow.from] ? usersData[NFTTransferRow.from] : null
     ) as UserType;
@@ -269,41 +256,15 @@ const Details: React.FC<DetailsProps> = ({
           <div className={styleDetails.rowBadge}>
             {NFTTransferRow.typeOfTransaction.substr(0,1).toUpperCase() + NFTTransferRow.typeOfTransaction.substr(1,NFTTransferRow.typeOfTransaction.length - 1)}
           </div>
-          <div className={styleDetails.CreatorPicture}>
-            <Creator
-              className={styleDetails.CreatorPictureIMG}
-              size={'fullwidth'}
-              user={(NFTTransferRow.typeOfTransaction === "creation" || NFTTransferRow.typeOfTransaction === "sale") ? toData : fromData}
-              walletId={(NFTTransferRow.typeOfTransaction === "creation" || NFTTransferRow.typeOfTransaction === "sale") ? NFTTransferRow.to : NFTTransferRow.from}
-              showTooltip={false}
-            />
-          </div>
           <div className={styleDetails.rowDatas}>
-            <div className={styleDetails.historyDatasName}>
-              {(NFTTransferRow.typeOfTransaction === "creation" || NFTTransferRow.typeOfTransaction === "sale")  ? 
-                <>
-                  <div>
-                    <Link href={`/${NFTTransferRow.to}`}>
-                      <a>
-                        {toData?.name || middleEllipsis(NFTTransferRow.to, 10)}
-                      </a>
-                    </Link>
-                  </div>
-                  <Clipboard address={NFTTransferRow.to} isEllipsis />
-                </>
-              :
-                <>
-                  <div>
-                      <Link href={`/${NFTTransferRow.from}`}>
-                        <a>
-                          {fromData?.name || middleEllipsis(NFTTransferRow.from, 10)}
-                        </a>
-                      </Link>
-                  </div>
-                  <Clipboard address={NFTTransferRow.from} isEllipsis />
-                </>
-              }
-            </div>
+            <Avatar
+              isAddressDisplayed
+              isClickable
+              isVerified={isTransactionCreationOrSale ? toData?.verified : fromData.verified}
+              name={isTransactionCreationOrSale ? toData?.name : fromData.name}
+              picture={isTransactionCreationOrSale ? toData?.picture : fromData.picture}
+              walletId={isTransactionCreationOrSale ? NFTTransferRow.to : NFTTransferRow.from}
+            />
             <SDatasDetails>
               <div className={styleDetails.rowDatasDetails}>
                 {NFTTransferRow.typeOfTransaction === "creation" &&
@@ -365,27 +326,14 @@ const Details: React.FC<DetailsProps> = ({
             <div className={styleDetails.detailsInfos}>
               <div className={styleDetails.creatorWrapper}>
                 <div className={styleDetails.creatorBadge}>Creator</div>
-                <div className={styleDetails.TopInfosCreator}>
-                  <div className={styleDetails.TopInfosCreatorPicture}>
-                    <Creator
-                      className={styleDetails.TopInfosCreatorPictureIMG}
-                      size={'fullwidth'}
-                      user={NFT.creatorData}
-                      walletId={NFT.creator}
-                      showTooltip={false}
-                    />
-                  </div>
-                  <div className={styleDetails.TopInfosCreatorName}>
-                    <div>
-                      <Link href={`/${NFT.creator}`}>
-                        <a>{NFT.creatorData?.name || middleEllipsis(NFT.creator, 20)}</a>
-                      </Link>
-                    </div>
-                    <span className={styleDetails.rowTwitterUsername}>
-                      {NFT.creatorData?.twitterName || null}
-                    </span>
-                  </div>
-                </div>
+                <Avatar
+                  isClickable
+                  isVerified={NFT.creatorData?.verified}
+                  name={NFT.creatorData?.name}
+                  picture={NFT.creatorData?.picture}
+                  twitterName={NFT.creatorData?.twitterName}
+                  walletId={NFT.creator}
+                />
               </div>
               <div className={styleDetails.infoDatasWrapper}>
               <div className={styleDetails.infoDatas}>

@@ -6,7 +6,7 @@ import { useMediaQuery } from 'react-responsive';
 import { likeNFT, unlikeNFT } from 'actions/user';
 import { getNFT } from 'actions/nft';
 import Heart from 'components/assets/heart';
-import Creator from 'components/base/Creator';
+import { Picture } from 'components/base/Avatar';
 import Chip from 'components/ui/Chip';
 import { INFTLike, NftType, UserType } from 'interfaces/index';
 import { computeCaps, computeTiime } from 'utils/strings';
@@ -60,43 +60,53 @@ const NftCardWithHover = ({
   });
 
   const handleLikeDislike = async (nftId: string, serieId: string) => {
-    try{
-      let res: INFTLike | null = null
-      if (!likeLoading && isLiked !== undefined && user){
-        setLikeLoading(true)
-        if (!isLiked){
-          res = await likeNFT(user.walletId, nftId, serieId) as INFTLike
-        }else{
-          res = await unlikeNFT(user.walletId, nftId, serieId) as INFTLike
+    try {
+      let res: INFTLike | null = null;
+      if (!likeLoading && isLiked !== undefined && user) {
+        setLikeLoading(true);
+        if (!isLiked) {
+          res = (await likeNFT(user.walletId, nftId, serieId)) as INFTLike;
+        } else {
+          res = (await unlikeNFT(user.walletId, nftId, serieId)) as INFTLike;
         }
       }
-      if (res !== null && setUser && user){
-        let newUser = user
-        if (newUser.likedNFTs){
-          if (!isLiked){
-            newUser.likedNFTs.push(res)
-          }else{
-            newUser.likedNFTs = newUser?.likedNFTs.filter(x => x.walletId !== res?.walletId && x.nftId !== res?.nftId && x.serieId !== res?.serieId)
+      if (res !== null && setUser && user) {
+        let newUser = user;
+        if (newUser.likedNFTs) {
+          if (!isLiked) {
+            newUser.likedNFTs.push(res);
+          } else {
+            newUser.likedNFTs = newUser?.likedNFTs.filter(
+              (x) =>
+                x.walletId !== res?.walletId &&
+                x.nftId !== res?.nftId &&
+                x.serieId !== res?.serieId
+            );
           }
-          setUser(newUser)
+          setUser(newUser);
         }
-        if (likedNfts && setLikedNfts){
-          if (!isLiked){
-            let newlyLikedNFT = await getNFT(nftId, undefined, undefined, undefined, undefined, true)
-            if (newlyLikedNFT) setLikedNfts([...likedNfts, newlyLikedNFT])
-          }else{
-            setLikedNfts(
-              likedNfts.filter(x => x.id !== nftId)
-            )
+        if (likedNfts && setLikedNfts) {
+          if (!isLiked) {
+            let newlyLikedNFT = await getNFT(
+              nftId,
+              undefined,
+              undefined,
+              undefined,
+              undefined,
+              true
+            );
+            if (newlyLikedNFT) setLikedNfts([...likedNfts, newlyLikedNFT]);
+          } else {
+            setLikedNfts(likedNfts.filter((x) => x.id !== nftId));
           }
         }
       }
-      setLikeLoading(false)
-    }catch(err){
-      setLikeLoading(false)
-      console.error(err)
+      setLikeLoading(false);
+    } catch (err) {
+      setLikeLoading(false);
+      console.error(err);
     }
-  }
+  };
 
   return (
     <NftCard
@@ -142,26 +152,27 @@ const NftCardWithHover = ({
           <div></div>
         )}
         <div className={style.Infos}>
-          {!noCreator && <div
-            onClick={(e) => manageRouting(e, item.creator)}
-            className={style.Auth}
-          >
-            <Creator
-              user={item.creatorData}
-              walletId={item.creator}
-              className={isHovering ? style.Slide : ''}
-              size="card"
-              showTooltip={false}
-              isClickable={false}
-            />
+          {!noCreator && (
             <div
-              className={
-                isHovering ? `${style.Author} ${style.Fade}` : style.Author
-              }
+              onClick={(e) => manageRouting(e, item.creator)}
+              className={style.Auth}
             >
-              {item.creatorData?.name || `Ternoa #${item.creator.slice(0, 5)}`}
+              <Picture
+                className={isHovering ? style.Slide : ''}
+                link={item.creatorData?.walletId}
+                name={item.creatorData?.name}
+                picture={item.creatorData?.picture}
+              />
+              <div
+                className={
+                  isHovering ? `${style.Author} ${style.Fade}` : style.Author
+                }
+              >
+                {item.creatorData?.name ||
+                  `Ternoa #${item.creator.slice(0, 5)}`}
+              </div>
             </div>
-          </div>}
+          )}
           {((item.smallestPrice && Number(item.smallestPrice)) ||
             (item.smallestPriceTiime && Number(item.smallestPriceTiime))) && (
             <SPriceWrapper className={isHovering ? style.FadeLong : ''}>

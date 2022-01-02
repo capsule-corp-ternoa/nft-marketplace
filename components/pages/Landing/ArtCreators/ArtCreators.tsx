@@ -61,10 +61,10 @@ const ArtCreators = ({ creators, NFTs, user, setUser }: ArtCreatorsProps) => {
                   <Picture
                     isClickable
                     isTooltip
-                    link={walletId}
                     name={name}
                     picture={picture}
                     variant={AVATAR_VARIANT_MOSAIC}
+                    walletId={walletId}
                   />
                 </SCreatorPicture>
               ))}

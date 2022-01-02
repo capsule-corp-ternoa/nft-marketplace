@@ -29,10 +29,10 @@ const ProfileMenuBadge = ({
       </STokenContainer>
       <SPicture
         isVerified={verified}
-        link={walletId}
         name={name}
         picture={picture}
         variant={AVATAR_VARIANT_BADGE}
+        walletId={walletId}
       />
     </SBadgeContainer>
   );

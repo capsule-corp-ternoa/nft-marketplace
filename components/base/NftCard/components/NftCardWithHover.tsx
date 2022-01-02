@@ -164,9 +164,9 @@ const NftCardWithHover = ({
             >
               <Picture
                 className={isHovering ? style.Slide : ''}
-                link={item.creatorData?.walletId}
                 name={item.creatorData?.name}
                 picture={item.creatorData?.picture}
+                walletId={item.creatorData?.walletId}
               />
               <div
                 className={

@@ -74,10 +74,10 @@ const Avatar = ({
         isClickable={isClickable}
         isTooltip={isTooltip}
         isVerified={isVerified}
-        link={walletId}
         name={name}
         picture={picture}
         variant={variant}
+        walletId={walletId}
       />
     );
   }
@@ -89,10 +89,10 @@ const Avatar = ({
           isClickable={isClickable}
           isTooltip={isTooltip}
           isVerified={isVerified}
-          link={walletId}
           name={name}
           picture={picture}
           variant={variant}
+          walletId={walletId}
         />
         <SDetailsContainer variant={variant}>
           <STopDetails>

@@ -123,7 +123,7 @@ const SLabelContainer = styled.div`
 `;
 
 const SIconContainer = styled.div<{ isExpanded?: boolean }>`
-  fill: white;
+  fill: ${({ theme }) => theme.colors.invertedContrast};
   width: 1.6rem;
   margin-left: 1.6rem;
   transform: ${({ isExpanded }) =>

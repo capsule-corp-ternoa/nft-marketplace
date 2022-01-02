@@ -146,20 +146,18 @@ const SInputWrapper = styled.div<{ isEmpty: boolean }>`
   & input {
     background: transparent;
     height: 100%;
-    box-sizing: border-box;
     padding: 4px 6px;
     width: 0;
     flex-grow: 1;
     border: 0;
     margin: 0;
     outline: 0;
-    font-family: 'Airbnb Cereal App Book';
     font-size: 1.6rem;
     z-index: 10;
 
     &::placeholder {
       color: ${({ theme, isEmpty }) =>
-        isEmpty ? theme.colors.neutral300 : 'transparent'};
+    isEmpty ? theme.colors.neutral300 : 'transparent'};
     }
 
     &:focus + #borderWrapper {

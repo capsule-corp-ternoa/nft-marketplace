@@ -53,7 +53,7 @@ const TextInput = ({
           name="tag"
           readOnly
         />}
-        <Input
+        <SInput
           type="text"
           disabled={disabled}
           placeholder={placeholder}
@@ -68,7 +68,9 @@ const TextInput = ({
 };
 
 export const InputStyle = css<{
+  endIcon?: string;
   isError?: boolean;
+  startIcon?: string;
 }>`
   width: 100%;
   background: ${({ theme }) => theme.colors.neutral500};
@@ -79,12 +81,13 @@ export const InputStyle = css<{
   font-size: 1.6rem;
   margin-top: 1.6rem;
   outline: none;
-  padding: 1.6rem;
+  padding: ${({ endIcon, startIcon }) =>
+    endIcon ? '1.6rem 5.6rem 1.6rem 1.6rem' : startIcon ? '1.6rem 1.6rem 1.6rem 5.6rem' : '1.6rem'};
 
   &:focus {
     border: 0.2rem solid;
     border-color: ${({ isError, theme }) =>
-      isError ? theme.colors.danger : theme.colors.primary};
+    isError ? theme.colors.danger : theme.colors.primary};
   }
 
   &::placeholder {
@@ -92,11 +95,11 @@ export const InputStyle = css<{
   }
 `;
 
-export const Input = styled.input<{ isError?: boolean }>`
+export const SInput = styled.input<{ isError?: boolean }>`
   ${InputStyle}
 `;
 
-const STagInput = styled(Input)`
+const STagInput = styled(SInput)`
   width: 5.2rem;
   margin-right: 0.8rem;
 `;

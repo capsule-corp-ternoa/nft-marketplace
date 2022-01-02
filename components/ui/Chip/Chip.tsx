@@ -66,14 +66,16 @@ const SChipContainer = styled.div<IChip>`
   backdrop-filter: ${({ color }) =>
     color === 'whiteBlur' ? 'blur(2.8rem)' : 'blur(0)'};
   border: ${({ color, noBorder }) =>
-    !noBorder && color === 'invertedContrast' ? '2px dashed #E0E0E0' : 'none'};
+    !noBorder && color === 'invertedContrast' ? '2px dashed' : 'none'};
+  border-color: ${({ color, theme }) =>
+    color === 'invertedContrast' ? theme.colors.neutral400 : 'none'};
   border-radius: ${({ isDeletable, variant }) =>
     isDeletable || variant === 'rectangle' ? '0.8rem' : '6.4rem'};
   padding: ${({ size }) =>
     size === 'small' ? '0.4rem 1.2rem' : '0.8rem 1.6rem'};
 `;
 
-const SIcon = styled(Icon)<{ isIconOnly: boolean; size: 'small' | 'medium' }>`
+const SIcon = styled(Icon) <{ isIconOnly: boolean; size: 'small' | 'medium' }>`
   width: ${({ size }) => (size === 'small' ? '1.2rem' : '2rem')};
   height: ${({ size }) => (size === 'small' ? '1.2rem' : '2rem')};
   margin-right: ${({ isIconOnly, size }) =>

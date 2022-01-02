@@ -36,7 +36,7 @@ const TooltipContainer = styled.div`
 
 const InformationIcon = styled(Information)`
   width: 2rem;
-  fill: black;
+  fill: ${({ theme }) => theme.colors.contrast};
 `;
 
 const Popover = styled.span`

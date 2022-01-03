@@ -32,14 +32,14 @@ const Hero = ({ capsDollarValue: _capsDollarValue, NFTs, mode }: HeroProps) => {
         <Link href={`/nft/${selectedNFT.id}`} passHref>
           <STitle>{selectedNFT.title}</STitle>
         </Link>
-        <SAvatar
+        {selectedNFT.creatorData && <SAvatar
           isClickable
           isVerified={selectedNFT.creatorData.verified}
           label="(Creator)"
           name={selectedNFT.creatorData.name}
           picture={selectedNFT.creatorData.picture}
           walletId={selectedNFT.creatorData.walletId}
-        />
+        />}
         <SSellWrapper>
           <SSell mode={mode}>
             <SBidLabel>

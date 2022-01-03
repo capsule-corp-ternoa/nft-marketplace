@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
 
 import {
@@ -6,12 +7,14 @@ import {
   AVATAR_VARIANT_BANNER,
 } from 'components/base/Avatar';
 import Icon from 'components/ui/Icon';
+import { breakpointMap } from 'style/theme/base';
 import { clipboardCopy } from 'utils/functions';
 import { middleEllipsis } from 'utils/strings';
 
 interface Props {
   address: string;
   className?: string;
+  isCopyLabelIndicator?: boolean;
   isEllipsis?: boolean;
   variant?: AVATAR_VARIANT_TYPE;
 }
@@ -19,10 +22,15 @@ interface Props {
 const Clipboard = ({
   address,
   className,
+  isCopyLabelIndicator = true,
   isEllipsis = false,
   variant,
 }: Props) => {
   const [isCopyIndicator, setIsCopyIndicator] = useState(false);
+
+  const isMobile = useMediaQuery({
+    query: `(max-width: ${breakpointMap.md - 1}px)`,
+  });
 
   useEffect(() => {
     if (isCopyIndicator) {
@@ -41,11 +49,11 @@ const Clipboard = ({
         setIsCopyIndicator(true);
       }}
     >
-      {isEllipsis ? middleEllipsis(address, 20) : address}
+      {isEllipsis ? middleEllipsis(address, isMobile ? 12 : 20) : address}
       {isCopyIndicator ? (
         <SSuccessContainer variant={variant}>
           <SCheckIcon name="checkMark" />
-          <SLabel>Copied !</SLabel>
+          {isCopyLabelIndicator && <SLabel>Copied !</SLabel>}
         </SSuccessContainer>
       ) : (
         <SCopyIcon name="copyPaste" variant={variant} />

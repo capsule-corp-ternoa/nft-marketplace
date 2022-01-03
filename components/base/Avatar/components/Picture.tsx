@@ -9,6 +9,7 @@ import {
   AVATAR_VARIANT_BADGE,
   AVATAR_VARIANT_BANNER,
   AVATAR_VARIANT_EDIT,
+  AVATAR_VARIANT_MOSAIC,
   AVATAR_VARIANT_TYPE,
 } from '../Avatar';
 
@@ -19,7 +20,7 @@ interface Props {
   isTooltip?: boolean;
   isVerified?: boolean;
   link?: string;
-  name: string;
+  name?: string;
   picture?: string;
   variant?: AVATAR_VARIANT_TYPE;
 }
@@ -32,6 +33,8 @@ const pictureSize = (variant?: AVATAR_VARIANT_TYPE) => {
       return '9.6rem';
     case AVATAR_VARIANT_BADGE:
       return '3.6rem';
+    case AVATAR_VARIANT_MOSAIC:
+      return '8rem';
     default:
       return '5.6rem';
   }
@@ -45,6 +48,8 @@ const fontSize = (variant?: AVATAR_VARIANT_TYPE) => {
       return '3.2rem';
     case AVATAR_VARIANT_BADGE:
       return '2rem';
+    case AVATAR_VARIANT_MOSAIC:
+      return '2.8rem';
     default:
       return '2.4rem';
   }
@@ -56,7 +61,7 @@ const Picture = ({
   isTooltip,
   isVerified,
   link,
-  name,
+  name = 'Ternoa',
   picture,
   variant,
 }: Props) => (
@@ -161,10 +166,10 @@ const SLetter = styled.div<{ variant?: AVATAR_VARIANT_TYPE }>`
 
 const SPopoverName = styled.span`
   position: absolute;
-  background: white;
+  background: ${({theme}) => theme.colors.contrast};
   border-radius: 0.8rem;
   box-shadow: 0px 0px 14.5243px 5.0835px rgb(0 0 0 / 10%);
-  color: ${({ theme }) => theme.colors.neutral200};
+  color: ${({ theme }) => theme.colors.invertedContrast};
   font-family: ${({ theme }) => theme.fonts.bold};
   font-size: 1.4rem;
   max-width: 32rem;

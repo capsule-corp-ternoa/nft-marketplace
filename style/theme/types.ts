@@ -25,6 +25,7 @@ export interface Fonts {
 }
 
 export type MediaQueries = {
+  xs: string;
   sm: string;
   md: string;
   lg: string;

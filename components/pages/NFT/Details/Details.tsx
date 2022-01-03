@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components'
 import { FixedSizeList as List, ListOnItemsRenderedProps } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
@@ -8,11 +9,16 @@ import { computeCaps, formatDate } from 'utils/strings';
 import Link from 'next/link';
 import { middleEllipsis } from '../../../../utils/strings';
 import { getUsers } from 'actions/user';
-import Avatar from 'components/base/Avatar';
+import Avatar, { AVATAR_VARIANT_BADGE } from 'components/base/Avatar';
+import Button from 'components/ui/Button';
+import Chip from 'components/ui/Chip';
 import { EXPLORER_URL, MARKETPLACE_ID } from 'utils/constant';
 import { Loader } from 'components/ui/Icon';
 import { getRandomNFTFromArray } from 'utils/functions';
 import { getHistory } from 'actions/nft';
+import { breakpointMap } from 'style/theme/base';
+
+const GUTTER_SIZE = 5;
 
 export interface DetailsProps {
   NFT: NftType;
@@ -42,6 +48,13 @@ const Details: React.FC<DetailsProps> = ({
   const [serieDataCount, setSerieDataCount] = useState({} as any);
   const [historyData, setHistoryData] = useState<NFTTransferType[]>([])
   const [historyLoading, setHistoryLoading] = useState(false)
+
+  const isMobile = useMediaQuery({
+    query: `(max-width: ${breakpointMap.md - 1}px)`,
+  });
+  const isTablet = useMediaQuery({
+    query: `(max-width: ${breakpointMap.lg - 1}px)`,
+  });
   
   useEffect(() => {
     loadHistoryData()
@@ -158,7 +171,6 @@ const Details: React.FC<DetailsProps> = ({
     index: number;
     style: React.CSSProperties | undefined;
   }) => {
-    const GUTTER_SIZE = 5;
     const NFTRow =
       serieDataGrouped && serieDataGrouped.length > 0
         ? serieDataGrouped[index]
@@ -168,9 +180,9 @@ const Details: React.FC<DetailsProps> = ({
     const NFTRowPrice = NFTRow ? NFTRow.price : '';
     const NFTRowListed = NFTRow ? NFTRow.listed : '';
     const NFTRowMarketplaceId = NFTRow ? NFTRow.marketplaceId : '';
-    const ownerData = (
-      usersData[NFTRowOwner] ? usersData[NFTRowOwner] : null
-    ) as UserType;
+    const ownerData = (usersData[NFTRowOwner] ?? {}) as UserType;
+    const { name, picture, twitterName, verified } = ownerData;
+
     const key = `${NFTRowOwner}-${NFTRowListed}-${NFTRowPrice}-${NFTRowMarketplaceId}-${NFTRow?.isCapsule}`;
     const NFTRowTypeWording = (NFTRow?.isCapsule ? 'capsule' : 'edition') + (serieDataCount[key].length > 1 ? 's' : '');
     const userCanBuy = (!isVR || (isVR && isUserFromDappQR && canUserBuyAgain)) && (user
@@ -184,6 +196,23 @@ const Details: React.FC<DetailsProps> = ({
         NFTRowMarketplaceId === MARKETPLACE_ID
       : NFTRowListed === 1 && NFTRowMarketplaceId === MARKETPLACE_ID
     );
+
+    const StatusLinkLabel = () => (
+      <Link href={`/nft/${NFTRowId}`} passHref>
+        <SStatusLink>
+          {NFTRowListed === 0
+            ? `${serieDataCount[key].length} ${NFTRowTypeWording} not for sale`
+            : NFTRowListed === 1 && NFTRowMarketplaceId === MARKETPLACE_ID
+            ? `${
+                serieDataCount[key].length
+              } ${NFTRowTypeWording} on sale for ${computeCaps(
+                Number(NFTRowPrice)
+              )} CAPS ${serieDataCount[key].length > 1 ? 'each' : ''}`
+            : `${serieDataCount[key].length} ${NFTRowTypeWording} on sale on other marketplace(s)`}
+        </SStatusLink>
+      </Link>
+    );
+
     return (
       <div
         className={styleDetails.rows}
@@ -191,41 +220,48 @@ const Details: React.FC<DetailsProps> = ({
         style={{ ...style, height: (style?.height as any) - GUTTER_SIZE }}
       >
         <div className={styleDetails.row}>
-          <div className={styleDetails.rowBadge}>Owner</div>
-          <div className={styleDetails.rowDatas}>
-          <Avatar
-            isClickable
-            isVerified={ownerData?.verified}
-            name={ownerData?.name}
-            picture={ownerData?.picture}
-            twitterName={ownerData?.twitterName}
-            walletId={NFTRowOwner}
-          />
-            <Link href={`/nft/${NFTRowId}`}>
-              <a className={styleDetails.rowDatasDetails}>
-                {NFTRowListed === 0
-                  ? `${serieDataCount[key].length} ${NFTRowTypeWording} not for sale`
-                  : NFTRowListed === 1 && NFTRowMarketplaceId === MARKETPLACE_ID
-                  ? `${
-                      serieDataCount[key].length
-                    } ${NFTRowTypeWording} on sale for ${computeCaps(
-                      Number(NFTRowPrice)
-                    )} CAPS ${serieDataCount[key].length > 1 ? 'each' : ''}`
-                  : `${serieDataCount[key].length} ${NFTRowTypeWording} on sale on other marketplace(s)`}
-              </a>
-            </Link>
-          </div>
+          {!isMobile && (
+            <SChipButtonWrapper>
+              <Chip
+                color="primaryLight"
+                size="medium"
+                text="Owner"
+                variant="round"
+              />
+            </SChipButtonWrapper>
+          )}
+          <SRowDatas>
+            <Avatar
+              isClickable
+              isVerified={verified}
+              label={isTablet && <StatusLinkLabel />}
+              name={name}
+              picture={picture}
+              twitterName={isTablet ? undefined : twitterName}
+              variant={isTablet ? AVATAR_VARIANT_BADGE : undefined}
+              walletId={NFTRowOwner}
+            />
+            {!isTablet && <StatusLinkLabel />}
+          </SRowDatas>
         </div>
-        <div>
-          <div
-            className={`${styleDetails.buyButton} ${
-              !userCanBuy && styleDetails.disabled
-            }`}
+        <SChipButtonWrapper>
+          <Button
+            color="primary"
+            disabled={!userCanBuy}
             onClick={() => userCanBuy && NFTRow && handleCustomBuy(NFTRow)}
-          >
-            {(user && user.walletId) === NFTRowOwner ? 'Owned' : ((isVR && !isUserFromDappQR) ? 'VR gallery' : (canUserBuyAgain ? 'Buy' : '1 per account'))}
-          </div>
-        </div>
+            size="small"
+            text={
+              (user && user.walletId) === NFTRowOwner
+                ? 'Owned'
+                : isVR && !isUserFromDappQR
+                ? 'VR gallery'
+                : canUserBuyAgain
+                ? 'Buy'
+                : '1 per account'
+            }
+            variant="contained"
+          />
+        </SChipButtonWrapper>
       </div>
     );
   };
@@ -237,65 +273,77 @@ const Details: React.FC<DetailsProps> = ({
     index: number;
     style: React.CSSProperties | undefined;
   }) => {
-    const GUTTER_SIZE = 5;
     const NFTTransferRow = historyData[index]
-    const isTransactionCreationOrSale = (NFTTransferRow.typeOfTransaction === "creation" || NFTTransferRow.typeOfTransaction === "sale");
-    const fromData = (
-      usersData[NFTTransferRow.from] ? usersData[NFTTransferRow.from] : null
-    ) as UserType;
-    const toData = (
-      usersData[NFTTransferRow.to] ? usersData[NFTTransferRow.to] : null
-    ) as UserType;
+    const { amount, extrinsic, from, id, quantity, timestamp, to, typeOfTransaction } = NFTTransferRow;
+    const isTransactionCreationOrSale = (typeOfTransaction === "creation" || typeOfTransaction === "sale");
+    const isTransactionViewDisabled = !EXPLORER_URL;
+
+    const fromData = (usersData[from] ?? null) as UserType;
+    const toData = (usersData[to] ?? null) as UserType;
+
+    const StatusLabel = () => (
+      <SDatasDetails>
+        <SRowDatasDetails>
+          {typeOfTransaction === "creation" &&
+            `Created ${quantity} edition${quantity > 1 ? "s" : ""}`
+          }
+          {typeOfTransaction === "transfer" &&
+            `Transferred ${quantity} edition${quantity > 1 ? "s" : ""}
+            to ${toData?.name ?? middleEllipsis(to, 10)}`
+          }
+          {typeOfTransaction === "sale" &&
+            `Bought ${quantity} edition${quantity > 1 ? "s" : ""} 
+            for ${computeCaps(Number(amount))} caps 
+            from ${fromData?.name ?? middleEllipsis(from, 10)}`
+          }
+          {typeOfTransaction === "burn" &&
+            `Burned ${quantity} edition${quantity > 1 ? "s" : ""}`
+          }
+        </SRowDatasDetails>
+        {timestamp && 
+          <SRowDatasSubDetails>
+              {formatDate(new Date(timestamp))}
+          </SRowDatasSubDetails>
+        }
+      </SDatasDetails>
+    );
+
     return (
       <div
         className={styleDetails.rows}
-        key={NFTTransferRow.id}
+        key={id}
         style={{ ...style, height: (style?.height as any) - GUTTER_SIZE }}
       >
         <div className={styleDetails.row}>
-          <div className={styleDetails.rowBadge}>
-            {NFTTransferRow.typeOfTransaction.substr(0,1).toUpperCase() + NFTTransferRow.typeOfTransaction.substr(1,NFTTransferRow.typeOfTransaction.length - 1)}
-          </div>
-          <div className={styleDetails.rowDatas}>
+          {!isMobile && (
+            <SChipButtonWrapper>
+              <Chip color="primaryLight" size="medium" text={typeOfTransaction} variant="round" />
+            </SChipButtonWrapper>
+          )}
+          <SRowDatas>
             <Avatar
-              isAddressDisplayed
+              isAddressDisplayed={!isMobile}
               isClickable
-              isVerified={isTransactionCreationOrSale ? toData?.verified : fromData.verified}
-              name={isTransactionCreationOrSale ? toData?.name : fromData.name}
-              picture={isTransactionCreationOrSale ? toData?.picture : fromData.picture}
-              walletId={isTransactionCreationOrSale ? NFTTransferRow.to : NFTTransferRow.from}
+              isVerified={isTransactionCreationOrSale ? toData?.verified : fromData?.verified}
+              label={isMobile && <StatusLabel />}
+              name={isTransactionCreationOrSale ? toData?.name : fromData?.name}
+              picture={isTransactionCreationOrSale ? toData?.picture : fromData?.picture}
+              variant={isTablet ? AVATAR_VARIANT_BADGE : undefined}
+              walletId={isTransactionCreationOrSale ? to : from}
             />
-            <SDatasDetails>
-              <div className={styleDetails.rowDatasDetails}>
-                {NFTTransferRow.typeOfTransaction === "creation" &&
-                  `Created ${NFTTransferRow.quantity} edition${NFTTransferRow.quantity > 1 ? "s" : ""}`
-                }
-                {NFTTransferRow.typeOfTransaction === "transfer" &&
-                  `Transferred ${NFTTransferRow.quantity} edition${NFTTransferRow.quantity > 1 ? "s" : ""}
-                  to ${toData?.name ? toData.name : middleEllipsis(NFTTransferRow.to, 10)}`
-                }
-                {NFTTransferRow.typeOfTransaction === "sale" &&
-                  `Bought ${NFTTransferRow.quantity} edition${NFTTransferRow.quantity > 1 ? "s" : ""} 
-                  for ${computeCaps(Number(NFTTransferRow.amount))} caps 
-                  from ${fromData?.name ? fromData.name : middleEllipsis(NFTTransferRow.from, 10)}`
-                }
-                {NFTTransferRow.typeOfTransaction === "burn" &&
-                  `Burned ${NFTTransferRow.quantity} edition${NFTTransferRow.quantity > 1 ? "s" : ""}`
-                }
-              </div>
-              {NFTTransferRow.timestamp && 
-                <div className={styleDetails.historyDatasDetailDate}>
-                    {formatDate(new Date(NFTTransferRow.timestamp))}
-                </div>
-              }
-            </SDatasDetails>
-          </div>
+            {!isMobile && <StatusLabel />}
+          </SRowDatas>
         </div>
-        <div className={styleDetails.TernoaChainButton + " " + (EXPLORER_URL ? "" : styleDetails.disabled)}>
-          <a href={`${EXPLORER_URL ? `${EXPLORER_URL}/nft/${NFTTransferRow.id}?extrinsic=${NFTTransferRow.extrinsic.id}` : "#"}`} target="_blank">
-            View transaction
-          </a>
-        </div>
+        <SChipButtonWrapper>
+          <Button
+            color="primary"
+            disabled={isTransactionViewDisabled}
+            href={`${!isTransactionViewDisabled ? `${EXPLORER_URL}/nft/${id}?extrinsic=${extrinsic.id}` : "#"}`}
+            size="small"
+            text="View transaction"
+            variant={isTransactionViewDisabled ? "contained" : "outlined"}
+          />
+        </SChipButtonWrapper>
       </div>
     );
   };
@@ -325,13 +373,21 @@ const Details: React.FC<DetailsProps> = ({
           {currentTab === 'infos' && (
             <div className={styleDetails.detailsInfos}>
               <div className={styleDetails.creatorWrapper}>
-                <div className={styleDetails.creatorBadge}>Creator</div>
+                <SChipButtonWrapper>
+                  <Chip
+                    color="primaryLight"
+                    size="medium"
+                    text="Creator"
+                    variant="round"
+                  />
+                </SChipButtonWrapper>
                 <Avatar
                   isClickable
                   isVerified={NFT.creatorData?.verified}
                   name={NFT.creatorData?.name}
                   picture={NFT.creatorData?.picture}
                   twitterName={NFT.creatorData?.twitterName}
+                  variant={isTablet ? AVATAR_VARIANT_BADGE : undefined}
                   walletId={NFT.creator}
                 />
               </div>
@@ -355,7 +411,7 @@ const Details: React.FC<DetailsProps> = ({
                     width={width}
                     height={height}
                     itemCount={serieDataGrouped.length}
-                    itemSize={75}
+                    itemSize={88}
                     onItemsRendered={onRowRenderedOwners}
                   >
                     {ownerRowData}
@@ -376,7 +432,7 @@ const Details: React.FC<DetailsProps> = ({
                       width={width}
                       height={height}
                       itemCount={historyData.length}
-                      itemSize={75}
+                      itemSize={88}
                       onItemsRendered={onRowRenderedHistory}
                     >
                       {historyRowData}
@@ -397,11 +453,61 @@ const Details: React.FC<DetailsProps> = ({
   );
 };
 
+const SRowDatas = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: flex-start;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+`;
+
+const SRowDatasDetails = styled.div`
+  color: ${({ theme }) => theme.colors.contrast};
+  font-size: 1.2rem;
+  
+  ${({ theme }) => theme.mediaQueries.md} {
+    font-family: ${({theme}) => theme.fonts.bold};
+    font-size: 1.6rem;
+  }
+`;
+
+const SRowDatasSubDetails = styled.div`
+  color: ${({ theme }) => theme.colors.neutral200};
+  font-family: ${({theme}) => theme.fonts.light};
+  font-size: 0.8rem;
+  
+  ${({ theme }) => theme.mediaQueries.md} {
+    font-size: 1.2rem;
+  }
+`;
+
+const SChipButtonWrapper = styled.div`
+  margin: 1.2rem;
+  text-transform: capitalize;
+`;
+
+const SStatusLink = styled.a`
+  color: ${({ theme }) => theme.colors.contrast};
+  font-size: 1.2rem;
+  
+  ${({ theme }) => theme.mediaQueries.lg} {
+    font-family: ${({theme}) => theme.fonts.bold};
+    font-size: 1.6rem;
+    margin-left: 1.6rem;
+  }
+`;
+
 const SDatasDetails = styled.div`
   margin-top: 0.4rem;
 
-  ${({ theme }) => theme.mediaQueries.lg} {
+  ${({ theme }) => theme.mediaQueries.md} {
     margin-top: 0;
+    margin-left: 1.6rem;
   }
 `;
 

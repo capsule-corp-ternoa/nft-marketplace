@@ -1,10 +1,11 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
+import styled, { css, DefaultTheme } from 'styled-components';
 import Icon, { IconNameType } from 'components/ui/Icon';
 import { Colors } from 'style/theme/types';
 
 interface IButton {
   color?: keyof Colors;
+  disabled?: boolean;
   isIconOnly?: boolean;
   noHover?: boolean;
   size?: 'small' | 'medium';
@@ -12,33 +13,59 @@ interface IButton {
 }
 interface Props extends IButton {
   className?: string;
-  disabled?: boolean;
   href?: string;
   icon?: IconNameType;
   onClick?: () => void;
   text?: string;
 }
 
+const containedColors = (theme: DefaultTheme, color?: keyof Colors) => {
+  switch (color) {
+    case 'contrast':
+    case 'primary':
+      return theme.colors.invertedContrast;
+    case 'primaryLight':
+      return theme.colors.primary;
+    case 'invertedContrast':
+    case 'whiteBlur':
+    default:
+      return theme.colors.contrast;
+  }
+};
+
+const outlinedColors = (theme: DefaultTheme, color?: keyof Colors) => {
+  switch (color) {
+    case 'primary':
+      return theme.colors.primary;
+    default:
+      return theme.colors.contrast;
+  }
+};
+
 const ButtonStyle = css<IButton>`
   display: flex;
   justify-content: center;
   align-items: center;
   align-self: center;
-  background: ${({ theme, color }) =>
-    color ? theme.colors[`${color}`] : theme.colors.primary};
-  border: ${({ variant }) => (variant === 'outlined' ? '2px solid' : 'none')};
+  background: ${({ theme, color, variant }) =>
+    variant === 'contained' && color
+      ? theme.colors[`${color}`]
+      : 'transparent'};
+  border: ${({ size, variant }) => (variant === 'outlined' ? size === 'small' ? '1px solid' : '2px solid' : 'none')};
   border-radius: 4rem;
   box-shadow: 0 0 0.8rem 0.4rem rgba(0, 0, 0, 0.05);
   cursor: ${({ noHover }) => (noHover ? 'default' : 'pointer')};
   font-family: ${({ theme }) => theme.fonts.bold};
-  font-size: 1.6rem;
+  font-size: ${({ size }) => (size === 'small' ? '1.2rem' : '1.6rem')};
+  opacity: ${({ disabled }) => (disabled ? '0.4' : '1')};
   padding: ${({ isIconOnly, size }) =>
     isIconOnly
       ? '1.2rem'
       : size === 'small'
       ? '0.8rem 2.4rem'
       : '1.2rem 3.2rem'};
-  pointer-events: ${({ noHover }) => (noHover ? 'none' : 'auto')};
+  pointer-events: ${({ disabled, noHover }) => (disabled || noHover ? 'none' : 'auto')};
+  text-align: center;
   transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
   z-index: 1;
 
@@ -55,13 +82,10 @@ const ButtonStyle = css<IButton>`
       }
     }`}
 
-  &:disabled {
-    opacity: 0.4;
-    pointer-events: none;
-  }
-
   border-color: ${({ theme, color }) => {
     switch (color) {
+      case 'primary':
+        return theme.colors.primary;
       case 'contrast':
       case 'invertedContrast':
         return theme.colors.contrast;
@@ -70,17 +94,14 @@ const ButtonStyle = css<IButton>`
         return theme.colors.neutral400;
     }
   }};
-  color: ${({ theme, color }) => {
-    switch (color) {
-      case 'contrast':
-      case 'primary':
-        return theme.colors.invertedContrast;
-      case 'primaryLight':
-        return theme.colors.primary;
-      case 'invertedContrast':
-      case 'whiteBlur':
+
+  color: ${({ theme, color, variant }) => {
+    switch (variant) {
+      case 'contained':
+        return containedColors(theme, color);
+      case 'outlined':
       default:
-        return theme.colors.contrast;
+        return outlinedColors(theme, color);
     }
   }};
 `;
@@ -102,6 +123,7 @@ const Button = ({
       <SAnchor
         className={className}
         color={color}
+        disabled={disabled}
         href={href}
         isIconOnly={text === undefined}
         noHover={noHover}

@@ -33,8 +33,8 @@ interface Props {
   isTooltip?: boolean;
   isUnfollow?: boolean;
   isVerified?: boolean;
-  label?: string;
-  name: string;
+  label?: string | React.ReactNode;
+  name?: string;
   nickname?: string;
   personalUrl?: string;
   picture?: string;
@@ -56,7 +56,7 @@ const Avatar = ({
   isUnfollow,
   isVerified,
   label,
-  name,
+  name = 'Ternoa',
   nickname,
   personalUrl,
   picture,
@@ -103,7 +103,7 @@ const Avatar = ({
           </STopDetails>
 
           <SBottomDetails>
-            {label !== undefined && <SLabel>{label}</SLabel>}
+            {label !== undefined && label && typeof label === "string" ? <SLabel>{label}</SLabel> : label}
             {followers !== undefined && (
               <SFollowers>{`${followers} followers`}</SFollowers>
             )}
@@ -129,7 +129,7 @@ const Avatar = ({
               </SLink>
             )}
             {isAddressDisplayed && walletId && (
-              <Clipboard address={walletId} isEllipsis variant={variant} />
+              <Clipboard address={walletId} isCopyLabelIndicator={false} isEllipsis variant={variant} />
             )}
             {!isTablet && isFollowButton && (
               <SFollowButton
@@ -212,7 +212,6 @@ const STopDetails = styled.div`
 const SBottomDetails = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 0.4rem;
 
   > * {
     &:not(:first-child) {
@@ -236,7 +235,7 @@ const SName = styled.a<{ variant?: AVATAR_VARIANT_TYPE }>`
   }
 `;
 
-const SLabel = styled.span`
+const SLabel = styled.div`
   color: ${({ theme }) => theme.colors.contrast};
   font-size: 1.6rem;
 `;
@@ -265,6 +264,7 @@ const STwitterIcon = styled(Icon)`
 
 const STwitterNickname = styled.span`
   margin-left: 0.4rem;
+  font-size: 1.2rem;
 `;
 
 const SFollowButton = styled(Button)`

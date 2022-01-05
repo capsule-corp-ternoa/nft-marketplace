@@ -103,14 +103,17 @@ const Profile = ({
     (variant === ARTIST_PROFILE_VARIANT && artist?.walletId === user?.walletId);
 
   const populateProfileData = async (token: string) => {
-    // Created nfts
-    const createdNfts = await getCreatorNFTS(token, undefined, undefined);
-    setCreatedNfts(createdNfts.data);
-    setCreatedNftsHasNextPage(createdNfts.hasNextPage);
-    // Liked NFTs
-    const liked = await getLikedNFTs(token, undefined, undefined);
-    setLikedNfts(liked.data);
-    setLikedNftsHasNextPage(liked.hasNextPage);
+    if (variant === USER_PERSONNAL_PROFILE_VARIANT) {
+      // Created nfts
+      const createdNfts = await getCreatorNFTS(token, undefined, undefined);
+      setCreatedNfts(createdNfts.data);
+      setCreatedNftsHasNextPage(createdNfts.hasNextPage);
+      // Liked NFTs
+      const liked = await getLikedNFTs(token, undefined, undefined);
+      setLikedNfts(liked.data);
+      setLikedNftsHasNextPage(liked.hasNextPage);
+    }
+
     // Owned listed NFTs
     const ownedListed = await getOwnedNFTS(token, true, true, undefined, undefined);
     setOwnedNftsListed(ownedListed.data);

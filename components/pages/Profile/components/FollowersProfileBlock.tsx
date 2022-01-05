@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import Avatar from 'components/base/Avatar';
 import NoNFTComponent from 'components/base/NoNFTComponent';
 import Button from 'components/ui/Button';
+import { Loader } from 'components/ui/Icon';
 import { UserType } from 'interfaces';
 import { FOLLOW_ACTION, UNFOLLOW_ACTION, FOLLOW_ACTION_TYPE } from 'utils/profile/constants';
 
@@ -40,71 +41,75 @@ const FollowersProfileBlock = ({
   updateKeywordSearch,
   user,
   users,
-}: Props) => {
-  return (
-    <>
-      <SSearchContainer>
-        <SSearchLabel>
-          <SSearchInput type="search" onChange={updateKeywordSearch} placeholder="Search" />
-        </SSearchLabel>
-        <SToggle>
-          <SCertifiedLabel>Verified only</SCertifiedLabel>
-          <label>
-            <Switch
-              checked={isFilterVerified}
-              onChange={() => setIsFilterVerified(!isFilterVerified)}
-              offColor="#000000"
-              onColor="#7417ea"
-              uncheckedIcon={false}
-              checkedIcon={false}
-              width={46}
-              handleDiameter={23}
-            />
-          </label>
-        </SToggle>
-      </SSearchContainer>
+}: Props) => (
+  <>
+    <SSearchContainer>
+      <SSearchLabel>
+        <SSearchInput type="search" onChange={updateKeywordSearch} placeholder="Search" />
+      </SSearchLabel>
+      <SToggle>
+        <SCertifiedLabel>Verified only</SCertifiedLabel>
+        <label>
+          <Switch
+            checked={isFilterVerified}
+            onChange={() => setIsFilterVerified(!isFilterVerified)}
+            offColor="#000000"
+            onColor="#7417ea"
+            uncheckedIcon={false}
+            checkedIcon={false}
+            width={46}
+            handleDiameter={23}
+          />
+        </label>
+      </SToggle>
+    </SSearchContainer>
 
-      {users.length < 1 ? (
-        <SNoNFTContainer>
-          <NoNFTComponent body={noContentBody} title={noContentTitle} />
-        </SNoNFTContainer>
-      ) : (
-        <>
-          <SFollowersContainer>
-            {users.map(({ _id, name, picture, verified, walletId }: UserType) => (
-              <Avatar
-                key={_id}
-                followers={followersNbFollowers[walletId] ?? 0}
-                handleFollow={() => handleFollow(walletId, followingStatus[walletId] ? UNFOLLOW_ACTION : FOLLOW_ACTION)}
-                isClickable
-                isFollowButton={user && walletId !== user.walletId}
-                isUnfollow={followingStatus[walletId]}
-                isVerified={verified}
-                name={name}
-                picture={picture}
-                walletId={walletId}
-              />
-            ))}
-          </SFollowersContainer>
-          {isLoadMore && (
-            <SLoadButtonWrapper>
-              <Button
-                color="invertedContrast"
-                disabled={isLoading}
-                onClick={loadMore}
-                size="medium"
-                text={isLoading ? 'Loading...' : 'Load more'}
-                variant="outlined"
-              />
-            </SLoadButtonWrapper>
-          )}
-        </>
-      )}
-    </>
-  );
-};
+    {users.length < 1 ? (
+      <SNoNFTContainer>
+        {isLoading ? <SLoader color="primary" /> : <NoNFTComponent body={noContentBody} title={noContentTitle} />}
+      </SNoNFTContainer>
+    ) : (
+      <>
+        <SFollowersContainer>
+          {users.map(({ _id, name, picture, verified, walletId }: UserType) => (
+            <Avatar
+              key={_id}
+              followers={followersNbFollowers[walletId] ?? 0}
+              handleFollow={() => handleFollow(walletId, followingStatus[walletId] ? UNFOLLOW_ACTION : FOLLOW_ACTION)}
+              isClickable
+              isFollowButton={user && walletId !== user.walletId}
+              isUnfollow={followingStatus[walletId]}
+              isVerified={verified}
+              name={name}
+              picture={picture}
+              walletId={walletId}
+            />
+          ))}
+        </SFollowersContainer>
+        {isLoadMore && (
+          <SLoadButtonWrapper>
+            <Button
+              color="invertedContrast"
+              disabled={isLoading}
+              onClick={loadMore}
+              size="medium"
+              text={isLoading ? 'Loading...' : 'Load more'}
+              variant="outlined"
+            />
+          </SLoadButtonWrapper>
+        )}
+      </>
+    )}
+  </>
+);
+
+const SLoader = styled(Loader)`
+  margin: 8rem auto;
+`;
 
 const SNoNFTContainer = styled.div`
+  display: flex;
+  align-items; center;
   margin-top: 8rem;
 `;
 

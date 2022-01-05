@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import BetaBanner from 'components/base/BetaBanner';
 import MainHeader from 'components/base/MainHeader';
-import TernoaWallet from 'components/base/TernoaWallet';
+import WalletConnector from 'components/base/WalletConnector';
 import Profile from 'components/pages/Profile';
 import SuccessPopup from 'components/base/SuccessPopup';
 import cookies from 'next-cookies';
@@ -305,7 +305,7 @@ const ProfilePage = ({ user, owned, ownedHasNextPage }: ProfilePageProps) => {
         <meta name="description" content="Ternoa - Your profile." />
         <meta name="og:image" content="ternoa-social-banner.jpg" />
       </Head>
-      {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
+      {modalExpand && <WalletConnector setModalExpand={setModalExpand} />}
       {successPopup && <SuccessPopup setSuccessPopup={setSuccessPopup} />}
       <BetaBanner />
       <MainHeader user={walletUser} setModalExpand={setModalExpand} />

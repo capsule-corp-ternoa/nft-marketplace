@@ -3,7 +3,7 @@ import Head from 'next/head';
 import BetaBanner from 'components/base/BetaBanner';
 import MainHeader from 'components/base/MainHeader';
 import Explore from 'components/pages/Explore';
-import TernoaWallet from 'components/base/TernoaWallet';
+import WalletConnector from 'components/base/WalletConnector';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
 import cookies from 'next-cookies';
@@ -63,7 +63,7 @@ const ExplorePage = ({
         <meta name="og:image" content="ternoa-social-banner.jpg" />
         <meta property="og:image" content="ternoa-social-banner.jpg" />
       </Head>
-      {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
+      {modalExpand && <WalletConnector setModalExpand={setModalExpand} />}
       <BetaBanner />
       <MainHeader user={walletUser} setModalExpand={setModalExpand} />
       <Explore

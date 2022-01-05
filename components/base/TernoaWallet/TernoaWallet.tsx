@@ -14,7 +14,7 @@ export interface TernoaWalletProps {
   setModalExpand: (b: boolean) => void;
 }
 
-const TernoaWallet: React.FC<TernoaWalletProps> = ({ setModalExpand }) => {
+const TernoaWallet: React.FC<WalletConnectorProps> = ({ setModalExpand }) => {
   const [session] = useState(randomstring.generate());
   const [error, setError] = useState('');
   const [showQR, setShowQR] = useState(false);

@@ -3,7 +3,7 @@ import Head from 'next/head';
 import BetaBanner from 'components/base/BetaBanner';
 import MainHeader from 'components/base/MainHeader';
 import Landing from 'components/pages/Landing';
-import TernoaWallet from 'components/base/TernoaWallet';
+import WalletConnector from 'components/base/WalletConnector';
 import arrayShuffle from 'array-shuffle';
 import cookies from 'next-cookies';
 
@@ -55,7 +55,7 @@ const LandingPage = ({
         <meta name="og:image" content="ternoa-social-banner.jpg" />
         <meta property="og:image" content="ternoa-social-banner.jpg" />
       </Head>
-      {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
+      {modalExpand && <WalletConnector setModalExpand={setModalExpand} />}
       <BetaBanner />
       <MainHeader
         user={walletUser as UserType}

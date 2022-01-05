@@ -3,7 +3,7 @@ import Head from 'next/head';
 import BetaBanner from 'components/base/BetaBanner';
 import MainHeader from 'components/base/MainHeader';
 import ModalBuy from 'components/pages/NFT/ModalBuy';
-import TernoaWallet from 'components/base/TernoaWallet';
+import WalletConnector from 'components/base/WalletConnector';
 import NFTPage from 'components/pages/NFT';
 import ModalShowcase from 'components/pages/NFT/ModalShowcase';
 import cookies from 'next-cookies';
@@ -80,7 +80,7 @@ const NftPage = ({ user, NFT, capsValue }: NFTPageProps) => {
         />
       )}
       {exp === 3 && <ModalBuy setModalExpand={() => setExp(0)} id={nftToBuy.id} seriesId={nftToBuy.serieId}/>}
-      {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
+      {modalExpand && <WalletConnector setModalExpand={setModalExpand} />}
 
       <BetaBanner />
       <MainHeader user={walletUser} setModalExpand={setModalExpand} />

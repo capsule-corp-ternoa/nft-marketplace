@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import BetaBanner from 'components/base/BetaBanner';
 import MainHeader from 'components/base/MainHeader';
-import TernoaWallet from 'components/base/TernoaWallet';
+import WalletConnector from 'components/base/WalletConnector';
 import cookies from 'next-cookies';
 import { getUser } from 'actions/user';
 import { UserType } from 'interfaces';
@@ -40,7 +40,7 @@ const SuccessPage = ({ user }: SuccessProps) => {
         <meta name="description" content="Success page of SecretNFT, by Ternoa." />
         <meta name="og:image" content="ternoa-social-banner.jpg" />
       </Head>
-      {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
+      {modalExpand && <WalletConnector setModalExpand={setModalExpand} />}
       <BetaBanner />
       <MainHeader user={user} setModalExpand={setModalExpand} />
       <Success

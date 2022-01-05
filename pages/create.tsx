@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import BetaBanner from 'components/base/BetaBanner';
 import MainHeader from 'components/base/MainHeader';
-import TernoaWallet from 'components/base/TernoaWallet';
+import WalletConnector from 'components/base/WalletConnector';
 import Create from 'components/pages/Create';
 import ModalMint from 'components/pages/Create/ModalMint';
 import cookies from 'next-cookies';
@@ -97,7 +97,7 @@ const CreatePage = ({ categories, user }: CreatePageProps) => {
         <meta name="og:image" content="ternoa-social-banner.jpg" />
       </Head>
       <>
-        {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
+        {modalExpand && <WalletConnector setModalExpand={setModalExpand} />}
         {modalCreate && (
           <ModalMint
             error={error}

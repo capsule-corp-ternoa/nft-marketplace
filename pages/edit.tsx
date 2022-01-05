@@ -8,7 +8,7 @@ import FloatingHeader from 'components/base/FloatingHeader';
 import Footer from 'components/base/Footer';
 import MainHeader from 'components/base/MainHeader';
 import SuccessPopup from 'components/base/SuccessPopup';
-import TernoaWallet from 'components/base/TernoaWallet';
+import WalletConnector from 'components/base/WalletConnector';
 import Edit from 'components/pages/Edit';
 
 import { getUser } from 'actions/user';
@@ -37,7 +37,7 @@ const EditPage = ({ user }: EditPageProps) => {
         <meta name="description" content="Ternoa - Your profile." />
         <meta name="og:image" content="ternoa-social-banner.jpg" />
       </Head>
-      {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
+      {modalExpand && <WalletConnector setModalExpand={setModalExpand} />}
       {successPopup && <SuccessPopup setSuccessPopup={setSuccessPopup} />}
       <BetaBanner />
       <MainHeader user={user} setModalExpand={setModalExpand} />

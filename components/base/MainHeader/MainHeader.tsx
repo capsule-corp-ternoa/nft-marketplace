@@ -79,7 +79,7 @@ const MainHeader: React.FC<HeaderProps> = ({ setModalExpand, user }) => {
                 color="contrast"
                 onClick={() => setModalExpand(true)}
                 size="medium"
-                text="Connect"
+                text="Wallet Connect"
                 variant="outlined"
               />
             )}

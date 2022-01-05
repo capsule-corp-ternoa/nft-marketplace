@@ -6,11 +6,7 @@ import Avatar from 'components/base/Avatar';
 import NoNFTComponent from 'components/base/NoNFTComponent';
 import Button from 'components/ui/Button';
 import { UserType } from 'interfaces';
-import {
-  FOLLOW_ACTION,
-  UNFOLLOW_ACTION,
-  FOLLOW_ACTION_TYPE,
-} from 'utils/profile/follow';
+import { FOLLOW_ACTION, UNFOLLOW_ACTION, FOLLOW_ACTION_TYPE } from 'utils/profile/constants';
 
 interface Props {
   followingStatus: {
@@ -49,11 +45,7 @@ const FollowersProfileBlock = ({
     <>
       <SSearchContainer>
         <SSearchLabel>
-          <SSearchInput
-            type="search"
-            onChange={updateKeywordSearch}
-            placeholder="Search"
-          />
+          <SSearchInput type="search" onChange={updateKeywordSearch} placeholder="Search" />
         </SSearchLabel>
         <SToggle>
           <SCertifiedLabel>Verified only</SCertifiedLabel>
@@ -79,36 +71,27 @@ const FollowersProfileBlock = ({
       ) : (
         <>
           <SFollowersContainer>
-            {users.map(
-              ({ _id, name, picture, verified, walletId }: UserType) => (
-                <Avatar
-                  key={_id}
-                  followers={followersNbFollowers[walletId] ?? 0}
-                  handleFollow={() =>
-                    handleFollow(
-                      walletId,
-                      followingStatus[walletId]
-                        ? UNFOLLOW_ACTION
-                        : FOLLOW_ACTION
-                    )
-                  }
-                  isClickable
-                  isFollowButton={user && walletId !== user.walletId}
-                  isUnfollow={followingStatus[walletId]}
-                  isVerified={verified}
-                  name={name}
-                  picture={picture}
-                  walletId={walletId}
-                />
-              )
-            )}
+            {users.map(({ _id, name, picture, verified, walletId }: UserType) => (
+              <Avatar
+                key={_id}
+                followers={followersNbFollowers[walletId] ?? 0}
+                handleFollow={() => handleFollow(walletId, followingStatus[walletId] ? UNFOLLOW_ACTION : FOLLOW_ACTION)}
+                isClickable
+                isFollowButton={user && walletId !== user.walletId}
+                isUnfollow={followingStatus[walletId]}
+                isVerified={verified}
+                name={name}
+                picture={picture}
+                walletId={walletId}
+              />
+            ))}
           </SFollowersContainer>
           {isLoadMore && (
             <SLoadButtonWrapper>
               <Button
                 color="invertedContrast"
                 disabled={isLoading}
-                onClick={() => loadMore()}
+                onClick={loadMore}
                 size="medium"
                 text={isLoading ? 'Loading...' : 'Load more'}
                 variant="outlined"

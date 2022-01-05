@@ -53,7 +53,9 @@ const NftsProfileBlock = ({
       case NFT_ON_SALE_TAB:
         return totalOwnedListedInMarketplaceByRequestingUser;
       case NFT_NOT_FOR_SALE_TAB:
-        return totalOwnedByRequestingUser ? totalOwnedByRequestingUser - (totalOwnedListedInMarketplaceByRequestingUser ?? 0) : 0
+        return totalOwnedByRequestingUser
+          ? totalOwnedByRequestingUser - (totalOwnedListedInMarketplaceByRequestingUser ?? 0)
+          : 0;
       case NFT_OWNED_TAB:
       default:
         return totalOwnedByRequestingUser ?? 1;
@@ -66,12 +68,7 @@ const NftsProfileBlock = ({
         {isLoading ? (
           <SLoader color="primary" />
         ) : (
-          <NoNFTComponent
-            body={noNftBody}
-            href={noNftHref}
-            linkLabel={noNftLinkLabel}
-            title={noNftTitle}
-          />
+          <NoNFTComponent body={noNftBody} href={noNftHref} linkLabel={noNftLinkLabel} title={noNftTitle} />
         )}
       </SNoNFTContainer>
     );
@@ -125,7 +122,7 @@ const NftsProfileBlock = ({
           <Button
             color="invertedContrast"
             disabled={isLoading}
-            onClick={() => loadMore()}
+            onClick={loadMore}
             size="medium"
             text={isLoading ? 'Loading...' : 'Load more'}
             variant="outlined"

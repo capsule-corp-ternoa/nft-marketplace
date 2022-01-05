@@ -5,8 +5,8 @@ import styled from 'styled-components';
 import { Banner as AvatarBanner } from 'components/base/Avatar';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
-import { follow, unfollow } from 'actions/follower';
-import { getUserNFTsStat } from 'actions/nft';
+import { getCreatorNFTS, getLikedNFTs, getOwnedNFTS, getUserNFTsStat } from 'actions/nft';
+import { follow, getFollowers, getFollowed, unfollow } from 'actions/follower';
 import { Container, Wrapper } from 'components/layout/Container';
 import Button from 'components/ui/Button';
 import Tabs from 'components/ui/Tabs';
@@ -23,13 +23,9 @@ import {
   NFT_LIKED_TAB,
 } from 'interfaces';
 import { breakpointMap } from 'style/theme/base';
-import {
-  FOLLOW_ACTION,
-  FOLLOW_ACTION_TYPE,
-  UNFOLLOW_ACTION,
-  getFollowingStatus,
-  getProfilesFollowersCount,
-} from 'utils/profile/follow';
+import { loadMoreNfts } from 'utils/profile';
+import { FOLLOW_ACTION, FOLLOW_ACTION_TYPE, UNFOLLOW_ACTION } from 'utils/profile/constants';
+import { getFollowingStatus, getProfilesFollowersCount, loadMoreProfiles } from 'utils/profile/follow';
 
 import FollowersProfileBlock from './components/FollowersProfileBlock';
 import NftsProfileBlock from './components/NftsProfileBlock';
@@ -43,48 +39,10 @@ export interface ProfileProps {
   setArtist?: (u: UserType) => void;
   user: UserType;
   setUser: (u: UserType) => void;
-  loading: boolean;
-  isFiltered: boolean;
-  setIsFiltered: (b: boolean) => void;
-  searchValue: string;
-  setSearchValue: (s: string) => void;
-  //Owned
-  ownedNfts?: NftType[];
-  loadMoreOwnedNfts?: () => void;
-  ownedNftsHasNextPage?: boolean;
-  //Owned listed
-  ownedNftsListed: NftType[];
-  ownedNftsListedHasNextPage: boolean;
-  loadMoreOwnedListedNfts: () => void;
-  //Owned not listed
-  ownedNftsUnlisted: NftType[];
-  ownedNftsUnlistedHasNextPage: boolean;
-  loadMoreOwnedUnlistedNfts: () => void;
-  //created
-  createdNfts?: NftType[];
-  loadMoreCreatedNfts?: () => void;
-  createdNftsHasNextPage?: boolean;
-  //liked
-  likedNfts?: NftType[];
-  setLikedNfts?: (nfts: NftType[]) => void;
-  likedNftsHasNextPage?: boolean;
-  loadMoreLikedNfts?: () => void;
-  //followers
-  followers: UserType[];
-  followersUsersHasNextPage: boolean;
-  loadMoreFollowers: (forceLoad?: boolean) => void;
-  setFollowers: (users: UserType[]) => void;
-  //followed
-  followed: UserType[];
-  setFollowed: (users: UserType[]) => void;
-  followedUsersHasNextPage: boolean;
-  loadMoreFollowed: (forceLoad?: boolean) => void;
-  canEditProfile: boolean;
+  userOwnedlNfts?: NftType[];
+  userOwnedNftsHasNextPage?: boolean;
   tabs: readonly TabsIdType[];
-  profileDataLoaded: boolean;
-  variant:
-    | typeof ARTIST_PROFILE_VARIANT
-    | typeof USER_PERSONNAL_PROFILE_VARIANT;
+  variant: typeof ARTIST_PROFILE_VARIANT | typeof USER_PERSONNAL_PROFILE_VARIANT;
 }
 
 const Profile = ({
@@ -93,66 +51,89 @@ const Profile = ({
   setArtist,
   user,
   setUser,
-  loading,
-  isFiltered,
-  setIsFiltered,
-  searchValue,
-  setSearchValue,
-  ownedNfts,
-  loadMoreOwnedNfts,
-  ownedNftsHasNextPage,
-  ownedNftsListed,
-  ownedNftsListedHasNextPage,
-  loadMoreOwnedListedNfts,
-  ownedNftsUnlisted,
-  ownedNftsUnlistedHasNextPage,
-  loadMoreOwnedUnlistedNfts,
-  createdNfts,
-  createdNftsHasNextPage,
-  loadMoreCreatedNfts,
-  likedNfts,
-  likedNftsHasNextPage,
-  loadMoreLikedNfts,
-  followers,
-  followersUsersHasNextPage,
-  loadMoreFollowers,
-  setFollowers,
-  followed,
-  followedUsersHasNextPage,
-  loadMoreFollowed,
-  setFollowed,
-  canEditProfile,
+  userOwnedlNfts,
+  userOwnedNftsHasNextPage,
   tabs,
-  profileDataLoaded,
   variant,
 }: ProfileProps) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [profileDataLoaded, setProfileDataLoaded] = useState(false);
+
+  //Owned NFTs
+  const [ownedNfts, setOwnedNfts] = useState<NftType[]>(userOwnedlNfts ?? []);
+  const [ownedNftsHasNextPage, setOwnedNftsHasNextPage] = useState(userOwnedNftsHasNextPage ?? false);
+  const [ownedNftsCurrentPage, setOwnedNftsCurrentPage] = useState(1);
+  //Created NFTs
+  const [createdNfts, setCreatedNfts] = useState<NftType[]>([]);
+  const [createdNftsHasNextPage, setCreatedNftsHasNextPage] = useState(false);
+  const [createdCurrentPage, setCreatedCurrentPage] = useState(1);
+  //Owned listed NFTs
+  const [ownedNftsListed, setOwnedNftsListed] = useState<NftType[]>([]);
+  const [ownedNftsListedHasNextPage, setOwnedNftsListedHasNextPage] = useState(false);
+  const [ownedNftsListedCurrentPage, setOwnedNftsListedCurrentPage] = useState(1);
+  //Owned not listed NFTs
+  const [ownedNftsUnlisted, setOwnedNftsUnlisted] = useState<NftType[]>([]);
+  const [ownedNftsUnlistedHasNextPage, setOwnedNftsUnlistedHasNextPage] = useState(false);
+  const [ownedNftsUnlistedCurrentPage, setOwnedNftsUnlistedCurrentPage] = useState(1);
+  //Liked NFTs
+  const [likedNfts, setLikedNfts] = useState<NftType[]>([]);
+  const [likedNftsHasNextPage, setLikedNftsHasNextPage] = useState(false);
+  const [likedCurrentPage, setLikedCurrentPage] = useState(1);
+  //profile followers
+  const [followers, setFollowers] = useState<UserType[]>([]);
+  const [followersHasNextPage, setFollowersHasNextPage] = useState(false);
+  const [followersCurrentPage, setFollowersCurrentPage] = useState(1);
+  //profile followed
+  const [followed, setFollowed] = useState<UserType[]>([]);
+  const [followedHasNextPage, setFollowedHasNextPage] = useState(false);
+  const [followedCurrentPage, setFollowedCurrentPage] = useState(1);
+
+  // Stats
   const [followLoading, setFollowLoading] = useState(false);
-  const [userFollowingStatus, setUserFollowingStatus] = useState<{
-    [key: string]: boolean;
-  }>({});
-  const [profilesFollowersCount, setProfilesFollowersCount] = useState<{
-    [key: string]: number;
-  }>({});
-  const [counts, setCounts] = useState<{
-    [key in TabsIdType]: number;
-  }>(
-    tabs.reduce(
-      (acc, id) => ({
-        ...acc,
-        [id]: 0,
-      }),
-      {} as {
-        [key in TabsIdType]: number;
-      }
-    )
+  const [userFollowingStatus, setUserFollowingStatus] = useState<{ [key: string]: boolean }>({});
+  const [profilesFollowersCount, setProfilesFollowersCount] = useState<{ [key: string]: number }>({});
+  const [counts, setCounts] = useState<{ [key in TabsIdType]: number }>(
+    tabs.reduce((acc, id) => ({ ...acc, [id]: 0 }), {} as { [key in TabsIdType]: number })
   );
 
-  const isTablet = useMediaQuery({
-    query: `(max-width: ${breakpointMap.lg - 1}px)`,
-  });
+  // Followers search
+  const [isFiltered, setIsFiltered] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
+
+  const { banner, bio, name, picture, twitterName, verified, walletId } = artist ?? user;
+  const isTablet = useMediaQuery({ query: `(max-width: ${breakpointMap.lg - 1}px)` });
   const isMyProfile =
     variant === USER_PERSONNAL_PROFILE_VARIANT ||
     (variant === ARTIST_PROFILE_VARIANT && artist?.walletId === user?.walletId);
+
+  const populateProfileData = async (token: string) => {
+    // Created nfts
+    const createdNfts = await getCreatorNFTS(token, undefined, undefined);
+    setCreatedNfts(createdNfts.data);
+    setCreatedNftsHasNextPage(createdNfts.hasNextPage);
+    // Liked NFTs
+    const liked = await getLikedNFTs(token, undefined, undefined);
+    setLikedNfts(liked.data);
+    setLikedNftsHasNextPage(liked.hasNextPage);
+    // Owned listed NFTs
+    const ownedListed = await getOwnedNFTS(token, true, true, undefined, undefined);
+    setOwnedNftsListed(ownedListed.data);
+    setOwnedNftsListedHasNextPage(ownedListed.hasNextPage);
+    // Owned not listed NFTs
+    const ownedUnlisted = await getOwnedNFTS(token, false, false, undefined, undefined);
+    setOwnedNftsUnlisted(ownedUnlisted.data);
+    setOwnedNftsUnlistedHasNextPage(ownedUnlisted.hasNextPage);
+    // Followers
+    const followers = await getFollowers(token);
+    setFollowers(followers.data);
+    setFollowersHasNextPage(followers.hasNextPage);
+    // Followed
+    const followed = await getFollowed(token);
+    setFollowed(followed.data);
+    setFollowedHasNextPage(followed.hasNextPage);
+
+    setProfileDataLoaded(true);
+  };
 
   const initCounts = async () => {
     const { walletId } = artist ?? user;
@@ -160,14 +141,8 @@ const Profile = ({
       if (walletId) {
         const stats = await getUserNFTsStat(walletId, true);
         if (stats) {
-          const {
-            countOwned,
-            countOwnedListed,
-            countOwnedUnlisted,
-            countCreated,
-            countFollowers,
-            countFollowed,
-          } = stats;
+          const { countOwned, countOwnedListed, countOwnedUnlisted, countCreated, countFollowers, countFollowed } =
+            stats;
 
           setCounts((prevCounts) => ({
             ...prevCounts,
@@ -187,9 +162,7 @@ const Profile = ({
   };
 
   const initFollowersData = async (): Promise<void> => {
-    const profileWalletIds = [...followers, ...followed].map(
-      ({ walletId }) => walletId
-    );
+    const profileWalletIds = [...followers, ...followed].map(({ walletId }) => walletId);
 
     if (artist !== undefined) {
       profileWalletIds.push(artist.walletId);
@@ -197,8 +170,7 @@ const Profile = ({
 
     setFollowLoading(true);
     if (user) {
-      const status =
-        (await getFollowingStatus(profileWalletIds, user.walletId)) ?? {};
+      const status = (await getFollowingStatus(profileWalletIds, user.walletId)) ?? {};
       setUserFollowingStatus(status);
     }
 
@@ -211,10 +183,7 @@ const Profile = ({
     setSearchValue(event.currentTarget.value);
   };
 
-  const handleUserFollow = async (
-    profileWalletId: string,
-    action: FOLLOW_ACTION_TYPE
-  ) => {
+  const handleUserFollow = async (profileWalletId: string, action: FOLLOW_ACTION_TYPE) => {
     if (user) {
       setFollowLoading(true);
       try {
@@ -228,8 +197,7 @@ const Profile = ({
                   [FOLLOWED_TAB]: prevCounts[FOLLOWED_TAB] + 1,
                 }));
               } else {
-                if (artist && setArtist)
-                  setArtist({ ...res, viewsCount: artist.viewsCount ?? 0 });
+                if (artist && setArtist) setArtist({ ...res, viewsCount: artist.viewsCount ?? 0 });
                 setFollowers([...followers, res]);
                 setCounts((prevCounts) => ({
                   ...prevCounts,
@@ -248,23 +216,14 @@ const Profile = ({
           case UNFOLLOW_ACTION: {
             unfollow(profileWalletId, user.walletId).then((res) => {
               if (isMyProfile) {
-                setFollowed(
-                  followed.filter(
-                    ({ walletId }) => walletId !== profileWalletId
-                  )
-                );
+                setFollowed(followed.filter(({ walletId }) => walletId !== profileWalletId));
                 setCounts((prevCounts) => ({
                   ...prevCounts,
                   [FOLLOWED_TAB]: prevCounts[FOLLOWED_TAB] - 1,
                 }));
               } else {
-                if (artist && setArtist)
-                  setArtist({ ...res, viewsCount: artist.viewsCount ?? 0 });
-                setFollowers(
-                  followers.filter(
-                    ({ walletId }) => walletId !== profileWalletId
-                  )
-                );
+                if (artist && setArtist) setArtist({ ...res, viewsCount: artist.viewsCount ?? 0 });
+                setFollowers(followers.filter(({ walletId }) => walletId !== profileWalletId));
                 setCounts((prevCounts) => ({
                   ...prevCounts,
                   [FOLLOWERS_TAB]: prevCounts[FOLLOWERS_TAB] - 1,
@@ -297,11 +256,24 @@ const Profile = ({
 
   const returnNFTs = (tabId: TabsIdType) => {
     switch (tabId) {
-      case NFT_CREATED_TAB:
+      case NFT_CREATED_TAB: {
+        const loadMoreCreatedNfts = () => {
+          setIsLoading(true);
+          loadMoreNfts(
+            walletId,
+            createdCurrentPage,
+            setCreatedCurrentPage,
+            setCreatedNftsHasNextPage,
+            setCreatedNfts,
+            tabId
+          );
+          setIsLoading(false);
+        };
+
         return (
           <NftsProfileBlock
             NFTs={createdNfts}
-            isLoading={!profileDataLoaded || loading}
+            isLoading={!profileDataLoaded || isLoading}
             isLoadMore={!!createdNftsHasNextPage}
             loadMore={loadMoreCreatedNfts}
             noNftHref="/create"
@@ -312,11 +284,17 @@ const Profile = ({
             setUser={setUser}
           />
         );
-      case NFT_LIKED_TAB:
+      }
+      case NFT_LIKED_TAB: {
+        const loadMoreLikedNfts = () => {
+          setIsLoading(true);
+          loadMoreNfts(walletId, likedCurrentPage, setLikedCurrentPage, setLikedNftsHasNextPage, setLikedNfts, tabId);
+          setIsLoading(false);
+        };
         return (
           <NftsProfileBlock
             NFTs={likedNfts}
-            isLoading={!profileDataLoaded || loading}
+            isLoading={!profileDataLoaded || isLoading}
             isLoadMore={!!likedNftsHasNextPage}
             loadMore={loadMoreLikedNfts}
             noNftBody="The NFTs you liked are displayed here"
@@ -326,11 +304,25 @@ const Profile = ({
             setUser={setUser}
           />
         );
-      case NFT_ON_SALE_TAB:
+      }
+      case NFT_ON_SALE_TAB: {
+        const loadMoreOwnedListedNfts = () => {
+          setIsLoading(true);
+          loadMoreNfts(
+            walletId,
+            ownedNftsListedCurrentPage,
+            setOwnedNftsListedCurrentPage,
+            setOwnedNftsListedHasNextPage,
+            setOwnedNftsListed,
+            tabId
+          );
+          setIsLoading(false);
+        };
+
         return (
           <NftsProfileBlock
             NFTs={ownedNftsListed}
-            isLoading={!profileDataLoaded || loading}
+            isLoading={!profileDataLoaded || isLoading}
             isLoadMore={ownedNftsListedHasNextPage}
             loadMore={loadMoreOwnedListedNfts}
             noNftHref="/"
@@ -341,11 +333,25 @@ const Profile = ({
             setUser={setUser}
           />
         );
-      case NFT_NOT_FOR_SALE_TAB:
+      }
+      case NFT_NOT_FOR_SALE_TAB: {
+        const loadMoreOwnedUnlistedNfts = () => {
+          setIsLoading(true);
+          loadMoreNfts(
+            walletId,
+            ownedNftsUnlistedCurrentPage,
+            setOwnedNftsUnlistedCurrentPage,
+            setOwnedNftsUnlistedHasNextPage,
+            setOwnedNftsUnlisted,
+            tabId
+          );
+          setIsLoading(false);
+        };
+
         return (
           <NftsProfileBlock
             NFTs={ownedNftsUnlisted}
-            isLoading={!profileDataLoaded || loading}
+            isLoading={!profileDataLoaded || isLoading}
             isLoadMore={ownedNftsUnlistedHasNextPage}
             loadMore={loadMoreOwnedUnlistedNfts}
             noNftBody="The NFTs you owned and are not for sale are displayed here"
@@ -355,12 +361,26 @@ const Profile = ({
             setUser={setUser}
           />
         );
+      }
       case NFT_OWNED_TAB:
-      default:
+      default: {
+        const loadMoreOwnedNfts = () => {
+          setIsLoading(true);
+          loadMoreNfts(
+            walletId,
+            ownedNftsCurrentPage,
+            setOwnedNftsCurrentPage,
+            setOwnedNftsHasNextPage,
+            setOwnedNfts,
+            tabId
+          );
+          setIsLoading(false);
+        };
+
         return (
           <NftsProfileBlock
             NFTs={ownedNfts}
-            isLoading={!profileDataLoaded || loading}
+            isLoading={!profileDataLoaded || isLoading}
             isLoadMore={!!ownedNftsHasNextPage}
             loadMore={loadMoreOwnedNfts}
             noNftBody="The NFTs you owned are displayed here"
@@ -372,12 +392,29 @@ const Profile = ({
             setUser={setUser}
           />
         );
+      }
     }
   };
 
   const returnFollowers = (tabId: TabsIdType) => {
     switch (tabId) {
-      case FOLLOWERS_TAB:
+      case FOLLOWERS_TAB: {
+        const loadMoreFollowers = () => {
+          setIsLoading(true);
+          loadMoreProfiles(
+            walletId,
+            followersCurrentPage,
+            setFollowersCurrentPage,
+            setFollowersHasNextPage,
+            setFollowers,
+            tabId,
+            false,
+            searchValue,
+            isFiltered
+          );
+          setIsLoading(false);
+        };
+
         return (
           <FollowersProfileBlock
             users={followers}
@@ -385,8 +422,8 @@ const Profile = ({
             followersNbFollowers={profilesFollowersCount}
             handleFollow={handleUserFollow}
             isFiltered={isFiltered}
-            isLoading={!profileDataLoaded || loading}
-            isLoadMore={followersUsersHasNextPage}
+            isLoading={!profileDataLoaded || isLoading}
+            isLoadMore={followersHasNextPage}
             loadMore={loadMoreFollowers}
             noContentBody="Discover new artists and start following them!"
             noContentTitle="Nothing to display"
@@ -395,7 +432,24 @@ const Profile = ({
             user={user}
           />
         );
-      case FOLLOWED_TAB:
+      }
+      case FOLLOWED_TAB: {
+        const loadMoreFollowed = () => {
+          setIsLoading(true);
+          loadMoreProfiles(
+            walletId,
+            followedCurrentPage,
+            setFollowedCurrentPage,
+            setFollowedHasNextPage,
+            setFollowed,
+            tabId,
+            false,
+            searchValue,
+            isFiltered
+          );
+          setIsLoading(false);
+        };
+
         return (
           <FollowersProfileBlock
             users={followed}
@@ -403,8 +457,8 @@ const Profile = ({
             followersNbFollowers={profilesFollowersCount}
             handleFollow={handleUserFollow}
             isFiltered={isFiltered}
-            isLoading={!profileDataLoaded || loading}
-            isLoadMore={followedUsersHasNextPage}
+            isLoading={!profileDataLoaded || isLoading}
+            isLoadMore={followedHasNextPage}
             loadMore={loadMoreFollowed}
             noContentTitle="Nothing to display"
             setIsFiltered={setIsFiltered}
@@ -412,6 +466,7 @@ const Profile = ({
             user={user}
           />
         );
+      }
     }
   };
 
@@ -422,6 +477,14 @@ const Profile = ({
 
     return returnNFTs(tabId);
   };
+
+  useEffect(() => {
+    try {
+      populateProfileData(walletId);
+    } catch (err) {
+      console.log(err);
+    }
+  }, []);
 
   useEffect(() => {
     if (profileDataLoaded) {
@@ -435,31 +498,34 @@ const Profile = ({
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      loadMoreFollowers(true);
-      loadMoreFollowed(true);
+      loadMoreProfiles(
+        walletId,
+        followersCurrentPage,
+        setFollowersCurrentPage,
+        setFollowersHasNextPage,
+        setFollowers,
+        FOLLOWERS_TAB,
+        true
+      );
+      loadMoreProfiles(
+        walletId,
+        followersCurrentPage,
+        setFollowersCurrentPage,
+        setFollowersHasNextPage,
+        setFollowers,
+        FOLLOWED_TAB,
+        true
+      );
     }, 1000);
     return () => clearTimeout(timer);
   }, [searchValue, isFiltered]);
 
-  const { banner, bio, name, picture, twitterName, verified, walletId } =
-    artist ?? user;
-
   return (
     <Container>
       <SBannerContainer>
-        <SBannerIMG
-          src={banner ?? '/defaultBanner.jpeg'}
-          draggable="false"
-          alt="banner"
-        />
-        {isTablet && canEditProfile && (
-          <SEditButtonMobile
-            color="invertedContrast"
-            icon="edit"
-            href="/edit"
-            size="medium"
-            variant="contained"
-          />
+        <SBannerIMG src={banner ?? '/defaultBanner.jpeg'} draggable="false" alt="banner" />
+        {isTablet && variant === USER_PERSONNAL_PROFILE_VARIANT && (
+          <SEditButtonMobile color="invertedContrast" icon="edit" href="/edit" size="medium" variant="contained" />
         )}
       </SBannerContainer>
       <Wrapper>
@@ -472,43 +538,23 @@ const Profile = ({
             twitterName={twitterName}
             walletId={walletId}
           />
-          {!isTablet && canEditProfile && (
-            <Button
-              color="whiteBlur"
-              icon="edit"
-              href="/edit"
-              text="Edit profile"
-              size="small"
-              variant="outlined"
-            />
+          {!isTablet && variant === USER_PERSONNAL_PROFILE_VARIANT && (
+            <Button color="whiteBlur" icon="edit" href="/edit" text="Edit profile" size="small" variant="outlined" />
           )}
           {artist && (
             <SArtistStatsBannerContainer>
-              {user?.walletId &&
-                artist.walletId &&
-                user.walletId !== artist.walletId && (
-                  <Button
-                    color={
-                      userFollowingStatus[walletId]
-                        ? 'contrast'
-                        : 'invertedContrast'
-                    }
-                    disabled={followLoading}
-                    onClick={() =>
-                      handleUserFollow(
-                        artist.walletId,
-                        userFollowingStatus[walletId]
-                          ? UNFOLLOW_ACTION
-                          : FOLLOW_ACTION
-                      )
-                    }
-                    size="medium"
-                    text={userFollowingStatus[walletId] ? 'Unfollow' : 'Follow'}
-                    variant={
-                      userFollowingStatus[walletId] ? 'contained' : 'outlined'
-                    }
-                  />
-                )}
+              {user?.walletId && artist.walletId && user.walletId !== artist.walletId && (
+                <Button
+                  color={userFollowingStatus[walletId] ? 'contrast' : 'invertedContrast'}
+                  disabled={followLoading}
+                  onClick={() =>
+                    handleUserFollow(artist.walletId, userFollowingStatus[walletId] ? UNFOLLOW_ACTION : FOLLOW_ACTION)
+                  }
+                  size="medium"
+                  text={userFollowingStatus[walletId] ? 'Unfollow' : 'Follow'}
+                  variant={userFollowingStatus[walletId] ? 'contained' : 'outlined'}
+                />
+              )}
               <SArtistStatsContainer>
                 <SArtistStatsValue>{counts[FOLLOWERS_TAB]}</SArtistStatsValue>followers
                 <SArtistStatsSeparator>·</SArtistStatsSeparator>

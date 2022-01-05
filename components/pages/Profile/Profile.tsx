@@ -533,7 +533,9 @@ const Profile = ({
         setFollowersHasNextPage,
         setFollowers,
         FOLLOWERS_TAB,
-        true
+        true,
+        searchValue,
+        isFiltered
       );
       loadMoreProfiles(
         walletId,
@@ -542,7 +544,9 @@ const Profile = ({
         setFollowedHasNextPage,
         setFollowed,
         FOLLOWED_TAB,
-        true
+        true,
+        searchValue,
+        isFiltered
       );
     }, 1000);
     return () => clearTimeout(timer);

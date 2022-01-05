@@ -23,7 +23,6 @@ const ORDERED_TABS_ID = [NFT_ON_SALE_TAB, NFT_NOT_FOR_SALE_TAB, FOLLOWERS_TAB, F
 const PublicProfilePage = ({ user, profile }: PublicProfileProps) => {
   const { name, walletId } = profile;
   const [modalExpand, setModalExpand] = useState(false);
-  const [loggedUser, setLoggedUser] = useState(user);
 
   return (
     <>
@@ -41,11 +40,10 @@ const PublicProfilePage = ({ user, profile }: PublicProfileProps) => {
       </Head>
       {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
       <BetaBanner />
-      <MainHeader user={loggedUser} setModalExpand={setModalExpand} />
+      <MainHeader user={user} setModalExpand={setModalExpand} />
       <Profile
         artist={profile}
-        user={loggedUser}
-        setUser={setLoggedUser}
+        user={user}
         setModalExpand={setModalExpand}
         tabs={ORDERED_TABS_ID}
         variant={ARTIST_PROFILE_VARIANT}

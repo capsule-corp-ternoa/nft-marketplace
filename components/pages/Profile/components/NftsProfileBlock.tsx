@@ -7,6 +7,7 @@ import Button from 'components/ui/Button';
 import { Loader } from 'components/ui/Icon';
 import {
   NftType,
+  NFTsNominalSetState,
   UserType,
   TabsIdType,
   NFT_OWNED_TAB,
@@ -25,7 +26,7 @@ interface Props {
   noNftHref?: string;
   noNftLinkLabel?: string;
   noNftTitle: string;
-  setUser?: (u: UserType) => void;
+  setLikedNfts: NFTsNominalSetState;
   tabId: TabsIdType;
   user: UserType;
 }
@@ -39,7 +40,7 @@ const NftsProfileBlock = ({
   noNftHref,
   noNftLinkLabel,
   noNftTitle,
-  setUser,
+  setLikedNfts,
   user,
   tabId,
 }: Props) => {
@@ -98,7 +99,7 @@ const NftsProfileBlock = ({
             item={item}
             mode={GRID_MODE}
             quantity={returnQuantityNFTsAvailable(item, tabId)}
-            setUser={setUser}
+            setLikedNfts={setLikedNfts}
             user={user}
           />
         ))}

@@ -33,14 +33,10 @@ import NftsProfileBlock from './components/NftsProfileBlock';
 export const ARTIST_PROFILE_VARIANT = 'artist_profile';
 export const USER_PERSONNAL_PROFILE_VARIANT = 'user_personnal_profile';
 
-type UserNominalSetState = React.Dispatch<React.SetStateAction<UserType>>;
-
 export interface ProfileProps {
   setModalExpand: (b: boolean) => void;
   artist?: UserType;
-  setArtist?: UserNominalSetState;
   user: UserType;
-  setUser: UserNominalSetState;
   userOwnedlNfts?: NftType[];
   userOwnedNftsHasNextPage?: boolean;
   tabs: readonly TabsIdType[];
@@ -51,7 +47,6 @@ const Profile = ({
   setModalExpand,
   artist,
   user,
-  setUser,
   userOwnedlNfts,
   userOwnedNftsHasNextPage,
   tabs,
@@ -282,9 +277,9 @@ const Profile = ({
             noNftHref="/create"
             noNftLinkLabel="Create your NFT"
             noNftTitle="Nothing to display"
+            setLikedNfts={setLikedNfts}
             tabId={tabId}
             user={user}
-            setUser={setUser}
           />
         );
       }
@@ -302,9 +297,9 @@ const Profile = ({
             loadMore={loadMoreLikedNfts}
             noNftBody="The NFTs you liked are displayed here"
             noNftTitle="Nothing to display"
+            setLikedNfts={setLikedNfts}
             tabId={tabId}
             user={user}
-            setUser={setUser}
           />
         );
       }
@@ -331,9 +326,9 @@ const Profile = ({
             noNftHref="/"
             noNftLinkLabel="Sell your NFT"
             noNftTitle="Nothing to display"
+            setLikedNfts={setLikedNfts}
             tabId={tabId}
             user={user}
-            setUser={setUser}
           />
         );
       }
@@ -359,9 +354,9 @@ const Profile = ({
             loadMore={loadMoreOwnedUnlistedNfts}
             noNftBody="The NFTs you owned and are not for sale are displayed here"
             noNftTitle="Nothing to display"
+            setLikedNfts={setLikedNfts}
             tabId={tabId}
             user={user}
-            setUser={setUser}
           />
         );
       }
@@ -390,9 +385,9 @@ const Profile = ({
             noNftHref="/explore"
             noNftLinkLabel="Explore NFTs"
             noNftTitle="Nothing to display"
+            setLikedNfts={setLikedNfts}
             tabId={tabId}
             user={user}
-            setUser={setUser}
           />
         );
       }
@@ -483,6 +478,7 @@ const Profile = ({
 
   useEffect(() => {
     try {
+      initCounts();
       populateProfileData(walletId);
     } catch (err) {
       console.log(err);
@@ -496,8 +492,13 @@ const Profile = ({
   }, [profileDataLoaded]);
 
   useEffect(() => {
-    initCounts();
-  }, [artist, user]);
+    if (profileDataLoaded) {
+      setCounts((prevCounts) => ({
+        ...prevCounts,
+        [NFT_LIKED_TAB]: likedNfts?.length || 0,
+      }));
+    }
+  }, [likedNfts]);
 
   useEffect(() => {
     const timer = setTimeout(() => {

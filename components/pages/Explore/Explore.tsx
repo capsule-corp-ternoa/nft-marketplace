@@ -8,14 +8,13 @@ import NftsExploreBlock from './components/NftsExploreBlock';
 export interface ExploreProps {
   NFTS: NftType[];
   user?: UserType;
-  setUser?: (u: UserType) => void;
   loadMore: () => void;
   hasNextPage: boolean;
   loading: boolean;
   totalCount?: number;
 }
 
-const Explore: React.FC<ExploreProps> = ({ NFTS, user, setUser, loadMore, hasNextPage, loading, totalCount }) => (
+const Explore: React.FC<ExploreProps> = ({ NFTS, user, loadMore, hasNextPage, loading, totalCount }) => (
   <Container>
     <Wrapper>
       <STitle>{totalCount && totalCount > 10 ? `Explore among ${totalCount} NFTs` : 'Explore'}</STitle>
@@ -34,7 +33,6 @@ const Explore: React.FC<ExploreProps> = ({ NFTS, user, setUser, loadMore, hasNex
         }
         noNftTitle="All NFTs are sold !"
         user={user}
-        setUser={setUser}
       />
     </Wrapper>
   </Container>

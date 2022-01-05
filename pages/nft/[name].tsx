@@ -90,7 +90,6 @@ const NftPage = ({ user, NFT, capsValue }: NFTPageProps) => {
         setNftToBuy={setNftToBuy}
         setModalExpand={setModalExpand}
         user={walletUser}
-        setUser={setWalletUser}
         type={type}
         capsValue={capsValue}
         isUserFromDappQR={isUserFromDappQR}

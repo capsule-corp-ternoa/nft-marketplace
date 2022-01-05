@@ -42,7 +42,6 @@ const ORDERED_TABS_ID = [
 const ProfilePage = ({ user, owned, ownedHasNextPage }: ProfilePageProps) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [successPopup, setSuccessPopup] = useState(false);
-  const [walletUser, setWalletUser] = useState(user);
 
   return (
     <>
@@ -55,10 +54,9 @@ const ProfilePage = ({ user, owned, ownedHasNextPage }: ProfilePageProps) => {
       {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
       {successPopup && <SuccessPopup setSuccessPopup={setSuccessPopup} />}
       <BetaBanner />
-      <MainHeader user={walletUser} setModalExpand={setModalExpand} />
+      <MainHeader user={user} setModalExpand={setModalExpand} />
       <Profile
-        user={walletUser}
-        setUser={setWalletUser}
+        user={user}
         userOwnedlNfts={owned}
         userOwnedNftsHasNextPage={ownedHasNextPage}
         setModalExpand={setModalExpand}

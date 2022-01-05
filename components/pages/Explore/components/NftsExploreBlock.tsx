@@ -16,7 +16,6 @@ interface Props {
   noNftLinkLabel?: string;
   noNftTitle: string;
   user?: UserType;
-  setUser?: (u: UserType) => void;
 }
 
 const NftsExploreBlock = ({
@@ -29,7 +28,6 @@ const NftsExploreBlock = ({
   noNftLinkLabel,
   noNftTitle,
   user,
-  setUser,
 }: Props) => {
   if (NFTs == undefined || NFTs.length < 1) {
     return (
@@ -55,7 +53,6 @@ const NftsExploreBlock = ({
             item={item}
             quantity={item.totalNft ?? 1}
             user={user}
-            setUser={setUser}
           />
         ))}
       </SNFTsContainer>

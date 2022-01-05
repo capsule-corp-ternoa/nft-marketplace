@@ -1,6 +1,8 @@
 import { getCreatorNFTS, getLikedNFTs, getOwnedNFTS } from 'actions/nft';
+import { likeNFT, unlikeNFT } from 'actions/user';
 import {
   NftType,
+  NFTsNominalSetState,
   TabsIdType,
   NFT_OWNED_TAB,
   NFT_ON_SALE_TAB,
@@ -9,15 +11,17 @@ import {
   NFT_LIKED_TAB,
 } from 'interfaces';
 
+import { LIKE_ACTION, UNLIKE_ACTION, LIKE_ACTION_TYPE } from './constants';
+
 type CurrentPageNominalSetState = React.Dispatch<React.SetStateAction<number>>;
 type DataNominalSetState = React.Dispatch<React.SetStateAction<NftType[]>>;
-type HasNextPageNominalSetState = React.Dispatch<React.SetStateAction<boolean>>;
+type ToggleNominalSetState = React.Dispatch<React.SetStateAction<boolean>>;
 
 export const loadMoreNfts = async (
   userWalletId: string,
   currentPage: number,
   setCurrentPage: CurrentPageNominalSetState,
-  setHasNextPage: HasNextPageNominalSetState,
+  setHasNextPage: ToggleNominalSetState,
   setData: DataNominalSetState,
   tabId: TabsIdType
 ) => {
@@ -48,5 +52,35 @@ export const loadMoreNfts = async (
     setData((prevState) => [...prevState, ...data]);
   } catch (err) {
     console.log(err);
+  }
+};
+
+export const toggleLike = async (
+  nft: NftType,
+  action: LIKE_ACTION_TYPE,
+  userWalletId: string,
+  toogleIsLike: ToggleNominalSetState,
+  setData?: NFTsNominalSetState
+) => {
+  const { id: nftId, serieId } = nft;
+
+  try {
+    switch (action) {
+      case LIKE_ACTION: {
+        await likeNFT(userWalletId, nftId, serieId);
+        if (setData) setData((prevState) => [...prevState, nft]);
+        break;
+      }
+      case UNLIKE_ACTION: {
+        await unlikeNFT(userWalletId, nftId, serieId);
+        if (setData) setData((prevState) => prevState.filter(({ id }) => id !== nftId));
+        break;
+      }
+      default:
+        break;
+    }
+    toogleIsLike((prevState) => !prevState);
+  } catch (error) {
+    console.error(error);
   }
 };

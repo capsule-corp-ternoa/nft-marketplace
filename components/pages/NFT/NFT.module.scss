@@ -124,6 +124,7 @@
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 8px;
   padding: 10px 10px;
+  margin-right: 5px;
 }
 
 .EyeSVG {
@@ -140,7 +141,7 @@
   border-radius: 50%;
   padding: 12px 10px;
   cursor: pointer;
-  margin: 0px 10px;
+  margin: 0px 5px;
   @media (min-width: 768px) {
     &:hover {
       background-color: $primary;
@@ -170,6 +171,7 @@
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 50%;
   padding: 10px;
+  margin-left: 5px;
   cursor: pointer;
   &:hover {
     background-color: $primary;

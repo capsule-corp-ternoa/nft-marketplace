@@ -28,7 +28,6 @@ const ExplorePage = ({
   dataTotalCount,
 }: ExplorePage) => {
   const [modalExpand, setModalExpand] = useState(false);
-  const [walletUser, setWalletUser] = useState(user);
   const [dataNfts, setDataNfts] = useState(data);
   const [dataNftsHasNextPage, setDataNftsHasNextPage] =
     useState(dataHasNextPage);
@@ -67,18 +66,17 @@ const ExplorePage = ({
       </Head>
       {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
       <BetaBanner />
-      <MainHeader user={walletUser} setModalExpand={setModalExpand} />
+      <MainHeader user={user} setModalExpand={setModalExpand} />
       <Explore
         NFTS={dataNfts}
-        user={walletUser}
-        setUser={setWalletUser}
+        user={user}
         loadMore={loadMoreNfts}
         hasNextPage={dataNftsHasNextPage}
         loading={isLoading}
         totalCount={dataTotalCount}
       />
       <Footer />
-      <FloatingHeader user={walletUser} setModalExpand={setModalExpand} />
+      <FloatingHeader user={user} setModalExpand={setModalExpand} />
     </>
   );
 };

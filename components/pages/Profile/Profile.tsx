@@ -33,12 +33,14 @@ import NftsProfileBlock from './components/NftsProfileBlock';
 export const ARTIST_PROFILE_VARIANT = 'artist_profile';
 export const USER_PERSONNAL_PROFILE_VARIANT = 'user_personnal_profile';
 
+type UserNominalSetState = React.Dispatch<React.SetStateAction<UserType>>;
+
 export interface ProfileProps {
   setModalExpand: (b: boolean) => void;
   artist?: UserType;
-  setArtist?: (u: UserType) => void;
+  setArtist?: UserNominalSetState;
   user: UserType;
-  setUser: (u: UserType) => void;
+  setUser: UserNominalSetState;
   userOwnedlNfts?: NftType[];
   userOwnedNftsHasNextPage?: boolean;
   tabs: readonly TabsIdType[];
@@ -48,7 +50,6 @@ export interface ProfileProps {
 const Profile = ({
   setModalExpand,
   artist,
-  setArtist,
   user,
   setUser,
   userOwnedlNfts,
@@ -183,7 +184,11 @@ const Profile = ({
     setSearchValue(event.currentTarget.value);
   };
 
-  const handleUserFollow = async (profileWalletId: string, action: FOLLOW_ACTION_TYPE) => {
+  const handleUserFollow = async (
+    profileWalletId: string,
+    action: FOLLOW_ACTION_TYPE,
+    iArtistProfileFollowButton: boolean = false
+  ) => {
     if (user) {
       setFollowLoading(true);
       try {
@@ -196,9 +201,8 @@ const Profile = ({
                   ...prevCounts,
                   [FOLLOWED_TAB]: prevCounts[FOLLOWED_TAB] + 1,
                 }));
-              } else {
-                if (artist && setArtist) setArtist({ ...res, viewsCount: artist.viewsCount ?? 0 });
-                setFollowers([...followers, res]);
+              } else if (iArtistProfileFollowButton) {
+                setFollowers([...followers, user]);
                 setCounts((prevCounts) => ({
                   ...prevCounts,
                   [FOLLOWERS_TAB]: prevCounts[FOLLOWERS_TAB] + 1,
@@ -214,16 +218,15 @@ const Profile = ({
             break;
           }
           case UNFOLLOW_ACTION: {
-            unfollow(profileWalletId, user.walletId).then((res) => {
+            unfollow(profileWalletId, user.walletId).then(() => {
               if (isMyProfile) {
                 setFollowed(followed.filter(({ walletId }) => walletId !== profileWalletId));
                 setCounts((prevCounts) => ({
                   ...prevCounts,
                   [FOLLOWED_TAB]: prevCounts[FOLLOWED_TAB] - 1,
                 }));
-              } else {
-                if (artist && setArtist) setArtist({ ...res, viewsCount: artist.viewsCount ?? 0 });
-                setFollowers(followers.filter(({ walletId }) => walletId !== profileWalletId));
+              } else if (iArtistProfileFollowButton) {
+                setFollowers(followers.filter(({ walletId }) => walletId !== user.walletId));
                 setCounts((prevCounts) => ({
                   ...prevCounts,
                   [FOLLOWERS_TAB]: prevCounts[FOLLOWERS_TAB] - 1,
@@ -548,7 +551,11 @@ const Profile = ({
                   color={userFollowingStatus[walletId] ? 'contrast' : 'invertedContrast'}
                   disabled={followLoading}
                   onClick={() =>
-                    handleUserFollow(artist.walletId, userFollowingStatus[walletId] ? UNFOLLOW_ACTION : FOLLOW_ACTION)
+                    handleUserFollow(
+                      artist.walletId,
+                      userFollowingStatus[walletId] ? UNFOLLOW_ACTION : FOLLOW_ACTION,
+                      true
+                    )
                   }
                   size="medium"
                   text={userFollowingStatus[walletId] ? 'Unfollow' : 'Follow'}

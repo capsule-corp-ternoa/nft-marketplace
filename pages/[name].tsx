@@ -21,21 +21,21 @@ export interface PublicProfileProps {
 const ORDERED_TABS_ID = [NFT_ON_SALE_TAB, NFT_NOT_FOR_SALE_TAB, FOLLOWERS_TAB, FOLLOWED_TAB] as const;
 
 const PublicProfilePage = ({ user, profile }: PublicProfileProps) => {
+  const { name, walletId } = profile;
   const [modalExpand, setModalExpand] = useState(false);
   const [loggedUser, setLoggedUser] = useState(user);
-  const [viewProfile, setViewProfile] = useState(profile);
 
   return (
     <>
       <Head>
         <title>
           {process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : 'SecretNFT'} -{' '}
-          {viewProfile.name || middleEllipsis(viewProfile.walletId, 10)}
+          {name || middleEllipsis(walletId, 10)}
         </title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta
           name="description"
-          content={`Ternoart - ${viewProfile.name || middleEllipsis(viewProfile.walletId, 10)} profile page.`}
+          content={`Ternoart - ${name || middleEllipsis(walletId, 10)} profile page.`}
         />
         <meta name="og:image" content="ternoa-social-banner.jpg" />
       </Head>
@@ -43,8 +43,7 @@ const PublicProfilePage = ({ user, profile }: PublicProfileProps) => {
       <BetaBanner />
       <MainHeader user={loggedUser} setModalExpand={setModalExpand} />
       <Profile
-        artist={viewProfile}
-        setArtist={setViewProfile}
+        artist={profile}
         user={loggedUser}
         setUser={setLoggedUser}
         setModalExpand={setModalExpand}

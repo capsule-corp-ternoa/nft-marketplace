@@ -68,23 +68,35 @@ export const loadMoreProfiles = async (
   tabId: TabsIdType,
   forceLoad: boolean = false,
   searchValue?: string,
-  isFiltered?: boolean
+  isFilterVerified?: boolean
 ): Promise<UserType[]> => {
   try {
     const pageToLoad = forceLoad ? 0 : currentPage;
     let promise;
     switch (tabId) {
       case FOLLOWED_TAB:
-        promise = getFollowed(userWalletId, (pageToLoad + 1).toString(), undefined, searchValue, isFiltered);
+        promise = getFollowed(
+          userWalletId,
+          (pageToLoad + 1).toString(),
+          undefined,
+          searchValue || undefined,
+          isFilterVerified || undefined
+        );
         break;
       case FOLLOWERS_TAB:
       default:
-        promise = getFollowers(userWalletId, (pageToLoad + 1).toString(), undefined, searchValue, isFiltered);
+        promise = getFollowers(
+          userWalletId,
+          (pageToLoad + 1).toString(),
+          undefined,
+          searchValue || undefined,
+          isFilterVerified || undefined
+        );
         break;
     }
 
     const { data, hasNextPage } = await promise;
-    if (hasNextPage) setCurrentPage((prevState) => prevState + 1);
+    setCurrentPage((prevState) => prevState + 1);
     setHasNextPage(hasNextPage || false);
 
     if (forceLoad) {

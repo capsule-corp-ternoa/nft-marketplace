@@ -93,8 +93,8 @@ const Profile = ({
   );
 
   // Followers search
-  const [isFiltered, setIsFiltered] = useState(false);
-  const [searchValue, setSearchValue] = useState('');
+  const [isFilterVerified, setIsFilterVerified] = useState<boolean | undefined>(undefined);
+  const [searchValue, setSearchValue] = useState<string | undefined>(undefined);
 
   const { banner, bio, name, picture, twitterName, verified, walletId } = artist ?? user;
   const isTablet = useMediaQuery({ query: `(max-width: ${breakpointMap.lg - 1}px)` });
@@ -410,7 +410,7 @@ const Profile = ({
             tabId,
             false,
             searchValue,
-            isFiltered
+            isFilterVerified
           );
 
           if (user) {
@@ -431,13 +431,13 @@ const Profile = ({
             followingStatus={userFollowingStatus}
             followersNbFollowers={profilesFollowersCount}
             handleFollow={handleUserFollow}
-            isFiltered={isFiltered}
+            isFilterVerified={isFilterVerified ?? false}
             isLoading={!profileDataLoaded || isLoading}
             isLoadMore={followersHasNextPage}
             loadMore={loadMoreFollowers}
             noContentBody="Discover new artists and start following them!"
             noContentTitle="Nothing to display"
-            setIsFiltered={setIsFiltered}
+            setIsFilterVerified={setIsFilterVerified}
             updateKeywordSearch={updateKeywordSearch}
             user={user}
           />
@@ -457,9 +457,9 @@ const Profile = ({
             tabId,
             false,
             searchValue,
-            isFiltered
+            isFilterVerified
           );
-          
+
           if (user) {
             const newProfileWalletIds = newProfiles.map(({ walletId }) => walletId);
             const status = (await getFollowingStatus(newProfileWalletIds, user.walletId)) ?? {};
@@ -478,12 +478,12 @@ const Profile = ({
             followingStatus={userFollowingStatus}
             followersNbFollowers={profilesFollowersCount}
             handleFollow={handleUserFollow}
-            isFiltered={isFiltered}
+            isFilterVerified={isFilterVerified ?? false}
             isLoading={!profileDataLoaded || isLoading}
             isLoadMore={followedHasNextPage}
             loadMore={loadMoreFollowed}
             noContentTitle="Nothing to display"
-            setIsFiltered={setIsFiltered}
+            setIsFilterVerified={setIsFilterVerified}
             updateKeywordSearch={updateKeywordSearch}
             user={user}
           />
@@ -525,32 +525,34 @@ const Profile = ({
   }, [likedNfts]);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      loadMoreProfiles(
-        walletId,
-        followersCurrentPage,
-        setFollowersCurrentPage,
-        setFollowersHasNextPage,
-        setFollowers,
-        FOLLOWERS_TAB,
-        true,
-        searchValue,
-        isFiltered
-      );
-      loadMoreProfiles(
-        walletId,
-        followedCurrentPage,
-        setFollowedCurrentPage,
-        setFollowedHasNextPage,
-        setFollowed,
-        FOLLOWED_TAB,
-        true,
-        searchValue,
-        isFiltered
-      );
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, [searchValue, isFiltered]);
+    if (searchValue !== undefined || isFilterVerified !== undefined) {
+      const timer = setTimeout(() => {
+        loadMoreProfiles(
+          walletId,
+          followersCurrentPage,
+          setFollowersCurrentPage,
+          setFollowersHasNextPage,
+          setFollowers,
+          FOLLOWERS_TAB,
+          true,
+          searchValue,
+          isFilterVerified
+        );
+        loadMoreProfiles(
+          walletId,
+          followedCurrentPage,
+          setFollowedCurrentPage,
+          setFollowedHasNextPage,
+          setFollowed,
+          FOLLOWED_TAB,
+          true,
+          searchValue,
+          isFilterVerified
+        );
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [searchValue, isFilterVerified]);
 
   return (
     <Container>

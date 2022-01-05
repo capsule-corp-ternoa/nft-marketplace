@@ -14,13 +14,13 @@ interface Props {
   };
   followersNbFollowers: any;
   handleFollow: (profileWalletId: string, action: FOLLOW_ACTION_TYPE) => void;
-  isFiltered: boolean;
+  isFilterVerified: boolean;
   isLoading: boolean;
   isLoadMore: boolean;
   loadMore: () => void;
   noContentBody?: string;
   noContentTitle: string;
-  setIsFiltered: (b: boolean) => void;
+  setIsFilterVerified: (b: boolean) => void;
   updateKeywordSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
   user: UserType;
   users: UserType[];
@@ -30,13 +30,13 @@ const FollowersProfileBlock = ({
   followingStatus,
   followersNbFollowers,
   handleFollow,
-  isFiltered,
+  isFilterVerified,
   isLoading,
   isLoadMore,
   loadMore,
   noContentBody,
   noContentTitle,
-  setIsFiltered,
+  setIsFilterVerified,
   updateKeywordSearch,
   user,
   users,
@@ -51,8 +51,8 @@ const FollowersProfileBlock = ({
           <SCertifiedLabel>Verified only</SCertifiedLabel>
           <label>
             <Switch
-              checked={isFiltered}
-              onChange={() => setIsFiltered(!isFiltered)}
+              checked={isFilterVerified}
+              onChange={() => setIsFilterVerified(!isFilterVerified)}
               offColor="#000000"
               onColor="#7417ea"
               uncheckedIcon={false}

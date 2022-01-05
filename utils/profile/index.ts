@@ -47,7 +47,7 @@ export const loadMoreNfts = async (
     }
 
     const { data, hasNextPage } = await promise;
-    if (hasNextPage) setCurrentPage((prevState) => prevState + 1);
+    setCurrentPage((prevState) => prevState + 1);
     setHasNextPage(hasNextPage || false);
     setData((prevState) => [...prevState, ...data]);
   } catch (err) {

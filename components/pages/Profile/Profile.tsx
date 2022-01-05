@@ -189,50 +189,50 @@ const Profile = ({
       try {
         switch (action) {
           case FOLLOW_ACTION: {
-            follow(profileWalletId, user.walletId).then((res) => {
-              if (isMyProfile) {
-                setFollowed([...followed, res]);
-                setCounts((prevCounts) => ({
-                  ...prevCounts,
-                  [FOLLOWED_TAB]: prevCounts[FOLLOWED_TAB] + 1,
-                }));
-              } else if (iArtistProfileFollowButton) {
-                setFollowers([...followers, user]);
-                setCounts((prevCounts) => ({
-                  ...prevCounts,
-                  [FOLLOWERS_TAB]: prevCounts[FOLLOWERS_TAB] + 1,
-                }));
-              }
-
-              setProfilesFollowersCount((prevState) => ({
-                ...prevState,
-                [profileWalletId]: prevState[profileWalletId] + 1,
+            const res = await follow(profileWalletId, user.walletId);
+            if (isMyProfile) {
+              setFollowed((prevState) => [...prevState, res]);
+              setCounts((prevCounts) => ({
+                ...prevCounts,
+                [FOLLOWED_TAB]: prevCounts[FOLLOWED_TAB] + 1,
               }));
-            });
+            } else if (iArtistProfileFollowButton) {
+              setFollowers((prevState) => [...prevState, user]);
+              setCounts((prevCounts) => ({
+                ...prevCounts,
+                [FOLLOWERS_TAB]: prevCounts[FOLLOWERS_TAB] + 1,
+              }));
+            }
+
+            setProfilesFollowersCount((prevState) => ({
+              ...prevState,
+              [profileWalletId]: prevState[profileWalletId] + 1,
+            }));
+
             setFollowLoading(false);
             break;
           }
           case UNFOLLOW_ACTION: {
-            unfollow(profileWalletId, user.walletId).then(() => {
-              if (isMyProfile) {
-                setFollowed(followed.filter(({ walletId }) => walletId !== profileWalletId));
-                setCounts((prevCounts) => ({
-                  ...prevCounts,
-                  [FOLLOWED_TAB]: prevCounts[FOLLOWED_TAB] - 1,
-                }));
-              } else if (iArtistProfileFollowButton) {
-                setFollowers(followers.filter(({ walletId }) => walletId !== user.walletId));
-                setCounts((prevCounts) => ({
-                  ...prevCounts,
-                  [FOLLOWERS_TAB]: prevCounts[FOLLOWERS_TAB] - 1,
-                }));
-              }
-
-              setProfilesFollowersCount((prevState) => ({
-                ...prevState,
-                [profileWalletId]: prevState[profileWalletId] - 1,
+            await unfollow(profileWalletId, user.walletId);
+            if (isMyProfile) {
+              setFollowed((prevState) => prevState.filter(({ walletId }) => walletId !== profileWalletId));
+              setCounts((prevCounts) => ({
+                ...prevCounts,
+                [FOLLOWED_TAB]: prevCounts[FOLLOWED_TAB] - 1,
               }));
-            });
+            } else if (iArtistProfileFollowButton) {
+              setFollowers((prevState) => prevState.filter(({ walletId }) => walletId !== user.walletId));
+              setCounts((prevCounts) => ({
+                ...prevCounts,
+                [FOLLOWERS_TAB]: prevCounts[FOLLOWERS_TAB] - 1,
+              }));
+            }
+
+            setProfilesFollowersCount((prevState) => ({
+              ...prevState,
+              [profileWalletId]: prevState[profileWalletId] - 1,
+            }));
+
             setFollowLoading(false);
             break;
           }

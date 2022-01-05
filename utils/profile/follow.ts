@@ -1,9 +1,10 @@
-import { getFollowersCount, isUserFollowing } from 'actions/follower';
+import { getFollowed, getFollowers, getFollowersCount, isUserFollowing } from 'actions/follower';
 
-export const FOLLOW_ACTION = 'follow';
-export const UNFOLLOW_ACTION = 'unfollow';
-export type FOLLOW_ACTION_TYPE = typeof FOLLOW_ACTION | typeof UNFOLLOW_ACTION;
+import { TabsIdType, UserType, FOLLOWED_TAB, FOLLOWERS_TAB } from 'interfaces';
 
+type CurrentPageNominalSetState = React.Dispatch<React.SetStateAction<number>>;
+type DataNominalSetState = React.Dispatch<React.SetStateAction<UserType[]>>;
+type HasNextPageNominalSetState = React.Dispatch<React.SetStateAction<boolean>>;
 
 export const getFollowingStatus = async (
   profiles: string[],
@@ -33,9 +34,7 @@ export const getFollowingStatus = async (
   }
 };
 
-export const getProfilesFollowersCount = async (
-  profiles: string[]
-): Promise<{ [key: string]: number } | void> => {
+export const getProfilesFollowersCount = async (profiles: string[]): Promise<{ [key: string]: number } | void> => {
   const promises = [] as Promise<number>[];
 
   profiles.forEach((profileWalletId) => {
@@ -55,6 +54,44 @@ export const getProfilesFollowersCount = async (
     );
 
     return counts;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const loadMoreProfiles = async (
+  userWalletId: string,
+  currentPage: number,
+  setCurrentPage: CurrentPageNominalSetState,
+  setHasNextPage: HasNextPageNominalSetState,
+  setData: DataNominalSetState,
+  tabId: TabsIdType,
+  forceLoad: boolean = false,
+  searchValue?: string,
+  isFiltered?: boolean
+) => {
+  try {
+    const pageToLoad = forceLoad ? 0 : currentPage;
+    let promise;
+    switch (tabId) {
+      case FOLLOWED_TAB:
+        promise = getFollowed(userWalletId, (pageToLoad + 1).toString(), undefined, searchValue, isFiltered);
+        break;
+      case FOLLOWERS_TAB:
+      default:
+        promise = getFollowers(userWalletId, (pageToLoad + 1).toString(), undefined, searchValue, isFiltered);
+        break;
+    }
+
+    const { data, hasNextPage } = await promise;
+    if (hasNextPage) setCurrentPage((prevState) => prevState + 1);
+    setHasNextPage(hasNextPage || false);
+
+    if (forceLoad) {
+      setData([...data]);
+    } else {
+      setData((prevState) => [...prevState, ...data]);
+    }
   } catch (err) {
     console.log(err);
   }

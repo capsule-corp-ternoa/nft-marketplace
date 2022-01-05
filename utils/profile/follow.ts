@@ -69,7 +69,7 @@ export const loadMoreProfiles = async (
   forceLoad: boolean = false,
   searchValue?: string,
   isFiltered?: boolean
-) => {
+): Promise<UserType[]> => {
   try {
     const pageToLoad = forceLoad ? 0 : currentPage;
     let promise;
@@ -92,7 +92,10 @@ export const loadMoreProfiles = async (
     } else {
       setData((prevState) => [...prevState, ...data]);
     }
+
+    return data;
   } catch (err) {
     console.log(err);
+    return [];
   }
 };

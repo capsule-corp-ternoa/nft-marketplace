@@ -397,9 +397,11 @@ const Profile = ({
   const returnFollowers = (tabId: TabsIdType) => {
     switch (tabId) {
       case FOLLOWERS_TAB: {
-        const loadMoreFollowers = () => {
+        const loadMoreFollowers = async () => {
           setIsLoading(true);
-          loadMoreProfiles(
+          setFollowLoading(true);
+
+          const newProfiles = await loadMoreProfiles(
             walletId,
             followersCurrentPage,
             setFollowersCurrentPage,
@@ -410,7 +412,17 @@ const Profile = ({
             searchValue,
             isFiltered
           );
+
+          if (user) {
+            const newProfileWalletIds = newProfiles.map(({ walletId }) => walletId);
+            const status = (await getFollowingStatus(newProfileWalletIds, user.walletId)) ?? {};
+            setUserFollowingStatus((prevStatus) => ({ ...prevStatus, ...status }));
+
+            const counts = (await getProfilesFollowersCount(newProfileWalletIds)) ?? {};
+            setProfilesFollowersCount((prevCounts) => ({ ...prevCounts, ...counts }));
+          }
           setIsLoading(false);
+          setFollowLoading(false);
         };
 
         return (
@@ -432,9 +444,11 @@ const Profile = ({
         );
       }
       case FOLLOWED_TAB: {
-        const loadMoreFollowed = () => {
+        const loadMoreFollowed = async () => {
           setIsLoading(true);
-          loadMoreProfiles(
+          setFollowLoading(true);
+
+          const newProfiles = await loadMoreProfiles(
             walletId,
             followedCurrentPage,
             setFollowedCurrentPage,
@@ -445,7 +459,17 @@ const Profile = ({
             searchValue,
             isFiltered
           );
+          
+          if (user) {
+            const newProfileWalletIds = newProfiles.map(({ walletId }) => walletId);
+            const status = (await getFollowingStatus(newProfileWalletIds, user.walletId)) ?? {};
+            setUserFollowingStatus((prevStatus) => ({ ...prevStatus, ...status }));
+
+            const counts = (await getProfilesFollowersCount(newProfileWalletIds)) ?? {};
+            setProfilesFollowersCount((prevCounts) => ({ ...prevCounts, ...counts }));
+          }
           setIsLoading(false);
+          setFollowLoading(false);
         };
 
         return (
@@ -513,10 +537,10 @@ const Profile = ({
       );
       loadMoreProfiles(
         walletId,
-        followersCurrentPage,
-        setFollowersCurrentPage,
-        setFollowersHasNextPage,
-        setFollowers,
+        followedCurrentPage,
+        setFollowedCurrentPage,
+        setFollowedHasNextPage,
+        setFollowed,
         FOLLOWED_TAB,
         true
       );

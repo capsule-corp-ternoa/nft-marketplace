@@ -80,7 +80,10 @@ const NftCardWithHover = ({ className, isDragging, item, mode, noCreator = false
                  ${likeLoading ? style.Disabled : ''}`
                 : style.Hide
             }
-            onClick={toggleLikeDislike}
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleLikeDislike();
+            }}
           >
             <Heart className={style.HeartSVG} />
           </div>

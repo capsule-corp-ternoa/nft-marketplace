@@ -64,9 +64,11 @@ const FollowersProfileBlock = ({
       </SToggle>
     </SSearchContainer>
 
-    {users.length < 1 ? (
+    {isLoading ? (
+      <SLoader color="primary" />
+    ) : users.length < 1 ? (
       <SNoNFTContainer>
-        {isLoading ? <SLoader color="primary" /> : <NoNFTComponent body={noContentBody} title={noContentTitle} />}
+        <NoNFTComponent body={noContentBody} title={noContentTitle} />
       </SNoNFTContainer>
     ) : (
       <>

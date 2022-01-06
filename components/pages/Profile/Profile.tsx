@@ -168,13 +168,13 @@ const Profile = ({
   };
 
   const initFollowersData = async (): Promise<void> => {
+    setFollowLoading(true);
     const profileWalletIds = [...followers, ...followed].map(({ walletId }) => walletId);
 
     if (artist !== undefined) {
       profileWalletIds.push(artist.walletId);
     }
 
-    setFollowLoading(true);
     if (user) {
       const status = (await getFollowingStatus(profileWalletIds, user.walletId)) ?? {};
       setUserFollowingStatus(status);
@@ -534,13 +534,14 @@ const Profile = ({
   };
 
   useEffect(() => {
+    setProfileDataLoaded(false);
     try {
       initCounts();
       populateProfileData(walletId);
     } catch (err) {
       console.log(err);
     }
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     if (profileDataLoaded) {
@@ -577,8 +578,6 @@ const Profile = ({
       return () => clearTimeout(timer);
     }
   }, [searchValue, isFilterVerified]);
-
-  console.log({ likedNfts, likedCurrentPage, likedNftsHasNextPage, count: counts[NFT_LIKED_TAB] });
 
   return (
     <Container>

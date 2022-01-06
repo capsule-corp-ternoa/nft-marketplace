@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useMediaQuery } from 'react-responsive';
 import Link from 'next/link';
 import styled from 'styled-components';
 
@@ -7,6 +8,7 @@ import Button from 'components/ui/Button';
 
 import { UserType } from 'interfaces/index';
 import { computeCaps } from 'utils/strings';
+import { breakpointMap } from 'style/theme/base';
 
 import { onModelOpen } from '../../../utils/model-helpers';
 import style from './FloatingHeader.module.scss';
@@ -27,13 +29,16 @@ const FloatingHeader: React.FC<FloatingHeaderProps> = ({
     setSearchValue(event.currentTarget.value);
   };
 
+  const isMobileTablet = useMediaQuery({
+    query: `(max-width: ${breakpointMap.lg - 1}px)`,
+  });
+
+  if (!isMobileTablet) {
+    return null;
+  }
+
   return (
-    <div
-      id="FloatingHeader"
-      className={
-        isExpanded ? `${style.Header} ${style.HeaderExpanded}` : style.Header
-      }
-    >
+    <div className={isExpanded ? `${style.Header} ${style.HeaderExpanded}` : style.Header}>
       {isExpanded && (
         <div className={style.FullHeader}>
           <div className={style.SearchBar}>

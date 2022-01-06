@@ -17,6 +17,7 @@ export interface ExplorePage {
   user: UserType;
   data: NftType[];
   dataHasNextPage: boolean;
+  dataTotalCount?: number;
   loading: boolean
 }
 
@@ -24,6 +25,7 @@ const ExplorePage = ({
   user,
   data,
   dataHasNextPage,
+  dataTotalCount,
 }: ExplorePage) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [walletUser, setWalletUser] = useState(user);
@@ -73,6 +75,7 @@ const ExplorePage = ({
         loadMore={loadMoreNfts}
         hasNextPage={dataNftsHasNextPage}
         loading={isLoading}
+        totalCount={dataTotalCount}
       />
       <Footer />
       <FloatingHeader user={walletUser} setModalExpand={setModalExpand} />
@@ -84,7 +87,8 @@ export async function getServerSideProps(ctx: NextPageContext) {
   const token = cookies(ctx).token && decryptCookie(cookies(ctx).token as string);
   let user: UserType | null = null,
     data: NftType[] = [],
-    dataHasNextPage: boolean = false;
+    dataHasNextPage: boolean = false,
+    dataTotalCount: number | undefined = undefined;
   const promises = [];
   if (token) {
     promises.push(
@@ -104,6 +108,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
         .then((result) => {
           data = result.data;
           dataHasNextPage = result.hasNextPage || false;
+          dataTotalCount = result.totalCount;
           success();
         })
         .catch(success);
@@ -116,7 +121,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
     };
   }
   return {
-    props: { user, data, dataHasNextPage },
+    props: { user, data, dataHasNextPage, dataTotalCount },
   };
 }
 

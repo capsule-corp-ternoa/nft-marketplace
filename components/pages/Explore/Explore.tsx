@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 import { NftType, UserType } from 'interfaces/index';
 import { Container, Title, Wrapper } from 'components/layout';
 
@@ -11,12 +12,13 @@ export interface ExploreProps {
   loadMore: () => void;
   hasNextPage: boolean;
   loading: boolean;
+  totalCount?: number;
 }
 
-const Explore: React.FC<ExploreProps> = ({ NFTS, user, setUser, loadMore, hasNextPage, loading }) => (
+const Explore: React.FC<ExploreProps> = ({ NFTS, user, setUser, loadMore, hasNextPage, loading, totalCount }) => (
   <Container>
     <Wrapper>
-      <Title>Explore</Title>
+      <STitle>{totalCount && totalCount > 10 ? `Explore among ${totalCount} NFTs` : 'Explore'}</STitle>
       <NftsExploreBlock
         NFTs={NFTS}
         isLoading={loading}
@@ -37,5 +39,13 @@ const Explore: React.FC<ExploreProps> = ({ NFTS, user, setUser, loadMore, hasNex
     </Wrapper>
   </Container>
 );
+
+const STitle = styled(Title)`
+  font-size: 3.2rem;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    font-size: 4.8rem;
+  }
+`;
 
 export default Explore;

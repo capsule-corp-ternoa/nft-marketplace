@@ -1,75 +1,12 @@
 @import "style/colors.scss";
 
-.Header {
-  width: 100%;
-  margin: 0px;
-  padding: 0px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
-}
-
-.HeaderContainer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 1250px;
-  box-sizing: border-box;
-  padding: 16px 24px;
-  padding-top: 24px;
-  position: relative;
-}
 
 .Logo {
   width: 140px;
   cursor: pointer;
 }
 
-.Input {
-  background: rgba(0, 0, 0, 0.05);
-  border-radius: 30px;
-  font-size: 14px;
-  border: none;
-  width: 320px;
-  padding: 12px 24px;
-  outline: none;
-  font-family: "Airbnb Cereal App Book";
-  display: none;
-}
-
-.Infos {
-  display: flex;
-  align-items: center;
-}
-
-.Links {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 180px;
-}
-
-.LinkItem {
-  font-family: "Airbnb Cereal App Medium";
-  font-style: normal;
-  font-weight: bold;
-  font-size: 1.6rem;
-  color: black;
-  text-decoration: none;
-}
-
 @media (max-width: 1300px) {
-  .Links {
-    margin-right: 24px;
-  }
-
-  .HeaderContainer {
-    justify-content: space-around;
-    width: 100%;
-    width: 950px;
-  }
-
   .Logo {
     width: 120px;
     cursor: pointer;
@@ -77,21 +14,6 @@
 }
 
 @media (max-width: 1000px) {
-  .Links {
-    display: none;
-  }
-
-  .SearchBar,
-  .Infos {
-    display: none;
-  }
-
-  .HeaderContainer {
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-  }
-
   .Logo {
     width: 200px;
     cursor: pointer;

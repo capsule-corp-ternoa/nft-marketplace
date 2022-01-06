@@ -24,7 +24,14 @@ import {
 } from 'interfaces';
 import { breakpointMap } from 'style/theme/base';
 import { loadMoreNfts } from 'utils/profile';
-import { FOLLOW_ACTION, FOLLOW_ACTION_TYPE, UNFOLLOW_ACTION } from 'utils/profile/constants';
+import {
+  FOLLOW_ACTION,
+  FOLLOW_ACTION_TYPE,
+  LIKE_ACTION,
+  LIKE_ACTION_TYPE,
+  UNFOLLOW_ACTION,
+  UNLIKE_ACTION,
+} from 'utils/profile/constants';
 import { getFollowingStatus, getProfilesFollowersCount, loadMoreProfiles } from 'utils/profile/follow';
 
 import FollowersProfileBlock from './components/FollowersProfileBlock';
@@ -182,6 +189,24 @@ const Profile = ({
     setSearchValue(event.currentTarget.value);
   };
 
+  const handleLikeCount = (action: LIKE_ACTION_TYPE): void => {
+    setCounts((prevCounts) => {
+      const prevLikedCount = prevCounts[NFT_LIKED_TAB];
+      switch (action) {
+        case LIKE_ACTION:
+          return {
+            ...prevCounts,
+            [NFT_LIKED_TAB]: prevLikedCount + 1,
+          };
+        case UNLIKE_ACTION:
+          return {
+            ...prevCounts,
+            [NFT_LIKED_TAB]: prevLikedCount - 1,
+          };
+      }
+    });
+  };
+
   const handleUserFollow = async (
     profileWalletId: string,
     action: FOLLOW_ACTION_TYPE,
@@ -280,6 +305,7 @@ const Profile = ({
             noNftHref="/create"
             noNftLinkLabel="Create your NFT"
             noNftTitle="Nothing to display"
+            handleLikeCount={handleLikeCount}
             setLikedNfts={setLikedNfts}
             tabId={tabId}
             user={user}
@@ -300,6 +326,7 @@ const Profile = ({
             loadMore={loadMoreLikedNfts}
             noNftBody="The NFTs you liked are displayed here"
             noNftTitle="Nothing to display"
+            handleLikeCount={handleLikeCount}
             setLikedNfts={setLikedNfts}
             tabId={tabId}
             user={user}
@@ -329,6 +356,7 @@ const Profile = ({
             noNftHref="/"
             noNftLinkLabel="Sell your NFT"
             noNftTitle="Nothing to display"
+            handleLikeCount={handleLikeCount}
             setLikedNfts={setLikedNfts}
             tabId={tabId}
             user={user}
@@ -357,6 +385,7 @@ const Profile = ({
             loadMore={loadMoreOwnedUnlistedNfts}
             noNftBody="The NFTs you owned and are not for sale are displayed here"
             noNftTitle="Nothing to display"
+            handleLikeCount={handleLikeCount}
             setLikedNfts={setLikedNfts}
             tabId={tabId}
             user={user}
@@ -388,6 +417,7 @@ const Profile = ({
             noNftHref="/explore"
             noNftLinkLabel="Explore NFTs"
             noNftTitle="Nothing to display"
+            handleLikeCount={handleLikeCount}
             setLikedNfts={setLikedNfts}
             tabId={tabId}
             user={user}
@@ -519,15 +549,6 @@ const Profile = ({
   }, [profileDataLoaded]);
 
   useEffect(() => {
-    if (profileDataLoaded) {
-      setCounts((prevCounts) => ({
-        ...prevCounts,
-        [NFT_LIKED_TAB]: likedNfts?.length || 0,
-      }));
-    }
-  }, [likedNfts]);
-
-  useEffect(() => {
     if (searchValue !== undefined || isFilterVerified !== undefined) {
       const timer = setTimeout(() => {
         loadMoreProfiles(
@@ -556,6 +577,8 @@ const Profile = ({
       return () => clearTimeout(timer);
     }
   }, [searchValue, isFilterVerified]);
+
+  console.log({ likedNfts, likedCurrentPage, likedNftsHasNextPage, count: counts[NFT_LIKED_TAB] });
 
   return (
     <Container>

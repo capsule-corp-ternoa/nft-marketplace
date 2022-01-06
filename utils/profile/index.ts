@@ -60,7 +60,8 @@ export const toggleLike = async (
   action: LIKE_ACTION_TYPE,
   userWalletId: string,
   toogleIsLike: ToggleNominalSetState,
-  setData?: NFTsNominalSetState
+  setData?: NFTsNominalSetState,
+  handleCount?: (action: LIKE_ACTION_TYPE) => void,
 ) => {
   const { id: nftId, serieId } = nft;
 
@@ -79,6 +80,7 @@ export const toggleLike = async (
       default:
         break;
     }
+    if (handleCount) handleCount(action);
     toogleIsLike((prevState) => !prevState);
   } catch (error) {
     console.error(error);

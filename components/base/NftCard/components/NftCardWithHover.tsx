@@ -8,7 +8,7 @@ import { Picture } from 'components/base/Avatar';
 import Chip from 'components/ui/Chip';
 import { NftType, NFTsNominalSetState, UserType } from 'interfaces/index';
 import { toggleLike } from 'utils/profile';
-import { LIKE_ACTION, UNLIKE_ACTION } from 'utils/profile/constants';
+import { LIKE_ACTION, LIKE_ACTION_TYPE, UNLIKE_ACTION } from 'utils/profile/constants';
 import { computeCaps, computeTiime } from 'utils/strings';
 import { breakpointMap } from 'style/theme/base';
 
@@ -24,6 +24,7 @@ interface Props {
   mode?: ModeType;
   noCreator?: boolean;
   quantity?: number;
+  handleLikeCount?: (action: LIKE_ACTION_TYPE) => void;
   setLikedNfts?: NFTsNominalSetState;
   user?: UserType;
 }
@@ -33,7 +34,17 @@ function manageRouting(e: React.MouseEvent<HTMLDivElement, MouseEvent>, id: stri
   Router.push(`/${id}`);
 }
 
-const NftCardWithHover = ({ className, isDragging, item, mode, noCreator = false, quantity, setLikedNfts, user }: Props) => {
+const NftCardWithHover = ({
+  className,
+  isDragging,
+  item,
+  mode,
+  noCreator = false,
+  quantity,
+  handleLikeCount,
+  setLikedNfts,
+  user,
+}: Props) => {
   const [isHovering, setIsHovering] = useState(false);
   const [isLiked, setIsLiked] = useState(
     (item.serieId === '0'
@@ -48,7 +59,14 @@ const NftCardWithHover = ({ className, isDragging, item, mode, noCreator = false
     try {
       if (!likeLoading && user?.walletId) {
         setLikeLoading(true);
-        await toggleLike(item, isLiked ? UNLIKE_ACTION : LIKE_ACTION, user.walletId, setIsLiked, setLikedNfts);
+        await toggleLike(
+          item,
+          isLiked ? UNLIKE_ACTION : LIKE_ACTION,
+          user.walletId,
+          setIsLiked,
+          setLikedNfts,
+          handleLikeCount
+        );
         setLikeLoading(false);
       }
     } catch (error) {

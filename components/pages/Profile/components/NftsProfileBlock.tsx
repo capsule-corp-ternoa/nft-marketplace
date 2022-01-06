@@ -16,6 +16,7 @@ import {
   NFT_CREATED_TAB,
   NFT_LIKED_TAB,
 } from 'interfaces';
+import { LIKE_ACTION_TYPE } from 'utils/profile/constants';
 
 interface Props {
   NFTs?: NftType[];
@@ -26,6 +27,7 @@ interface Props {
   noNftHref?: string;
   noNftLinkLabel?: string;
   noNftTitle: string;
+  handleLikeCount: (action: LIKE_ACTION_TYPE) => void;
   setLikedNfts: NFTsNominalSetState;
   tabId: TabsIdType;
   user: UserType;
@@ -40,6 +42,7 @@ const NftsProfileBlock = ({
   noNftHref,
   noNftLinkLabel,
   noNftTitle,
+  handleLikeCount,
   setLikedNfts,
   user,
   tabId,
@@ -99,7 +102,8 @@ const NftsProfileBlock = ({
             item={item}
             mode={GRID_MODE}
             quantity={returnQuantityNFTsAvailable(item, tabId)}
-            setLikedNfts={setLikedNfts}
+            handleLikeCount={handleLikeCount}
+            setLikedNfts={tabId === NFT_LIKED_TAB ? setLikedNfts : undefined}
             user={user}
           />
         ))}

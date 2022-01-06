@@ -3,16 +3,14 @@ import { useMediaQuery } from 'react-responsive';
 import Link from 'next/link';
 import styled from 'styled-components';
 
-import Logo from 'components/assets/LogoTernoaBlack';
 import { ProfileMenuBadge, ProfileMenuDropdown } from 'components/base/ProfileMenu';
 import Button from 'components/ui/Button';
+import Icon from 'components/ui/Icon';
 import { Container, Wrapper } from 'components/layout';
 
 import { UserType } from 'interfaces/index';
 import { computeCaps } from 'utils/strings';
 import { breakpointMap } from 'style/theme/base';
-
-import style from './MainHeader.module.scss';
 
 export interface HeaderProps {
   user: UserType;
@@ -35,7 +33,7 @@ const MainHeader: React.FC<HeaderProps> = ({ setModalExpand, user }) => {
       <SWrapper>
         <Link href="/">
           <a>
-            <Logo className={style.Logo} onClick={() => true} />
+            <SLogo name="logoTernoaBlack" />
           </a>
         </Link>
         {!isMobileTablet && (
@@ -96,6 +94,11 @@ const SWrapper = styled(Wrapper)`
   ${({ theme }) => theme.mediaQueries.lg} {
     justify-content: space-between;
   }
+`;
+
+const SLogo = styled(Icon)`
+  width: 16rem;
+  cursor: pointer;
 `;
 
 const SNavContainer = styled.div`

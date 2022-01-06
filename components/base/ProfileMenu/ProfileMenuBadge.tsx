@@ -27,7 +27,7 @@ const ProfileMenuBadge = ({
         <STokenAmount>{tokenAmount}</STokenAmount>
         <STokenSymbol>{tokenSymbol}</STokenSymbol>
       </STokenContainer>
-      <Picture
+      <SPicture
         isVerified={verified}
         link={walletId}
         name={name}
@@ -82,6 +82,10 @@ const STokenSymbol = styled.span`
   ${({ theme }) => theme.mediaQueries.sm} {
     font-size: 1.4rem;
   }
+`;
+
+const SPicture = styled(Picture)`
+  cursor: pointer;
 `;
 
 export default ProfileMenuBadge;

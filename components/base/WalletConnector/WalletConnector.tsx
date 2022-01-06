@@ -7,6 +7,7 @@ import { onModelClose } from 'utils/model-helpers';
 import { WALLET_CONNECT } from 'utils/chains.const';
 import { PairingTypes } from "@walletconnect/types";
 import QRCodeModal from "@walletconnect/legacy-modal";
+import { getAppMetadata } from "@walletconnect/utils";
 export interface WalletConnectorProps {
   setModalExpand: (b: boolean) => void;
 }
@@ -52,6 +53,7 @@ const WalletConnector: React.FC<WalletConnectorProps> = ({ setModalExpand }) => 
   };
   const connect = async () => {
     const session = await (client as WalletConnect).connect({
+      metadata: getAppMetadata(),
       permissions: {
         blockchain: {
           chains: ["eip155:1"],

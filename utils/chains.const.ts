@@ -8,3 +8,7 @@ export const CHAINS = {
         }
     }
 }
+export const WALLET_CONNECT = {
+    projectId: '441431138975688f696a34766e4ff48d',
+  };
+  

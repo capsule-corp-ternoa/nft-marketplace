@@ -178,7 +178,7 @@ const SPopoverName = styled.span`
   left: 50%;
   text-align: center;
   transform: translateX(calc(-50%));
-  z-index: 2;
+  z-index: 10;
 `;
 
 export default Picture;

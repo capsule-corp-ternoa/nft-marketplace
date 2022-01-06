@@ -6,7 +6,7 @@ import { Banner as AvatarBanner } from 'components/base/Avatar';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
 import { getCreatorNFTS, getLikedNFTs, getOwnedNFTS, getUserNFTsStat } from 'actions/nft';
-import { follow, getFollowers, getFollowed, unfollow } from 'actions/follower';
+import { follow, getFollowers, getFollowed, getFollowersCount, unfollow } from 'actions/follower';
 import { Container, Wrapper } from 'components/layout/Container';
 import Button from 'components/ui/Button';
 import Tabs from 'components/ui/Tabs';
@@ -225,6 +225,8 @@ const Profile = ({
                 [FOLLOWED_TAB]: prevCounts[FOLLOWED_TAB] + 1,
               }));
             } else if (iArtistProfileFollowButton) {
+              const userFollowersCount = (await getFollowersCount(user.walletId)) ?? {};
+              setProfilesFollowersCount((prevCounts) => ({ ...prevCounts, [user.walletId]: userFollowersCount }));
               setFollowers((prevState) => [...prevState, user]);
               setCounts((prevCounts) => ({
                 ...prevCounts,

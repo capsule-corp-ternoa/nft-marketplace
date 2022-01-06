@@ -1,8 +1,9 @@
 import React from 'react';
-import style from './Explore.module.scss';
-import { NftCardWithHover } from 'components/base/NftCard';
-import NoNFTComponent, { NO_NFT_VARIANT_SOLD_OUT } from 'components/base/NoNFTComponent';
 import { NftType, UserType } from 'interfaces/index';
+import { Container, Title, Wrapper } from 'components/layout';
+
+import NftsExploreBlock from './components/NftsExploreBlock';
+
 export interface ExploreProps {
   NFTS: NftType[];
   user?: UserType;
@@ -12,97 +13,29 @@ export interface ExploreProps {
   loading: boolean;
 }
 
-const Explore: React.FC<ExploreProps> = ({
-  NFTS,
-  user,
-  setUser,
-  loadMore,
-  hasNextPage,
-  loading,
-}) => {
-  function returnNFTs() {
-    return NFTS.map((item) => (
-      <div key={item.id} className={style.NFTShell}>
-        <NftCardWithHover mode="grid" item={item} user={user} setUser={setUser} />
-      </div>
-    ));
-  }
-  return (
-    <>
-      <div id="explore" className={style.Wrapper}>
-        <div className={style.Top}>
-          <h3 className={style.Title}>Explore</h3>
-          <div className={style.Hide}>
-            <span className={style.Filter}>
-              <span role="img" className={style.Emoji} aria-label="art">
-                🎨
-              </span>
-              Art
-            </span>
-            <span className={style.Filter}>
-              <span role="img" className={style.Emoji} aria-label="photo">
-                📸
-              </span>
-              Photo
-            </span>
-            <span className={style.Filter}>
-              <span role="img" className={style.Emoji} aria-label="games">
-                👾
-              </span>
-              Games
-            </span>
-            <span className={style.Filter}>
-              <span role="img" className={style.Emoji} aria-label="games">
-                🎷
-              </span>
-              Music
-            </span>
-            <span className={style.Filter}>
-              <span role="img" className={style.Emoji} aria-label="design">
-                🖌
-              </span>
-              Design
-            </span>
-            <span className={style.Filter}>
-              <span role="img" className={style.Emoji} aria-label="photo">
-                📷
-              </span>
-              Photo
-            </span>
-          </div>
-        </div>
-        {NFTS.length === 0 ? (
-          <NoNFTComponent
-            body={
-              <>
-                Come later to discover new NFTs.
-                <br />
-                <br />
-                Thanks !
-              </>
-            }
-            title="All NFTs are sold !"
-            variant={NO_NFT_VARIANT_SOLD_OUT}
-          />
-        ) : (
-          <div className={style.NFTWrapper}>{returnNFTs()}</div>
-        )}
-        {hasNextPage && (
+const Explore: React.FC<ExploreProps> = ({ NFTS, user, setUser, loadMore, hasNextPage, loading }) => (
+  <Container>
+    <Wrapper>
+      <Title>Explore</Title>
+      <NftsExploreBlock
+        NFTs={NFTS}
+        isLoading={loading}
+        isLoadMore={hasNextPage}
+        loadMore={loadMore}
+        noNftBody={
           <>
-            {!loading ? (
-              <div onClick={() => loadMore()} className={style.Button}>
-                Load more
-              </div>
-            ) : (
-              <div className={style.DisabledButton}>
-                Loading...
-              </div>
-            )}
+            Come later to discover new NFTs.
+            <br />
+            <br />
+            Thanks !
           </>
-        )}
-      </div>
-    </>
-  );
-};
+        }
+        noNftTitle="All NFTs are sold !"
+        user={user}
+        setUser={setUser}
+      />
+    </Wrapper>
+  </Container>
+);
 
 export default Explore;

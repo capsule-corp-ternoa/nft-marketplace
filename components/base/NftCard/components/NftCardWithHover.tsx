@@ -24,6 +24,7 @@ interface Props {
   likedNfts?: NftType[];
   mode?: ModeType;
   noCreator?: boolean;
+  quantity?: number;
   setLikedNfts?: (nfts: NftType[]) => void;
   setUser?: (u: UserType) => void;
   user?: UserType;
@@ -38,11 +39,13 @@ function manageRouting(
 }
 
 const NftCardWithHover = ({
+  className,
   isDragging,
   item,
   likedNfts,
   mode,
   noCreator = false,
+  quantity,
   setLikedNfts,
   setUser,
   user,
@@ -110,6 +113,7 @@ const NftCardWithHover = ({
 
   return (
     <NftCard
+      className={className}
       item={item}
       mode={mode}
       isDragging={isDragging}
@@ -122,6 +126,7 @@ const NftCardWithHover = ({
         mode={mode}
         noPriceChip={isHovering}
         noSecretChip={isHovering}
+        quantity={quantity}
       />
       <div
         className={

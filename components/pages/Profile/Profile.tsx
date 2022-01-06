@@ -61,6 +61,7 @@ const Profile = ({
 }: ProfileProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [profileDataLoaded, setProfileDataLoaded] = useState(false);
+  const [resetTabId, toggleResetTabId] = useState(false);
 
   //Owned NFTs
   const [ownedNfts, setOwnedNfts] = useState<NftType[]>(userOwnedlNfts ?? []);
@@ -537,6 +538,7 @@ const Profile = ({
 
   useEffect(() => {
     setProfileDataLoaded(false);
+    toggleResetTabId(prevState => !prevState);
     try {
       initCounts();
       populateProfileData(walletId);
@@ -634,6 +636,7 @@ const Profile = ({
       <Wrapper>
         <Tabs
           isTabsSelect={isTablet}
+          resetTabId={resetTabId}
           tabs={tabs.reduce(
             (acc, id) => ({
               ...acc,

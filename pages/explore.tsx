@@ -106,7 +106,9 @@ export async function getServerSideProps(ctx: NextPageContext) {
     new Promise<void>((success) => {
       getNFTs(undefined, undefined, undefined, true, true)
         .then((result) => {
-          data = result.data;
+          data = result.data.sort(
+            (a, b) => new Date(b.timestampList ?? 0).getTime() - new Date(a.timestampList ?? 0).getTime()
+          );
           dataHasNextPage = result.hasNextPage || false;
           dataTotalCount = result.totalCount;
           success();

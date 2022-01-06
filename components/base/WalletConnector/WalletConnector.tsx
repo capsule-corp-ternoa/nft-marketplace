@@ -29,8 +29,8 @@ const WalletConnector: React.FC<WalletConnectorProps> = ({ setModalExpand }) => 
       projectId: WALLET_CONNECT.projectId,
       relayUrl: 'wss://relay.walletconnect.com',
       metadata: {
-        name: 'Dapp Wallet Connect',
-        description: 'Dapp Wallet Connect',
+        name: 'Marketplace Dapp WalletConnect',
+        description: 'Marketplace Dapp WalletConnect',
         url: '#',
         icons: ['https://walletconnect.com/walletconnect-logo.png'],
       },

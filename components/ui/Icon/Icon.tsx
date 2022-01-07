@@ -35,13 +35,8 @@ export type IconNameType =
   | 'secretCards'
   | 'share'
   | 'socialDiscord'
-  | 'socialGithub'
   | 'socialInstagram'
-  | 'socialLinkedIn'
-  | 'socialTelegram'
-  | 'socialTwitch'
   | 'socialTwitter'
-  | 'socialYoutube'
   | 'soundOff'
   | 'soundOn'
   | 'successImage'
@@ -202,33 +197,13 @@ const Icon = ({ className, name }: Props) => {
       const Discord = dynamic(() => import('components/assets/SocialMedias/Discord'));
       return <Discord className={className} />;
     }
-    case 'socialGithub': {
-      const Github = dynamic(() => import('components/assets/SocialMedias/Github'));
-      return <Github className={className} />;
-    }
     case 'socialInstagram': {
       const Instagram = dynamic(() => import('components/assets/SocialMedias/Instagram'));
       return <Instagram className={className} />;
     }
-    case 'socialLinkedIn': {
-      const LinkedIn = dynamic(() => import('components/assets/SocialMedias/LinkedIn'));
-      return <LinkedIn className={className} />;
-    }
-    case 'socialTelegram': {
-      const Telegram = dynamic(() => import('components/assets/SocialMedias/Telegram'));
-      return <Telegram className={className} />;
-    }
-    case 'socialTwitch': {
-      const Twitch = dynamic(() => import('components/assets/SocialMedias/Twitch'));
-      return <Twitch className={className} />;
-    }
     case 'socialTwitter': {
       const Twitter = dynamic(() => import('components/assets/SocialMedias/Twitter'));
       return <Twitter className={className} />;
-    }
-    case 'socialYoutube': {
-      const Youtube = dynamic(() => import('components/assets/SocialMedias/Youtube'));
-      return <Youtube className={className} />;
     }
     case 'soundOff': {
       const SoundOff = dynamic(() => import('components/assets/SoundOff'));

@@ -101,6 +101,7 @@ const NftsGrid = ({
           <Button
             color="invertedContrast"
             disabled={isLoading}
+            isLoading={isLoading}
             onClick={loadMore}
             size="medium"
             text={isLoading ? 'Loading...' : 'Load more'}

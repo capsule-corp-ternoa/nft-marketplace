@@ -617,6 +617,7 @@ const Profile = ({
                 <Button
                   color={userFollowingStatus[walletId] ? 'contrast' : 'invertedContrast'}
                   disabled={followLoading}
+                  isLoading={followLoading}
                   onClick={() =>
                     handleUserFollow(
                       artist.walletId,

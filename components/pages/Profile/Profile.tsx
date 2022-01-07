@@ -113,21 +113,21 @@ const Profile = ({
   const populateProfileData = async (token: string) => {
     if (variant === USER_PERSONNAL_PROFILE_VARIANT) {
       // Created nfts
-      const createdNfts = await getCreatorNFTS(token, undefined, undefined);
+      const createdNfts = await getCreatorNFTS(token, undefined, "12");
       setCreatedNfts(createdNfts.data);
       setCreatedNftsHasNextPage(createdNfts.hasNextPage);
       // Liked NFTs
-      const liked = await getLikedNFTs(token, undefined, undefined);
+      const liked = await getLikedNFTs(token, undefined, "12");
       setLikedNfts(liked.data);
       setLikedNftsHasNextPage(liked.hasNextPage);
     }
 
     // Owned listed NFTs
-    const ownedListed = await getOwnedNFTS(token, true, true, undefined, undefined);
+    const ownedListed = await getOwnedNFTS(token, true, true, undefined, "12");
     setOwnedNftsListed(ownedListed.data);
     setOwnedNftsListedHasNextPage(ownedListed.hasNextPage);
     // Owned not listed NFTs
-    const ownedUnlisted = await getOwnedNFTS(token, false, false, undefined, undefined);
+    const ownedUnlisted = await getOwnedNFTS(token, false, false, undefined, "12");
     setOwnedNftsUnlisted(ownedUnlisted.data);
     setOwnedNftsUnlistedHasNextPage(ownedUnlisted.hasNextPage);
     // Followers

@@ -86,7 +86,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
     );
     promises.push(
       new Promise<void>((success) => {
-        getOwnedNFTS(token, false, undefined, undefined, undefined)
+        getOwnedNFTS(token, false, undefined, undefined, "12")
           .then((result) => {
             owned = result.data;
             ownedHasNextPage = result.hasNextPage || false;

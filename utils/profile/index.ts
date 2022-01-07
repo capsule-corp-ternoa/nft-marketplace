@@ -29,20 +29,20 @@ export const loadMoreNfts = async (
     let promise;
     switch (tabId) {
       case NFT_CREATED_TAB:
-        promise = getCreatorNFTS(userWalletId, (currentPage + 1).toString(), undefined);
+        promise = getCreatorNFTS(userWalletId, (currentPage + 1).toString(), "12");
         break;
       case NFT_LIKED_TAB:
-        promise = getLikedNFTs(userWalletId, (currentPage + 1).toString(), undefined);
+        promise = getLikedNFTs(userWalletId, (currentPage + 1).toString(), "12");
         break;
       case NFT_ON_SALE_TAB:
-        promise = getOwnedNFTS(userWalletId, true, true, (currentPage + 1).toString(), undefined);
+        promise = getOwnedNFTS(userWalletId, true, true, (currentPage + 1).toString(), "12");
         break;
       case NFT_NOT_FOR_SALE_TAB:
-        promise = getOwnedNFTS(userWalletId, false, false, (currentPage + 1).toString(), undefined);
+        promise = getOwnedNFTS(userWalletId, false, false, (currentPage + 1).toString(), "12");
         break;
       case NFT_OWNED_TAB:
       default:
-        promise = getOwnedNFTS(userWalletId, false, undefined, (currentPage + 1).toString(), undefined);
+        promise = getOwnedNFTS(userWalletId, false, undefined, (currentPage + 1).toString(), "12");
         break;
     }
 

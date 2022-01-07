@@ -1,4 +1,8 @@
 export const CHAINS = {
+    ETH:{
+        id:"eip155:1",
+        rpcMethods:["eth_sendTransaction", "personal_sign", "eth_signTypedData"]
+    },
     TERNOA: {
         STAGING : {
             rpc: undefined, // { [chainId ]: string }

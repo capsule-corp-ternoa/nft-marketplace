@@ -1,10 +1,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useEffect, useState } from 'react';
-import style from './WalletConnector.module.scss';
-import Close from 'components/assets/close';
 import WalletConnect, { CLIENT_EVENTS } from '@walletconnect/client';
-import { onModelClose } from 'utils/model-helpers';
-import { WALLET_CONNECT } from 'utils/chains.const';
+import { WALLET_CONNECT, CHAINS } from 'utils/chains.const';
 import { PairingTypes } from "@walletconnect/types";
 import QRCodeModal from "@walletconnect/legacy-modal";
 import { getAppMetadata } from "@walletconnect/utils";
@@ -12,10 +9,12 @@ export interface WalletConnectorProps {
   setModalExpand: (b: boolean) => void;
 }
 
-const WalletConnector: React.FC<WalletConnectorProps> = ({ setModalExpand }) => {
-  const [error] = useState('');
+const WalletConnector: React.FC<WalletConnectorProps> = ({
+  setModalExpand
+}) => {
+  const [] = useState('');
   const [client, setClient] = useState<WalletConnect | null>(null);
-  const [uri, setUri] = useState<string | null>(null);
+  const [, setUri] = useState<string | null>(null);
   useEffect(() => {
     init();
   }, []);
@@ -48,6 +47,7 @@ const WalletConnector: React.FC<WalletConnectorProps> = ({ setModalExpand }) => 
       console.log("EVENT", "QR Code Modal open");
       QRCodeModal.open(_uri, () => {
         console.log("EVENT", "QR Code Modal closed");
+        setModalExpand(false);
       });
     });
   };
@@ -56,38 +56,16 @@ const WalletConnector: React.FC<WalletConnectorProps> = ({ setModalExpand }) => 
       metadata: getAppMetadata(),
       permissions: {
         blockchain: {
-          chains: ["eip155:1"],
+          chains: [CHAINS.ETH.id],
         },
         jsonrpc: {
-          methods: ["eth_sendTransaction", "personal_sign", "eth_signTypedData"],
+          methods: [...CHAINS.ETH.rpcMethods],
         },
       },
     });
     console.log('session', session);
 
   };
-  return (
-    <div id="WalletConnector" className={style.Background}>
-      <div className={style.Container}>
-        <Close
-          onClick={() => {
-            onModelClose();
-            setModalExpand(false);
-          }}
-          className={style.Close}
-        />
-        <div className={style.Title}>WalletConnect</div>
-        <div className={style.Text}>
-          To authenticate, scan this QR Code from your Ternoa Wallet mobile
-          application.
-        </div>
-        <div>
-
-        </div>
-        {error && <div className={style.Error}>{error}</div>}
-      </div>
-    </div>
-  );
+  return null;
 };
-
 export default WalletConnector;

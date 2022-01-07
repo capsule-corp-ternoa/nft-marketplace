@@ -20,6 +20,7 @@
     "asmcrypto-lite": "^1.1.0",
     "axios": "^0.24.0",
     "bufferutil": "^4.0.5",
+    "caip-wallet": "^1.6.6",
     "crypto-js": "^4.1.1",
     "dayjs": "^1.10.7",
     "emoji-regex": "^10.0.0",

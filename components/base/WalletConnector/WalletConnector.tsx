@@ -64,6 +64,8 @@ const WalletConnector: React.FC<WalletConnectorProps> = ({
       },
     });
     console.log('session', session);
+    QRCodeModal.close();
+    setModalExpand(false);
 
   };
   return null;

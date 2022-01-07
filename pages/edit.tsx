@@ -42,8 +42,8 @@ const EditPage = ({ user }: EditPageProps) => {
       <BetaBanner />
       <MainHeader user={user} setModalExpand={setModalExpand} />
       <Edit user={user} setSuccessPopup={setSuccessPopup} />
-      <FloatingHeader user={user} setModalExpand={setModalExpand} />
       <Footer />
+      <FloatingHeader user={user} setModalExpand={setModalExpand} />
     </>
   );
 };

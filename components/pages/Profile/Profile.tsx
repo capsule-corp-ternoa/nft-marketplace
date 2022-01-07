@@ -658,8 +658,8 @@ const Profile = ({
           )}
         />
       </Wrapper>
-      <FloatingHeader user={user} setModalExpand={setModalExpand} />
       <Footer />
+      <FloatingHeader user={user} setModalExpand={setModalExpand} />
     </Container>
   );
 };

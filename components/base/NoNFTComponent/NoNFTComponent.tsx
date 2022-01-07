@@ -46,6 +46,7 @@ const NoNFTComponent = ({ body, className, href, linkLabel, title, variant }: Pr
 };
 
 const SIcon = styled(Icon)`
+  min-height: 22rem;
   width: 16rem;
   height: auto;
   margin: 0 auto;

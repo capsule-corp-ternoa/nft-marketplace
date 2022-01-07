@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 import dynamic from 'next/dynamic';
 
 export type IconNameType =
@@ -173,7 +174,11 @@ const Icon = ({ className, name }: Props) => {
       return <Metamask className={className} />;
     }
     case 'noNFTImage': {
-      const NoNFTImage = dynamic(() => import('components/assets/NoNFTImage'));
+      const SPlaceholderWrapper = styled.div`
+        min-height: 22rem;
+      `;
+      const NoNFTImage = dynamic(() => import('components/assets/NoNFTImage'),
+      { loading: () => <SPlaceholderWrapper /> });
       return <NoNFTImage className={className} />;
     }
     case 'powerOff': {

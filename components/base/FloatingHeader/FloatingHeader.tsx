@@ -91,7 +91,7 @@ const FloatingHeader: React.FC<FloatingHeaderProps> = ({
           />
         ) : (
           <Button
-            color="contrast"
+            color="invertedContrast"
             onClick={() => {
               onModelOpen();
               setModalExpand(true);
@@ -99,7 +99,7 @@ const FloatingHeader: React.FC<FloatingHeaderProps> = ({
             }}
             size="medium"
             text="Connect Wallet"
-            variant="outlined"
+            variant="contained"
           />
         )}
       </div>

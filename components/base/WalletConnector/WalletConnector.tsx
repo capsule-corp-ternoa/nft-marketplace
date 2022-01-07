@@ -5,6 +5,8 @@ import { WALLET_CONNECT, CHAINS } from 'utils/chains.const';
 import { PairingTypes } from "@walletconnect/types";
 import QRCodeModal from "@walletconnect/legacy-modal";
 import { getAppMetadata } from "@walletconnect/utils";
+import Close from 'components/assets/close';
+import style from './TernoaWallet.module.scss';
 export interface WalletConnectorProps {
   setModalExpand: (b: boolean) => void;
 }
@@ -12,7 +14,7 @@ export interface WalletConnectorProps {
 const WalletConnector: React.FC<WalletConnectorProps> = ({
   setModalExpand
 }) => {
-  const [] = useState('');
+  const [pairingSuccess, setPairingSuccess] = useState(false);
   const [client, setClient] = useState<WalletConnect | null>(null);
   const [, setUri] = useState<string | null>(null);
   useEffect(() => {
@@ -50,7 +52,15 @@ const WalletConnector: React.FC<WalletConnectorProps> = ({
         setModalExpand(false);
       });
     });
+    (client as WalletConnect).on(CLIENT_EVENTS.pairing.created, async (proposal: PairingTypes.Settled) => {
+      console.log('pairing.created', proposal);
+      QRCodeModal.close();
+      setPairingSuccess(true)
+    });
   };
+  const onPairingSuccessClick = () => {
+    setModalExpand(false);
+  }
   const connect = async () => {
     const session = await (client as WalletConnect).connect({
       metadata: getAppMetadata(),
@@ -64,10 +74,21 @@ const WalletConnector: React.FC<WalletConnectorProps> = ({
       },
     });
     console.log('session', session);
-    QRCodeModal.close();
-    setModalExpand(false);
-
   };
-  return null;
+  return <>
+    { pairingSuccess ?
+      (<div id="walletConnect" className={style.Background}>
+        <div className={style.Container}>
+          <Close
+            onClick={onPairingSuccessClick}
+            className={style.Close}
+          />
+          <div className={style.Text}>
+            <div onClick={onPairingSuccessClick}>Paring success!</div>
+          </div>
+        </div>
+      </div>)
+      : null}
+  </>;
 };
 export default WalletConnector;

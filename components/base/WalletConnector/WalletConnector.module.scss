@@ -1,0 +1,63 @@
+@import 'style/colors.scss';
+
+.Background {
+  width: 100%;
+  position: fixed;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 110;
+  box-sizing: border-box;
+}
+
+.Container {
+  width: 600px;
+  border-radius: 25px;
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  align-items: center;
+  padding: 70px 50px;
+  position: relative;
+}
+
+.Text {
+  color: white;
+  font-size: 14px;
+  line-height: 20px;
+  font-family: 'Airbnb Cereal App Medium';
+  margin-top: 16px;
+  text-align: center;
+  max-width: 400px;
+  margin-bottom: 40px;
+}
+
+.Close {
+  display: flex;
+  position: absolute;
+  z-index: 130;
+  fill: white;
+  top: 28px;
+  right: 28px;
+  width: 18px;
+  cursor: pointer;
+}
+
+@media (max-width: 720px) {
+  .Container {
+    width: 100%;
+    margin: 0px 24px;
+    padding: 52px 32px;
+  }
+
+  .Text {
+    font-size: 13px;
+    line-height: 18px;
+    margin-top: 12px;
+    text-align: center;
+    max-width: 85%;
+  }
+}

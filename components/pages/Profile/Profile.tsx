@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { Banner as AvatarBanner } from 'components/base/Avatar';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
+import NftsGrid from 'components/base/NftsGrid';
 import { getCreatorNFTS, getLikedNFTs, getOwnedNFTS, getUserNFTsStat } from 'actions/nft';
 import { follow, getFollowers, getFollowed, getFollowersCount, unfollow } from 'actions/follower';
 import { Container, Wrapper } from 'components/layout/Container';
@@ -35,7 +36,6 @@ import {
 import { getFollowingStatus, getProfilesFollowersCount, loadMoreProfiles } from 'utils/profile/follow';
 
 import FollowersProfileBlock from './components/FollowersProfileBlock';
-import NftsProfileBlock from './components/NftsProfileBlock';
 
 export const ARTIST_PROFILE_VARIANT = 'artist_profile';
 export const USER_PERSONNAL_PROFILE_VARIANT = 'user_personnal_profile';
@@ -300,7 +300,7 @@ const Profile = ({
         };
 
         return (
-          <NftsProfileBlock
+          <NftsGrid
             NFTs={createdNfts}
             isLoading={!profileDataLoaded || isLoading}
             isLoadMore={!!createdNftsHasNextPage}
@@ -322,7 +322,7 @@ const Profile = ({
           setIsLoading(false);
         };
         return (
-          <NftsProfileBlock
+          <NftsGrid
             NFTs={likedNfts}
             isLoading={!profileDataLoaded || isLoading}
             isLoadMore={!!likedNftsHasNextPage}
@@ -351,19 +351,26 @@ const Profile = ({
         };
 
         return (
-          <NftsProfileBlock
-            NFTs={ownedNftsListed}
-            isLoading={!profileDataLoaded || isLoading}
-            isLoadMore={ownedNftsListedHasNextPage}
-            loadMore={loadMoreOwnedListedNfts}
-            noNftHref="/"
-            noNftLinkLabel="Sell your NFT"
-            noNftTitle="Nothing to display"
-            handleLikeCount={handleLikeCount}
-            setLikedNfts={setLikedNfts}
-            tabId={tabId}
-            user={user}
-          />
+          <>
+            {/* TODO: add this when NFT sale if available */}
+            {/* {isTablet && <NftSaleLink />} */}
+            <NftsGrid
+              NFTs={ownedNftsListed}
+              isLoading={!profileDataLoaded || isLoading}
+              isLoadMore={ownedNftsListedHasNextPage}
+              loadMore={loadMoreOwnedListedNfts}
+              noNftHref="/"
+              noNftLinkLabel="Sell your NFT"
+              noNftTitle="Nothing to display"
+              handleLikeCount={handleLikeCount}
+              setLikedNfts={setLikedNfts}
+              tabId={tabId}
+              user={user}
+            >
+              {/* TODO: add this when NFT sale if available */}
+              {/* {!isTablet && <NftSaleLink />} */}
+            </NftsGrid>
+          </>
         );
       }
       case NFT_NOT_FOR_SALE_TAB: {
@@ -381,7 +388,7 @@ const Profile = ({
         };
 
         return (
-          <NftsProfileBlock
+          <NftsGrid
             NFTs={ownedNftsUnlisted}
             isLoading={!profileDataLoaded || isLoading}
             isLoadMore={ownedNftsUnlistedHasNextPage}
@@ -411,7 +418,7 @@ const Profile = ({
         };
 
         return (
-          <NftsProfileBlock
+          <NftsGrid
             NFTs={ownedNfts}
             isLoading={!profileDataLoaded || isLoading}
             isLoadMore={!!ownedNftsHasNextPage}

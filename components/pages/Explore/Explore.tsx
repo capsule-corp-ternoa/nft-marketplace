@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import { NftType, UserType } from 'interfaces/index';
-import { Container, Title, Wrapper } from 'components/layout';
 
-import NftsExploreBlock from './components/NftsExploreBlock';
+import NftsGrid from 'components/base/NftsGrid';
+import { Container, Title, Wrapper } from 'components/layout';
+import { NftType, UserType } from 'interfaces/index';
 
 export interface ExploreProps {
   NFTS: NftType[];
@@ -18,7 +18,7 @@ const Explore: React.FC<ExploreProps> = ({ NFTS, user, loadMore, hasNextPage, lo
   <Container>
     <Wrapper>
       <STitle>{totalCount && totalCount > 10 ? `Explore among ${totalCount} NFTs` : 'Explore'}</STitle>
-      <NftsExploreBlock
+      <NftsGrid
         NFTs={NFTS}
         isLoading={loading}
         isLoadMore={hasNextPage}

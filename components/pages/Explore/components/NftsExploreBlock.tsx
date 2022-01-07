@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { NftCardWithHover, PROFILE_MODE } from 'components/base/NftCard';
+import { NftCardWithHover, GRID_MODE } from 'components/base/NftCard';
 import NoNFTComponent, { NO_NFT_VARIANT_SOLD_OUT } from 'components/base/NoNFTComponent';
 import Button from 'components/ui/Button';
 import { NftType, UserType } from 'interfaces';
@@ -51,7 +51,7 @@ const NftsExploreBlock = ({
         {NFTs.map((item: NftType) => (
           <SNftCard
             key={item.id}
-            mode={PROFILE_MODE}
+            mode={GRID_MODE}
             item={item}
             quantity={item.totalNft ?? 1}
             user={user}
@@ -89,31 +89,18 @@ const SNFTsContainer = styled.div`
   display: grid;
   justify-content: center;
   align-items: center;
-  padding: 3.2rem 0;
+  margin: 5.6rem 0 3.2rem;
   width: 100%;
-  margin-bottom: 3.2rem;
-  gap: 3.2rem;
+  gap: 4rem;
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: ${({ theme }) =>
+      `repeat(auto-fill, ${theme.sizes.cardWidth.sm})`};
   }
 
   ${({ theme }) => theme.mediaQueries.md} {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2.4rem 0;
-    padding: 5.4rem 0;
-  }
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 3.2rem 0;
-    margin-top: 4.8rem;
-    padding: 0;
-  }
-
-  ${({ theme }) => theme.mediaQueries.xxl} {
-    grid-template-columns: repeat(6, 1fr);
-    gap: 3.2rem;
+    grid-template-columns: ${({ theme }) =>
+      `repeat(auto-fill, ${theme.sizes.cardWidth.md})`};
   }
 `;
 

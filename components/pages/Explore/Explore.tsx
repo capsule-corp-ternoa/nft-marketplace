@@ -45,6 +45,12 @@ const STitle = styled(Title)`
 
   ${({ theme }) => theme.mediaQueries.md} {
     font-size: 4.8rem;
+    margin: 0 auto;
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    font-size: 4.8rem;
+    margin: 0;
   }
 `;
 

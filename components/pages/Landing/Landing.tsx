@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import style from './Landing.module.scss';
 import Hero, { HERO_MODE_SELL } from './Hero';
 import ArtCreators from './ArtCreators';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
-import NoNFTComponent from 'components/base/NoNFTComponent';
+import NoNFTComponent, { NO_NFT_VARIANT_SOLD_OUT } from 'components/base/NoNFTComponent';
 import { Container, Wrapper } from 'components/layout';
 import { UserType, NftType } from 'interfaces/index';
 import dynamic from 'next/dynamic';
@@ -17,7 +17,7 @@ export interface LandingProps {
   user: UserType;
   users: UserType[];
   setModalExpand: (b: boolean) => void;
-  capsValue?: number;
+  capsDollarValue?: number;
   heroNFTs: NftType[];
   popularNfts: NftType[];
   bestSellingNfts: NftType[];
@@ -29,30 +29,39 @@ const Landing = ({
   setModalExpand,
   user,
   users,
-  capsValue,
+  capsDollarValue,
   heroNFTs,
   popularNfts,
   bestSellingNfts,
   NFTCreators,
   totalCountNFT,
-}: LandingProps) => {
-  const [walletUser, setWalletUser] = useState(user);
-
-  return (
+}: LandingProps) => (
     <Container>
       <Wrapper>
         {heroNFTs?.length === 3 && (
-          <Hero capsValue={capsValue} NFTs={heroNFTs} mode={HERO_MODE_SELL} />
+          <Hero capsDollarValue={capsDollarValue} NFTs={heroNFTs} mode={HERO_MODE_SELL} />
         )}
-        {totalCountNFT === 0 && <NoNFTComponent />}
+        {totalCountNFT === 0 && (
+          <NoNFTComponent
+            body={
+              <>
+                Come later to discover new NFTs.
+                <br />
+                <br />
+                Thanks !
+              </>
+            }
+            title="All NFTs are sold !"
+            variant={NO_NFT_VARIANT_SOLD_OUT}
+          />
+        )}
       </Wrapper>
       {popularNfts?.length > 0 && (
         <Wrapper>
           <Showcase
             category="Most popular"
             NFTs={popularNfts}
-            user={walletUser}
-            setUser={setWalletUser}
+            user={user}
           />
         </Wrapper>
       )}
@@ -61,8 +70,7 @@ const Landing = ({
           <Showcase
             category="Best sellers"
             NFTs={bestSellingNfts}
-            user={walletUser}
-            setUser={setWalletUser}
+            user={user}
           />
         </Wrapper>
       )}
@@ -71,8 +79,7 @@ const Landing = ({
           <ArtCreators
             NFTs={NFTCreators}
             creators={users}
-            user={walletUser}
-            setUser={setWalletUser}
+            user={user}
           />
           <Link href="/explore">
             <a className={style.Button}>See more</a>
@@ -80,9 +87,9 @@ const Landing = ({
         </Wrapper>
       )}
       <Footer />
-      <FloatingHeader user={walletUser} setModalExpand={setModalExpand} />
+      <FloatingHeader user={user} setModalExpand={setModalExpand} />
     </Container>
   );
-};
+
 
 export default Landing;

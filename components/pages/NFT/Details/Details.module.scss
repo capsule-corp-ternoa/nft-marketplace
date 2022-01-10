@@ -53,6 +53,8 @@
   margin: 10px 0;
   opacity: 0.9;
   border-radius: 12px;
+  min-height: 83px;
+  padding: 0 1.2rem;
 }
 
 .creatorWrapper {
@@ -101,21 +103,13 @@
   font-size: 16px;
   margin-left: 10px;
 }
-.creatorBadge {
-  color: #7417ea;
-  font-family: 'Airbnb Cereal App Bold';
-  font-size: 13px;
-  line-height: 13px;
-  padding: 10px 15px;
-  margin: 0 20px;
-  background: rgba(116, 23, 234, 0.1);
-  border-radius: 64px;
-}
+
 .infoDatasTitle {
   margin: 0 10px;
   font-family: 'Airbnb Cereal App Book';
   font-size: 12px;
   font-style: normal;
+  flex-shrink: 0;
 }
 .infoDatasContent {
   word-break: break-word;
@@ -123,11 +117,13 @@
   font-style: normal;
   font-weight: bold;
   font-size: 16px;
+  text-align: center;
 }
 
 .rowsContainers {
   height: 29vh;
   width: auto;
+  display: flex;
 }
 .rows {
   display: flex;
@@ -137,32 +133,15 @@
   margin: 10px 0;
   opacity: 0.9;
   border-radius: 12px;
+  overflow: auto hidden;
+  padding: 1.2rem;
 }
 .row {
   display: flex;
   align-items: center;
   width: 85%;
 }
-.rowBadge {
-  color: #7417ea;
-  font-family: 'Airbnb Cereal App Bold';
-  font-style: normal;
-  font-weight: bold;
-  font-size: 13px;
-  line-height: 13px;
-  padding: 10px 0;
-  text-align: center;
-  margin: 0 10px;
-  background: rgba(116, 23, 234, 0.1);
-  border-radius: 64px;
-  width: 12%;
-}
-.rowDatas {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 70%;
-}
+
 .rowDatasName {
   font-size: 16px;
   line-height: 16px;
@@ -183,34 +162,6 @@
   color: black;
 }
 
-.rowDatasDetails {
-  font-size: 16px;
-  line-height: 21px;
-  margin-left: 10px;
-  font-family: 'Airbnb Cereal App Bold';
-  color: black;
-}
-.historyDatasDetailDate {
-  font-size: 11px;
-  font-family: 'Airbnb Cereal App Light';
-  margin-left: 10px;
-}
-.buyButton {
-  color: white;
-  text-align: center;
-  background-color: $primary;
-  padding: 8px 55px;
-  margin: 20px;
-  font-size: 12px;
-  font-family: 'Airbnb Cereal App Medium';
-  cursor: pointer;
-  transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-  border-radius: 1000px;
-  &:hover {
-    color: white;
-    background-color: black;
-  }
-}
 .disabled {
   pointer-events: none;
   background-color: lighten($primary, 35%);
@@ -232,20 +183,6 @@
   align-items: center;
 }
 
-.CreatorPicture {
-  width: 50px;
-  height: 50px;
-  position: relative;
-}
-.CreatorPictureIMG {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  position: absolute;
-  z-index: 1;
-  object-fit: cover;
-  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.25);
-}
 .HistoryName {
   font-family: 'Airbnb Cereal App Bold';
   font-size: 16px;
@@ -270,6 +207,8 @@
 
 .loaderContainer{
   text-align: center;
+  align-self: center;
+  width: 100%;
 }
 
 .loader{
@@ -295,11 +234,7 @@
     margin-left: auto;
     margin-right: auto;
   }
-  .rowDatas {
-    flex-direction: column;
-    justify-content: start;
-    align-items: flex-start;
-  }
+  
   .rowDatasName {
     display: flex;
   }
@@ -316,6 +251,7 @@
   }
   .detailsInfos {
     flex-direction: column;
+    padding: 20px 10px;
   }
   .detailsContent {
     justify-content: center;
@@ -358,18 +294,10 @@
   .detailsMenuItem {
     margin: 0 3px;
   }
-  .buyButton {
-    padding: 8px 30px;
-  }
   .HistoryLeftBlock {
     width: 100%;
   }
-  .rowBadge {
-    display: none;
-  }
-  .CreatorPicture {
-    margin-Left: 10px;
-  } 
+
   .rowDatasName {
     font-size: 14px;
     line-height: 14px;
@@ -377,13 +305,6 @@
   .historyDatasName {
     font-size: 14px;
     line-height: 14px;
-  }
-  .rowDatasDetails {
-    font-size: 14px;
-    line-height: 14px;
-  }
-  .historyDatasDetailDate {
-    font-size: 12px;
   }
 }
 @media (max-width: 576px) {
@@ -413,20 +334,7 @@
     font-size: 12px;
     line-height: 12px;
   }
-  .rowDatasDetails {
-    font-size: 12px;
-    line-height: 12px;
-  }
-  .historyDatasDetailDate {
-    font-size: 10px;
-  }
-  .buyButton {
-    padding: 8px 20px;
-    margin: 10px;
-  }
-  .detailsInfos {
-    padding: 20px 10px;
-  }
+
   .infoDatas {
     padding: 5px 10px;
     justify-content: center;
@@ -443,23 +351,10 @@
     flex-direction: column-reverse;
     align-items: center;
   }
-  .creatorBadge {
-    text-align: center;
-    padding: 10px;
-    margin: 10px;
-  }
-  .CreatorPicture {
-    width: 40px;
-    height: 40px;
-  } 
+  
 }
 @media (max-width: 350px) {
   .historyDatasDetailDate {
     display: none;
   }
-  .CreatorPicture {
-    width: 30px;
-    height: 30px;
-    margin-Left: 5px;
-  } 
 }

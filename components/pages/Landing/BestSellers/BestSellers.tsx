@@ -3,7 +3,7 @@ import Switch from 'react-switch';
 import style from './BestSellers.module.scss';
 import Blaze from 'components/assets/blaze';
 
-import Creator from 'components/base/Creator';
+import Avatar from 'components/base/Avatar';
 
 import { UserType } from 'interfaces/index';
 
@@ -13,17 +13,6 @@ export interface BestSellersProps {
 
 const BestSellers: React.FC<BestSellersProps> = ({ creators }) => {
   const [isFiltered, setIsFiltered] = useState(false);
-  function returnCreators() {
-    return creators.map((item, index) => (
-        <div key={index} className={style.CreatorShell}>
-          <Creator user={item} walletId={item.walletId} showTooltip={false}/>
-          <div className={style.CreatorInfos}>
-            <h2 className={style.CreatorName}>{item.name}</h2>
-            <span className={style.CreatorCaps}>0 CAPS</span>
-          </div>
-        </div>
-    ));
-  }
 
   return (
     <>
@@ -49,7 +38,20 @@ const BestSellers: React.FC<BestSellersProps> = ({ creators }) => {
             <span className={style.Label}>Certified only</span>
           </div>
         </div>
-        <div className={style.CreatorsWrapper}>{returnCreators()}</div>
+        <div className={style.CreatorsWrapper}>
+          {creators.map(({ name, picture, verified, walletId }) => (
+            <div key={walletId} className={style.CreatorShell}>
+              <Avatar
+                isClickable
+                isVerified={verified}
+                label="0 CAPS"
+                name={name}
+                picture={picture}
+                walletId={walletId}
+              />
+            </div>
+          ))}
+        </div>
       </div>
     </>
   );

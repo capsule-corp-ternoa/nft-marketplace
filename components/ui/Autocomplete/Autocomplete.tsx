@@ -146,20 +146,18 @@ const SInputWrapper = styled.div<{ isEmpty: boolean }>`
   & input {
     background: transparent;
     height: 100%;
-    box-sizing: border-box;
     padding: 4px 6px;
     width: 0;
     flex-grow: 1;
     border: 0;
     margin: 0;
     outline: 0;
-    font-family: 'Airbnb Cereal App Book';
     font-size: 1.6rem;
     z-index: 10;
 
     &::placeholder {
       color: ${({ theme, isEmpty }) =>
-        isEmpty ? theme.colors.neutral400 : 'transparent'};
+    isEmpty ? theme.colors.neutral300 : 'transparent'};
     }
 
     &:focus + #borderWrapper {
@@ -205,7 +203,7 @@ const SOptions = styled.ul`
 `;
 
 const SEmptyLabel = styled.span`
-  color: ${({ theme }) => theme.colors.neutral400};
+  color: ${({ theme }) => theme.colors.neutral300};
   font-size: 1.6rem;
   font-style: italic;
   line-height: 1.3;
@@ -213,7 +211,7 @@ const SEmptyLabel = styled.span`
 
 const SOption = styled.li<{ isActive?: boolean }>`
   color: ${({ theme, isActive }) =>
-    isActive ? theme.colors.contrast : theme.colors.neutral400};
+    isActive ? theme.colors.contrast : theme.colors.neutral300};
   cursor: pointer;
   font-size: 1.6rem;
   font-family: ${({ theme }) => theme.fonts.bold};

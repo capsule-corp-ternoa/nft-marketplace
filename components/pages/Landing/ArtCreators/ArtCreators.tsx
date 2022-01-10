@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import styled from 'styled-components';
 import Switch from 'react-switch';
 import style from './ArtCreators.module.scss';
-import Creator from 'components/base/Creator';
-import { NftCardWithHover } from 'components/base/NftCard';
+import { Picture, AVATAR_VARIANT_MOSAIC } from 'components/base/Avatar';
+import { NftCardWithHover, CAROUSEL_MODE } from 'components/base/NftCard';
 
 import Blaze from 'components/assets/blaze';
 
@@ -13,10 +14,9 @@ export interface ArtCreatorsProps {
   NFTs: NftType[];
   category?: string;
   user?: UserType;
-  setUser?: (u: UserType) => void
 }
 
-const ArtCreators = ({ creators, NFTs, user, setUser }: ArtCreatorsProps) => {
+const ArtCreators = ({ creators, NFTs, user }: ArtCreatorsProps) => {
   const [isFiltered, setIsFiltered] = useState(false);
 
   return (
@@ -45,20 +45,27 @@ const ArtCreators = ({ creators, NFTs, user, setUser }: ArtCreatorsProps) => {
         </div>
         <div className={style.Bottom}>
           {NFTs?.length > 0 && (
-              <div className={style.NFTS}>
-                {NFTs.map((item) => (
-                  <div key={item.id} className={style.NFTShell}>
-                    <NftCardWithHover item={item} user={user} setUser={setUser} />
-                  </div>
-                ))}
-              </div>
-            )}
+            <div className={style.NFTS}>
+              {NFTs.map((item) => (
+                <div key={item.id} className={style.NFTShell}>
+                  <NftCardWithHover item={item} mode={CAROUSEL_MODE} user={user} />
+                </div>
+              ))}
+            </div>
+          )}
           <div className={style.CreatorsContainer}>
             <div className={style.CreatorsInner}>
-              {creators.slice(0, 9).map((item, index) => (
-                <div key={index} className={style.CreatorItem}>
-                  <Creator user={item} walletId={item.walletId} size="small" />
-                </div>
+              {creators.slice(0, 9).map(({ name, picture, walletId }) => (
+                <SCreatorPicture key={walletId}>
+                  <Picture
+                    isClickable
+                    isTooltip
+                    name={name}
+                    picture={picture}
+                    variant={AVATAR_VARIANT_MOSAIC}
+                    walletId={walletId}
+                  />
+                </SCreatorPicture>
               ))}
             </div>
           </div>
@@ -67,5 +74,9 @@ const ArtCreators = ({ creators, NFTs, user, setUser }: ArtCreatorsProps) => {
     </>
   );
 };
+
+const SCreatorPicture = styled.div`
+  margin: 0.8rem;
+`;
 
 export default ArtCreators;

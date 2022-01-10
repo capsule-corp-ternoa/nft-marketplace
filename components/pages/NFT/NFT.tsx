@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
 import styled from 'styled-components'
 import style from './NFT.module.scss';
 import Footer from 'components/base/Footer';
@@ -9,25 +8,25 @@ import Scale from 'components/assets/scale';
 import Share from 'components/assets/share';
 import Like from 'components/assets/heart';
 import Eye from 'components/assets/eye';
-import { computeCaps, computeTiime, middleEllipsis } from 'utils/strings';
-import { UserType, NftType, INFTLike } from 'interfaces';
-import { likeNFT, unlikeNFT } from 'actions/user';
+import { computeCaps, computeTiime } from 'utils/strings';
+import { UserType, NftType } from 'interfaces';
 import ModalShare from 'components/base/ModalShare';
 import NoNFTImage from '../../assets/NoNFTImage';
 import Details from './Details';
-import Creator from 'components/base/Creator';
+import Avatar from 'components/base/Avatar';
 import { MARKETPLACE_ID } from 'utils/constant';
 import { Title } from 'components/layout'
 import Chip from 'components/ui/Chip';
 import Showcase from 'components/base/Showcase';
-import { getByTheSameArtistNFTs, getOwnedNFTS } from 'actions/nft';
+import { getByTheSameArtistNFTs, getOwnedNFTS, getSeriesData } from 'actions/nft';
 import { getRandomNFTFromArray } from 'utils/functions';
+import { toggleLike } from 'utils/profile';
+import { LIKE_ACTION, UNLIKE_ACTION } from 'utils/profile/constants';
 
 export interface NFTPageProps {
   NFT: NftType;
   setNftToBuy: (NFT: NftType) => void;
   user: UserType;
-  setUser: (u: UserType) => void;
   type: string | null;
   setExp: (n: number) => void;
   setModalExpand: (b: boolean) => void;
@@ -41,14 +40,19 @@ const NFTPage = ({
   setNftToBuy,
   setModalExpand,
   user,
-  setUser,
   type,
   isUserFromDappQR,
 }: NFTPageProps) => {
+  const [isLiked, setIsLiked] = useState(
+    (NFT.serieId === '0'
+      ? user?.likedNFTs?.some(({ nftId }) => nftId === NFT.id)
+      : user?.likedNFTs?.some(({ serieId }) => serieId === NFT.serieId)) ?? false
+  );
   const [likeLoading, setLikeLoading] = useState(false);
   const [modalShareOpen, setModalShareOpen] = useState(false);
   const [byTheSameArtistNFTs, setByTheSameArtistNFTs] = useState<NftType[]>([])
   const [canUserBuyAgain, setCanUserBuyAgain] = useState(true)
+  const [seriesData, setSeriesData] = useState([NFT])
   const isVR = (NFT.categories.findIndex(x => x.code === "vr") !== -1) && NFT.creator === NFT.owner
   const shareSubject = 'Check out this Secret NFT';
   const shareText = `Check out ${NFT.title ? NFT.title : 'this nft'} on ${
@@ -63,43 +67,24 @@ const NFTPage = ({
         ? process.env.NEXT_PUBLIC_APP_LINK
         : 'secret-nft.com'
     }/nft/${NFT.id}`;
-  const isLiked = !user
-    ? undefined
-    : NFT.serieId === '0'
-    ? user.likedNFTs?.map((x) => x.nftId).includes(NFT.id)
-    : user.likedNFTs?.map((x) => x.serieId).includes(NFT.serieId);
-  const numberListedOnThisMarketplace = NFT.totalListedInMarketplace 
-    ? NFT.totalListedInMarketplace 
-    : !NFT.serieData
-    ? 0
-    : NFT.serieData.reduce(
-        (prev, current) =>
-          prev +
-          (current?.listed === 1 && current.marketplaceId === MARKETPLACE_ID
-            ? 1
-            : 0),
-        0
-      );
   const smallestPriceRow =
-    (!NFT.serieData || NFT.serieData.length <= 1)
-      ? NFT
-      : NFT.serieData
-          .filter((x) => x.marketplaceId === MARKETPLACE_ID)
-          .sort(
-            (a, b) =>
-              (a.owner === b.owner
-                ? 0
-                : !user
-                ? 0
-                : a.owner === user.walletId
-                ? 1
-                : b.owner === user.walletId
-                ? -1
-                : 0) || // take nft which i'm not owner first
-              b.listed - a.listed || //listed first
-              Number(a.price) - Number(b.price) || //lowest price first
-              Number(a.priceTiime) - Number(b.priceTiime) // lower pricetiime first
-          )[0];
+    seriesData
+      .filter((x) => x.marketplaceId === MARKETPLACE_ID)
+      .sort(
+        (a, b) =>
+          (a.owner === b.owner
+            ? 0
+            : !user
+            ? 0
+            : a.owner === user.walletId
+            ? 1
+            : b.owner === user.walletId
+            ? -1
+            : 0) || // take nft which i'm not owner first
+          b.listed - a.listed || //listed first
+          Number(a.price) - Number(b.price) || //lowest price first
+          Number(a.priceTiime) - Number(b.priceTiime) // lower pricetiime first
+      )[0];
   const userCanBuy = (!isVR || (isVR && isUserFromDappQR && canUserBuyAgain)) && (user
     ? user.capsAmount &&
       smallestPriceRow &&
@@ -114,6 +99,10 @@ const NFTPage = ({
       smallestPriceRow.marketplaceId === MARKETPLACE_ID
     : false);
 
+  useEffect(() => {
+    loadSeriesData(NFT.serieId);
+  }, []);
+  
   useEffect(() => {
     setNftToBuy(smallestPriceRow);
   }, [smallestPriceRow]);
@@ -130,9 +119,18 @@ const NFTPage = ({
     }
   }, [isVR])
 
+  const loadSeriesData = async (seriesId: string) => {
+    try{
+      const result = await getSeriesData(seriesId)
+      setSeriesData(result.data)
+    }catch(err){
+      console.log(err)
+    }
+  }
+
   const loadCanUserBuyAgain = async () => {
     try{
-      const res = await getOwnedNFTS(user.walletId,false, undefined, undefined, undefined, true, NFT.serieData?.map(x => x.id))
+      const res = await getOwnedNFTS(user.walletId,false, undefined, undefined, undefined, seriesData?.map(x => x.id))
       const canUserBuyAgainValue = res.totalCount === 0
       setCanUserBuyAgain(canUserBuyAgainValue)
       return canUserBuyAgainValue
@@ -143,35 +141,20 @@ const NFTPage = ({
   }
 
   const loadByTheSameArtistNFTs = async () => {
-    const NFTs = await getByTheSameArtistNFTs(NFT.creator, "1", "7", true)
+    const NFTs = await getByTheSameArtistNFTs(NFT.creator, "1", "7")
     setByTheSameArtistNFTs(NFTs.data.filter(x => x.serieId !== NFT.serieId))
   }
 
-  const handleLikeDislike = async () => {
+  const toggleLikeDislike = async () => {
     try {
-      let res: INFTLike | null = null;
-      if (!likeLoading && user) {
+      if (!likeLoading && user?.walletId) {
         setLikeLoading(true);
-        if (!isLiked) {
-          res = await likeNFT(user.walletId, NFT.id, NFT.serieId);
-        } else {
-          res = await unlikeNFT(user.walletId, NFT.id, NFT.serieId);
-        }
+        await toggleLike(NFT, isLiked ? UNLIKE_ACTION : LIKE_ACTION, user.walletId, setIsLiked);
+        setLikeLoading(false);
       }
-      if (res !== null){
-        let newUser = user
-        if (newUser.likedNFTs){
-          if (!isLiked){
-            newUser.likedNFTs.push(res)
-          }else{
-            newUser.likedNFTs = newUser?.likedNFTs.filter(x => x.nftId !== res?.nftId && x.serieId !== res?.serieId)
-          }
-          setUser(newUser)
-        }
-      }
+    } catch (error) {
+      console.error(error);
       setLikeLoading(false);
-    } catch (err) {
-      console.error(err);
     }
   };
 
@@ -193,10 +176,7 @@ const NFTPage = ({
 
   const handleBuy = async () => {
     //get a random row to buy if same price
-    const smallestPriceRows = (!NFT.serieData || NFT.serieData.length <= 1) ? 
-      [NFT]
-    : 
-      NFT.serieData
+    const smallestPriceRows = seriesData
         .filter((x) => x.marketplaceId === MARKETPLACE_ID && x.listed===1 && (!user || (x.owner !== user.walletId)))
         .sort(
           (a, b) =>
@@ -221,49 +201,35 @@ const NFTPage = ({
       <div className={style.MainWrapper}>
         <div className={style.Wrapper}>
           <SMediaWrapper className={style.NFT}>
-            <Media
-              src={NFT.properties?.preview.ipfs!}
-              type={type}
-              alt="imgnft"
-              draggable="false"
-            />
+            <Media src={NFT.properties?.preview.ipfs!} type={type} alt="imgnft" draggable="false" />
             <div onClick={() => setExp(1)} className={style.Scale}>
               <Scale className={style.ScaleSVG} />
             </div>
           </SMediaWrapper>
           <div className={style.Text}>
             <div className={style.Top}>
-              <div className={style.TopInfosCreator}>
-                <div className={style.TopInfosCreatorPicture}>
-                  <Creator
-                    className={style.TopInfosCreatorPictureIMG}
-                    size={'fullwidth'}
-                    user={NFT.creatorData}
-                    walletId={NFT.creator}
-                  />
-                </div>
-                <div className={style.TopInfosCreatorName}>
-                  <Link href={`/${NFT.creator}`}>
-                    <a>{NFT.creatorData?.name || middleEllipsis(NFT.creator, 20)}</a>
-                  </Link>
-                  <span className={style.creatorTwitterUsername}>
-                    {NFT.creatorData?.twitterName || null}
-                  </span>
-                </div>
-              </div>
+              <Avatar
+                isVerified={NFT.creatorData?.verified}
+                name={NFT.creatorData?.name}
+                picture={NFT.creatorData?.picture}
+                twitterName={NFT.creatorData?.twitterName}
+                walletId={NFT.creatorData?.walletId}
+              />
               <div className={style.TopInfos}>
                 <div className={style.Views}>
                   <Eye className={style.EyeSVG} />
                   {NFT.viewsCount}
                 </div>
-                <div
-                  className={`${style.Like} ${isLiked ? style.Liked : ''} ${
-                    likeLoading || !user ? style.DisabledLike : ''
-                  }`}
-                  onClick={() => handleLikeDislike()}
-                >
-                  <Like className={style.LikeSVG} />
-                </div>
+                {user !== undefined && user !== null && (
+                  <div
+                    className={`${style.Like} ${isLiked ? style.Liked : ''} ${
+                      likeLoading || !user ? style.DisabledLike : ''
+                    }`}
+                    onClick={toggleLikeDislike}
+                  >
+                    <Like className={style.LikeSVG} />
+                  </div>
+                )}
                 <div className={style.Share} onClick={() => handleShare()}>
                   <Share className={style.ShareSVG} />
                 </div>
@@ -282,82 +248,61 @@ const NFTPage = ({
             </div>
             <Title>
               {NFT.title}
-              {NFT.isCapsule && <SChip
-                color="primaryLight"
-                text={
-                  <>
-                    <SDot />
-                    Capsule
-                  </>
-                }
-                variant="rectangle"
-              />}
+              {NFT.isCapsule && (
+                <SChip
+                  color="primaryLight"
+                  text={
+                    <>
+                      <SDot />
+                      Capsule
+                    </>
+                  }
+                  variant="rectangle"
+                />
+              )}
             </Title>
             <SCategoriesWrapper>
               {NFT.categories.map(({ name, code }) => (
-                <Chip
-                  key={code}
-                  color="invertedContrast"
-                  text={name}
-                  size="medium"
-                  variant="rectangle"
-                />
+                <Chip key={code} color="invertedContrast" text={name} size="medium" variant="rectangle" />
               ))}
             </SCategoriesWrapper>
             <p className={style.Description}>{NFT.description}</p>
             <div className={style.Buy}>
               <div
                 onClick={() => userCanBuy && handleBuy()}
-                className={
-                  userCanBuy
-                    ? style.Button
-                    : `${style.Button} ${style.Disabled}`
-                }
+                className={userCanBuy ? style.Button : `${style.Button} ${style.Disabled}`}
               >
-                {(isVR && !isUserFromDappQR) ? 
-                  "Reserved for VR gallery"
-                :
-                  (!canUserBuyAgain ? 
-                    "1 VR NFT per account"
-                  :
-                    <>
-                      Buy{' '}
-                      {`${
-                        smallestPriceRow &&
-                        (smallestPriceRow.price || smallestPriceRow.priceTiime)
-                          ? 'for '
-                          : ''
-                      }`}
-                      {smallestPriceRow && (
-                        <>
-                          {smallestPriceRow.price &&
-                            Number(smallestPriceRow.price) > 0 &&
-                            `${computeCaps(Number(smallestPriceRow.price))} CAPS`}
-                          {smallestPriceRow.price &&
-                            Number(smallestPriceRow.price) > 0 &&
-                            smallestPriceRow.priceTiime &&
-                            Number(smallestPriceRow.priceTiime) &&
-                            ` / `}
-                          {smallestPriceRow.priceTiime &&
-                            Number(smallestPriceRow.priceTiime) > 0 &&
-                            `${computeTiime(
-                              Number(smallestPriceRow.priceTiime)
-                            )} TIIME`}
-                        </>
-                      )}
-                    </>
-                  )
-                }
+                {isVR && !isUserFromDappQR ? (
+                  'Reserved for VR gallery'
+                ) : !canUserBuyAgain ? (
+                  '1 VR NFT per account'
+                ) : (
+                  <>
+                    Buy {`${smallestPriceRow && (smallestPriceRow.price || smallestPriceRow.priceTiime) ? 'for ' : ''}`}
+                    {smallestPriceRow && (
+                      <>
+                        {smallestPriceRow.price &&
+                          Number(smallestPriceRow.price) > 0 &&
+                          `${computeCaps(Number(smallestPriceRow.price))} CAPS`}
+                        {smallestPriceRow.price &&
+                          Number(smallestPriceRow.price) > 0 &&
+                          smallestPriceRow.priceTiime &&
+                          Number(smallestPriceRow.priceTiime) &&
+                          ` / `}
+                        {smallestPriceRow.priceTiime &&
+                          Number(smallestPriceRow.priceTiime) > 0 &&
+                          `${computeTiime(Number(smallestPriceRow.priceTiime))} TIIME`}
+                      </>
+                    )}
+                  </>
+                )}
               </div>
             </div>
             <div className={style.Available}>
               <div className={style.AvailbleText}>
                 <NoNFTImage className={style.AvailbleCards} />
                 <div className={style.AvailableTextContent}>
-                  {`${numberListedOnThisMarketplace} of ${
-                    NFT.serieData ? NFT.serieData.length : 1
-                  }`}{' '}
-                  Available
+                  {`${NFT.totalListedInMarketplace ?? 0} of ${NFT.totalNft ?? 0}`} Available
                 </div>
               </div>
               <div className={style.AvailableBackLine} />
@@ -367,6 +312,7 @@ const NFTPage = ({
         <div>
           <Details
             NFT={NFT}
+            seriesData={seriesData}
             user={user}
             setNftToBuy={setNftToBuy}
             setExp={setExp}
@@ -378,12 +324,7 @@ const NFTPage = ({
       </div>
       {byTheSameArtistNFTs.length > 0 && (
         <SShowcaseWrapper>
-          <Showcase
-            category="By the same artist"
-            NFTs={byTheSameArtistNFTs}
-            user={user}
-            setUser={setUser}
-          />
+          <Showcase category="By the same artist" NFTs={byTheSameArtistNFTs} user={user} />
         </SShowcaseWrapper>
       )}
       <Footer />

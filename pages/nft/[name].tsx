@@ -90,7 +90,6 @@ const NftPage = ({ user, NFT, capsValue }: NFTPageProps) => {
         setNftToBuy={setNftToBuy}
         setModalExpand={setModalExpand}
         user={walletUser}
-        setUser={setWalletUser}
         type={type}
         capsValue={capsValue}
         isUserFromDappQR={isUserFromDappQR}
@@ -113,7 +112,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
     }));
   }
   promises.push(new Promise<void>((success) => {
-    getNFT(ctx.query.name as string, true, token ? token : null, ip, false, MARKETPLACE_ID, true).then(_nft => {
+    getNFT(ctx.query.name as string, true, token ? token : null, ip, MARKETPLACE_ID, true).then(_nft => {
       NFT = _nft
       success();
     }).catch(success);

@@ -6,7 +6,11 @@ import { NftType } from 'interfaces/index';
 
 import Media from '../Media';
 
-export type ModeType = 'carousel' | 'grid';
+export const CAROUSEL_MODE = 'carousel';
+export const GRID_MODE = 'grid';
+export type ModeType =
+  | typeof CAROUSEL_MODE
+  | typeof GRID_MODE;
 
 export interface NftCardProps {
   children?: React.ReactNode;
@@ -83,7 +87,7 @@ const SMediaWrapper = styled.div<{ mode?: ModeType }>`
 
   ${({ mode, theme }) => {
     switch (mode) {
-      case 'carousel': {
+      case CAROUSEL_MODE: {
         return `
           height: ${theme.sizes.cardHeight.sm};
           width: ${theme.sizes.cardWidth.sm};
@@ -94,7 +98,8 @@ const SMediaWrapper = styled.div<{ mode?: ModeType }>`
           }
         `;
       }
-      case 'grid': {
+      case GRID_MODE:
+      default: {
         return `
           height: ${theme.sizes.cardHeight.md};
           width: ${theme.sizes.cardWidth.md};
@@ -104,23 +109,7 @@ const SMediaWrapper = styled.div<{ mode?: ModeType }>`
             width: ${theme.sizes.cardWidth.sm};
           }
 
-          ${theme.mediaQueries.xxl} {
-            height: ${theme.sizes.cardHeight.md};
-            width: ${theme.sizes.cardWidth.md};
-          }
-        `;
-      }
-      default: {
-        return `
-          height: ${theme.sizes.cardHeight.xs};
-          width: ${theme.sizes.cardWidth.xs};
-
           ${theme.mediaQueries.md} {
-            height: ${theme.sizes.cardHeight.sm};
-            width: ${theme.sizes.cardWidth.sm};
-          }
-
-          ${theme.mediaQueries.xxl} {
             height: ${theme.sizes.cardHeight.md};
             width: ${theme.sizes.cardWidth.md};
           }

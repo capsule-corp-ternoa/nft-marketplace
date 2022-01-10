@@ -15,6 +15,7 @@ import { NFTProps } from 'pages/create';
 import { navigateToSuccess } from 'utils/functions';
 import { addNFTsToCategories } from 'actions/nft';
 import { generateVideoThumbnail } from 'utils/imageProcessing/image';
+import { useAppSelector } from 'redux/hooks';
 
 export interface ModalProps {
   error: string;
@@ -56,7 +57,7 @@ const ModalMint: React.FC<ModalProps> = ({
   const [qrRetry, setQrRetry] = useState(false)
   const [showProgress, setShowProgress] = useState(false);
   const [progressData, setProgressData] = useState([] as number[]);
-  const [isRN, setIsRN] = useState(false);
+  const isRN = useAppSelector((state) => state.rn.isRN)
   const [mintReponse, setMintResponse] = useState<boolean | null>(null)
   const [startUploadTime, setStartUploadTime] = useState<any>(null)
   const [alreadySentSocketTimeout, setAlreadySentSocketTimeout] = useState(false)
@@ -257,10 +258,6 @@ const ModalMint: React.FC<ModalProps> = ({
       console.log(err)
     }
   }
-
-  useEffect(() => {
-    setIsRN(window.isRNApp);
-  }, []);
 
   useEffect(() => {
     if (output.length > 0) {

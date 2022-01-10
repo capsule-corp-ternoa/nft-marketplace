@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { MediaStyle } from 'components/layout/Media';
-import Icon from 'components/ui/Icon';
+import { Loader } from 'components/ui/Icon';
 import { NFT_FILE_TYPE_IMAGE, NFT_FILE_TYPE_VIDEO } from 'interfaces/index';
 import { timer } from 'utils/functions';
 export interface MediaProps {
@@ -61,7 +61,7 @@ const Media: React.FC<MediaProps & Record<string,any>> = ({
   }, [fetchStatusOk])
 
   if (mediaSrc === undefined || isLoading) {
-    return <SLoaderIcon name='animatedLoader' />;
+    return <SLoader />;
   }
 
   return (
@@ -84,8 +84,9 @@ const Media: React.FC<MediaProps & Record<string,any>> = ({
   );
 };
 
-const SLoaderIcon = styled(Icon)`
+const SLoader = styled(Loader)`
   margin: 0 auto;
+  align-self: center;
 `;
 
 const SImage = styled.img`

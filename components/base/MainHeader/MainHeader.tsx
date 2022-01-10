@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
+import { useMediaQuery } from 'react-responsive';
 import Link from 'next/link';
+import styled from 'styled-components';
 
-import Logo from 'components/assets/LogoTernoaBlack';
-import Clipboard from 'components/base/Clipboard';
-import Creator from '../Creator';
-
-import style from './MainHeader.module.scss';
-import { computeCaps, computeTiime } from 'utils/strings';
-import gradient from 'random-gradient';
+import { ProfileMenuBadge, ProfileMenuDropdown } from 'components/base/ProfileMenu';
+import Button from 'components/ui/Button';
+import Icon from 'components/ui/Icon';
+import { Container, Wrapper } from 'components/layout';
 
 import { UserType } from 'interfaces/index';
+import { computeCaps } from 'utils/strings';
+import { breakpointMap } from 'style/theme/base';
 
 export interface HeaderProps {
   user: UserType;
@@ -17,133 +18,142 @@ export interface HeaderProps {
 }
 
 const MainHeader: React.FC<HeaderProps> = ({ setModalExpand, user }) => {
-  const [, setSearchValue] = useState('' as string);
-  const [isExpanded, setIsExpanded] = useState(false);
-  const bgGradient = user ? { background: gradient(user.name) } : {};
-  const isNftCreationEnabled = process.env.NEXT_PUBLIC_IS_NFT_CREATION_ENABLED===undefined ? true : process.env.NEXT_PUBLIC_IS_NFT_CREATION_ENABLED === 'true'
-  const updateKeywordSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(event.currentTarget.value);
-  };
+  const [isProfileMenuExpanded, setIsProfileMenuExpanded] = useState(false);
+  const isNftCreationEnabled =
+    process.env.NEXT_PUBLIC_IS_NFT_CREATION_ENABLED === undefined
+      ? true
+      : process.env.NEXT_PUBLIC_IS_NFT_CREATION_ENABLED === 'true';
+
+  const isMobileTablet = useMediaQuery({
+    query: `(max-width: ${breakpointMap.lg - 1}px)`,
+  });
+
   return (
-    <div className={style.Header}>
-      <div className={style.HeaderContainer}>
+    <Container>
+      <SWrapper>
         <Link href="/">
           <a>
-            <Logo className={style.Logo} onClick={() => true} />
+            <SLogo name="logoTernoaBlack" />
           </a>
         </Link>
-        <div className={style.SearchBar}>
-          <input
-            type="search"
-            onChange={updateKeywordSearch}
-            className={style.Input}
-            placeholder="Search"
-          />
-        </div>
-        <div className={style.Infos}>
-          <div className={style.Links}>
-            <Link href="/explore">
-              <a className={style.LinkItem}>Explore</a>
-            </Link>
-            <Link href="/faq">
-              <a className={style.LinkItem}>How it works</a>
-            </Link>
-          </div>
-          <div className={style.Wallet}>
-            {user ? (
-              <div className={style.Regular}>
-                {isNftCreationEnabled && <Link href="/create">
-                  <a className={style.Create}>Create NFT</a>
-                </Link>}
-                <div
-                  onClick={() => setIsExpanded(!isExpanded)}
-                  className={style.Profile}
-                >
-                  <div className={style.Caps}>
-                    <span className={style.NumberCaps}>
-                      {user && user.capsAmount
-                        ? computeCaps(Number(user.capsAmount))
-                        : 0}
-                    </span>
-                    CAPS
-                  </div>
-                  <div className={style.Caps} style={{display: "none"}}>
-                    <span className={style.NumberCaps}>
-                      {user && user.tiimeAmount
-                        ? computeTiime(Number(user.tiimeAmount))
-                        : 0}
-                    </span>
-                    TIIME
-                  </div>
-                  
-                  <div className={style.ProfileImageContainer}>
-                    {user.picture ? (
-                      <img
-                        src={user.picture}
-                        draggable="false"
-                        className={style.ProfileImage}
-                      />
-                    ) : (
-                      <div style={bgGradient} className={style.ProfileImage}>
-                        <div className={style.CreatorLetter}>
-                          {user.name.charAt(0)}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className={style.Regular}>
-                {isNftCreationEnabled && <Link href="/create">
-                  <a className={style.Create}>Create NFT</a>
-                </Link>}
-                <div
-                  onClick={() => setModalExpand(true)}
-                  className={style.Connect}
-                >
-                  Connect
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-        {user && isExpanded && (
-          <div className={style.Dropdown}>
-            <div className={style.DropdownContainer}>
-              <div className={style.DropdownProfile}>
-                <Creator user={user} walletId={user.walletId} size="xsmall" showTooltip={false}/>
-                <div className={style.Name}>{user.name}</div>
-              </div>
-
-              <div className={`${style.Section} ${style.NoHover}`}>
-                <div
-                  className={style.SectionTitle}
-                >
-                  <Link href="/wallet">
-                    <a className={style.SectionWalletTitle}>
-                      Wallet
-                    </a>
-                  </Link>
-                  <Clipboard address={user.walletId} isEllipsis />
-                </div>
-              </div>
-              <Link href="/profile">
-                <a className={style.Section}>
-                  <div className={style.SectionTitle}> My Account</div>
-                </a>
+        {!isMobileTablet && (
+          <SNavContainer>
+            <SNavLinksContainer>
+              <Link href="/explore" passHref>
+                <SLinkItem>Explore</SLinkItem>
               </Link>
-            </div>
-            <Link href={`/${user.walletId}`}>
-              <a className={style.CapsSection}>
-                <div className={style.SectionTitle}>My artist profile</div>
-              </a>
-            </Link>
-          </div>
+              <Link href="/faq" >
+                <SLinkItem>How it works</SLinkItem>
+              </Link>
+            </SNavLinksContainer>
+            <SNavButtonsCointainer>
+              {isNftCreationEnabled && (
+                <Link href="/create" passHref>
+                  <>
+                    <Button
+                      color="invertedContrast"
+                      href="/create"
+                      size="medium"
+                      text="Create NFT"
+                      variant="outlined"
+                    />
+                  </>
+                </Link>
+              )}
+              {user ? (
+                <ProfileMenuBadge
+                  onClick={() => setIsProfileMenuExpanded((prevState) => !prevState)}
+                  tokenAmount={user?.capsAmount ? computeCaps(Number(user.capsAmount)) : 0}
+                  tokenSymbol="CAPS"
+                  user={user}
+                />
+              ) : (
+                <Button
+                  color="contrast"
+                  onClick={() => setModalExpand(true)}
+                  size="medium"
+                  text="Connect"
+                  variant="outlined"
+                />
+              )}
+            </SNavButtonsCointainer>
+          </SNavContainer>
         )}
-      </div>
-    </div>
+        {user && isProfileMenuExpanded && (
+          <SProfileMenuDropdown onClose={() => setIsProfileMenuExpanded(false)} user={user} />
+        )}
+      </SWrapper>
+    </Container>
   );
 };
+
+const SWrapper = styled(Wrapper)`
+  flex-direction: row;
+  justify-content: center;
+  position: relative;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    justify-content: space-between;
+  }
+`;
+
+const SLogo = styled(Icon)`
+  width: 16rem;
+  cursor: pointer;
+`;
+
+const SNavContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const SNavLinksContainer = styled.div`
+  display: flex;
+  align-items: center;
+
+  > * {
+    &:not(:first-child) {
+      margin-left: 2.4rem;
+    }
+  }
+`;
+
+const SLinkItem = styled.a`
+  color: ${({theme}) => theme.colors.contrast};
+  cursor: pointer;
+  font-family: ${({theme}) => theme.fonts.bold};
+  font-size: 1.6rem;
+`;
+
+
+const SNavButtonsCointainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2.4rem;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    margin-left: 5.6rem;
+  }
+`;
+
+const SProfileMenuDropdown = styled(ProfileMenuDropdown)`
+  top: 10.4rem;
+  right: 3.2rem;
+
+  &::before {
+    width: 0;
+    height: 0;
+    border-left: 2.4rem solid transparent;
+    border-right: 2.4rem solid transparent;
+    z-index: 101;
+    border-top: ${({ theme }) => `1.2rem solid ${theme.colors.invertedContrast}`};
+    content: '';
+    position: absolute;
+    top: -1.6rem;
+    right: 3.2rem;
+    transform: translateY(0.8rem) rotate(180deg);
+  }
+`;
 
 export default MainHeader;

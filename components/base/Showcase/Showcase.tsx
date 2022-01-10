@@ -7,7 +7,7 @@ import { breakpointMap } from 'style/theme/base';
 
 import style from './Showcase.module.scss';
 
-import { NftCardWithHover } from 'components/base/NftCard';
+import { NftCardWithHover, CAROUSEL_MODE } from 'components/base/NftCard';
 import ArrowLeft from 'components/assets/arrowLeft';
 import ArrowRight from 'components/assets/arrowRight';
 
@@ -40,10 +40,9 @@ export interface ShowcaseProps {
   NFTs: NftType[];
   category: string;
   user?: UserType;
-  setUser?: (u: UserType) => void
 }
 
-const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category, user, setUser }) => {
+const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category, user }) => {
   const [isFiltered, setIsFiltered] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
 
@@ -112,8 +111,8 @@ const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category, user, setUser }) =>
                 <NftCardWithHover
                   isDragging={isDragging}
                   item={item}
+                  mode={CAROUSEL_MODE}
                   user={user}
-                  setUser={setUser}
                 />
               </div>
             ))
@@ -134,8 +133,8 @@ const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category, user, setUser }) =>
                   <NftCardWithHover
                     isDragging={isDragging}
                     item={item}
+                    mode={CAROUSEL_MODE}
                     user={user}
-                    setUser={setUser}
                   />
                 </div>
               ))}

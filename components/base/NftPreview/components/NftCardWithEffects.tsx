@@ -15,13 +15,13 @@ import {
 import Chip from 'components/ui/Chip';
 import Slider from 'components/ui/Slider';
 import { breakpointMap } from 'style/theme/base';
+import { useAppSelector } from 'redux/hooks';
 
 interface Props {
   blurValue: number;
   coverNFT: File | null;
   className?: string;
   effect: NftEffectType;
-  isRN?: boolean;
   originalNFT: File;
   setBlurValue: (v: number) => void;
   setCoverNFT: (f: File | null) => void;
@@ -80,14 +80,13 @@ const NftCardWithEffects = ({
   className,
   coverNFT,
   effect,
-  isRN,
   originalNFT,
   setBlurValue,
   setCoverNFT,
   setEffect,
   setError,
 }: Props) => {
-  
+  const isRN = useAppSelector((state) => state.rn.isRN)
   const isTablet = useMediaQuery({
     minWidth: breakpointMap.md,
     maxWidth: breakpointMap.lg - 1,
@@ -146,7 +145,6 @@ const NftCardWithEffects = ({
                   </SecretUploadDescription>
                 }
                 inputId="uploadOriginalNft"
-                isRN={isRN}
                 isSecretOption
                 note={`JPEG, JPG, PNG, GIF ${
                   !isRN ? ', MP4 or MOV' : ''
@@ -157,7 +155,6 @@ const NftCardWithEffects = ({
               <NftUpload
                 content={returnType(coverNFT)}
                 inputId="reUploadOriginalNft"
-                isRN={isRN}
                 isMinimal
                 isSecretOption
                 onChange={handleSecretFileUpload}

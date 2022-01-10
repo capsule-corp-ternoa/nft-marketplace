@@ -71,10 +71,7 @@
   justify-content: space-between;
   width: 100%;
 }
-.TopInfosCreator {
-  display: flex;
-  align-items: center;
-}
+
 .TopInfosCreatorPicture {
   width: 45px;
   height: 45px;
@@ -127,6 +124,7 @@
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 8px;
   padding: 10px 10px;
+  margin-right: 5px;
 }
 
 .EyeSVG {
@@ -143,7 +141,7 @@
   border-radius: 50%;
   padding: 12px 10px;
   cursor: pointer;
-  margin: 0px 10px;
+  margin: 0px 5px;
   @media (min-width: 768px) {
     &:hover {
       background-color: $primary;
@@ -173,6 +171,7 @@
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 50%;
   padding: 10px;
+  margin-left: 5px;
   cursor: pointer;
   &:hover {
     background-color: $primary;
@@ -402,8 +401,8 @@
     flex-direction: column;
   }
 
-  .TopInfosCreator {
-    margin-bottom: 20px;
+  .TopInfos {
+    margin-top: 2.4rem;
   }
 
   .Title {

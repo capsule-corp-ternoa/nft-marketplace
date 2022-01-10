@@ -3,40 +3,81 @@ import Router from 'next/router';
 import styled, { css } from 'styled-components';
 import gradient from 'random-gradient';
 
-import Icon from '../../../ui/Icon';
+import Icon from 'components/ui/Icon';
+
+import {
+  AVATAR_VARIANT_BADGE,
+  AVATAR_VARIANT_BANNER,
+  AVATAR_VARIANT_EDIT,
+  AVATAR_VARIANT_MOSAIC,
+  AVATAR_VARIANT_TYPE,
+} from '../Avatar';
 
 interface Props {
   className?: string;
+  isBanner?: boolean;
   isClickable?: boolean;
   isTooltip?: boolean;
   isVerified?: boolean;
-  link?: string;
-  name: string;
+  name?: string;
   picture?: string;
+  variant?: AVATAR_VARIANT_TYPE;
+  walletId?: string;
 }
+
+const pictureSize = (variant?: AVATAR_VARIANT_TYPE) => {
+  switch (variant) {
+    case AVATAR_VARIANT_BANNER:
+      return '12rem';
+    case AVATAR_VARIANT_EDIT:
+      return '9.6rem';
+    case AVATAR_VARIANT_BADGE:
+      return '3.6rem';
+    case AVATAR_VARIANT_MOSAIC:
+      return '8rem';
+    default:
+      return '5.6rem';
+  }
+};
+
+const fontSize = (variant?: AVATAR_VARIANT_TYPE) => {
+  switch (variant) {
+    case AVATAR_VARIANT_BANNER:
+      return '5.6rem';
+    case AVATAR_VARIANT_EDIT:
+      return '3.2rem';
+    case AVATAR_VARIANT_BADGE:
+      return '2rem';
+    case AVATAR_VARIANT_MOSAIC:
+      return '2.8rem';
+    default:
+      return '2.4rem';
+  }
+};
 
 const Picture = ({
   className,
   isClickable,
   isTooltip,
   isVerified,
-  link,
-  name,
+  name = 'Ternoa',
   picture,
+  variant,
+  walletId,
 }: Props) => (
   <SPictureContainer
     className={className}
     isClickable={isClickable}
     isTooltip={isTooltip}
-    onClick={() => isClickable && link && Router.push(link)}
+    onClick={() => isClickable && walletId && Router.push(`/${walletId}`)}
   >
-    <SPictureWrapper>
+    <SPictureWrapper variant={variant}>
       {isVerified && <SIcon name="badge" />}
       {picture ? (
         <SImage draggable="false" isClickable={isClickable} src={picture} />
       ) : (
         <SInitials isClickable={isClickable} name={name}>
-          <SLetter>{name?.charAt(0) ?? 'T'}</SLetter>
+          <SLetter variant={variant}>{name?.charAt(0) ?? 'T'}</SLetter>
         </SInitials>
       )}
     </SPictureWrapper>
@@ -66,12 +107,12 @@ const SPictureContainer = styled.div<{
   `}
 `;
 
-const SPictureWrapper = styled.div`
-  width: 5.6rem;
-  height: 5.6rem;
+const SPictureWrapper = styled.div<{ variant?: AVATAR_VARIANT_TYPE }>`
+  width: ${({ variant }) => pictureSize(variant)};
+  height: ${({ variant }) => pictureSize(variant)};
   position: relative;
   border-radius: 50%;
-  box-shadow: 0 0.4rem 0.4rem rgba(0, 0, 0, 0.25);
+  box-shadow: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.25);
   z-index: 5;
 `;
 
@@ -116,19 +157,19 @@ const SInitials = styled.div<{ isClickable?: boolean; name: string }>`
   background: ${({ name }) => gradient(name)};
 `;
 
-const SLetter = styled.div`
+const SLetter = styled.div<{ variant?: AVATAR_VARIANT_TYPE }>`
   color: ${({ theme }) => theme.colors.invertedContrast};
   font-family: ${({ theme }) => theme.fonts.medium};
-  font-size: 2.4rem;
+  font-size: ${({ variant }) => fontSize(variant)};
   text-transform: uppercase;
 `;
 
 const SPopoverName = styled.span`
   position: absolute;
-  background: white;
+  background: ${({theme}) => theme.colors.contrast};
   border-radius: 0.8rem;
   box-shadow: 0px 0px 14.5243px 5.0835px rgb(0 0 0 / 10%);
-  color: ${({ theme }) => theme.colors.neutral200};
+  color: ${({ theme }) => theme.colors.invertedContrast};
   font-family: ${({ theme }) => theme.fonts.bold};
   font-size: 1.4rem;
   max-width: 32rem;
@@ -137,7 +178,7 @@ const SPopoverName = styled.span`
   left: 50%;
   text-align: center;
   transform: translateX(calc(-50%));
-  z-index: 2;
+  z-index: 10;
 `;
 
 export default Picture;

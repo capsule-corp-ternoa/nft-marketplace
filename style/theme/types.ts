@@ -2,6 +2,7 @@ export type Breakpoints = string[];
 
 export interface Colors {
   contrast: string;
+  danger: string;
   invertedContrast: string;
   neutral200: string;
   neutral300: string;
@@ -10,6 +11,7 @@ export interface Colors {
   primary: string;
   primaryLight: string;
   secondary: string;
+  success: string;
   whiteBlur: string;
 }
 
@@ -23,6 +25,7 @@ export interface Fonts {
 }
 
 export type MediaQueries = {
+  xs: string;
   sm: string;
   md: string;
   lg: string;

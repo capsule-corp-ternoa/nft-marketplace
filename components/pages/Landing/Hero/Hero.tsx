@@ -7,18 +7,18 @@ import { Showcase3D } from 'components/base/Showcase';
 import Avatar from 'components/base/Avatar';
 import Button from 'components/ui/Button';
 import { NftType } from 'interfaces/index';
-import { computeCaps, formatPrice } from 'utils/strings';
+import { computeCaps } from 'utils/strings';
 
 export const HERO_MODE_AUCTION = 'auction';
 export const HERO_MODE_SELL = 'sell';
 
 export interface HeroProps {
-  capsValue?: number;
+  capsDollarValue?: number;
   NFTs: NftType[];
   mode: typeof HERO_MODE_AUCTION | typeof HERO_MODE_SELL;
 }
 
-const Hero = ({ capsValue, NFTs, mode }: HeroProps) => {
+const Hero = ({ capsDollarValue: _capsDollarValue, NFTs, mode }: HeroProps) => {
   const [selectedNFT, setSelectedNFT] = useState<NftType>(NFTs[1]);
 
   return (
@@ -32,14 +32,16 @@ const Hero = ({ capsValue, NFTs, mode }: HeroProps) => {
         <Link href={`/nft/${selectedNFT.id}`} passHref>
           <STitle>{selectedNFT.title}</STitle>
         </Link>
-        <SAvatar
-          isClickable
-          isVerified={selectedNFT.creatorData.verified}
-          label="(Creator)"
-          name={selectedNFT.creatorData.name}
-          picture={selectedNFT.creatorData.picture}
-          walletId={selectedNFT.creatorData.walletId}
-        />
+        {selectedNFT.creatorData && (
+          <SAvatar
+            isClickable
+            isVerified={selectedNFT.creatorData.verified}
+            label="(Creator)"
+            name={selectedNFT.creatorData.name}
+            picture={selectedNFT.creatorData.picture}
+            walletId={selectedNFT.creatorData.walletId}
+          />
+        )}
         <SSellWrapper>
           <SSell mode={mode}>
             <SBidLabel>
@@ -48,17 +50,18 @@ const Hero = ({ capsValue, NFTs, mode }: HeroProps) => {
             <SBidCapsPrice>
               {`${computeCaps(Number(selectedNFT.price))} CAPS`}
             </SBidCapsPrice>
-            {capsValue && (
+            {/* TODO: enable on mainnet */}
+            {/* {capsDollarValue && (
               <SBidDollarsPrice>
                 {formatPrice(
                   Math.round(
-                    capsValue *
+                    capsDollarValue *
                       (Number(selectedNFT.price) / 1000000000000000000) *
                       100
                   ) / 100
                 )}
               </SBidDollarsPrice>
-            )}
+            )} */}
           </SSell>
           {mode === HERO_MODE_AUCTION && (
             <SBid mode={mode}>
@@ -228,14 +231,14 @@ const SBidCapsPrice = styled.span`
   }
 `;
 
-const SBidDollarsPrice = styled.span`
-  color: ${({ theme }) => theme.colors.contrast};
-  font-size: 1.4rem;
+// const SBidDollarsPrice = styled.span`
+//   color: ${({ theme }) => theme.colors.contrast};
+//   font-size: 1.4rem;
 
-  ${({ theme }) => theme.mediaQueries.sm} {
-    font-size: 1.6rem;
-  }
-`;
+//   ${({ theme }) => theme.mediaQueries.sm} {
+//     font-size: 1.6rem;
+//   }
+// `;
 
 const SBidCountdown = styled.div`
   width: 100%;

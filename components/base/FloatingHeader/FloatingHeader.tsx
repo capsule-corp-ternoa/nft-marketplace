@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
+import { useMediaQuery } from 'react-responsive';
 import Link from 'next/link';
+import styled from 'styled-components';
 
-import style from './FloatingHeader.module.scss';
-import Creator from 'components/base/Creator';
-import Clipboard from 'components/base/Clipboard';
-
-import { computeCaps, computeTiime } from 'utils/strings';
-import gradient from 'random-gradient';
+import { ProfileMenuBadge, ProfileMenuDropdown } from 'components/base/ProfileMenu';
+import Button from 'components/ui/Button';
 
 import { UserType } from 'interfaces/index';
+import { computeCaps } from 'utils/strings';
+import { breakpointMap } from 'style/theme/base';
 
 import { onModelOpen } from '../../../utils/model-helpers';
+import style from './FloatingHeader.module.scss';
 export interface FloatingHeaderProps {
   user: UserType;
   setModalExpand: (b: boolean) => void;
@@ -22,21 +23,22 @@ const FloatingHeader: React.FC<FloatingHeaderProps> = ({
 }) => {
   const [, setSearchValue] = useState('' as string);
   const [isExpanded, setIsExpanded] = useState(false);
-  const [fullProfile, setFullProfile] = useState(false);
-
-  const bgGradient = user ? { background: gradient(user.name) } : {};
+  const [isProfileMenuExpanded, setIsProfileMenuExpanded] = useState(false);
 
   const updateKeywordSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.currentTarget.value);
   };
 
+  const isMobileTablet = useMediaQuery({
+    query: `(max-width: ${breakpointMap.lg - 1}px)`,
+  });
+
+  if (!isMobileTablet) {
+    return null;
+  }
+
   return (
-    <div
-      id="FloatingHeader"
-      className={
-        isExpanded ? `${style.Header} ${style.HeaderExpanded}` : style.Header
-      }
-    >
+    <div className={isExpanded ? `${style.Header} ${style.HeaderExpanded}` : style.Header}>
       {isExpanded && (
         <div className={style.FullHeader}>
           <div className={style.SearchBar}>
@@ -79,108 +81,61 @@ const FloatingHeader: React.FC<FloatingHeaderProps> = ({
           )}
         </div>
         {user ? (
-          <div
-            className={
-              fullProfile
-                ? `${style.Profile} ${style.ProfileSelect}`
-                : style.Profile
+          <SProfileMenuBadge
+            onClick={() => setIsProfileMenuExpanded(prevState => !prevState)}
+            tokenAmount={
+              user?.capsAmount ? computeCaps(Number(user.capsAmount)) : 0
             }
-            onClick={() => setFullProfile(!fullProfile)}
-          >
-            <div
-              className={
-                fullProfile
-                  ? `${style.Caps} ${style.ProfileSelect}`
-                  : style.Caps
-              }
-            >
-              <span>
-                <span
-                  className={
-                    fullProfile
-                      ? `${style.NumberCaps} ${style.ProfileSelect}`
-                      : style.NumberCaps
-                  }
-                >
-                  {user.capsAmount ? computeCaps(Number(user.capsAmount)) : 0}{' '}
-                </span>
-                CAPS
-              </span>
-              <span style={{display: "none"}}>
-                <span
-                  className={
-                    fullProfile
-                      ? `${style.NumberCaps} ${style.ProfileSelect}`
-                      : style.NumberCaps
-                  }
-                >
-                  {user.tiimeAmount ? computeTiime(Number(user.tiimeAmount)) : 0}{' '}
-                </span>
-                TIIME
-              </span>
-            </div>
-            <div className={style.ProfileImageContainer}>
-              {user.picture ? (
-                <img
-                  src={user.picture}
-                  draggable="false"
-                  className={style.ProfileImage}
-                />
-              ) : (
-                <div style={bgGradient} className={style.ProfileImage}>
-                  <div className={style.CreatorLetter}>
-                    {user.name.charAt(0)}
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
+            tokenSymbol="CAPS"
+            user={user}
+          />
         ) : (
-          <div
-            className={style.Connect}
+          <Button
+            color="invertedContrast"
             onClick={() => {
               onModelOpen();
               setModalExpand(true);
               setIsExpanded(false);
             }}
-          >
-            Connect Wallet
-          </div>
+            size="medium"
+            text="Connect Wallet"
+            variant="contained"
+          />
         )}
       </div>
-      {user && fullProfile && (
-        <div className={style.Dropdown}>
-          <div className={style.DropdownContainer}>
-            <div className={style.DropdownProfile}>
-              <Creator user={user} walletId={user.walletId} size="xsmall" showTooltip={false}/>
-              <div className={style.Name}>{user.name}</div>
-            </div>
-
-            <div className={style.Section}>
-              <div className={style.SectionTitle}>
-                <Link href="/wallet">
-                  <a>
-                    Wallet
-                  </a>
-                </Link>
-                <Clipboard address={user.walletId} isEllipsis />
-              </div>
-            </div>
-            <Link href="/profile">
-              <a className={style.Section}>
-                <div className={style.SectionTitle}> My Account</div>
-              </a>
-            </Link>
-          </div>
-          <Link href={`/${user.walletId}`}>
-            <a className={style.CapsSection}>
-              <div className={style.SectionTitle}>My artist profile</div>
-            </a>
-          </Link>
-        </div>
+      {user && isProfileMenuExpanded && (
+        <SProfileMenuDropdown
+          onClose={() => setIsProfileMenuExpanded(false)}
+          user={user}
+        />
       )}
     </div>
   );
 };
+
+const SProfileMenuBadge = styled(ProfileMenuBadge)`
+  background-color: transparent;
+  border-color: ${({theme}) => theme.colors.invertedContrast};
+`;
+
+const SProfileMenuDropdown = styled(ProfileMenuDropdown)`
+  top: -23rem;
+  right: 0;
+
+  &::after {
+    width: 0;
+    height: 0;
+    border-left: 2.4rem solid transparent;
+    border-right: 2.4rem solid transparent;
+    z-index: 101;
+    border-top: ${({ theme }) =>
+      `1.2rem solid ${theme.colors.contrast}`};
+    content: "";
+    position: absolute;
+    bottom: 0;
+    right: 3.2rem;
+    transform: translateY(0.8rem);
+  }
+`;
 
 export default FloatingHeader;

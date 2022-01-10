@@ -127,6 +127,7 @@ export const NFT_CREATED_TAB = 'Created';
 export const NFT_LIKED_TAB = 'Liked';
 export const FOLLOWERS_TAB = 'Followers';
 export const FOLLOWED_TAB = 'Following';
+export const EXPLORE_TAB = 'Explore';
 
 const ALL_TABS_ID = [
   NFT_OWNED_TAB,
@@ -136,6 +137,7 @@ const ALL_TABS_ID = [
   NFT_LIKED_TAB,
   FOLLOWERS_TAB,
   FOLLOWED_TAB,
+  EXPLORE_TAB,
 ] as const;
 
 export type TabsIdType = typeof ALL_TABS_ID[number];

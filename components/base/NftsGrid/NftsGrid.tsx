@@ -15,6 +15,7 @@ import {
   NFT_NOT_FOR_SALE_TAB,
   NFT_CREATED_TAB,
   NFT_LIKED_TAB,
+  EXPLORE_TAB,
 } from 'interfaces';
 import { LIKE_ACTION_TYPE } from 'utils/profile/constants';
 
@@ -50,7 +51,7 @@ const NftsGrid = ({
   tabId,
 }: Props) => {
   const returnQuantityNFTsAvailable = (NFT: NftType, tabId?: TabsIdType) => {
-    const { totalNft, totalOwnedByRequestingUser, totalOwnedListedInMarketplaceByRequestingUser } = NFT;
+    const { totalNft, totalOwnedByRequestingUser, totalOwnedListedInMarketplaceByRequestingUser, totalListedInMarketplace } = NFT;
     switch (tabId) {
       case NFT_LIKED_TAB:
         return 0;
@@ -62,6 +63,8 @@ const NftsGrid = ({
           : 0;
       case NFT_OWNED_TAB:
         return totalOwnedByRequestingUser ?? 1;
+      case EXPLORE_TAB:
+        return totalListedInMarketplace
       case NFT_CREATED_TAB:
       default:
         return totalNft ?? 1;

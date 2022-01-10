@@ -11,16 +11,14 @@ const Footer = () => {
   return (
     <div className={style.Footer}>
       <SIcon name="waterMark" />
-      <div className={style.Container}>
-        <div className={style.SocialMedias}>
-          {twitterLink!=="false" && <a href={twitterLink} target="_blank">
-            <SMediaIcon name="socialTwitter" />
-          </a>}
-          {instagramLink!=="false" && <a href={instagramLink} target="_blank">
-            <SMediaIcon name="socialInstagram" />
-          </a>}
-        </div>
-      </div>
+      <SSocialsContainer>
+        {twitterLink!=="false" && <a href={twitterLink} target="_blank">
+          <SMediaIcon name="socialTwitter" />
+        </a>}
+        {instagramLink!=="false" && <a href={instagramLink} target="_blank">
+          <SMediaIcon name="socialInstagram" />
+        </a>}
+      </SSocialsContainer>
       <div className={style.FooterBar}>
         <div className={style.Legals}>
           <div className={style.Link}>{process.env.NEXT_PUBLIC_APP_NAME || "SecretNFT"}</div>
@@ -47,6 +45,25 @@ const Footer = () => {
     </div>
   );
 };
+
+const SSocialsContainer = styled.div`
+  width: 100%;
+  display: flex;
+  margin: 9rem 0 3.2rem;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+
+  > a {
+    &:not(:first-child) {
+      margin-left: 3.2rem;
+    }
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    margin: 9rem 0 8rem;
+  }
+`;
 
 const SIcon = styled(Icon)`
   width: 16rem;

@@ -71,7 +71,7 @@ const NftsGrid = ({
     }
   };
 
-  if (NFTs == undefined || NFTs.length < 1) {
+  if (NFTs === undefined || NFTs.length < 1) {
     return (
       <SNoNFTContainer>
         {isLoading ? (
@@ -128,7 +128,7 @@ const SLoader = styled(Loader)`
 
 const SLoadButtonWrapper = styled.div`
   button {
-    margin: 5.6rem auto 11.6rem;
+    margin: 1.6rem auto 3.2rem;
   }
 `;
 

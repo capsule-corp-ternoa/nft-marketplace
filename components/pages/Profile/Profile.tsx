@@ -286,9 +286,9 @@ const Profile = ({
   const returnNFTs = (tabId: TabsIdType) => {
     switch (tabId) {
       case NFT_CREATED_TAB: {
-        const loadMoreCreatedNfts = () => {
+        const loadMoreCreatedNfts = async () => {
           setIsLoading(true);
-          loadMoreNfts(
+          await loadMoreNfts(
             walletId,
             createdCurrentPage,
             setCreatedCurrentPage,
@@ -316,9 +316,9 @@ const Profile = ({
         );
       }
       case NFT_LIKED_TAB: {
-        const loadMoreLikedNfts = () => {
+        const loadMoreLikedNfts = async () => {
           setIsLoading(true);
-          loadMoreNfts(walletId, likedCurrentPage, setLikedCurrentPage, setLikedNftsHasNextPage, setLikedNfts, tabId);
+          await loadMoreNfts(walletId, likedCurrentPage, setLikedCurrentPage, setLikedNftsHasNextPage, setLikedNfts, tabId);
           setIsLoading(false);
         };
         return (
@@ -337,9 +337,9 @@ const Profile = ({
         );
       }
       case NFT_ON_SALE_TAB: {
-        const loadMoreOwnedListedNfts = () => {
+        const loadMoreOwnedListedNfts = async () => {
           setIsLoading(true);
-          loadMoreNfts(
+          await loadMoreNfts(
             walletId,
             ownedNftsListedCurrentPage,
             setOwnedNftsListedCurrentPage,
@@ -374,9 +374,9 @@ const Profile = ({
         );
       }
       case NFT_NOT_FOR_SALE_TAB: {
-        const loadMoreOwnedUnlistedNfts = () => {
+        const loadMoreOwnedUnlistedNfts = async () => {
           setIsLoading(true);
-          loadMoreNfts(
+          await loadMoreNfts(
             walletId,
             ownedNftsUnlistedCurrentPage,
             setOwnedNftsUnlistedCurrentPage,
@@ -404,9 +404,9 @@ const Profile = ({
       }
       case NFT_OWNED_TAB:
       default: {
-        const loadMoreOwnedNfts = () => {
+        const loadMoreOwnedNfts = async () => {
           setIsLoading(true);
-          loadMoreNfts(
+          await loadMoreNfts(
             walletId,
             ownedNftsCurrentPage,
             setOwnedNftsCurrentPage,

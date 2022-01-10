@@ -43,8 +43,7 @@ const NftChips = ({
   const isPrice = !!Number(smallestPrice) || !!Number(smallestPriceTiime);
   const isSecret = properties?.cryptedMedia.ipfs !== properties?.preview.ipfs;
 
-  const defaultQuantityAvailable =
-    totalListedInMarketplace ?? totalListedNft ?? 1;
+  const defaultQuantityAvailable = totalListedInMarketplace ?? totalListedNft ?? 1;
   const quantityAvailable = quantity ?? defaultQuantityAvailable;
 
   // Filter gradients flags

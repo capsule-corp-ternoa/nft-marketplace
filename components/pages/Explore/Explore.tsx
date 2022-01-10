@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import NftsGrid from 'components/base/NftsGrid';
 import { Container, Title, Wrapper } from 'components/layout';
-import { NftType, UserType } from 'interfaces/index';
+import { EXPLORE_TAB, NftType, UserType } from 'interfaces/index';
 
 export interface ExploreProps {
   NFTS: NftType[];
@@ -33,6 +33,7 @@ const Explore: React.FC<ExploreProps> = ({ NFTS, user, loadMore, hasNextPage, lo
         }
         noNftTitle="All NFTs are sold !"
         user={user}
+        tabId={EXPLORE_TAB}
       />
     </Wrapper>
   </Container>

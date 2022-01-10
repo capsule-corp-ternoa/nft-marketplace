@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import Router from 'next/router';
 import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
 
@@ -74,10 +75,10 @@ const Avatar = ({
         isClickable={isClickable}
         isTooltip={isTooltip}
         isVerified={isVerified}
-        link={walletId}
         name={name}
         picture={picture}
         variant={variant}
+        walletId={walletId}
       />
     );
   }
@@ -89,20 +90,20 @@ const Avatar = ({
           isClickable={isClickable}
           isTooltip={isTooltip}
           isVerified={isVerified}
-          link={walletId}
           name={name}
           picture={picture}
           variant={variant}
+          walletId={walletId}
         />
         <SDetailsContainer variant={variant}>
           <STopDetails>
             <Link href={`/${walletId}`} passHref>
-              <SName variant={variant}>{name}</SName>
+              <SName href={`/${walletId}`} variant={variant}>{name}</SName>
             </Link>
             {nickname !== undefined && <SNickname>{nickname}</SNickname>}
           </STopDetails>
 
-          <SBottomDetails>
+          <SBottomDetails isMarginTop={!isTablet && isFollowButton}>
             {label !== undefined && label && typeof label === "string" ? <SLabel>{label}</SLabel> : label}
             {followers !== undefined && (
               <SFollowers>{`${followers} followers`}</SFollowers>
@@ -145,7 +146,9 @@ const Avatar = ({
       {isDiscoverButton && (
         <SDiscoverButton
           color="primaryLight"
-          href={`/${walletId}`}
+          onClick={() =>
+            walletId && Router.push(`/${walletId}`)
+          }
           size="small"
           text="Discover"
         />
@@ -209,9 +212,10 @@ const STopDetails = styled.div`
   }
 `;
 
-const SBottomDetails = styled.div`
+const SBottomDetails = styled.div<{ isMarginTop?: boolean }>`
   display: flex;
   align-items: center;
+  margin-top: ${({ isMarginTop }) => isMarginTop ? '0.4rem' : 0};
 
   > * {
     &:not(:first-child) {

@@ -22,8 +22,9 @@ export const getOwnedNFTS = async (id: string, onlyFromMpId: boolean, listed? :b
 export const getCreatorNFTS = async (id: string, page: string="1", limit: string=DEFAULT_LIMIT_PAGINATION) => {
   const paginationOptions = {page, limit}
   const filterOptions: any = {creator: id}
+  const sortOptions = "created_at:desc"
   const res = await fetch(
-    `${NODE_API_URL}/api/NFTs/?pagination=${JSON.stringify(paginationOptions)}&filter=${JSON.stringify(filterOptions)}`
+    `${NODE_API_URL}/api/NFTs/?pagination=${JSON.stringify(paginationOptions)}&filter=${JSON.stringify(filterOptions)}&sort=${sortOptions}`
   );
   if (!res.ok) throw new Error('error fetching created NFTs');
   let result: CustomResponse<NftType> = await res.json();
@@ -34,10 +35,11 @@ export const getCreatorNFTS = async (id: string, page: string="1", limit: string
 export const getNFTs = async (codes?: string[], page: string="1", limit: string=DEFAULT_LIMIT_PAGINATION, listed? :Boolean, useCache = false) => {
   const paginationOptions = {page, limit}
   const filterOptions: any = {marketplaceId: MARKETPLACE_ID}
+  const sortOptions = "created_at:desc"
   if (codes) filterOptions.categories = codes
   if (listed !== undefined) filterOptions.listed = listed
   const res = await fetch(
-    `${NODE_API_URL}/api/NFTs/?pagination=${JSON.stringify(paginationOptions)}&filter=${JSON.stringify(filterOptions)}&useCache300=${useCache}`
+    `${NODE_API_URL}/api/NFTs/?pagination=${JSON.stringify(paginationOptions)}&filter=${JSON.stringify(filterOptions)}&sort=${sortOptions}&useCache300=${useCache}`
   );
   if (!res.ok) throw new Error('error fetching NFTs by categories');
   let result: CustomResponse<NftType> = await res.json();
@@ -57,8 +59,9 @@ export const getNFT = async (id: string, incViews: boolean = false, viewerWallet
 export const getLikedNFTs = async (walletId: string, page: string="1", limit: string=DEFAULT_LIMIT_PAGINATION) => {
   const paginationOptions = {page, limit}
   const filterOptions: any = {liked: walletId}
+  const sortOptions = "created_at:desc"
   const res = await fetch(
-    `${NODE_API_URL}/api/NFTs/?pagination=${JSON.stringify(paginationOptions)}&filter=${JSON.stringify(filterOptions)}`
+    `${NODE_API_URL}/api/NFTs/?pagination=${JSON.stringify(paginationOptions)}&filter=${JSON.stringify(filterOptions)}&sort=${sortOptions}`
   );
   if (!res.ok) throw new Error();
   let result: CustomResponse<NftType> = await res.json();
@@ -127,6 +130,13 @@ export const getSeriesData = async (seriesId: string, marketplaceId: string=MARK
   const filterOptions: any = { owner, marketplaceId }
   const res = await fetch(`${NODE_API_URL}/api/nfts/series/data/?seriesIds=${seriesId}&pagination=${JSON.stringify(paginationOptions)}&filter=${JSON.stringify(filterOptions)}&useCache60=true`);
   if (!res.ok) throw new Error('error fetching NFT series data');
+  let result = await res.json()
+  return result;
+}
+
+export const getTotalOnSaleOnMarketplace = async (marketplaceId: string=MARKETPLACE_ID) => {
+  const res = await fetch(`${NODE_API_URL}/api/nfts/total-on-sale/?marketplaceId=${marketplaceId}`)
+  if (!res.ok) throw new Error('error fetching NFT total');
   let result = await res.json()
   return result;
 }

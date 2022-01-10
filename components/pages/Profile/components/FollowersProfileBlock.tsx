@@ -5,124 +5,114 @@ import styled from 'styled-components';
 import Avatar from 'components/base/Avatar';
 import NoNFTComponent from 'components/base/NoNFTComponent';
 import Button from 'components/ui/Button';
-import {
-  TabsIdType,
-  UserType,
-  FOLLOWERS_TAB,
-} from 'interfaces';
+import { Loader } from 'components/ui/Icon';
+import { UserType } from 'interfaces';
+import { FOLLOW_ACTION, UNFOLLOW_ACTION, FOLLOW_ACTION_TYPE } from 'utils/profile/constants';
 
 interface Props {
-  followBacks: boolean[],
-  followersNbFollowers: any,
-  handleFollow: (
-    profileWalletId: string,
-    isUnfollow: boolean,
-  ) => void;
-  isFiltered: boolean;
+  followingStatus: {
+    [key: string]: boolean;
+  };
+  followersNbFollowers: any;
+  handleFollow: (profileWalletId: string, action: FOLLOW_ACTION_TYPE) => void;
+  isFilterVerified: boolean;
   isLoading: boolean;
   isLoadMore: boolean;
   loadMore: () => void;
   noContentBody?: string;
   noContentTitle: string;
-  setIsFiltered: (b: boolean) => void;
-  tabId: TabsIdType;
+  setIsFilterVerified: (b: boolean) => void;
   updateKeywordSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  user: UserType;
   users: UserType[];
 }
 
 const FollowersProfileBlock = ({
-  followBacks,
+  followingStatus,
   followersNbFollowers,
   handleFollow,
-  isFiltered,
+  isFilterVerified,
   isLoading,
   isLoadMore,
   loadMore,
   noContentBody,
   noContentTitle,
-  setIsFiltered,
-  tabId,
+  setIsFilterVerified,
   updateKeywordSearch,
+  user,
   users,
-}: Props) => {
-  return (
-    <>
-      <SSearchContainer>
-        <SSearchLabel>
-          <SSearchInput
-            type="search"
-            onChange={updateKeywordSearch}
-            placeholder="Search"
+}: Props) => (
+  <>
+    <SSearchContainer>
+      <SSearchLabel>
+        <SSearchInput type="search" onChange={updateKeywordSearch} placeholder="Search" />
+      </SSearchLabel>
+      <SToggle>
+        <SCertifiedLabel>Verified only</SCertifiedLabel>
+        <label>
+          <Switch
+            checked={isFilterVerified}
+            onChange={() => setIsFilterVerified(!isFilterVerified)}
+            offColor="#000000"
+            onColor="#7417ea"
+            uncheckedIcon={false}
+            checkedIcon={false}
+            width={46}
+            handleDiameter={23}
           />
-        </SSearchLabel>
-        <SToggle>
-          <SCertifiedLabel>Verified only</SCertifiedLabel>
-          <label>
-            <Switch
-              checked={isFiltered}
-              onChange={() => setIsFiltered(!isFiltered)}
-              offColor="#000000"
-              onColor="#7417ea"
-              uncheckedIcon={false}
-              checkedIcon={false}
-              width={46}
-              handleDiameter={23}
+        </label>
+      </SToggle>
+    </SSearchContainer>
+
+    {isLoading ? (
+      <SLoader color="primary" />
+    ) : users.length < 1 ? (
+      <SNoNFTContainer>
+        <NoNFTComponent body={noContentBody} title={noContentTitle} />
+      </SNoNFTContainer>
+    ) : (
+      <>
+        <SFollowersContainer>
+          {users.map(({ _id, name, picture, verified, walletId }: UserType) => (
+            <Avatar
+              key={_id}
+              followers={followersNbFollowers[walletId] ?? 0}
+              handleFollow={() => handleFollow(walletId, followingStatus[walletId] ? UNFOLLOW_ACTION : FOLLOW_ACTION)}
+              isClickable
+              isFollowButton={user && walletId !== user.walletId}
+              isUnfollow={followingStatus[walletId]}
+              isVerified={verified}
+              name={name}
+              picture={picture}
+              walletId={walletId}
             />
-          </label>
-        </SToggle>
-      </SSearchContainer>
+          ))}
+        </SFollowersContainer>
+        {isLoadMore && (
+          <SLoadButtonWrapper>
+            <Button
+              color="invertedContrast"
+              disabled={isLoading}
+              isLoading={isLoading}
+              onClick={loadMore}
+              size="medium"
+              text={isLoading ? 'Loading...' : 'Load more'}
+              variant="outlined"
+            />
+          </SLoadButtonWrapper>
+        )}
+      </>
+    )}
+  </>
+);
 
-      {users.length < 1 ? (
-        <SNoNFTContainer>
-          <NoNFTComponent body={noContentBody} title={noContentTitle} />
-        </SNoNFTContainer>
-      ) : (
-        <>
-          <SFollowersContainer>
-            {users.map(
-              (
-                { _id, name, picture, verified, walletId }: UserType,
-                idx: number
-              ) => {
-                const isUnfollow =
-                  tabId === FOLLOWERS_TAB ? followBacks[idx] : true;
-
-                return (
-                  <Avatar
-                    key={_id}
-                    followers={followersNbFollowers[walletId] ?? 0}
-                    handleFollow={() => handleFollow(walletId, isUnfollow)}
-                    isClickable
-                    isFollowButton
-                    isUnfollow={isUnfollow}
-                    isVerified={verified}
-                    name={name}
-                    picture={picture}
-                    walletId={walletId}
-                  />
-                );
-              }
-            )}
-          </SFollowersContainer>
-          {isLoadMore && (
-            <SLoadButtonWrapper>
-              <Button
-                color="invertedContrast"
-                disabled={isLoading}
-                onClick={() => loadMore()}
-                size="medium"
-                text={isLoading ? 'Loading...' : 'Load more'}
-                variant="outlined"
-              />
-            </SLoadButtonWrapper>
-          )}
-        </>
-      )}
-    </>
-  );
-};
+const SLoader = styled(Loader)`
+  margin: 8rem auto;
+`;
 
 const SNoNFTContainer = styled.div`
+  display: flex;
+  align-items; center;
   margin-top: 8rem;
 `;
 

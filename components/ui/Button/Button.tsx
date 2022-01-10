@@ -1,12 +1,13 @@
 import React from 'react';
 import styled, { css, DefaultTheme } from 'styled-components';
-import Icon, { IconNameType } from 'components/ui/Icon';
+import Icon, { IconNameType , Loader } from 'components/ui/Icon';
 import { Colors } from 'style/theme/types';
 
 interface IButton {
   color?: keyof Colors;
   disabled?: boolean;
   isIconOnly?: boolean;
+  isLoading?: boolean;
   noHover?: boolean;
   size?: 'small' | 'medium';
   variant?: 'contained' | 'outlined';
@@ -19,7 +20,17 @@ interface Props extends IButton {
   text?: string;
 }
 
-const containedColors = (theme: DefaultTheme, color?: keyof Colors) => {
+const handleColor = (theme: DefaultTheme, color?: keyof Colors, variant?: 'contained' | 'outlined'): string => {
+  switch (variant) {
+    case 'contained':
+      return containedColors(theme, color);
+    case 'outlined':
+    default:
+      return outlinedColors(theme, color);
+  }
+};
+
+const containedColors = (theme: DefaultTheme, color?: keyof Colors): string => {
   switch (color) {
     case 'contrast':
     case 'primary':
@@ -33,7 +44,7 @@ const containedColors = (theme: DefaultTheme, color?: keyof Colors) => {
   }
 };
 
-const outlinedColors = (theme: DefaultTheme, color?: keyof Colors) => {
+const outlinedColors = (theme: DefaultTheme, color?: keyof Colors): string => {
   switch (color) {
     case 'primary':
       return theme.colors.primary;
@@ -95,15 +106,7 @@ const ButtonStyle = css<IButton>`
     }
   }};
 
-  color: ${({ theme, color, variant }) => {
-    switch (variant) {
-      case 'contained':
-        return containedColors(theme, color);
-      case 'outlined':
-      default:
-        return outlinedColors(theme, color);
-    }
-  }};
+  color: ${({ theme, color, variant }) => handleColor(theme, color, variant)};
 `;
 
 const Button = ({
@@ -112,6 +115,7 @@ const Button = ({
   disabled,
   href,
   icon,
+  isLoading = false,
   noHover = false,
   onClick,
   size = 'medium',
@@ -149,13 +153,27 @@ const Button = ({
       size={size}
       variant={variant}
     >
-      {icon && (
-        <SIcon isIconOnly={text === undefined} name={icon} size={size} />
+      {isLoading ? (
+        <SLoader color={color ?? 'invertedContrast'} size="small" variant={variant} />
+      ) : (
+        <>
+          {icon && (
+            <SIcon isIconOnly={text === undefined} name={icon} size={size} />
+          )}
+          {text}
+        </>
       )}
-      {text}
     </SButton>
   );
 };
+
+const SLoader = styled(Loader)<{ color: keyof Colors, variant?: 'contained' | 'outlined' }>`
+  margin: 0 auto;
+
+  div {
+    border-color: ${({ color, theme, variant }) => `${handleColor(theme, color, variant)} transparent transparent transparent`};
+  }
+`;
 
 const SIcon = styled(Icon)<{ isIconOnly: boolean; size: 'small' | 'medium' }>`
   width: ${({ size }) => (size === 'small' ? '1.2rem' : '2rem')};

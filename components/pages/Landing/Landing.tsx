@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import style from './Landing.module.scss';
 import Hero, { HERO_MODE_SELL } from './Hero';
@@ -35,10 +35,7 @@ const Landing = ({
   bestSellingNfts,
   NFTCreators,
   totalCountNFT,
-}: LandingProps) => {
-  const [walletUser, setWalletUser] = useState(user);
-
-  return (
+}: LandingProps) => (
     <Container>
       <Wrapper>
         {heroNFTs?.length === 3 && (
@@ -64,8 +61,7 @@ const Landing = ({
           <Showcase
             category="Most popular"
             NFTs={popularNfts}
-            user={walletUser}
-            setUser={setWalletUser}
+            user={user}
           />
         </Wrapper>
       )}
@@ -74,8 +70,7 @@ const Landing = ({
           <Showcase
             category="Best sellers"
             NFTs={bestSellingNfts}
-            user={walletUser}
-            setUser={setWalletUser}
+            user={user}
           />
         </Wrapper>
       )}
@@ -84,8 +79,7 @@ const Landing = ({
           <ArtCreators
             NFTs={NFTCreators}
             creators={users}
-            user={walletUser}
-            setUser={setWalletUser}
+            user={user}
           />
           <Link href="/explore">
             <a className={style.Button}>See more</a>
@@ -93,9 +87,9 @@ const Landing = ({
         </Wrapper>
       )}
       <Footer />
-      <FloatingHeader user={walletUser} setModalExpand={setModalExpand} />
+      <FloatingHeader user={user} setModalExpand={setModalExpand} />
     </Container>
   );
-};
+
 
 export default Landing;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import Select from '../Select';
@@ -13,13 +13,18 @@ type TabsType = {
 interface Props {
   className?: string;
   isTabsSelect: boolean;
+  resetTabId?: boolean;
   tabs: {
     [id: string]: TabsType;
   };
 }
 
-const Tabs = ({ className, isTabsSelect, tabs }: Props) => {
+const Tabs = ({ className, isTabsSelect, resetTabId, tabs }: Props) => {
   const [activeTab, setActiveTab] = useState<string>(Object.keys(tabs)[0]);
+
+  useEffect(() => {
+    setActiveTab(Object.keys(tabs)[0]);
+  }, [resetTabId])
 
   if (isTabsSelect) {
     return (

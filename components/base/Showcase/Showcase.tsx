@@ -40,10 +40,9 @@ export interface ShowcaseProps {
   NFTs: NftType[];
   category: string;
   user?: UserType;
-  setUser?: (u: UserType) => void
 }
 
-const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category, user, setUser }) => {
+const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category, user }) => {
   const [isFiltered, setIsFiltered] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
 
@@ -113,7 +112,6 @@ const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category, user, setUser }) =>
                   isDragging={isDragging}
                   item={item}
                   user={user}
-                  setUser={setUser}
                 />
               </div>
             ))
@@ -135,7 +133,6 @@ const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category, user, setUser }) =>
                     isDragging={isDragging}
                     item={item}
                     user={user}
-                    setUser={setUser}
                   />
                 </div>
               ))}

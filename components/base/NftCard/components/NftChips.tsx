@@ -6,7 +6,7 @@ import { NftType } from 'interfaces/index';
 import { computeCaps, computeTiime } from 'utils/strings';
 import { breakpointMap } from 'style/theme/base';
 
-import { CAROUSEL_MODE, PROFILE_MODE, ModeType } from '../NftCard';
+import { CAROUSEL_MODE, GRID_MODE, ModeType } from '../NftCard';
 
 interface Props {
   mode?: ModeType;
@@ -60,7 +60,7 @@ const NftChips = ({
             color="whiteBlur"
             size="small"
             text={`${
-              !isLargeDesktop || mode === PROFILE_MODE ? '' : 'Available : '
+              !isLargeDesktop || mode === GRID_MODE ? '' : 'Available : '
             }${quantityAvailable} of ${NFT.totalNft}`}
             variant="round"
           />

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import BetaBanner from 'components/base/BetaBanner';
 import MainHeader from 'components/base/MainHeader';
@@ -8,7 +8,7 @@ import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
 import cookies from 'next-cookies';
 import { getUser } from 'actions/user';
-import { getNFTs } from 'actions/nft';
+import { getNFTs, getTotalOnSaleOnMarketplace } from 'actions/nft';
 import { NftType, UserType } from 'interfaces';
 import { NextPageContext } from 'next';
 import { decryptCookie } from 'utils/cookie';
@@ -26,12 +26,12 @@ const ExplorePage = ({
   dataHasNextPage,
 }: ExplorePage) => {
   const [modalExpand, setModalExpand] = useState(false);
-  const [walletUser, setWalletUser] = useState(user);
   const [dataNfts, setDataNfts] = useState(data);
   const [dataNftsHasNextPage, setDataNftsHasNextPage] =
     useState(dataHasNextPage);
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [dataTotalCount, setDataTotalCount] = useState(0)
 
   const loadMoreNfts = async () => {
     setIsLoading(true)
@@ -40,7 +40,7 @@ const ExplorePage = ({
         let result = await getNFTs(
           undefined,
           (currentPage + 1).toString(),
-          undefined,
+          "12",
           true,
           true
         );
@@ -54,6 +54,19 @@ const ExplorePage = ({
     }
   };
 
+  const loadTotalCount = async () => {
+    try{
+      setDataTotalCount(await getTotalOnSaleOnMarketplace())
+    }catch(err){
+      console.log(err)
+    }
+  }
+
+
+  useEffect(() => {
+    loadTotalCount()
+  }, [])
+
   return (
     <>
       <Head>
@@ -65,17 +78,17 @@ const ExplorePage = ({
       </Head>
       {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
       <BetaBanner />
-      <MainHeader user={walletUser} setModalExpand={setModalExpand} />
+      <MainHeader user={user} setModalExpand={setModalExpand} />
       <Explore
         NFTS={dataNfts}
-        user={walletUser}
-        setUser={setWalletUser}
+        user={user}
         loadMore={loadMoreNfts}
         hasNextPage={dataNftsHasNextPage}
         loading={isLoading}
+        totalCount={dataTotalCount}
       />
       <Footer />
-      <FloatingHeader user={walletUser} setModalExpand={setModalExpand} />
+      <FloatingHeader user={user} setModalExpand={setModalExpand} />
     </>
   );
 };
@@ -100,7 +113,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
   }
   promises.push(
     new Promise<void>((success) => {
-      getNFTs(undefined, undefined, undefined, true, true)
+      getNFTs(undefined, undefined, "12", true, true)
         .then((result) => {
           data = result.data;
           dataHasNextPage = result.hasNextPage || false;

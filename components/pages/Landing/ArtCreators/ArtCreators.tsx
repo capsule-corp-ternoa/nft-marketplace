@@ -14,10 +14,9 @@ export interface ArtCreatorsProps {
   NFTs: NftType[];
   category?: string;
   user?: UserType;
-  setUser?: (u: UserType) => void;
 }
 
-const ArtCreators = ({ creators, NFTs, user, setUser }: ArtCreatorsProps) => {
+const ArtCreators = ({ creators, NFTs, user }: ArtCreatorsProps) => {
   const [isFiltered, setIsFiltered] = useState(false);
 
   return (
@@ -49,7 +48,7 @@ const ArtCreators = ({ creators, NFTs, user, setUser }: ArtCreatorsProps) => {
             <div className={style.NFTS}>
               {NFTs.map((item) => (
                 <div key={item.id} className={style.NFTShell}>
-                  <NftCardWithHover item={item} user={user} setUser={setUser} />
+                  <NftCardWithHover item={item} user={user} />
                 </div>
               ))}
             </div>
@@ -61,10 +60,10 @@ const ArtCreators = ({ creators, NFTs, user, setUser }: ArtCreatorsProps) => {
                   <Picture
                     isClickable
                     isTooltip
-                    link={walletId}
                     name={name}
                     picture={picture}
                     variant={AVATAR_VARIANT_MOSAIC}
+                    walletId={walletId}
                   />
                 </SCreatorPicture>
               ))}

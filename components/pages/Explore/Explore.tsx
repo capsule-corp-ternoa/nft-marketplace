@@ -1,108 +1,55 @@
 import React from 'react';
-import style from './Explore.module.scss';
-import { NftCardWithHover } from 'components/base/NftCard';
-import NoNFTComponent, { NO_NFT_VARIANT_SOLD_OUT } from 'components/base/NoNFTComponent';
+import styled from 'styled-components';
+
+import NftsGrid from 'components/base/NftsGrid';
+import { Container, Title, Wrapper } from 'components/layout';
 import { NftType, UserType } from 'interfaces/index';
+
 export interface ExploreProps {
   NFTS: NftType[];
   user?: UserType;
-  setUser?: (u: UserType) => void;
   loadMore: () => void;
   hasNextPage: boolean;
   loading: boolean;
+  totalCount: number;
 }
 
-const Explore: React.FC<ExploreProps> = ({
-  NFTS,
-  user,
-  setUser,
-  loadMore,
-  hasNextPage,
-  loading,
-}) => {
-  function returnNFTs() {
-    return NFTS.map((item) => (
-      <div key={item.id} className={style.NFTShell}>
-        <NftCardWithHover mode="grid" item={item} user={user} setUser={setUser} />
-      </div>
-    ));
-  }
-  return (
-    <>
-      <div id="explore" className={style.Wrapper}>
-        <div className={style.Top}>
-          <h3 className={style.Title}>Explore</h3>
-          <div className={style.Hide}>
-            <span className={style.Filter}>
-              <span role="img" className={style.Emoji} aria-label="art">
-                🎨
-              </span>
-              Art
-            </span>
-            <span className={style.Filter}>
-              <span role="img" className={style.Emoji} aria-label="photo">
-                📸
-              </span>
-              Photo
-            </span>
-            <span className={style.Filter}>
-              <span role="img" className={style.Emoji} aria-label="games">
-                👾
-              </span>
-              Games
-            </span>
-            <span className={style.Filter}>
-              <span role="img" className={style.Emoji} aria-label="games">
-                🎷
-              </span>
-              Music
-            </span>
-            <span className={style.Filter}>
-              <span role="img" className={style.Emoji} aria-label="design">
-                🖌
-              </span>
-              Design
-            </span>
-            <span className={style.Filter}>
-              <span role="img" className={style.Emoji} aria-label="photo">
-                📷
-              </span>
-              Photo
-            </span>
-          </div>
-        </div>
-        {NFTS.length === 0 ? (
-          <NoNFTComponent
-            body={
-              <>
-                Come later to discover new NFTs.
-                <br />
-                <br />
-                Thanks !
-              </>
-            }
-            title="All NFTs are sold !"
-            variant={NO_NFT_VARIANT_SOLD_OUT}
-          />
-        ) : (
-          <div className={style.NFTWrapper}>{returnNFTs()}</div>
-        )}
-        {hasNextPage && (
+const Explore: React.FC<ExploreProps> = ({ NFTS, user, loadMore, hasNextPage, loading, totalCount }) => (
+  <Container>
+    <Wrapper>
+      <STitle>{`Explore${totalCount > 0 ? ` (${totalCount} NFTs)` : ""}`}</STitle>
+      <NftsGrid
+        NFTs={NFTS}
+        isLoading={loading}
+        isLoadMore={hasNextPage}
+        loadMore={loadMore}
+        noNftBody={
           <>
-            {!loading ? (
-              <div onClick={() => loadMore()} className={style.Button}>
-                Load more
-              </div>
-            ) : (
-              <div className={style.DisabledButton}>
-                Loading...
-              </div>
-            )}
+            Come later to discover new NFTs.
+            <br />
+            <br />
+            Thanks !
           </>
-        )}
-      </div>
-    </>
-  );
-};
+        }
+        noNftTitle="All NFTs are sold !"
+        user={user}
+      />
+    </Wrapper>
+  </Container>
+);
+
+const STitle = styled(Title)`
+  font-size: 3.2rem;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    font-size: 4.8rem;
+    margin: 0 auto;
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    font-size: 4.8rem;
+    margin: 0;
+  }
+`;
 
 export default Explore;

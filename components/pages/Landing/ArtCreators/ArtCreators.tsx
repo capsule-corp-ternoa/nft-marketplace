@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Switch from 'react-switch';
 import style from './ArtCreators.module.scss';
 import { Picture, AVATAR_VARIANT_MOSAIC } from 'components/base/Avatar';
-import { NftCardWithHover } from 'components/base/NftCard';
+import { NftCardWithHover, CAROUSEL_MODE } from 'components/base/NftCard';
 
 import Blaze from 'components/assets/blaze';
 
@@ -48,7 +48,7 @@ const ArtCreators = ({ creators, NFTs, user }: ArtCreatorsProps) => {
             <div className={style.NFTS}>
               {NFTs.map((item) => (
                 <div key={item.id} className={style.NFTShell}>
-                  <NftCardWithHover item={item} user={user} />
+                  <NftCardWithHover item={item} mode={CAROUSEL_MODE} user={user} />
                 </div>
               ))}
             </div>

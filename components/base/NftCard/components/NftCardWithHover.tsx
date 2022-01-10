@@ -113,6 +113,7 @@ const NftCardWithHover = ({
             <div onClick={(e) => manageRouting(e, item.creator)} className={style.Auth}>
               <Picture
                 className={isHovering ? style.Slide : ''}
+                isClickable
                 name={item.creatorData?.name}
                 picture={item.creatorData?.picture}
                 walletId={item.creatorData?.walletId}

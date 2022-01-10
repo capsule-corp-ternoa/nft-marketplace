@@ -20,15 +20,6 @@
   z-index: 1;
 }
 
-.Container {
-  display: flex;
-  flex-direction: column;
-  margin-top: 8rem;
-  width: 100%;
-  box-sizing: border-box;
-  z-index: 2;
-}
-
 .Insight {
   text-align: center;
   font-family: 'Airbnb Cereal App Book';
@@ -75,29 +66,6 @@
   font-family: 'Airbnb Cereal App Bold';
   font-size: 14px;
   margin: 4px;
-}
-
-.SocialMedias {
-  display: flex;
-  margin: 2.4rem 0;
-  align-items: center;
-  justify-content: space-evenly;
-  width: 400px;
-  align-self: center;
-}
-
-.SVGMedia {
-  width: 22px;
-  cursor: pointer;
-  z-index: 10;
-  fill: white;
-}
-
-.SVGMediaTwitter {
-  width: 22px;
-  cursor: pointer;
-  z-index: 10;
-  fill: white;
 }
 
 .FooterBar {
@@ -152,16 +120,6 @@
     font-size: 13px;
   }
 
-  .SVGMedia {
-    width: 20px;
-    margin: 0px 8px;
-  }
-
-  .SVGMediaTwitter {
-    width: 20px;
-    margin: 0px 8px;
-  }
-
   .Link,
   .Text {
     font-size: 12px;
@@ -205,19 +163,6 @@
     top: 5px;
     font-size: 13px;
   }
-
-  .SVGMedia {
-    width: 16px;
-  }
-
-  .SVGMediaTwitter {
-    width: 16px;
-  }
-
-  .SocialMedias {
-    width: 360px;
-    margin: 2.4rem 0 8rem;
-  }
 }
 
 @media (max-width: 720px) {
@@ -248,22 +193,6 @@
 
   .Languages {
     margin-top: 16px;
-  }
-
-  .SocialMedias {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    padding: 0 2.4rem;
-  }
-
-  .SVGMedia {
-    width: 16px;
-  }
-
-  .SVGMediaTwitter {
-    width: 16px;
   }
 
   .Link,

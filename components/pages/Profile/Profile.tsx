@@ -113,21 +113,21 @@ const Profile = ({
   const populateProfileData = async (token: string) => {
     if (variant === USER_PERSONNAL_PROFILE_VARIANT) {
       // Created nfts
-      const createdNfts = await getCreatorNFTS(token, undefined, "12");
+      const createdNfts = await getCreatorNFTS(token, undefined, undefined);
       setCreatedNfts(createdNfts.data);
       setCreatedNftsHasNextPage(createdNfts.hasNextPage);
       // Liked NFTs
-      const liked = await getLikedNFTs(token, undefined, "12");
+      const liked = await getLikedNFTs(token, undefined, undefined);
       setLikedNfts(liked.data);
       setLikedNftsHasNextPage(liked.hasNextPage);
     }
 
     // Owned listed NFTs
-    const ownedListed = await getOwnedNFTS(token, true, true, undefined, "12");
+    const ownedListed = await getOwnedNFTS(token, true, true, undefined, undefined);
     setOwnedNftsListed(ownedListed.data);
     setOwnedNftsListedHasNextPage(ownedListed.hasNextPage);
     // Owned not listed NFTs
-    const ownedUnlisted = await getOwnedNFTS(token, false, false, undefined, "12");
+    const ownedUnlisted = await getOwnedNFTS(token, false, false, undefined, undefined);
     setOwnedNftsUnlisted(ownedUnlisted.data);
     setOwnedNftsUnlistedHasNextPage(ownedUnlisted.hasNextPage);
     // Followers
@@ -286,9 +286,9 @@ const Profile = ({
   const returnNFTs = (tabId: TabsIdType) => {
     switch (tabId) {
       case NFT_CREATED_TAB: {
-        const loadMoreCreatedNfts = () => {
+        const loadMoreCreatedNfts = async () => {
           setIsLoading(true);
-          loadMoreNfts(
+          await loadMoreNfts(
             walletId,
             createdCurrentPage,
             setCreatedCurrentPage,
@@ -316,9 +316,9 @@ const Profile = ({
         );
       }
       case NFT_LIKED_TAB: {
-        const loadMoreLikedNfts = () => {
+        const loadMoreLikedNfts = async () => {
           setIsLoading(true);
-          loadMoreNfts(walletId, likedCurrentPage, setLikedCurrentPage, setLikedNftsHasNextPage, setLikedNfts, tabId);
+          await loadMoreNfts(walletId, likedCurrentPage, setLikedCurrentPage, setLikedNftsHasNextPage, setLikedNfts, tabId);
           setIsLoading(false);
         };
         return (
@@ -337,9 +337,9 @@ const Profile = ({
         );
       }
       case NFT_ON_SALE_TAB: {
-        const loadMoreOwnedListedNfts = () => {
+        const loadMoreOwnedListedNfts = async () => {
           setIsLoading(true);
-          loadMoreNfts(
+          await loadMoreNfts(
             walletId,
             ownedNftsListedCurrentPage,
             setOwnedNftsListedCurrentPage,
@@ -374,9 +374,9 @@ const Profile = ({
         );
       }
       case NFT_NOT_FOR_SALE_TAB: {
-        const loadMoreOwnedUnlistedNfts = () => {
+        const loadMoreOwnedUnlistedNfts = async () => {
           setIsLoading(true);
-          loadMoreNfts(
+          await loadMoreNfts(
             walletId,
             ownedNftsUnlistedCurrentPage,
             setOwnedNftsUnlistedCurrentPage,
@@ -404,9 +404,9 @@ const Profile = ({
       }
       case NFT_OWNED_TAB:
       default: {
-        const loadMoreOwnedNfts = () => {
+        const loadMoreOwnedNfts = async () => {
           setIsLoading(true);
-          loadMoreNfts(
+          await loadMoreNfts(
             walletId,
             ownedNftsCurrentPage,
             setOwnedNftsCurrentPage,

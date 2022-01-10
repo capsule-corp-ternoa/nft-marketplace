@@ -64,12 +64,14 @@ const FollowersProfileBlock = ({
       </SToggle>
     </SSearchContainer>
 
-    {isLoading ? (
-      <SLoader color="primary" />
-    ) : users.length < 1 ? (
-      <SNoNFTContainer>
-        <NoNFTComponent body={noContentBody} title={noContentTitle} />
-      </SNoNFTContainer>
+    {users === undefined || users.length < 1 ? (
+      isLoading ? (
+        <SLoader color="primary" />
+      ) : (
+        <SNoNFTContainer>
+          <NoNFTComponent body={noContentBody} title={noContentTitle} />
+        </SNoNFTContainer>
+      )
     ) : (
       <>
         <SFollowersContainer>
@@ -118,7 +120,7 @@ const SNoNFTContainer = styled.div`
 
 const SLoadButtonWrapper = styled.div`
   button {
-    margin: 5.6rem auto 11.6rem;
+    margin: 1.6rem auto 3.2rem;
   }
 `;
 

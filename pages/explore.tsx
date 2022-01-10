@@ -40,7 +40,7 @@ const ExplorePage = ({
         let result = await getNFTs(
           undefined,
           (currentPage + 1).toString(),
-          "12",
+          undefined,
           true,
           true
         );

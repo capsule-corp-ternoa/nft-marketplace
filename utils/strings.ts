@@ -97,8 +97,14 @@ export const removeURLSlash = (url: string) => {
 }
 
 export const formatDate = (d: Date) => {
-  //06/08/2021, 13:21
-  return `${d.getDate()}/${d.getMonth()}/${d.getFullYear()}, ${d.getHours()}:${d.getMinutes()}`
+  //eg 06/08/2021, 13:21
+  const day = d.getDate()
+  const month = d.getMonth() + 1
+  const year = d.getFullYear()
+  const hours = d.getHours()
+  const minutes = d.getMinutes()
+  const formatVal = (val: number) => val < 10 ? `0${val}` : val
+  return `${formatVal(day)}/${formatVal(month)}/${formatVal(year)}, ${formatVal(hours)}:${formatVal(minutes)}`
 }
 
 export const formatPrice = (n: number) => {

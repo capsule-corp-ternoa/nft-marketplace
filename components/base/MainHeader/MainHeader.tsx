@@ -90,6 +90,7 @@ const MainHeader: React.FC<HeaderProps> = ({ setModalExpand, user }) => {
 const SWrapper = styled(Wrapper)`
   flex-direction: row;
   justify-content: center;
+  position: relative;
 
   ${({ theme }) => theme.mediaQueries.lg} {
     justify-content: space-between;
@@ -137,8 +138,8 @@ const SNavButtonsCointainer = styled.div`
 `;
 
 const SProfileMenuDropdown = styled(ProfileMenuDropdown)`
-  top: 10rem;
-  right: 4.8rem;
+  top: 10.4rem;
+  right: 3.2rem;
 
   &::before {
     width: 0;

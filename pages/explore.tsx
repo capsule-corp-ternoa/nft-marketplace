@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import BetaBanner from 'components/base/BetaBanner';
 import MainHeader from 'components/base/MainHeader';
@@ -8,7 +8,7 @@ import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
 import cookies from 'next-cookies';
 import { getUser } from 'actions/user';
-import { getNFTs } from 'actions/nft';
+import { getNFTs, getTotalOnSaleOnMarketplace } from 'actions/nft';
 import { NftType, UserType } from 'interfaces';
 import { NextPageContext } from 'next';
 import { decryptCookie } from 'utils/cookie';
@@ -17,7 +17,6 @@ export interface ExplorePage {
   user: UserType;
   data: NftType[];
   dataHasNextPage: boolean;
-  dataTotalCount?: number;
   loading: boolean
 }
 
@@ -25,7 +24,6 @@ const ExplorePage = ({
   user,
   data,
   dataHasNextPage,
-  dataTotalCount,
 }: ExplorePage) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [dataNfts, setDataNfts] = useState(data);
@@ -33,6 +31,7 @@ const ExplorePage = ({
     useState(dataHasNextPage);
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [dataTotalCount, setDataTotalCount] = useState(0)
 
   const loadMoreNfts = async () => {
     setIsLoading(true)
@@ -54,6 +53,19 @@ const ExplorePage = ({
       console.log(err);
     }
   };
+
+  const loadTotalCount = async () => {
+    try{
+      setDataTotalCount(await getTotalOnSaleOnMarketplace())
+    }catch(err){
+      console.log(err)
+    }
+  }
+
+
+  useEffect(() => {
+    loadTotalCount()
+  }, [])
 
   return (
     <>
@@ -85,8 +97,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
   const token = cookies(ctx).token && decryptCookie(cookies(ctx).token as string);
   let user: UserType | null = null,
     data: NftType[] = [],
-    dataHasNextPage: boolean = false,
-    dataTotalCount: number | undefined = undefined;
+    dataHasNextPage: boolean = false;
   const promises = [];
   if (token) {
     promises.push(
@@ -104,11 +115,8 @@ export async function getServerSideProps(ctx: NextPageContext) {
     new Promise<void>((success) => {
       getNFTs(undefined, undefined, "12", true, true)
         .then((result) => {
-          data = result.data.sort(
-            (a, b) => new Date(b.timestampList ?? 0).getTime() - new Date(a.timestampList ?? 0).getTime()
-          );
+          data = result.data;
           dataHasNextPage = result.hasNextPage || false;
-          dataTotalCount = result.totalCount;
           success();
         })
         .catch(success);
@@ -121,7 +129,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
     };
   }
   return {
-    props: { user, data, dataHasNextPage, dataTotalCount },
+    props: { user, data, dataHasNextPage },
   };
 }
 

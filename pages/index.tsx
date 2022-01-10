@@ -110,9 +110,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
     new Promise<void>((success) => {
       getNFTs(undefined, '1', '19', true, true)
         .then((result) => {
-          regularNfts = result.data.sort(
-            (a, b) => new Date(b.timestampList ?? 0).getTime() - new Date(a.timestampList ?? 0).getTime()
-          );
+          regularNfts = result.data;
           success();
         })
         .catch(success);

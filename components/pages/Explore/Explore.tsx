@@ -11,13 +11,13 @@ export interface ExploreProps {
   loadMore: () => void;
   hasNextPage: boolean;
   loading: boolean;
-  totalCount?: number;
+  totalCount: number;
 }
 
 const Explore: React.FC<ExploreProps> = ({ NFTS, user, loadMore, hasNextPage, loading, totalCount }) => (
   <Container>
     <Wrapper>
-      <STitle>{totalCount && totalCount > 10 ? `Explore among ${totalCount} NFTs` : 'Explore'}</STitle>
+      <STitle>{`Explore${totalCount > 0 ? ` (${totalCount} NFTs)` : ""}`}</STitle>
       <NftsGrid
         NFTs={NFTS}
         isLoading={loading}

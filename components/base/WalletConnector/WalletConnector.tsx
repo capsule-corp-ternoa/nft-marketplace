@@ -30,24 +30,26 @@ const WalletConnector: React.FC<WalletConnectorProps> = ({
     setProvider(_provider);
   };
   const subscribeToEvents = () => {
-    const _provider = (provider as WalletConnectProvider);
+    const _provider: WalletConnectProvider = (provider as WalletConnectProvider);
     console.log('subscribeToEvents');
     _provider.on("accountsChanged", (accounts: string[]) => {
       console.log('accountsChanged', accounts);
     });
-    // Subscribe to chainId change
     _provider.on("chainChanged", (chainId: number) => {
       console.log('chainChanged to' + chainId);
+    });
+    _provider.on("close", (chainId: number) => {
+      onProviderClose(chainId);
     });
     _provider.onConnect(onConnect)
 
     _provider.onDisconnect().then(onDisconnect)
   };
-  const onConnect = ()=>{
+  const onConnect = () => {
     console.log('chainChanged tonConnect');
     setConnectSuccess(true);
   }
-  const onDisconnect = ()=>{
+  const onDisconnect = () => {
     console.log('onDisconnect');
   }
   const onConnectSuccessClick = () => {
@@ -55,6 +57,10 @@ const WalletConnector: React.FC<WalletConnectorProps> = ({
   }
   const onProviderError = () => {
     console.log('onProviderError');
+    setModalExpand(false);
+  }
+  const onProviderClose = (chainId: number) => {
+    console.log('onProviderClose', chainId);
     setModalExpand(false);
   }
   const connect = async () => {

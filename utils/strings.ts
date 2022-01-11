@@ -36,7 +36,7 @@ export function computeCaps(n: number, decimals: number = 4) {
     return Number(toFixed(n / 1e6, decimals)).toString() + 'M';
   }
   if (n < 1e12) {
-    return Number(toFixed(n / 1e9, decimals)).toString() + 'G';
+    return Number(toFixed(n / 1e9, decimals)).toString() + 'B';
   }
   if (n < 1e15) {
     return Number(toFixed(n / 1e12, decimals)).toString() + 'T';
@@ -65,7 +65,7 @@ export function computeTiime(n: number, decimals: number = 4) {
     return Number(toFixed(n / 1e6, decimals)).toString() + 'M';
   }
   if (n < 1e12) {
-    return Number(toFixed(n / 1e9, decimals)).toString() + 'G';
+    return Number(toFixed(n / 1e9, decimals)).toString() + 'B';
   }
   if (n < 1e15) {
     return Number(toFixed(n / 1e12, decimals)).toString() + 'T';

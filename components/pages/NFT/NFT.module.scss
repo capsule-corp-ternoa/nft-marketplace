@@ -204,31 +204,6 @@
   margin-top: 12px;
 }
 
-.Tags {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.Tag {
-  font-family: 'Airbnb Cereal App Bold';
-  font-size: 14px;
-  line-height: 22px;
-  padding: 6px 24px;
-  border-radius: 18px;
-  border: 1.3px dashed #e0e0e0;
-  cursor: pointer;
-  margin: 0px 16px;
-}
-
-.Tag:nth-child(1) {
-  margin-left: 0px;
-}
-
-.Emoji {
-  margin-right: 10px;
-  font-size: 15px;
-}
-
 .Description {
   margin: 52px 0px;
   font-size: 16px;
@@ -302,10 +277,6 @@
   }
 }
 
-.Hide {
-  display: none;
-}
-
 @media (max-width: 1300px) {
   .MainWrapper {
     width: 980px;
@@ -345,12 +316,6 @@
 
   .LikeSVG {
     width: 14px;
-  }
-
-  .Tag {
-    font-size: 12px;
-    line-height: 18px;
-    padding: 6px 16px;
   }
 
   .Description {
@@ -441,17 +406,6 @@
 
   .Buy {
     margin-top: 30px;
-  }
-
-  .Tags {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-left: 40px;
-  }
-
-  .Tag {
-    margin: 0px 10px;
   }
 }
 

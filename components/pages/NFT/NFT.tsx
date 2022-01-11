@@ -232,16 +232,6 @@ const NFTPage = ({
               </div>
             </div>
             <div className={style.Line} />
-            <div className={style.Hide}>
-              <div className={style.Tags}>
-                <div className={style.Tag}>
-                  <span role="img" className={style.Emoji} aria-label="art">
-                    🎨
-                  </span>
-                  Design
-                </div>
-              </div>
-            </div>
             <Title>
               {NFT.title}
               {NFT.isCapsule && (

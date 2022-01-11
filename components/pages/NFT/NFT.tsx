@@ -13,7 +13,7 @@ import NoNFTImage from '../../assets/NoNFTImage';
 import Details from './Details';
 import Avatar from 'components/base/Avatar';
 import { MARKETPLACE_ID } from 'utils/constant';
-import { Title } from 'components/layout'
+import { Container, Title, Wrapper } from 'components/layout';
 import Chip from 'components/ui/Chip';
 import Showcase from 'components/base/Showcase';
 import { getByTheSameArtistNFTs, getOwnedNFTS, getSeriesData } from 'actions/nft';
@@ -193,9 +193,9 @@ const NFTPage = ({
   };
 
   return (
-    <div className={style.Container}>
-      <div className={style.MainWrapper}>
-        <div className={style.Wrapper}>
+    <Container>
+      <Wrapper>
+        <SNftWrapper>
           <SMediaWrapper className={style.NFT}>
             <Media src={NFT.properties?.preview.ipfs!} type={type} alt="imgnft" draggable="false" />
             <div onClick={() => setExp(1)} className={style.Scale}>
@@ -294,24 +294,22 @@ const NFTPage = ({
               <div className={style.AvailableBackLine} />
             </div>
           </div>
-        </div>
-        <div>
-          <Details
-            NFT={NFT}
-            seriesData={seriesData}
-            user={user}
-            setNftToBuy={setNftToBuy}
-            setExp={setExp}
-            isUserFromDappQR={isUserFromDappQR}
-            isVR={isVR}
-            canUserBuyAgain={canUserBuyAgain}
-          />
-        </div>
-      </div>
+        </SNftWrapper>
+        <Details
+          NFT={NFT}
+          seriesData={seriesData}
+          user={user}
+          setNftToBuy={setNftToBuy}
+          setExp={setExp}
+          isUserFromDappQR={isUserFromDappQR}
+          isVR={isVR}
+          canUserBuyAgain={canUserBuyAgain}
+        />
+      </Wrapper>
       {byTheSameArtistNFTs.length > 0 && (
-        <SShowcaseWrapper>
+        <Wrapper>
           <Showcase category="By the same artist" NFTs={byTheSameArtistNFTs} user={user} />
-        </SShowcaseWrapper>
+        </Wrapper>
       )}
       {modalShareOpen && (
         <ModalShare
@@ -322,9 +320,17 @@ const NFTPage = ({
           url={shareUrl}
         />
       )}
-    </div>
+    </Container>
   );
 };
+
+const SNftWrapper = styled(Wrapper)`
+  ${({ theme }) => theme.mediaQueries.lg} {
+    flex-direction: row;
+    justify-content: space-evenly;
+    padding: 3.2rem 6.4rem;
+  }
+`;
 
 const SMediaWrapper = styled.div`
   height: ${({theme}) => theme.sizes.cardHeight.md};
@@ -364,21 +370,6 @@ const SCategoriesWrapper = styled.div`
   ${({ theme }) => theme.mediaQueries.md} {
     justify-content: start;
     margin: 0;
-  }
-`
-
-const SShowcaseWrapper = styled.div`
-  width: 100%;
-  margin: 0 auto;
-  max-width: 1200px;
-  padding: 3.2rem 4rem 6.4rem;
-
-  ${({ theme }) => theme.mediaQueries.xl} {
-    padding: 3.2rem 9.6rem 6.4rem;
-  }
-
-  ${({ theme }) => theme.mediaQueries.xxl} {
-    padding: 3.2rem 2.4rem 6.4rem;
   }
 `
 

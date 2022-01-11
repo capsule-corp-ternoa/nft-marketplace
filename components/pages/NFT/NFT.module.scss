@@ -1,33 +1,5 @@
 @import 'style/colors.scss';
 
-.Container {
-  width: 100%;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-}
-
-.MainWrapper {
-  display: flex;
-  flex-direction: column;
-  width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-  justify-content: center;
-  box-sizing: border-box;
-  padding: 60px 0 20px 0;
-}
-
-.Wrapper {
-  display: flex;
-  width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-  justify-content: center;
-  box-sizing: border-box;
-  padding: 60px 0;
-}
-
 .NFT {
   display: flex;
   position: relative;
@@ -278,15 +250,6 @@
 }
 
 @media (max-width: 1300px) {
-  .MainWrapper {
-    width: 980px;
-    padding: 40px 0 20px 0;
-  }
-  .Wrapper {
-    width: 980px;
-    padding: 50px 0px;
-  }
-
   .NFT {
     margin-right: 60px;
   }
@@ -333,26 +296,7 @@
   }
 }
 
-@media (max-width: 1000px) {
-  .MainWrapper {
-    width: 100%;
-    padding: 30px 24px 20px 24px;
-  }
-  .Wrapper {
-    width: 100%;
-    padding: 50px 24px;
-  }
-}
-
 @media (max-width: 840px) {
-  .Wrapper {
-    width: 90%;
-    padding: 0px 24px;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-
   .NFT {
     margin-right: 0px;
     margin-bottom: 52px;
@@ -410,9 +354,6 @@
 }
 
 @media (max-width: 720px) {
-  .Wrapper {
-    width: 100%;
-  }
   .Text {
     width: 100%;
   }

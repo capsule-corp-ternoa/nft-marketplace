@@ -418,9 +418,7 @@ const Details: React.FC<DetailsProps> = ({
                   </List>
                 )}
               </AutoSizer>
-              {NFT.totalNft && seriesData.length < NFT.totalNft && <div className={styleDetails.loaderContainer}>
-                <Loader color="primary" />
-              </div>}
+              {NFT.totalNft && seriesData.length < NFT.totalNft && <SLoader color="primary" />}
             </div>
           )}
           {currentTab === 'history' && 
@@ -441,9 +439,7 @@ const Details: React.FC<DetailsProps> = ({
                 </AutoSizer>
               </div>
             :
-              <div className={styleDetails.loaderContainer}>
-                <Loader color="primary" />
-              </div>
+              <SLoader color="primary" />
             )
           }
           {currentTab === 'bid' && <div></div>}
@@ -509,6 +505,10 @@ const SDatasDetails = styled.div`
     margin-top: 0;
     margin-left: 1.6rem;
   }
+`;
+
+const SLoader = styled(Loader)`
+  margin: 4rem auto;
 `;
 
 export default Details;

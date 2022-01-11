@@ -12,10 +12,7 @@
     "@polkadot/util-crypto": "^7.8.2",
     "@sentry/nextjs": "^6.14.1",
     "@use-gesture/react": "^10.2.2",
-    "@walletconnect/client": "^2.0.0-beta.21",
-    "@walletconnect/legacy-modal": "^2.0.0-beta.21",
-    "@walletconnect/types": "^2.0.0-beta.21",
-    "@walletconnect/utils": "^2.0.0-beta.21",
+    "@walletconnect/web3-provider": "^1.7.0",
     "array-shuffle": "^3.0.0",
     "asmcrypto-lite": "^1.1.0",
     "axios": "^0.24.0",
@@ -57,7 +54,8 @@
     "socket.io-client": "^4.3.2",
     "styled-components": "^5.3.3",
     "utf-8-validate": "^5.0.7",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "web3": "^1.6.1"
   },
   "devDependencies": {
     "@netlify/plugin-nextjs": "^3.9.2",

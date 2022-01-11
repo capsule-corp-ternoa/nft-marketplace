@@ -1,12 +1,9 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useEffect, useState } from 'react';
-import WalletConnect, { CLIENT_EVENTS } from '@walletconnect/client';
-import { WALLET_CONNECT, CHAINS } from 'utils/chains.const';
-import { PairingTypes } from "@walletconnect/types";
-import QRCodeModal from "@walletconnect/legacy-modal";
-import { getAppMetadata } from "@walletconnect/utils";
+import WalletConnectProvider from "@walletconnect/web3-provider";
+import { CHAINS } from 'utils/chains.const';
 import Close from 'components/assets/close';
-import style from './TernoaWallet.module.scss';
+import style from './WalletConnector.module.scss';
 export interface WalletConnectorProps {
   setModalExpand: (b: boolean) => void;
 }
@@ -14,77 +11,68 @@ export interface WalletConnectorProps {
 const WalletConnector: React.FC<WalletConnectorProps> = ({
   setModalExpand
 }) => {
-  const [pairingSuccess, setPairingSuccess] = useState(false);
-  const [client, setClient] = useState<WalletConnect | null>(null);
-  const [, setUri] = useState<string | null>(null);
+  const [connectSuccess, setConnectSuccess] = useState(false);
+  const [provider, setProvider] = useState<WalletConnectProvider | null>(null);
   useEffect(() => {
     init();
   }, []);
   useEffect(() => {
-    if (client) {
+    if (provider) {
       subscribeToEvents();
       connect();
     }
-  }, [client]);
+  }, [provider]);
   const init = async () => {
-    const _client: WalletConnect = await WalletConnect.init({
-      projectId: WALLET_CONNECT.projectId,
-      relayUrl: 'wss://relay.walletconnect.com',
-      metadata: {
-        name: 'Marketplace Dapp WalletConnect',
-        description: 'Marketplace Dapp WalletConnect',
-        url: '#',
-        icons: ['https://walletconnect.com/walletconnect-logo.png'],
-      },
+    const _provider = new WalletConnectProvider({
+      rpc: CHAINS.RPC,
     });
-    setClient(_client);
+
+    setProvider(_provider);
   };
   const subscribeToEvents = () => {
+    const _provider = (provider as WalletConnectProvider);
     console.log('subscribeToEvents');
-    (client as WalletConnect).on(CLIENT_EVENTS.pairing.proposal, async (proposal: PairingTypes.Proposal) => {
-      console.log('session.proposal', proposal);
-      // uri should be shared with the Wallet either through QR Code scanning or mobile deep linking
-      const { uri: _uri } = proposal.signal.params;
-      setUri(_uri);
-      console.log("EVENT", "QR Code Modal open");
-      QRCodeModal.open(_uri, () => {
-        console.log("EVENT", "QR Code Modal closed");
-        setModalExpand(false);
-      });
+    _provider.on("accountsChanged", (accounts: string[]) => {
+      console.log('accountsChanged', accounts);
     });
-    (client as WalletConnect).on(CLIENT_EVENTS.pairing.created, async (proposal: PairingTypes.Settled) => {
-      console.log('pairing.created', proposal);
-      QRCodeModal.close();
-      setPairingSuccess(true)
+    // Subscribe to chainId change
+    _provider.on("chainChanged", (chainId: number) => {
+      console.log('chainChanged to' + chainId);
     });
+    _provider.onConnect(onConnect)
+
+    _provider.onDisconnect().then(onDisconnect)
   };
-  const onPairingSuccessClick = () => {
+  const onConnect = ()=>{
+    console.log('chainChanged tonConnect');
+    setConnectSuccess(true);
+  }
+  const onDisconnect = ()=>{
+    console.log('onDisconnect');
+  }
+  const onConnectSuccessClick = () => {
+    setModalExpand(false);
+  }
+  const onProviderError = () => {
+    console.log('onProviderError');
     setModalExpand(false);
   }
   const connect = async () => {
-    const session = await (client as WalletConnect).connect({
-      metadata: getAppMetadata(),
-      permissions: {
-        blockchain: {
-          chains: [CHAINS.ETH.id],
-        },
-        jsonrpc: {
-          methods: [...CHAINS.ETH.rpcMethods],
-        },
-      },
-    });
-    console.log('session', session);
+    const _provider = (provider as WalletConnectProvider);
+    //  Enable session (triggers QR Code modal)
+    await _provider.enable().catch(onProviderError);
+    console.log('provider enabled');
   };
   return <>
-    { pairingSuccess ?
+    { connectSuccess ?
       (<div id="walletConnect" className={style.Background}>
         <div className={style.Container}>
           <Close
-            onClick={onPairingSuccessClick}
+            onClick={onConnectSuccessClick}
             className={style.Close}
           />
           <div className={style.Text}>
-            <div onClick={onPairingSuccessClick}>Paring success!</div>
+            <div onClick={onConnectSuccessClick}>Connection success!</div>
           </div>
         </div>
       </div>)

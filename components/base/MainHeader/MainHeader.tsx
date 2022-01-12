@@ -51,7 +51,7 @@ const MainHeader: React.FC<HeaderProps> = ({ setModalExpand, user }) => {
                 <Link href="/create" passHref>
                   <>
                     <Button
-                      color="invertedContrast"
+                      color="contrast"
                       href="/create"
                       size="medium"
                       text="Create NFT"

@@ -93,7 +93,7 @@ const FollowersProfileBlock = ({
         {isLoadMore && (
           <SLoadButtonWrapper>
             <Button
-              color="invertedContrast"
+              color="contrast"
               disabled={isLoading}
               isLoading={isLoading}
               onClick={loadMore}

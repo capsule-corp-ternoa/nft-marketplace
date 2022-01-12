@@ -195,8 +195,8 @@ const Icon = ({ className, name }: Props) => {
       return <SecretCards className={className} />;
     }
     case 'share': {
-      const SoundOff = dynamic(() => import('components/assets/SoundOff'));
-      return <SoundOff className={className} />;
+      const Share = dynamic(() => import('components/assets/share'));
+      return <Share className={className} />;
     }
     case 'socialDiscord': {
       const Discord = dynamic(() => import('components/assets/SocialMedias/Discord'));

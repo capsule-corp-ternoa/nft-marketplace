@@ -3,9 +3,6 @@ import styled from 'styled-components'
 import style from './NFT.module.scss';
 import Media from 'components/base/Media';
 import Scale from 'components/assets/scale';
-import Share from 'components/assets/share';
-import Like from 'components/assets/heart';
-import Eye from 'components/assets/eye';
 import { computeCaps, computeTiime } from 'utils/strings';
 import { UserType, NftType } from 'interfaces';
 import ModalShare from 'components/base/ModalShare';
@@ -231,25 +228,11 @@ const NFTPage = ({
                 twitterName={NFT.creatorData?.twitterName}
                 walletId={NFT.creatorData?.walletId}
               />
-              <div className={style.TopInfos}>
-                <div className={style.Views}>
-                  <Eye className={style.EyeSVG} />
-                  {NFT.viewsCount}
-                </div>
-                {user !== undefined && user !== null && (
-                  <div
-                    className={`${style.Like} ${isLiked ? style.Liked : ''} ${
-                      likeLoading || !user ? style.DisabledLike : ''
-                    }`}
-                    onClick={toggleLikeDislike}
-                  >
-                    <Like className={style.LikeSVG} />
-                  </div>
-                )}
-                <div className={style.Share} onClick={() => handleShare()}>
-                  <Share className={style.ShareSVG} />
-                </div>
-              </div>
+              <STopCtasContainer>
+                <Chip color="invertedContrast" icon="eye" size="medium" text={NFT.viewsCount} variant="rectangle" />
+                <Button color="neutral200" disabled={likeLoading} icon="heart" isLoading={likeLoading} onClick={toggleLikeDislike} size="small" variant="outlined" />
+                <Button color="neutral200" icon="share" onClick={handleShare} size="small" variant="outlined" />
+              </STopCtasContainer>
             </div>
             <div className={style.Line} />
             <Title>
@@ -330,7 +313,24 @@ const SMediaWrapper = styled.div`
     height: ${({theme}) => theme.sizes.cardHeight.lg};
     width: ${({theme}) => theme.sizes.cardWidth.lg};
   }
-`
+`;
+
+const STopCtasContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2.4rem;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    margin: 0;
+  }
+
+  > * {
+    &:not(:first-child) {
+      margin-left: 1.6rem;
+    };
+  }
+`;
 
 const SChip = styled(Chip)`
   margin: 1.6rem auto 0;

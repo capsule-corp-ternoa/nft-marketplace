@@ -80,88 +80,6 @@
   max-width: 400px;
 }
 
-.TopInfos {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.Views {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Airbnb Cereal App Book';
-  font-size: 13.2617px;
-  line-height: 16px;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  border-radius: 8px;
-  padding: 10px 10px;
-  margin-right: 5px;
-}
-
-.EyeSVG {
-  width: 16px;
-  fill: black;
-  margin-right: 10px;
-}
-
-.Like {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  border-radius: 50%;
-  padding: 12px 10px;
-  cursor: pointer;
-  margin: 0px 5px;
-  @media (min-width: 768px) {
-    &:hover {
-      background-color: $primary;
-      .LikeSVG {
-        fill: white;
-      }
-    }
-  }
-}
-
-.DisabledLike {
-  opacity: 0.7;
-  pointer-events: none;
-}
-
-.Liked {
-  background-color: $primary;
-  .LikeSVG {
-    fill: white;
-  }
-}
-
-.Share {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  border-radius: 50%;
-  padding: 10px;
-  margin-left: 5px;
-  cursor: pointer;
-  &:hover {
-    background-color: $primary;
-    .ShareSVG {
-      fill: white;
-    }
-  }
-}
-.ShareSVG {
-  width: 14px;
-  fill: black;
-}
-
-.LikeSVG {
-  width: 16px;
-  fill: black;
-}
-
 .Line {
   width: 100%;
   border-bottom: 1px solid transparent;
@@ -227,26 +145,6 @@
     width: 500px;
   }
 
-  .Views {
-    font-size: 12px;
-  }
-
-  .EyeSVG {
-    width: 14px;
-    margin-right: 8px;
-  }
-
-  .Like {
-    padding: 11px 10px;
-  }
-  .ShareSVG {
-    width: 12px;
-  }
-
-  .LikeSVG {
-    width: 14px;
-  }
-
   .Description {
     margin: 32px 0px;
     font-size: 14px;
@@ -269,10 +167,6 @@
 
   .Top {
     flex-direction: column;
-  }
-
-  .TopInfos {
-    margin-top: 2.4rem;
   }
 
   .Title {

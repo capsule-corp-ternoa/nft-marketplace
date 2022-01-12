@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components'
-import style from './NFT.module.scss';
 import Media from 'components/base/Media';
 import { computeCaps, computeTiime } from 'utils/strings';
 import { UserType, NftType } from 'interfaces';
 import ModalShare from 'components/base/ModalShare';
-import NoNFTImage from '../../assets/NoNFTImage';
 import Details from './Details';
 import Avatar from 'components/base/Avatar';
 import { MARKETPLACE_ID } from 'utils/constant';
 import { Container, Title, Wrapper } from 'components/layout';
 import Button from 'components/ui/Button';
 import Chip from 'components/ui/Chip';
+import Icon from 'components/ui/Icon';
 import Showcase from 'components/base/Showcase';
 import { getByTheSameArtistNFTs, getOwnedNFTS, getSeriesData } from 'actions/nft';
 import { getRandomNFTFromArray } from 'utils/functions';
@@ -212,12 +211,12 @@ const NFTPage = ({
     <Container>
       <Wrapper>
         <SNftWrapper>
-          <SMediaWrapper className={style.NFT}>
+          <SMediaWrapper>
             <Media src={NFT.properties?.preview.ipfs!} type={type} alt="imgnft" draggable="false" />
             <SScaleButton color="invertedContrast" icon="scale" onClick={() => setExp(1)} size="small" variant="contained" />
           </SMediaWrapper>
-          <div className={style.Text}>
-            <div className={style.Top}>
+          <SInfosContainer>
+            <STopInfosContainer>
               <Avatar
                 isVerified={NFT.creatorData?.verified}
                 name={NFT.creatorData?.name}
@@ -230,9 +229,8 @@ const NFTPage = ({
                 <Button color="neutral200" disabled={likeLoading} icon="heart" isLoading={likeLoading} onClick={toggleLikeDislike} size="small" variant="outlined" />
                 <Button color="neutral200" icon="share" onClick={handleShare} size="small" variant="outlined" />
               </STopCtasContainer>
-            </div>
-            <div className={style.Line} />
-            <Title>
+            </STopInfosContainer>
+            <STitle>
               {NFT.title}
               {NFT.isCapsule && (
                 <SChip
@@ -246,35 +244,40 @@ const NFTPage = ({
                   variant="rectangle"
                 />
               )}
-            </Title>
-            <SCategoriesWrapper>
-              {NFT.categories.map(({ name, code }) => (
-                <Chip key={code} color="invertedContrast" text={name} size="medium" variant="rectangle" />
-              ))}
-            </SCategoriesWrapper>
-            <p className={style.Description}>{NFT.description}</p>
-            <Button color="primary" disabled={!userCanBuy} onClick={handleBuy} size="medium" text={ctaWording} variant="contained"/>
-            <div className={style.Available}>
-              <div className={style.AvailbleText}>
-                <NoNFTImage className={style.AvailbleCards} />
-                <div className={style.AvailableTextContent}>
-                  {`${NFT.totalListedInMarketplace ?? 0} of ${NFT.totalNft ?? 0}`} Available
-                </div>
-              </div>
-              <div className={style.AvailableBackLine} />
-            </div>
-          </div>
+            </STitle>
+            {NFT.categories.length > 0 && (
+              <SCategoriesWrapper>
+                {NFT.categories.map(({ name, code }) => (
+                  <Chip key={code} color="invertedContrast" text={name} size="medium" variant="rectangle" />
+                ))}
+              </SCategoriesWrapper>
+            )}
+            {NFT.description && <SDescription>{NFT.description}</SDescription>}
+            {ctaWording && (
+              <SBuyContainer>
+                <Button color="primary" disabled={!userCanBuy} onClick={handleBuy} size="medium" text={ctaWording} variant="contained"/>
+                <SAvailableContainer>
+                  <SIcon name="noNFTImage" />
+                  <SAvailableLabel>
+                    {`${NFT.totalListedInMarketplace ?? 0} of ${NFT.totalNft ?? 0}`} available
+                  </SAvailableLabel>
+                </SAvailableContainer>
+              </SBuyContainer>
+            )}
+          </SInfosContainer>
         </SNftWrapper>
-        <Details
-          NFT={NFT}
-          seriesData={seriesData}
-          user={user}
-          setNftToBuy={setNftToBuy}
-          setExp={setExp}
-          isUserFromDappQR={isUserFromDappQR}
-          isVR={isVR}
-          canUserBuyAgain={canUserBuyAgain}
-        />
+        <SDetailsWrapper>
+          <Details
+            NFT={NFT}
+            seriesData={seriesData}
+            user={user}
+            setNftToBuy={setNftToBuy}
+            setExp={setExp}
+            isUserFromDappQR={isUserFromDappQR}
+            isVR={isVR}
+            canUserBuyAgain={canUserBuyAgain}
+          />
+        </SDetailsWrapper>
       </Wrapper>
       {byTheSameArtistNFTs.length > 0 && (
         <Wrapper>
@@ -294,17 +297,34 @@ const NFTPage = ({
   );
 };
 
-const SNftWrapper = styled(Wrapper)`
+const SNftWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
   ${({ theme }) => theme.mediaQueries.lg} {
+    display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
-    padding: 3.2rem 6.4rem;
+    align-items: flex-start;
+  }
+`;
+
+const SDetailsWrapper = styled.div`
+  margin-top: 5.6rem;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    margin-top: 9.6rem;
   }
 `;
 
 const SMediaWrapper = styled.div`
   height: ${({theme}) => theme.sizes.cardHeight.md};
   width: ${({theme}) => theme.sizes.cardWidth.md};
+  display: flex;
+  position: relative;
+  background: linear-gradient(180deg, #f29fff 0%, #878cff 100%);
+  box-shadow: 0px 0px 14.5243px 5.0835px rgba(0, 0, 0, 0.15);
+  border-radius: 1.2rem;
 
   ${({ theme }) => theme.mediaQueries.xxl} {
     height: ${({theme}) => theme.sizes.cardHeight.lg};
@@ -315,8 +335,48 @@ const SMediaWrapper = styled.div`
 const SScaleButton = styled(Button)`
   position: absolute;
   bottom: 2.4rem;
-  left: 2.4rem;
+  right: 2.4rem;
   z-index: 3;
+`;
+
+const SInfosContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  margin-top: 4rem;
+  width: 100%;
+  max-width: ${({theme}) => theme.sizes.cardWidth.md};
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    max-width: 48rem;
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    margin-left: 8rem;
+    margin-top: 0;
+    max-width: none;
+    width: auto;
+  }
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    margin-left: 12rem;
+  }
+
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    margin-left: 16rem;
+  }
+`;
+
+const STopInfosContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+  }
 `;
 
 const STopCtasContainer = styled.div`
@@ -325,14 +385,40 @@ const STopCtasContainer = styled.div`
   justify-content: center;
   margin-top: 2.4rem;
 
-  ${({ theme }) => theme.mediaQueries.md} {
-    margin: 0;
-  }
-
   > * {
     &:not(:first-child) {
       margin-left: 1.6rem;
     };
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    margin: 0;
+  }
+`;
+
+const STitle = styled(Title)`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 3.2rem;
+  text-align: center;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    justify-content: flex-start;
+    text-align: left;
+  }
+`;
+
+const SDescription = styled.p`
+  font-size: 1.6rem;
+  color: ${({ theme }) => theme.colors.neutral200};
+  margin-top: 3.2rem;
+  text-align: justify;
+  white-space: pre-line;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    margin-top: 5.6rem;
+    text-align: left;
   }
 `;
 
@@ -343,14 +429,14 @@ const SChip = styled(Chip)`
     margin: 0;
     transform: translateY(85%);
   }
-`
+`;
 
 const SDot = styled.div`
   width: 0.8rem;
   height: 0.8rem;
   background: ${({theme}) => theme.colors.primary};
   border-radius: 50%;
-`
+`;
 
 const SCategoriesWrapper = styled.div`
   display: flex;
@@ -365,6 +451,40 @@ const SCategoriesWrapper = styled.div`
     justify-content: start;
     margin: 0;
   }
-`
+`;
+
+const SBuyContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+  margin-top: 4rem;
+  width: fit-content;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    align-self: flex-start;
+    margin-top: 4.8rem;
+  }
+`;
+
+const SAvailableContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 1.6rem;
+`;
+
+const SIcon = styled(Icon)`
+  width: 2.4rem;
+  height: 2.4rem;
+`;
+
+const SAvailableLabel = styled.span`
+  color: ${({ theme }) => theme.colors.neutral300};
+  font-size: 1.6rem;
+  margin-left: 0.8rem;
+  white-space: nowrap;
+`;
 
 export default NFTPage;

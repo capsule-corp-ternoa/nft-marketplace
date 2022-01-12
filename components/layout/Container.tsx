@@ -14,11 +14,7 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  padding: 3.2rem;
-
-  &:not(:first-child) {
-    padding-top: 5.6rem;
-  }
+  padding: 5.6rem 3.2rem;
 
   &:last-child {
     padding-bottom: 7.2rem;
@@ -39,10 +35,10 @@ export const Wrapper = styled.div`
   }
 
   ${({ theme }) => theme.mediaQueries.xl} {
-    padding: 4rem 6.4rem;
+    padding: 5.6rem 6.4rem;
 
-    &:not(:first-child) {
-      padding-top: 5.6rem;
+    &:first-child {
+      padding-top: 9.6rem;
     }
 
     &:last-child {

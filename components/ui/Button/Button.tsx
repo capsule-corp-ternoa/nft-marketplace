@@ -172,7 +172,7 @@ const Button = ({
       variant={variant}
     >
       {isLoading ? (
-        <SLoader color={color ?? 'invertedContrast'} size="small" variant={variant} />
+        <SLoader color={color ?? 'invertedContrast'} size={size} variant={variant} />
       ) : (
         <>
           {icon && (

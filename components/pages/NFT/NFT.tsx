@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components'
 import style from './NFT.module.scss';
 import Media from 'components/base/Media';
-import Scale from 'components/assets/scale';
 import { computeCaps, computeTiime } from 'utils/strings';
 import { UserType, NftType } from 'interfaces';
 import ModalShare from 'components/base/ModalShare';
@@ -215,9 +214,7 @@ const NFTPage = ({
         <SNftWrapper>
           <SMediaWrapper className={style.NFT}>
             <Media src={NFT.properties?.preview.ipfs!} type={type} alt="imgnft" draggable="false" />
-            <div onClick={() => setExp(1)} className={style.Scale}>
-              <Scale className={style.ScaleSVG} />
-            </div>
+            <SScaleButton color="invertedContrast" icon="scale" onClick={() => setExp(1)} size="small" variant="contained" />
           </SMediaWrapper>
           <div className={style.Text}>
             <div className={style.Top}>
@@ -313,6 +310,13 @@ const SMediaWrapper = styled.div`
     height: ${({theme}) => theme.sizes.cardHeight.lg};
     width: ${({theme}) => theme.sizes.cardWidth.lg};
   }
+`;
+
+const SScaleButton = styled(Button)`
+  position: absolute;
+  bottom: 2.4rem;
+  left: 2.4rem;
+  z-index: 3;
 `;
 
 const STopCtasContainer = styled.div`

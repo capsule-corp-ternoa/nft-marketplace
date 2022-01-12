@@ -14,6 +14,7 @@ import Details from './Details';
 import Avatar from 'components/base/Avatar';
 import { MARKETPLACE_ID } from 'utils/constant';
 import { Container, Title, Wrapper } from 'components/layout';
+import Button from 'components/ui/Button';
 import Chip from 'components/ui/Chip';
 import Showcase from 'components/base/Showcase';
 import { getByTheSameArtistNFTs, getOwnedNFTS, getSeriesData } from 'actions/nft';
@@ -192,6 +193,25 @@ const NFTPage = ({
     }
   };
 
+  const smallestCapsPrice = Number(smallestPriceRow?.price);
+  const smallestTiimePrice = Number(smallestPriceRow?.priceTiime);
+  const isSmallestCapsPrice = smallestCapsPrice > 0;
+  const isSmallestTiimePrice = smallestTiimePrice > 0;
+
+  const smallestPriceWording =
+    isSmallestCapsPrice || isSmallestTiimePrice
+      ? `${isSmallestCapsPrice ? `${computeCaps(smallestCapsPrice)} CAPS` : ''}
+          ${isSmallestCapsPrice && isSmallestTiimePrice ? ' / ' : ''}
+          ${isSmallestTiimePrice ? `${computeTiime(smallestTiimePrice)} TIIME` : ''}`
+      : undefined;
+
+  const ctaWording =
+    isVR && !isUserFromDappQR
+      ? 'Reserved for VR gallery'
+      : !canUserBuyAgain
+      ? '1 VR NFT per account'
+      : smallestPriceWording && `Buy for ${smallestPriceWording}`;
+
   return (
     <Container>
       <Wrapper>
@@ -253,37 +273,7 @@ const NFTPage = ({
               ))}
             </SCategoriesWrapper>
             <p className={style.Description}>{NFT.description}</p>
-            <div className={style.Buy}>
-              <div
-                onClick={() => userCanBuy && handleBuy()}
-                className={userCanBuy ? style.Button : `${style.Button} ${style.Disabled}`}
-              >
-                {isVR && !isUserFromDappQR ? (
-                  'Reserved for VR gallery'
-                ) : !canUserBuyAgain ? (
-                  '1 VR NFT per account'
-                ) : (
-                  <>
-                    Buy {`${smallestPriceRow && (smallestPriceRow.price || smallestPriceRow.priceTiime) ? 'for ' : ''}`}
-                    {smallestPriceRow && (
-                      <>
-                        {smallestPriceRow.price &&
-                          Number(smallestPriceRow.price) > 0 &&
-                          `${computeCaps(Number(smallestPriceRow.price))} CAPS`}
-                        {smallestPriceRow.price &&
-                          Number(smallestPriceRow.price) > 0 &&
-                          smallestPriceRow.priceTiime &&
-                          Number(smallestPriceRow.priceTiime) &&
-                          ` / `}
-                        {smallestPriceRow.priceTiime &&
-                          Number(smallestPriceRow.priceTiime) > 0 &&
-                          `${computeTiime(Number(smallestPriceRow.priceTiime))} TIIME`}
-                      </>
-                    )}
-                  </>
-                )}
-              </div>
-            </div>
+            <Button color="primary" disabled={!userCanBuy} onClick={handleBuy} size="medium" text={ctaWording} variant="contained"/>
             <div className={style.Available}>
               <div className={style.AvailbleText}>
                 <NoNFTImage className={style.AvailbleCards} />

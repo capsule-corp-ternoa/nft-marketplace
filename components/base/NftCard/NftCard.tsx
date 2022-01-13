@@ -113,6 +113,11 @@ const SMediaWrapper = styled.div<{ mode?: ModeType }>`
             height: ${theme.sizes.cardHeight.md};
             width: ${theme.sizes.cardWidth.md};
           }
+
+          ${theme.mediaQueries.xxl} {
+            height: ${theme.sizes.cardHeight.sm};
+            width: ${theme.sizes.cardWidth.sm};
+          }
         `;
       }
     }

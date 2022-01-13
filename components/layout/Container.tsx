@@ -20,6 +20,10 @@ export const Wrapper = styled.div`
     padding-top: 5.6rem;
   }
 
+  &:last-child {
+    padding-bottom: 7.2rem;
+  }
+
   ${({ theme }) => theme.mediaQueries.md} {
     padding: 3.2rem 4rem;
   }
@@ -27,6 +31,10 @@ export const Wrapper = styled.div`
   ${({ theme }) => theme.mediaQueries.lg} {
     &:not(:first-child) {
       padding-top: 4.8rem;
+    }
+
+    &:last-child {
+      padding-bottom: 9.6rem;
     }
   }
 
@@ -37,6 +45,10 @@ export const Wrapper = styled.div`
 
     &:not(:first-child) {
       padding-top: 5.6rem;
+    }
+
+    &:last-child {
+      padding-bottom: 12rem;
     }
   }
 

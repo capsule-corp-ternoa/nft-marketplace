@@ -91,9 +91,13 @@ const SWrapper = styled(Wrapper)`
   flex-direction: row;
   justify-content: center;
   position: relative;
+  padding-top: 3.2rem !important;
+  padding-bottom: 3.2rem !important;
 
   ${({ theme }) => theme.mediaQueries.lg} {
     justify-content: space-between;
+    padding-top: 4rem !important;
+    padding-bottom: 4rem !important;
   }
 `;
 

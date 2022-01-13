@@ -209,89 +209,91 @@ const NFTPage = ({
       : smallestPriceWording && `Buy for ${smallestPriceWording}`;
 
   return (
-    <Container>
-      <Wrapper>
-        <SNftWrapper>
-          <SMediaWrapper>
-            <Media src={NFT.properties?.preview.ipfs!} type={type} alt="imgnft" draggable="false" />
-            <SScaleButton color="invertedContrast" icon="scale" onClick={() => setExp(1)} size="small" variant="contained" />
-          </SMediaWrapper>
-          <SInfosContainer>
-            <STopInfosContainer>
-              <Avatar
-                isVerified={NFT.creatorData?.verified}
-                name={NFT.creatorData?.name}
-                picture={NFT.creatorData?.picture}
-                twitterName={NFT.creatorData?.twitterName}
-                walletId={NFT.creatorData?.walletId}
-              />
-              <STopCtasContainer>
-                <Chip color="invertedContrast" icon="eye" size="medium" text={NFT.viewsCount} variant="rectangle" />
-                <Button color="neutral200" disabled={likeLoading} icon="heart" isLoading={likeLoading} onClick={toggleLikeDislike} size="small" variant="outlined" />
-                <Button color="neutral200" icon="share" onClick={handleShare} size="small" variant="outlined" />
-              </STopCtasContainer>
-            </STopInfosContainer>
-            <STitle>
-              {NFT.title}
-              {NFT.isCapsule && (
-                <SChip
-                  color="primaryLight"
-                  text={
-                    <>
-                      <SDot />
-                      Capsule
-                    </>
-                  }
-                  variant="rectangle"
-                />
-              )}
-            </STitle>
-            {NFT.categories.length > 0 && (
-              <SCategoriesWrapper>
-                {NFT.categories.map(({ name, code }) => (
-                  <Chip key={code} color="invertedContrast" text={name} size="medium" variant="rectangle" />
-                ))}
-              </SCategoriesWrapper>
-            )}
-            {NFT.description && <SDescription>{NFT.description}</SDescription>}
-            {ctaWording && (
-              <SBuyContainer>
-                <SBuyTopContainer>
-                  <Button color="primary" disabled={!userCanBuy} onClick={handleBuy} size="medium" text={ctaWording} variant="contained"/>
-                  {/* TODO: Use real date when biding option is implemented */}
-                  {/* <Countdown date={new Date('2022-01-17T03:24:00')} /> */}
-                </SBuyTopContainer>
-                <SAvailableContainer>
-                  <SAvailableText>
-                    <SIcon name="noNFTImage" />
-                    <SAvailableLabel>
-                      {`${NFT.totalListedInMarketplace ?? 0} of ${NFT.totalNft ?? 0}`} available
-                    </SAvailableLabel>
-                  </SAvailableText>
-                  <SAvailableBackLine />
-                </SAvailableContainer>
-              </SBuyContainer>
-            )}
-          </SInfosContainer>
-        </SNftWrapper>
-        <SDetailsWrapper>
-          <Details
-            NFT={NFT}
-            seriesData={seriesData}
-            user={user}
-            setNftToBuy={setNftToBuy}
-            setExp={setExp}
-            isUserFromDappQR={isUserFromDappQR}
-            isVR={isVR}
-            canUserBuyAgain={canUserBuyAgain}
-          />
-        </SDetailsWrapper>
-      </Wrapper>
-      {byTheSameArtistNFTs.length > 0 && (
+    <>
+      <Container>
         <Wrapper>
-          <Showcase category="By the same artist" NFTs={byTheSameArtistNFTs} user={user} />
+          <SNftWrapper>
+            <SMediaWrapper>
+              <Media src={NFT.properties?.preview.ipfs!} type={type} alt="imgnft" draggable="false" />
+              <SScaleButton color="invertedContrast" icon="scale" onClick={() => setExp(1)} size="small" variant="contained" />
+            </SMediaWrapper>
+            <SInfosContainer>
+              <STopInfosContainer>
+                <Avatar
+                  isVerified={NFT.creatorData?.verified}
+                  name={NFT.creatorData?.name}
+                  picture={NFT.creatorData?.picture}
+                  twitterName={NFT.creatorData?.twitterName}
+                  walletId={NFT.creatorData?.walletId}
+                />
+                <STopCtasContainer>
+                  <Chip color="invertedContrast" icon="eye" size="medium" text={NFT.viewsCount} variant="rectangle" />
+                  <Button color="neutral200" disabled={likeLoading} icon="heart" isLoading={likeLoading} onClick={toggleLikeDislike} size="small" variant="outlined" />
+                  <Button color="neutral200" icon="share" onClick={handleShare} size="small" variant="outlined" />
+                </STopCtasContainer>
+              </STopInfosContainer>
+              <STitle>
+                {NFT.title}
+                {NFT.isCapsule && (
+                  <SChip
+                    color="primaryLight"
+                    text={
+                      <>
+                        <SDot />
+                        Capsule
+                      </>
+                    }
+                    variant="rectangle"
+                  />
+                )}
+              </STitle>
+              {NFT.categories.length > 0 && (
+                <SCategoriesWrapper>
+                  {NFT.categories.map(({ name, code }) => (
+                    <Chip key={code} color="invertedContrast" text={name} size="medium" variant="rectangle" />
+                  ))}
+                </SCategoriesWrapper>
+              )}
+              {NFT.description && <SDescription>{NFT.description}</SDescription>}
+              {ctaWording && (
+                <SBuyContainer>
+                  <SBuyTopContainer>
+                    <Button color="primary" disabled={!userCanBuy} onClick={handleBuy} size="medium" text={ctaWording} variant="contained"/>
+                    {/* TODO: Use real date when biding option is implemented */}
+                    {/* <Countdown date={new Date('2022-01-17T03:24:00')} /> */}
+                  </SBuyTopContainer>
+                  <SAvailableContainer>
+                    <SAvailableText>
+                      <SIcon name="noNFTImage" />
+                      <SAvailableLabel>
+                        {`${NFT.totalListedInMarketplace ?? 0} of ${NFT.totalNft ?? 0}`} available
+                      </SAvailableLabel>
+                    </SAvailableText>
+                    <SAvailableBackLine />
+                  </SAvailableContainer>
+                </SBuyContainer>
+              )}
+            </SInfosContainer>
+          </SNftWrapper>
+          <SDetailsWrapper>
+            <Details
+              NFT={NFT}
+              seriesData={seriesData}
+              user={user}
+              setNftToBuy={setNftToBuy}
+              setExp={setExp}
+              isUserFromDappQR={isUserFromDappQR}
+              isVR={isVR}
+              canUserBuyAgain={canUserBuyAgain}
+            />
+          </SDetailsWrapper>
         </Wrapper>
-      )}
+        {byTheSameArtistNFTs.length > 0 && (
+          <Wrapper>
+            <Showcase category="By the same artist" NFTs={byTheSameArtistNFTs} user={user} />
+          </Wrapper>
+        )}
+      </Container>
       {modalShareOpen && (
         <ModalShare
           setModalExpand={setModalShareOpen}
@@ -301,7 +303,7 @@ const NFTPage = ({
           url={shareUrl}
         />
       )}
-    </Container>
+    </>
   );
 };
 

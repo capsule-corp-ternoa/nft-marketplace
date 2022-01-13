@@ -1,22 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components'
-import Media from 'components/base/Media';
-import { computeCaps, computeTiime } from 'utils/strings';
-import { UserType, NftType } from 'interfaces';
-import ModalShare from 'components/base/ModalShare';
-import Details from './Details';
+
+import { getByTheSameArtistNFTs, getOwnedNFTS, getSeriesData } from 'actions/nft';
 import Avatar from 'components/base/Avatar';
-import { MARKETPLACE_ID } from 'utils/constant';
+import Media from 'components/base/Media';
+import ModalShare from 'components/base/ModalShare';
+import Showcase from 'components/base/Showcase';
 import { Container, Title, Wrapper } from 'components/layout';
 import Button from 'components/ui/Button';
 import Chip from 'components/ui/Chip';
 import Icon from 'components/ui/Icon';
-import Showcase from 'components/base/Showcase';
-import { getByTheSameArtistNFTs, getOwnedNFTS, getSeriesData } from 'actions/nft';
+import { UserType, NftType } from 'interfaces';
+import { MARKETPLACE_ID } from 'utils/constant';
 import { getRandomNFTFromArray } from 'utils/functions';
 import { toggleLike } from 'utils/profile';
 import { LIKE_ACTION, UNLIKE_ACTION } from 'utils/profile/constants';
+import { computeCaps, computeTiime } from 'utils/strings';
 
+import Details from './Details';
 export interface NFTPageProps {
   NFT: NftType;
   setNftToBuy: (NFT: NftType) => void;
@@ -255,12 +256,19 @@ const NFTPage = ({
             {NFT.description && <SDescription>{NFT.description}</SDescription>}
             {ctaWording && (
               <SBuyContainer>
-                <Button color="primary" disabled={!userCanBuy} onClick={handleBuy} size="medium" text={ctaWording} variant="contained"/>
+                <SBuyTopContainer>
+                  <Button color="primary" disabled={!userCanBuy} onClick={handleBuy} size="medium" text={ctaWording} variant="contained"/>
+                  {/* TODO: Use real date when biding option is implemented */}
+                  {/* <Countdown date={new Date('2022-01-17T03:24:00')} /> */}
+                </SBuyTopContainer>
                 <SAvailableContainer>
-                  <SIcon name="noNFTImage" />
-                  <SAvailableLabel>
-                    {`${NFT.totalListedInMarketplace ?? 0} of ${NFT.totalNft ?? 0}`} available
-                  </SAvailableLabel>
+                  <SAvailableText>
+                    <SIcon name="noNFTImage" />
+                    <SAvailableLabel>
+                      {`${NFT.totalListedInMarketplace ?? 0} of ${NFT.totalNft ?? 0}`} available
+                    </SAvailableLabel>
+                  </SAvailableText>
+                  <SAvailableBackLine />
                 </SAvailableContainer>
               </SBuyContainer>
             )}
@@ -461,6 +469,7 @@ const SBuyContainer = styled.div`
   align-items: center;
   align-self: center;
   margin-top: 4rem;
+  position: relative;
   width: fit-content;
 
   ${({ theme }) => theme.mediaQueries.lg} {
@@ -469,10 +478,40 @@ const SBuyContainer = styled.div`
   }
 `;
 
+const SBuyTopContainer = styled.div`
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+
+  > * {
+      &:not(:first-child) {
+        margin-bottom: 1.6rem;
+      }
+    }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    flex-direction: row;
+
+    > * {
+      &:not(:first-child) {
+        margin-bottom: 0;
+        margin-left: 5.6rem;
+      }
+    }
+  }
+`;
+
 const SAvailableContainer = styled.div`
   display: flex;
   align-items: center;
   margin-top: 1.6rem;
+`;
+
+const SAvailableText = styled.div`
+  background-color: ${({ theme }) => theme.colors.invertedContrast};
+  display: flex;
+  align-items: center;
+  padding: 0 0.8rem;
 `;
 
 const SIcon = styled(Icon)`
@@ -485,6 +524,15 @@ const SAvailableLabel = styled.span`
   font-size: 1.6rem;
   margin-left: 0.8rem;
   white-space: nowrap;
+`;
+
+const SAvailableBackLine = styled.div`
+  width: calc(100% - 4.8rem);
+  border-bottom: solid 1px;
+  border-color: ${({ theme }) => theme.colors.neutral400};
+  position: absolute;
+  left: 2.4rem;
+  z-index: -1;
 `;
 
 export default NFTPage;

@@ -349,7 +349,7 @@ const Details: React.FC<DetailsProps> = ({
   };
 
   return (
-    <div className={styleDetails.detailsMain}>
+    <>
       <div className={styleDetails.detailsMenu}>
         {tabs.map(x => {
           return (
@@ -445,7 +445,7 @@ const Details: React.FC<DetailsProps> = ({
           {currentTab === 'bid' && <div></div>}
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

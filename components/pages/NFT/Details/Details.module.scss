@@ -1,8 +1,5 @@
 @import 'style/colors.scss';
 
-.detailsMain {
-  margin: 15px 24px;
-}
 .detailsMenu {
   display: flex;
   align-items: center;
@@ -216,9 +213,6 @@
 }
 
 @media (max-width: 1300px) {
-  .detailsMain {
-    margin: 15px 60px;
-  }
   .infoDatasWrapper {
     justify-content: start;
     flex-wrap: wrap;
@@ -229,22 +223,11 @@
   }
 }
 @media (max-width: 1000px) {
-  .detailsMain {
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  
   .rowDatasName {
     display: flex;
   }
 }
 @media (max-width: 840px) {
-  .detailsMain {
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto;
-  }
   .detailsMenu {
     justify-content: center;
     padding: 0px;
@@ -280,11 +263,6 @@
   }
 }
 @media (max-width: 720px) {
-  .detailsMain {
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-  }
   .detailsMenu {
     padding: 15px 24px;
   }

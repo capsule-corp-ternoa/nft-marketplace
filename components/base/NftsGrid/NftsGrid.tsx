@@ -147,6 +147,15 @@ const SNFTsContainer = styled.div`
   ${({ theme }) => theme.mediaQueries.md} {
     grid-template-columns: ${({ theme }) => `repeat(auto-fill, ${theme.sizes.cardWidth.md})`};
   }
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    gap: 4rem 2.4rem;
+    justify-content: space-between;
+  }
+
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    grid-template-columns: ${({ theme }) => `repeat(auto-fill, ${theme.sizes.cardWidth.sm})`};
+  }
 `;
 
 const SNftCardWithHover = styled(NftCardWithHover)`

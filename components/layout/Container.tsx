@@ -39,8 +39,6 @@ export const Wrapper = styled.div`
   }
 
   ${({ theme }) => theme.mediaQueries.xl} {
-    // TODO: Use xxl breakpoint when its value is 1440px
-    // max-width: ${breakpointMap.xxl}px;
     padding: 4rem 6.4rem;
 
     &:not(:first-child) {
@@ -53,6 +51,6 @@ export const Wrapper = styled.div`
   }
 
   ${({ theme }) => theme.mediaQueries.xxl} {
-    max-width: 144rem;
+    max-width: ${breakpointMap.xxl}px;
   }
 `;

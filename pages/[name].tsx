@@ -5,6 +5,8 @@ import cookies from 'next-cookies';
 
 import { getUser, getProfile } from 'actions/user';
 import BetaBanner from 'components/base/BetaBanner';
+import FloatingHeader from 'components/base/FloatingHeader';
+import Footer from 'components/base/Footer';
 import MainHeader from 'components/base/MainHeader';
 import TernoaWallet from 'components/base/TernoaWallet';
 import Profile, { ARTIST_PROFILE_VARIANT } from 'components/pages/Profile';
@@ -44,10 +46,11 @@ const PublicProfilePage = ({ user, profile }: PublicProfileProps) => {
       <Profile
         artist={profile}
         user={user}
-        setModalExpand={setModalExpand}
         tabs={ORDERED_TABS_ID}
         variant={ARTIST_PROFILE_VARIANT}
       />
+      <Footer />
+      <FloatingHeader user={user} setModalExpand={setModalExpand} />
     </>
   );
 };

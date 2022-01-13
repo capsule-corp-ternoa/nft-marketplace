@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import emojiRegex from 'emoji-regex';
 import { checkMark, errorMark, loadingSpinner500 } from 'components/assets';
-import Footer from 'components/base/Footer';
-import FloatingHeader from 'components/base/FloatingHeader';
 import {
   Advice,
   Container,
@@ -48,7 +46,6 @@ export interface CreateProps {
   QRData: QRDataType;
   user: UserType;
   setError: (err: string) => void;
-  setModalExpand: (b: boolean) => void;
   setModalCreate: (b: boolean) => void;
   setNFTData: (o: NFTProps) => void;
   setOriginalNFT: (f: File | null) => void;
@@ -66,7 +63,6 @@ const Create = ({
   QRData,
   user,
   setError,
-  setModalExpand,
   setModalCreate,
   setNFTData: setNftDataToParent,
   setOriginalNFT,
@@ -345,8 +341,6 @@ const Create = ({
           text="Create NFT"
         />
       </Wrapper>
-      <Footer />
-      <FloatingHeader user={user} setModalExpand={setModalExpand} />
     </Container>
   );
 };
@@ -441,11 +435,7 @@ const SAdvice = styled(Advice)`
 `;
 
 const SButton = styled(Button)`
-  margin: 4.8rem 0;
-
-  ${({ theme }) => theme.mediaQueries.xl} {
-    margin: 4.8rem 0 9.6rem;
-  }
+  margin-top: 4.8rem;
 `;
 
 export default Create;

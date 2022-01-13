@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import BetaBanner from 'components/base/BetaBanner';
+import FloatingHeader from 'components/base/FloatingHeader';
+import Footer from 'components/base/Footer';
 import MainHeader from 'components/base/MainHeader';
 import Landing from 'components/pages/Landing';
 import TernoaWallet from 'components/base/TernoaWallet';
@@ -62,7 +64,6 @@ const LandingPage = ({
         setModalExpand={setModalExpand}
       />
       <Landing
-        setModalExpand={setModalExpand}
         user={walletUser as UserType}
         users={users}
         capsDollarValue={capsDollarValue}
@@ -72,6 +73,8 @@ const LandingPage = ({
         NFTCreators={NFTCreators}
         totalCountNFT={totalCountNFT}
       />
+      <Footer />
+      <FloatingHeader user={user} setModalExpand={setModalExpand} />
     </>
   );
 };

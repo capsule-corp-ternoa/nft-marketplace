@@ -10,7 +10,7 @@ import Blaze from 'components/assets/blaze';
 import { UserType, NftType } from 'interfaces/index';
 
 export interface ArtCreatorsProps {
-  creators: UserType[];
+  creators?: UserType[];
   NFTs: NftType[];
   category?: string;
   user?: UserType;
@@ -53,22 +53,24 @@ const ArtCreators = ({ creators, NFTs, user }: ArtCreatorsProps) => {
               ))}
             </div>
           )}
-          <div className={style.CreatorsContainer}>
-            <div className={style.CreatorsInner}>
-              {creators.slice(0, 9).map(({ name, picture, walletId }) => (
-                <SCreatorPicture key={walletId}>
-                  <Picture
-                    isClickable
-                    isTooltip
-                    name={name}
-                    picture={picture}
-                    variant={AVATAR_VARIANT_MOSAIC}
-                    walletId={walletId}
-                  />
-                </SCreatorPicture>
-              ))}
+          {creators !== undefined && creators?.length > 0 && (
+            <div className={style.CreatorsContainer}>
+              <div className={style.CreatorsInner}>
+                {creators.slice(0, 9).map(({ name, picture, walletId }) => (
+                  <SCreatorPicture key={walletId}>
+                    <Picture
+                      isClickable
+                      isTooltip
+                      name={name}
+                      picture={picture}
+                      variant={AVATAR_VARIANT_MOSAIC}
+                      walletId={walletId}
+                    />
+                  </SCreatorPicture>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </>

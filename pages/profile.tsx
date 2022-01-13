@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import Head from 'next/head';
 import BetaBanner from 'components/base/BetaBanner';
+import FloatingHeader from 'components/base/FloatingHeader';
+import Footer from 'components/base/Footer';
 import MainHeader from 'components/base/MainHeader';
 import TernoaWallet from 'components/base/TernoaWallet';
 import Profile, { USER_PERSONNAL_PROFILE_VARIANT } from 'components/pages/Profile';
@@ -59,10 +61,11 @@ const ProfilePage = ({ user, owned, ownedHasNextPage }: ProfilePageProps) => {
         user={user}
         userOwnedlNfts={owned}
         userOwnedNftsHasNextPage={ownedHasNextPage}
-        setModalExpand={setModalExpand}
         tabs={ORDERED_TABS_ID}
         variant={USER_PERSONNAL_PROFILE_VARIANT}
       />
+      <Footer />
+      <FloatingHeader user={user} setModalExpand={setModalExpand} />
     </>
   );
 };

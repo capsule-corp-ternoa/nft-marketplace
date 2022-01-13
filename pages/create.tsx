@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import BetaBanner from 'components/base/BetaBanner';
+import FloatingHeader from 'components/base/FloatingHeader';
+import Footer from 'components/base/Footer';
 import MainHeader from 'components/base/MainHeader';
 import TernoaWallet from 'components/base/TernoaWallet';
 import Create from 'components/pages/Create';
@@ -126,7 +128,6 @@ const CreatePage = ({ categories, user }: CreatePageProps) => {
             QRData={QRData}
             user={user}
             setError={setError}
-            setModalExpand={setModalExpand}
             setModalCreate={setModalCreate}
             setNFTData={setNFTData}
             setOutput={setOutput}
@@ -137,6 +138,8 @@ const CreatePage = ({ categories, user }: CreatePageProps) => {
             setThumbnailTimecode={setThumbnailTimecode}
           />
         )}
+        <Footer />
+        <FloatingHeader user={user} setModalExpand={setModalExpand} />
       </>
     </>
   );

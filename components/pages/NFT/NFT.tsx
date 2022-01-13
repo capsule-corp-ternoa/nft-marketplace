@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components'
 import style from './NFT.module.scss';
-import Footer from 'components/base/Footer';
-import FloatingHeader from 'components/base/FloatingHeader';
 import Media from 'components/base/Media';
 import Scale from 'components/assets/scale';
 import Share from 'components/assets/share';
@@ -29,7 +27,6 @@ export interface NFTPageProps {
   user: UserType;
   type: string | null;
   setExp: (n: number) => void;
-  setModalExpand: (b: boolean) => void;
   capsValue: number;
   isUserFromDappQR: boolean;
 }
@@ -38,7 +35,6 @@ const NFTPage = ({
   setExp,
   NFT,
   setNftToBuy,
-  setModalExpand,
   user,
   type,
   isUserFromDappQR,
@@ -327,8 +323,6 @@ const NFTPage = ({
           <Showcase category="By the same artist" NFTs={byTheSameArtistNFTs} user={user} />
         </SShowcaseWrapper>
       )}
-      <Footer />
-      <FloatingHeader user={user} setModalExpand={setModalExpand} />
       {modalShareOpen && (
         <ModalShare
           setModalExpand={setModalShareOpen}

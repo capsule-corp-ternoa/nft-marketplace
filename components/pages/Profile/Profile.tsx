@@ -3,8 +3,6 @@ import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
 // import Link from 'next/link';
 import { Banner as AvatarBanner } from 'components/base/Avatar';
-import Footer from 'components/base/Footer';
-import FloatingHeader from 'components/base/FloatingHeader';
 import NftsGrid from 'components/base/NftsGrid';
 import { getCreatorNFTS, getLikedNFTs, getOwnedNFTS, getUserNFTsStat } from 'actions/nft';
 import { follow, getFollowers, getFollowed, getFollowersCount, unfollow } from 'actions/follower';
@@ -41,7 +39,6 @@ export const ARTIST_PROFILE_VARIANT = 'artist_profile';
 export const USER_PERSONNAL_PROFILE_VARIANT = 'user_personnal_profile';
 
 export interface ProfileProps {
-  setModalExpand: (b: boolean) => void;
   artist?: UserType;
   user: UserType;
   userOwnedlNfts?: NftType[];
@@ -51,7 +48,6 @@ export interface ProfileProps {
 }
 
 const Profile = ({
-  setModalExpand,
   artist,
   user,
   userOwnedlNfts,
@@ -658,8 +654,6 @@ const Profile = ({
           )}
         />
       </Wrapper>
-      <Footer />
-      <FloatingHeader user={user} setModalExpand={setModalExpand} />
     </Container>
   );
 };

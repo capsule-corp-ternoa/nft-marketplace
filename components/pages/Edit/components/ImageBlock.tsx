@@ -36,11 +36,13 @@ const ImageBlock = ({
     <SBlockContainer className={className}>
       <label htmlFor={id}>
         {name && (
-          <SPicture
-            name={name}
-            picture={picture}
-            variant={AVATAR_VARIANT_EDIT}
-          />
+          <SPictureContainer>
+            <Picture
+              name={name}
+              picture={picture}
+              variant={AVATAR_VARIANT_EDIT}
+            />
+          </SPictureContainer>
         )}
         {banner && (
           <SBannerPicture src={banner} alt="user banner" draggable="false" />
@@ -72,7 +74,7 @@ const SBlockContainer = styled.div`
   align-items: center;
 `;
 
-const SPicture = styled(Picture)`
+const SPictureContainer = styled.div`
   &:hover {
     cursor: pointer;
   }

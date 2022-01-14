@@ -50,13 +50,12 @@ const Select = ({
         setSelectExpanded(false);
       }}
     >
-      <SelectContainer className={className} suppressHydrationWarning>
+      <SelectContainer className={className}>
         <SelectRoot
           color={color}
           disabled={disabled}
           isBadge={isBadge}
           onClick={toggleSelect}
-          suppressHydrationWarning
         >
           <SLabelContainer>
             {text}

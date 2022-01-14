@@ -35,7 +35,6 @@ const Chip = ({
       isDeletable={!!onDelete}
       noBorder={noBorder}
       size={size}
-      suppressHydrationWarning
       variant={variant}
     >
       {icon && (

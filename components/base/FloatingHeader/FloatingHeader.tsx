@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useMediaQuery } from 'react-responsive';
 import Link from 'next/link';
 import styled from 'styled-components';
 
@@ -9,7 +8,6 @@ import Button from 'components/ui/Button';
 
 import { UserType } from 'interfaces/index';
 import { computeCaps } from 'utils/strings';
-import { breakpointMap } from 'style/theme/base';
 
 import style from './FloatingHeader.module.scss';
 export interface FloatingHeaderProps {
@@ -26,17 +24,9 @@ const FloatingHeader: React.FC<FloatingHeaderProps> = ({ user }) => {
     setSearchValue(event.currentTarget.value);
   };
 
-  const isMobileTablet = useMediaQuery({
-    query: `(max-width: ${breakpointMap.lg - 1}px)`,
-  });
-
-  if (!isMobileTablet) {
-    return null;
-  }
-
   return (
     <>
-      <div className={isExpanded ? `${style.Header} ${style.HeaderExpanded}` : style.Header}>
+      <SHeaderContainer isExpanded={isExpanded}>
         {isExpanded && (
           <div className={style.FullHeader}>
             <div className={style.SearchBar}>
@@ -93,11 +83,38 @@ const FloatingHeader: React.FC<FloatingHeaderProps> = ({ user }) => {
         {user && isProfileMenuExpanded && (
           <SProfileMenuDropdown onClose={() => setIsProfileMenuExpanded(false)} user={user} />
         )}
-      </div>
+      </SHeaderContainer>
       {isModalWalletExpanded && <ModalWallet setExpanded={setIsModalWalletExpanded} />}
     </>
   );
 };
+
+const SHeaderContainer = styled.div<{ isExpanded: boolean }>`
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(20px);
+  border-radius: ${({ isExpanded }) => isExpanded ? '2.4rem' : '4rem'};
+  position: fixed;
+  z-index: 100;
+  bottom: 5.6rem;
+  right: 10%;
+  padding: ${({ isExpanded }) => isExpanded ? '1.6rem' : '1.2rem'};
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    width: 28rem;
+    right: 5.6rem;
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    display: none;
+  }
+`;
 
 const SProfileMenuBadge = styled(ProfileMenuBadge)`
   background-color: transparent;

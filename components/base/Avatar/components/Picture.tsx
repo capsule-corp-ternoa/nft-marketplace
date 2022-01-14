@@ -21,9 +21,8 @@ interface Props {
 }
 
 const Picture = ({
-  className,
-  isClickable,
-  isTooltip,
+  isClickable = false,
+  isTooltip = false,
   isVerified,
   name = 'Ternoa',
   picture,
@@ -31,7 +30,6 @@ const Picture = ({
   walletId,
 }: Props) => (
   <SPictureContainer
-    className={className}
     isClickable={isClickable}
     isTooltip={isTooltip}
     onClick={() => isClickable && walletId && Router.push(`/${walletId}`)}
@@ -50,10 +48,7 @@ const Picture = ({
   </SPictureContainer>
 );
 
-const SPictureContainer = styled.div<{
-  isClickable?: boolean;
-  isTooltip?: boolean;
-}>`
+const SPictureContainer = styled.div<{ isClickable?: boolean; isTooltip?: boolean }>`
   position: relative;
   cursor: ${({ isClickable }) => (isClickable ? 'pointer' : 'default')};
 

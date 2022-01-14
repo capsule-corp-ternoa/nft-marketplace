@@ -639,7 +639,7 @@ const Profile = ({
       </Wrapper>
       <Wrapper>
         <Tabs
-          isTabsSelect={isTablet}
+          isTabsSelect
           resetTabId={resetTabId}
           tabs={tabs.reduce(
             (acc, id) => ({

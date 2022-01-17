@@ -4,12 +4,11 @@ import styled from 'styled-components'
 import { FixedSizeList as List, ListOnItemsRenderedProps } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { UserType, NftType, NFTTransferType, CustomResponse } from 'interfaces';
-import styleDetails from './Details.module.scss';
 import { computeCaps, formatDate } from 'utils/strings';
 import Link from 'next/link';
 import { middleEllipsis } from '../../../../utils/strings';
 import { getUsers } from 'actions/user';
-import Avatar, { AVATAR_VARIANT_BADGE } from 'components/base/Avatar';
+import Avatar, { AVATAR_VARIANT_BADGE, AVATAR_VARIANT_TRANSACTION } from 'components/base/Avatar';
 import Button from 'components/ui/Button';
 import Chip from 'components/ui/Chip';
 import { EXPLORER_URL, MARKETPLACE_ID } from 'utils/constant';
@@ -214,36 +213,36 @@ const Details: React.FC<DetailsProps> = ({
     );
 
     return (
-      <div
-        className={styleDetails.rows}
+      <SRows
         key={NFTRowId}
         style={{ ...style, height: (style?.height as any) - GUTTER_SIZE }}
       >
-        <div className={styleDetails.row}>
+        <SRowWrapper>
           {!isMobile && (
-            <SChipButtonWrapper>
+            <SStatusChipWrapper>
               <Chip
                 color="primaryLight"
                 size="medium"
                 text="Owner"
                 variant="round"
               />
-            </SChipButtonWrapper>
+            </SStatusChipWrapper>
           )}
           <SRowDatas>
             <Avatar
               isClickable
+              isNameEllipsis
               isVerified={verified}
               label={isTablet && <StatusLinkLabel />}
               name={name}
               picture={picture}
               twitterName={isTablet ? undefined : twitterName}
-              variant={isTablet ? AVATAR_VARIANT_BADGE : undefined}
+              variant={isTablet ? AVATAR_VARIANT_TRANSACTION : undefined}
               walletId={NFTRowOwner}
             />
             {!isTablet && <StatusLinkLabel />}
           </SRowDatas>
-        </div>
+        </SRowWrapper>
         <SChipButtonWrapper>
           <Button
             color="primary"
@@ -262,7 +261,7 @@ const Details: React.FC<DetailsProps> = ({
             variant="contained"
           />
         </SChipButtonWrapper>
-      </div>
+      </SRows>
     );
   };
 
@@ -309,145 +308,242 @@ const Details: React.FC<DetailsProps> = ({
     );
 
     return (
-      <div
-        className={styleDetails.rows}
+      <SRows
         key={id}
         style={{ ...style, height: (style?.height as any) - GUTTER_SIZE }}
       >
-        <div className={styleDetails.row}>
+        <SRowWrapper>
           {!isMobile && (
-            <SChipButtonWrapper>
+            <SStatusChipWrapper>
               <Chip color="primaryLight" size="medium" text={typeOfTransaction} variant="round" />
-            </SChipButtonWrapper>
+            </SStatusChipWrapper>
           )}
           <SRowDatas>
             <Avatar
               isAddressDisplayed={!isMobile}
               isClickable
+              isNameEllipsis
               isVerified={isTransactionCreationOrSale ? toData?.verified : fromData?.verified}
               label={isMobile && <StatusLabel />}
               name={isTransactionCreationOrSale ? toData?.name : fromData?.name}
               picture={isTransactionCreationOrSale ? toData?.picture : fromData?.picture}
-              variant={isTablet ? AVATAR_VARIANT_BADGE : undefined}
+              variant={isTablet ? AVATAR_VARIANT_TRANSACTION : undefined}
               walletId={isTransactionCreationOrSale ? to : from}
             />
             {!isMobile && <StatusLabel />}
           </SRowDatas>
-        </div>
+        </SRowWrapper>
         <SChipButtonWrapper>
           <Button
             color="primary"
             disabled={isTransactionViewDisabled}
             href={`${!isTransactionViewDisabled ? `${EXPLORER_URL}/nft/${id}?extrinsic=${extrinsic.id}` : "#"}`}
             size="small"
-            text="View transaction"
+            text={isMobile ? "View" : "View transaction"}
             variant={isTransactionViewDisabled ? "contained" : "outlined"}
           />
         </SChipButtonWrapper>
-      </div>
+      </SRows>
     );
   };
 
   return (
     <>
-      <div className={styleDetails.detailsMenu}>
-        {tabs.map(x => {
-          return (
-            <button
-              key={x}
-              className={
-                currentTab === x
-                  ? styleDetails.detailsMenuActiveItem
-                  : styleDetails.detailsMenuItem
-              }
-              onClick={() => switchTab(x)}
-              disabled={x==="bid"}
-            >
-              {x[0].toUpperCase() + x.substring(1)}
-            </button>
-          )
-        })}
-      </div>
-      <div>
-        <div className={styleDetails.detailsContent}>
-          {currentTab === 'infos' && (
-            <div className={styleDetails.detailsInfos}>
-              <div className={styleDetails.creatorWrapper}>
-                <SChipButtonWrapper>
-                  <Chip
-                    color="primaryLight"
-                    size="medium"
-                    text="Creator"
-                    variant="round"
-                  />
-                </SChipButtonWrapper>
-                <Avatar
-                  isClickable
-                  isVerified={NFT.creatorData?.verified}
-                  name={NFT.creatorData?.name}
-                  picture={NFT.creatorData?.picture}
-                  twitterName={NFT.creatorData?.twitterName}
-                  variant={isTablet ? AVATAR_VARIANT_BADGE : undefined}
-                  walletId={NFT.creator}
+      <STabsContainer>
+        {tabs.map((tab) => (
+          <STab
+            key={tab}
+            color={currentTab === tab ? 'contrast' : 'neutral500'}
+            disabled={tab === 'bid'}
+            onClick={() => switchTab(tab)}
+            size="medium"
+            text={tab}
+            variant="contained"
+          />
+        ))}
+      </STabsContainer>
+      <SContentContainer>
+        {currentTab === 'infos' && (
+          <SInfosContainer>
+            <SInfosCreatorContainer>
+              <SStatusChipWrapper>
+                <Chip
+                  color="primaryLight"
+                  size="medium"
+                  text="Creator"
+                  variant="round"
                 />
-              </div>
-              <div className={styleDetails.infoDatasWrapper}>
-              <div className={styleDetails.infoDatas}>
-                  <small className={styleDetails.infoDatasTitle}>
-                    Series ID : 
-                  </small>
-                  <div className={styleDetails.infoDatasContent}>
-                    {NFT.serieId}
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-          {currentTab === 'owners' && (
-            <div className={styleDetails.rowsContainers}>
+              </SStatusChipWrapper>
+              <Avatar
+                isClickable
+                isVerified={NFT.creatorData?.verified}
+                name={NFT.creatorData?.name}
+                picture={NFT.creatorData?.picture}
+                twitterName={NFT.creatorData?.twitterName}
+                variant={isTablet ? AVATAR_VARIANT_BADGE : undefined}
+                walletId={NFT.creator}
+              />
+            </SInfosCreatorContainer>
+            <SInfosDataContainer>
+              <SInfoDatasTitle>
+                Series ID :
+              </SInfoDatasTitle>
+              <SInfoDatasContent>
+                {NFT.serieId}
+              </SInfoDatasContent>
+            </SInfosDataContainer>
+          </SInfosContainer>
+        )}
+        {currentTab === 'owners' && (
+          <SRowsContainers>
+            <AutoSizer>
+              {({ width, height }) => (
+                <List
+                  width={width}
+                  height={height}
+                  itemCount={serieDataGrouped.length}
+                  itemSize={88}
+                  onItemsRendered={onRowRenderedOwners}
+                >
+                  {ownerRowData}
+                </List>
+              )}
+            </AutoSizer>
+            {NFT.totalNft && seriesData.length < NFT.totalNft && (
+              <SLoader color="primary" />
+            )}
+          </SRowsContainers>
+        )}
+        {currentTab === 'history' &&
+          (!historyLoading ? (
+            <SRowsContainers>
               <AutoSizer>
                 {({ width, height }) => (
                   <List
                     width={width}
                     height={height}
-                    itemCount={serieDataGrouped.length}
+                    itemCount={historyData.length}
                     itemSize={88}
-                    onItemsRendered={onRowRenderedOwners}
+                    onItemsRendered={onRowRenderedHistory}
                   >
-                    {ownerRowData}
+                    {historyRowData}
                   </List>
                 )}
               </AutoSizer>
-              {NFT.totalNft && seriesData.length < NFT.totalNft && <SLoader color="primary" />}
-            </div>
-          )}
-          {currentTab === 'history' && 
-            (!historyLoading ? 
-              <div className={styleDetails.rowsContainers}>
-                <AutoSizer>
-                  {({ width, height }) => (
-                    <List
-                      width={width}
-                      height={height}
-                      itemCount={historyData.length}
-                      itemSize={88}
-                      onItemsRendered={onRowRenderedHistory}
-                    >
-                      {historyRowData}
-                    </List>
-                  )}
-                </AutoSizer>
-              </div>
-            :
-              <SLoader color="primary" />
-            )
-          }
-          {currentTab === 'bid' && <div></div>}
-        </div>
-      </div>
+            </SRowsContainers>
+          ) : (
+            <SLoader color="primary" />
+          ))}
+        {currentTab === 'bid' && <div></div>}
+      </SContentContainer>
     </>
   );
 };
+
+const STabsContainer = styled.div`
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+
+  > * {
+    margin-left: 1.6rem;
+
+    &:first-child {
+      margin: 0;
+    }
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    > * {
+      margin-left: 3.2rem;
+
+      &:first-child {
+        margin: 0;
+      }
+    }
+  }
+`;
+
+const STab = styled(Button)`
+ text-transform: capitalize; 
+`;
+
+const SContentContainer = styled.div`
+  margin-top: 1.6rem;
+`;
+
+const SInfosContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+  background: ${({ theme }) => theme.colors.neutral500};
+  border-radius: 1.6rem;
+  padding: 2.4rem 1.6rem;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    flex-direction: row;
+  }
+`;
+
+const SInfosCreatorContainer = styled.div`
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    flex-direction: row;
+  }
+`;
+
+const SInfosDataContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0.8rem;
+  text-align: center;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: baseline;
+  }
+`;
+
+const SInfoDatasTitle = styled.small`
+  font-size: 1.2rem;
+`;
+
+const SInfoDatasContent = styled.div`
+  font-family: ${({ theme }) => theme.fonts.bold};
+  font-size: 1.6rem;
+  text-align: center;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    margin-left: 0.4rem;
+  }
+`;
+
+const SRowsContainers = styled.div`
+  height: 29vh;
+  width: auto;
+`;
+
+const SRows = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: ${({ theme }) => theme.colors.neutral500};
+  border-radius: 1.2rem;
+  overflow: auto hidden;
+  padding: 1.2rem;
+`;
+
+const SRowWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
 
 const SRowDatas = styled.div`
   display: flex;
@@ -466,7 +562,7 @@ const SRowDatasDetails = styled.div`
   color: ${({ theme }) => theme.colors.contrast};
   font-size: 1.2rem;
   
-  ${({ theme }) => theme.mediaQueries.md} {
+  ${({ theme }) => theme.mediaQueries.lg} {
     font-family: ${({theme}) => theme.fonts.bold};
     font-size: 1.6rem;
   }
@@ -487,9 +583,18 @@ const SChipButtonWrapper = styled.div`
   text-transform: capitalize;
 `;
 
+const SStatusChipWrapper = styled(SChipButtonWrapper)`
+  min-width: 10rem;
+`;
+
 const SStatusLink = styled.a`
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   color: ${({ theme }) => theme.colors.contrast};
   font-size: 1.2rem;
+  max-width: 24rem;
+  overflow: hidden;
   
   ${({ theme }) => theme.mediaQueries.lg} {
     font-family: ${({theme}) => theme.fonts.bold};

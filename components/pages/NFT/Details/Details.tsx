@@ -17,6 +17,7 @@ import { getRandomNFTFromArray } from 'utils/functions';
 import { getHistory } from 'actions/nft';
 import { breakpointMap } from 'style/theme/base';
 
+const ITEM_SIZE = 88;
 const GUTTER_SIZE = 5;
 
 export interface DetailsProps {
@@ -395,14 +396,14 @@ const Details: React.FC<DetailsProps> = ({
           </SInfosContainer>
         )}
         {currentTab === 'owners' && (
-          <SRowsContainers>
+          <SRowsContainer>
             <AutoSizer>
               {({ width, height }) => (
                 <List
                   width={width}
                   height={height}
                   itemCount={serieDataGrouped.length}
-                  itemSize={88}
+                  itemSize={ITEM_SIZE}
                   onItemsRendered={onRowRenderedOwners}
                 >
                   {ownerRowData}
@@ -412,25 +413,25 @@ const Details: React.FC<DetailsProps> = ({
             {NFT.totalNft && seriesData.length < NFT.totalNft && (
               <SLoader color="primary" />
             )}
-          </SRowsContainers>
+          </SRowsContainer>
         )}
         {currentTab === 'history' &&
           (!historyLoading ? (
-            <SRowsContainers>
+            <SRowsContainer>
               <AutoSizer>
                 {({ width, height }) => (
                   <List
                     width={width}
                     height={height}
                     itemCount={historyData.length}
-                    itemSize={88}
+                    itemSize={ITEM_SIZE}
                     onItemsRendered={onRowRenderedHistory}
                   >
                     {historyRowData}
                   </List>
                 )}
               </AutoSizer>
-            </SRowsContainers>
+            </SRowsContainer>
           ) : (
             <SLoader color="primary" />
           ))}
@@ -470,6 +471,7 @@ const STab = styled(Button)`
 
 const SContentContainer = styled.div`
   margin-top: 1.6rem;
+  height: 29vh;
 `;
 
 const SInfosContainer = styled.div`
@@ -479,10 +481,11 @@ const SInfosContainer = styled.div`
   flex-direction: column;
   background: ${({ theme }) => theme.colors.neutral500};
   border-radius: 1.6rem;
-  padding: 2.4rem 1.6rem;
+  padding: 1.2rem 2.4rem 1.2rem 1.2rem;
 
   ${({ theme }) => theme.mediaQueries.lg} {
     flex-direction: row;
+    height: ${`${ITEM_SIZE - GUTTER_SIZE}px`};
   }
 `;
 
@@ -525,7 +528,7 @@ const SInfoDatasContent = styled.div`
   }
 `;
 
-const SRowsContainers = styled.div`
+const SRowsContainer = styled.div`
   height: 29vh;
   width: auto;
 `;

@@ -6,11 +6,19 @@ body {
   padding: 0px;
   margin: 0px;
   box-sizing: border-box;
+  height: 100vh;
+  margin: 0;
 
   &.model-open {
     overflow: hidden;
   }
   -webkit-font-smoothing :antialiased;
+}
+
+#__next {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 @font-face {

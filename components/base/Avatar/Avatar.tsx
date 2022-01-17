@@ -10,16 +10,9 @@ import Icon from 'components/ui/Icon';
 import { breakpointMap } from 'style/theme/base';
 
 import Picture from './components/Picture';
-
-export const AVATAR_VARIANT_BADGE = 'badge';
-export const AVATAR_VARIANT_BANNER = 'banner';
-export const AVATAR_VARIANT_EDIT = 'edit';
-export const AVATAR_VARIANT_MOSAIC = 'mosaic';
-export type AVATAR_VARIANT_TYPE =
-  | typeof AVATAR_VARIANT_BADGE
-  | typeof AVATAR_VARIANT_BANNER
-  | typeof AVATAR_VARIANT_EDIT
-  | typeof AVATAR_VARIANT_MOSAIC;
+import { AVATAR_VARIANT_BANNER } from './constants'
+import { AVATAR_VARIANT_TYPE } from './interfaces';
+import { getNameFontSize } from './utils';
 
 interface Props {
   className?: string;
@@ -230,8 +223,13 @@ const SName = styled.a<{ variant?: AVATAR_VARIANT_TYPE }>`
       ? theme.colors.primary
       : theme.colors.contrast};
   font-family: ${({ theme }) => theme.fonts.bold};
-  font-size: ${({ variant }) =>
-    variant === AVATAR_VARIANT_BANNER ? '3.2rem' : '1.6rem'};
+  font-size: ${({ variant }) => getNameFontSize(variant)};
+
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 10rem;
+  display: inline-block;
 
   &:hover {
     color: ${({ theme }) => theme.colors.primary};

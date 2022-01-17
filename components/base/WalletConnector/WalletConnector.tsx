@@ -45,8 +45,8 @@ const WalletConnector: React.FC<WalletConnectorProps> = ({
 
     _provider.onDisconnect().then(onDisconnect)
   };
-  const onConnect = () => {
-    console.log('chainChanged tonConnect');
+  const onConnect = (data: any) => {
+    console.log('chainChanged onConnect', data);
     setConnectSuccess(true);
   }
   const onDisconnect = () => {

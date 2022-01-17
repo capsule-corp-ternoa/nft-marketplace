@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import Head from 'next/head';
 import BetaBanner from 'components/base/BetaBanner';
+import Footer from 'components/base/Footer';
+import FloatingHeader from 'components/base/FloatingHeader';
 import MainHeader from 'components/base/MainHeader';
 import TernoaWallet from 'components/base/TernoaWallet';
 import FAQ from 'components/pages/FAQ';
@@ -28,10 +30,9 @@ const FAQPage = ({ user }: FAQProps) => {
       {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
       <BetaBanner />
       <MainHeader user={user} setModalExpand={setModalExpand} />
-      <FAQ
-        user={user}
-        setModalExpand={setModalExpand}
-      />
+      <FAQ />
+      <Footer />
+      <FloatingHeader user={user} setModalExpand={setModalExpand} />
     </>
   );
 };

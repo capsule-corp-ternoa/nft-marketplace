@@ -49,6 +49,7 @@ const Footer = () => {
 const SFooterContainer = styled(Container)`
   width: 100%;
   background: ${({ theme }) => theme.colors.contrast};
+  margin-top: auto;
 `;
 
 const SFooterWrapper = styled(Wrapper)`

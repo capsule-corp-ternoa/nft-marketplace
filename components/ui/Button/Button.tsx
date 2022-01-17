@@ -21,6 +21,10 @@ interface Props extends IButton {
 }
 
 const handleColor = (theme: DefaultTheme, color?: keyof Colors, variant?: 'contained' | 'outlined'): string => {
+  if (color === undefined) {
+    return theme.colors.contrast;
+  }
+
   switch (variant) {
     case 'contained':
       return containedColors(theme, color);
@@ -30,7 +34,7 @@ const handleColor = (theme: DefaultTheme, color?: keyof Colors, variant?: 'conta
   }
 };
 
-const containedColors = (theme: DefaultTheme, color?: keyof Colors): string => {
+const containedColors = (theme: DefaultTheme, color: keyof Colors): string => {
   switch (color) {
     case 'contrast':
     case 'primary':
@@ -44,12 +48,17 @@ const containedColors = (theme: DefaultTheme, color?: keyof Colors): string => {
   }
 };
 
-const outlinedColors = (theme: DefaultTheme, color?: keyof Colors): string => {
+const outlinedColors = (theme: DefaultTheme, color: keyof Colors): string => {
   switch (color) {
-    case 'primary':
-      return theme.colors.primary;
-    default:
+    case 'invertedContrast':
+    case 'neutral200':
+    case 'neutral300':
+    case 'neutral400':
+    case 'neutral500':
+    case 'whiteBlur':
       return theme.colors.contrast;
+    default:
+      return theme.colors[color];
   }
 };
 
@@ -64,7 +73,7 @@ const ButtonStyle = css<IButton>`
       : 'transparent'};
   border: ${({ size, variant }) => (variant === 'outlined' ? size === 'small' ? '1px solid' : '2px solid' : 'none')};
   border-radius: 4rem;
-  box-shadow: 0 0 0.8rem 0.4rem rgba(0, 0, 0, 0.05);
+  box-shadow: ${({ disabled }) => disabled ? 'none' : '0 0 0.8rem 0.4rem rgba(0, 0, 0, 0.05)'};
   cursor: ${({ noHover }) => (noHover ? 'default' : 'pointer')};
   font-family: ${({ theme }) => theme.fonts.bold};
   font-size: ${({ size }) => (size === 'small' ? '1.2rem' : '1.6rem')};
@@ -73,7 +82,7 @@ const ButtonStyle = css<IButton>`
     isIconOnly
       ? '1.2rem'
       : size === 'small'
-      ? '0.8rem 2.4rem'
+      ? '0.8rem 2rem'
       : '1.2rem 3.2rem'};
   pointer-events: ${({ disabled, noHover }) => (disabled || noHover ? 'none' : 'auto')};
   text-align: center;
@@ -94,19 +103,28 @@ const ButtonStyle = css<IButton>`
     }`}
 
   border-color: ${({ theme, color }) => {
+    if (color === undefined) {
+      return theme.colors.contrast;
+    }
+
     switch (color) {
-      case 'primary':
-        return theme.colors.primary;
-      case 'contrast':
       case 'invertedContrast':
-        return theme.colors.contrast;
+      case 'neutral200':
+      case 'neutral300':
+      case 'neutral400':
+      case 'neutral500':
       case 'whiteBlur':
-      default:
         return theme.colors.neutral400;
+      default:
+        return theme.colors[color];
     }
   }};
 
   color: ${({ theme, color, variant }) => handleColor(theme, color, variant)};
+
+  svg, path {
+    fill: ${({ theme, color, variant }) => handleColor(theme, color, variant)};
+  }
 `;
 
 const Button = ({
@@ -154,7 +172,7 @@ const Button = ({
       variant={variant}
     >
       {isLoading ? (
-        <SLoader color={color ?? 'invertedContrast'} size="small" variant={variant} />
+        <SLoader color={color ?? 'invertedContrast'} size={size} variant={variant} />
       ) : (
         <>
           {icon && (
@@ -176,10 +194,10 @@ const SLoader = styled(Loader)<{ color: keyof Colors, variant?: 'contained' | 'o
 `;
 
 const SIcon = styled(Icon)<{ isIconOnly: boolean; size: 'small' | 'medium' }>`
-  width: ${({ size }) => (size === 'small' ? '1.2rem' : '2rem')};
-  height: ${({ size }) => (size === 'small' ? '1.2rem' : '2rem')};
+  width: ${({ size }) => (size === 'small' ? '1.6rem' : '2rem')};
+  height: ${({ size }) => (size === 'small' ? '1.6rem' : '2rem')};
   margin-right: ${({ isIconOnly, size }) =>
-    isIconOnly ? 0 : size === 'small' ? '0.8rem' : '1.6rem'};
+    isIconOnly ? 0 : size === 'small' ? '1.2rem' : '1.6rem'};
 `;
 
 const SAnchor = styled.a<IButton>`

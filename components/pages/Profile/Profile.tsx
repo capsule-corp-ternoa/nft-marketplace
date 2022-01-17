@@ -605,7 +605,7 @@ const Profile = ({
             walletId={walletId}
           />
           {!isTablet && variant === USER_PERSONNAL_PROFILE_VARIANT && (
-            <Button color="whiteBlur" icon="edit" href="/edit" text="Edit profile" size="small" variant="outlined" />
+            <Button color="neutral200" icon="edit" href="/edit" text="Edit profile" size="small" variant="outlined" />
           )}
           {artist && (
             <SArtistStatsBannerContainer>

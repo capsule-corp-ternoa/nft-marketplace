@@ -179,7 +179,7 @@ const Edit = ({ user, setSuccessPopup }: Props) => {
               walletId={walletId}
             />
             <Button
-              color="whiteBlur"
+              color="neutral200"
               icon="arrowLeft"
               href="/profile"
               text="Return"
@@ -192,7 +192,7 @@ const Edit = ({ user, setSuccessPopup }: Props) => {
           <STitle>Edit your profile</STitle>
           <SCertifiedButtonCOntainer>
             <Button
-              color="whiteBlur"
+              color="neutral200"
               icon={data.verified || data.reviewRequested ? 'badge' : undefined}
               noHover={data.verified || data.reviewRequested}
               onClick={handleCertificationReview}

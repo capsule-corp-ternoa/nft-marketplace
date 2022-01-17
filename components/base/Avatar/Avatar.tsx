@@ -10,16 +10,9 @@ import Icon from 'components/ui/Icon';
 import { breakpointMap } from 'style/theme/base';
 
 import Picture from './components/Picture';
-
-export const AVATAR_VARIANT_BADGE = 'badge';
-export const AVATAR_VARIANT_BANNER = 'banner';
-export const AVATAR_VARIANT_EDIT = 'edit';
-export const AVATAR_VARIANT_MOSAIC = 'mosaic';
-export type AVATAR_VARIANT_TYPE =
-  | typeof AVATAR_VARIANT_BADGE
-  | typeof AVATAR_VARIANT_BANNER
-  | typeof AVATAR_VARIANT_EDIT
-  | typeof AVATAR_VARIANT_MOSAIC;
+import { AVATAR_VARIANT_BANNER } from './constants'
+import { AVATAR_VARIANT_TYPE } from './interfaces';
+import { getNameFontSize } from './utils';
 
 interface Props {
   className?: string;
@@ -30,6 +23,7 @@ interface Props {
   isClickable?: boolean;
   isDiscoverButton?: boolean;
   isFollowButton?: boolean;
+  isNameEllipsis?: boolean;
   isPictureOnly?: boolean;
   isTooltip?: boolean;
   isUnfollow?: boolean;
@@ -52,6 +46,7 @@ const Avatar = ({
   isClickable,
   isDiscoverButton,
   isFollowButton,
+  isNameEllipsis,
   isPictureOnly,
   isTooltip,
   isUnfollow,
@@ -98,7 +93,7 @@ const Avatar = ({
         <SDetailsContainer variant={variant}>
           <STopDetails>
             <Link href={`/${walletId}`} passHref>
-              <SName href={`/${walletId}`} variant={variant}>{name}</SName>
+              <SName href={`/${walletId}`} isNameEllipsis={isNameEllipsis} variant={variant}>{name}</SName>
             </Link>
             {nickname !== undefined && <SNickname>{nickname}</SNickname>}
           </STopDetails>
@@ -224,14 +219,21 @@ const SBottomDetails = styled.div<{ isMarginTop?: boolean }>`
   }
 `;
 
-const SName = styled.a<{ variant?: AVATAR_VARIANT_TYPE }>`
+const SName = styled.a<{ isNameEllipsis?: boolean, variant?: AVATAR_VARIANT_TYPE }>`
   color: ${({ theme, variant }) =>
     variant === AVATAR_VARIANT_BANNER
       ? theme.colors.primary
       : theme.colors.contrast};
   font-family: ${({ theme }) => theme.fonts.bold};
-  font-size: ${({ variant }) =>
-    variant === AVATAR_VARIANT_BANNER ? '3.2rem' : '1.6rem'};
+  font-size: ${({ variant }) => getNameFontSize(variant)};
+
+  ${({ isNameEllipsis }) => isNameEllipsis && `
+    display: inline-block;
+    width: 12rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  `}
 
   &:hover {
     color: ${({ theme }) => theme.colors.primary};

@@ -30,7 +30,7 @@ const NoNFTComponent = ({ body, className, href, linkLabel, title, variant }: Pr
             <Link href={href} passHref>
               <>
                 <Button
-                  color="invertedContrast"
+                  color="contrast"
                   href={href}
                   text={linkLabel}
                   size="medium"

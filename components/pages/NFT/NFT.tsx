@@ -1,26 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components'
-import style from './NFT.module.scss';
-import Media from 'components/base/Media';
-import Scale from 'components/assets/scale';
-import Share from 'components/assets/share';
-import Like from 'components/assets/heart';
-import Eye from 'components/assets/eye';
-import { computeCaps, computeTiime } from 'utils/strings';
-import { UserType, NftType } from 'interfaces';
-import ModalShare from 'components/base/ModalShare';
-import NoNFTImage from '../../assets/NoNFTImage';
-import Details from './Details';
-import Avatar from 'components/base/Avatar';
-import { MARKETPLACE_ID } from 'utils/constant';
-import { Title } from 'components/layout'
-import Chip from 'components/ui/Chip';
-import Showcase from 'components/base/Showcase';
+
 import { getByTheSameArtistNFTs, getOwnedNFTS, getSeriesData } from 'actions/nft';
+import Avatar from 'components/base/Avatar';
+import Media from 'components/base/Media';
+import ModalShare from 'components/base/ModalShare';
+import Showcase from 'components/base/Showcase';
+import { Container, Title, Wrapper } from 'components/layout';
+import Button from 'components/ui/Button';
+import Chip from 'components/ui/Chip';
+import Icon from 'components/ui/Icon';
+import { UserType, NftType } from 'interfaces';
+import { MARKETPLACE_ID } from 'utils/constant';
 import { getRandomNFTFromArray } from 'utils/functions';
 import { toggleLike } from 'utils/profile';
 import { LIKE_ACTION, UNLIKE_ACTION } from 'utils/profile/constants';
+import { computeCaps, computeTiime } from 'utils/strings';
 
+import Details from './Details';
 export interface NFTPageProps {
   NFT: NftType;
   setNftToBuy: (NFT: NftType) => void;
@@ -192,137 +189,111 @@ const NFTPage = ({
     }
   };
 
+  const smallestCapsPrice = Number(smallestPriceRow?.price);
+  const smallestTiimePrice = Number(smallestPriceRow?.priceTiime);
+  const isSmallestCapsPrice = smallestCapsPrice > 0;
+  const isSmallestTiimePrice = smallestTiimePrice > 0;
+
+  const smallestPriceWording =
+    isSmallestCapsPrice || isSmallestTiimePrice
+      ? `${isSmallestCapsPrice ? `${computeCaps(smallestCapsPrice)} CAPS` : ''}
+          ${isSmallestCapsPrice && isSmallestTiimePrice ? ' / ' : ''}
+          ${isSmallestTiimePrice ? `${computeTiime(smallestTiimePrice)} TIIME` : ''}`
+      : undefined;
+
+  const ctaWording =
+    isVR && !isUserFromDappQR
+      ? 'Reserved for VR gallery'
+      : !canUserBuyAgain
+      ? '1 VR NFT per account'
+      : smallestPriceWording && `Buy for ${smallestPriceWording}`;
+
   return (
-    <div className={style.Container}>
-      <div className={style.MainWrapper}>
-        <div className={style.Wrapper}>
-          <SMediaWrapper className={style.NFT}>
-            <Media src={NFT.properties?.preview.ipfs!} type={type} alt="imgnft" draggable="false" />
-            <div onClick={() => setExp(1)} className={style.Scale}>
-              <Scale className={style.ScaleSVG} />
-            </div>
-          </SMediaWrapper>
-          <div className={style.Text}>
-            <div className={style.Top}>
-              <Avatar
-                isVerified={NFT.creatorData?.verified}
-                name={NFT.creatorData?.name}
-                picture={NFT.creatorData?.picture}
-                twitterName={NFT.creatorData?.twitterName}
-                walletId={NFT.creatorData?.walletId}
-              />
-              <div className={style.TopInfos}>
-                <div className={style.Views}>
-                  <Eye className={style.EyeSVG} />
-                  {NFT.viewsCount}
-                </div>
-                {user !== undefined && user !== null && (
-                  <div
-                    className={`${style.Like} ${isLiked ? style.Liked : ''} ${
-                      likeLoading || !user ? style.DisabledLike : ''
-                    }`}
-                    onClick={toggleLikeDislike}
-                  >
-                    <Like className={style.LikeSVG} />
-                  </div>
-                )}
-                <div className={style.Share} onClick={() => handleShare()}>
-                  <Share className={style.ShareSVG} />
-                </div>
-              </div>
-            </div>
-            <div className={style.Line} />
-            <div className={style.Hide}>
-              <div className={style.Tags}>
-                <div className={style.Tag}>
-                  <span role="img" className={style.Emoji} aria-label="art">
-                    🎨
-                  </span>
-                  Design
-                </div>
-              </div>
-            </div>
-            <Title>
-              {NFT.title}
-              {NFT.isCapsule && (
-                <SChip
-                  color="primaryLight"
-                  text={
-                    <>
-                      <SDot />
-                      Capsule
-                    </>
-                  }
-                  variant="rectangle"
+    <>
+      <Container>
+        <Wrapper>
+          <SNftWrapper>
+            <SMediaWrapper>
+              <Media src={NFT.properties?.preview.ipfs!} type={type} alt="imgnft" draggable="false" />
+              <SScaleButton color="invertedContrast" icon="scale" onClick={() => setExp(1)} size="small" variant="contained" />
+            </SMediaWrapper>
+            <SInfosContainer>
+              <STopInfosContainer>
+                <Avatar
+                  isVerified={NFT.creatorData?.verified}
+                  name={NFT.creatorData?.name}
+                  picture={NFT.creatorData?.picture}
+                  twitterName={NFT.creatorData?.twitterName}
+                  walletId={NFT.creatorData?.walletId}
                 />
-              )}
-            </Title>
-            <SCategoriesWrapper>
-              {NFT.categories.map(({ name, code }) => (
-                <Chip key={code} color="invertedContrast" text={name} size="medium" variant="rectangle" />
-              ))}
-            </SCategoriesWrapper>
-            <p className={style.Description}>{NFT.description}</p>
-            <div className={style.Buy}>
-              <div
-                onClick={() => userCanBuy && handleBuy()}
-                className={userCanBuy ? style.Button : `${style.Button} ${style.Disabled}`}
-              >
-                {isVR && !isUserFromDappQR ? (
-                  'Reserved for VR gallery'
-                ) : !canUserBuyAgain ? (
-                  '1 VR NFT per account'
-                ) : (
-                  <>
-                    Buy {`${smallestPriceRow && (smallestPriceRow.price || smallestPriceRow.priceTiime) ? 'for ' : ''}`}
-                    {smallestPriceRow && (
+                <STopCtasContainer>
+                  <Chip color="invertedContrast" icon="eye" size="medium" text={NFT.viewsCount} variant="rectangle" />
+                  <Button color="neutral200" disabled={likeLoading} icon="heart" isLoading={likeLoading} onClick={toggleLikeDislike} size="small" variant="outlined" />
+                  <Button color="neutral200" icon="share" onClick={handleShare} size="small" variant="outlined" />
+                </STopCtasContainer>
+              </STopInfosContainer>
+              <STitle>
+                {NFT.title}
+                {NFT.isCapsule && (
+                  <SChip
+                    color="primaryLight"
+                    text={
                       <>
-                        {smallestPriceRow.price &&
-                          Number(smallestPriceRow.price) > 0 &&
-                          `${computeCaps(Number(smallestPriceRow.price))} CAPS`}
-                        {smallestPriceRow.price &&
-                          Number(smallestPriceRow.price) > 0 &&
-                          smallestPriceRow.priceTiime &&
-                          Number(smallestPriceRow.priceTiime) &&
-                          ` / `}
-                        {smallestPriceRow.priceTiime &&
-                          Number(smallestPriceRow.priceTiime) > 0 &&
-                          `${computeTiime(Number(smallestPriceRow.priceTiime))} TIIME`}
+                        <SDot />
+                        Capsule
                       </>
-                    )}
-                  </>
+                    }
+                    variant="rectangle"
+                  />
                 )}
-              </div>
-            </div>
-            <div className={style.Available}>
-              <div className={style.AvailbleText}>
-                <NoNFTImage className={style.AvailbleCards} />
-                <div className={style.AvailableTextContent}>
-                  {`${NFT.totalListedInMarketplace ?? 0} of ${NFT.totalNft ?? 0}`} Available
-                </div>
-              </div>
-              <div className={style.AvailableBackLine} />
-            </div>
-          </div>
-        </div>
-        <div>
-          <Details
-            NFT={NFT}
-            seriesData={seriesData}
-            user={user}
-            setNftToBuy={setNftToBuy}
-            setExp={setExp}
-            isUserFromDappQR={isUserFromDappQR}
-            isVR={isVR}
-            canUserBuyAgain={canUserBuyAgain}
-          />
-        </div>
-      </div>
-      {byTheSameArtistNFTs.length > 0 && (
-        <SShowcaseWrapper>
-          <Showcase category="By the same artist" NFTs={byTheSameArtistNFTs} user={user} />
-        </SShowcaseWrapper>
-      )}
+              </STitle>
+              {NFT.categories.length > 0 && (
+                <SCategoriesWrapper>
+                  {NFT.categories.map(({ name, code }) => (
+                    <Chip key={code} color="invertedContrast" text={name} size="medium" variant="rectangle" />
+                  ))}
+                </SCategoriesWrapper>
+              )}
+              {NFT.description && <SDescription>{NFT.description}</SDescription>}
+              {ctaWording && (
+                <SBuyContainer>
+                  <SBuyTopContainer>
+                    <Button color="primary" disabled={!userCanBuy} onClick={handleBuy} size="medium" text={ctaWording} variant="contained"/>
+                    {/* TODO: Use real date when biding option is implemented */}
+                    {/* <Countdown date={new Date('2022-01-17T03:24:00')} /> */}
+                  </SBuyTopContainer>
+                  <SAvailableContainer>
+                    <SAvailableText>
+                      <SIcon name="noNFTImage" />
+                      <SAvailableLabel>
+                        {`${NFT.totalListedInMarketplace ?? 0} of ${NFT.totalNft ?? 0}`} available
+                      </SAvailableLabel>
+                    </SAvailableText>
+                    <SAvailableBackLine />
+                  </SAvailableContainer>
+                </SBuyContainer>
+              )}
+            </SInfosContainer>
+          </SNftWrapper>
+          <SDetailsWrapper>
+            <Details
+              NFT={NFT}
+              seriesData={seriesData}
+              user={user}
+              setNftToBuy={setNftToBuy}
+              setExp={setExp}
+              isUserFromDappQR={isUserFromDappQR}
+              isVR={isVR}
+              canUserBuyAgain={canUserBuyAgain}
+            />
+          </SDetailsWrapper>
+        </Wrapper>
+        {byTheSameArtistNFTs.length > 0 && (
+          <Wrapper>
+            <Showcase category="By the same artist" NFTs={byTheSameArtistNFTs} user={user} />
+          </Wrapper>
+        )}
+      </Container>
       {modalShareOpen && (
         <ModalShare
           setModalExpand={setModalShareOpen}
@@ -332,19 +303,134 @@ const NFTPage = ({
           url={shareUrl}
         />
       )}
-    </div>
+    </>
   );
 };
+
+const SNftWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+  }
+`;
+
+const SDetailsWrapper = styled.div`
+  margin-top: 5.6rem;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    margin-top: 9.6rem;
+  }
+`;
 
 const SMediaWrapper = styled.div`
   height: ${({theme}) => theme.sizes.cardHeight.md};
   width: ${({theme}) => theme.sizes.cardWidth.md};
+  display: flex;
+  position: relative;
+  background: linear-gradient(180deg, #f29fff 0%, #878cff 100%);
+  box-shadow: 0px 0px 14.5243px 5.0835px rgba(0, 0, 0, 0.15);
+  border-radius: 1.2rem;
 
   ${({ theme }) => theme.mediaQueries.xxl} {
     height: ${({theme}) => theme.sizes.cardHeight.lg};
     width: ${({theme}) => theme.sizes.cardWidth.lg};
   }
-`
+`;
+
+const SScaleButton = styled(Button)`
+  position: absolute;
+  bottom: 2.4rem;
+  right: 2.4rem;
+  z-index: 3;
+`;
+
+const SInfosContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  margin-top: 4rem;
+  width: 100%;
+  max-width: ${({theme}) => theme.sizes.cardWidth.md};
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    max-width: 48rem;
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    margin-left: 8rem;
+    margin-top: 0;
+    max-width: none;
+    width: auto;
+  }
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    margin-left: 12rem;
+  }
+
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    margin-left: 16rem;
+  }
+`;
+
+const STopInfosContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+  }
+`;
+
+const STopCtasContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2.4rem;
+
+  > * {
+    &:not(:first-child) {
+      margin-left: 1.6rem;
+    };
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    margin: 0;
+  }
+`;
+
+const STitle = styled(Title)`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 3.2rem;
+  text-align: center;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    justify-content: flex-start;
+    text-align: left;
+  }
+`;
+
+const SDescription = styled.p`
+  font-size: 1.6rem;
+  color: ${({ theme }) => theme.colors.neutral200};
+  margin-top: 3.2rem;
+  text-align: justify;
+  white-space: pre-line;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    margin-top: 5.6rem;
+    text-align: left;
+  }
+`;
 
 const SChip = styled(Chip)`
   margin: 1.6rem auto 0;
@@ -353,14 +439,14 @@ const SChip = styled(Chip)`
     margin: 0;
     transform: translateY(85%);
   }
-`
+`;
 
 const SDot = styled.div`
   width: 0.8rem;
   height: 0.8rem;
   background: ${({theme}) => theme.colors.primary};
   border-radius: 50%;
-`
+`;
 
 const SCategoriesWrapper = styled.div`
   display: flex;
@@ -375,21 +461,80 @@ const SCategoriesWrapper = styled.div`
     justify-content: start;
     margin: 0;
   }
-`
+`;
 
-const SShowcaseWrapper = styled.div`
+const SBuyContainer = styled.div`
   width: 100%;
-  margin: 0 auto;
-  max-width: 1200px;
-  padding: 3.2rem 4rem 6.4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+  margin-top: 4rem;
+  position: relative;
+  width: fit-content;
 
-  ${({ theme }) => theme.mediaQueries.xl} {
-    padding: 3.2rem 9.6rem 6.4rem;
+  ${({ theme }) => theme.mediaQueries.lg} {
+    align-self: flex-start;
+    margin-top: 4.8rem;
   }
+`;
 
-  ${({ theme }) => theme.mediaQueries.xxl} {
-    padding: 3.2rem 2.4rem 6.4rem;
+const SBuyTopContainer = styled.div`
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+
+  > * {
+      &:not(:first-child) {
+        margin-bottom: 1.6rem;
+      }
+    }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    flex-direction: row;
+
+    > * {
+      &:not(:first-child) {
+        margin-bottom: 0;
+        margin-left: 5.6rem;
+      }
+    }
   }
-`
+`;
+
+const SAvailableContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 1.6rem;
+`;
+
+const SAvailableText = styled.div`
+  background-color: ${({ theme }) => theme.colors.invertedContrast};
+  display: flex;
+  align-items: center;
+  padding: 0 0.8rem;
+`;
+
+const SIcon = styled(Icon)`
+  width: 2.4rem;
+  height: 2.4rem;
+`;
+
+const SAvailableLabel = styled.span`
+  color: ${({ theme }) => theme.colors.neutral300};
+  font-size: 1.6rem;
+  margin-left: 0.8rem;
+  white-space: nowrap;
+`;
+
+const SAvailableBackLine = styled.div`
+  width: calc(100% - 4.8rem);
+  border-bottom: solid 1px;
+  border-color: ${({ theme }) => theme.colors.neutral400};
+  position: absolute;
+  left: 2.4rem;
+  z-index: -1;
+`;
 
 export default NFTPage;

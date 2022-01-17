@@ -102,7 +102,7 @@ const NftsGrid = ({
       {isLoadMore && loadMore && (
         <SLoadButtonWrapper>
           <Button
-            color="invertedContrast"
+            color="contrast"
             disabled={isLoading}
             isLoading={isLoading}
             onClick={loadMore}

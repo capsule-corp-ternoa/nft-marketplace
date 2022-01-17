@@ -39,7 +39,7 @@ const ProfileMenuDropdown = ({ className, onClose, user }: Props) => {
             />
             {!isRN && (
               <Button
-                color="whiteBlur"
+                color="neutral200"
                 icon="powerOff"
                 onClick={handleLogout}
                 size="small"

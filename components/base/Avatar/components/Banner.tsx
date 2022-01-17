@@ -3,7 +3,8 @@ import styled from 'styled-components';
 
 import Icon from 'components/ui/Icon';
 
-import Avatar, { AVATAR_VARIANT_BANNER } from '../Avatar';
+import Avatar from '../Avatar';
+import { AVATAR_VARIANT_BANNER } from '../constants';
 
 interface Props {
   bio?: string;

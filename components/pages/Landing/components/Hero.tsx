@@ -9,13 +9,13 @@ import Button from 'components/ui/Button';
 import { NftType } from 'interfaces/index';
 import { computeCaps } from 'utils/strings';
 
-export const HERO_MODE_AUCTION = 'auction';
-export const HERO_MODE_SELL = 'sell';
+import { HERO_MODE_AUCTION, HERO_MODE_SELL } from '../constants';
+import { HERO_MODE_TYPE } from '../interfaces';
 
 export interface HeroProps {
   capsDollarValue?: number;
   NFTs: NftType[];
-  mode: typeof HERO_MODE_AUCTION | typeof HERO_MODE_SELL;
+  mode: HERO_MODE_TYPE;
 }
 
 const Hero = ({ capsDollarValue: _capsDollarValue, NFTs, mode }: HeroProps) => {

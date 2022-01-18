@@ -40,18 +40,13 @@ const LandingPage = ({
   const [walletUser, setWalletUser] = useState(user);
 
   useEffect(() => {
-    setUserFromDApp(setWalletUser)
+    setUserFromDApp(setWalletUser);
   }, []);
-  
+
   return (
     <>
       <Head>
-        <title>
-          {process.env.NEXT_PUBLIC_APP_NAME
-            ? process.env.NEXT_PUBLIC_APP_NAME
-            : 'SecretNFT'}{' '}
-          - Welcome
-        </title>
+        <title>{process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : 'SecretNFT'} - Welcome</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta name="description" content="SecretNFT Marketplace, by Ternoa." />
         <meta name="og:image" content="ternoa-social-banner.jpg" />
@@ -59,10 +54,7 @@ const LandingPage = ({
       </Head>
       {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
       <BetaBanner />
-      <MainHeader
-        user={walletUser as UserType}
-        setModalExpand={setModalExpand}
-      />
+      <MainHeader user={walletUser as UserType} setModalExpand={setModalExpand} />
       <Landing
         user={walletUser as UserType}
         users={users}
@@ -79,9 +71,7 @@ const LandingPage = ({
   );
 };
 export async function getServerSideProps(ctx: NextPageContext) {
-  const token =
-    (ctx.query.walletId as string) ||
-    (cookies(ctx).token && decryptCookie(cookies(ctx).token as string));
+  const token = (ctx.query.walletId as string) || (cookies(ctx).token && decryptCookie(cookies(ctx).token as string));
   let users: UserType[] = [],
     user: UserType | null = null,
     regularNfts: NftType[] = [],
@@ -89,7 +79,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
   const promises = [];
   promises.push(
     new Promise<void>((success) => {
-      getUsers(undefined,true)
+      getUsers(undefined, true)
         .then((result) => {
           users = result.data;
           success();
@@ -119,12 +109,16 @@ export async function getServerSideProps(ctx: NextPageContext) {
         .catch(success);
     })
   );
-  promises.push(new Promise<void>((success) => {
-    getCapsValue().then(_value => {
-      capsDollarValue = _value
-      success();
-    }).catch(success);
-  }));
+  promises.push(
+    new Promise<void>((success) => {
+      getCapsValue()
+        .then((_value) => {
+          capsDollarValue = _value;
+          success();
+        })
+        .catch(success);
+    })
+  );
   await Promise.all(promises);
   users = arrayShuffle(users);
   let popularNfts = arrayShuffle((regularNfts || []).slice(0, 8));

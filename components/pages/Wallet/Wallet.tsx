@@ -67,7 +67,7 @@ const SWalletContainer = styled.div`
 
 const SName = styled.h3`
   color: ${({ theme }) => theme.colors.invertedContrast};
-  font-familly: ${({ theme }) => theme.fonts.bold};
+  font-family: ${({ theme }) => theme.fonts.bold};
   font-size: 2.4rem;
   margin-top: 2.4rem;
   text-align: center;

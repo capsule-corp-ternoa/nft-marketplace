@@ -7,8 +7,9 @@ import Button from 'components/ui/Button';
 import { Container, Wrapper } from 'components/layout';
 import { UserType, NftType } from 'interfaces/index';
 
-import ArtCreators from './ArtCreators';
-import Hero, { HERO_MODE_SELL } from './Hero';
+import ArtCreators from './components/ArtCreators';
+import Hero from './components/Hero';
+import { HERO_MODE_SELL } from './constants';
 
 const Showcase = dynamic(() => import('../../base/Showcase'), {
   ssr: false,
@@ -66,14 +67,18 @@ const Landing = ({
     {NFTCreators?.length > 0 && (
       <Wrapper>
         <ArtCreators NFTs={NFTCreators} user={user} />
-        <SButton color="primary" href="/explore" size="medium" text="See more" variant="outlined" />
+        <SButtonContainer>
+          <Button color="primary" href="/explore" size="medium" text="See more" variant="outlined" />
+        </SButtonContainer>
       </Wrapper>
     )}
   </Container>
 );
 
-const SButton = styled(Button)`
-  margin-top: 3.2rem;
+const SButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 4rem;
 `;
 
 export default Landing;

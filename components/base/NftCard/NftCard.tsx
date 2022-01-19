@@ -5,12 +5,8 @@ import Router from 'next/router';
 import { NftType } from 'interfaces/index';
 
 import Media from '../Media';
-
-export const CAROUSEL_MODE = 'carousel';
-export const GRID_MODE = 'grid';
-export type ModeType =
-  | typeof CAROUSEL_MODE
-  | typeof GRID_MODE;
+import { CAROUSEL_MODE, GRID_MODE } from './constants';
+import { ModeType } from './interfaces';
 
 export interface NftCardProps {
   children?: React.ReactNode;
@@ -61,13 +57,7 @@ const NftCard: React.FC<NftCardProps> = ({
       onMouseOver={onMouseOver}
       onMouseOut={onMouseOut}
     >
-      <Media
-        src={item.properties?.preview.ipfs!}
-        type={type}
-        alt="imgnft"
-        draggable="false"
-        isHovering={isHovering}
-      />
+      <Media src={item.properties?.preview.ipfs!} type={type} alt="imgnft" draggable="false" isHovering={isHovering} />
       {children}
     </SMediaWrapper>
   );

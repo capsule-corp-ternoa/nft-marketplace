@@ -12,7 +12,8 @@ import { LIKE_ACTION, LIKE_ACTION_TYPE, UNLIKE_ACTION } from 'utils/profile/cons
 import { computeCaps, computeTiime } from 'utils/strings';
 import { breakpointMap } from 'style/theme/base';
 
-import NftCard, { ModeType } from '../NftCard';
+import NftCard from '../NftCard';
+import { ModeType } from '../interfaces';
 import style from '../NftCard.module.scss';
 
 import NftChips from './NftChips';
@@ -22,7 +23,6 @@ interface Props {
   isDragging?: boolean;
   item: NftType;
   mode?: ModeType;
-  noCreator?: boolean;
   quantity?: number;
   handleLikeCount?: (action: LIKE_ACTION_TYPE) => void;
   setLikedNfts?: NFTsNominalSetState;
@@ -39,12 +39,12 @@ const NftCardWithHover = ({
   isDragging,
   item,
   mode,
-  noCreator = false,
   quantity,
   handleLikeCount,
   setLikedNfts,
   user,
 }: Props) => {
+  const { creator, creatorData, smallestPrice, smallestPriceTiime } = item;
   const [isHovering, setIsHovering] = useState(false);
   const [isLiked, setIsLiked] = useState(
     (item.serieId === '0'
@@ -75,6 +75,21 @@ const NftCardWithHover = ({
     }
   };
 
+  const isCreator = creator !== undefined && creator !== '' && creatorData !== undefined;
+  const isUserLogged = user !== undefined && user !== null;
+
+  const smallestCapsPrice = Number(smallestPrice);
+  const smallestTiimePrice = Number(smallestPriceTiime);
+  const isSmallestCapsPrice = smallestCapsPrice > 0;
+  const isSmallestTiimePrice = smallestTiimePrice > 0;
+
+  const smallestPriceWording =
+    isSmallestCapsPrice || isSmallestTiimePrice
+      ? `${isSmallestCapsPrice ? `${computeCaps(smallestCapsPrice)} CAPS` : ''}
+          ${isSmallestCapsPrice && isSmallestTiimePrice ? ' / ' : ''}
+          ${isSmallestTiimePrice ? `${computeTiime(smallestTiimePrice)} TIIME` : ''}`
+      : undefined;
+
   return (
     <NftCard
       className={className}
@@ -88,7 +103,7 @@ const NftCardWithHover = ({
       <NftChips NFT={item} mode={mode} noPriceChip={isHovering} noSecretChip={isHovering} quantity={quantity} />
       <div className={isHovering ? `${style.Filter} ${style.Fade}` : `${style.Filter} ${style.Hide}`} />
       <div className={isHovering ? `${style.Container}` : style.Hide}>
-        {user !== undefined && user !== null ? (
+        {isUserLogged && (
           <div
             className={
               isHovering
@@ -105,48 +120,26 @@ const NftCardWithHover = ({
           >
             <Heart className={style.HeartSVG} />
           </div>
-        ) : (
-          <div></div>
         )}
         <div className={style.Infos}>
-          {!noCreator && (
-            <div onClick={(e) => manageRouting(e, item.creator)} className={style.Auth}>
+          {isCreator && (
+            <div onClick={(e) => manageRouting(e, creator)} className={style.Auth}>
               <Picture
                 className={isHovering ? style.Slide : ''}
                 isClickable
-                isVerified={item.creatorData?.verified}
-                name={item.creatorData?.name}
-                picture={item.creatorData?.picture}
-                walletId={item.creatorData?.walletId}
+                isVerified={creatorData?.verified}
+                name={creatorData?.name}
+                picture={creatorData?.picture}
+                walletId={creatorData?.walletId}
               />
               <div className={isHovering ? `${style.Author} ${style.Fade}` : style.Author}>
-                {item.creatorData?.name || `Ternoa #${item.creator.slice(0, 5)}`}
+                {creatorData?.name || `Ternoa #${creator.slice(0, 5)}`}
               </div>
             </div>
           )}
-          {((item.smallestPrice && Number(item.smallestPrice)) ||
-            (item.smallestPriceTiime && Number(item.smallestPriceTiime))) && (
+          {smallestPriceWording && (
             <SPriceWrapper className={isHovering ? style.FadeLong : ''}>
-              <Chip
-                color="whiteBlur"
-                size="small"
-                text={
-                  <>
-                    {item.smallestPrice &&
-                      Number(item.smallestPrice) > 0 &&
-                      `${computeCaps(Number(item.smallestPrice))} CAPS`}
-                    {item.smallestPrice &&
-                      Number(item.smallestPrice) &&
-                      item.smallestPriceTiime &&
-                      Number(item.smallestPriceTiime) &&
-                      ` / `}
-                    {item.smallestPriceTiime &&
-                      Number(item.smallestPriceTiime) > 0 &&
-                      `${computeTiime(Number(item.smallestPriceTiime))} TIIME`}
-                  </>
-                }
-                variant="round"
-              />
+              <Chip color="whiteBlur" size="small" text={smallestPriceWording} variant="round" />
             </SPriceWrapper>
           )}
         </div>

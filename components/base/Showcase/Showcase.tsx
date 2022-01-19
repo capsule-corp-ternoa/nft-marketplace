@@ -1,38 +1,22 @@
 import React, { useState } from 'react';
-import Switch from 'react-switch';
+import styled from 'styled-components';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
-import { useMediaQuery } from 'react-responsive';
 import { breakpointMap } from 'style/theme/base';
 
-import style from './Showcase.module.scss';
-
 import { NftCardWithHover, CAROUSEL_MODE } from 'components/base/NftCard';
-import ArrowLeft from 'components/assets/arrowLeft';
-import ArrowRight from 'components/assets/arrowRight';
+import Button from 'components/ui/Button';
 
 import { NftType, UserType } from 'interfaces/index';
 
 const responsive = {
   desktop: {
-    breakpoint: { max: 3000, min: breakpointMap.xxl },
-    items: 4.2,
+    breakpoint: { max: 3000, min: breakpointMap.xl },
+    items: 4.6,
   },
   tablet: {
-    breakpoint: { max: (breakpointMap.xxl - 1), min: breakpointMap.lg },
+    breakpoint: { max: breakpointMap.xl - 1, min: breakpointMap.lg },
     items: 4.2,
-  },
-  tablet2: {
-    breakpoint: { max: (breakpointMap.lg - 1), min: breakpointMap.md },
-    items: 3.5,
-  },
-  mobile: {
-    breakpoint: { max: (breakpointMap.md - 1), min: breakpointMap.sm },
-    items: 2.4,
-  },
-  mobile2: {
-    breakpoint: { max: (breakpointMap.sm - 1), min: 0 },
-    items: 1.8,
   },
 };
 
@@ -43,10 +27,7 @@ export interface ShowcaseProps {
 }
 
 const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category, user }) => {
-  const [isFiltered, setIsFiltered] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
-
-  const isMobile = useMediaQuery({ query: `(max-width: ${breakpointMap.md - 1}px)` });
 
   let carousel: Carousel | null = new Carousel({
     responsive: {},
@@ -54,96 +35,125 @@ const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category, user }) => {
   });
 
   return (
-    <div className={style.Showcase}>
-      <div className={style.Top}>
-        <div className={style.Infos}>
-          <h3 className={style.Title}>{category}</h3>
-          <div className={`${style.Toggle} ${style.Hide}`}>
-            <label>
-              <Switch
-                checked={isFiltered}
-                onChange={() => setIsFiltered(!isFiltered)}
-                offColor="#000000"
-                onColor="#7417ea"
-                uncheckedIcon={false}
-                checkedIcon={false}
-                width={46}
-                handleDiameter={23}
-                className={style.SwitchShell}
-              />
-            </label>
-            <span className={style.Label}>Certified only</span>
-          </div>
-        </div>
-        {!isMobile && (
-          <div className={style.Nav}>
-            <div
-              onClick={() => {
-                carousel?.previous(1);
-              }}
-              className={style.NavButton}
-            >
-              <ArrowLeft className={style.ArrowSVG} />
-            </div>
-
-            <div
-              onClick={() => {
-                carousel?.next(1);
-              }}
-              className={style.NavButton}
-            >
-              <ArrowRight className={style.ArrowSVG} />
-            </div>
-          </div>
-        )}
-      </div>
-      <div className={style.Wrapper}>
-        <div
-          className={style.NFTContainer}
-          onMouseDown={() => setIsDragging(false)}
-          onMouseMove={() => setIsDragging(true)}
-          onTouchStart={() => setIsDragging(false)}
-          onTouchMove={() => setIsDragging(true)}
+    <SShowcaseContainer>
+      <STopContainer>
+        <STitle>{category}</STitle>
+        <SNavContainer>
+          <Button
+            color="neutral500"
+            icon="arrowLeft"
+            onClick={() => {
+              carousel?.previous(1);
+            }}
+            size="small"
+            variant="contained"
+          />
+          <Button
+            color="neutral500"
+            icon="arrowRight"
+            onClick={() => {
+              carousel?.next(1);
+            }}
+            size="small"
+            variant="contained"
+          />
+        </SNavContainer>
+      </STopContainer>
+      <SNftsContainer
+        onMouseDown={() => setIsDragging(false)}
+        onMouseMove={() => setIsDragging(true)}
+        onTouchStart={() => setIsDragging(false)}
+        onTouchMove={() => setIsDragging(true)}
+      >
+        <SNftsMobileContainer>
+          {NFTs.map((item) => (
+            <NftCardWithHover key={item.id} isDragging={isDragging} item={item} mode={CAROUSEL_MODE} user={user} />
+          ))}
+        </SNftsMobileContainer>
+        <SNftsCarouselContainer
+          ref={(el) => {
+            carousel = el;
+          }}
+          responsive={responsive}
+          infinite
+          ssr={false}
+          arrows={false}
+          swipeable={true}
         >
-          {isMobile ? (
-            NFTs.map((item) => (
-              <div key={item.id} className={style.NFTShell}>
-                <NftCardWithHover
-                  isDragging={isDragging}
-                  item={item}
-                  mode={CAROUSEL_MODE}
-                  user={user}
-                />
-              </div>
-            ))
-          ) : (
-            <Carousel
-              ref={(el) => {
-                carousel = el;
-              }}
-              responsive={responsive}
-              infinite
-              ssr={false}
-              arrows={false}
-              className={style.CarouselContainer}
-              swipeable={true}
-            >
-              {NFTs.map((item) => (
-                <div key={item.id} className={style.NFTShell}>
-                  <NftCardWithHover
-                    isDragging={isDragging}
-                    item={item}
-                    mode={CAROUSEL_MODE}
-                    user={user}
-                  />
-                </div>
-              ))}
-            </Carousel>
-          )}
-        </div>
-      </div>
-    </div>
+          {NFTs.map((item) => (
+            <NftCardWithHover key={item.id} isDragging={isDragging} item={item} mode={CAROUSEL_MODE} user={user} />
+          ))}
+        </SNftsCarouselContainer>
+      </SNftsContainer>
+    </SShowcaseContainer>
   );
 };
+
+const SShowcaseContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+`;
+
+const STopContainer = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const STitle = styled.h3`
+  font-family: ${({ theme }) => theme.fonts.bold};
+  font-size: 2.4rem;
+  margin: 0;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    font-size: 3.2rem;
+  }
+`;
+
+const SNavContainer = styled.div`
+  display: none;
+
+  > * {
+    &:not(:first-child) {
+      margin-left: 0.8rem;
+    }
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    display: flex;
+  }
+`;
+
+const SNftsContainer = styled.div`
+  width: 100%;
+  display: flex;
+  overflow-x: auto;
+  justify-content: flex-start;
+  margin-top: 2.4rem;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    display: inline;
+  }
+`;
+
+const SNftsMobileContainer = styled.div`
+  display: flex;
+  gap: 3.2rem;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    display: none;
+  }
+`;
+
+const SNftsCarouselContainer = styled(Carousel)`
+  ${({ theme }) => theme.mediaQueries.lg} {
+    display: flex;
+    overflow-y: visible;
+  }
+`;
 
 export default Showcase;

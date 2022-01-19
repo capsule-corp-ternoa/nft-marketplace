@@ -1,6 +1,6 @@
 import React from 'react';
 import styled, { css, DefaultTheme } from 'styled-components';
-import Icon, { IconNameType , Loader } from 'components/ui/Icon';
+import Icon, { IconNameType, Loader } from 'components/ui/Icon';
 import { Colors } from 'style/theme/types';
 
 interface IButton {
@@ -16,7 +16,7 @@ interface Props extends IButton {
   className?: string;
   href?: string;
   icon?: IconNameType;
-  onClick?: () => void;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
   text?: string;
 }
 
@@ -68,22 +68,15 @@ const ButtonStyle = css<IButton>`
   align-items: center;
   align-self: center;
   background: ${({ theme, color, variant }) =>
-    variant === 'contained' && color
-      ? theme.colors[`${color}`]
-      : 'transparent'};
-  border: ${({ size, variant }) => (variant === 'outlined' ? size === 'small' ? '1px solid' : '2px solid' : 'none')};
+    variant === 'contained' && color ? theme.colors[`${color}`] : 'transparent'};
+  border: ${({ size, variant }) => (variant === 'outlined' ? (size === 'small' ? '1px solid' : '2px solid') : 'none')};
   border-radius: 4rem;
-  box-shadow: ${({ disabled }) => disabled ? 'none' : '0 0 0.8rem 0.4rem rgba(0, 0, 0, 0.05)'};
+  box-shadow: ${({ disabled }) => (disabled ? 'none' : '0 0 0.8rem 0.4rem rgba(0, 0, 0, 0.05)')};
   cursor: ${({ noHover }) => (noHover ? 'default' : 'pointer')};
   font-family: ${({ theme }) => theme.fonts.bold};
   font-size: ${({ size }) => (size === 'small' ? '1.2rem' : '1.6rem')};
   opacity: ${({ disabled }) => (disabled ? '0.4' : '1')};
-  padding: ${({ isIconOnly, size }) =>
-    isIconOnly
-      ? '1.2rem'
-      : size === 'small'
-      ? '0.8rem 2rem'
-      : '1.2rem 3.2rem'};
+  padding: ${({ isIconOnly, size }) => (isIconOnly ? '1.2rem' : size === 'small' ? '0.8rem 2rem' : '1.2rem 3.2rem')};
   pointer-events: ${({ disabled, noHover }) => (disabled || noHover ? 'none' : 'auto')};
   text-align: center;
   transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
@@ -122,7 +115,8 @@ const ButtonStyle = css<IButton>`
 
   color: ${({ theme, color, variant }) => handleColor(theme, color, variant)};
 
-  svg, path {
+  svg,
+  path {
     fill: ${({ theme, color, variant }) => handleColor(theme, color, variant)};
   }
 `;
@@ -152,9 +146,7 @@ const Button = ({
         size={size}
         variant={variant}
       >
-        {icon && (
-          <SIcon isIconOnly={text === undefined} name={icon} size={size} />
-        )}
+        {icon && <SIcon isIconOnly={text === undefined} name={icon} size={size} />}
         {text}
       </SAnchor>
     );
@@ -175,9 +167,7 @@ const Button = ({
         <SLoader color={color ?? 'invertedContrast'} size={size} variant={variant} />
       ) : (
         <>
-          {icon && (
-            <SIcon isIconOnly={text === undefined} name={icon} size={size} />
-          )}
+          {icon && <SIcon isIconOnly={text === undefined} name={icon} size={size} />}
           {text}
         </>
       )}
@@ -185,19 +175,19 @@ const Button = ({
   );
 };
 
-const SLoader = styled(Loader)<{ color: keyof Colors, variant?: 'contained' | 'outlined' }>`
+const SLoader = styled(Loader)<{ color: keyof Colors; variant?: 'contained' | 'outlined' }>`
   margin: 0 auto;
 
   div {
-    border-color: ${({ color, theme, variant }) => `${handleColor(theme, color, variant)} transparent transparent transparent`};
+    border-color: ${({ color, theme, variant }) =>
+      `${handleColor(theme, color, variant)} transparent transparent transparent`};
   }
 `;
 
 const SIcon = styled(Icon)<{ isIconOnly: boolean; size: 'small' | 'medium' }>`
   width: ${({ size }) => (size === 'small' ? '1.6rem' : '2rem')};
   height: ${({ size }) => (size === 'small' ? '1.6rem' : '2rem')};
-  margin-right: ${({ isIconOnly, size }) =>
-    isIconOnly ? 0 : size === 'small' ? '1.2rem' : '1.6rem'};
+  margin-right: ${({ isIconOnly, size }) => (isIconOnly ? 0 : size === 'small' ? '1.2rem' : '1.6rem')};
 `;
 
 const SAnchor = styled.a<IButton>`

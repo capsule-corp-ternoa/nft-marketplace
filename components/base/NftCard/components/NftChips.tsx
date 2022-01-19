@@ -6,7 +6,8 @@ import { NftType } from 'interfaces/index';
 import { computeCaps, computeTiime } from 'utils/strings';
 import { breakpointMap } from 'style/theme/base';
 
-import { CAROUSEL_MODE, GRID_MODE, ModeType } from '../NftCard';
+import { CAROUSEL_MODE, GRID_MODE } from '../constants';
+import { ModeType } from '../interfaces';
 
 interface Props {
   mode?: ModeType;
@@ -107,7 +108,7 @@ const SSecretChipWrapper = styled(SChipWrapper)`
 
 const SPriceChipWrapper = styled(SChipWrapper)`
   width: fit-content;
-  bottom: 1.6rem;
+  bottom: 2.4rem;
   left: 0;
   right: 0;
   margin: 0 auto;

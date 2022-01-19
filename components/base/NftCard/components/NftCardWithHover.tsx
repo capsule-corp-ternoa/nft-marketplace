@@ -1,22 +1,22 @@
 import React, { useState } from 'react';
 import Router from 'next/router';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { useMediaQuery } from 'react-responsive';
 
-import Heart from 'components/assets/heart';
 import { Picture } from 'components/base/Avatar';
 import Chip from 'components/ui/Chip';
 import { NftType, NFTsNominalSetState, UserType } from 'interfaces/index';
 import { toggleLike } from 'utils/profile';
 import { LIKE_ACTION, LIKE_ACTION_TYPE, UNLIKE_ACTION } from 'utils/profile/constants';
 import { computeCaps, computeTiime } from 'utils/strings';
+import { fadeIn, ySlide } from 'style/animations';
 import { breakpointMap } from 'style/theme/base';
 
 import NftCard from '../NftCard';
 import { ModeType } from '../interfaces';
-import style from '../NftCard.module.scss';
 
 import NftChips from './NftChips';
+import Button from 'components/ui/Button';
 
 interface Props {
   className?: string;
@@ -101,55 +101,137 @@ const NftCardWithHover = ({
       onMouseOver={() => !isMobile && setIsHovering(true)}
     >
       <NftChips NFT={item} mode={mode} noPriceChip={isHovering} noSecretChip={isHovering} quantity={quantity} />
-      <div className={isHovering ? `${style.Filter} ${style.Fade}` : `${style.Filter} ${style.Hide}`} />
-      <div className={isHovering ? `${style.Container}` : style.Hide}>
+      <SFilter isHovering={isHovering} />
+      <SHoverContainer isHovering={isHovering}>
         {isUserLogged && (
-          <div
-            className={
-              isHovering
-                ? `${style.Favorite} 
-                 ${style.FadeSimple} 
-                 ${isLiked ? style.Favorited : ''} 
-                 ${likeLoading ? style.Disabled : ''}`
-                : style.Hide
-            }
-            onClick={(e) => {
-              e.stopPropagation();
-              toggleLikeDislike();
-            }}
-          >
-            <Heart className={style.HeartSVG} />
-          </div>
+          <SLikeButtonContainer isHovering={isHovering}>
+            <Button
+              color={isLiked ? 'primary' : 'neutral400'}
+              disabled={likeLoading}
+              icon="heart"
+              isLoading={likeLoading}
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleLikeDislike();
+              }}
+              size="small"
+              variant="contained"
+            />
+          </SLikeButtonContainer>
         )}
-        <div className={style.Infos}>
+        <SInfosContainer>
           {isCreator && (
-            <div onClick={(e) => manageRouting(e, creator)} className={style.Auth}>
-              <Picture
-                className={isHovering ? style.Slide : ''}
-                isClickable
-                isVerified={creatorData?.verified}
-                name={creatorData?.name}
-                picture={creatorData?.picture}
-                walletId={creatorData?.walletId}
-              />
-              <div className={isHovering ? `${style.Author} ${style.Fade}` : style.Author}>
+            <SCreatorContainer onClick={(e) => manageRouting(e, creator)}>
+              <SCreatorPicture isHovering={isHovering}>
+                <Picture
+                  isClickable
+                  isVerified={creatorData?.verified}
+                  name={creatorData?.name}
+                  picture={creatorData?.picture}
+                  walletId={creatorData?.walletId}
+                />
+              </SCreatorPicture>
+              <SCreatorName isHovering={isHovering}>
                 {creatorData?.name || `Ternoa #${creator.slice(0, 5)}`}
-              </div>
-            </div>
+              </SCreatorName>
+            </SCreatorContainer>
           )}
           {smallestPriceWording && (
-            <SPriceWrapper className={isHovering ? style.FadeLong : ''}>
+            <SPriceWrapper isHovering={isHovering}>
               <Chip color="whiteBlur" size="small" text={smallestPriceWording} variant="round" />
             </SPriceWrapper>
           )}
-        </div>
-      </div>
+        </SInfosContainer>
+      </SHoverContainer>
     </NftCard>
   );
 };
 
-const SPriceWrapper = styled.div`
+const ySlideStyle = css<{ isHovering: boolean }>`
+  animation-fill-mode: forwards;
+  animation: ${ySlide('40px', '0px')} 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+`;
+
+const ySlideFadeStyle = css<{ isHovering: boolean }>`
+  animation-fill-mode: forwards;
+  animation: ${ySlide('30px', '0px')} 0.8s cubic-bezier(0.25, 1, 0.5, 1), ${fadeIn} 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+`;
+
+const yLongSlideFadeStyle = css<{ isHovering: boolean }>`
+  animation-fill-mode: forwards;
+  animation: ${ySlide('20px', '0px')} 0.8s cubic-bezier(0.25, 1, 0.5, 1), ${fadeIn} 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+`;
+
+const SFilter = styled.div<{ isHovering: boolean }>`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  transition: all 0.5s ease-out;
+  background: linear-gradient(180deg, rgba(57, 57, 57, 0) 60%, #030303 92.5%);
+  border-radius: 12px;
+
+  ${({ isHovering }) => isHovering && ySlideFadeStyle}
+`;
+
+const SHoverContainer = styled.div<{ isHovering: boolean }>`
+  display: ${({ isHovering }) => (isHovering ? 'flex' : 'none')};
+  justify-content: space-between;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 2;
+  border-radius: 1.2rem;
+`;
+
+const LikeButtonStyle = css<{ isHovering: boolean }>`
+  align-self: flex-end;
+  margin: 1.6rem;
+  top: 1.2rem;
+  right: 1.2rem;
+  z-index: 4;
+  animation-fill-mode: forwards;
+  animation: ${fadeIn} 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+`;
+
+const SLikeButtonContainer = styled.div<{ isHovering: boolean }>`
+  ${({ isHovering }) => isHovering && LikeButtonStyle}
+`;
+
+const SInfosContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2.4rem;
+`;
+
+const SCreatorContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+`;
+
+const SCreatorPicture = styled.div<{ isHovering: boolean }>`
+  ${({ isHovering }) => isHovering && ySlideStyle}
+`;
+
+const SCreatorName = styled.div<{ isHovering: boolean }>`
+  color: ${({ theme }) => theme.colors.invertedContrast};
+  font-size: 1.2rem;
+  margin-top: 1.2rem;
+
+  ${({ isHovering }) => isHovering && ySlideFadeStyle}
+`;
+
+const SPriceWrapper = styled.div<{ isHovering: boolean }>`
   margin-top: 0.8rem;
+
+  ${({ isHovering }) => isHovering && yLongSlideFadeStyle}
 `;
 
 export default NftCardWithHover;

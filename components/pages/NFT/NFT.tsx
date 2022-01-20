@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { getByTheSameArtistNFTs, getOwnedNFTS, getSeriesData } from 'actions/nft';
 import Avatar from 'components/base/Avatar';
 import Media from 'components/base/Media';
-import ModalShare from 'components/base/ModalShare';
+import { ModalShare } from 'components/base/Modal';
 import Showcase from 'components/base/Showcase';
 import { Container, Title, Wrapper } from 'components/layout';
 import Button from 'components/ui/Button';
@@ -296,10 +296,11 @@ const NFTPage = ({
       </Container>
       {modalShareOpen && (
         <ModalShare
-          setModalExpand={setModalShareOpen}
-          title={'Share this NFT with your friends'}
+          setExpanded={setModalShareOpen}
+          subtitle="Share this NFT with your friends"
           subject={shareSubject}
           text={shareText}
+          title="Share"
           url={shareUrl}
         />
       )}

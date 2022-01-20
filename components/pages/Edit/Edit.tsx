@@ -6,20 +6,13 @@ import styled from 'styled-components';
 import { reviewRequested as requestReview } from 'actions/user';
 // import { padlock } from 'components/assets';
 import { Banner as AvatarBanner } from 'components/base/Avatar';
-import {
-  Advice,
-  Container,
-  Form,
-  FormSideLeft,
-  FormSideRight,
-  Title,
-  Wrapper,
-} from 'components/layout';
+import { Advice, Container, Form, FormSideLeft, FormSideRight, Title, Wrapper } from 'components/layout';
 import ModalEdit from 'components/pages/Edit/components/ModalEdit/ModalEdit';
 import TwitterErrorModal from 'components/pages/Edit/components/TwitterErrorModal/TwitterErrorModal';
 import Button from 'components/ui/Button';
 import Icon from 'components/ui/Icon';
 import { TextArea, TextInput } from 'components/ui/Input';
+import Modal from 'components/ui/Modal';
 import { UserType } from 'interfaces';
 import { breakpointMap } from 'style/theme/base';
 import { MARKETPLACE_ID, NODE_API_URL } from 'utils/constant';
@@ -30,24 +23,14 @@ import { ImageBlock } from './components';
 
 interface Props {
   user: UserType;
-  setSuccessPopup: (b: boolean) => void;
 }
 
-const Edit = ({ user, setSuccessPopup }: Props) => {
+const Edit = ({ user }: Props) => {
   const router = useRouter();
-  const {
-    banner,
-    bio,
-    name,
-    personalUrl,
-    picture,
-    reviewRequested,
-    twitterName,
-    twitterVerified,
-    verified,
-    walletId,
-  } = user;
+  const { banner, bio, name, personalUrl, picture, reviewRequested, twitterName, twitterVerified, verified, walletId } =
+    user;
 
+  const [isCertificationModalExpanded, setIsCertificationModalExpanded] = useState(false);
   const [data, setData] = useState({
     walletId,
     name,
@@ -72,12 +55,8 @@ const Edit = ({ user, setSuccessPopup }: Props) => {
     data.name &&
     data.name.length > 0 &&
     (!data.customUrl || data.customUrl === '' || validateUrl(data.customUrl)) &&
-    (!data.personalUrl ||
-      data.personalUrl === '' ||
-      validateUrl(data.personalUrl)) &&
-    (!data.twitterName ||
-      data.twitterName === '' ||
-      validateTwitter(data.twitterName));
+    (!data.personalUrl || data.personalUrl === '' || validateUrl(data.personalUrl)) &&
+    (!data.twitterName || data.twitterName === '' || validateTwitter(data.twitterName));
 
   const isMobile = useMediaQuery({
     query: `(max-width: ${breakpointMap.md - 1}px)`,
@@ -86,11 +65,7 @@ const Edit = ({ user, setSuccessPopup }: Props) => {
     query: `(max-width: ${breakpointMap.lg - 1}px)`,
   });
 
-  const isVerificationAvailable =
-    twitterName &&
-    twitterName.length > 2 &&
-    !twitterVerified &&
-    MARKETPLACE_ID === '0';
+  const isVerificationAvailable = twitterName && twitterName.length > 2 && !twitterVerified && MARKETPLACE_ID === '0';
   const verificationLabel = data.verified
     ? 'Certified'
     : data.reviewRequested
@@ -106,7 +81,7 @@ const Edit = ({ user, setSuccessPopup }: Props) => {
       try {
         let res = await requestReview(walletId);
         if (res) {
-          setSuccessPopup(true);
+          setIsCertificationModalExpanded(true);
           setData({ ...data, reviewRequested: res.reviewRequested });
         }
       } catch (error) {
@@ -132,10 +107,8 @@ const Edit = ({ user, setSuccessPopup }: Props) => {
       if (isDataValid) {
         //save picture and banner to pinata before sending api if exist and different
         let updateData = { ...data };
-        if (data.banner?.slice(0, 4) === 'blob')
-          updateData.banner = await fileToUrl(data.banner, 'banner');
-        if (data.picture?.slice(0, 4) === 'blob')
-          updateData.picture = await fileToUrl(data.picture, 'picture');
+        if (data.banner?.slice(0, 4) === 'blob') updateData.banner = await fileToUrl(data.banner, 'banner');
+        if (data.picture?.slice(0, 4) === 'blob') updateData.picture = await fileToUrl(data.picture, 'picture');
         setData(updateData);
         //show update modal
         setModalEditOpen(true);
@@ -153,92 +126,89 @@ const Edit = ({ user, setSuccessPopup }: Props) => {
   }, [router.query]);
 
   return (
-    <Container>
-      <SBannerContainer>
-        <SBannerIMG src={data.banner} draggable="false" alt="banner" />
-        {isTablet && (
-          <SReturnButtonMobile
-            color="invertedContrast"
-            icon="arrowLeft"
-            href="/profile"
-            size="small"
-            text="Return"
-            variant="contained"
-          />
-        )}
-      </SBannerContainer>
-      <SWrapper>
-        {!isTablet && (
-          <SAvatarBannerContainer>
-            <AvatarBanner
-              bio={bio}
-              isVerified={verified}
-              name={name}
-              picture={picture}
-              twitterName={twitterName}
-              walletId={walletId}
-            />
-            <Button
-              color="neutral200"
+    <>
+      <Container>
+        <SBannerContainer>
+          <SBannerIMG src={data.banner} draggable="false" alt="banner" />
+          {isTablet && (
+            <SReturnButtonMobile
+              color="invertedContrast"
               icon="arrowLeft"
               href="/profile"
+              size="small"
               text="Return"
-              size="small"
-              variant="outlined"
+              variant="contained"
             />
-          </SAvatarBannerContainer>
-        )}
-        <STopContainer>
-          <STitle>Edit your profile</STitle>
-          <SCertifiedButtonCOntainer>
-            <Button
-              color="neutral200"
-              icon={data.verified || data.reviewRequested ? 'badge' : undefined}
-              noHover={data.verified || data.reviewRequested}
-              onClick={handleCertificationReview}
-              size="small"
-              text={verificationLabel}
-              variant="outlined"
-            />
-          </SCertifiedButtonCOntainer>
-        </STopContainer>
-        {isMobile && (
-          <>
-            <SPictureBlock
-              chipLabel="Upload avatar"
-              description="We recommend an image
+          )}
+        </SBannerContainer>
+        <SWrapper>
+          {!isTablet && (
+            <SAvatarBannerContainer>
+              <AvatarBanner
+                bio={bio}
+                isVerified={verified}
+                name={name}
+                picture={picture}
+                twitterName={twitterName}
+                walletId={walletId}
+              />
+              <Button
+                color="neutral200"
+                icon="arrowLeft"
+                href="/profile"
+                text="Return"
+                size="small"
+                variant="outlined"
+              />
+            </SAvatarBannerContainer>
+          )}
+          <STopContainer>
+            <STitle>Edit your profile</STitle>
+            <SCertifiedButtonCOntainer>
+              <Button
+                color="neutral200"
+                icon={data.verified || data.reviewRequested ? 'badge' : undefined}
+                noHover={data.verified || data.reviewRequested}
+                onClick={handleCertificationReview}
+                size="small"
+                text={verificationLabel}
+                variant="outlined"
+              />
+            </SCertifiedButtonCOntainer>
+          </STopContainer>
+          {isMobile && (
+            <>
+              <SPictureBlock
+                chipLabel="Upload avatar"
+                description="We recommend an image
 of at least 120x120. Gifs work too."
-              id="uploadPicture"
-              name={name}
-              onChange={(file: File) =>
-                handleChange(URL.createObjectURL(file), 'picture')
-              }
-              picture={data.picture}
-            />
+                id="uploadPicture"
+                name={name}
+                onChange={(file: File) => handleChange(URL.createObjectURL(file), 'picture')}
+                picture={data.picture}
+              />
 
-            <SBannerBlock
-              banner={data.banner}
-              chipLabel="Upload banner"
-              description="We recommend an image
+              <SBannerBlock
+                banner={data.banner}
+                chipLabel="Upload banner"
+                description="We recommend an image
           of at least 1800x280"
-              id="uploadBanner"
-              onChange={(file: File) =>
-                handleChange(URL.createObjectURL(file), 'banner')
-              }
-            />
-          </>
-        )}
-        <Form>
-          <FormSideLeft>
-            <STextInput
-              isError={data.name === ''}
-              label="Display name"
-              onChange={(e) => handleChange(e.target.value, 'name')}
-              placeholder="Your name"
-              value={data.name || ''}
-            />
-            {/* TODO: herotag features added later when specifications are defined */}
-            {/* {data.nickname && (
+                id="uploadBanner"
+                onChange={(file: File) => handleChange(URL.createObjectURL(file), 'banner')}
+              />
+            </>
+          )}
+          <Form>
+            <FormSideLeft>
+              <STextInput
+                isError={data.name === ''}
+                label="Display name"
+                onChange={(e) => handleChange(e.target.value, 'name')}
+                placeholder="Your name"
+                value={data.name || ''}
+              />
+              {/* TODO: herotag features added later when specifications are defined */}
+              {/* {data.nickname && (
               <>
                 <STextInput
                   label="@artistname"
@@ -257,112 +227,114 @@ of at least 120x120. Gifs work too."
                 />
               </>
             )} */}
-            <STextArea
-              label="Bio"
-              placeholder="Tell something about you in a few words..."
-              onChange={(e) => handleChange(e.target.value, 'bio')}
-              value={data.bio}
-            />
-          </FormSideLeft>
-          <FormSideRight>
-            <STextInput
-              isError={
-                data.twitterName !== undefined &&
-                data.twitterName !== '' &&
-                data.twitterName !== null &&
-                !validateTwitter(data.twitterName)
-              }
-              label={
-                <STwitterInputLabel>
-                  <STwitterLabel>Twitter username</STwitterLabel>
-                  {data.twitterVerified ? (
-                    <STwitterVerified>
-                      <span>Verified</span>
-                      <SIcon name="badge" />
-                    </STwitterVerified>
-                  ) : (
-                    isVerificationAvailable && (
-                      <STwitterVerificationLink
-                        href={`${NODE_API_URL}/api/users/verifyTwitter/${data.walletId}`}
-                        target="_self"
-                        rel="noreferrer noopener"
-                      >
-                        Verify your Twitter account ({twitterName})
-                      </STwitterVerificationLink>
-                    )
-                  )}
-                </STwitterInputLabel>
-              }
-              placeholder="Twitter @username"
-              onChange={(e) => handleChange(e.target.value, 'twitterName')}
-              value={data.twitterName || ''}
-            />
-            <SClaimTwitterContainer>
-              {isVerificationAvailable && (
-                <STwitterNotVerified>
-                  Verify your Twitter account in order to get the verification
-                  badge
-                </STwitterNotVerified>
-              )}
-            </SClaimTwitterContainer>
-            <STextInput
-              isError={
-                data.personalUrl !== undefined &&
-                data.personalUrl !== '' &&
-                data.personalUrl !== null &&
-                !validateUrl(data.personalUrl)
-              }
-              label="Personal site or portfolio"
-              placeholder="https://"
-              onChange={(e) => handleChange(e.target.value, 'personalUrl')}
-              value={data.personalUrl || ''}
-            />
-            {!isMobile && (
-              <SImagesContainer>
-                <SPictureBlock
-                  chipLabel="Upload avatar"
-                  description="We recommend an image
+              <STextArea
+                label="Bio"
+                placeholder="Tell something about you in a few words..."
+                onChange={(e) => handleChange(e.target.value, 'bio')}
+                value={data.bio}
+              />
+            </FormSideLeft>
+            <FormSideRight>
+              <STextInput
+                isError={
+                  data.twitterName !== undefined &&
+                  data.twitterName !== '' &&
+                  data.twitterName !== null &&
+                  !validateTwitter(data.twitterName)
+                }
+                label={
+                  <STwitterInputLabel>
+                    <STwitterLabel>Twitter username</STwitterLabel>
+                    {data.twitterVerified ? (
+                      <STwitterVerified>
+                        <span>Verified</span>
+                        <SIcon name="badge" />
+                      </STwitterVerified>
+                    ) : (
+                      isVerificationAvailable && (
+                        <STwitterVerificationLink
+                          href={`${NODE_API_URL}/api/users/verifyTwitter/${data.walletId}`}
+                          target="_self"
+                          rel="noreferrer noopener"
+                        >
+                          Verify your Twitter account ({twitterName})
+                        </STwitterVerificationLink>
+                      )
+                    )}
+                  </STwitterInputLabel>
+                }
+                placeholder="Twitter @username"
+                onChange={(e) => handleChange(e.target.value, 'twitterName')}
+                value={data.twitterName || ''}
+              />
+              <SClaimTwitterContainer>
+                {isVerificationAvailable && (
+                  <STwitterNotVerified>
+                    Verify your Twitter account in order to get the verification badge
+                  </STwitterNotVerified>
+                )}
+              </SClaimTwitterContainer>
+              <STextInput
+                isError={
+                  data.personalUrl !== undefined &&
+                  data.personalUrl !== '' &&
+                  data.personalUrl !== null &&
+                  !validateUrl(data.personalUrl)
+                }
+                label="Personal site or portfolio"
+                placeholder="https://"
+                onChange={(e) => handleChange(e.target.value, 'personalUrl')}
+                value={data.personalUrl || ''}
+              />
+              {!isMobile && (
+                <SImagesContainer>
+                  <SPictureBlock
+                    chipLabel="Upload avatar"
+                    description="We recommend an image
 of at least 120x120. Gifs work too."
-                  id="uploadPicture"
-                  name={name}
-                  onChange={(file: File) =>
-                    handleChange(URL.createObjectURL(file), 'picture')
-                  }
-                  picture={data.picture}
-                />
+                    id="uploadPicture"
+                    name={name}
+                    onChange={(file: File) => handleChange(URL.createObjectURL(file), 'picture')}
+                    picture={data.picture}
+                  />
 
-                <SBannerBlock
-                  banner={data.banner}
-                  chipLabel="Upload banner"
-                  description="We recommend an image
+                  <SBannerBlock
+                    banner={data.banner}
+                    chipLabel="Upload banner"
+                    description="We recommend an image
           of at least 1800x280"
-                  id="uploadBanner"
-                  onChange={(file: File) =>
-                    handleChange(URL.createObjectURL(file), 'banner')
-                  }
-                />
-              </SImagesContainer>
-            )}
-          </FormSideRight>
-        </Form>
-        <SAdvice>
-          To update your settings you should sign message through your wallet.
-          Click 'Update profile' then sign the message.
-        </SAdvice>
-        <SButton
-          color="primary"
-          disabled={!isDataValid}
-          onClick={() => handleUpdate()}
-          text="Update  your profile"
-        />
-        {modalEditOpen && (
-          <ModalEdit setModalExpand={setModalEditOpen} data={data} />
-        )}
-        {twitterErrorModal && (
-          <TwitterErrorModal setModalExpand={setTwitterErrorModal} />
-        )}
-      </SWrapper>
-    </Container>
+                    id="uploadBanner"
+                    onChange={(file: File) => handleChange(URL.createObjectURL(file), 'banner')}
+                  />
+                </SImagesContainer>
+              )}
+            </FormSideRight>
+          </Form>
+          <SAdvice>
+            To update your settings you should sign message through your wallet. Click 'Update profile' then sign the
+            message.
+          </SAdvice>
+          <SButton color="primary" disabled={!isDataValid} onClick={() => handleUpdate()} text="Update  your profile" />
+          {modalEditOpen && <ModalEdit setModalExpand={setModalEditOpen} data={data} />}
+          {twitterErrorModal && <TwitterErrorModal setModalExpand={setTwitterErrorModal} />}
+        </SWrapper>
+      </Container>
+      {isCertificationModalExpanded && (
+        <Modal
+          setExpanded={setIsCertificationModalExpanded}
+          subtitle="Your profile is under review. After review it will be certified."
+          title="Review requested"
+        >
+          <Button
+            color="invertedContrast"
+            onClick={() => setIsCertificationModalExpanded(false)}
+            size="medium"
+            text="Continue"
+            variant="contained"
+          />
+        </Modal>
+      )}
+    </>
   );
 };
 

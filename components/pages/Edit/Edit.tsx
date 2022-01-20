@@ -7,7 +7,6 @@ import { reviewRequested as requestReview } from 'actions/user';
 // import { padlock } from 'components/assets';
 import { Banner as AvatarBanner } from 'components/base/Avatar';
 import { Advice, Container, Form, FormSideLeft, FormSideRight, Title, Wrapper } from 'components/layout';
-import TwitterErrorModal from 'components/pages/Edit/components/TwitterErrorModal/TwitterErrorModal';
 import Button from 'components/ui/Button';
 import Icon from 'components/ui/Icon';
 import { TextArea, TextInput } from 'components/ui/Input';
@@ -31,6 +30,8 @@ const Edit = ({ user }: Props) => {
     user;
 
   const [isCertificationModalExpanded, setIsCertificationModalExpanded] = useState(false);
+  const [isEditModalExpanded, setIsEditModalExpanded] = useState(false);
+  const [isTwitterErrorModalExpanded, setIsTwitterErrorModalExpanded] = useState(false);
   const [data, setData] = useState({
     walletId,
     name,
@@ -47,8 +48,6 @@ const Edit = ({ user }: Props) => {
     reviewRequested,
     verified,
   });
-  const [modalEditOpen, setModalEditOpen] = useState(false);
-  const [twitterErrorModal, setTwitterErrorModal] = useState(false);
 
   const isDataValid =
     data &&
@@ -111,7 +110,7 @@ const Edit = ({ user }: Props) => {
         if (data.picture?.slice(0, 4) === 'blob') updateData.picture = await fileToUrl(data.picture, 'picture');
         setData(updateData);
         //show update modal
-        setModalEditOpen(true);
+        setIsEditModalExpanded(true);
       }
     } catch (err) {
       console.log(err);
@@ -120,7 +119,7 @@ const Edit = ({ user }: Props) => {
 
   useEffect(() => {
     if (router.query?.twitterValidated === 'false') {
-      setTwitterErrorModal(true);
+      setIsTwitterErrorModalExpanded(true);
       router.query = {};
     }
   }, [router.query]);
@@ -315,8 +314,22 @@ of at least 120x120. Gifs work too."
             message.
           </SAdvice>
           <SButton color="primary" disabled={!isDataValid} onClick={() => handleUpdate()} text="Update  your profile" />
-          {modalEditOpen && <ModalEdit setExpanded={setModalEditOpen} data={data} />}
-          {twitterErrorModal && <TwitterErrorModal setModalExpand={setTwitterErrorModal} />}
+          {isEditModalExpanded && <ModalEdit setExpanded={setIsEditModalExpanded} data={data} />}
+          {isTwitterErrorModalExpanded && (
+            <Modal
+              setExpanded={setIsTwitterErrorModalExpanded}
+              subtitle="Twitter validation failed, please check your information and try again"
+              title="Twitter validation"
+            >
+              <SModalButton
+                color="invertedContrast"
+                onClick={() => setIsTwitterErrorModalExpanded(false)}
+                size="medium"
+                text="Back to profile edit"
+                variant="contained"
+              />
+            </Modal>
+          )}
         </SWrapper>
       </Container>
       {isCertificationModalExpanded && (
@@ -325,7 +338,7 @@ of at least 120x120. Gifs work too."
           subtitle="Your profile is under review. After review it will be certified."
           title="Review requested"
         >
-          <Button
+          <SModalButton
             color="invertedContrast"
             onClick={() => setIsCertificationModalExpanded(false)}
             size="medium"
@@ -537,6 +550,13 @@ const SButton = styled(Button)`
 
   ${({ theme }) => theme.mediaQueries.xl} {
     margin: 4.8rem 0 9.6rem;
+  }
+`;
+
+const SModalButton = styled(Button)`
+  &:hover {
+    background: ${({ theme }) => theme.colors.invertedContrast};
+    color: ${({ theme }) => theme.colors.contrast};
   }
 `;
 

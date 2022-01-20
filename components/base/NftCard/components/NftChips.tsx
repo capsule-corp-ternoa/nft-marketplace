@@ -6,7 +6,8 @@ import { NftType } from 'interfaces/index';
 import { computeCaps, computeTiime } from 'utils/strings';
 import { breakpointMap } from 'style/theme/base';
 
-import { CAROUSEL_MODE, GRID_MODE, ModeType } from '../NftCard';
+import { CAROUSEL_MODE, GRID_MODE } from '../constants';
+import { ModeType } from '../interfaces';
 
 interface Props {
   mode?: ModeType;
@@ -25,13 +26,7 @@ const NftChips = ({
   quantity,
   NFT,
 }: Props) => {
-  const {
-    properties,
-    smallestPrice,
-    smallestPriceTiime,
-    totalListedInMarketplace,
-    totalListedNft,
-  } = NFT;
+  const { properties, smallestPrice, smallestPriceTiime, totalListedInMarketplace, totalListedNft } = NFT;
 
   const isMobile = useMediaQuery({
     query: `(max-width: ${breakpointMap.md - 1}px)`,
@@ -40,15 +35,24 @@ const NftChips = ({
     query: `(min-width: ${breakpointMap.xxl}px)`,
   });
 
-  const isPrice = !!Number(smallestPrice) || !!Number(smallestPriceTiime);
+  const smallestCapsPrice = Number(smallestPrice);
+  const smallestTiimePrice = Number(smallestPriceTiime);
+  const isSmallestCapsPrice = smallestCapsPrice > 0;
+  const isSmallestTiimePrice = smallestTiimePrice > 0;
+  const isPrice = isSmallestCapsPrice || isSmallestTiimePrice;
   const isSecret = properties?.cryptedMedia.ipfs !== properties?.preview.ipfs;
+
+  const smallestPriceWording = isPrice
+    ? `${isSmallestCapsPrice ? `${computeCaps(smallestCapsPrice)} CAPS` : ''}
+          ${isSmallestCapsPrice && isSmallestTiimePrice ? ' / ' : ''}
+          ${isSmallestTiimePrice ? `${computeTiime(smallestTiimePrice)} TIIME` : ''}`
+    : undefined;
 
   const defaultQuantityAvailable = totalListedInMarketplace ?? totalListedNft ?? 1;
   const quantityAvailable = quantity ?? defaultQuantityAvailable;
 
   // Filter gradients flags
-  const isTopFilter =
-    (quantityAvailable > 1 && !noAvailableChip) || (isSecret && !noSecretChip);
+  const isTopFilter = (quantityAvailable > 1 && !noAvailableChip) || (isSecret && !noSecretChip);
   const isBottomFilter = isPrice && !noPriceChip;
 
   return (
@@ -58,9 +62,9 @@ const NftChips = ({
           <Chip
             color="whiteBlur"
             size="small"
-            text={`${
-              !isLargeDesktop || mode === GRID_MODE ? '' : 'Available : '
-            }${quantityAvailable} of ${NFT.totalNft}`}
+            text={`${!isLargeDesktop || mode === GRID_MODE ? '' : 'Available : '}${quantityAvailable} of ${
+              NFT.totalNft
+            }`}
             variant="round"
           />
         </SAvailableChipWrapper>
@@ -76,28 +80,9 @@ const NftChips = ({
           />
         </SSecretChipWrapper>
       )}
-      {isPrice && !noPriceChip && (
+      {smallestPriceWording && !noPriceChip && (
         <SPriceChipWrapper>
-          <Chip
-            color="whiteBlur"
-            size="small"
-            text={
-              <>
-                {smallestPrice &&
-                  Number(smallestPrice) > 0 &&
-                  `${computeCaps(Number(smallestPrice))} CAPS`}
-                {smallestPrice &&
-                  Number(smallestPrice) &&
-                  smallestPriceTiime &&
-                  Number(smallestPriceTiime) &&
-                  ` / `}
-                {smallestPriceTiime &&
-                  Number(smallestPriceTiime) > 0 &&
-                  `${computeTiime(Number(smallestPriceTiime))} TIIME`}
-              </>
-            }
-            variant="round"
-          />
+          <Chip color="whiteBlur" size="small" text={smallestPriceWording} variant="round" />
         </SPriceChipWrapper>
       )}
       <SFilter isTopFilter={isTopFilter} isBottomFilter={isBottomFilter} />
@@ -123,7 +108,7 @@ const SSecretChipWrapper = styled(SChipWrapper)`
 
 const SPriceChipWrapper = styled(SChipWrapper)`
   width: fit-content;
-  bottom: 1.6rem;
+  bottom: 2.4rem;
   left: 0;
   right: 0;
   margin: 0 auto;
@@ -135,15 +120,9 @@ const SFilter = styled.div<{ isTopFilter?: boolean; isBottomFilter?: boolean }>`
   height: 100%;
   z-index: 1;
   background: ${({ isTopFilter, isBottomFilter }) => `${
-    isTopFilter
-      ? 'linear-gradient(0deg, rgba(57, 57, 57, 0) 70%, #0303039e 100%)'
-      : 'none'
+    isTopFilter ? 'linear-gradient(0deg, rgba(57, 57, 57, 0) 70%, #0303039e 100%)' : 'none'
   },
-  ${
-    isBottomFilter
-      ? 'linear-gradient(180deg, rgba(57, 57, 57, 0) 70%, #0303039e 100%)'
-      : 'none'
-  }`};
+  ${isBottomFilter ? 'linear-gradient(180deg, rgba(57, 57, 57, 0) 70%, #0303039e 100%)' : 'none'}`};
   border-radius: 1.2rem;
 `;
 

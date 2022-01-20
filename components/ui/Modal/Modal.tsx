@@ -6,12 +6,13 @@ import Icon from '../Icon';
 
 export interface ModalProps {
   children?: React.ReactNode;
+  error?: string;
   setExpanded: (b: boolean) => void;
   subtitle?: string;
   title?: string;
 }
 
-const Modal: React.FC<ModalProps> = ({ children, setExpanded, subtitle, title }) => (
+const Modal: React.FC<ModalProps> = ({ children, error, setExpanded, subtitle, title }) => (
   <SModalBackground>
     <ClickAwayListener
       onClickAway={() => {
@@ -24,7 +25,8 @@ const Modal: React.FC<ModalProps> = ({ children, setExpanded, subtitle, title })
         </SIconContainer>
         {title && <STitle>{title}</STitle>}
         {subtitle && <SSubtitle>{subtitle}</SSubtitle>}
-        {children && <SBody>{children}</SBody>}
+        {error && <SError>{error}</SError>}
+        {!error && children && <SBody>{children}</SBody>}
       </SModalContainer>
     </ClickAwayListener>
   </SModalBackground>
@@ -83,13 +85,21 @@ const SSubtitle = styled.div`
   font-family: ${({ theme }) => theme.fonts.light};
   font-size: 1.6rem;
   margin-top: 0.8rem;
+  text-align: center;
 `;
 
 const SBody = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 0.8rem;
+  margin-top: 4rem;
+`;
+
+const SError = styled.div`
+  color: ${({ theme }) => theme.colors.danger};
+  font-family: ${({ theme }) => theme.fonts.medium};
+  font-size: 1.6rem;
+  margin-top: 4rem;
 `;
 
 export default Modal;

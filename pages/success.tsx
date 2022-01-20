@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import Head from 'next/head';
 import BetaBanner from 'components/base/BetaBanner';
 import FloatingHeader from 'components/base/FloatingHeader';
 import Footer from 'components/base/Footer';
 import MainHeader from 'components/base/MainHeader';
-import TernoaWallet from 'components/base/TernoaWallet';
 import cookies from 'next-cookies';
 import { getUser } from 'actions/user';
 import { UserType } from 'interfaces';
@@ -18,7 +17,6 @@ export interface SuccessProps {
 }
 
 const SuccessPage = ({ user }: SuccessProps) => {
-  const [modalExpand, setModalExpand] = useState(false);
   const router = useRouter();
   const { title, text, buttonText, returnUrl, isRedirect, subText } = router.query;
   useEffect(() => {
@@ -42,9 +40,8 @@ const SuccessPage = ({ user }: SuccessProps) => {
         <meta name="description" content="Success page of SecretNFT, by Ternoa." />
         <meta name="og:image" content="ternoa-social-banner.jpg" />
       </Head>
-      {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
       <BetaBanner />
-      <MainHeader user={user} setModalExpand={setModalExpand} />
+      <MainHeader user={user} />
       <Success
         title={String(title)}
         text={text ? String(text) : undefined}
@@ -53,7 +50,7 @@ const SuccessPage = ({ user }: SuccessProps) => {
         subText={subText ? String(subText) : undefined}
       />
       <Footer />
-      <FloatingHeader user={user} setModalExpand={setModalExpand} />
+      <FloatingHeader user={user} />
     </>
   );
 };

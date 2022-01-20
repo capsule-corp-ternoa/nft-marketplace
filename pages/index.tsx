@@ -5,7 +5,6 @@ import FloatingHeader from 'components/base/FloatingHeader';
 import Footer from 'components/base/Footer';
 import MainHeader from 'components/base/MainHeader';
 import Landing from 'components/pages/Landing';
-import TernoaWallet from 'components/base/TernoaWallet';
 import arrayShuffle from 'array-shuffle';
 import cookies from 'next-cookies';
 
@@ -36,7 +35,6 @@ const LandingPage = ({
   NFTCreators,
   totalCountNFT,
 }: LandingProps) => {
-  const [modalExpand, setModalExpand] = useState(false);
   const [walletUser, setWalletUser] = useState(user);
 
   useEffect(() => {
@@ -52,9 +50,8 @@ const LandingPage = ({
         <meta name="og:image" content="ternoa-social-banner.jpg" />
         <meta property="og:image" content="ternoa-social-banner.jpg" />
       </Head>
-      {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
       <BetaBanner />
-      <MainHeader user={walletUser as UserType} setModalExpand={setModalExpand} />
+      <MainHeader user={walletUser as UserType} />
       <Landing
         user={walletUser as UserType}
         users={users}
@@ -66,7 +63,7 @@ const LandingPage = ({
         totalCountNFT={totalCountNFT}
       />
       <Footer />
-      <FloatingHeader user={user} setModalExpand={setModalExpand} />
+      <FloatingHeader user={user} />
     </>
   );
 };

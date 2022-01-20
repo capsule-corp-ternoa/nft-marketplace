@@ -3,6 +3,7 @@ import { useMediaQuery } from 'react-responsive';
 import Link from 'next/link';
 import styled from 'styled-components';
 
+import { ModalWallet } from 'components/base/Modal';
 import { ProfileMenuBadge, ProfileMenuDropdown } from 'components/base/ProfileMenu';
 import Button from 'components/ui/Button';
 
@@ -14,15 +15,12 @@ import { onModelOpen } from '../../../utils/model-helpers';
 import style from './FloatingHeader.module.scss';
 export interface FloatingHeaderProps {
   user: UserType;
-  setModalExpand: (b: boolean) => void;
 }
 
-const FloatingHeader: React.FC<FloatingHeaderProps> = ({
-  user,
-  setModalExpand,
-}) => {
+const FloatingHeader: React.FC<FloatingHeaderProps> = ({ user }) => {
   const [, setSearchValue] = useState('' as string);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isModalWalletExpanded, setIsModalWalletExpanded] = useState(false);
   const [isProfileMenuExpanded, setIsProfileMenuExpanded] = useState(false);
 
   const updateKeywordSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,84 +36,74 @@ const FloatingHeader: React.FC<FloatingHeaderProps> = ({
   }
 
   return (
-    <div className={isExpanded ? `${style.Header} ${style.HeaderExpanded}` : style.Header}>
-      {isExpanded && (
-        <div className={style.FullHeader}>
-          <div className={style.SearchBar}>
-            <input
-              type="search"
-              onChange={updateKeywordSearch}
-              className={style.Input}
-              placeholder="Search"
+    <>
+      <div className={isExpanded ? `${style.Header} ${style.HeaderExpanded}` : style.Header}>
+        {isExpanded && (
+          <div className={style.FullHeader}>
+            <div className={style.SearchBar}>
+              <input type="search" onChange={updateKeywordSearch} className={style.Input} placeholder="Search" />
+            </div>
+            <div className={style.Links}>
+              <Link href="/create">
+                <a className={style.Link}>Create</a>
+              </Link>
+              <Link href="/explore">
+                <a className={style.Link}>Explore</a>
+              </Link>
+              <Link href="/faq">
+                <a className={style.Link}>How it works</a>
+              </Link>
+            </div>
+          </div>
+        )}
+        <div className={style.Container}>
+          <div className={style.Burger} onClick={() => setIsExpanded(!isExpanded)}>
+            {isExpanded ? (
+              <>
+                <span className={style.CrossLine} />
+                <span className={style.CrossLine} />
+              </>
+            ) : (
+              <>
+                <span className={style.Line} />
+                <span className={style.Line} />
+                <span className={style.Line} />
+              </>
+            )}
+          </div>
+          {user ? (
+            <SProfileMenuBadge
+              onClick={() => setIsProfileMenuExpanded((prevState) => !prevState)}
+              tokenAmount={user?.capsAmount ? computeCaps(Number(user.capsAmount)) : 0}
+              tokenSymbol="CAPS"
+              user={user}
             />
-          </div>
-          <div className={style.Links}>
-            <Link href="/create">
-              <a className={style.Link}>Create</a>
-            </Link>
-            <Link href="/explore">
-              <a className={style.Link}>Explore</a>
-            </Link>
-            <Link href="/faq">
-              <a className={style.Link}>How it works</a>
-            </Link>
-          </div>
-        </div>
-      )}
-      <div className={style.Container}>
-        <div
-          className={style.Burger}
-          onClick={() => setIsExpanded(!isExpanded)}
-        >
-          {isExpanded ? (
-            <>
-              <span className={style.CrossLine} />
-              <span className={style.CrossLine} />
-            </>
           ) : (
-            <>
-              <span className={style.Line} />
-              <span className={style.Line} />
-              <span className={style.Line} />
-            </>
+            <Button
+              color="invertedContrast"
+              onClick={() => {
+                onModelOpen();
+                setIsModalWalletExpanded(true);
+                setIsExpanded(false);
+              }}
+              size="medium"
+              text="Connect Wallet"
+              variant="contained"
+            />
           )}
         </div>
-        {user ? (
-          <SProfileMenuBadge
-            onClick={() => setIsProfileMenuExpanded(prevState => !prevState)}
-            tokenAmount={
-              user?.capsAmount ? computeCaps(Number(user.capsAmount)) : 0
-            }
-            tokenSymbol="CAPS"
-            user={user}
-          />
-        ) : (
-          <Button
-            color="invertedContrast"
-            onClick={() => {
-              onModelOpen();
-              setModalExpand(true);
-              setIsExpanded(false);
-            }}
-            size="medium"
-            text="Connect Wallet"
-            variant="contained"
-          />
+        {user && isProfileMenuExpanded && (
+          <SProfileMenuDropdown onClose={() => setIsProfileMenuExpanded(false)} user={user} />
         )}
       </div>
-      {user && isProfileMenuExpanded && (
-        <SProfileMenuDropdown
-          onClose={() => setIsProfileMenuExpanded(false)}
-          user={user}
-        />
-      )}
-    </div>
+      {isModalWalletExpanded && <ModalWallet setExpanded={setIsModalWalletExpanded} />}
+    </>
   );
 };
 
 const SProfileMenuBadge = styled(ProfileMenuBadge)`
   background-color: transparent;
-  border-color: ${({theme}) => theme.colors.invertedContrast};
+  border-color: ${({ theme }) => theme.colors.invertedContrast};
 `;
 
 const SProfileMenuDropdown = styled(ProfileMenuDropdown)`
@@ -128,9 +116,8 @@ const SProfileMenuDropdown = styled(ProfileMenuDropdown)`
     border-left: 2.4rem solid transparent;
     border-right: 2.4rem solid transparent;
     z-index: 101;
-    border-top: ${({ theme }) =>
-      `1.2rem solid ${theme.colors.contrast}`};
-    content: "";
+    border-top: ${({ theme }) => `1.2rem solid ${theme.colors.contrast}`};
+    content: '';
     position: absolute;
     bottom: 0;
     right: 3.2rem;

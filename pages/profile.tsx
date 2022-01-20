@@ -4,7 +4,6 @@ import BetaBanner from 'components/base/BetaBanner';
 import FloatingHeader from 'components/base/FloatingHeader';
 import Footer from 'components/base/Footer';
 import MainHeader from 'components/base/MainHeader';
-import TernoaWallet from 'components/base/TernoaWallet';
 import Profile, { USER_PERSONNAL_PROFILE_VARIANT } from 'components/pages/Profile';
 import SuccessPopup from 'components/base/SuccessPopup';
 import { getOwnedNFTS } from 'actions/nft';
@@ -42,7 +41,6 @@ const ORDERED_TABS_ID = [
 ] as const;
 
 const ProfilePage = ({ user, owned, ownedHasNextPage }: ProfilePageProps) => {
-  const [modalExpand, setModalExpand] = useState(false);
   const [successPopup, setSuccessPopup] = useState(false);
 
   return (
@@ -53,10 +51,9 @@ const ProfilePage = ({ user, owned, ownedHasNextPage }: ProfilePageProps) => {
         <meta name="description" content="Ternoa - Your profile." />
         <meta name="og:image" content="ternoa-social-banner.jpg" />
       </Head>
-      {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
       {successPopup && <SuccessPopup setSuccessPopup={setSuccessPopup} />}
       <BetaBanner />
-      <MainHeader user={user} setModalExpand={setModalExpand} />
+      <MainHeader user={user} />
       <Profile
         user={user}
         userOwnedlNfts={owned}
@@ -65,7 +62,7 @@ const ProfilePage = ({ user, owned, ownedHasNextPage }: ProfilePageProps) => {
         variant={USER_PERSONNAL_PROFILE_VARIANT}
       />
       <Footer />
-      <FloatingHeader user={user} setModalExpand={setModalExpand} />
+      <FloatingHeader user={user} />
     </>
   );
 };

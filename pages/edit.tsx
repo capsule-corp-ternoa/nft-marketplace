@@ -8,7 +8,6 @@ import FloatingHeader from 'components/base/FloatingHeader';
 import Footer from 'components/base/Footer';
 import MainHeader from 'components/base/MainHeader';
 import SuccessPopup from 'components/base/SuccessPopup';
-import TernoaWallet from 'components/base/TernoaWallet';
 import Edit from 'components/pages/Edit';
 
 import { getUser } from 'actions/user';
@@ -21,7 +20,6 @@ export interface EditPageProps {
 }
 
 const EditPage = ({ user }: EditPageProps) => {
-  const [modalExpand, setModalExpand] = useState(false);
   const [successPopup, setSuccessPopup] = useState(false);
 
   return (
@@ -37,13 +35,12 @@ const EditPage = ({ user }: EditPageProps) => {
         <meta name="description" content="Ternoa - Your profile." />
         <meta name="og:image" content="ternoa-social-banner.jpg" />
       </Head>
-      {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
       {successPopup && <SuccessPopup setSuccessPopup={setSuccessPopup} />}
       <BetaBanner />
-      <MainHeader user={user} setModalExpand={setModalExpand} />
+      <MainHeader user={user} />
       <Edit user={user} setSuccessPopup={setSuccessPopup} />
       <Footer />
-      <FloatingHeader user={user} setModalExpand={setModalExpand} />
+      <FloatingHeader user={user}/>
     </>
   );
 };

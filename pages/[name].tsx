@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { NextPageContext } from 'next';
 import Head from 'next/head';
 import cookies from 'next-cookies';
@@ -8,7 +8,6 @@ import BetaBanner from 'components/base/BetaBanner';
 import FloatingHeader from 'components/base/FloatingHeader';
 import Footer from 'components/base/Footer';
 import MainHeader from 'components/base/MainHeader';
-import TernoaWallet from 'components/base/TernoaWallet';
 import Profile, { ARTIST_PROFILE_VARIANT } from 'components/pages/Profile';
 import { UserType, FOLLOWERS_TAB, FOLLOWED_TAB, NFT_ON_SALE_TAB, NFT_NOT_FOR_SALE_TAB } from 'interfaces';
 import { decryptCookie } from 'utils/cookie';
@@ -24,7 +23,6 @@ const ORDERED_TABS_ID = [NFT_ON_SALE_TAB, NFT_NOT_FOR_SALE_TAB, FOLLOWERS_TAB, F
 
 const PublicProfilePage = ({ user, profile }: PublicProfileProps) => {
   const { name, walletId } = profile;
-  const [modalExpand, setModalExpand] = useState(false);
 
   return (
     <>
@@ -34,23 +32,14 @@ const PublicProfilePage = ({ user, profile }: PublicProfileProps) => {
           {name || middleEllipsis(walletId, 10)}
         </title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-        <meta
-          name="description"
-          content={`Ternoart - ${name || middleEllipsis(walletId, 10)} profile page.`}
-        />
+        <meta name="description" content={`Ternoart - ${name || middleEllipsis(walletId, 10)} profile page.`} />
         <meta name="og:image" content="ternoa-social-banner.jpg" />
       </Head>
-      {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
       <BetaBanner />
-      <MainHeader user={user} setModalExpand={setModalExpand} />
-      <Profile
-        artist={profile}
-        user={user}
-        tabs={ORDERED_TABS_ID}
-        variant={ARTIST_PROFILE_VARIANT}
-      />
+      <MainHeader user={user} />
+      <Profile artist={profile} user={user} tabs={ORDERED_TABS_ID} variant={ARTIST_PROFILE_VARIANT} />
       <Footer />
-      <FloatingHeader user={user} setModalExpand={setModalExpand} />
+      <FloatingHeader user={user} />
     </>
   );
 };

@@ -4,7 +4,6 @@ import BetaBanner from 'components/base/BetaBanner';
 import FloatingHeader from 'components/base/FloatingHeader';
 import Footer from 'components/base/Footer';
 import MainHeader from 'components/base/MainHeader';
-import TernoaWallet from 'components/base/TernoaWallet';
 import Create from 'components/pages/Create';
 import ModalMint from 'components/pages/Create/ModalMint';
 import cookies from 'next-cookies';
@@ -36,7 +35,6 @@ const CreatePage = ({ categories, user }: CreatePageProps) => {
       : process.env.NEXT_PUBLIC_IS_NFT_CREATION_ENABLED === 'true';
 
   const [error, setError] = useState('');
-  const [modalExpand, setModalExpand] = useState(false);
   const [modalCreate, setModalCreate] = useState(false);
   const [previewNFT, setPreviewNFT] = useState<File | null>(null); // Public NFT media
   const [output, setOutput] = useState<string[]>([]);
@@ -99,7 +97,6 @@ const CreatePage = ({ categories, user }: CreatePageProps) => {
         <meta name="og:image" content="ternoa-social-banner.jpg" />
       </Head>
       <>
-        {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
         {modalCreate && (
           <ModalMint
             error={error}
@@ -119,7 +116,7 @@ const CreatePage = ({ categories, user }: CreatePageProps) => {
           />
         )}
         <BetaBanner />
-        <MainHeader user={user} setModalExpand={setModalExpand} />
+        <MainHeader user={user} />
         {isNftCreationEnabled && (
           <Create
             categoriesOptions={categories}
@@ -139,7 +136,7 @@ const CreatePage = ({ categories, user }: CreatePageProps) => {
           />
         )}
         <Footer />
-        <FloatingHeader user={user} setModalExpand={setModalExpand} />
+        <FloatingHeader user={user} />
       </>
     </>
   );

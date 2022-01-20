@@ -7,7 +7,6 @@ import { reviewRequested as requestReview } from 'actions/user';
 // import { padlock } from 'components/assets';
 import { Banner as AvatarBanner } from 'components/base/Avatar';
 import { Advice, Container, Form, FormSideLeft, FormSideRight, Title, Wrapper } from 'components/layout';
-import ModalEdit from 'components/pages/Edit/components/ModalEdit/ModalEdit';
 import TwitterErrorModal from 'components/pages/Edit/components/TwitterErrorModal/TwitterErrorModal';
 import Button from 'components/ui/Button';
 import Icon from 'components/ui/Icon';
@@ -19,7 +18,8 @@ import { MARKETPLACE_ID, NODE_API_URL } from 'utils/constant';
 import { uploadIPFS } from 'utils/nftEncryption';
 import { validateTwitter, validateUrl } from 'utils/strings';
 
-import { ImageBlock } from './components';
+import ImageBlock from './components/ImageBlock';
+import ModalEdit from './components/ModalEdit';
 
 interface Props {
   user: UserType;
@@ -315,7 +315,7 @@ of at least 120x120. Gifs work too."
             message.
           </SAdvice>
           <SButton color="primary" disabled={!isDataValid} onClick={() => handleUpdate()} text="Update  your profile" />
-          {modalEditOpen && <ModalEdit setModalExpand={setModalEditOpen} data={data} />}
+          {modalEditOpen && <ModalEdit setExpanded={setModalEditOpen} data={data} />}
           {twitterErrorModal && <TwitterErrorModal setModalExpand={setTwitterErrorModal} />}
         </SWrapper>
       </Container>

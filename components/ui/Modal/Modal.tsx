@@ -56,7 +56,7 @@ const SModalContainer = styled.div`
   position: relative;
 
   ${({ theme }) => theme.mediaQueries.lg} {
-    width: 48rem;
+    width: 56rem;
     padding: 5.6rem 4rem;
   }
 `;

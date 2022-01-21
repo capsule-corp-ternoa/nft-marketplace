@@ -4,7 +4,7 @@ import BetaBanner from 'components/base/BetaBanner';
 import FloatingHeader from 'components/base/FloatingHeader';
 import Footer from 'components/base/Footer';
 import MainHeader from 'components/base/MainHeader';
-import ModalBuy from 'components/pages/NFT/ModalBuy';
+import { ModalBuy } from 'components/base/Modal';
 import NFTPage from 'components/pages/NFT';
 import ModalShowcase from 'components/pages/NFT/ModalShowcase';
 import cookies from 'next-cookies';
@@ -81,7 +81,7 @@ const NftPage = ({ user, NFT, capsValue }: NFTPageProps) => {
           user={walletUser}
         />
       )}
-      {exp === 3 && <ModalBuy setModalExpand={() => setExp(0)} id={nftToBuy.id} seriesId={nftToBuy.serieId} />}
+      {exp === 3 && <ModalBuy setExpanded={() => setExp(0)} id={nftToBuy.id} seriesId={nftToBuy.serieId} />}
 
       <BetaBanner />
       <MainHeader user={walletUser} />

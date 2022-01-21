@@ -54,7 +54,6 @@ const ModalEdit: React.FC<ModalEditProps> = ({ setExpanded, data }) => {
     socket.on('CONNECTION_FAILURE', (data) => setError(data.msg));
 
     socket.on('PROFILE_UPDATED', (data) => {
-      console.log({data})
       if (data.success) {
         setSuccess(true);
       } else {

@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import { NextPageContext } from 'next';
 import Head from 'next/head';
+import cookies from 'next-cookies';
+import Router from 'next/router';
+
+import { getCategories } from 'actions/category';
+import { getUser } from 'actions/user';
 import BetaBanner from 'components/base/BetaBanner';
 import FloatingHeader from 'components/base/FloatingHeader';
 import Footer from 'components/base/Footer';
 import MainHeader from 'components/base/MainHeader';
+import { ModalMint } from 'components/base/Modal';
 import Create from 'components/pages/Create';
-import ModalMint from 'components/pages/Create/ModalMint';
-import cookies from 'next-cookies';
-import Router from 'next/router';
-import { getCategories } from 'actions/category';
-import { getUser } from 'actions/user';
 import { CategoryType, UserType } from 'interfaces';
-import { NextPageContext } from 'next';
 import { decryptCookie } from 'utils/cookie';
 
 export interface CreatePageProps {
@@ -35,13 +36,13 @@ const CreatePage = ({ categories, user }: CreatePageProps) => {
       : process.env.NEXT_PUBLIC_IS_NFT_CREATION_ENABLED === 'true';
 
   const [error, setError] = useState('');
-  const [modalCreate, setModalCreate] = useState(false);
+  const [isModalMintExpanded, setIsModalMintExpanded] = useState(false);
   const [previewNFT, setPreviewNFT] = useState<File | null>(null); // Public NFT media
   const [output, setOutput] = useState<string[]>([]);
   const [originalNFT, setOriginalNFT] = useState<File | null>(null); // Crypted NFT media
   const [uploadSize, setUploadSize] = useState(0);
-  const [stateSocket, setStateSocket] = useState<any>(null)
-  const [thumbnailTimecode, setThumbnailTimecode] = useState(0)
+  const [stateSocket, setStateSocket] = useState<any>(null);
+  const [thumbnailTimecode, setThumbnailTimecode] = useState(0);
   const [NFTData, setNFTData] = useState<NFTProps>({
     categories: [],
     description: '',
@@ -70,34 +71,31 @@ const CreatePage = ({ categories, user }: CreatePageProps) => {
     }
   }, [quantity, previewNFT, originalNFT]);
 
-  useEffect(()=> {
-    if (error !== ''){
-      setModalCreate(true)
+  useEffect(() => {
+    if (error !== '') {
+      setIsModalMintExpanded(true);
     }
-  }, [error])
+  }, [error]);
 
-  useEffect(()=> {
-    if (!modalCreate){
-      setError('')
+  useEffect(() => {
+    if (!isModalMintExpanded) {
+      setError('');
       if (stateSocket) stateSocket.close();
     }
-  }, [modalCreate])
+  }, [isModalMintExpanded]);
 
   return (
     <>
       <Head>
         <title>
-          {process.env.NEXT_PUBLIC_APP_NAME
-            ? process.env.NEXT_PUBLIC_APP_NAME
-            : 'SecretNFT'}{' '}
-          - Create your NFT
+          {process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : 'SecretNFT'} - Create your NFT
         </title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta name="description" content="SecretNFT Marketplace, by Ternoa." />
         <meta name="og:image" content="ternoa-social-banner.jpg" />
       </Head>
       <>
-        {modalCreate && (
+        {isModalMintExpanded && (
           <ModalMint
             error={error}
             previewNFT={previewNFT}
@@ -110,7 +108,7 @@ const CreatePage = ({ categories, user }: CreatePageProps) => {
             stateSocket={stateSocket}
             setStateSocket={setStateSocket}
             setError={setError}
-            setModalCreate={setModalCreate}
+            setExpanded={setIsModalMintExpanded}
             setRunNFTMintData={setRunNFTMintData}
             thumbnailTimecode={thumbnailTimecode}
           />
@@ -125,7 +123,7 @@ const CreatePage = ({ categories, user }: CreatePageProps) => {
             QRData={QRData}
             user={user}
             setError={setError}
-            setModalCreate={setModalCreate}
+            setIsModalMintExpanded={setIsModalMintExpanded}
             setNFTData={setNFTData}
             setOutput={setOutput}
             setOriginalNFT={setOriginalNFT}
@@ -148,8 +146,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
 
   const promises = [];
 
-  const token =
-    cookies(ctx).token && decryptCookie(cookies(ctx).token as string);
+  const token = cookies(ctx).token && decryptCookie(cookies(ctx).token as string);
   if (token) {
     promises.push(
       new Promise<void>((success) => {

@@ -1,11 +1,25 @@
+import { DefaultTheme } from 'styled-components';
+
 import {
   AVATAR_VARIANT_BADGE,
   AVATAR_VARIANT_BANNER,
+  AVATAR_VARIANT_CHECKOUT,
   AVATAR_VARIANT_EDIT,
   AVATAR_VARIANT_MOSAIC,
   AVATAR_VARIANT_TRANSACTION,
 } from './constants';
 import { AVATAR_VARIANT_TYPE } from './interfaces';
+
+export const getNameColor = (theme: DefaultTheme, variant?: AVATAR_VARIANT_TYPE): string => {
+  switch (variant) {
+    case AVATAR_VARIANT_BANNER:
+      return theme.colors.primary;
+    case AVATAR_VARIANT_CHECKOUT:
+      return theme.colors.invertedContrast;
+    default:
+      return theme.colors.contrast;
+  }
+};
 
 export const getNameFontSize = (variant?: AVATAR_VARIANT_TYPE): string => {
   switch (variant) {

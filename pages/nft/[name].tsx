@@ -1,21 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
-import BetaBanner from 'components/base/BetaBanner';
-import FloatingHeader from 'components/base/FloatingHeader';
-import Footer from 'components/base/Footer';
-import MainHeader from 'components/base/MainHeader';
-import { ModalBuy } from 'components/base/Modal';
-import NFTPage from 'components/pages/NFT';
-import ModalShowcase from 'components/pages/NFT/ModalShowcase';
 import cookies from 'next-cookies';
 
 import { getUser } from 'actions/user';
 import { getNFT } from 'actions/nft';
 import { getCapsValue } from 'actions/caps';
+import BetaBanner from 'components/base/BetaBanner';
+import FloatingHeader from 'components/base/FloatingHeader';
+import Footer from 'components/base/Footer';
+import MainHeader from 'components/base/MainHeader';
+import NFTPage from 'components/pages/NFT';
 import { NftType, UserType } from 'interfaces';
 import { NextPageContext } from 'next';
 
-import { onModelClose, onModelOpen } from '../../utils/model-helpers';
 import { decryptCookie, setUserFromDApp } from 'utils/cookie';
 import { getUserIp } from 'utils/functions';
 import { MARKETPLACE_ID } from 'utils/constant';
@@ -27,8 +24,6 @@ export interface NFTPageProps {
 }
 
 const NftPage = ({ user, NFT, capsValue }: NFTPageProps) => {
-  const [exp, setExp] = useState(0);
-  const [nftToBuy, setNftToBuy] = useState(NFT);
   const [type, setType] = useState<string | null>(null);
   const [walletUser, setWalletUser] = useState(user);
   const [isUserFromDappQR, setIsUserFromDappQR] = useState(false);
@@ -51,15 +46,6 @@ const NftPage = ({ user, NFT, capsValue }: NFTPageProps) => {
     callBack();
   }, []);
 
-  useEffect(() => {
-    if (exp === 1 || exp === 2) {
-      // we are showing a modal;
-      onModelOpen();
-    } else {
-      onModelClose();
-    }
-  }, [exp]);
-
   return (
     <>
       <Head>
@@ -71,24 +57,11 @@ const NftPage = ({ user, NFT, capsValue }: NFTPageProps) => {
         <meta name="og:image" content={NFT.properties?.preview.ipfs} />
         <meta property="og:image" content={NFT.properties?.preview.ipfs} />
       </Head>
-      {(exp === 1 || exp === 2) && (
-        <ModalShowcase
-          NFT={exp === 1 ? NFT : nftToBuy}
-          setExp={setExp}
-          exp={exp}
-          setModalExpand={() => setExp(3)}
-          type={type}
-          user={walletUser}
-        />
-      )}
-      {exp === 3 && <ModalBuy setExpanded={() => setExp(0)} id={nftToBuy.id} seriesId={nftToBuy.serieId} />}
 
       <BetaBanner />
       <MainHeader user={walletUser} />
       <NFTPage
         NFT={NFT}
-        setExp={setExp}
-        setNftToBuy={setNftToBuy}
         user={walletUser}
         type={type}
         capsValue={capsValue}

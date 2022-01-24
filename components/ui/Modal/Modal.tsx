@@ -3,6 +3,8 @@ import ClickAwayListener from 'react-click-away-listener';
 import styled from 'styled-components';
 
 import Icon from '../Icon';
+import { MODAL_CONTAINER_VARIANT, MODAL_SHOWCASE_VARIANT } from './constants';
+import { MODAL_VARIANT_TYPE } from './interfaces';
 
 export interface ModalProps {
   children?: React.ReactNode;
@@ -10,24 +12,44 @@ export interface ModalProps {
   setExpanded: (b: boolean) => void;
   subtitle?: string;
   title?: string;
+  variant?: MODAL_VARIANT_TYPE;
 }
 
-const Modal: React.FC<ModalProps> = ({ children, error, setExpanded, subtitle, title }) => (
+const Modal: React.FC<ModalProps> = ({
+  children,
+  error,
+  setExpanded,
+  subtitle,
+  title,
+  variant = MODAL_CONTAINER_VARIANT,
+}) => (
   <SModalBackground>
+    {variant === MODAL_SHOWCASE_VARIANT && (
+      <SCloseIconShowcase onClick={() => setExpanded(false)}>
+        <Icon name="close" />
+      </SCloseIconShowcase>
+    )}
     <ClickAwayListener
       onClickAway={() => {
         setExpanded(false);
       }}
     >
-      <SModalContainer>
-        <SIconContainer onClick={() => setExpanded(false)}>
-          <Icon name="close" />
-        </SIconContainer>
-        {title && <STitle>{title}</STitle>}
-        {subtitle && <SSubtitle>{subtitle}</SSubtitle>}
-        {error && <SError>{error}</SError>}
-        {!error && children && <SBody>{children}</SBody>}
-      </SModalContainer>
+      {
+        {
+          [MODAL_CONTAINER_VARIANT]: (
+            <SModalContainer>
+              <SCloseIcon onClick={() => setExpanded(false)}>
+                <Icon name="close" />
+              </SCloseIcon>
+              {title && <STitle>{title}</STitle>}
+              {subtitle && <SSubtitle>{subtitle}</SSubtitle>}
+              {error && <SError>{error}</SError>}
+              {!error && children && <SBody>{children}</SBody>}
+            </SModalContainer>
+          ),
+          [MODAL_SHOWCASE_VARIANT]: <>{children}</>,
+        }[variant]
+      }
     </ClickAwayListener>
   </SModalBackground>
 );
@@ -45,6 +67,25 @@ const SModalBackground = styled.div`
   z-index: 110;
 `;
 
+const SCloseIcon = styled.div`
+  display: flex;
+  position: absolute;
+  z-index: 130;
+  fill: ${({ theme }) => theme.colors.invertedContrast};
+  top: 2.4rem;
+  right: 2.4rem;
+  width: 2rem;
+  height: 2rem;
+  cursor: pointer;
+`;
+
+const SCloseIconShowcase = styled(SCloseIcon)`
+  top: 5.6rem;
+  right: 5.6rem;
+  width: 3.2rem;
+  height: 3.2rem;
+`;
+
 const SModalContainer = styled.div`
   width: 340px;
   border-radius: 2.4rem;
@@ -59,17 +100,6 @@ const SModalContainer = styled.div`
     width: 56rem;
     padding: 5.6rem 4rem;
   }
-`;
-
-const SIconContainer = styled.div`
-  display: flex;
-  position: absolute;
-  z-index: 130;
-  fill: ${({ theme }) => theme.colors.invertedContrast};
-  top: 2.4rem;
-  right: 2.4rem;
-  width: 2rem;
-  cursor: pointer;
 `;
 
 const STitle = styled.h3`

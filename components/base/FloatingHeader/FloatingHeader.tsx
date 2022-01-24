@@ -11,7 +11,6 @@ import { UserType } from 'interfaces/index';
 import { computeCaps } from 'utils/strings';
 import { breakpointMap } from 'style/theme/base';
 
-import { onModelOpen } from '../../../utils/model-helpers';
 import style from './FloatingHeader.module.scss';
 export interface FloatingHeaderProps {
   user: UserType;
@@ -82,7 +81,6 @@ const FloatingHeader: React.FC<FloatingHeaderProps> = ({ user }) => {
             <Button
               color="invertedContrast"
               onClick={() => {
-                onModelOpen();
                 setIsModalWalletExpanded(true);
                 setIsExpanded(false);
               }}

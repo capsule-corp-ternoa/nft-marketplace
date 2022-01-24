@@ -3,7 +3,6 @@ import Head from 'next/head';
 import BetaBanner from 'components/base/BetaBanner';
 import MainHeader from 'components/base/MainHeader';
 import Explore from 'components/pages/Explore';
-import TernoaWallet from 'components/base/TernoaWallet';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
 import cookies from 'next-cookies';
@@ -25,7 +24,6 @@ const ExplorePage = ({
   data,
   dataHasNextPage,
 }: ExplorePage) => {
-  const [modalExpand, setModalExpand] = useState(false);
   const [dataNfts, setDataNfts] = useState(data);
   const [dataNftsHasNextPage, setDataNftsHasNextPage] =
     useState(dataHasNextPage);
@@ -76,9 +74,8 @@ const ExplorePage = ({
         <meta name="og:image" content="ternoa-social-banner.jpg" />
         <meta property="og:image" content="ternoa-social-banner.jpg" />
       </Head>
-      {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
       <BetaBanner />
-      <MainHeader user={user} setModalExpand={setModalExpand} />
+      <MainHeader user={user} />
       <Explore
         NFTS={dataNfts}
         user={user}
@@ -88,7 +85,7 @@ const ExplorePage = ({
         totalCount={dataTotalCount}
       />
       <Footer />
-      <FloatingHeader user={user} setModalExpand={setModalExpand} />
+      <FloatingHeader user={user} />
     </>
   );
 };

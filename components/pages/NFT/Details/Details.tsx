@@ -25,7 +25,7 @@ export interface DetailsProps {
   seriesData: NftType[]
   user: UserType;
   setNftToBuy: (NFT: NftType) => void;
-  setExp: (n: number) => void;
+  setIsModalCheckoutExpanded: (b: boolean) => void;
   isUserFromDappQR: boolean;
   isVR: boolean;
   canUserBuyAgain: boolean;
@@ -36,7 +36,7 @@ const Details: React.FC<DetailsProps> = ({
   seriesData,
   user,
   setNftToBuy,
-  setExp,
+  setIsModalCheckoutExpanded,
   isUserFromDappQR,
   isVR,
   canUserBuyAgain,
@@ -90,7 +90,7 @@ const Details: React.FC<DetailsProps> = ({
     const key = `${NFT.owner}-${NFT.listed}-${NFT.price}-${NFT.marketplaceId}-${NFT.isCapsule}`;
     const NFTToBuy = seriesData.find(x => x.id === getRandomNFTFromArray(serieDataCount[key])) || NFT
     setNftToBuy(NFTToBuy);
-    setExp(2);
+    setIsModalCheckoutExpanded(true);
   };
 
   const switchTab = (tab: string) => {

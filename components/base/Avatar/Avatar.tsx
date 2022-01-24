@@ -12,7 +12,7 @@ import { breakpointMap } from 'style/theme/base';
 import Picture from './components/Picture';
 import { AVATAR_VARIANT_BANNER } from './constants'
 import { AVATAR_VARIANT_TYPE } from './interfaces';
-import { getNameFontSize } from './utils';
+import { getNameColor, getNameFontSize } from './utils';
 
 interface Props {
   className?: string;
@@ -220,10 +220,7 @@ const SBottomDetails = styled.div<{ isMarginTop?: boolean }>`
 `;
 
 const SName = styled.a<{ isNameEllipsis?: boolean, variant?: AVATAR_VARIANT_TYPE }>`
-  color: ${({ theme, variant }) =>
-    variant === AVATAR_VARIANT_BANNER
-      ? theme.colors.primary
-      : theme.colors.contrast};
+  color: ${({ theme, variant }) => getNameColor(theme, variant)};
   font-family: ${({ theme }) => theme.fonts.bold};
   font-size: ${({ variant }) => getNameFontSize(variant)};
 

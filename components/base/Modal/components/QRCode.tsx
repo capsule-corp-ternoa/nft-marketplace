@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from 'react';
-import style from './QRCode.module.scss';
+import styled from 'styled-components';
 import QRCode from 'qrcode.react';
 
 interface CodeProps {
@@ -19,16 +19,21 @@ interface CodeProps {
   action: string;
 }
 
-const Code: React.FC<CodeProps> = ({ data, action }) => {
-  return (
+const Code: React.FC<CodeProps> = ({ data, action }) => (
+  <SContainer>
     <QRCode
       value={JSON.stringify({ action, data })}
       includeMargin={false}
       renderAs={'svg'}
-      size={(data && data.links && data.links.length > 5) || action==="UPDATE_PROFILE" ? 400 : 200}
-      className={style.QRCode}
+      size={(data && data.links && data.links.length > 5) || action === 'UPDATE_PROFILE' ? 400 : 200}
     />
-  );
-};
+  </SContainer>
+);
+
+const SContainer = styled.div`
+  background-color: ${({ theme }) => theme.colors.invertedContrast};
+  border-radius: 12px;
+  padding: 2.4rem;
+`;
 
 export default Code;

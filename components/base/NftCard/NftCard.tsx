@@ -88,8 +88,7 @@ const SMediaWrapper = styled.div<{ mode?: ModeType }>`
           }
         `;
       }
-      case GRID_MODE:
-      default: {
+      case GRID_MODE: {
         return `
           height: ${theme.sizes.cardHeight.md};
           width: ${theme.sizes.cardWidth.md};
@@ -109,6 +108,12 @@ const SMediaWrapper = styled.div<{ mode?: ModeType }>`
             width: ${theme.sizes.cardWidth.sm};
           }
         `;
+      }
+      default: {
+        return `
+          height: ${theme.sizes.cardHeight.sm};
+          width: ${theme.sizes.cardWidth.sm};
+        `
       }
     }
   }}

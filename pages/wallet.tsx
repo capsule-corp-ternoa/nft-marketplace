@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Head from 'next/head';
 import BetaBanner from 'components/base/BetaBanner';
 import FloatingHeader from 'components/base/FloatingHeader';
 import Footer from 'components/base/Footer';
 import MainHeader from 'components/base/MainHeader';
-import TernoaWallet from 'components/base/TernoaWallet';
 import Wallet from 'components/pages/Wallet';
 import cookies from 'next-cookies';
 
@@ -18,26 +17,21 @@ export interface WalletPageProps {
   token: string;
 }
 
-const WalletPage = ({ user }: WalletPageProps) => {
-  const [modalExpand, setModalExpand] = useState(false);
-
-  return (
-    <>
-      <Head>
-        <title>{process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : 'SecretNFT'} - Wallet</title>
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-        <meta name="description" content="Ternoa Wallet" />
-        <meta name="og:image" content="ternoa-social-banner.jpg" />
-      </Head>
-      {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
-      <BetaBanner />
-      <MainHeader user={user} setModalExpand={setModalExpand} />
-      <Wallet user={user} />
-      <Footer />
-      <FloatingHeader user={user} setModalExpand={setModalExpand} />
-    </>
-  );
-};
+const WalletPage = ({ user }: WalletPageProps) => (
+  <>
+    <Head>
+      <title>{process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : 'SecretNFT'} - Wallet</title>
+      <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      <meta name="description" content="Ternoa Wallet" />
+      <meta name="og:image" content="ternoa-social-banner.jpg" />
+    </Head>
+    <BetaBanner />
+    <MainHeader user={user} />
+    <Wallet user={user} />
+    <Footer />
+    <FloatingHeader user={user} />
+  </>
+);
 
 export async function getServerSideProps(ctx: NextPageContext) {
   let user = null;

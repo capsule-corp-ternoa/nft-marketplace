@@ -46,7 +46,7 @@ export interface CreateProps {
   QRData: QRDataType;
   user: UserType;
   setError: (err: string) => void;
-  setModalCreate: (b: boolean) => void;
+  setIsModalMintExpanded: (b: boolean) => void;
   setNFTData: (o: NFTProps) => void;
   setOriginalNFT: (f: File | null) => void;
   setOutput: (s: string[]) => void;
@@ -63,7 +63,7 @@ const Create = ({
   QRData,
   user,
   setError,
-  setModalCreate,
+  setIsModalMintExpanded,
   setNFTData: setNftDataToParent,
   setOriginalNFT,
   setOutput,
@@ -162,7 +162,7 @@ const Create = ({
   const initMintingNFT = async () => {
     try {
       if (!user) throw new Error('Please login to create an NFT.');
-      setModalCreate(true);
+      setIsModalMintExpanded(true);
 
       if (originalNFT !== null) {
         if (effect === NFT_EFFECT_BLUR || effect === NFT_EFFECT_PROTECT) {

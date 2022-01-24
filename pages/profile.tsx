@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Head from 'next/head';
 import BetaBanner from 'components/base/BetaBanner';
 import FloatingHeader from 'components/base/FloatingHeader';
 import Footer from 'components/base/Footer';
 import MainHeader from 'components/base/MainHeader';
-import TernoaWallet from 'components/base/TernoaWallet';
 import Profile, { USER_PERSONNAL_PROFILE_VARIANT } from 'components/pages/Profile';
-import SuccessPopup from 'components/base/SuccessPopup';
 import { getOwnedNFTS } from 'actions/nft';
 import cookies from 'next-cookies';
 import { getUser } from 'actions/user';
@@ -41,34 +39,27 @@ const ORDERED_TABS_ID = [
   FOLLOWED_TAB,
 ] as const;
 
-const ProfilePage = ({ user, owned, ownedHasNextPage }: ProfilePageProps) => {
-  const [modalExpand, setModalExpand] = useState(false);
-  const [successPopup, setSuccessPopup] = useState(false);
-
-  return (
-    <>
-      <Head>
-        <title>{process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : 'SecretNFT'} - My account</title>
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-        <meta name="description" content="Ternoa - Your profile." />
-        <meta name="og:image" content="ternoa-social-banner.jpg" />
-      </Head>
-      {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
-      {successPopup && <SuccessPopup setSuccessPopup={setSuccessPopup} />}
-      <BetaBanner />
-      <MainHeader user={user} setModalExpand={setModalExpand} />
-      <Profile
-        user={user}
-        userOwnedlNfts={owned}
-        userOwnedNftsHasNextPage={ownedHasNextPage}
-        tabs={ORDERED_TABS_ID}
-        variant={USER_PERSONNAL_PROFILE_VARIANT}
-      />
-      <Footer />
-      <FloatingHeader user={user} setModalExpand={setModalExpand} />
-    </>
-  );
-};
+const ProfilePage = ({ user, owned, ownedHasNextPage }: ProfilePageProps) => (
+  <>
+    <Head>
+      <title>{process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : 'SecretNFT'} - My account</title>
+      <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      <meta name="description" content="Ternoa - Your profile." />
+      <meta name="og:image" content="ternoa-social-banner.jpg" />
+    </Head>
+    <BetaBanner />
+    <MainHeader user={user} />
+    <Profile
+      user={user}
+      userOwnedlNfts={owned}
+      userOwnedNftsHasNextPage={ownedHasNextPage}
+      tabs={ORDERED_TABS_ID}
+      variant={USER_PERSONNAL_PROFILE_VARIANT}
+    />
+    <Footer />
+    <FloatingHeader user={user} />
+  </>
+);
 
 export async function getServerSideProps(ctx: NextPageContext) {
   const token = cookies(ctx).token && decryptCookie(cookies(ctx).token as string);

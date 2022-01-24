@@ -3,6 +3,7 @@ import { useMediaQuery } from 'react-responsive';
 import Link from 'next/link';
 import styled from 'styled-components';
 
+import { ModalWallet } from 'components/base/Modal';
 import { ProfileMenuBadge, ProfileMenuDropdown } from 'components/base/ProfileMenu';
 import Button from 'components/ui/Button';
 import Icon from 'components/ui/Icon';
@@ -14,10 +15,10 @@ import { breakpointMap } from 'style/theme/base';
 
 export interface HeaderProps {
   user: UserType;
-  setModalExpand: (b: boolean) => void;
 }
 
-const MainHeader: React.FC<HeaderProps> = ({ setModalExpand, user }) => {
+const MainHeader: React.FC<HeaderProps> = ({ user }) => {
+  const [isModalWalletExpanded, setIsModalWalletExpanded] = useState(false);
   const [isProfileMenuExpanded, setIsProfileMenuExpanded] = useState(false);
   const isNftCreationEnabled =
     process.env.NEXT_PUBLIC_IS_NFT_CREATION_ENABLED === undefined
@@ -29,61 +30,58 @@ const MainHeader: React.FC<HeaderProps> = ({ setModalExpand, user }) => {
   });
 
   return (
-    <Container>
-      <SWrapper>
-        <Link href="/">
-          <a>
-            <SLogo name="logoTernoaBlack" />
-          </a>
-        </Link>
-        {!isMobileTablet && (
-          <SNavContainer>
-            <SNavLinksContainer>
-              <Link href="/explore" passHref>
-                <SLinkItem>Explore</SLinkItem>
-              </Link>
-              <Link href="/faq" >
-                <SLinkItem>How it works</SLinkItem>
-              </Link>
-            </SNavLinksContainer>
-            <SNavButtonsCointainer>
-              {isNftCreationEnabled && (
-                <Link href="/create" passHref>
-                  <>
-                    <Button
-                      color="contrast"
-                      href="/create"
-                      size="medium"
-                      text="Create NFT"
-                      variant="outlined"
-                    />
-                  </>
+    <>
+      <Container>
+        <SWrapper>
+          <Link href="/">
+            <a>
+              <SLogo name="logoTernoaBlack" />
+            </a>
+          </Link>
+          {!isMobileTablet && (
+            <SNavContainer>
+              <SNavLinksContainer>
+                <Link href="/explore" passHref>
+                  <SLinkItem>Explore</SLinkItem>
                 </Link>
-              )}
-              {user ? (
-                <ProfileMenuBadge
-                  onClick={() => setIsProfileMenuExpanded((prevState) => !prevState)}
-                  tokenAmount={user?.capsAmount ? computeCaps(Number(user.capsAmount)) : 0}
-                  tokenSymbol="CAPS"
-                  user={user}
-                />
-              ) : (
-                <Button
-                  color="contrast"
-                  onClick={() => setModalExpand(true)}
-                  size="medium"
-                  text="Connect"
-                  variant="outlined"
-                />
-              )}
-            </SNavButtonsCointainer>
-          </SNavContainer>
-        )}
-        {user && isProfileMenuExpanded && (
-          <SProfileMenuDropdown onClose={() => setIsProfileMenuExpanded(false)} user={user} />
-        )}
-      </SWrapper>
-    </Container>
+                <Link href="/faq">
+                  <SLinkItem>How it works</SLinkItem>
+                </Link>
+              </SNavLinksContainer>
+              <SNavButtonsCointainer>
+                {isNftCreationEnabled && (
+                  <Link href="/create" passHref>
+                    <>
+                      <Button color="contrast" href="/create" size="medium" text="Create NFT" variant="outlined" />
+                    </>
+                  </Link>
+                )}
+                {user ? (
+                  <ProfileMenuBadge
+                    onClick={() => setIsProfileMenuExpanded((prevState) => !prevState)}
+                    tokenAmount={user?.capsAmount ? computeCaps(Number(user.capsAmount)) : 0}
+                    tokenSymbol="CAPS"
+                    user={user}
+                  />
+                ) : (
+                  <Button
+                    color="contrast"
+                    onClick={() => setIsModalWalletExpanded(true)}
+                    size="medium"
+                    text="Connect"
+                    variant="outlined"
+                  />
+                )}
+              </SNavButtonsCointainer>
+            </SNavContainer>
+          )}
+          {user && isProfileMenuExpanded && (
+            <SProfileMenuDropdown onClose={() => setIsProfileMenuExpanded(false)} user={user} />
+          )}
+        </SWrapper>
+      </Container>
+      {isModalWalletExpanded && <ModalWallet setExpanded={setIsModalWalletExpanded} />}
+    </>
   );
 };
 
@@ -123,12 +121,11 @@ const SNavLinksContainer = styled.div`
 `;
 
 const SLinkItem = styled.a`
-  color: ${({theme}) => theme.colors.contrast};
+  color: ${({ theme }) => theme.colors.contrast};
   cursor: pointer;
-  font-family: ${({theme}) => theme.fonts.bold};
+  font-family: ${({ theme }) => theme.fonts.bold};
   font-size: 1.6rem;
 `;
-
 
 const SNavButtonsCointainer = styled.div`
   display: flex;

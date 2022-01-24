@@ -4,8 +4,7 @@ import router from 'next/router';
 import randomstring from 'randomstring';
 import Link from 'next/link';
 
-import QRCode from 'components/base/QRCode';
-import { ModalLoader } from 'components/base/Modal';
+import { ModalLoader, QRCode } from 'components/base/Modal';
 import Button from 'components/ui/Button';
 import Icon from 'components/ui/Icon';
 import Modal from 'components/ui/Modal';

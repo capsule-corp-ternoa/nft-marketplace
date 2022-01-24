@@ -4,7 +4,7 @@ import randomstring from 'randomstring';
 import Cookies from 'js-cookie';
 
 import { getUser } from 'actions/user';
-import QRCode from 'components/base/QRCode';
+import { QRCode } from 'components/base/Modal';
 import Modal from 'components/ui/Modal';
 import { NODE_API_URL, SOCKET_URL } from 'utils/constant';
 import { encryptCookie } from 'utils/cookie';

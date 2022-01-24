@@ -8,8 +8,7 @@ import { Circle } from 'rc-progress';
 import { v4 as uuidv4 } from 'uuid';
 
 import { addNFTsToCategories } from 'actions/nft';
-import { ModalLoader } from 'components/base/Modal';
-import QRCode from 'components/base/QRCode';
+import { ModalLoader, QRCode } from 'components/base/Modal';
 import Modal from 'components/ui/Modal';
 import { NFTProps } from 'pages/create';
 import { useAppSelector } from 'redux/hooks';

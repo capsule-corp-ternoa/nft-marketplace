@@ -3,8 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import randomstring from 'randomstring';
 
-import { ModalLoader } from 'components/base/Modal';
-import QRCode from 'components/base/QRCode';
+import { ModalLoader, QRCode } from 'components/base/Modal';
 import Modal from 'components/ui/Modal';
 import { useAppSelector } from 'redux/hooks';
 import { SOCKET_URL } from 'utils/constant';

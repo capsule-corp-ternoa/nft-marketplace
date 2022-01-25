@@ -22,11 +22,61 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body {
-  margin: 0;
-  padding: 0;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    margin: 0;
 
-  -webkit-font-smoothing :antialiased;
-}
+    -webkit-font-smoothing :antialiased;
+  }
+
+  #__next {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  button {
+    background: transparent;
+    border: none;
+    margin: 0;
+  }
+
+  #nprogress {
+    pointer-events: none;
+  }
+
+  #nprogress .bar {
+    background: ${({ theme }) => theme.colors.primary};
+
+    position: fixed;
+    z-index: 1031;
+    top: 0;
+    left: 0;
+    transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    border-radius: 6px;
+    width: 100%;
+    height: 5px;
+  }
+
+  #nprogress .peg {
+    display: block;
+    position: absolute;
+    right: 0px;
+    width: 100px;
+    height: 100%;
+    box-shadow: ${({ theme }) => `0 0 10px ${theme.colors.primary}, 0 0 5px ${theme.colors.primary}`};
+    opacity: 1;
+
+    -webkit-transform: rotate(3deg) translate(0px, -4px);
+    -ms-transform: rotate(3deg) translate(0px, -4px);
+    transform: rotate(3deg) translate(0px, -4px);
+  }
 `;
 
 export default GlobalStyle;

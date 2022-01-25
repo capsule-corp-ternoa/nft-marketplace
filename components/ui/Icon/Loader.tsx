@@ -9,7 +9,7 @@ interface Props {
   size?: 'small' | 'medium';
 }
 
-const Loader = ({ className, color = 'invertedContrast', size = 'medium' }: Props) => (
+const Loader = ({ className, color = 'invertedContrast', size }: Props) => (
   <LoaderContainer className={className} color={color} size={size}>
     <div></div>
     <div></div>

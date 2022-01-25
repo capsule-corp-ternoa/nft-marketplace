@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
-// import Link from 'next/link';
 import { Banner as AvatarBanner } from 'components/base/Avatar';
 import NftsGrid from 'components/base/NftsGrid';
 import { getCreatorNFTS, getLikedNFTs, getOwnedNFTS, getUserNFTsStat } from 'actions/nft';
@@ -21,7 +19,6 @@ import {
   NFT_CREATED_TAB,
   NFT_LIKED_TAB,
 } from 'interfaces';
-import { breakpointMap } from 'style/theme/base';
 import { loadMoreNfts } from 'utils/profile';
 import {
   FOLLOW_ACTION,
@@ -47,14 +44,7 @@ export interface ProfileProps {
   variant: typeof ARTIST_PROFILE_VARIANT | typeof USER_PERSONNAL_PROFILE_VARIANT;
 }
 
-const Profile = ({
-  artist,
-  user,
-  userOwnedlNfts,
-  userOwnedNftsHasNextPage,
-  tabs,
-  variant,
-}: ProfileProps) => {
+const Profile = ({ artist, user, userOwnedlNfts, userOwnedNftsHasNextPage, tabs, variant }: ProfileProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [profileDataLoaded, setProfileDataLoaded] = useState(false);
   const [resetTabId, toggleResetTabId] = useState(false);
@@ -101,7 +91,6 @@ const Profile = ({
   const [searchValue, setSearchValue] = useState<string | undefined>(undefined);
 
   const { banner, bio, name, picture, twitterName, verified, walletId } = artist ?? user;
-  const isTablet = useMediaQuery({ query: `(max-width: ${breakpointMap.lg - 1}px)` });
   const isMyProfile =
     variant === USER_PERSONNAL_PROFILE_VARIANT ||
     (variant === ARTIST_PROFILE_VARIANT && artist?.walletId === user?.walletId);
@@ -314,7 +303,14 @@ const Profile = ({
       case NFT_LIKED_TAB: {
         const loadMoreLikedNfts = async () => {
           setIsLoading(true);
-          await loadMoreNfts(walletId, likedCurrentPage, setLikedCurrentPage, setLikedNftsHasNextPage, setLikedNfts, tabId);
+          await loadMoreNfts(
+            walletId,
+            likedCurrentPage,
+            setLikedCurrentPage,
+            setLikedNftsHasNextPage,
+            setLikedNfts,
+            tabId
+          );
           setIsLoading(false);
         };
         return (
@@ -348,7 +344,7 @@ const Profile = ({
 
         return (
           <>
-            {/* TODO: add this when NFT sale if available */}
+            {/* TODO: add this when NFT sale if available and remove react-responsive */}
             {/* {isTablet && <NftSaleLink />} */}
             <NftsGrid
               NFTs={ownedNftsListed}
@@ -363,7 +359,7 @@ const Profile = ({
               tabId={tabId}
               user={user}
             >
-              {/* TODO: add this when NFT sale if available */}
+              {/* TODO: add this when NFT sale if available and remove react-responsive */}
               {/* {!isTablet && <NftSaleLink />} */}
             </NftsGrid>
           </>
@@ -541,7 +537,7 @@ const Profile = ({
 
   useEffect(() => {
     setProfileDataLoaded(false);
-    toggleResetTabId(prevState => !prevState);
+    toggleResetTabId((prevState) => !prevState);
     try {
       initCounts();
       populateProfileData(walletId);
@@ -590,8 +586,10 @@ const Profile = ({
     <Container>
       <SBannerContainer>
         <SBannerIMG src={banner ?? '/defaultBanner.jpeg'} draggable="false" alt="banner" />
-        {isTablet && variant === USER_PERSONNAL_PROFILE_VARIANT && (
-          <SEditButtonMobile color="invertedContrast" icon="edit" href="/edit" size="medium" variant="contained" />
+        {variant === USER_PERSONNAL_PROFILE_VARIANT && (
+          <SEditButtonMobileWrapper>
+            <Button color="invertedContrast" icon="edit" href="/edit" size="medium" variant="contained" />
+          </SEditButtonMobileWrapper>
         )}
       </SBannerContainer>
       <Wrapper>
@@ -604,8 +602,10 @@ const Profile = ({
             twitterName={twitterName}
             walletId={walletId}
           />
-          {!isTablet && variant === USER_PERSONNAL_PROFILE_VARIANT && (
-            <Button color="neutral200" icon="edit" href="/edit" text="Edit profile" size="small" variant="outlined" />
+          {variant === USER_PERSONNAL_PROFILE_VARIANT && (
+            <SEditButtonDesktopWrapper>
+              <Button color="neutral200" icon="edit" href="/edit" text="Edit profile" size="small" variant="outlined" />
+            </SEditButtonDesktopWrapper>
           )}
           {artist && (
             <SArtistStatsBannerContainer>
@@ -639,7 +639,7 @@ const Profile = ({
       </Wrapper>
       <Wrapper>
         <Tabs
-          isTabsSelect={isTablet}
+          isTabsSelect
           resetTabId={resetTabId}
           tabs={tabs.reduce(
             (acc, id) => ({
@@ -676,11 +676,23 @@ const SBannerIMG = styled.img`
   height: 100%;
 `;
 
-const SEditButtonMobile = styled(Button)`
+const SEditButtonMobileWrapper = styled.div`
   position: absolute;
   top: 2.4rem;
   right: 2.4rem;
   z-index: 10;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    display: none;
+  }
+`;
+
+const SEditButtonDesktopWrapper = styled.div`
+  display: none;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    display: block;
+  }
 `;
 
 const SAvatarBannerContainer = styled.div`

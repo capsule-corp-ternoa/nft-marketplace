@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
 
 import { reviewRequested as requestReview } from 'actions/user';
@@ -12,7 +11,6 @@ import Icon from 'components/ui/Icon';
 import { TextArea, TextInput } from 'components/ui/Input';
 import Modal from 'components/ui/Modal';
 import { UserType } from 'interfaces';
-import { breakpointMap } from 'style/theme/base';
 import { MARKETPLACE_ID, NODE_API_URL } from 'utils/constant';
 import { uploadIPFS } from 'utils/nftEncryption';
 import { validateTwitter, validateUrl } from 'utils/strings';
@@ -56,13 +54,6 @@ const Edit = ({ user }: Props) => {
     (!data.customUrl || data.customUrl === '' || validateUrl(data.customUrl)) &&
     (!data.personalUrl || data.personalUrl === '' || validateUrl(data.personalUrl)) &&
     (!data.twitterName || data.twitterName === '' || validateTwitter(data.twitterName));
-
-  const isMobile = useMediaQuery({
-    query: `(max-width: ${breakpointMap.md - 1}px)`,
-  });
-  const isTablet = useMediaQuery({
-    query: `(max-width: ${breakpointMap.lg - 1}px)`,
-  });
 
   const isVerificationAvailable = twitterName && twitterName.length > 2 && !twitterVerified && MARKETPLACE_ID === '0';
   const verificationLabel = data.verified
@@ -129,8 +120,8 @@ const Edit = ({ user }: Props) => {
       <Container>
         <SBannerContainer>
           <SBannerIMG src={data.banner} draggable="false" alt="banner" />
-          {isTablet && (
-            <SReturnButtonMobile
+          <SReturnButtonContainer>
+            <Button
               color="invertedContrast"
               icon="arrowLeft"
               href="/profile"
@@ -138,29 +129,20 @@ const Edit = ({ user }: Props) => {
               text="Return"
               variant="contained"
             />
-          )}
+          </SReturnButtonContainer>
         </SBannerContainer>
         <SWrapper>
-          {!isTablet && (
-            <SAvatarBannerContainer>
-              <AvatarBanner
-                bio={bio}
-                isVerified={verified}
-                name={name}
-                picture={picture}
-                twitterName={twitterName}
-                walletId={walletId}
-              />
-              <Button
-                color="neutral200"
-                icon="arrowLeft"
-                href="/profile"
-                text="Return"
-                size="small"
-                variant="outlined"
-              />
-            </SAvatarBannerContainer>
-          )}
+          <SAvatarBannerContainer>
+            <AvatarBanner
+              bio={bio}
+              isVerified={verified}
+              name={name}
+              picture={picture}
+              twitterName={twitterName}
+              walletId={walletId}
+            />
+            <Button color="neutral200" icon="arrowLeft" href="/profile" text="Return" size="small" variant="outlined" />
+          </SAvatarBannerContainer>
           <STopContainer>
             <STitle>Edit your profile</STitle>
             <SCertifiedButtonCOntainer>
@@ -175,28 +157,26 @@ const Edit = ({ user }: Props) => {
               />
             </SCertifiedButtonCOntainer>
           </STopContainer>
-          {isMobile && (
-            <>
-              <SPictureBlock
-                chipLabel="Upload avatar"
-                description="We recommend an image
+          <SImagesMobileContainer>
+            <SPictureBlock
+              chipLabel="Upload avatar"
+              description="We recommend an image
 of at least 120x120. Gifs work too."
-                id="uploadPicture"
-                name={name}
-                onChange={(file: File) => handleChange(URL.createObjectURL(file), 'picture')}
-                picture={data.picture}
-              />
+              id="uploadPicture"
+              name={name}
+              onChange={(file: File) => handleChange(URL.createObjectURL(file), 'picture')}
+              picture={data.picture}
+            />
 
-              <SBannerBlock
-                banner={data.banner}
-                chipLabel="Upload banner"
-                description="We recommend an image
+            <SBannerBlock
+              banner={data.banner}
+              chipLabel="Upload banner"
+              description="We recommend an image
           of at least 1800x280"
-                id="uploadBanner"
-                onChange={(file: File) => handleChange(URL.createObjectURL(file), 'banner')}
-              />
-            </>
-          )}
+              id="uploadBanner"
+              onChange={(file: File) => handleChange(URL.createObjectURL(file), 'banner')}
+            />
+          </SImagesMobileContainer>
           <Form>
             <FormSideLeft>
               <STextInput
@@ -285,28 +265,26 @@ of at least 120x120. Gifs work too."
                 onChange={(e) => handleChange(e.target.value, 'personalUrl')}
                 value={data.personalUrl || ''}
               />
-              {!isMobile && (
-                <SImagesContainer>
-                  <SPictureBlock
-                    chipLabel="Upload avatar"
-                    description="We recommend an image
+              <SImagesContainer>
+                <SPictureBlock
+                  chipLabel="Upload avatar"
+                  description="We recommend an image
 of at least 120x120. Gifs work too."
-                    id="uploadPicture"
-                    name={name}
-                    onChange={(file: File) => handleChange(URL.createObjectURL(file), 'picture')}
-                    picture={data.picture}
-                  />
+                  id="uploadPicture"
+                  name={name}
+                  onChange={(file: File) => handleChange(URL.createObjectURL(file), 'picture')}
+                  picture={data.picture}
+                />
 
-                  <SBannerBlock
-                    banner={data.banner}
-                    chipLabel="Upload banner"
-                    description="We recommend an image
+                <SBannerBlock
+                  banner={data.banner}
+                  chipLabel="Upload banner"
+                  description="We recommend an image
           of at least 1800x280"
-                    id="uploadBanner"
-                    onChange={(file: File) => handleChange(URL.createObjectURL(file), 'banner')}
-                  />
-                </SImagesContainer>
-              )}
+                  id="uploadBanner"
+                  onChange={(file: File) => handleChange(URL.createObjectURL(file), 'banner')}
+                />
+              </SImagesContainer>
             </FormSideRight>
           </Form>
           <SAdvice>
@@ -352,6 +330,8 @@ of at least 120x120. Gifs work too."
 };
 
 const SAvatarBannerContainer = styled.div`
+  display: none;
+
   ${({ theme }) => theme.mediaQueries.md} {
     width: 100%;
     display: flex;
@@ -419,9 +399,13 @@ const SBannerIMG = styled.img`
   height: 100%;
 `;
 
-const SReturnButtonMobile = styled(Button)`
+const SReturnButtonContainer = styled.div`
   margin: 0 auto -1.8rem;
   z-index: 10;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    display: none;
+  }
 `;
 
 const SPictureBlock = styled(ImageBlock)`
@@ -520,7 +504,19 @@ const SIcon = styled(Icon)`
   margin-left: 0.2rem;
 `;
 
+const SImagesMobileContainer = styled.div`
+  ${({ theme }) => theme.mediaQueries.md} {
+    display: none;
+  }
+`;
+
 const SImagesContainer = styled.div`
+  display: none;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    display: inline-block;
+  }
+
   ${({ theme }) => theme.mediaQueries.xxl} {
     display: flex;
     align-items: center;

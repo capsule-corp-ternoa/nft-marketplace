@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useMediaQuery } from 'react-responsive';
 import Link from 'next/link';
 import styled from 'styled-components';
 
@@ -11,7 +10,6 @@ import { Container, Wrapper } from 'components/layout';
 
 import { UserType } from 'interfaces/index';
 import { computeCaps } from 'utils/strings';
-import { breakpointMap } from 'style/theme/base';
 
 export interface HeaderProps {
   user: UserType;
@@ -25,10 +23,6 @@ const MainHeader: React.FC<HeaderProps> = ({ user }) => {
       ? true
       : process.env.NEXT_PUBLIC_IS_NFT_CREATION_ENABLED === 'true';
 
-  const isMobileTablet = useMediaQuery({
-    query: `(max-width: ${breakpointMap.lg - 1}px)`,
-  });
-
   return (
     <>
       <Container>
@@ -38,32 +32,31 @@ const MainHeader: React.FC<HeaderProps> = ({ user }) => {
               <SLogo name="logoTernoaBlack" />
             </a>
           </Link>
-          {!isMobileTablet && (
-            <SNavContainer>
-              <SNavLinksContainer>
-                <Link href="/explore" passHref>
-                  <SLinkItem>Explore</SLinkItem>
+          <SNavContainer>
+            <SNavLinksContainer>
+              <Link href="/explore" passHref>
+                <SLinkItem>Explore</SLinkItem>
+              </Link>
+              <Link href="/faq">
+                <SLinkItem>How it works</SLinkItem>
+              </Link>
+            </SNavLinksContainer>
+            <SNavButtonsCointainer>
+              {isNftCreationEnabled && (
+                <Link href="/create" passHref>
+                  <>
+                    <Button color="contrast" href="/create" size="medium" text="Create NFT" variant="outlined" />
+                  </>
                 </Link>
-                <Link href="/faq">
-                  <SLinkItem>How it works</SLinkItem>
-                </Link>
-              </SNavLinksContainer>
-              <SNavButtonsCointainer>
-                {isNftCreationEnabled && (
-                  <Link href="/create" passHref>
-                    <>
-                      <Button color="contrast" href="/create" size="medium" text="Create NFT" variant="outlined" />
-                    </>
-                  </Link>
-                )}
-                {user ? (
-                  <ProfileMenuBadge
-                    onClick={() => setIsProfileMenuExpanded((prevState) => !prevState)}
-                    tokenAmount={user?.capsAmount ? computeCaps(Number(user.capsAmount)) : 0}
-                    tokenSymbol="CAPS"
-                    user={user}
-                  />
-                ) : (
+              )}
+              {user ? (
+                <ProfileMenuBadge
+                  onClick={() => setIsProfileMenuExpanded((prevState) => !prevState)}
+                  tokenAmount={user?.capsAmount ? computeCaps(Number(user.capsAmount)) : 0}
+                  tokenSymbol="CAPS"
+                  user={user}
+                />
+              ) : (
                   <Button
                     color="contrast"
                     onClick={() => setIsModalWalletExpanded(true)}
@@ -74,7 +67,6 @@ const MainHeader: React.FC<HeaderProps> = ({ user }) => {
                 )}
               </SNavButtonsCointainer>
             </SNavContainer>
-          )}
           {user && isProfileMenuExpanded && (
             <SProfileMenuDropdown onClose={() => setIsProfileMenuExpanded(false)} user={user} />
           )}
@@ -105,8 +97,12 @@ const SLogo = styled(Icon)`
 `;
 
 const SNavContainer = styled.div`
-  display: flex;
-  align-items: center;
+  display: none;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    display: flex;
+    align-items: center;
+  }
 `;
 
 const SNavLinksContainer = styled.div`

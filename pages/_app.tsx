@@ -63,9 +63,7 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
           }}
         />
       </Head>
-
       <GlobalStyle />
-      <Component {...pageProps} />
 
       {!cookiesConsent && !hide && (
         <div className="cookies">
@@ -85,6 +83,8 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
           />
         </div>
       )}
+
+      <Component {...pageProps} />
     </ThemeProvider>
   );
 };

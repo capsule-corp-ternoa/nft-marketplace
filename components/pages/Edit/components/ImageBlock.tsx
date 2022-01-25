@@ -1,11 +1,9 @@
 import React from 'react';
-import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
 
 import { AVATAR_VARIANT_EDIT, Picture } from 'components/base/Avatar';
 import { HiddenInput, HiddenShell } from 'components/layout';
 import Chip from 'components/ui/Chip';
-import { breakpointMap } from 'style/theme/base';
 
 interface Props {
   banner?: string;
@@ -18,53 +16,34 @@ interface Props {
   picture?: string;
 }
 
-const ImageBlock = ({
-  banner,
-  chipLabel,
-  className,
-  description,
-  id,
-  name,
-  onChange,
-  picture,
-}: Props) => {
-  const isSmallDesktop = useMediaQuery({
-    query: `(max-width: ${breakpointMap.xl - 1}px)`,
-  });
-
-  return (
-    <SBlockContainer className={className}>
-      <label htmlFor={id}>
-        {name && (
-          <SPicture
-            name={name}
-            picture={picture}
-            variant={AVATAR_VARIANT_EDIT}
-          />
-        )}
-        {banner && (
-          <SBannerPicture src={banner} alt="user banner" draggable="false" />
-        )}
-      </label>
-      {description && <SDescription>{description}</SDescription>}
-      <SUploadLabel htmlFor={id}>
-        <Chip color="primaryLight" size={isSmallDesktop ? "small" : "medium"} text={chipLabel} />
-        <HiddenShell>
-          <HiddenInput
-            accept='.jpg, .jpeg, .png, .gif'
-            type="file"
-            id={id}
-            onChange={(event) => {
-              const { target } = event;
-              const file = target?.files?.[0];
-              if (file) onChange(file);
-            }}
-          />
-        </HiddenShell>
-      </SUploadLabel>
-    </SBlockContainer>
-  );
-};
+const ImageBlock = ({ banner, chipLabel, className, description, id, name, onChange, picture }: Props) => (
+  <SBlockContainer className={className}>
+    <label htmlFor={id}>
+      {name && (
+        <SPictureContainer>
+          <Picture name={name} picture={picture} variant={AVATAR_VARIANT_EDIT} />
+        </SPictureContainer>
+      )}
+      {banner && <SBannerPicture src={banner} alt="user banner" draggable="false" />}
+    </label>
+    {description && <SDescription>{description}</SDescription>}
+    <SUploadLabel htmlFor={id}>
+      <Chip color="primaryLight" size="medium" text={chipLabel} />
+      <HiddenShell>
+        <HiddenInput
+          accept=".jpg, .jpeg, .png, .gif"
+          type="file"
+          id={id}
+          onChange={(event) => {
+            const { target } = event;
+            const file = target?.files?.[0];
+            if (file) onChange(file);
+          }}
+        />
+      </HiddenShell>
+    </SUploadLabel>
+  </SBlockContainer>
+);
 
 const SBlockContainer = styled.div`
   display: flex;
@@ -72,7 +51,7 @@ const SBlockContainer = styled.div`
   align-items: center;
 `;
 
-const SPicture = styled(Picture)`
+const SPictureContainer = styled.div`
   &:hover {
     cursor: pointer;
   }

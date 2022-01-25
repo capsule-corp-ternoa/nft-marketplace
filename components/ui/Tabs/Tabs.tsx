@@ -12,24 +12,24 @@ type TabsType = {
 
 interface Props {
   className?: string;
-  isTabsSelect: boolean;
+  isTabsSelect?: boolean;
   resetTabId?: boolean;
   tabs: {
     [id: string]: TabsType;
   };
 }
 
-const Tabs = ({ className, isTabsSelect, resetTabId, tabs }: Props) => {
+const Tabs = ({ className, isTabsSelect = false, resetTabId, tabs }: Props) => {
   const [activeTab, setActiveTab] = useState<string>(Object.keys(tabs)[0]);
 
   useEffect(() => {
     setActiveTab(Object.keys(tabs)[0]);
   }, [resetTabId])
 
-  if (isTabsSelect) {
-    return (
-      <div className={className}>
-        <SSelectContainer suppressHydrationWarning>
+  return (
+    <div className={className}>
+      {isTabsSelect && (
+        <SSelectContainer>
           <Select
             badge={tabs[activeTab].badge}
             color="primary"
@@ -55,16 +55,8 @@ const Tabs = ({ className, isTabsSelect, resetTabId, tabs }: Props) => {
             )}
           </Select>
         </SSelectContainer>
-        {Object.entries(tabs).map(([id, { content }]) => (
-          <div key={id}>{activeTab === id && content}</div>
-        ))}
-      </div>
-    );
-  }
-
-  return (
-    <div className={className}>
-      <STabsListContainer>
+      )}
+      <STabsListContainer isTabsSelect={isTabsSelect}>
         {Object.entries(tabs).map(([id, { badge, label }]) => (
           <Tab
             key={id}
@@ -85,14 +77,18 @@ const Tabs = ({ className, isTabsSelect, resetTabId, tabs }: Props) => {
   );
 };
 
-const STabsListContainer = styled.div`
+const STabsListContainer = styled.div<{ isTabsSelect: boolean }>`
   width: 80%;
-  display: flex;
+  display: ${({ isTabsSelect }) => isTabsSelect ? 'none' : 'flex'};
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   gap: 2.4rem;
   margin: 0 auto 8rem;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    display: flex;
+  }
 
   ${({ theme }) => theme.mediaQueries.xxl} {
     width: 100%;
@@ -103,6 +99,10 @@ const STabsListContainer = styled.div`
 const SSelectContainer = styled.div`
   max-width: 26rem;
   margin: 0 auto;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    display: none;
+  }
 `;
 
 const SContentContainer = styled.div`

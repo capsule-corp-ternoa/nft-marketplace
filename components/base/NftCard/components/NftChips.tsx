@@ -1,16 +1,10 @@
 import React from 'react';
-import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
 import Chip from 'components/ui/Chip';
 import { NftType } from 'interfaces/index';
 import { computeCaps, computeTiime } from 'utils/strings';
-import { breakpointMap } from 'style/theme/base';
-
-import { CAROUSEL_MODE, GRID_MODE } from '../constants';
-import { ModeType } from '../interfaces';
 
 interface Props {
-  mode?: ModeType;
   noAvailableChip?: boolean;
   noPriceChip?: boolean;
   noSecretChip?: boolean;
@@ -18,22 +12,8 @@ interface Props {
   NFT: NftType;
 }
 
-const NftChips = ({
-  mode,
-  noAvailableChip = false,
-  noPriceChip = false,
-  noSecretChip = false,
-  quantity,
-  NFT,
-}: Props) => {
+const NftChips = ({ noAvailableChip = false, noPriceChip = false, noSecretChip = false, quantity, NFT }: Props) => {
   const { properties, smallestPrice, smallestPriceTiime, totalListedInMarketplace, totalListedNft } = NFT;
-
-  const isMobile = useMediaQuery({
-    query: `(max-width: ${breakpointMap.md - 1}px)`,
-  });
-  const isLargeDesktop = useMediaQuery({
-    query: `(min-width: ${breakpointMap.xxl}px)`,
-  });
 
   const smallestCapsPrice = Number(smallestPrice);
   const smallestTiimePrice = Number(smallestPriceTiime);
@@ -59,25 +39,12 @@ const NftChips = ({
     <>
       {quantityAvailable > 1 && !noAvailableChip && (
         <SAvailableChipWrapper>
-          <Chip
-            color="whiteBlur"
-            size="small"
-            text={`${!isLargeDesktop || mode === GRID_MODE ? '' : 'Available : '}${quantityAvailable} of ${
-              NFT.totalNft
-            }`}
-            variant="round"
-          />
+          <Chip color="whiteBlur" size="small" text={`${quantityAvailable} of ${NFT.totalNft}`} variant="round" />
         </SAvailableChipWrapper>
       )}
       {isSecret && !noSecretChip && (
         <SSecretChipWrapper>
-          <Chip
-            color="whiteBlur"
-            icon="secretCards"
-            size="small"
-            text={isMobile && mode === CAROUSEL_MODE ? undefined : 'Secret'}
-            variant="round"
-          />
+          <Chip color="whiteBlur" icon="secretCards" size="small" text="Secret" variant="round" />
         </SSecretChipWrapper>
       )}
       {smallestPriceWording && !noPriceChip && (

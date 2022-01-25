@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Router from 'next/router';
 import styled, { css } from 'styled-components';
-import { useMediaQuery } from 'react-responsive';
 
 import { Picture } from 'components/base/Avatar';
 import Chip from 'components/ui/Chip';
@@ -10,7 +9,6 @@ import { toggleLike } from 'utils/profile';
 import { LIKE_ACTION, LIKE_ACTION_TYPE, UNLIKE_ACTION } from 'utils/profile/constants';
 import { computeCaps, computeTiime } from 'utils/strings';
 import { fadeIn, ySlide } from 'style/animations';
-import { breakpointMap } from 'style/theme/base';
 
 import NftCard from '../NftCard';
 import { ModeType } from '../interfaces';
@@ -52,8 +50,6 @@ const NftCardWithHover = ({
       : user?.likedNFTs?.some(({ serieId }) => serieId === item.serieId)) ?? false
   );
   const [likeLoading, setLikeLoading] = useState(false);
-
-  const isMobile = useMediaQuery({ query: `(max-width: ${breakpointMap.md - 1}px)` });
 
   const toggleLikeDislike = async () => {
     try {
@@ -97,10 +93,10 @@ const NftCardWithHover = ({
       mode={mode}
       isDragging={isDragging}
       isHovering={isHovering}
-      onMouseOut={() => !isMobile && setIsHovering(false)}
-      onMouseOver={() => !isMobile && setIsHovering(true)}
+      onMouseOut={() => setIsHovering(false)}
+      onMouseOver={() => setIsHovering(true)}
     >
-      <NftChips NFT={item} mode={mode} noPriceChip={isHovering} noSecretChip={isHovering} quantity={quantity} />
+      <NftChips NFT={item} noPriceChip={isHovering} noSecretChip={isHovering} quantity={quantity} />
       <SFilter isHovering={isHovering} />
       <SHoverContainer isHovering={isHovering}>
         {isUserLogged && (

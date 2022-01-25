@@ -1,5 +1,4 @@
 import React from 'react';
-import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
 import Eye from 'components/assets/eye';
 import { NftCardWithEffects, NftUpload } from 'components/base/NftPreview';
@@ -16,7 +15,6 @@ import {
   NFT_FILE_TYPE_GIF,
   NFT_FILE_TYPE_VIDEO,
 } from 'interfaces';
-import { breakpointMap } from 'style/theme/base';
 import { useAppSelector } from 'redux/hooks';
 
 interface Props {
@@ -52,10 +50,7 @@ const NftPreview = ({
   setError,
   setOriginalNFT,
 }: Props) => {
-  const isRN = useAppSelector((state) => state.rn.isRN)
-  const isMobile = useMediaQuery({
-    query: `(max-width: ${breakpointMap.md - 1}px)`,
-  });
+  const isRN = useAppSelector((state) => state.rn.isRN);
 
   const handleAllowedEffect = (file: File, effect: NftEffectType) => {
     switch (effect) {
@@ -112,7 +107,7 @@ const NftPreview = ({
           </SReuploadWrapper>
         )}
       </SHeader>
-      {isMobile && effect !== undefined ? (
+      {effect !== undefined && (
         <SWrapper>
           <SMobileCardWrapper>
             <NftCardWithEffects
@@ -150,49 +145,48 @@ const NftPreview = ({
           </SSelect>
           <SSeparator />
         </SWrapper>
-      ) : (
-        <SFieldset>
-          {NFT_EFFECTS_ORDERED.filter((effectType) =>
-            handleAllowedEffect(originalNFT, effectType)
-          ).map((effectType) => (
-            <SLabelWrapper key={effectType}>
-              <SLabel
-                htmlFor={`NftType_${effectType}`}
-                isSelected={effect === effectType}
-              >
-                <SCardWrapper isSelected={effect === effectType}>
-                  <NftCardWithEffects
-                    blurValue={blurValue}
-                    coverNFT={coverNFT}
-                    effect={effectType}
-                    originalNFT={originalNFT}
-                    setBlurValue={setBlurValue}
-                    setCoverNFT={setCoverNFT}
-                    setEffect={setEffect}
-                    setError={setError}
-                  />
-                </SCardWrapper>
-
-                <SRadio
-                  checked={effect === effectType}
-                  label={effectType}
-                  onChange={() => setEffect(effectType)}
-                />
-              </SLabel>
-
-              <HiddenShell>
-                <HiddenInput
-                  type="radio"
-                  id={`NftType_${effectType}`}
-                  name={`NftType_${effectType}`}
-                  onClick={() => setEffect(effectType)}
-                  value={effectType}
-                />
-              </HiddenShell>
-            </SLabelWrapper>
-          ))}
-        </SFieldset>
       )}
+      <SFieldset>
+        {NFT_EFFECTS_ORDERED.filter((effectType) =>
+          handleAllowedEffect(originalNFT, effectType)
+        ).map((effectType) => (
+          <SLabelWrapper key={effectType}>
+            <SLabel
+              htmlFor={`NftType_${effectType}`}
+              isSelected={effect === effectType}
+            >
+              <SCardWrapper isSelected={effect === effectType}>
+                <NftCardWithEffects
+                  blurValue={blurValue}
+                  coverNFT={coverNFT}
+                  effect={effectType}
+                  originalNFT={originalNFT}
+                  setBlurValue={setBlurValue}
+                  setCoverNFT={setCoverNFT}
+                  setEffect={setEffect}
+                  setError={setError}
+                />
+              </SCardWrapper>
+
+              <SRadio
+                checked={effect === effectType}
+                label={effectType}
+                onChange={() => setEffect(effectType)}
+              />
+            </SLabel>
+
+            <HiddenShell>
+              <HiddenInput
+                type="radio"
+                id={`NftType_${effectType}`}
+                name={`NftType_${effectType}`}
+                onClick={() => setEffect(effectType)}
+                value={effectType}
+              />
+            </HiddenShell>
+          </SLabelWrapper>
+        ))}
+      </SFieldset>
     </div>
   );
 };
@@ -230,6 +224,10 @@ const SWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    display: none;
+  }
 `;
 
 const SMobileCardWrapper = styled.div`
@@ -250,13 +248,17 @@ const SSeparator = styled.div`
 `;
 
 const SFieldset = styled.fieldset`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1.2rem;
-  border: none;
-  padding: 0;
+  display: none;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.2rem;
+    border: none;
+    padding: 0;
+  }
 `;
 
 const SLabelWrapper = styled.label<{ isSelected?: boolean }>`

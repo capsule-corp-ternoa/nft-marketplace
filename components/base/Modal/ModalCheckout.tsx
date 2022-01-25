@@ -112,7 +112,7 @@ const SBackground = styled.div`
 `;
 
 const SContainer = styled.div`
-  width: 48rem;
+  width: 100%;
   height: 100vh;
   top: 0;
   right: 0;
@@ -120,12 +120,23 @@ const SContainer = styled.div`
   color: ${({ theme }) => theme.colors.invertedContrast};
   padding: 4rem 3.2rem;
   overflow-y: auto;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    width: 48rem;
+  }
 `;
 
 const SSection = styled.div`
-  margin: 12rem 0 0;
+  margin: 6.4rem 0 0;
   display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin: 12rem 0 0;
+    flex-direction: row;
+  }
 `;
 
 const STop = styled.div`
@@ -146,7 +157,12 @@ const SDetailsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  margin-left: 1.6rem;
+  margin-top: 3.2rem;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin-left: 1.6rem;
+    margin-top: 0;
+  }
 `;
 
 const SNftCardContainer = styled.div`
@@ -157,6 +173,15 @@ const STitle = styled.h3`
   font-family: ${({ theme }) => theme.fonts.bold};
   font-size: 3.2rem;
   margin: 0;
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    -webkit-line-clamp: 3;
+  }
 `;
 
 const SAvatarContainer = styled.div`
@@ -167,13 +192,23 @@ const SPricingContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  margin-top: 8.8rem;
+  margin-top: 4.8rem;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin-top: 8.8rem;
+  }
 `;
 
 const STransactionInfosContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
+
+  > * {
+    &:not(:first-child) {
+      margin-left: 0.8rem;
+    }
+  }
 `;
 
 const SPrice = styled.div`
@@ -193,6 +228,7 @@ const STokenAmount = styled.div`
 const STokenUnit = styled.div`
   font-family: ${({ theme }) => theme.fonts.bold};
   font-size: 3.2rem;
+  margin-left: 1.6rem;
   text-transform: uppercase;
 `;
 

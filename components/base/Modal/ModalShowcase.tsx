@@ -21,12 +21,22 @@ const ModalShowcase: React.FC<ModalShowcaseProps> = ({ media, setExpanded, type 
 const SMediaContainer = styled.div`
   display: flex;
   position: relative;
-  width: 48rem;
-  height: 72rem;
+  width: ${({ theme }) => theme.sizes.cardWidth.md};
+  height: ${({ theme }) => theme.sizes.cardHeight.md};
   overflow: hidden;
   background: linear-gradient(180deg, #f29fff 0%, #878cff 100%);
   box-shadow: ${({ theme }) => theme.shadows.popupShadow};
   border-radius: 1.2rem;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    width: ${({ theme }) => theme.sizes.cardWidth.lg};
+    height: ${({ theme }) => theme.sizes.cardHeight.lg};
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    width: ${({ theme }) => theme.sizes.cardWidth.xl};
+    height: ${({ theme }) => theme.sizes.cardHeight.xl};
+  }
 `;
 
 export default ModalShowcase;

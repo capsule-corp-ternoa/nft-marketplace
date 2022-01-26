@@ -80,7 +80,6 @@ const SNftsContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 2.4rem;
-  margin: 0 auto;
   overflow-x: auto;
   width: 100%;
 

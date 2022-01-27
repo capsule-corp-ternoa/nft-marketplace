@@ -11,7 +11,7 @@ import { addNFTsToCategories } from 'actions/nft';
 import { ModalLoader, QRCode } from 'components/base/Modal';
 import Modal from 'components/ui/Modal';
 import { NFTProps } from 'pages/create';
-import { useAppSelector } from 'redux/hooks';
+import { useApp } from 'redux/hooks';
 import theme from 'style/theme';
 import { SOCKET_URL } from 'utils/constant';
 import { navigateToSuccess } from 'utils/functions';
@@ -59,7 +59,7 @@ const ModalMint: React.FC<ModalProps> = ({
   const [qrRetry, setQrRetry] = useState(false);
   const [showProgress, setShowProgress] = useState(false);
   const [progressData, setProgressData] = useState([] as number[]);
-  const isRN = useAppSelector((state) => state.rn.isRN);
+  const { isRN } = useApp();
   const [mintReponse, setMintResponse] = useState<boolean | null>(null);
   const [startUploadTime, setStartUploadTime] = useState<any>(null);
   const [alreadySentSocketTimeout, setAlreadySentSocketTimeout] = useState(false);

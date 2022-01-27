@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Cookies from 'js-cookie';
 import styled from 'styled-components';
 import ClickAwayListener from 'react-click-away-listener';
-import { useAppSelector } from 'redux/hooks';
+import { useApp } from 'redux/hooks';
 
 import Avatar from 'components/base/Avatar';
 import Clipboard from 'components/base/Clipboard';
@@ -19,7 +19,7 @@ interface Props {
 const ProfileMenuDropdown = ({ className, onClose, user }: Props) => {
   const { name, picture, verified, walletId } = user;
 
-  const isRN = useAppSelector((state) => state.rn.isRN);
+  const { isRN } = useApp();
 
   const handleLogout = () => {
     Cookies.remove('token');

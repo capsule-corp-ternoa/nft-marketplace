@@ -5,7 +5,7 @@ import randomstring from 'randomstring';
 
 import { ModalLoader, QRCode } from 'components/base/Modal';
 import Modal from 'components/ui/Modal';
-import { useAppSelector } from 'redux/hooks';
+import { useApp } from 'redux/hooks';
 import { SOCKET_URL } from 'utils/constant';
 import { navigateToSuccess } from 'utils/functions';
 import { connect as connectIo } from 'utils/socket/socket.helper';
@@ -21,7 +21,7 @@ const ModalBuy: React.FC<ModalBuyProps> = ({ setExpanded, id, seriesId }) => {
   const router = useRouter();
   const [error, setError] = useState('');
   const [showQR, setShowQR] = useState(false);
-  const isRN = useAppSelector((state) => state.rn.isRN);
+  const { isRN } = useApp();
 
   useEffect(() => {
     console.log('socket connect on session', session);

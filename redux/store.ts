@@ -1,11 +1,18 @@
-import { createStore, combineReducers } from "redux";
-import { reducer as rnReducer } from "redux/rn/reducer";
+import { createWrapper } from 'next-redux-wrapper';
+import { createStore, combineReducers, Store } from 'redux';
 
-export const store = createStore(
-    combineReducers({
-        rn: rnReducer
-    })
-)
+import { appDefaultState, appReducer } from './app';
 
-export type RootState = ReturnType<typeof store.getState>
-export type AppDispatch = typeof store.dispatch
+const reducer = combineReducers({
+  app: appReducer,
+});
+
+export type RootState = ReturnType<typeof reducer>;
+
+export const initialState: RootState = {
+  app: appDefaultState,
+};
+
+const store = createStore(reducer, initialState);
+
+export const wrapper = createWrapper<Store<RootState>>(() => store, { debug: true });

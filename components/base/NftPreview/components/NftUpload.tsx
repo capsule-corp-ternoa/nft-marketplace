@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Upload from 'components/assets/upload';
 import { HiddenInput, HiddenShell, InsightLight } from 'components/layout';
 import Chip from 'components/ui/Chip';
-import { useAppSelector } from 'redux/hooks';
+import { useApp } from 'redux/hooks';
 
 interface Props {
   className?: string;
@@ -63,7 +63,7 @@ const NftUpload = ({
   note,
   onChange,
 }: Props) => {
-  const isRN = useAppSelector((state) => state.rn.isRN)
+  const { isRN } = useApp();
   const [acceptedFileTypes, setAcceptedFileTypes] = useState([
     '.jpg',
     '.jpeg',

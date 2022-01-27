@@ -13,7 +13,7 @@ import {
 } from 'interfaces';
 import Chip from 'components/ui/Chip';
 import Slider from 'components/ui/Slider';
-import { useAppSelector } from 'redux/hooks';
+import { useApp } from 'redux/hooks';
 
 interface Props {
   blurValue: number;
@@ -71,7 +71,7 @@ const NftCardWithEffects = ({
   setEffect,
   setError,
 }: Props) => {
-  const isRN = useAppSelector((state) => state.rn.isRN);
+  const { isRN } = useApp();
 
   const handleBlurredChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { target } = event;

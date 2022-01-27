@@ -10,6 +10,7 @@ import Footer from 'components/base/Footer';
 import MainHeader from 'components/base/MainHeader';
 import Profile, { ARTIST_PROFILE_VARIANT } from 'components/pages/Profile';
 import { UserType, FOLLOWERS_TAB, FOLLOWED_TAB, NFT_ON_SALE_TAB, NFT_NOT_FOR_SALE_TAB } from 'interfaces';
+import { useApp } from 'redux/hooks';
 import { decryptCookie } from 'utils/cookie';
 import { getUserIp } from 'utils/functions';
 import { middleEllipsis } from 'utils/strings';
@@ -22,13 +23,14 @@ export interface PublicProfileProps {
 const ORDERED_TABS_ID = [NFT_ON_SALE_TAB, NFT_NOT_FOR_SALE_TAB, FOLLOWERS_TAB, FOLLOWED_TAB] as const;
 
 const PublicProfilePage = ({ user, profile }: PublicProfileProps) => {
+  const { name: appName } = useApp();
   const { name, walletId } = profile;
 
   return (
     <>
       <Head>
         <title>
-          {process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : 'SecretNFT'} -{' '}
+          {appName} -{' '}
           {name || middleEllipsis(walletId, 10)}
         </title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />

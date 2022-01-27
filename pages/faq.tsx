@@ -9,16 +9,19 @@ import cookies from 'next-cookies';
 import { getUser } from 'actions/user';
 import { UserType } from 'interfaces';
 import { NextPageContext } from 'next';
+import { useApp } from 'redux/hooks';
 import { decryptCookie } from 'utils/cookie';
 
 export interface FAQProps {
   user: UserType;
 }
 
-const FAQPage = ({ user }: FAQProps) => (
-  <>
+const FAQPage = ({ user }: FAQProps) => {
+  const { name } = useApp();
+
+  return <>
     <Head>
-      <title>{process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : 'SecretNFT'} - FAQ</title>
+      <title>{name} - FAQ</title>
       <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       <meta name="description" content="FAQ page of SecretNFT, by Ternoa." />
       <meta name="og:image" content="ternoa-social-banner.jpg" />
@@ -29,7 +32,7 @@ const FAQPage = ({ user }: FAQProps) => (
     <Footer />
     <FloatingHeader user={user} />
   </>
-);
+};
 
 export async function getServerSideProps(ctx: NextPageContext) {
   let user = null;

@@ -11,6 +11,7 @@ import Edit from 'components/pages/Edit';
 
 import { getUser } from 'actions/user';
 import { UserType } from 'interfaces';
+import { useApp } from 'redux/hooks';
 import { decryptCookie } from 'utils/cookie';
 
 export interface EditPageProps {
@@ -18,21 +19,25 @@ export interface EditPageProps {
   token: string;
 }
 
-const EditPage = ({ user }: EditPageProps) => (
-  <>
-    <Head>
-      <title>{process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : 'SecretNFT'} - My account</title>
-      <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-      <meta name="description" content="Ternoa - Your profile." />
-      <meta name="og:image" content="ternoa-social-banner.jpg" />
-    </Head>
-    <BetaBanner />
-    <MainHeader user={user} />
-    <Edit user={user} />
-    <Footer />
-    <FloatingHeader user={user} />
-  </>
-);
+const EditPage = ({ user }: EditPageProps) => {
+  const { name } = useApp();
+
+  return (
+    <>
+      <Head>
+        <title>{name} - My account</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <meta name="description" content="Ternoa - Your profile." />
+        <meta name="og:image" content="ternoa-social-banner.jpg" />
+      </Head>
+      <BetaBanner />
+      <MainHeader user={user} />
+      <Edit user={user} />
+      <Footer />
+      <FloatingHeader user={user} />
+    </>
+  );
+};
 
 export async function getServerSideProps(ctx: NextPageContext) {
   let user = null;

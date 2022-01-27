@@ -11,6 +11,7 @@ import Button from 'components/ui/Button';
 import Chip from 'components/ui/Chip';
 import Icon from 'components/ui/Icon';
 import { UserType, NftType } from 'interfaces';
+import { useApp } from 'redux/hooks';
 import { MARKETPLACE_ID } from 'utils/constant';
 import { getRandomNFTFromArray } from 'utils/functions';
 import { toggleLike } from 'utils/profile';
@@ -42,16 +43,14 @@ const NFTPage = ({ NFT, user, type, isUserFromDappQR }: NFTPageProps) => {
   const [isModalCheckoutExpanded, setIsModalCheckoutExpanded] = useState(false);
   const [isModalShowcaseExpanded, setIsModalShowcaseExpanded] = useState(false);
 
+  const { url } = useApp();
+
   const isVR = NFT.categories.findIndex((x) => x.code === 'vr') !== -1 && NFT.creator === NFT.owner;
   const shareSubject = 'Check out this Secret NFT';
   const shareText = `Check out ${NFT.title ? NFT.title : 'this nft'} on ${
-    process.env.NEXT_PUBLIC_APP_LINK ? process.env.NEXT_PUBLIC_APP_LINK : 'secret-nft.com'
+    url.replace(/^(?:https?:\/\/)?(?:www\.)?/i, '').split('/')[0]
   }`;
-  const shareUrl =
-    (typeof window !== 'undefined' && window.location?.href) ||
-    `https://www.${process.env.NEXT_PUBLIC_APP_LINK ? process.env.NEXT_PUBLIC_APP_LINK : 'secret-nft.com'}/nft/${
-      NFT.id
-    }`;
+  const shareUrl = (typeof window !== 'undefined' && window.location?.href) || `${url}/nft/${NFT.id}`;
 
   const smallestPriceRow = seriesData
     .filter((x) => x.marketplaceId === MARKETPLACE_ID)
@@ -62,8 +61,8 @@ const NFTPage = ({ NFT, user, type, isUserFromDappQR }: NFTPageProps) => {
         Number(a.price) - Number(b.price) || //lowest price first
         Number(a.priceTiime) - Number(b.priceTiime) // lower pricetiime first
     )[0];
-  
-    const userCanBuy =
+
+  const userCanBuy =
     (!isVR || (isVR && isUserFromDappQR && canUserBuyAgain)) &&
     (user
       ? user.capsAmount &&

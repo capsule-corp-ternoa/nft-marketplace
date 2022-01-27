@@ -1,12 +1,14 @@
 import React from 'react';
+import { NextPageContext } from 'next';
+import cookies from 'next-cookies';
 import Head from 'next/head';
+
 import BetaBanner from 'components/base/BetaBanner';
 import FloatingHeader from 'components/base/FloatingHeader';
 import Footer from 'components/base/Footer';
 import MainHeader from 'components/base/MainHeader';
 import Profile, { USER_PERSONNAL_PROFILE_VARIANT } from 'components/pages/Profile';
 import { getOwnedNFTS } from 'actions/nft';
-import cookies from 'next-cookies';
 import { getUser } from 'actions/user';
 import {
   NftType,
@@ -19,8 +21,9 @@ import {
   NFT_LIKED_TAB,
   NFT_OWNED_TAB,
 } from 'interfaces';
-import { NextPageContext } from 'next';
+import { useApp } from 'redux/hooks';
 import { decryptCookie } from 'utils/cookie';
+
 
 export interface ProfilePageProps {
   user: UserType;
@@ -39,10 +42,12 @@ const ORDERED_TABS_ID = [
   FOLLOWED_TAB,
 ] as const;
 
-const ProfilePage = ({ user, owned, ownedHasNextPage }: ProfilePageProps) => (
-  <>
+const ProfilePage = ({ user, owned, ownedHasNextPage }: ProfilePageProps) => {
+  const { name } = useApp();
+
+  return <>
     <Head>
-      <title>{process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : 'SecretNFT'} - My account</title>
+      <title>{name} - My account</title>
       <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       <meta name="description" content="Ternoa - Your profile." />
       <meta name="og:image" content="ternoa-social-banner.jpg" />
@@ -59,7 +64,7 @@ const ProfilePage = ({ user, owned, ownedHasNextPage }: ProfilePageProps) => (
     <Footer />
     <FloatingHeader user={user} />
   </>
-);
+};
 
 export async function getServerSideProps(ctx: NextPageContext) {
   const token = cookies(ctx).token && decryptCookie(cookies(ctx).token as string);

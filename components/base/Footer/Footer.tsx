@@ -3,16 +3,16 @@ import styled from 'styled-components';
 
 import Icon from 'components/ui/Icon';
 import { Container, Wrapper } from 'components/layout';
+import { useApp } from 'redux/hooks';
 
 const Footer = () => {
-  const twitterLink = process.env.NEXT_PUBLIC_TWITTER_LINK || 'https://twitter.com/SecretNFT_';
-  const instagramLink = process.env.NEXT_PUBLIC_INSTAGRAM_LINK || 'https://www.instagram.com/ternoa_/';
+  const { instagramUrl, name, twitterUrl } = useApp();
 
   return (
     <SFooterContainer>
       <SFooterWrapper>
         <SLegalsContainer>
-          <SLabel>{process.env.NEXT_PUBLIC_APP_NAME || '© SECRET NFT'}</SLabel>
+          <SLabel>{`© ${name}`}</SLabel>
           <SLabel>All rights reserved</SLabel>
           <SLink
             href="https://ternoahelp.zendesk.com/hc/fr/articles/4409410791185-Terms-of-use"
@@ -30,13 +30,13 @@ const Footer = () => {
           </SLink>
         </SLegalsContainer>
         <SSocialsContainer>
-          {twitterLink !== 'false' && (
-            <a href={twitterLink} target="_blank">
+          {twitterUrl !== 'false' && (
+            <a href={twitterUrl} target="_blank">
               <SMediaIcon name="socialTwitter" />
             </a>
           )}
-          {instagramLink !== 'false' && (
-            <a href={instagramLink} target="_blank">
+          {instagramUrl !== 'false' && (
+            <a href={instagramUrl} target="_blank">
               <SMediaIcon name="socialInstagram" />
             </a>
           )}

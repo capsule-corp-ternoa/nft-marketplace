@@ -10,6 +10,7 @@ import { getUser } from 'actions/user';
 import { getNFTs, getTotalOnSaleOnMarketplace } from 'actions/nft';
 import { NftType, UserType } from 'interfaces';
 import { NextPageContext } from 'next';
+import { useApp } from 'redux/hooks';
 import { decryptCookie } from 'utils/cookie';
 
 export interface ExplorePage {
@@ -29,7 +30,9 @@ const ExplorePage = ({
     useState(dataHasNextPage);
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [dataTotalCount, setDataTotalCount] = useState(0)
+  const [dataTotalCount, setDataTotalCount] = useState(0);
+
+  const { name } = useApp();
 
   const loadMoreNfts = async () => {
     setIsLoading(true)
@@ -68,7 +71,7 @@ const ExplorePage = ({
   return (
     <>
       <Head>
-        <title>{process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : "SecretNFT"} - Explore</title>
+        <title>{name} - Explore</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta name="description" content="SecretNFT Marketplace, by Ternoa." />
         <meta name="og:image" content="ternoa-social-banner.jpg" />

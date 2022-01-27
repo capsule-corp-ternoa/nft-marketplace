@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { NextPageContext } from 'next';
 import Head from 'next/head';
+
 import BetaBanner from 'components/base/BetaBanner';
 import FloatingHeader from 'components/base/FloatingHeader';
 import Footer from 'components/base/Footer';
@@ -12,7 +14,7 @@ import { getCapsValue } from 'actions/caps';
 import { getUser, getUsers } from 'actions/user';
 import { getNFTs } from 'actions/nft';
 import { NftType, UserType } from 'interfaces';
-import { NextPageContext } from 'next';
+import { useApp } from 'redux/hooks';
 import { decryptCookie, setUserFromDApp } from 'utils/cookie';
 
 export interface LandingProps {
@@ -36,6 +38,7 @@ const LandingPage = ({
   totalCountNFT,
 }: LandingProps) => {
   const [walletUser, setWalletUser] = useState(user);
+  const { name } = useApp();
 
   useEffect(() => {
     setUserFromDApp(setWalletUser);
@@ -44,7 +47,7 @@ const LandingPage = ({
   return (
     <>
       <Head>
-        <title>{process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : 'SecretNFT'} - Welcome</title>
+        <title>{name} - Welcome</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta name="description" content="SecretNFT Marketplace, by Ternoa." />
         <meta name="og:image" content="ternoa-social-banner.jpg" />

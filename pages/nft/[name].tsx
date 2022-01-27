@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { NextPageContext } from 'next';
 import Head from 'next/head';
 import cookies from 'next-cookies';
 
@@ -11,8 +12,7 @@ import Footer from 'components/base/Footer';
 import MainHeader from 'components/base/MainHeader';
 import NFTPage from 'components/pages/NFT';
 import { NftType, UserType } from 'interfaces';
-import { NextPageContext } from 'next';
-
+import { useApp } from 'redux/hooks';
 import { decryptCookie, setUserFromDApp } from 'utils/cookie';
 import { getUserIp } from 'utils/functions';
 import { MARKETPLACE_ID } from 'utils/constant';
@@ -27,6 +27,8 @@ const NftPage = ({ user, NFT, capsValue }: NFTPageProps) => {
   const [type, setType] = useState<string | null>(null);
   const [walletUser, setWalletUser] = useState(user);
   const [isUserFromDappQR, setIsUserFromDappQR] = useState(false);
+
+  const { name } = useApp();
 
   useEffect(() => {
     setUserFromDApp(setWalletUser, setIsUserFromDappQR);
@@ -50,7 +52,7 @@ const NftPage = ({ user, NFT, capsValue }: NFTPageProps) => {
     <>
       <Head>
         <title>
-          {NFT.title} - {process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : 'SecretNFT'}
+          {NFT.title} - {name}
         </title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta name="description" content={NFT.description} />
@@ -60,13 +62,7 @@ const NftPage = ({ user, NFT, capsValue }: NFTPageProps) => {
 
       <BetaBanner />
       <MainHeader user={walletUser} />
-      <NFTPage
-        NFT={NFT}
-        user={walletUser}
-        type={type}
-        capsValue={capsValue}
-        isUserFromDappQR={isUserFromDappQR}
-      />
+      <NFTPage NFT={NFT} user={walletUser} type={type} capsValue={capsValue} isUserFromDappQR={isUserFromDappQR} />
       <Footer />
       <FloatingHeader user={user} />
     </>

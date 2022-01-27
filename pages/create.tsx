@@ -13,6 +13,7 @@ import MainHeader from 'components/base/MainHeader';
 import { ModalMint } from 'components/base/Modal';
 import Create from 'components/pages/Create';
 import { CategoryType, UserType } from 'interfaces';
+import { useApp } from 'redux/hooks';
 import { decryptCookie } from 'utils/cookie';
 
 export interface CreatePageProps {
@@ -57,6 +58,9 @@ const CreatePage = ({ categories, user }: CreatePageProps) => {
     quantity: quantity,
   });
   const [runNFTMintData, setRunNFTMintData] = useState<any>(null);
+
+  const { name } = useApp();
+
   useEffect(() => {
     if (!isNftCreationEnabled) {
       Router.push('/');
@@ -88,7 +92,7 @@ const CreatePage = ({ categories, user }: CreatePageProps) => {
     <>
       <Head>
         <title>
-          {process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : 'SecretNFT'} - Create your NFT
+          {name} - Create your NFT
         </title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta name="description" content="SecretNFT Marketplace, by Ternoa." />

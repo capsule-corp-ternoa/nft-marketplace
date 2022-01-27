@@ -1,4 +1,5 @@
 import React from 'react';
+import { useApp } from 'redux/hooks';
 
 interface LogoProps {
   className?: string;
@@ -6,9 +7,11 @@ interface LogoProps {
 }
 
 const LogoTernoa = ({ className, onClick }: LogoProps) => {
-  return process.env.NEXT_PUBLIC_APP_LOGO_PATH ?
+  const { logo } = useApp();
+
+  return logo ?
       <img
-        src={process.env.NEXT_PUBLIC_APP_LOGO_PATH}
+        src={logo}
         className={className}
         onClick={onClick} 
       />

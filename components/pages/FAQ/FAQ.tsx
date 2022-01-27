@@ -2,32 +2,25 @@ import React from 'react';
 import styled from 'styled-components'
 
 import { Container, Title, Wrapper } from 'components/layout';
+import { useApp } from 'redux/hooks';
 
 import Section from './Section';
 
 const FAQ = () => {
+  const { name } = useApp();
+
   const sections = [
     {
-      question: `What is ${
-        process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : 'SecretNFT'
-      } Marketplace ?`,
-      answer: `“${
-        process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : 'SecretNFT'
-      }” is a NFTs marketplace for digital creators. Discover Tokenized Digital Art. Artists issue authenticated single edition digital artworks. These are certified on the Ternoa blockchain to prevent forgery. Each artwork is authentically created by an artist in the network, and tokenized as a collectible digital item that you can own, display and trade.`,
+      question: `What is ${name} Marketplace ?`,
+      answer: `“${name}” is a NFTs marketplace for digital creators. Discover Tokenized Digital Art. Artists issue authenticated single edition digital artworks. These are certified on the Ternoa blockchain to prevent forgery. Each artwork is authentically created by an artist in the network, and tokenized as a collectible digital item that you can own, display and trade.`,
     },
     {
       question: 'How to submit your NFT as an artist?',
-      answer: `In beta version, you fill our form here. Soon you will be able to upload your creations on “${
-        process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : 'SecretNFT'
-      }”.`,
+      answer: `In beta version, you fill our form here. Soon you will be able to upload your creations on “${name}”.`,
     },
     {
-      question: `What do I use for payment when buying on ${
-        process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : 'SecretNFT'
-      } ?`,
-      answer: `“${
-        process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : 'SecretNFT'
-      }” is on Ternoa Chain, so all the platform use CAPS for transactions.`,
+      question: `What do I use for payment when buying on ${name} ?`,
+      answer: `“${name}” is on Ternoa Chain, so all the platform use CAPS for transactions.`,
     },
     {
       question: 'What is CAPS and why do i need some ?',

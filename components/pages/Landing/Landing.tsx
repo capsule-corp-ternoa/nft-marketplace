@@ -16,7 +16,6 @@ const Showcase = dynamic(() => import('../../base/Showcase'), {
 });
 
 export interface LandingProps {
-  user: UserType;
   users?: UserType[];
   capsDollarValue?: number;
   heroNFTs: NftType[];
@@ -27,7 +26,6 @@ export interface LandingProps {
 }
 
 const Landing = ({
-  user,
   users: _users,
   capsDollarValue,
   heroNFTs,
@@ -56,17 +54,17 @@ const Landing = ({
     </Wrapper>
     {popularNfts?.length > 0 && (
       <Wrapper>
-        <Showcase category="Most popular" NFTs={popularNfts} user={user} />
+        <Showcase category="Most popular" NFTs={popularNfts} />
       </Wrapper>
     )}
     {bestSellingNfts?.length > 0 && (
       <Wrapper>
-        <Showcase category="Best sellers" NFTs={bestSellingNfts} user={user} />
+        <Showcase category="Best sellers" NFTs={bestSellingNfts} />
       </Wrapper>
     )}
     {NFTCreators?.length > 0 && (
       <Wrapper>
-        <ArtCreators NFTs={NFTCreators} user={user} />
+        <ArtCreators NFTs={NFTCreators} />
         <SButtonContainer>
           <Button color="primary500" href="/explore" size="medium" text="See more" variant="outlined" />
         </SButtonContainer>

@@ -3,18 +3,17 @@ import styled from 'styled-components';
 
 import NftsGrid from 'components/base/NftsGrid';
 import { Container, Title, Wrapper } from 'components/layout';
-import { EXPLORE_TAB, NftType, UserType } from 'interfaces/index';
+import { EXPLORE_TAB, NftType } from 'interfaces/index';
 
 export interface ExploreProps {
   NFTS: NftType[];
-  user?: UserType;
   loadMore: () => void;
   hasNextPage: boolean;
   loading: boolean;
   totalCount: number;
 }
 
-const Explore: React.FC<ExploreProps> = ({ NFTS, user, loadMore, hasNextPage, loading, totalCount }) => (
+const Explore: React.FC<ExploreProps> = ({ NFTS, loadMore, hasNextPage, loading, totalCount }) => (
   <Container>
     <Wrapper>
       <STitle>{`Explore${totalCount > 0 ? ` (${totalCount} NFTs)` : ""}`}</STitle>
@@ -32,7 +31,6 @@ const Explore: React.FC<ExploreProps> = ({ NFTS, user, loadMore, hasNextPage, lo
           </>
         }
         noNftTitle="All NFTs are sold !"
-        user={user}
         tabId={EXPLORE_TAB}
       />
     </Wrapper>

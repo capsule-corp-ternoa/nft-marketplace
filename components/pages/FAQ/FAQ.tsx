@@ -2,12 +2,12 @@ import React from 'react';
 import styled from 'styled-components'
 
 import { Container, Title, Wrapper } from 'components/layout';
-import { useApp } from 'redux/hooks';
+import { useMarketplaceData } from 'redux/hooks';
 
 import Section from './Section';
 
 const FAQ = () => {
-  const { name } = useApp();
+  const { name } = useMarketplaceData();
 
   const sections = [
     {

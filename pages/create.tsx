@@ -1,24 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { NextPageContext } from 'next';
 import Head from 'next/head';
-import cookies from 'next-cookies';
 import Router from 'next/router';
 
 import { getCategories } from 'actions/category';
-import { getUser } from 'actions/user';
 import BetaBanner from 'components/base/BetaBanner';
 import FloatingHeader from 'components/base/FloatingHeader';
 import Footer from 'components/base/Footer';
 import MainHeader from 'components/base/MainHeader';
 import { ModalMint } from 'components/base/Modal';
 import Create from 'components/pages/Create';
-import { CategoryType, UserType } from 'interfaces';
-import { useApp } from 'redux/hooks';
-import { decryptCookie } from 'utils/cookie';
+import { CategoryType } from 'interfaces';
+import { useApp, useMarketplaceData } from 'redux/hooks';
 
 export interface CreatePageProps {
   categories: CategoryType[];
-  user: UserType;
 }
 
 export interface NFTProps {
@@ -30,7 +25,10 @@ export interface NFTProps {
   seriesId: string;
 }
 
-const CreatePage = ({ categories, user }: CreatePageProps) => {
+const CreatePage = ({ categories }: CreatePageProps) => {
+  const { user } = useApp();
+  const { name } = useMarketplaceData();
+
   const isNftCreationEnabled =
     process.env.NEXT_PUBLIC_IS_NFT_CREATION_ENABLED === undefined
       ? true
@@ -58,8 +56,6 @@ const CreatePage = ({ categories, user }: CreatePageProps) => {
     quantity: quantity,
   });
   const [runNFTMintData, setRunNFTMintData] = useState<any>(null);
-
-  const { name } = useApp();
 
   useEffect(() => {
     if (!isNftCreationEnabled) {
@@ -91,9 +87,7 @@ const CreatePage = ({ categories, user }: CreatePageProps) => {
   return (
     <>
       <Head>
-        <title>
-          {name} - Create your NFT
-        </title>
+        <title>{name} - Create your NFT</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta name="description" content="SecretNFT Marketplace, by Ternoa." />
         <meta name="og:image" content="ternoa-social-banner.jpg" />
@@ -118,14 +112,13 @@ const CreatePage = ({ categories, user }: CreatePageProps) => {
           />
         )}
         <BetaBanner />
-        <MainHeader user={user} />
+        <MainHeader />
         {isNftCreationEnabled && (
           <Create
             categoriesOptions={categories}
             NFTData={NFTData}
             originalNFT={originalNFT}
             QRData={QRData}
-            user={user}
             setError={setError}
             setIsModalMintExpanded={setIsModalMintExpanded}
             setNFTData={setNFTData}
@@ -138,46 +131,23 @@ const CreatePage = ({ categories, user }: CreatePageProps) => {
           />
         )}
         <Footer />
-        <FloatingHeader user={user} />
+        <FloatingHeader />
       </>
     </>
   );
 };
 
-export async function getServerSideProps(ctx: NextPageContext) {
+export async function getServerSideProps() {
   let categories: CategoryType[] = [];
-  let user = null;
 
-  const promises = [];
-
-  const token = cookies(ctx).token && decryptCookie(cookies(ctx).token as string);
-  if (token) {
-    promises.push(
-      new Promise<void>((success) => {
-        getUser(token)
-          .then((_user) => {
-            user = _user;
-            success();
-          })
-          .catch(success);
-      })
-    );
+  try {
+    categories = await getCategories();
+  } catch (error) {
+    console.log(error);
   }
 
-  promises.push(
-    new Promise<void>((success) => {
-      getCategories()
-        .then((result) => {
-          categories = result;
-          success();
-        })
-        .catch(success);
-    })
-  );
-
-  await Promise.all(promises);
   return {
-    props: { categories, user },
+    props: { categories },
   };
 }
 

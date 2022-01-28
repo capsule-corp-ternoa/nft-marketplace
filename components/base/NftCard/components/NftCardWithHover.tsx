@@ -4,10 +4,11 @@ import styled, { css } from 'styled-components';
 
 import { Picture } from 'components/base/Avatar';
 import Chip from 'components/ui/Chip';
-import { NftType, NFTsNominalSetState, UserType } from 'interfaces/index';
+import { NftType, NFTsNominalSetState } from 'interfaces/index';
 import { toggleLike } from 'utils/profile';
 import { LIKE_ACTION, LIKE_ACTION_TYPE, UNLIKE_ACTION } from 'utils/profile/constants';
 import { computeCaps, computeTiime } from 'utils/strings';
+import { useApp } from 'redux/hooks';
 import { fadeIn, ySlide } from 'style/animations';
 
 import NftCard from '../NftCard';
@@ -24,7 +25,6 @@ interface Props {
   quantity?: number;
   handleLikeCount?: (action: LIKE_ACTION_TYPE) => void;
   setLikedNfts?: NFTsNominalSetState;
-  user?: UserType;
 }
 
 function manageRouting(e: React.MouseEvent<HTMLDivElement, MouseEvent>, id: string) {
@@ -40,8 +40,8 @@ const NftCardWithHover = ({
   quantity,
   handleLikeCount,
   setLikedNfts,
-  user,
 }: Props) => {
+  const { user } = useApp();
   const { creator, creatorData, smallestPrice, smallestPriceTiime } = item;
   const [isHovering, setIsHovering] = useState(false);
   const [isLiked, setIsLiked] = useState(

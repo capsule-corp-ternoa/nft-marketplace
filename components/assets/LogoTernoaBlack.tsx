@@ -1,5 +1,5 @@
 import React from 'react';
-import { useApp } from 'redux/hooks';
+import { useMarketplaceData } from 'redux/hooks';
 
 interface LogoProps {
   className?: string;
@@ -7,7 +7,7 @@ interface LogoProps {
 }
 
 const LogoTernoa = ({ className, onClick }: LogoProps) => {
-  const { logo } = useApp();
+  const { logo } = useMarketplaceData();
 
   return logo ?
       <img

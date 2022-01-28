@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { NextPageContext } from 'next';
+import React, { useEffect } from 'react';
 import Head from 'next/head';
+import Cookies from 'js-cookie';
+import { useDispatch } from 'react-redux';
 
 import BetaBanner from 'components/base/BetaBanner';
 import FloatingHeader from 'components/base/FloatingHeader';
@@ -8,17 +9,16 @@ import Footer from 'components/base/Footer';
 import MainHeader from 'components/base/MainHeader';
 import Landing from 'components/pages/Landing';
 import arrayShuffle from 'array-shuffle';
-import cookies from 'next-cookies';
 
 import { getCapsValue } from 'actions/caps';
 import { getUser, getUsers } from 'actions/user';
 import { getNFTs } from 'actions/nft';
 import { NftType, UserType } from 'interfaces';
-import { useApp } from 'redux/hooks';
-import { decryptCookie, setUserFromDApp } from 'utils/cookie';
+import { appSetUser } from 'redux/app';
+import { useApp, useMarketplaceData } from 'redux/hooks';
+import { encryptCookie, decryptCookie } from 'utils/cookie';
 
 export interface LandingProps {
-  user: UserType;
   users: UserType[];
   capsDollarValue?: number;
   heroNFTs: NftType[];
@@ -28,7 +28,6 @@ export interface LandingProps {
   totalCountNFT: number;
 }
 const LandingPage = ({
-  user,
   users,
   capsDollarValue,
   heroNFTs,
@@ -37,11 +36,31 @@ const LandingPage = ({
   NFTCreators,
   totalCountNFT,
 }: LandingProps) => {
-  const [walletUser, setWalletUser] = useState(user);
-  const { name } = useApp();
+  const dispatch = useDispatch();
+  const { isRN } = useApp();
+  const { name } = useMarketplaceData();
 
   useEffect(() => {
-    setUserFromDApp(setWalletUser);
+    const params = new URLSearchParams(window.location.search);
+    if (
+      isRN &&
+      window.walletId &&
+      (!Cookies.get('token') || decryptCookie(Cookies.get('token') as string) !== window.walletId)
+    ) {
+      if (params.get('walletId') && params.get('walletId') !== window.walletId) {
+        dispatch(appSetUser(null));
+      }
+      Cookies.remove('token');
+      getUser(window.walletId, true)
+        .then((user) => {
+          dispatch(appSetUser(user));
+          Cookies.set('token', encryptCookie(window.walletId), { expires: 1 });
+        })
+        .catch((error) => console.log({ error }));
+    }
+    if (!isRN && params.get('walletId')) {
+      dispatch(appSetUser(null));
+    }
   }, []);
 
   return (
@@ -54,9 +73,8 @@ const LandingPage = ({
         <meta property="og:image" content="ternoa-social-banner.jpg" />
       </Head>
       <BetaBanner />
-      <MainHeader user={walletUser as UserType} />
+      <MainHeader />
       <Landing
-        user={walletUser as UserType}
         users={users}
         capsDollarValue={capsDollarValue}
         heroNFTs={heroNFTs}
@@ -66,14 +84,12 @@ const LandingPage = ({
         totalCountNFT={totalCountNFT}
       />
       <Footer />
-      <FloatingHeader user={user} />
+      <FloatingHeader />
     </>
   );
 };
-export async function getServerSideProps(ctx: NextPageContext) {
-  const token = (ctx.query.walletId as string) || (cookies(ctx).token && decryptCookie(cookies(ctx).token as string));
+export async function getServerSideProps() {
   let users: UserType[] = [],
-    user: UserType | null = null,
     regularNfts: NftType[] = [],
     capsDollarValue: number | null = null;
   const promises = [];
@@ -87,18 +103,6 @@ export async function getServerSideProps(ctx: NextPageContext) {
         .catch(success);
     })
   );
-  if (token) {
-    promises.push(
-      new Promise<void>((success) => {
-        getUser(token, true)
-          .then((_user) => {
-            user = _user;
-            success();
-          })
-          .catch(success);
-      })
-    );
-  }
   promises.push(
     new Promise<void>((success) => {
       getNFTs(undefined, '1', '19', true, true)
@@ -128,7 +132,6 @@ export async function getServerSideProps(ctx: NextPageContext) {
   let totalCountNFT = (regularNfts || []).length;
   return {
     props: {
-      user,
       users,
       capsDollarValue,
       heroNFTs,

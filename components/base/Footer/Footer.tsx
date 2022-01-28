@@ -3,10 +3,10 @@ import styled from 'styled-components';
 
 import Icon from 'components/ui/Icon';
 import { Container, Wrapper } from 'components/layout';
-import { useApp } from 'redux/hooks';
+import { useMarketplaceData } from 'redux/hooks';
 
 const Footer = () => {
-  const { instagramUrl, name, twitterUrl } = useApp();
+  const { instagramUrl, name, twitterUrl } = useMarketplaceData();
 
   return (
     <SFooterContainer>

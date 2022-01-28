@@ -19,7 +19,6 @@ import {
   NFT_EFFECT_SECRET,
   CategoryType,
   NftEffectType,
-  UserType,
 } from 'interfaces';
 import Autocomplete from 'components/ui/Autocomplete';
 import Button from 'components/ui/Button';
@@ -31,6 +30,7 @@ import { canAddToSeries } from 'actions/nft';
 import { processFile } from 'utils/imageProcessing/image';
 import mime from 'mime-types'
 import ThumbnailSelector from 'components/base/ThumbnailSelector';
+import { useApp } from 'redux/hooks';
 
 const DEFAULT_BLUR_VALUE = 5;
 
@@ -44,7 +44,6 @@ export interface CreateProps {
   NFTData: NFTProps;
   originalNFT: File | null;
   QRData: QRDataType;
-  user: UserType;
   setError: (err: string) => void;
   setIsModalMintExpanded: (b: boolean) => void;
   setNFTData: (o: NFTProps) => void;
@@ -61,7 +60,6 @@ const Create = ({
   NFTData: initalValue,
   originalNFT,
   QRData,
-  user,
   setError,
   setIsModalMintExpanded,
   setNFTData: setNftDataToParent,
@@ -72,6 +70,8 @@ const Create = ({
   thumbnailTimecode,
   setThumbnailTimecode,
 }: CreateProps) => {
+  const { user } = useApp();
+  
   const [blurValue, setBlurValue] = useState<number>(DEFAULT_BLUR_VALUE);
   const [coverNFT, setCoverNFT] = useState<File | null>(null); // Cover NFT used for secret effect
   const [effect, setEffect] = useState<NftEffectType>(NFT_EFFECT_DEFAULT);

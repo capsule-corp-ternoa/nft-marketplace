@@ -1,7 +1,5 @@
 import React from 'react';
-import { NextPageContext } from 'next';
 import Head from 'next/head';
-import cookies from 'next-cookies';
 
 import BetaBanner from 'components/base/BetaBanner';
 import FloatingHeader from 'components/base/FloatingHeader';
@@ -11,16 +9,17 @@ import Edit from 'components/pages/Edit';
 
 import { getUser } from 'actions/user';
 import { UserType } from 'interfaces';
-import { useApp } from 'redux/hooks';
+import { appSetUser } from 'redux/app';
+import { useMarketplaceData } from 'redux/hooks';
+import { wrapper } from 'redux/store';
 import { decryptCookie } from 'utils/cookie';
 
-export interface EditPageProps {
+interface EditPageProps {
   user: UserType;
-  token: string;
 }
 
 const EditPage = ({ user }: EditPageProps) => {
-  const { name } = useApp();
+  const { name } = useMarketplaceData();
 
   return (
     <>
@@ -31,26 +30,34 @@ const EditPage = ({ user }: EditPageProps) => {
         <meta name="og:image" content="ternoa-social-banner.jpg" />
       </Head>
       <BetaBanner />
-      <MainHeader user={user} />
+      <MainHeader />
       <Edit user={user} />
       <Footer />
-      <FloatingHeader user={user} />
+      <FloatingHeader />
     </>
   );
 };
 
-export async function getServerSideProps(ctx: NextPageContext) {
-  let user = null;
-  const token = cookies(ctx).token && decryptCookie(cookies(ctx).token as string);
-  if (token) user = await getUser(token).catch(() => null);
+export const getServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
+  const token = req.cookies.token && decryptCookie(req.cookies.token as string);
+  let user: UserType | null = null;
+
+  if (token) {
+    try {
+      user = await getUser(token, true);
+      store.dispatch(appSetUser(user));
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   if (!user) {
     return {
       notFound: true,
     };
   }
-  return {
-    props: { user },
-  };
-}
+
+  return { props: { user } };
+});
 
 export default EditPage;

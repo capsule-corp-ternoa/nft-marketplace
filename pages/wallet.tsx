@@ -1,5 +1,4 @@
 import React from 'react';
-import { NextPageContext } from 'next';
 import Head from 'next/head';
 
 import BetaBanner from 'components/base/BetaBanner';
@@ -7,12 +6,9 @@ import FloatingHeader from 'components/base/FloatingHeader';
 import Footer from 'components/base/Footer';
 import MainHeader from 'components/base/MainHeader';
 import Wallet from 'components/pages/Wallet';
-import cookies from 'next-cookies';
 
-import { getUser } from 'actions/user';
 import { UserType } from 'interfaces';
-import { useApp } from 'redux/hooks';
-import { decryptCookie } from 'utils/cookie';
+import { useMarketplaceData } from 'redux/hooks';
 
 export interface WalletPageProps {
   user: UserType;
@@ -20,7 +16,7 @@ export interface WalletPageProps {
 }
 
 const WalletPage = ({ user }: WalletPageProps) => {
-  const { name } = useApp();
+  const { name } = useMarketplaceData();
   
   return <>
     <Head>
@@ -30,25 +26,11 @@ const WalletPage = ({ user }: WalletPageProps) => {
       <meta name="og:image" content="ternoa-social-banner.jpg" />
     </Head>
     <BetaBanner />
-    <MainHeader user={user} />
+    <MainHeader />
     <Wallet user={user} />
     <Footer />
-    <FloatingHeader user={user} />
+    <FloatingHeader />
   </>
-}
-
-export async function getServerSideProps(ctx: NextPageContext) {
-  let user = null;
-  const token = cookies(ctx).token && decryptCookie(cookies(ctx).token as string);
-  if (token) user = await getUser(token).catch(() => null);
-  if (!user) {
-    return {
-      notFound: true,
-    };
-  }
-  return {
-    props: { user },
-  };
 }
 
 export default WalletPage;

@@ -6,17 +6,18 @@ import Avatar, { AVATAR_VARIANT_CHECKOUT } from 'components/base/Avatar';
 import NftCard from 'components/base/NftCard';
 import Button from 'components/ui/Button';
 import Icon from 'components/ui/Icon';
-import { NftType, UserType } from 'interfaces';
+import { NftType } from 'interfaces';
+import { useApp } from 'redux/hooks';
 import { computeCaps, computeTiime } from 'utils/strings';
 
 export interface ModalCheckoutProps {
   NFT: NftType;
   setExpanded: (b: boolean) => void;
   setModalBuyExpanded: (b: boolean) => void;
-  user: UserType;
 }
 
-const ModalCheckout: React.FC<ModalCheckoutProps> = ({ setExpanded, setModalBuyExpanded, NFT, user }) => {
+const ModalCheckout: React.FC<ModalCheckoutProps> = ({ setExpanded, setModalBuyExpanded, NFT }) => {
+  const { user } = useApp();
   const { creatorData, price, priceTiime, title } = NFT;
   const isCapsPrice = Number(price) > 0;
   const isTiimePrice = Number(priceTiime) > 0;

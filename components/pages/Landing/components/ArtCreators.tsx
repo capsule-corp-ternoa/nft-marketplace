@@ -11,10 +11,9 @@ export interface ArtCreatorsProps {
   creators?: UserType[];
   NFTs: NftType[];
   category?: string;
-  user?: UserType;
 }
 
-const ArtCreators = ({ creators, NFTs, user }: ArtCreatorsProps) => (
+const ArtCreators = ({ creators, NFTs }: ArtCreatorsProps) => (
   <>
     <STitle>
       Best art creators <SIcon name="blaze" />
@@ -24,7 +23,7 @@ const ArtCreators = ({ creators, NFTs, user }: ArtCreatorsProps) => (
         <SNftsContainer>
           {NFTs.map((item) => (
             <div key={item.id}>
-              <NftCardWithHover item={item} mode={CAROUSEL_MODE} user={user} />
+              <NftCardWithHover item={item} mode={CAROUSEL_MODE} />
             </div>
           ))}
         </SNftsContainer>

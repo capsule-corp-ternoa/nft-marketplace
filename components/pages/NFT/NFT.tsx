@@ -10,8 +10,8 @@ import { Container, Title, Wrapper } from 'components/layout';
 import Button from 'components/ui/Button';
 import Chip from 'components/ui/Chip';
 import Icon from 'components/ui/Icon';
-import { UserType, NftType } from 'interfaces';
-import { useApp } from 'redux/hooks';
+import { NftType } from 'interfaces';
+import { useApp, useMarketplaceData } from 'redux/hooks';
 import { MARKETPLACE_ID } from 'utils/constant';
 import { getRandomNFTFromArray } from 'utils/functions';
 import { toggleLike } from 'utils/profile';
@@ -21,13 +21,15 @@ import { computeCaps, computeTiime } from 'utils/strings';
 import Details from './Details';
 export interface NFTPageProps {
   NFT: NftType;
-  user: UserType;
   type: string | null;
   capsValue: number;
   isUserFromDappQR: boolean;
 }
 
-const NFTPage = ({ NFT, user, type, isUserFromDappQR }: NFTPageProps) => {
+const NFTPage = ({ NFT, type, isUserFromDappQR }: NFTPageProps) => {
+  const { user } = useApp();
+  const { url } = useMarketplaceData();
+
   const [isLiked, setIsLiked] = useState(
     (NFT.serieId === '0'
       ? user?.likedNFTs?.some(({ nftId }) => nftId === NFT.id)
@@ -42,8 +44,6 @@ const NFTPage = ({ NFT, user, type, isUserFromDappQR }: NFTPageProps) => {
   const [isModalBuyExpanded, setIsModalBuyExpanded] = useState(false);
   const [isModalCheckoutExpanded, setIsModalCheckoutExpanded] = useState(false);
   const [isModalShowcaseExpanded, setIsModalShowcaseExpanded] = useState(false);
-
-  const { url } = useApp();
 
   const isVR = NFT.categories.findIndex((x) => x.code === 'vr') !== -1 && NFT.creator === NFT.owner;
   const shareSubject = 'Check out this Secret NFT';
@@ -90,7 +90,7 @@ const NFTPage = ({ NFT, user, type, isUserFromDappQR }: NFTPageProps) => {
   }, [NFT]);
 
   useEffect(() => {
-    if (isVR && user) {
+    if (isVR) {
       loadCanUserBuyAgain();
     } else {
       setCanUserBuyAgain(true);
@@ -107,20 +107,24 @@ const NFTPage = ({ NFT, user, type, isUserFromDappQR }: NFTPageProps) => {
   };
 
   const loadCanUserBuyAgain = async () => {
-    try {
-      const res = await getOwnedNFTS(
-        user.walletId,
-        false,
-        undefined,
-        undefined,
-        undefined,
-        seriesData?.map((x) => x.id)
-      );
-      const canUserBuyAgainValue = res.totalCount === 0;
-      setCanUserBuyAgain(canUserBuyAgainValue);
-      return canUserBuyAgainValue;
-    } catch (err) {
-      setCanUserBuyAgain(false);
+    if (user) {
+      try {
+        const res = await getOwnedNFTS(
+          user.walletId,
+          false,
+          undefined,
+          undefined,
+          undefined,
+          seriesData?.map((x) => x.id)
+        );
+        const canUserBuyAgainValue = res.totalCount === 0;
+        setCanUserBuyAgain(canUserBuyAgainValue);
+        return canUserBuyAgainValue;
+      } catch (err) {
+        setCanUserBuyAgain(false);
+        return false;
+      }
+    } else {
       return false;
     }
   };
@@ -291,7 +295,6 @@ const NFTPage = ({ NFT, user, type, isUserFromDappQR }: NFTPageProps) => {
             <Details
               NFT={NFT}
               seriesData={seriesData}
-              user={user}
               setNftToBuy={setNftToBuy}
               isUserFromDappQR={isUserFromDappQR}
               isVR={isVR}
@@ -302,7 +305,7 @@ const NFTPage = ({ NFT, user, type, isUserFromDappQR }: NFTPageProps) => {
         </Wrapper>
         {byTheSameArtistNFTs.length > 0 && (
           <Wrapper>
-            <Showcase category="By the same artist" NFTs={byTheSameArtistNFTs} user={user} />
+            <Showcase category="By the same artist" NFTs={byTheSameArtistNFTs} />
           </Wrapper>
         )}
       </Container>
@@ -324,7 +327,6 @@ const NFTPage = ({ NFT, user, type, isUserFromDappQR }: NFTPageProps) => {
           NFT={nftToBuy}
           setExpanded={setIsModalCheckoutExpanded}
           setModalBuyExpanded={setIsModalBuyExpanded}
-          user={user}
         />
       )}
       {isModalBuyExpanded && (

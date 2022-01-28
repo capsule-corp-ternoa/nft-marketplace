@@ -102,7 +102,7 @@ const NftCardWithHover = ({
         {isUserLogged && (
           <SLikeButtonContainer isHovering={isHovering}>
             <Button
-              color={isLiked ? 'primary' : 'neutral400'}
+              color={isLiked ? 'primary500' : 'neutral600'}
               disabled={likeLoading}
               icon="heart"
               isLoading={likeLoading}

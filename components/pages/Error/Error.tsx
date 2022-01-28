@@ -24,7 +24,7 @@ const Error = ({ description, title, variant }: ErrorProps) => (
         <Link href="/" passHref>
           <>
             <Button
-              color={variant === 'error500' ? 'secondary' : 'primary'}
+              color={variant === 'error500' ? 'danger400' : 'primary500'}
               href="/"
               text="Return to home"
             />

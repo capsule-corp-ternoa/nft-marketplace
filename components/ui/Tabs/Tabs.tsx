@@ -32,7 +32,7 @@ const Tabs = ({ className, isTabsSelect = false, resetTabId, tabs }: Props) => {
         <SSelectContainer>
           <Select
             badge={tabs[activeTab].badge}
-            color="primary"
+            color="primary500"
             text={activeTab}
           >
             {(setSelectExpanded) => (

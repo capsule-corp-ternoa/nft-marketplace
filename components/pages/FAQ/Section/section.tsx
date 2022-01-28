@@ -79,7 +79,7 @@ const SQuestion = styled.div<{ isExpanded: boolean }>`
   ${({ isExpanded, theme }) =>
       isExpanded &&
       `
-      color: ${theme.colors.primary};
+      color: ${theme.colors.primary500};
     `}
 
   ${({ theme }) => theme.mediaQueries.lg} {
@@ -90,7 +90,7 @@ const SQuestion = styled.div<{ isExpanded: boolean }>`
 
 const SAnswer = styled.div<{ isExpanded: boolean }>`
   display: none;
-  color: ${({ theme }) => theme.colors.neutral200};
+  color: ${({ theme }) => theme.colors.neutral600};
   font-size: 1.6rem;
   margin-top: 1.2rem;
 

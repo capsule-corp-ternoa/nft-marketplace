@@ -61,14 +61,14 @@ const SAddressWrapper = styled.span`
   cursor: pointer;
   display: flex;
   align-items: center;
-  color: ${({ theme }) => theme.colors.neutral200};
+  color: ${({ theme }) => theme.colors.neutral600};
   font-family: ${({ theme }) => theme.fonts.light};
   font-size: 1.2rem;
 
   ${({ theme }) => theme.mediaQueries.lg} {
     &:hover {
-      color: ${({ theme }) => theme.colors.primary};
-      fill: ${({ theme }) => theme.colors.primary};
+      color: ${({ theme }) => theme.colors.primary500};
+      fill: ${({ theme }) => theme.colors.primary500};
     }
   }
 `;
@@ -89,7 +89,7 @@ const SSuccessContainer = styled.div<{ variant?: AVATAR_VARIANT_TYPE }>`
 
 const SCheckIcon = styled(Icon)`
   width: 1.2rem;
-  fill: ${({ theme }) => theme.colors.primary};
+  fill: ${({ theme }) => theme.colors.primary500};
   margin-left: 0.8rem;
 `;
 
@@ -100,7 +100,7 @@ const SLabel = styled.span`
 
 const SCopyIcon = styled(Icon)<{ variant?: AVATAR_VARIANT_TYPE }>`
   width: 1.2rem;
-  fill: ${({ theme }) => theme.colors.neutral400};
+  fill: ${({ theme }) => theme.colors.neutral600};
   margin-left: 0.8rem;
 
   ${({ variant }) =>

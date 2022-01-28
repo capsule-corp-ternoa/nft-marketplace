@@ -604,7 +604,7 @@ const Profile = ({ artist, user, userOwnedlNfts, userOwnedNftsHasNextPage, tabs,
           />
           {variant === USER_PERSONNAL_PROFILE_VARIANT && (
             <SEditButtonDesktopWrapper>
-              <Button color="neutral200" icon="edit" href="/edit" text="Edit profile" size="small" variant="outlined" />
+              <Button color="neutral600" icon="edit" href="/edit" text="Edit profile" size="small" variant="outlined" />
             </SEditButtonDesktopWrapper>
           )}
           {artist && (

@@ -80,19 +80,19 @@ const SLegalsContainer = styled.div`
 `;
 
 const SLabel = styled.span`
-  color: ${({ theme }) => theme.colors.neutral200};
+  color: ${({ theme }) => theme.colors.neutral600};
   font-size: 1.6rem;
 `;
 
 const SLink = styled.a`
-  color: ${({ theme }) => theme.colors.neutral200};
+  color: ${({ theme }) => theme.colors.neutral600};
   cursor: pointer;
   font-family: ${({ theme }) => theme.fonts.bold};
   font-size: 1.6rem;
   margin-top: 0.8rem;
 
   &:hover {
-    color: ${({ theme }) => theme.colors.primary};
+    color: ${({ theme }) => theme.colors.primary500};
   }
 
   ${({ theme }) => theme.mediaQueries.sm} {

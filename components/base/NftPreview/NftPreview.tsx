@@ -56,10 +56,7 @@ const NftPreview = ({
     switch (effect) {
       case NFT_EFFECT_BLUR:
       case NFT_EFFECT_PROTECT:
-        return (
-          !file.type.includes(NFT_FILE_TYPE_VIDEO) &&
-          file.type !== NFT_FILE_TYPE_GIF
-        );
+        return !file.type.includes(NFT_FILE_TYPE_VIDEO) && file.type !== NFT_FILE_TYPE_GIF;
       default:
         return true;
     }
@@ -98,12 +95,7 @@ const NftPreview = ({
         </Subtitle>
         {originalNFT.name && (
           <SReuploadWrapper>
-            <NftUpload
-              content={originalNFT.name}
-              inputId="reUploadNft"
-              isMinimal
-              onChange={handleFileUpload}
-            />
+            <NftUpload content={originalNFT.name} inputId="reUploadNft" isMinimal onChange={handleFileUpload} />
           </SReuploadWrapper>
         )}
       </SHeader>
@@ -121,12 +113,10 @@ const NftPreview = ({
               setError={setError}
             />
           </SMobileCardWrapper>
-          <SSelect color="primary" text={effect}>
+          <SSelect color="primary500" text={effect}>
             {(setSelectExpanded) => (
               <>
-                {NFT_EFFECTS_ORDERED.filter((effectType) =>
-                  handleAllowedEffect(originalNFT, effectType)
-                ).map(
+                {NFT_EFFECTS_ORDERED.filter((effectType) => handleAllowedEffect(originalNFT, effectType)).map(
                   (effectType, id) =>
                     effectType !== effect && (
                       <li
@@ -147,14 +137,9 @@ const NftPreview = ({
         </SWrapper>
       )}
       <SFieldset>
-        {NFT_EFFECTS_ORDERED.filter((effectType) =>
-          handleAllowedEffect(originalNFT, effectType)
-        ).map((effectType) => (
+        {NFT_EFFECTS_ORDERED.filter((effectType) => handleAllowedEffect(originalNFT, effectType)).map((effectType) => (
           <SLabelWrapper key={effectType}>
-            <SLabel
-              htmlFor={`NftType_${effectType}`}
-              isSelected={effect === effectType}
-            >
+            <SLabel htmlFor={`NftType_${effectType}`} isSelected={effect === effectType}>
               <SCardWrapper isSelected={effect === effectType}>
                 <NftCardWithEffects
                   blurValue={blurValue}
@@ -168,11 +153,7 @@ const NftPreview = ({
                 />
               </SCardWrapper>
 
-              <SRadio
-                checked={effect === effectType}
-                label={effectType}
-                onChange={() => setEffect(effectType)}
-              />
+              <SRadio checked={effect === effectType} label={effectType} onChange={() => setEffect(effectType)} />
             </SLabel>
 
             <HiddenShell>
@@ -243,7 +224,7 @@ const SSelect = styled(Select)`
 
 const SSeparator = styled.div`
   width: 15rem;
-  border-bottom: 2px solid #e0e0e0;
+  border-bottom: ${({ theme }) => `2px solid ${theme.colors.neutral600}`};
   margin-top: 3.2rem;
 `;
 
@@ -282,13 +263,15 @@ const SLabel = styled.label<{ isSelected?: boolean }>`
   padding: 0.8rem 0.8rem 2.4rem;
 
   &:hover {
-    border: 3px dashed #7417ea;
+    border: 3px dashed;
+    border-color: ${({ theme }) => theme.colors.primary500};
   }
 
-  ${({ isSelected }) =>
+  ${({ isSelected, theme }) =>
     isSelected &&
     `
-    border: 3px dashed #7417ea;
+    border: 3px dashed;
+    border-color: ${theme.colors.primary500};
   `}
 `;
 

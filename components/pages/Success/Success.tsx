@@ -27,7 +27,7 @@ const Success = ({ title, text, buttonText, returnUrl, subText }: SuccessProps) 
           .map((x, i) => <SSubText key={i}>{x}</SSubText>)}
       <SButtonContainer>
         <Link href={returnUrl} passHref>
-          <Button color="primary" size="medium" text={buttonText} variant="outlined" />
+          <Button color="primary500" size="medium" text={buttonText} variant="outlined" />
         </Link>
       </SButtonContainer>
     </Wrapper>

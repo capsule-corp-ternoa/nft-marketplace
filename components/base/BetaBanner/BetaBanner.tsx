@@ -10,7 +10,7 @@ const BetaBanner: React.FC = () => {
     <SBannerContainer>
       <SText>
         <span>Welcome to the</span>
-        <Chip color="primary" size="small" text="Beta Version" />
+        <Chip color="primary500" size="small" text="Beta Version" />
         <span>of SecretNFT. All the marketplace is in</span>
         <SLink
           href="https://telemetry.polkadot.io/#list/0xd9adfc7ea82be63ba28088d62b96e9270ad2af25c962afc393361909670835b2"

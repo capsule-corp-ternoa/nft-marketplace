@@ -326,7 +326,7 @@ const ModalMint: React.FC<ModalProps> = ({
           {!showQR && !showProgress && <ModalLoader />}
           {!showQR && showProgress && (
             <>
-              <SProgressBar percent={generalPercentage()} strokeColor={theme.colors.primary} strokeWidth={3} />
+              <SProgressBar percent={generalPercentage()} strokeColor={theme.colors.primary500} strokeWidth={3} />
               <SText>{`Progress : ${generalPercentage()}%`}</SText>
               <SText>{`Speed : ${isNaN(speed) ? 0 : speed} kb/sec`}</SText>
             </>

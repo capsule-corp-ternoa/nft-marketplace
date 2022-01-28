@@ -126,7 +126,7 @@ const SBody = styled.div`
 `;
 
 const SError = styled.div`
-  color: ${({ theme }) => theme.colors.danger};
+  color: ${({ theme }) => theme.colors.danger500};
   font-family: ${({ theme }) => theme.fonts.medium};
   font-size: 1.6rem;
   margin-top: 4rem;

@@ -73,10 +73,10 @@ export const InputStyle = css<{
   startIcon?: string;
 }>`
   width: 100%;
-  background: ${({ theme }) => theme.colors.neutral500};
+  background: ${({ theme }) => theme.colors.neutral100};
   border: 0.2rem solid;
   border-color: ${({ isError, theme }) =>
-    isError ? theme.colors.danger : 'rgba(0, 0, 0, 0)'};
+    isError ? theme.colors.danger500 : 'rgba(0, 0, 0, 0)'};
   border-radius: 0.8rem;
   font-size: 1.6rem;
   margin-top: 1.6rem;
@@ -87,7 +87,7 @@ export const InputStyle = css<{
   &:focus {
     border: 0.2rem solid;
     border-color: ${({ isError, theme }) =>
-    isError ? theme.colors.danger : theme.colors.primary};
+    isError ? theme.colors.danger500 : theme.colors.primary500};
   }
 
   &::placeholder {

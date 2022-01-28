@@ -70,7 +70,7 @@ const SMediaWrapper = styled.div<{ mode?: ModeType }>`
   box-sizing: border-box;
   border-radius: 12px;
   background: linear-gradient(180deg, #f29fff 0%, #878cff 100%);
-  box-shadow: 0px 0px 14.5243px 5.0835px rgba(0, 0, 0, 0.15);
+  box-shadow: ${({ theme }) => theme.shadows.popupShadow};
   cursor: pointer;
   overflow: hidden;
   transform: translateZ(0);

@@ -13,7 +13,7 @@ import { AVATAR_VARIANT_TYPE } from './interfaces';
 export const getNameColor = (theme: DefaultTheme, variant?: AVATAR_VARIANT_TYPE): string => {
   switch (variant) {
     case AVATAR_VARIANT_BANNER:
-      return theme.colors.primary;
+      return theme.colors.primary500;
     case AVATAR_VARIANT_CHECKOUT:
       return theme.colors.invertedContrast;
     default:

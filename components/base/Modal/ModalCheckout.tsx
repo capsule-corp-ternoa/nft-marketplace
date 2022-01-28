@@ -77,7 +77,7 @@ const ModalCheckout: React.FC<ModalCheckoutProps> = ({ setExpanded, setModalBuyE
 
           <SButtonsContainer>
             <SConfirmButton
-              color="primary"
+              color="primary500"
               onClick={() => {
                 setModalBuyExpanded(true);
                 setExpanded(false);
@@ -226,10 +226,10 @@ const SButtonsContainer = styled.div`
 `;
 
 const SConfirmButton = styled(Button)`
-  border-color: ${({ theme }) => theme.colors.primary};
+  border-color: ${({ theme }) => theme.colors.primary500};
 
   &:hover {
-    background: ${({ theme }) => theme.colors.primary};
+    background: ${({ theme }) => theme.colors.primary500};
     color: ${({ theme }) => theme.colors.invertedContrast};
   }
 `;

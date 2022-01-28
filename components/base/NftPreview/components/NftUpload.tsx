@@ -102,7 +102,7 @@ const NftUpload = ({
       <SWrapper isSmall={isSecretOption}>
         {isSecretOption && (
           <Chip
-            color="primaryLight"
+            color="primary300"
             text="Secret option"
             size="small"
             variant="round"
@@ -129,9 +129,9 @@ const NftUpload = ({
 };
 
 const Label = styled.label`
-  color: #7417ea;
+  color: ${({ theme }) => theme.colors.primary500};
   cursor: pointer;
-  font-family: 'Airbnb Cereal App Light';
+  font-family: ${({ theme }) => theme.fonts.light};
   font-size: 1.2rem;
   font-style: italic;
 `;
@@ -139,19 +139,20 @@ const Label = styled.label`
 const SLabel = styled.label<{ isSecretOption?: boolean }>`
   width: 100%;
   height: auto;
-  background: white;
+  background: ${({ theme }) => theme.colors.invertedContrast};
   display: flex;
   justify-content: center;
   position: relative;
-  border: 3px dashed #7417ea;
+  border: 3px dashed;
+  border-color: ${({ theme }) => theme.colors.primary500};
   border-radius: 1.6rem;
   cursor: pointer;
 
-  ${({ isSecretOption }) =>
+  ${({ isSecretOption, theme }) =>
     isSecretOption &&
     `
     border: none;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    box-shadow: ${theme.shadows.popupShadow};
     padding: 2rem;
   `}
 `;
@@ -181,7 +182,7 @@ const SUploadIcon = styled(Upload)<{ isSmall?: boolean }>`
 `;
 
 const SInsightMedium = styled(InsightLight)<{ isSmall?: boolean }>`
-  color: #686464;
+  color: ${({ theme }) => theme.colors.neutral600};
   font-size: ${({ isSmall }) => (isSmall ? '1.2rem' : '1.6rem')};
   margin: 1.6rem 0;
 `;

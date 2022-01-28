@@ -141,13 +141,13 @@ const Edit = ({ user }: Props) => {
               twitterName={twitterName}
               walletId={walletId}
             />
-            <Button color="neutral200" icon="arrowLeft" href="/profile" text="Return" size="small" variant="outlined" />
+            <Button color="neutral600" icon="arrowLeft" href="/profile" text="Return" size="small" variant="outlined" />
           </SAvatarBannerContainer>
           <STopContainer>
             <STitle>Edit your profile</STitle>
             <SCertifiedButtonCOntainer>
               <Button
-                color="neutral200"
+                color="neutral600"
                 icon={data.verified || data.reviewRequested ? 'badge' : undefined}
                 noHover={data.verified || data.reviewRequested}
                 onClick={handleCertificationReview}
@@ -291,7 +291,7 @@ of at least 120x120. Gifs work too."
             To update your settings you should sign message through your wallet. Click 'Update profile' then sign the
             message.
           </SAdvice>
-          <SButton color="primary" disabled={!isDataValid} onClick={() => handleUpdate()} text="Update  your profile" />
+          <SButton color="primary500" disabled={!isDataValid} onClick={() => handleUpdate()} text="Update  your profile" />
           {isEditModalExpanded && <ModalEdit setExpanded={setIsEditModalExpanded} data={data} />}
           {isTwitterErrorModalExpanded && (
             <Modal
@@ -456,26 +456,26 @@ const STextArea = styled(TextArea)`
 
 // const SNicknameAvailable = styled.span`
 //   align-self: flex-start;
-//   color: ${({ theme }) => theme.colors.success};
+//   color: ${({ theme }) => theme.colors.success500};
 //   font-size: 1.2rem;
 //   margin: 1.2rem 0 0 1.6rem;
 // `;
 
 const SClaimTwitterContainer = styled.div`
   align-self: flex-start;
-  color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.primary500};
   font-size: 1.2rem;
   margin: 1.2rem 0 0;
 `;
 
 const STwitterNotVerified = styled.div`
-  color: ${({ theme }) => theme.colors.neutral200};
+  color: ${({ theme }) => theme.colors.neutral600};
 `;
 
 const STwitterVerified = styled.div`
   display: flex;
   align-items: center;
-  color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.primary500};
   font-size: 1.2rem;
   margin: 0.4rem 0 0 1.6rem;
   text-align: left;
@@ -487,7 +487,7 @@ const STwitterVerified = styled.div`
 `;
 
 const STwitterVerificationLink = styled.a`
-  color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.primary500};
   font-size: 1.2rem;
   margin: 0.4rem 0 0;
   text-align: left;

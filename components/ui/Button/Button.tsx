@@ -37,10 +37,10 @@ const handleColor = (theme: DefaultTheme, color?: keyof Colors, variant?: 'conta
 const containedColors = (theme: DefaultTheme, color: keyof Colors): string => {
   switch (color) {
     case 'contrast':
-    case 'primary':
+    case 'primary500':
       return theme.colors.invertedContrast;
-    case 'primaryLight':
-      return theme.colors.primary;
+    case 'primary300':
+      return theme.colors.primary500;
     case 'invertedContrast':
     case 'whiteBlur':
     default:
@@ -51,10 +51,10 @@ const containedColors = (theme: DefaultTheme, color: keyof Colors): string => {
 const outlinedColors = (theme: DefaultTheme, color: keyof Colors): string => {
   switch (color) {
     case 'invertedContrast':
-    case 'neutral200':
+    case 'neutral600':
     case 'neutral300':
-    case 'neutral400':
-    case 'neutral500':
+    case 'neutral600':
+    case 'neutral100':
     case 'whiteBlur':
       return theme.colors.contrast;
     default:
@@ -71,7 +71,7 @@ const ButtonStyle = css<IButton>`
     variant === 'contained' && color ? theme.colors[`${color}`] : 'transparent'};
   border: ${({ size, variant }) => (variant === 'outlined' ? (size === 'small' ? '1px solid' : '2px solid') : 'none')};
   border-radius: 4rem;
-  box-shadow: ${({ disabled }) => (disabled ? 'none' : '0 0 0.8rem 0.4rem rgba(0, 0, 0, 0.05)')};
+  box-shadow: ${({ disabled, theme }) => (disabled ? 'none' : theme.shadows.popupShadow)};
   cursor: ${({ noHover }) => (noHover ? 'default' : 'pointer')};
   font-family: ${({ theme }) => theme.fonts.bold};
   font-size: ${({ size }) => (size === 'small' ? '1.2rem' : '1.6rem')};
@@ -102,12 +102,12 @@ const ButtonStyle = css<IButton>`
 
     switch (color) {
       case 'invertedContrast':
-      case 'neutral200':
+      case 'neutral600':
       case 'neutral300':
-      case 'neutral400':
-      case 'neutral500':
+      case 'neutral600':
+      case 'neutral100':
       case 'whiteBlur':
-        return theme.colors.neutral400;
+        return theme.colors.neutral600;
       default:
         return theme.colors[color];
     }

@@ -122,7 +122,7 @@ const SUnit = styled.div`
 `;
 
 const SLabel = styled.div`
-  color: ${({ theme }) => theme.colors.neutral200};
+  color: ${({ theme }) => theme.colors.neutral600};
   font-size: 0.8rem;
   margin-top: 0.4rem;
   text-transform: capitalize;

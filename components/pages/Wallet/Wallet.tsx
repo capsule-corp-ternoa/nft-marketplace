@@ -33,7 +33,7 @@ const Wallet = ({ user }: WalletProps) => {
 
           <SCapsAmount>{capsAmount ? computeCaps(Number(capsAmount)) : 0} CAPS</SCapsAmount>
           <SButtonContainer>
-            <Button color="primary" href="https://www.ternoa.com/" size="medium" text="Buy CAPS" variant="contained" />
+            <Button color="primary500" href="https://www.ternoa.com/" size="medium" text="Buy CAPS" variant="contained" />
           </SButtonContainer>
         </SWalletContainer>
       </Wrapper>
@@ -44,7 +44,7 @@ const Wallet = ({ user }: WalletProps) => {
 const SWalletContainer = styled.div`
   background: ${({ theme }) => theme.colors.contrast};
   border-radius: 2.4rem;
-  box-shadow: 0px 0px 8px 4px rgba(0, 0, 0, 0.15);
+  box-shadow: ${({ theme }) => theme.shadows.popupShadow};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -74,7 +74,7 @@ const SName = styled.h3`
 `;
 
 const SClipboard = styled(Clipboard)`
-  color: ${({ theme }) => theme.colors.neutral400};
+  color: ${({ theme }) => theme.colors.neutral600};
   flex-wrap: wrap;
   font-family: ${({ theme }) => theme.fonts.bold};
   font-size: 1.6rem;
@@ -103,7 +103,7 @@ const SButtonContainer = styled.div`
   &:hover {
     > a {
       background: ${({ theme }) => theme.colors.invertedContrast};
-      color: ${({ theme }) => theme.colors.primary};
+      color: ${({ theme }) => theme.colors.primary500};
     }
   }
 `;

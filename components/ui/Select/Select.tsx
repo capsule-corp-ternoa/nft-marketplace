@@ -9,10 +9,10 @@ import { Colors } from 'style/theme/types';
 
 const invertedColor = (color?: keyof Colors): keyof Colors => {
   switch (color) {
-    case 'primary':
+    case 'primary500':
       return 'invertedContrast';
-    case 'primaryLight':
-      return 'primary';
+    case 'primary300':
+      return 'primary500';
     case 'invertedContrast':
     case 'whiteBlur':
     default:
@@ -96,7 +96,7 @@ const SelectRoot = styled.button<{ color?: keyof Colors; isBadge?: boolean }>`
     color ? theme.colors[`${color}`] : theme.colors.invertedContrast};
   border: none;
   border-radius: 1.2rem;
-  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.25);
+  box-shadow: ${({ theme }) => theme.shadows.popupShadow};
   cursor: pointer;
   outline: none;
   padding: ${({ isBadge }) => (isBadge ? '1.2rem 2.4rem' : '2rem 2.4rem')};
@@ -132,9 +132,9 @@ const SIconContainer = styled.div<{ isExpanded?: boolean }>`
 
 const SelectOptions = styled.ul`
   width: 100%;
-  background: ${({ theme }) => theme.colors.neutral500};
+  background: ${({ theme }) => theme.colors.neutral100};
   border-radius: 1.2rem;
-  box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: ${({ theme }) => theme.shadows.popupShadow};
   list-style-type: none;
   margin: -2rem 0 0;
   padding: 4rem 2rem 2rem;

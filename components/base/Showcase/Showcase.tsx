@@ -40,7 +40,7 @@ const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category, user }) => {
         <STitle>{category}</STitle>
         <SNavContainer>
           <Button
-            color="neutral500"
+            color="neutral100"
             icon="arrowLeft"
             onClick={() => {
               carousel?.previous(1);
@@ -49,7 +49,7 @@ const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category, user }) => {
             variant="contained"
           />
           <Button
-            color="neutral500"
+            color="neutral100"
             icon="arrowRight"
             onClick={() => {
               carousel?.next(1);

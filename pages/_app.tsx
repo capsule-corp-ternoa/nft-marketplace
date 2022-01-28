@@ -105,7 +105,7 @@ const SCookiesWrapper = styled.div`
 `;
 
 const SCookiesLink = styled.a`
-  color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.primary500};
   font-family: ${({ theme }) => theme.fonts.bold};
   margin-left: 0.8rem;
 `;

@@ -1,4 +1,5 @@
 import React from 'react';
+import theme from 'style/theme';
 
 interface BadgeProps {
   className?: string;
@@ -18,7 +19,7 @@ const Badge = ({ className }: BadgeProps) => (
         width="9.91751"
         height="9.9003"
         rx="4.95015"
-        fill="#7417EA"
+        fill={theme.colors.primary500}
         stroke="white"
         strokeWidth="1.54961"
       />

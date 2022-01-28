@@ -178,7 +178,7 @@ const Details: React.FC<DetailsProps> = ({
       <SRows key={NFTRowId} style={{ ...style, height: (style?.height as any) - GUTTER_SIZE }}>
         <SRowWrapper>
           <SStatusChipMobileWrapper>
-            <Chip color="primaryLight" size="medium" text="Owner" variant="round" />
+            <Chip color="primary300" size="medium" text="Owner" variant="round" />
           </SStatusChipMobileWrapper>
           <SRowDatas>
             <Avatar
@@ -206,7 +206,7 @@ const Details: React.FC<DetailsProps> = ({
         </SRowWrapper>
         <SChipButtonWrapper>
           <Button
-            color="primary"
+            color="primary500"
             disabled={!userCanBuy}
             onClick={() => userCanBuy && NFTRow && handleCustomBuy(NFTRow)}
             size="small"
@@ -239,7 +239,7 @@ const Details: React.FC<DetailsProps> = ({
       <SRows key={id} style={{ ...style, height: (style?.height as any) - GUTTER_SIZE }}>
         <SRowWrapper>
           <SStatusChipMobileWrapper>
-            <Chip color="primaryLight" size="medium" text={typeOfTransaction} variant="round" />
+            <Chip color="primary300" size="medium" text={typeOfTransaction} variant="round" />
           </SStatusChipMobileWrapper>
           <SRowDatas>
             <Avatar
@@ -270,7 +270,7 @@ const Details: React.FC<DetailsProps> = ({
         </SRowWrapper>
         <SChipButtonWrapper>
           <Button
-            color="primary"
+            color="primary500"
             disabled={isTransactionViewDisabled}
             href={`${!isTransactionViewDisabled ? `${EXPLORER_URL}/nft/${id}?extrinsic=${extrinsic.id}` : '#'}`}
             size="small"
@@ -288,7 +288,7 @@ const Details: React.FC<DetailsProps> = ({
         {tabs.map((tab) => (
           <STab
             key={tab}
-            color={currentTab === tab ? 'contrast' : 'neutral500'}
+            color={currentTab === tab ? 'contrast' : 'neutral100'}
             disabled={tab === 'bid'}
             onClick={() => switchTab(tab)}
             size="medium"
@@ -302,7 +302,7 @@ const Details: React.FC<DetailsProps> = ({
           <SInfosContainer>
             <SInfosCreatorContainer>
               <SStatusChipWrapper>
-                <Chip color="primaryLight" size="medium" text="Creator" variant="round" />
+                <Chip color="primary300" size="medium" text="Creator" variant="round" />
               </SStatusChipWrapper>
               <Avatar
                 isClickable
@@ -335,7 +335,7 @@ const Details: React.FC<DetailsProps> = ({
                 </List>
               )}
             </AutoSizer>
-            {NFT.totalNft && seriesData.length < NFT.totalNft && <SLoader color="primary" />}
+            {NFT.totalNft && seriesData.length < NFT.totalNft && <SLoader color="primary500" />}
           </SRowsContainer>
         )}
         {currentTab === 'history' &&
@@ -356,7 +356,7 @@ const Details: React.FC<DetailsProps> = ({
               </AutoSizer>
             </SRowsContainer>
           ) : (
-            <SLoader color="primary" />
+            <SLoader color="primary500" />
           ))}
         {currentTab === 'bid' && <div></div>}
       </SContentContainer>
@@ -402,7 +402,7 @@ const SInfosContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   flex-direction: column;
-  background: ${({ theme }) => theme.colors.neutral500};
+  background: ${({ theme }) => theme.colors.neutral100};
   border-radius: 1.2rem;
   padding: 1.2rem 2.4rem 1.2rem 1.2rem;
 
@@ -460,7 +460,7 @@ const SRows = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: ${({ theme }) => theme.colors.neutral500};
+  background: ${({ theme }) => theme.colors.neutral100};
   border-radius: 1.2rem;
   overflow: auto hidden;
   padding: 1.2rem;
@@ -500,7 +500,7 @@ const SRowDatasDetails = styled.div`
 `;
 
 const SRowDatasSubDetails = styled.div`
-  color: ${({ theme }) => theme.colors.neutral200};
+  color: ${({ theme }) => theme.colors.neutral600};
   font-family: ${({ theme }) => theme.fonts.light};
   font-size: 0.8rem;
 

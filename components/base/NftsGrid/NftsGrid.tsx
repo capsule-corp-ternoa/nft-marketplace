@@ -75,7 +75,7 @@ const NftsGrid = ({
     return (
       <SNoNFTContainer>
         {isLoading ? (
-          <SLoader color="primary" />
+          <SLoader color="primary500" />
         ) : (
           <NoNFTComponent body={noNftBody} href={noNftHref} linkLabel={noNftLinkLabel} title={noNftTitle} />
         )}

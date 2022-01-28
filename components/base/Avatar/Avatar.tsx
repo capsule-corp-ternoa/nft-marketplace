@@ -124,7 +124,7 @@ const Avatar = ({
             )}
             {isFollowButton && (
               <SFollowButtonDesktop
-                color={isUnfollow ? 'primaryLight' : 'invertedContrast'}
+                color={isUnfollow ? 'primary300' : 'invertedContrast'}
                 onClick={handleFollow}
                 size="small"
                 text={isUnfollow ? 'Unfollow' : 'Follow'}
@@ -135,7 +135,7 @@ const Avatar = ({
       </SAvatarWrapper>
       {isDiscoverButton && (
         <SDiscoverButton
-          color="primaryLight"
+          color="primary300"
           onClick={() => walletId && Router.push(`/${walletId}`)}
           size="small"
           text="Discover"
@@ -143,7 +143,7 @@ const Avatar = ({
       )}
       {isFollowButton && (
         <SFollowButtonMobile
-          color={isUnfollow ? 'primaryLight' : 'invertedContrast'}
+          color={isUnfollow ? 'primary300' : 'invertedContrast'}
           onClick={handleFollow}
           size="small"
           text={isUnfollow ? 'Unfollow' : 'Follow'}
@@ -239,7 +239,7 @@ const SName = styled.a<{ isNameEllipsis?: boolean; variant?: AVATAR_VARIANT_TYPE
   `}
 
   &:hover {
-    color: ${({ theme }) => theme.colors.primary};
+    color: ${({ theme }) => theme.colors.primary500};
     cursor: pointer;
   }
 
@@ -263,14 +263,14 @@ const SFollowers = styled.span`
 `;
 
 const SNickname = styled.span`
-  color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.primary500};
   font-size: 1.6rem;
 `;
 
 const SLink = styled.a`
   display: flex;
   align-items: center;
-  color: ${({ theme }) => theme.colors.neutral200};
+  color: ${({ theme }) => theme.colors.neutral600};
   font-size: 1.6rem;
 `;
 

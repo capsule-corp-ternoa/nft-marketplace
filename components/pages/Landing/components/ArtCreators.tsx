@@ -100,7 +100,7 @@ const SCreatorsContainer = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   background: ${({ theme }) => theme.colors.invertedContrast};
-  box-shadow: 0px 0px 9px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: ${({ theme }) => theme.shadows.popupShadow};
   border-radius: 2.4rem;
   padding: 2.4rem 3.2rem;
   flex: 1;

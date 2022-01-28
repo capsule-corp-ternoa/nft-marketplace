@@ -67,7 +67,7 @@ const SChipContainer = styled.div<IChip>`
   border: ${({ color, noBorder }) =>
     !noBorder && color === 'invertedContrast' ? '2px dashed' : 'none'};
   border-color: ${({ color, theme }) =>
-    color === 'invertedContrast' ? theme.colors.neutral400 : 'none'};
+    color === 'invertedContrast' ? theme.colors.neutral600 : 'none'};
   border-radius: ${({ isDeletable, variant }) =>
     isDeletable || variant === 'rectangle' ? '0.8rem' : '6.4rem'};
   padding: ${({ size }) =>
@@ -91,10 +91,10 @@ const SText = styled.div<IChip>`
 
   color: ${({ theme, color }) => {
     switch (color) {
-      case 'primary':
+      case 'primary500':
         return theme.colors.invertedContrast;
-      case 'primaryLight':
-        return theme.colors.primary;
+      case 'primary300':
+        return theme.colors.primary500;
       case 'invertedContrast':
       case 'whiteBlur':
       default:
@@ -119,10 +119,10 @@ const SCross = styled.div<{ color?: keyof Colors }>`
 
   background: ${({ theme, color }) => {
     switch (color) {
-      case 'primary':
+      case 'primary500':
         return theme.colors.invertedContrast;
-      case 'primaryLight':
-        return theme.colors.primary;
+      case 'primary300':
+        return theme.colors.primary500;
       case 'invertedContrast':
       case 'whiteBlur':
       default:

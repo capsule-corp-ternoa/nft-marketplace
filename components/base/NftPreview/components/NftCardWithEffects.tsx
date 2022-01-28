@@ -32,7 +32,7 @@ const DefaultEffect = css`
   height: 100%;
   border-radius: 1.2rem;
   background: linear-gradient(180deg, #f29fff 0%, #878cff 100%);
-  box-shadow: 0px 0px 14.5243px 5.0835px rgba(0, 0, 0, 0.15);
+  box-shadow: ${({ theme }) => theme.shadows.popupShadow};
   object-fit: cover;
   overflow: hidden;
   position: absolute;
@@ -218,7 +218,7 @@ const SecretUploadDescription = styled.div`
 `;
 
 const SecretUploadTopDescription = styled.span`
-  color: #7417ea;
+  color: ${({ theme }) => theme.colors.primary500};
   font-family: ${({ theme }) => theme.fonts.bold};
   margin-bottom: 0.8rem;
 `;

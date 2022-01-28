@@ -39,7 +39,7 @@ const ProfileMenuDropdown = ({ className, onClose, user }: Props) => {
             />
             {!isRN && (
               <Button
-                color="neutral200"
+                color="neutral600"
                 icon="powerOff"
                 onClick={handleLogout}
                 size="small"
@@ -70,7 +70,7 @@ const ProfileMenuDropdown = ({ className, onClose, user }: Props) => {
 
 const SDropdownContainer = styled.div`
   background: ${({ theme }) => theme.colors.invertedContrast};
-  box-shadow: 0px 0px 9px rgba(0, 0, 0, 0.15);
+  box-shadow: ${({ theme }) => theme.shadows.popupShadow};
   border-radius: 1.6rem;
   display: flex;
   flex-direction: column;
@@ -95,7 +95,7 @@ const SProfileContainer = styled.div`
 const SLinkSection = styled.div`
   > * {
     width: 100%;
-    border-bottom: ${({ theme }) => `1px solid ${theme.colors.neutral400}`};
+    border-bottom: ${({ theme }) => `1px solid ${theme.colors.neutral600}`};
     cursor: pointer;
     margin: 1.6rem 0;
     padding-bottom: 0.8rem;
@@ -114,7 +114,7 @@ const SAnchor = styled.a`
   font-size: 1.2rem;
 
   &:hover {
-    color: ${({ theme }) => theme.colors.primary};
+    color: ${({ theme }) => theme.colors.primary500};
   }
 `;
 

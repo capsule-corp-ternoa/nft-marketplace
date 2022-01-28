@@ -72,7 +72,7 @@ const SPictureWrapper = styled.div<{ variant?: AVATAR_VARIANT_TYPE }>`
   height: ${({ variant }) => getPictureSize(variant)};
   position: relative;
   border-radius: 50%;
-  box-shadow: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.25);
+  box-shadow: ${({ theme }) => theme.shadows.popupShadow};
   z-index: 5;
 `;
 
@@ -92,7 +92,7 @@ const ImageStyle = css<{ isClickable?: boolean }>`
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-  box-shadow: 0 0.4rem 0.4rem rgba(0, 0, 0, 0.25);
+  box-shadow: ${({ theme }) => theme.shadows.popupShadow};
   position: absolute;
   transition: border 0.05s ease-out;
 
@@ -101,7 +101,7 @@ const ImageStyle = css<{ isClickable?: boolean }>`
     `
       &:hover {
         border: 3px solid;
-        border-color: ${theme.colors.primary};
+        border-color: ${theme.colors.primary500};
       }
     }
   `}
@@ -128,7 +128,7 @@ const SPopoverName = styled.span`
   position: absolute;
   background: ${({theme}) => theme.colors.contrast};
   border-radius: 0.8rem;
-  box-shadow: 0px 0px 14.5243px 5.0835px rgb(0 0 0 / 10%);
+  box-shadow: ${({ theme }) => theme.shadows.popupShadow};
   color: ${({ theme }) => theme.colors.invertedContrast};
   font-family: ${({ theme }) => theme.fonts.bold};
   font-size: 1.4rem;

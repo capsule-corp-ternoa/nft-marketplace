@@ -7,6 +7,7 @@ import NoNFTComponent from 'components/base/NoNFTComponent';
 import Button from 'components/ui/Button';
 import { Loader } from 'components/ui/Icon';
 import { UserType } from 'interfaces';
+import theme from 'style/theme';
 import { FOLLOW_ACTION, UNFOLLOW_ACTION, FOLLOW_ACTION_TYPE } from 'utils/profile/constants';
 
 interface Props {
@@ -53,8 +54,8 @@ const FollowersProfileBlock = ({
           <Switch
             checked={isFilterVerified}
             onChange={() => setIsFilterVerified(!isFilterVerified)}
-            offColor="#000000"
-            onColor="#7417ea"
+            offColor={theme.colors.contrast}
+            onColor={theme.colors.primary500}
             uncheckedIcon={false}
             checkedIcon={false}
             width={46}
@@ -66,7 +67,7 @@ const FollowersProfileBlock = ({
 
     {users === undefined || users.length < 1 ? (
       isLoading ? (
-        <SLoader color="primary" />
+        <SLoader color="primary500" />
       ) : (
         <SNoNFTContainer>
           <NoNFTComponent body={noContentBody} title={noContentTitle} />
@@ -188,7 +189,7 @@ const SToggle = styled.div`
 
 const SCertifiedLabel = styled.span`
   font-family: ${({ theme }) => theme.fonts.medium};
-  color: ${({ theme }) => theme.colors.neutral200};
+  color: ${({ theme }) => theme.colors.neutral600};
   font-size: 1.6rem;
   display: flex;
   align-items: center;

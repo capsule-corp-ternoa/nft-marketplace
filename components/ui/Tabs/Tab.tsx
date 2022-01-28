@@ -33,7 +33,7 @@ const Tab = ({
       {isStartBadge && (
         <SStartBadgeContainer>
           <Chip
-            color={isActive ? 'invertedContrast' : 'primary'}
+            color={isActive ? 'invertedContrast' : 'primary500'}
             noBorder
             size="medium"
             text={startBadge}
@@ -45,7 +45,7 @@ const Tab = ({
       {isEndBadge && (
         <SEndBadgeContainer>
           <Chip
-            color={isActive ? 'invertedContrast' : 'primary'}
+            color={isActive ? 'invertedContrast' : 'primary500'}
             noBorder
             size="medium"
             text={endBadge}
@@ -76,25 +76,25 @@ const STabContainer = styled.button<{ isActive?: boolean; isBadge?: boolean }>`
     width: auto;
     min-width: 19rem;
     min-height: 6.4rem;
-    background: ${({ theme }) => theme.colors.primary};
+    background: ${({ theme }) => theme.colors.primary500};
     border: 2px solid;
-    border-color: ${({ theme }) => theme.colors.primary};
+    border-color: ${({ theme }) => theme.colors.primary500};
     border-radius: 1.2rem;
-    box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: ${({ theme }) => theme.shadows.popupShadow};
     color: ${({ theme }) => theme.colors.invertedContrast};
     padding: ${({ isBadge }) => isBadge ? '0.8rem 1.6rem' : '1.6rem'};
 
     ${({ isActive, theme }) =>
       !isActive &&
       `
-        background: ${theme.colors.neutral500};
+        background: ${theme.colors.neutral100};
         border-color: rgba(0, 0, 0, 0);
         box-shadow: none;
         color: ${theme.colors.neutral300};
         opacity: 0.6;
 
         &:hover {
-          border-color: ${theme.colors.primary};
+          border-color: ${theme.colors.primary500};
           opacity: 1;
         }
       }

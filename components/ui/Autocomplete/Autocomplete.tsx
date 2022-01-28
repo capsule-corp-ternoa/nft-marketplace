@@ -55,7 +55,7 @@ const Autocomplete = <T extends { _id: string; name: string }>({
           <SInputWrapper isEmpty={list.length < 1}>
             {list.map(({ _id, name }) => (
               <SChip
-                color="primary"
+                color="primary500"
                 key={_id}
                 isDeletable
                 onDelete={() => {
@@ -136,7 +136,7 @@ const SInputWrapper = styled.div<{ isEmpty: boolean }>`
   flex-wrap: wrap;
   gap: 0.8rem;
   width: 100%;
-  background: ${({ theme }) => theme.colors.neutral500};
+  background: ${({ theme }) => theme.colors.neutral100};
   border-radius: 0.8rem;
   outline: none;
   padding: 1.6rem;
@@ -161,7 +161,7 @@ const SInputWrapper = styled.div<{ isEmpty: boolean }>`
     }
 
     &:focus + #borderWrapper {
-      border-color: ${({ theme }) => theme.colors.primary};
+      border-color: ${({ theme }) => theme.colors.primary500};
     }
   }
 `;
@@ -172,7 +172,7 @@ const SInputBorderWrapper = styled.div<{ isShowOptions: boolean }>`
   background: transparent;
   border: 0.2rem solid;
   border-color: ${({ isShowOptions, theme }) =>
-    isShowOptions ? theme.colors.primary : 'rgba(0, 0, 0, 0)'};
+    isShowOptions ? theme.colors.primary500 : 'rgba(0, 0, 0, 0)'};
   border-radius: 0.8rem;
   position: absolute;
   top: 0;
@@ -187,9 +187,9 @@ const SChip = styled(Chip)`
 
 const SOptions = styled.ul`
   width: 100%;
-  background: ${({ theme }) => theme.colors.neutral500};
+  background: ${({ theme }) => theme.colors.neutral100};
   border-radius: 0 0 0.8rem 0.8rem;
-  box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: ${({ theme }) => theme.shadows.popupShadow};
   list-style-type: none;
   margin: 0;
   max-height: 8.8rem;

@@ -192,14 +192,14 @@ const SInput = styled.input`
   width: 6.4rem;
   height: ${`${INPUT_HEIGHT_REM}rem`};
   border: ${({ theme }) =>
-    `${`${INPUT_HEIGHT_REM / 2}rem`} solid ${theme.colors.neutral500}`};
+    `${`${INPUT_HEIGHT_REM / 2}rem`} solid ${theme.colors.neutral100}`};
   border-radius: ${`${INPUT_HEIGHT_REM / 2}rem`};
   cursor: pointer;
   margin: 0;
 
   &:checked {
     border: ${({ theme }) =>
-      `${`${INPUT_HEIGHT_REM / 2}rem`} solid ${theme.colors.primary}`};
+      `${`${INPUT_HEIGHT_REM / 2}rem`} solid ${theme.colors.primary500}`};
   }
 `;
 

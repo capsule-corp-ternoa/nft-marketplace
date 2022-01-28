@@ -108,7 +108,7 @@ const ModalEdit: React.FC<ModalEditProps> = ({ setExpanded, data }) => {
 const SCheckIcon = styled(Icon)`
   width: 8rem;
   height: 8rem;
-  fill: ${({ theme }) => theme.colors.primary};
+  fill: ${({ theme }) => theme.colors.primary500};
 `;
 
 const SButtonCointainer = styled.div`

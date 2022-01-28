@@ -227,7 +227,7 @@ const NFTPage = ({ NFT, user, type, isUserFromDappQR }: NFTPageProps) => {
                 <STopCtasContainer>
                   <Chip color="invertedContrast" icon="eye" size="medium" text={NFT.viewsCount} variant="rectangle" />
                   <Button
-                    color="neutral200"
+                    color="neutral600"
                     disabled={likeLoading}
                     icon="heart"
                     isLoading={likeLoading}
@@ -235,14 +235,14 @@ const NFTPage = ({ NFT, user, type, isUserFromDappQR }: NFTPageProps) => {
                     size="small"
                     variant="outlined"
                   />
-                  <Button color="neutral200" icon="share" onClick={handleShare} size="small" variant="outlined" />
+                  <Button color="neutral600" icon="share" onClick={handleShare} size="small" variant="outlined" />
                 </STopCtasContainer>
               </STopInfosContainer>
               <STitle>
                 {NFT.title}
                 {NFT.isCapsule && (
                   <SChip
-                    color="primaryLight"
+                    color="primary300"
                     text={
                       <>
                         <SDot />
@@ -265,7 +265,7 @@ const NFTPage = ({ NFT, user, type, isUserFromDappQR }: NFTPageProps) => {
                 <SBuyContainer>
                   <SBuyTopContainer>
                     <Button
-                      color="primary"
+                      color="primary500"
                       disabled={!userCanBuy}
                       onClick={handleBuy}
                       size="medium"
@@ -361,7 +361,7 @@ const SMediaWrapper = styled.div`
   display: flex;
   position: relative;
   background: linear-gradient(180deg, #f29fff 0%, #878cff 100%);
-  box-shadow: 0px 0px 14.5243px 5.0835px rgba(0, 0, 0, 0.15);
+  box-shadow: ${({ theme }) => theme.shadows.popupShadow};
   border-radius: 1.2rem;
 
   ${({ theme }) => theme.mediaQueries.xxl} {
@@ -449,7 +449,7 @@ const STitle = styled(Title)`
 
 const SDescription = styled.p`
   font-size: 1.6rem;
-  color: ${({ theme }) => theme.colors.neutral200};
+  color: ${({ theme }) => theme.colors.neutral600};
   margin-top: 3.2rem;
   text-align: justify;
   white-space: pre-line;
@@ -472,7 +472,7 @@ const SChip = styled(Chip)`
 const SDot = styled.div`
   width: 0.8rem;
   height: 0.8rem;
-  background: ${({ theme }) => theme.colors.primary};
+  background: ${({ theme }) => theme.colors.primary500};
   border-radius: 50%;
 `;
 
@@ -558,7 +558,7 @@ const SAvailableLabel = styled.span`
 const SAvailableBackLine = styled.div`
   width: calc(100% - 4.8rem);
   border-bottom: solid 1px;
-  border-color: ${({ theme }) => theme.colors.neutral400};
+  border-color: ${({ theme }) => theme.colors.neutral600};
   position: absolute;
   left: 2.4rem;
   z-index: -1;

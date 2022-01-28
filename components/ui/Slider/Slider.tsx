@@ -54,16 +54,16 @@ const SliderInput = styled.input`
   height: 0.2rem;
   -webkit-appearance: none;
   appearance: none;
-  background: ${({ max, value }) =>
+  background: ${({ max, theme, value }) =>
     Number(max) > 0 && value
       ? `linear-gradient(
     to right,
-    #7417ea 0%,
-    #7417ea ${(Number(value) / Number(max)) * 100}%,
-    rgba(116, 23, 234, 0.4) ${(Number(value) / Number(max)) * 100}%,
-    rgba(116, 23, 234, 0.4) 100%
+    ${theme.colors.primary500} 0%,
+    ${theme.colors.primary500} ${(Number(value) / Number(max)) * 100}%,
+    ${theme.colors.primary700} ${(Number(value) / Number(max)) * 100}%,
+    ${theme.colors.primary700} 100%
   )`
-      : 'rgba(116, 23, 234, 0.4)'};
+      : theme.colors.primary700};
   border-radius: 0.2rem;
   outline: none;
   -webkit-transition: 0.2s;
@@ -78,7 +78,7 @@ const SliderInput = styled.input`
     height: 1.2rem;
     -webkit-appearance: none;
     appearance: none;
-    background: ${({ theme }) => theme.colors.primary};
+    background: ${({ theme }) => theme.colors.primary500};
     border-radius: 50%;
     cursor: pointer;
     transition: box-shadow 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
@@ -95,7 +95,7 @@ const SliderInput = styled.input`
     height: 1.2rem;
     -webkit-appearance: none;
     appearance: none;
-    background: ${({ theme }) => theme.colors.primary};
+    background: ${({ theme }) => theme.colors.primary500};
     border: none;
     border-radius: 50%;
     cursor: pointer;
@@ -113,7 +113,7 @@ const SliderInput = styled.input`
   }
 
   ::-moz-range-progress {
-    background-color: ${({ theme }) => theme.colors.primary};
+    background-color: ${({ theme }) => theme.colors.primary500};
   }
 `;
 

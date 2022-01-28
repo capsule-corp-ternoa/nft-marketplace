@@ -75,7 +75,7 @@ const Hero = ({ capsDollarValue: _capsDollarValue, NFTs, mode }: HeroProps) => {
         </SSellWrapper>
         <SButtonWrapper>
           <Button
-            color="primary"
+            color="primary500"
             href={`/nft/${selectedNFT.id}`}
             text={mode === HERO_MODE_AUCTION ? 'Place a bid' : 'Buy'}
           />
@@ -212,7 +212,7 @@ const SBid = styled(SellSideLayout)`
 `;
 
 const SBidLabel = styled.span`
-  color: ${({ theme }) => theme.colors.neutral200};
+  color: ${({ theme }) => theme.colors.neutral600};
   font-size: 1.4rem;
 
   ${({ theme }) => theme.mediaQueries.sm} {
@@ -221,7 +221,7 @@ const SBidLabel = styled.span`
 `;
 
 const SBidCapsPrice = styled.span`
-  color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.primary500};
   font-family: ${({ theme }) => theme.fonts.bold};
   font-size: 1.6rem;
   margin-top: 0.8rem;

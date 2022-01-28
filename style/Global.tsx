@@ -52,7 +52,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   #nprogress .bar {
-    background: ${({ theme }) => theme.colors.primary};
+    background: ${({ theme }) => theme.colors.primary500};
 
     position: fixed;
     z-index: 1031;
@@ -70,7 +70,7 @@ const GlobalStyle = createGlobalStyle`
     right: 0px;
     width: 100px;
     height: 100%;
-    box-shadow: ${({ theme }) => `0 0 10px ${theme.colors.primary}, 0 0 5px ${theme.colors.primary}`};
+    box-shadow: ${({ theme }) => `0 0 10px ${theme.colors.primary500}, 0 0 5px ${theme.colors.primary500}`};
     opacity: 1;
 
     -webkit-transform: rotate(3deg) translate(0px, -4px);

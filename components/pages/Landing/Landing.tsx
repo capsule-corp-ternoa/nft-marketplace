@@ -68,7 +68,7 @@ const Landing = ({
       <Wrapper>
         <ArtCreators NFTs={NFTCreators} user={user} />
         <SButtonContainer>
-          <Button color="primary" href="/explore" size="medium" text="See more" variant="outlined" />
+          <Button color="primary500" href="/explore" size="medium" text="See more" variant="outlined" />
         </SButtonContainer>
       </Wrapper>
     )}

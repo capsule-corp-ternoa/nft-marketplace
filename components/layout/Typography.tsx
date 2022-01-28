@@ -1,14 +1,14 @@
 import styled from 'styled-components';
 
 export const Advice = styled.span`
-  color: #7417ea;
+  color: ${({ theme }) => theme.colors.primary500};
   font-family: ${({ theme }) => theme.fonts.regular};
   font-size: 1.6rem;
   line-height: 1.3;
 `;
 
 export const Insight = styled.span`
-  color: #b1b1b1;
+  color: ${({ theme }) => theme.colors.neutral300};
   font-family: ${({ theme }) => theme.fonts.regular};
   font-size: 1.2rem;
   line-height: 1.3;

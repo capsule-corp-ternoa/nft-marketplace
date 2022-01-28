@@ -190,11 +190,15 @@ const SIcon = styled(Icon)<{ isIconOnly: boolean; size: 'small' | 'medium' }>`
   margin-right: ${({ isIconOnly, size }) => (isIconOnly ? 0 : size === 'small' ? '1.2rem' : '1.6rem')};
 `;
 
-const SAnchor = styled.a<IButton>`
+const SAnchor = styled.a.withConfig({
+  shouldForwardProp: (prop) => !['color', 'isIconOnly', 'noHover', 'size', 'variant'].includes(prop),
+})<IButton>`
   ${ButtonStyle}
 `;
 
-const SButton = styled.button<IButton>`
+const SButton = styled.button.withConfig({
+  shouldForwardProp: (prop) => !['color', 'isIconOnly', 'noHover', 'size', 'variant'].includes(prop),
+})<IButton>`
   ${ButtonStyle}
 `;
 

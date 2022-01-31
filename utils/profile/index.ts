@@ -1,15 +1,7 @@
 import { getCreatorNFTS, getLikedNFTs, getOwnedNFTS } from 'actions/nft';
 import { likeNFT, unlikeNFT } from 'actions/user';
-import {
-  NftType,
-  NFTsNominalSetState,
-  TabsIdType,
-  NFT_OWNED_TAB,
-  NFT_ON_SALE_TAB,
-  NFT_NOT_FOR_SALE_TAB,
-  NFT_CREATED_TAB,
-  NFT_LIKED_TAB,
-} from 'interfaces';
+import { TabsIdType, NFT_OWNED_TAB, NFT_ON_SALE_TAB, NFT_NOT_FOR_SALE_TAB, NFT_CREATED_TAB, NFT_LIKED_TAB } from 'components/pages/Profile';
+import { NftType, NFTsNominalSetState } from 'interfaces';
 
 import { LIKE_ACTION, UNLIKE_ACTION, LIKE_ACTION_TYPE } from './constants';
 
@@ -61,7 +53,7 @@ export const toggleLike = async (
   userWalletId: string,
   toogleIsLike: ToggleNominalSetState,
   setData?: NFTsNominalSetState,
-  handleCount?: (action: LIKE_ACTION_TYPE) => void,
+  handleCount?: (action: LIKE_ACTION_TYPE) => void
 ) => {
   const { id: nftId, serieId } = nft;
 

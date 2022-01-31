@@ -5,9 +5,8 @@ import { NftCardWithHover, GRID_MODE } from 'components/base/NftCard';
 import NoNFTComponent from 'components/base/NoNFTComponent';
 import Button from 'components/ui/Button';
 import { Loader } from 'components/ui/Icon';
+import { NftType, NFTsNominalSetState } from 'interfaces';
 import {
-  NftType,
-  NFTsNominalSetState,
   TabsIdType,
   NFT_OWNED_TAB,
   NFT_ON_SALE_TAB,
@@ -15,7 +14,7 @@ import {
   NFT_CREATED_TAB,
   NFT_LIKED_TAB,
   EXPLORE_TAB,
-} from 'interfaces';
+} from 'components/pages/Profile';
 import { LIKE_ACTION_TYPE } from 'utils/profile/constants';
 
 interface Props {
@@ -48,7 +47,12 @@ const NftsGrid = ({
   tabId,
 }: Props) => {
   const returnQuantityNFTsAvailable = (NFT: NftType, tabId?: TabsIdType) => {
-    const { totalNft, totalOwnedByRequestingUser, totalOwnedListedInMarketplaceByRequestingUser, totalListedInMarketplace } = NFT;
+    const {
+      totalNft,
+      totalOwnedByRequestingUser,
+      totalOwnedListedInMarketplaceByRequestingUser,
+      totalListedInMarketplace,
+    } = NFT;
     switch (tabId) {
       case NFT_LIKED_TAB:
         return 0;
@@ -61,7 +65,7 @@ const NftsGrid = ({
       case NFT_OWNED_TAB:
         return totalOwnedByRequestingUser ?? 1;
       case EXPLORE_TAB:
-        return totalListedInMarketplace
+        return totalListedInMarketplace;
       case NFT_CREATED_TAB:
       default:
         return totalNft ?? 1;
@@ -90,7 +94,7 @@ const NftsGrid = ({
             mode={GRID_MODE}
             quantity={returnQuantityNFTsAvailable(item, tabId)}
             handleLikeCount={handleLikeCount}
-            setLikedNfts={tabId === NFT_LIKED_TAB ? setLikedNfts : undefined}
+            setLikedNfts={setLikedNfts}
           />
         ))}
         {children}

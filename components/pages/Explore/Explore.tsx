@@ -3,7 +3,8 @@ import styled from 'styled-components';
 
 import NftsGrid from 'components/base/NftsGrid';
 import { Container, Title, Wrapper } from 'components/layout';
-import { EXPLORE_TAB, NftType } from 'interfaces/index';
+import { EXPLORE_TAB } from 'components/pages/Profile';
+import { NftType } from 'interfaces/index';
 
 export interface ExploreProps {
   NFTS: NftType[];

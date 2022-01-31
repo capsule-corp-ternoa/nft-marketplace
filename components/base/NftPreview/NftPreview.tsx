@@ -15,7 +15,7 @@ import {
   NFT_FILE_TYPE_GIF,
   NFT_FILE_TYPE_VIDEO,
 } from 'interfaces';
-import { useAppSelector } from 'redux/hooks';
+import { useApp } from 'redux/hooks';
 
 interface Props {
   blurValue: number;
@@ -50,7 +50,7 @@ const NftPreview = ({
   setError,
   setOriginalNFT,
 }: Props) => {
-  const isRN = useAppSelector((state) => state.rn.isRN);
+  const { isRN } = useApp();
 
   const handleAllowedEffect = (file: File, effect: NftEffectType) => {
     switch (effect) {

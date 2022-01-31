@@ -19,6 +19,7 @@ import {
   NFT_CREATED_TAB,
   NFT_LIKED_TAB,
 } from 'interfaces';
+import { useApp } from 'redux/hooks';
 import { loadMoreNfts } from 'utils/profile';
 import {
   FOLLOW_ACTION,
@@ -37,14 +38,16 @@ export const USER_PERSONNAL_PROFILE_VARIANT = 'user_personnal_profile';
 
 export interface ProfileProps {
   artist?: UserType;
-  user: UserType;
+  rawUser?: UserType;
   userOwnedlNfts?: NftType[];
   userOwnedNftsHasNextPage?: boolean;
   tabs: readonly TabsIdType[];
   variant: typeof ARTIST_PROFILE_VARIANT | typeof USER_PERSONNAL_PROFILE_VARIANT;
 }
 
-const Profile = ({ artist, user, userOwnedlNfts, userOwnedNftsHasNextPage, tabs, variant }: ProfileProps) => {
+const Profile = ({ artist, userOwnedlNfts, userOwnedNftsHasNextPage, rawUser, tabs, variant }: ProfileProps) => {
+  const { user: storedUser } = useApp();
+  const user = rawUser ?? storedUser;
   const [isLoading, setIsLoading] = useState(false);
   const [profileDataLoaded, setProfileDataLoaded] = useState(false);
   const [resetTabId, toggleResetTabId] = useState(false);
@@ -90,7 +93,7 @@ const Profile = ({ artist, user, userOwnedlNfts, userOwnedNftsHasNextPage, tabs,
   const [isFilterVerified, setIsFilterVerified] = useState<boolean | undefined>(undefined);
   const [searchValue, setSearchValue] = useState<string | undefined>(undefined);
 
-  const { banner, bio, name, picture, twitterName, verified, walletId } = artist ?? user;
+  const { banner, bio, name, picture, twitterName, verified, walletId } = artist ?? user!;
   const isMyProfile =
     variant === USER_PERSONNAL_PROFILE_VARIANT ||
     (variant === ARTIST_PROFILE_VARIANT && artist?.walletId === user?.walletId);
@@ -128,7 +131,7 @@ const Profile = ({ artist, user, userOwnedlNfts, userOwnedNftsHasNextPage, tabs,
   };
 
   const initCounts = async () => {
-    const { walletId } = artist ?? user;
+    const { walletId } = artist ?? user!;
     try {
       if (walletId) {
         const stats = await getUserNFTsStat(walletId, true);
@@ -296,7 +299,6 @@ const Profile = ({ artist, user, userOwnedlNfts, userOwnedNftsHasNextPage, tabs,
             handleLikeCount={handleLikeCount}
             setLikedNfts={setLikedNfts}
             tabId={tabId}
-            user={user}
           />
         );
       }
@@ -324,7 +326,6 @@ const Profile = ({ artist, user, userOwnedlNfts, userOwnedNftsHasNextPage, tabs,
             handleLikeCount={handleLikeCount}
             setLikedNfts={setLikedNfts}
             tabId={tabId}
-            user={user}
           />
         );
       }
@@ -357,7 +358,6 @@ const Profile = ({ artist, user, userOwnedlNfts, userOwnedNftsHasNextPage, tabs,
               handleLikeCount={handleLikeCount}
               setLikedNfts={setLikedNfts}
               tabId={tabId}
-              user={user}
             >
               {/* TODO: add this when NFT sale if available and remove react-responsive */}
               {/* {!isTablet && <NftSaleLink />} */}
@@ -390,7 +390,6 @@ const Profile = ({ artist, user, userOwnedlNfts, userOwnedNftsHasNextPage, tabs,
             handleLikeCount={handleLikeCount}
             setLikedNfts={setLikedNfts}
             tabId={tabId}
-            user={user}
           />
         );
       }
@@ -422,7 +421,6 @@ const Profile = ({ artist, user, userOwnedlNfts, userOwnedNftsHasNextPage, tabs,
             handleLikeCount={handleLikeCount}
             setLikedNfts={setLikedNfts}
             tabId={tabId}
-            user={user}
           />
         );
       }
@@ -474,7 +472,6 @@ const Profile = ({ artist, user, userOwnedlNfts, userOwnedNftsHasNextPage, tabs,
             noContentTitle="Nothing to display"
             setIsFilterVerified={setIsFilterVerified}
             updateKeywordSearch={updateKeywordSearch}
-            user={user}
           />
         );
       }
@@ -520,7 +517,6 @@ const Profile = ({ artist, user, userOwnedlNfts, userOwnedNftsHasNextPage, tabs,
             noContentTitle="Nothing to display"
             setIsFilterVerified={setIsFilterVerified}
             updateKeywordSearch={updateKeywordSearch}
-            user={user}
           />
         );
       }

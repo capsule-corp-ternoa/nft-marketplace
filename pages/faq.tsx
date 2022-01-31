@@ -5,39 +5,26 @@ import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
 import MainHeader from 'components/base/MainHeader';
 import FAQ from 'components/pages/FAQ';
-import cookies from 'next-cookies';
-import { getUser } from 'actions/user';
-import { UserType } from 'interfaces';
-import { NextPageContext } from 'next';
-import { decryptCookie } from 'utils/cookie';
+import { useMarketplaceData } from 'redux/hooks';
 
-export interface FAQProps {
-  user: UserType;
-}
+const FAQPage = () => {
+  const { name } = useMarketplaceData();
 
-const FAQPage = ({ user }: FAQProps) => (
-  <>
-    <Head>
-      <title>{process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : 'SecretNFT'} - FAQ</title>
-      <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-      <meta name="description" content="FAQ page of SecretNFT, by Ternoa." />
-      <meta name="og:image" content="ternoa-social-banner.jpg" />
-    </Head>
-    <BetaBanner />
-    <MainHeader user={user} />
-    <FAQ />
-    <Footer />
-    <FloatingHeader user={user} />
-  </>
-);
-
-export async function getServerSideProps(ctx: NextPageContext) {
-  let user = null;
-  const token = cookies(ctx).token && decryptCookie(cookies(ctx).token as string);
-  if (token) user = await getUser(token).catch(() => null);
-  return {
-    props: { user },
-  };
-}
+  return (
+    <>
+      <Head>
+        <title>{name} - FAQ</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <meta name="description" content="FAQ page of SecretNFT, by Ternoa." />
+        <meta name="og:image" content="ternoa-social-banner.jpg" />
+      </Head>
+      <BetaBanner />
+      <MainHeader />
+      <FAQ />
+      <Footer />
+      <FloatingHeader />
+    </>
+  );
+};
 
 export default FAQPage;

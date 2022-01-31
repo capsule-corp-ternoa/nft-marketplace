@@ -1,16 +1,15 @@
 import React from 'react';
 import Head from 'next/head';
+
 import BetaBanner from 'components/base/BetaBanner';
 import FloatingHeader from 'components/base/FloatingHeader';
 import Footer from 'components/base/Footer';
 import MainHeader from 'components/base/MainHeader';
 import Profile, { USER_PERSONNAL_PROFILE_VARIANT } from 'components/pages/Profile';
 import { getOwnedNFTS } from 'actions/nft';
-import cookies from 'next-cookies';
 import { getUser } from 'actions/user';
 import {
   NftType,
-  UserType,
   FOLLOWERS_TAB,
   FOLLOWED_TAB,
   NFT_ON_SALE_TAB,
@@ -18,15 +17,17 @@ import {
   NFT_CREATED_TAB,
   NFT_LIKED_TAB,
   NFT_OWNED_TAB,
+  UserType,
 } from 'interfaces';
-import { NextPageContext } from 'next';
+import { appSetUser } from 'redux/app';
+import { useMarketplaceData } from 'redux/hooks';
+import { wrapper } from 'redux/store';
 import { decryptCookie } from 'utils/cookie';
 
 export interface ProfilePageProps {
-  user: UserType;
   owned: NftType[];
   ownedHasNextPage: boolean;
-  loading: boolean;
+  user: UserType;
 }
 
 const ORDERED_TABS_ID = [
@@ -39,31 +40,35 @@ const ORDERED_TABS_ID = [
   FOLLOWED_TAB,
 ] as const;
 
-const ProfilePage = ({ user, owned, ownedHasNextPage }: ProfilePageProps) => (
-  <>
-    <Head>
-      <title>{process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : 'SecretNFT'} - My account</title>
-      <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-      <meta name="description" content="Ternoa - Your profile." />
-      <meta name="og:image" content="ternoa-social-banner.jpg" />
-    </Head>
-    <BetaBanner />
-    <MainHeader user={user} />
-    <Profile
-      user={user}
-      userOwnedlNfts={owned}
-      userOwnedNftsHasNextPage={ownedHasNextPage}
-      tabs={ORDERED_TABS_ID}
-      variant={USER_PERSONNAL_PROFILE_VARIANT}
-    />
-    <Footer />
-    <FloatingHeader user={user} />
-  </>
-);
+const ProfilePage = ({ owned, ownedHasNextPage, user }: ProfilePageProps) => {
+  const { name } = useMarketplaceData();
 
-export async function getServerSideProps(ctx: NextPageContext) {
-  const token = cookies(ctx).token && decryptCookie(cookies(ctx).token as string);
-  let user = null,
+  return (
+    <>
+      <Head>
+        <title>{name} - My account</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <meta name="description" content="Ternoa - Your profile." />
+        <meta name="og:image" content="ternoa-social-banner.jpg" />
+      </Head>
+      <BetaBanner />
+      <MainHeader />
+      <Profile
+        rawUser={user}
+        userOwnedlNfts={owned}
+        userOwnedNftsHasNextPage={ownedHasNextPage}
+        tabs={ORDERED_TABS_ID}
+        variant={USER_PERSONNAL_PROFILE_VARIANT}
+      />
+      <Footer />
+      <FloatingHeader />
+    </>
+  );
+};
+
+export const getServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
+  const token = req.cookies.token && decryptCookie(req.cookies.token as string);
+  let user: UserType | null = null,
     owned: NftType[] = [],
     ownedHasNextPage: boolean = false;
   const promises = [];
@@ -73,6 +78,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
         getUser(token, true)
           .then((_user) => {
             user = _user;
+            store.dispatch(appSetUser(_user));
             success();
           })
           .catch(success);
@@ -91,11 +97,13 @@ export async function getServerSideProps(ctx: NextPageContext) {
     );
   }
   await Promise.all(promises);
+
   if (!user) {
     return {
       notFound: true,
     };
   }
+
   return {
     props: {
       user,
@@ -103,6 +111,6 @@ export async function getServerSideProps(ctx: NextPageContext) {
       ownedHasNextPage,
     },
   };
-}
+});
 
 export default ProfilePage;

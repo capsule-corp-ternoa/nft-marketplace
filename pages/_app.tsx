@@ -1,17 +1,23 @@
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import styled, { ThemeProvider } from 'styled-components';
+import App from 'next/app';
 import Head from 'next/head';
-import { Provider } from 'react-redux';
-import Router from 'next/router';
+import Router, { useRouter } from 'next/router';
 import NProgress from 'nprogress';
-import { AppProps } from 'next/dist/shared/lib/router/router';
+import type { AppProps } from 'next/app';
+import Cookies from 'js-cookie';
 
+import { getUser } from 'actions/user';
 import Icon from 'components/ui/Icon';
-import { actions } from 'redux/rn/actions';
-import { useAppDispatch } from 'redux/hooks';
-import { store } from 'redux/store';
+import { appSetIsRN, appSetUser } from 'redux/app';
+import { mpSetInstagramUrl, mpSetLogo, mpSetName, mpSetTwitterUrl, mpSetUrl } from 'redux/marketplaceData';
+import { useApp } from 'redux/hooks';
+import { wrapper } from 'redux/store';
 import GlobalStyle from 'style/Global';
 import theme from 'style/theme';
+import { isServer } from 'utils/server';
+import { decryptCookie } from 'utils/cookie';
 
 import 'style/fonts.css';
 
@@ -19,25 +25,32 @@ Router.events.on('routeChangeStart', () => NProgress.start());
 Router.events.on('routeChangeComplete', () => NProgress.done());
 Router.events.on('routeChangeError', () => NProgress.done());
 
-const AppWrapper: React.FC<AppProps> = (props) => {
-  return (
-    <Provider store={store}>
-      <App {...props} />
-    </Provider>
-  );
-};
-
-const App: React.FC<AppProps> = ({ Component, pageProps }) => {
+const MyApp = ({ Component, pageProps }: AppProps) => {
   const [cookiesConsent, setCookiesConsent] = useState<string | null>(null);
   const [hide, setHide] = useState(false);
-  const dispatch = useAppDispatch();
+  const { user } = useApp();
+  const dispatch = useDispatch();
+  const router = useRouter();
+
+  const token =
+    (router.query.walletId as string) || (Cookies.get('token') && decryptCookie(Cookies.get('token') as string));
 
   useEffect(() => {
     setCookiesConsent(localStorage.getItem('cookiesConsent'));
   }, []);
 
   useEffect(() => {
-    dispatch(actions.setIsRN(window.isRNApp));
+    dispatch(appSetIsRN(Boolean(window.isRNApp)));
+  }, []);
+
+  useEffect(() => {
+    if (token && !user) {
+      getUser(token, true)
+        .then((result) => {
+          dispatch(appSetUser(result));
+        })
+        .catch((error) => console.log({ error }));
+    }
   }, []);
 
   return (
@@ -83,6 +96,30 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
   );
 };
 
+MyApp.getInitialProps = wrapper.getInitialAppProps((store) => async (context) => {
+  if (isServer) {
+    if (process.env.NEXT_PUBLIC_APP_LOGO_PATH) store.dispatch(mpSetLogo(process.env.NEXT_PUBLIC_APP_LOGO_PATH));
+    if (process.env.NEXT_PUBLIC_APP_NAME) store.dispatch(mpSetName(process.env.NEXT_PUBLIC_APP_NAME));
+    if (process.env.NEXT_PUBLIC_INSTAGRAM_LINK)
+      store.dispatch(mpSetInstagramUrl(process.env.NEXT_PUBLIC_INSTAGRAM_LINK));
+    if (process.env.NEXT_PUBLIC_TWITTER_LINK) store.dispatch(mpSetTwitterUrl(process.env.NEXT_PUBLIC_TWITTER_LINK));
+    if (process.env.NEXT_PUBLIC_APP_LINK) store.dispatch(mpSetUrl(process.env.NEXT_PUBLIC_APP_LINK));
+  }
+
+  try {
+    const pageProps = {
+      ...(await App.getInitialProps(context)).pageProps,
+    };
+
+    return { pageProps };
+  } catch (err) {
+    console.log(err);
+    return { pageProps: {} };
+  }
+});
+
+export default wrapper.withRedux(MyApp);
+
 const SCookiesWrapper = styled.div`
   display: flex;
   justify-content: center;
@@ -120,5 +157,3 @@ const SClose = styled.button`
     fill: ${({ theme }) => theme.colors.invertedContrast};
   }
 `;
-
-export default AppWrapper;

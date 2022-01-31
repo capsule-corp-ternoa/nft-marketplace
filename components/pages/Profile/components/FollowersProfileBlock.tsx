@@ -7,6 +7,7 @@ import NoNFTComponent from 'components/base/NoNFTComponent';
 import Button from 'components/ui/Button';
 import { Loader } from 'components/ui/Icon';
 import { UserType } from 'interfaces';
+import { useApp } from 'redux/hooks';
 import theme from 'style/theme';
 import { FOLLOW_ACTION, UNFOLLOW_ACTION, FOLLOW_ACTION_TYPE } from 'utils/profile/constants';
 
@@ -24,7 +25,6 @@ interface Props {
   noContentTitle: string;
   setIsFilterVerified: (b: boolean) => void;
   updateKeywordSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  user: UserType;
   users: UserType[];
 }
 
@@ -40,74 +40,77 @@ const FollowersProfileBlock = ({
   noContentTitle,
   setIsFilterVerified,
   updateKeywordSearch,
-  user,
   users,
-}: Props) => (
-  <>
-    <SSearchContainer>
-      <SSearchLabel>
-        <SSearchInput type="search" onChange={updateKeywordSearch} placeholder="Search" />
-      </SSearchLabel>
-      <SToggle>
-        <SCertifiedLabel>Verified only</SCertifiedLabel>
-        <label>
-          <Switch
-            checked={isFilterVerified}
-            onChange={() => setIsFilterVerified(!isFilterVerified)}
-            offColor={theme.colors.contrast}
-            onColor={theme.colors.primary500}
-            uncheckedIcon={false}
-            checkedIcon={false}
-            width={46}
-            handleDiameter={23}
-          />
-        </label>
-      </SToggle>
-    </SSearchContainer>
+}: Props) => {
+  const { user } = useApp();
 
-    {users === undefined || users.length < 1 ? (
-      isLoading ? (
-        <SLoader color="primary500" />
+  return (
+    <>
+      <SSearchContainer>
+        <SSearchLabel>
+          <SSearchInput type="search" onChange={updateKeywordSearch} placeholder="Search" />
+        </SSearchLabel>
+        <SToggle>
+          <SCertifiedLabel>Verified only</SCertifiedLabel>
+          <label>
+            <Switch
+              checked={isFilterVerified}
+              onChange={() => setIsFilterVerified(!isFilterVerified)}
+              offColor={theme.colors.contrast}
+              onColor={theme.colors.primary500}
+              uncheckedIcon={false}
+              checkedIcon={false}
+              width={46}
+              handleDiameter={23}
+            />
+          </label>
+        </SToggle>
+      </SSearchContainer>
+
+      {users === undefined || users.length < 1 ? (
+        isLoading ? (
+          <SLoader color="primary500" />
+        ) : (
+          <SNoNFTContainer>
+            <NoNFTComponent body={noContentBody} title={noContentTitle} />
+          </SNoNFTContainer>
+        )
       ) : (
-        <SNoNFTContainer>
-          <NoNFTComponent body={noContentBody} title={noContentTitle} />
-        </SNoNFTContainer>
-      )
-    ) : (
-      <>
-        <SFollowersContainer>
-          {users.map(({ _id, name, picture, verified, walletId }: UserType) => (
-            <Avatar
-              key={_id}
-              followers={followersNbFollowers[walletId] ?? 0}
-              handleFollow={() => handleFollow(walletId, followingStatus[walletId] ? UNFOLLOW_ACTION : FOLLOW_ACTION)}
-              isClickable
-              isFollowButton={user && walletId !== user.walletId}
-              isUnfollow={followingStatus[walletId]}
-              isVerified={verified}
-              name={name}
-              picture={picture}
-              walletId={walletId}
-            />
-          ))}
-        </SFollowersContainer>
-        {isLoadMore && (
-          <SLoadButtonWrapper>
-            <Button
-              color="contrast"
-              disabled={isLoading}
-              isLoading={isLoading}
-              onClick={loadMore}
-              size="medium"
-              text={isLoading ? 'Loading...' : 'Load more'}
-              variant="outlined"
-            />
-          </SLoadButtonWrapper>
-        )}
-      </>
-    )}
-  </>
-);
+        <>
+          <SFollowersContainer>
+            {users.map(({ _id, name, picture, verified, walletId }: UserType) => (
+              <Avatar
+                key={_id}
+                followers={followersNbFollowers[walletId] ?? 0}
+                handleFollow={() => handleFollow(walletId, followingStatus[walletId] ? UNFOLLOW_ACTION : FOLLOW_ACTION)}
+                isClickable
+                isFollowButton={!!user && walletId !== user.walletId}
+                isUnfollow={followingStatus[walletId]}
+                isVerified={verified}
+                name={name}
+                picture={picture}
+                walletId={walletId}
+              />
+            ))}
+          </SFollowersContainer>
+          {isLoadMore && (
+            <SLoadButtonWrapper>
+              <Button
+                color="contrast"
+                disabled={isLoading}
+                isLoading={isLoading}
+                onClick={loadMore}
+                size="medium"
+                text={isLoading ? 'Loading...' : 'Load more'}
+                variant="outlined"
+              />
+            </SLoadButtonWrapper>
+          )}
+        </>
+      )}
+    </>
+  );
+};
 
 const SLoader = styled(Loader)`
   margin: 8rem auto;

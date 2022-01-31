@@ -1,35 +1,62 @@
 import React, { useState, useEffect } from 'react';
+import { NextPageContext } from 'next';
 import Head from 'next/head';
 import cookies from 'next-cookies';
+import Cookies from 'js-cookie';
+import { useDispatch } from 'react-redux';
 
-import { getUser } from 'actions/user';
 import { getNFT } from 'actions/nft';
 import { getCapsValue } from 'actions/caps';
+import { getUser } from 'actions/user';
 import BetaBanner from 'components/base/BetaBanner';
 import FloatingHeader from 'components/base/FloatingHeader';
 import Footer from 'components/base/Footer';
 import MainHeader from 'components/base/MainHeader';
 import NFTPage from 'components/pages/NFT';
-import { NftType, UserType } from 'interfaces';
-import { NextPageContext } from 'next';
-
-import { decryptCookie, setUserFromDApp } from 'utils/cookie';
+import { NftType } from 'interfaces';
+import { appSetUser } from 'redux/app';
+import { useApp, useMarketplaceData } from 'redux/hooks';
+import { encryptCookie, decryptCookie } from 'utils/cookie';
 import { getUserIp } from 'utils/functions';
 import { MARKETPLACE_ID } from 'utils/constant';
 
 export interface NFTPageProps {
-  user: UserType;
   NFT: NftType;
   capsValue: number;
 }
 
-const NftPage = ({ user, NFT, capsValue }: NFTPageProps) => {
+const NftPage = ({ NFT, capsValue }: NFTPageProps) => {
   const [type, setType] = useState<string | null>(null);
-  const [walletUser, setWalletUser] = useState(user);
   const [isUserFromDappQR, setIsUserFromDappQR] = useState(false);
 
+  const dispatch = useDispatch();
+  const { isRN } = useApp();
+  const { name } = useMarketplaceData();
+
   useEffect(() => {
-    setUserFromDApp(setWalletUser, setIsUserFromDappQR);
+    const params = new URLSearchParams(window.location.search);
+    if (
+      isRN &&
+      window.walletId &&
+      (!Cookies.get('token') || decryptCookie(Cookies.get('token') as string) !== window.walletId)
+    ) {
+      if (params.get('walletId') && params.get('walletId') !== window.walletId) {
+        dispatch(appSetUser(null));
+      }
+      Cookies.remove('token');
+      getUser(window.walletId, true)
+        .then((user) => {
+          dispatch(appSetUser(user));
+          Cookies.set('token', encryptCookie(window.walletId), { expires: 1 });
+        })
+        .catch((error) => console.log({ error }));
+    }
+    if (!isRN && params.get('walletId')) {
+      dispatch(appSetUser(null));
+    }
+    if (window.isRNApp && window.history.length === 1) {
+      setIsUserFromDappQR(true);
+    }
   }, []);
 
   useEffect(() => {
@@ -50,7 +77,7 @@ const NftPage = ({ user, NFT, capsValue }: NFTPageProps) => {
     <>
       <Head>
         <title>
-          {NFT.title} - {process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : 'SecretNFT'}
+          {NFT.title} - {name}
         </title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta name="description" content={NFT.description} />
@@ -59,39 +86,21 @@ const NftPage = ({ user, NFT, capsValue }: NFTPageProps) => {
       </Head>
 
       <BetaBanner />
-      <MainHeader user={walletUser} />
-      <NFTPage
-        NFT={NFT}
-        user={walletUser}
-        type={type}
-        capsValue={capsValue}
-        isUserFromDappQR={isUserFromDappQR}
-      />
+      <MainHeader />
+      <NFTPage NFT={NFT} type={type} capsValue={capsValue} isUserFromDappQR={isUserFromDappQR} />
       <Footer />
-      <FloatingHeader user={user} />
+      <FloatingHeader />
     </>
   );
 };
 
 export async function getServerSideProps(ctx: NextPageContext) {
   const token = cookies(ctx).token && decryptCookie(cookies(ctx).token as string);
-  let user: UserType | null = null,
-    NFT: NftType | null = null,
+  let NFT: NftType | null = null,
     capsValue: number = 0;
   const promises = [];
   let ip = getUserIp(ctx.req);
-  if (token) {
-    promises.push(
-      new Promise<void>((success) => {
-        getUser(token, true)
-          .then((_user) => {
-            user = _user;
-            success();
-          })
-          .catch(success);
-      })
-    );
-  }
+
   promises.push(
     new Promise<void>((success) => {
       getNFT(ctx.query.name as string, true, token ? token : null, ip, MARKETPLACE_ID, true)
@@ -119,7 +128,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
     };
   }
   return {
-    props: { user, NFT, capsValue },
+    props: { NFT, capsValue },
   };
 }
 

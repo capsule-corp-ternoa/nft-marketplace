@@ -8,7 +8,6 @@ import { Loader } from 'components/ui/Icon';
 import {
   NftType,
   NFTsNominalSetState,
-  UserType,
   TabsIdType,
   NFT_OWNED_TAB,
   NFT_ON_SALE_TAB,
@@ -32,7 +31,6 @@ interface Props {
   handleLikeCount?: (action: LIKE_ACTION_TYPE) => void;
   setLikedNfts?: NFTsNominalSetState;
   tabId?: TabsIdType;
-  user?: UserType;
 }
 
 const NftsGrid = ({
@@ -47,7 +45,6 @@ const NftsGrid = ({
   noNftTitle,
   handleLikeCount,
   setLikedNfts,
-  user,
   tabId,
 }: Props) => {
   const returnQuantityNFTsAvailable = (NFT: NftType, tabId?: TabsIdType) => {
@@ -94,7 +91,6 @@ const NftsGrid = ({
             quantity={returnQuantityNFTsAvailable(item, tabId)}
             handleLikeCount={handleLikeCount}
             setLikedNfts={tabId === NFT_LIKED_TAB ? setLikedNfts : undefined}
-            user={user}
           />
         ))}
         {children}

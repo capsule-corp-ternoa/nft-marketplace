@@ -14,6 +14,7 @@ import { EXPLORER_URL, MARKETPLACE_ID } from 'utils/constant';
 import { Loader } from 'components/ui/Icon';
 import { getRandomNFTFromArray } from 'utils/functions';
 import { getHistory } from 'actions/nft';
+import { useApp } from 'redux/hooks';
 
 const ITEM_SIZE = 88;
 const GUTTER_SIZE = 5;
@@ -21,7 +22,6 @@ const GUTTER_SIZE = 5;
 export interface DetailsProps {
   NFT: NftType;
   seriesData: NftType[];
-  user: UserType;
   setNftToBuy: (NFT: NftType) => void;
   setIsModalCheckoutExpanded: (b: boolean) => void;
   isUserFromDappQR: boolean;
@@ -32,7 +32,6 @@ export interface DetailsProps {
 const Details: React.FC<DetailsProps> = ({
   NFT,
   seriesData,
-  user,
   setNftToBuy,
   setIsModalCheckoutExpanded,
   isUserFromDappQR,
@@ -150,6 +149,7 @@ const Details: React.FC<DetailsProps> = ({
   };
 
   const ownerRowData = ({ index, style }: { index: number; style: React.CSSProperties | undefined }) => {
+    const { user } = useApp();
     const NFTRow = serieDataGrouped && serieDataGrouped.length > 0 ? serieDataGrouped[index] : null;
     const NFTRowId = NFTRow ? NFTRow.id : null;
     const NFTRowOwner = NFTRow ? NFTRow.owner : '';

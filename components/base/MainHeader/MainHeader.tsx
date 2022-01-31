@@ -8,16 +8,15 @@ import Button from 'components/ui/Button';
 import Icon from 'components/ui/Icon';
 import { Container, Wrapper } from 'components/layout';
 
-import { UserType } from 'interfaces/index';
 import { computeCaps } from 'utils/strings';
+import { useApp } from 'redux/hooks';
 
-export interface HeaderProps {
-  user: UserType;
-}
-
-const MainHeader: React.FC<HeaderProps> = ({ user }) => {
+const MainHeader: React.FC = () => {
   const [isModalWalletExpanded, setIsModalWalletExpanded] = useState(false);
   const [isProfileMenuExpanded, setIsProfileMenuExpanded] = useState(false);
+
+  const { user } = useApp();
+
   const isNftCreationEnabled =
     process.env.NEXT_PUBLIC_IS_NFT_CREATION_ENABLED === undefined
       ? true

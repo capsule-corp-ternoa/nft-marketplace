@@ -6,17 +6,15 @@ import { ModalWallet } from 'components/base/Modal';
 import { ProfileMenuBadge, ProfileMenuDropdown } from 'components/base/ProfileMenu';
 import Button from 'components/ui/Button';
 
-import { UserType } from 'interfaces/index';
 import { computeCaps } from 'utils/strings';
+import { useApp } from 'redux/hooks';
 
-export interface FloatingHeaderProps {
-  user: UserType;
-}
-
-const FloatingHeader: React.FC<FloatingHeaderProps> = ({ user }) => {
+const FloatingHeader: React.FC = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isModalWalletExpanded, setIsModalWalletExpanded] = useState(false);
   const [isProfileMenuExpanded, setIsProfileMenuExpanded] = useState(false);
+
+  const { user } = useApp();
 
   return (
     <>

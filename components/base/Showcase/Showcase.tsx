@@ -7,7 +7,7 @@ import { breakpointMap } from 'style/theme/base';
 import { NftCardWithHover, CAROUSEL_MODE } from 'components/base/NftCard';
 import Button from 'components/ui/Button';
 
-import { NftType, UserType } from 'interfaces/index';
+import { NftType } from 'interfaces/index';
 
 const responsive = {
   desktop: {
@@ -23,10 +23,9 @@ const responsive = {
 export interface ShowcaseProps {
   NFTs: NftType[];
   category: string;
-  user?: UserType;
 }
 
-const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category, user }) => {
+const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category }) => {
   const [isDragging, setIsDragging] = useState(false);
 
   let carousel: Carousel | null = new Carousel({
@@ -67,7 +66,7 @@ const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category, user }) => {
       >
         <SNftsMobileContainer>
           {NFTs.map((item) => (
-            <NftCardWithHover key={item.id} isDragging={isDragging} item={item} mode={CAROUSEL_MODE} user={user} />
+            <NftCardWithHover key={item.id} isDragging={isDragging} item={item} mode={CAROUSEL_MODE} />
           ))}
         </SNftsMobileContainer>
         <SNftsCarouselContainer
@@ -81,7 +80,7 @@ const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category, user }) => {
           swipeable={true}
         >
           {NFTs.map((item) => (
-            <NftCardWithHover key={item.id} isDragging={isDragging} item={item} mode={CAROUSEL_MODE} user={user} />
+            <NftCardWithHover key={item.id} isDragging={isDragging} item={item} mode={CAROUSEL_MODE} />
           ))}
         </SNftsCarouselContainer>
       </SNftsContainer>

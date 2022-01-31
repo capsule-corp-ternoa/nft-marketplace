@@ -8,7 +8,7 @@ import { ModalLoader, QRCode } from 'components/base/Modal';
 import Button from 'components/ui/Button';
 import Icon from 'components/ui/Icon';
 import Modal from 'components/ui/Modal';
-import { useAppSelector } from 'redux/hooks';
+import { useApp } from 'redux/hooks';
 import { SOCKET_URL } from 'utils/constant';
 import { connect as connectIo } from 'utils/socket/socket.helper';
 
@@ -22,7 +22,7 @@ const ModalEdit: React.FC<ModalEditProps> = ({ setExpanded, data }) => {
   const [error, setError] = useState('');
   const [showQR, setShowQR] = useState(false);
   const [success, setSuccess] = useState(false);
-  const isRN = useAppSelector((state) => state.rn.isRN);
+  const { isRN } = useApp();
 
   const modalSubtitle = success
     ? 'Profile successfully updated'

@@ -14,17 +14,12 @@ import { getNameColor, getNameFontSize } from './utils';
 
 interface Props {
   className?: string;
-  followers?: number;
-  followLabel?: string;
-  handleFollow?: () => void;
   isAddressDisplayed?: boolean;
   isClickable?: boolean;
   isDiscoverButton?: boolean;
-  isFollowButton?: boolean;
   isNameEllipsis?: boolean;
   isPictureOnly?: boolean;
   isTooltip?: boolean;
-  isUnfollow?: boolean;
   isVerified?: boolean;
   label?: string | React.ReactNode;
   name?: string;
@@ -38,16 +33,12 @@ interface Props {
 
 const Avatar = ({
   className,
-  followers,
-  handleFollow,
   isAddressDisplayed,
   isClickable,
   isDiscoverButton,
-  isFollowButton,
   isNameEllipsis,
   isPictureOnly,
   isTooltip,
-  isUnfollow,
   isVerified,
   label,
   name = 'Ternoa',
@@ -60,15 +51,7 @@ const Avatar = ({
 }: Props) => {
   if (isPictureOnly) {
     return (
-      <Picture
-        isClickable={isClickable}
-        isTooltip={isTooltip}
-        isVerified={isVerified}
-        name={name}
-        picture={picture}
-        variant={variant}
-        walletId={walletId}
-      />
+      <Picture isClickable={isClickable} isTooltip={isTooltip} isVerified={isVerified} name={name} picture={picture} variant={variant} walletId={walletId} />
     );
   }
 
@@ -96,17 +79,11 @@ const Avatar = ({
             {nickname !== undefined && <SNickname>{nickname}</SNickname>}
           </STopDetails>
 
-          <SBottomDetails isMarginTop={isFollowButton}>
+          <SBottomDetails>
             {label !== undefined && label && typeof label === 'string' ? <SLabel>{label}</SLabel> : label}
-            {followers !== undefined && <SFollowers>{`${followers} followers`}</SFollowers>}
             {twitterName !== undefined && (
               <STransactionVariantWrapper variant={variant}>
-                <SLink
-                  href={`https://twitter.com/${twitterName}`}
-                  target="_blank"
-                  title={`${twitterName}'s twitter account`}
-                  rel="noopener noreferrer"
-                >
+                <SLink href={`https://twitter.com/${twitterName}`} target="_blank" title={`${twitterName}'s twitter account`} rel="noopener noreferrer">
                   <STwitterIcon name="socialTwitter" />
                   <STwitterNickname>{twitterName}</STwitterNickname>
                 </SLink>
@@ -122,33 +99,10 @@ const Avatar = ({
                 <Clipboard address={walletId} isCopyLabelIndicator={false} isEllipsis variant={variant} />
               </STransactionVariantWrapper>
             )}
-            {isFollowButton && (
-              <SFollowButtonDesktop
-                color={isUnfollow ? 'primary300' : 'invertedContrast'}
-                onClick={handleFollow}
-                size="small"
-                text={isUnfollow ? 'Unfollow' : 'Follow'}
-              />
-            )}
           </SBottomDetails>
         </SDetailsContainer>
       </SAvatarWrapper>
-      {isDiscoverButton && (
-        <SDiscoverButton
-          color="primary300"
-          onClick={() => walletId && Router.push(`/${walletId}`)}
-          size="small"
-          text="Discover"
-        />
-      )}
-      {isFollowButton && (
-        <SFollowButtonMobile
-          color={isUnfollow ? 'primary300' : 'invertedContrast'}
-          onClick={handleFollow}
-          size="small"
-          text={isUnfollow ? 'Unfollow' : 'Follow'}
-        />
-      )}
+      {isDiscoverButton && <SDiscoverButton color="primary300" onClick={() => walletId && Router.push(`/${walletId}`)} size="small" text="Discover" />}
     </SAvatarContainer>
   );
 };
@@ -182,12 +136,10 @@ const SDetailsContainer = styled.div<{ variant?: AVATAR_VARIANT_TYPE }>`
   flex-direction: column;
   align-items: ${({ variant }) => (variant === AVATAR_VARIANT_BANNER ? 'center' : 'flex-start')};
   margin-top: ${({ variant }) => (variant === AVATAR_VARIANT_BANNER ? '1.6rem' : 0)};
-  margin-left: ${({ variant }) =>
-    variant === AVATAR_VARIANT_BANNER || variant === AVATAR_VARIANT_TRANSACTION ? 0 : '1.6rem'};
+  margin-left: ${({ variant }) => (variant === AVATAR_VARIANT_BANNER || variant === AVATAR_VARIANT_TRANSACTION ? 0 : '1.6rem')};
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    margin-left: ${({ variant }) =>
-      variant === AVATAR_VARIANT_TRANSACTION ? '1.6rem' : variant === AVATAR_VARIANT_BANNER ? 0 : '1.6rem'};
+    margin-left: ${({ variant }) => (variant === AVATAR_VARIANT_TRANSACTION ? '1.6rem' : variant === AVATAR_VARIANT_BANNER ? 0 : '1.6rem')};
   }
 
   ${({ theme }) => theme.mediaQueries.lg} {
@@ -208,7 +160,7 @@ const STopDetails = styled.div`
   }
 `;
 
-const SBottomDetails = styled.div<{ isMarginTop?: boolean }>`
+const SBottomDetails = styled.div`
   display: flex;
   align-items: center;
 
@@ -216,10 +168,6 @@ const SBottomDetails = styled.div<{ isMarginTop?: boolean }>`
     &:not(:first-child) {
       margin-left: 0.8rem;
     }
-  }
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    margin-top: ${({ isMarginTop }) => (isMarginTop ? '0.4rem' : 0)};
   }
 `;
 
@@ -257,11 +205,6 @@ const SLabel = styled.div`
   font-size: 1.6rem;
 `;
 
-const SFollowers = styled.span`
-  color: ${({ theme }) => theme.colors.neutral300};
-  font-size: 1.2rem;
-`;
-
 const SNickname = styled.span`
   color: ${({ theme }) => theme.colors.primary500};
   font-size: 1.6rem;
@@ -282,28 +225,6 @@ const STwitterIcon = styled(Icon)`
 const STwitterNickname = styled.span`
   margin-left: 0.4rem;
   font-size: 1.2rem;
-`;
-
-const SFollowButton = styled(Button)`
-  font-size: 1.2rem;
-  padding: 0.4rem 1.2rem;
-`;
-
-const SFollowButtonMobile = styled(SFollowButton)`
-  display: inline-block;
-  margin-left: 1.6rem;
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    display: none;
-  }
-`;
-
-const SFollowButtonDesktop = styled(SFollowButton)`
-  display: none;
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    display: inline-block;
-  }
 `;
 
 const SDiscoverButton = styled(Button)`

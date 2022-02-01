@@ -5,6 +5,7 @@ import { follow, isUserFollowing, unfollow } from 'actions/follower';
 import Button from 'components/ui/Button';
 import { UserType } from 'interfaces';
 import { useApp } from 'redux/hooks';
+import { computeValue } from 'utils/strings';
 
 import { FOLLOWERS_TAB } from '../constants';
 import { TabsIdType } from '../interfaces';
@@ -86,11 +87,11 @@ const ArtistStatsBlock = ({ artistWalletId, followedCount, followersCount, setCo
         />
       )}
       <SArtistStatsContainer>
-        <SArtistStatsValue>{followersCount}</SArtistStatsValue>followers
+        <SArtistStatsValue>{computeValue(followersCount)}</SArtistStatsValue>followers
         <SArtistStatsSeparator>·</SArtistStatsSeparator>
-        <SArtistStatsValue>{followedCount}</SArtistStatsValue>following
+        <SArtistStatsValue>{computeValue(followedCount)}</SArtistStatsValue>following
         <SArtistStatsSeparator>·</SArtistStatsSeparator>
-        <SArtistStatsValue>{viewsCount}</SArtistStatsValue>views
+        <SArtistStatsValue>{computeValue(viewsCount)}</SArtistStatsValue>views
       </SArtistStatsContainer>
     </SStatsContainer>
   );

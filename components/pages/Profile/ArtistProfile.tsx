@@ -9,6 +9,7 @@ import Tabs from 'components/ui/Tabs';
 import { NftType, UserType } from 'interfaces';
 import { loadMoreNfts } from 'utils/profile';
 import { loadMoreProfiles } from 'utils/profile/follow';
+import { computeValue } from 'utils/strings';
 
 import ArtistStatsBlock from './components/ArtistStatsBlock';
 import FollowersProfileBlock from './components/FollowersProfileBlock';
@@ -295,7 +296,7 @@ const Profile = ({ artist }: ProfileProps) => {
             (acc, id) => ({
               ...acc,
               [id]: {
-                badge: counts[id],
+                badge: computeValue(counts[id]),
                 content: returnContent(id),
                 label: id,
               },

@@ -12,6 +12,7 @@ import { useApp } from 'redux/hooks';
 import { loadMoreNfts } from 'utils/profile';
 import { LIKE_ACTION, LIKE_ACTION_TYPE, UNLIKE_ACTION } from 'utils/profile/constants';
 import { loadMoreProfiles } from 'utils/profile/follow';
+import { computeValue } from 'utils/strings';
 
 import FollowersProfileBlock from './components/FollowersProfileBlock';
 import { NFT_OWNED_TAB, NFT_ON_SALE_TAB, NFT_NOT_FOR_SALE_TAB, NFT_CREATED_TAB, NFT_LIKED_TAB, FOLLOWERS_TAB, FOLLOWED_TAB } from './constants';
@@ -445,7 +446,7 @@ const Profile = ({ user, userOwnedlNfts, userOwnedNftsHasNextPage }: ProfileProp
             (acc, id) => ({
               ...acc,
               [id]: {
-                badge: counts[id],
+                badge: computeValue(counts[id]),
                 content: returnContent(id),
                 label: id,
               },

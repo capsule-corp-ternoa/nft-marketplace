@@ -21,6 +21,31 @@ export function validateUrl(url: string){
   return url.match(urlRegEx)
 }
 
+export function computeValue(n: number) {
+  if (typeof n !== 'number') {
+    return (<any>n).toString();
+  }
+  if (n < 1e4) {
+    return n.toString();
+  }
+  if (n < 1e5) {
+    n = n / 1000;
+    return (Math.trunc(n * 10) / 10).toString() + 'k';
+  }
+  if (n < 1e6) {
+    n = n / 1000;
+    return Math.floor(n).toString() + 'k';
+  }
+  if (n < 1e8) {
+    n = n / 1000000;
+    return (Math.trunc(n * 10) / 10).toString() + 'M';
+  }
+  if (n < 1e9) {
+    n = n / 1000000;
+    return Math.floor(n).toString() + 'M';
+  }
+}
+
 export function computeCaps(n: number, decimals: number = 4) {
   if (typeof n !== 'number') {
     return (<any>n).toString();

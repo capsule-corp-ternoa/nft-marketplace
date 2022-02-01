@@ -139,9 +139,9 @@ const WalletConnector: React.FC<WalletConnectorProps> = ({
               </div>
               <div className={style.Text}>
                 Select chain: <select onChange={handleRequestChainIdChange} >
-                  {ternoaChains.map(chain => {
+                  {ternoaChains.map(chain => (
                     <option selected={requestChainId == chain.id} value={chain.id}>{chain.name}</option>
-                  })}
+                  ))}
                 </select>
               </div>
               <div className={style.Text}>

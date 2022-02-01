@@ -1,3 +1,5 @@
+export type LikedNFTsType = { serieId: string, nftId: string, walletId?: string };
+
 export type UserType = {
   _id: string;
   name: string;
@@ -14,7 +16,7 @@ export type UserType = {
   capsAmount?: string;
   tiimeAmount?: string;
   reviewRequested?:boolean
-  likedNFTs?: { serieId: string, nftId: string, walletId?: string }[];
+  likedNFTs?: LikedNFTsType[];
 };
 
 export type NftType = {

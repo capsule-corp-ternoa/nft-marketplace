@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import Router from 'next/router';
+import { useDispatch } from 'react-redux';
 
 import { likeNFT, unlikeNFT } from 'actions/user';
 import { Picture } from 'components/base/Avatar';
 import Button from 'components/ui/Button';
 import Chip from 'components/ui/Chip';
 import { NftType } from 'interfaces/index';
+import { appSetUserLikedNFTs } from 'redux/app';
 import { useApp } from 'redux/hooks';
 import { fadeIn, ySlide } from 'style/animations';
 import { LIKE_ACTION, LIKE_ACTION_TYPE, UNLIKE_ACTION } from 'utils/profile/constants';
@@ -45,11 +47,12 @@ const NftCard: React.FC<NftCardProps> = ({
   quantity,
 }) => {
   const { user } = useApp();
+  const dispatch = useDispatch();
   const { creator, creatorData, id: nftId, properties, serieId, smallestPrice, smallestPriceTiime, totalListedInMarketplace, totalListedNft, totalNft } = item;
 
   const [isHovering, setIsHovering] = useState(false);
   const [isLiked, setIsLiked] = useState(
-    (item.serieId === '0' ? user?.likedNFTs?.some(({ nftId }) => nftId === item.id) : user?.likedNFTs?.some(({ serieId }) => serieId === item.serieId)) ?? false
+    (serieId === '0' ? user?.likedNFTs?.some(({ nftId }) => nftId === item.id) : user?.likedNFTs?.some(({ serieId }) => serieId === item.serieId)) ?? false
   );
   const [likeLoading, setLikeLoading] = useState(false);
   const [type, setType] = useState<string | null>(null);
@@ -83,8 +86,12 @@ const NftCard: React.FC<NftCardProps> = ({
         setLikeLoading(true);
         if (isLiked) {
           await unlikeNFT(user.walletId, nftId, serieId);
+          if (user.likedNFTs && user.likedNFTs.length > 0) {
+            dispatch(appSetUserLikedNFTs(user.likedNFTs.filter((item) => item.nftId !== nftId)));
+          }
         } else {
           await likeNFT(user.walletId, nftId, serieId);
+          dispatch(appSetUserLikedNFTs(user.likedNFTs?.concat([{ serieId, nftId, walletId: user.walletId }])));
         }
         setIsLiked((prevState) => !prevState);
         setLikeLoading(false);
@@ -95,6 +102,13 @@ const NftCard: React.FC<NftCardProps> = ({
       setLikeLoading(false);
     }
   };
+
+  useEffect(() => {
+    setIsLiked(
+      (serieId === '0' ? user?.likedNFTs?.some(({ nftId }) => nftId === item.id) : user?.likedNFTs?.some(({ serieId }) => serieId === item.serieId)) ??
+        false
+    );
+  }, [user?.likedNFTs]);
 
   useEffect(() => {
     async function callBack() {

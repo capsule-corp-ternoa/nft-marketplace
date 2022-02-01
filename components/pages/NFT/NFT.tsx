@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
 
 import { getByTheSameArtistNFTs, getOwnedNFTS, getSeriesData } from 'actions/nft';
 import { likeNFT, unlikeNFT } from 'actions/user';
@@ -12,6 +13,7 @@ import Button from 'components/ui/Button';
 import Chip from 'components/ui/Chip';
 import Icon from 'components/ui/Icon';
 import { NftType } from 'interfaces';
+import { appSetUserLikedNFTs } from 'redux/app';
 import { useApp, useMarketplaceData } from 'redux/hooks';
 import { MARKETPLACE_ID } from 'utils/constant';
 import { getRandomNFTFromArray } from 'utils/functions';
@@ -26,6 +28,7 @@ export interface NFTPageProps {
 }
 
 const NFTPage = ({ NFT, type, isUserFromDappQR }: NFTPageProps) => {
+  const dispatch = useDispatch();
   const { user } = useApp();
   const { url } = useMarketplaceData();
 
@@ -139,8 +142,12 @@ const NFTPage = ({ NFT, type, isUserFromDappQR }: NFTPageProps) => {
         setLikeLoading(true);
         if (isLiked) {
           await unlikeNFT(user.walletId, NFT.id, NFT.serieId);
+          if (user.likedNFTs && user.likedNFTs.length > 0) {
+            dispatch(appSetUserLikedNFTs(user.likedNFTs.filter((item) => item.nftId !== NFT.id)));
+          }
         } else {
           await likeNFT(user.walletId, NFT.id, NFT.serieId);
+          dispatch(appSetUserLikedNFTs(user.likedNFTs?.concat([{ serieId: NFT.serieId, nftId: NFT.id, walletId: user.walletId }])));
         }
         setIsLiked((prevState) => !prevState);
         setLikeLoading(false);

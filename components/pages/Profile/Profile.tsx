@@ -8,6 +8,7 @@ import { Container, Wrapper } from 'components/layout/Container';
 import Button from 'components/ui/Button';
 import Tabs from 'components/ui/Tabs';
 import { NftType, UserType } from 'interfaces';
+import { useApp } from 'redux/hooks';
 import { loadMoreNfts } from 'utils/profile';
 import { LIKE_ACTION, LIKE_ACTION_TYPE, UNLIKE_ACTION } from 'utils/profile/constants';
 import { loadMoreProfiles } from 'utils/profile/follow';
@@ -24,8 +25,9 @@ export interface ProfileProps {
   userOwnedNftsHasNextPage: boolean;
 }
 
-const Profile = ({ userOwnedlNfts, userOwnedNftsHasNextPage, user }: ProfileProps) => {
-  const { banner, bio, likedNFTs, name, picture, twitterName, verified, walletId } = user;
+const Profile = ({ user, userOwnedlNfts, userOwnedNftsHasNextPage }: ProfileProps) => {
+  const { user: reduxUser } = useApp();
+  const { banner, bio, likedNFTs, name, picture, twitterName, verified, walletId } = reduxUser ?? user;
 
   const [isLoading, setIsLoading] = useState(false);
   const [profileDataLoaded, setProfileDataLoaded] = useState(false);
@@ -359,6 +361,24 @@ const Profile = ({ userOwnedlNfts, userOwnedNftsHasNextPage, user }: ProfileProp
 
     return returnNFTs(tabId);
   };
+
+  useEffect(() => {
+    const resetPaginationLikedNFTs = async () => {
+      setIsLoading(true);
+      try {
+        const liked = await getLikedNFTs(walletId, undefined, undefined);
+        setLikedCurrentPage(1);
+        setLikedNfts(liked.data);
+        setLikedNftsHasNextPage(liked.hasNextPage);
+        setIsLoading(false);
+      } catch (error) {
+        console.log(error);
+        setIsLoading(false);
+      }
+    };
+
+    resetPaginationLikedNFTs();
+  }, [likedNFTs]);
 
   useEffect(() => {
     setProfileDataLoaded(false);

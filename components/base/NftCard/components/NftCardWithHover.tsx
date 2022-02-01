@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import Router from 'next/router';
 import styled, { css } from 'styled-components';
 
+import { likeNFT, unlikeNFT } from 'actions/user';
 import { Picture } from 'components/base/Avatar';
 import Chip from 'components/ui/Chip';
-import { NftType, NFTsNominalSetState } from 'interfaces/index';
-import { toggleLike } from 'utils/profile';
+import { NftType } from 'interfaces/index';
 import { LIKE_ACTION, LIKE_ACTION_TYPE, UNLIKE_ACTION } from 'utils/profile/constants';
 import { computeCaps, computeTiime } from 'utils/strings';
 import { useApp } from 'redux/hooks';
@@ -23,8 +23,7 @@ interface Props {
   item: NftType;
   mode?: ModeType;
   quantity?: number;
-  handleLikeCount?: (action: LIKE_ACTION_TYPE) => void;
-  setLikedNfts?: NFTsNominalSetState;
+  handleLike?: (action: LIKE_ACTION_TYPE, nft?: NftType) => void;
 }
 
 function manageRouting(e: React.MouseEvent<HTMLDivElement, MouseEvent>, id: string) {
@@ -32,22 +31,12 @@ function manageRouting(e: React.MouseEvent<HTMLDivElement, MouseEvent>, id: stri
   Router.push(`/${id}`);
 }
 
-const NftCardWithHover = ({
-  className,
-  isDragging,
-  item,
-  mode,
-  quantity,
-  handleLikeCount,
-  setLikedNfts,
-}: Props) => {
+const NftCardWithHover = ({ className, isDragging, item, mode, quantity, handleLike }: Props) => {
   const { user } = useApp();
-  const { creator, creatorData, smallestPrice, smallestPriceTiime } = item;
+  const { creator, creatorData, id: nftId, serieId, smallestPrice, smallestPriceTiime } = item;
   const [isHovering, setIsHovering] = useState(false);
   const [isLiked, setIsLiked] = useState(
-    (item.serieId === '0'
-      ? user?.likedNFTs?.some(({ nftId }) => nftId === item.id)
-      : user?.likedNFTs?.some(({ serieId }) => serieId === item.serieId)) ?? false
+    (item.serieId === '0' ? user?.likedNFTs?.some(({ nftId }) => nftId === item.id) : user?.likedNFTs?.some(({ serieId }) => serieId === item.serieId)) ?? false
   );
   const [likeLoading, setLikeLoading] = useState(false);
 
@@ -55,15 +44,14 @@ const NftCardWithHover = ({
     try {
       if (!likeLoading && user?.walletId) {
         setLikeLoading(true);
-        await toggleLike(
-          item,
-          isLiked ? UNLIKE_ACTION : LIKE_ACTION,
-          user.walletId,
-          setIsLiked,
-          setLikedNfts,
-          handleLikeCount
-        );
+        if (isLiked) {
+          await unlikeNFT(user.walletId, nftId, serieId);
+        } else {
+          await likeNFT(user.walletId, nftId, serieId);
+        }
+        setIsLiked((prevState) => !prevState);
         setLikeLoading(false);
+        if (handleLike) await handleLike(isLiked ? UNLIKE_ACTION : LIKE_ACTION, item);
       }
     } catch (error) {
       console.error(error);
@@ -127,9 +115,7 @@ const NftCardWithHover = ({
                   walletId={creatorData?.walletId}
                 />
               </SCreatorPicture>
-              <SCreatorName isHovering={isHovering}>
-                {creatorData?.name || `Ternoa #${creator.slice(0, 5)}`}
-              </SCreatorName>
+              <SCreatorName isHovering={isHovering}>{creatorData?.name || `Ternoa #${creator.slice(0, 5)}`}</SCreatorName>
             </SCreatorContainer>
           )}
           {smallestPriceWording && (

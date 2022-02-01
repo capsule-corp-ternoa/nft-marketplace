@@ -136,23 +136,16 @@ const Profile = ({ artist }: ProfileProps) => {
         };
 
         return (
-          <>
-            {/* TODO: add this when NFT sale if available and remove react-responsive */}
-            {/* {isTablet && <NftSaleLink />} */}
-            <NftsGrid
-              NFTs={ownedNftsListed}
-              isLoading={!profileDataLoaded || isLoading}
-              isLoadMore={ownedNftsListedHasNextPage}
-              loadMore={loadMoreOwnedListedNfts}
-              noNftHref="/"
-              noNftLinkLabel="Sell your NFT"
-              noNftTitle="Nothing to display"
-              tabId={tabId}
-            >
-              {/* TODO: add this when NFT sale if available and remove react-responsive */}
-              {/* {!isTablet && <NftSaleLink />} */}
-            </NftsGrid>
-          </>
+          <NftsGrid
+            NFTs={ownedNftsListed}
+            isLoading={!profileDataLoaded || isLoading}
+            isLoadMore={ownedNftsListedHasNextPage}
+            loadMore={loadMoreOwnedListedNfts}
+            noNftHref="/"
+            noNftLinkLabel="Sell your NFT"
+            noNftTitle="Nothing to display"
+            tabId={tabId}
+          />
         );
       }
     }

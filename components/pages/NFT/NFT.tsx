@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { getByTheSameArtistNFTs, getOwnedNFTS, getSeriesData } from 'actions/nft';
+import { likeNFT, unlikeNFT } from 'actions/user';
 import Avatar from 'components/base/Avatar';
 import Media from 'components/base/Media';
 import { ModalBuy, ModalCheckout, ModalShare, ModalShowcase } from 'components/base/Modal';
@@ -14,8 +15,6 @@ import { NftType } from 'interfaces';
 import { useApp, useMarketplaceData } from 'redux/hooks';
 import { MARKETPLACE_ID } from 'utils/constant';
 import { getRandomNFTFromArray } from 'utils/functions';
-import { toggleLike } from 'utils/profile';
-import { LIKE_ACTION, UNLIKE_ACTION } from 'utils/profile/constants';
 import { computeCaps, computeTiime } from 'utils/strings';
 
 import Details from './Details';
@@ -138,7 +137,12 @@ const NFTPage = ({ NFT, type, isUserFromDappQR }: NFTPageProps) => {
     try {
       if (!likeLoading && user?.walletId) {
         setLikeLoading(true);
-        await toggleLike(NFT, isLiked ? UNLIKE_ACTION : LIKE_ACTION, user.walletId, setIsLiked);
+        if (isLiked) {
+          await unlikeNFT(user.walletId, NFT.id, NFT.serieId);
+        } else {
+          await likeNFT(user.walletId, NFT.id, NFT.serieId);
+        }
+        setIsLiked((prevState) => !prevState);
         setLikeLoading(false);
       }
     } catch (error) {

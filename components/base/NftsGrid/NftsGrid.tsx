@@ -5,7 +5,7 @@ import { NftCardWithHover, GRID_MODE } from 'components/base/NftCard';
 import NoNFTComponent from 'components/base/NoNFTComponent';
 import Button from 'components/ui/Button';
 import { Loader } from 'components/ui/Icon';
-import { NftType, NFTsNominalSetState } from 'interfaces';
+import { NftType } from 'interfaces';
 import {
   TabsIdType,
   NFT_OWNED_TAB,
@@ -27,8 +27,7 @@ interface Props {
   noNftHref?: string;
   noNftLinkLabel?: string;
   noNftTitle: string;
-  handleLikeCount?: (action: LIKE_ACTION_TYPE) => void;
-  setLikedNfts?: NFTsNominalSetState;
+  handleNftLike?: (action: LIKE_ACTION_TYPE, nft?: NftType) => void;
   tabId?: TabsIdType;
 }
 
@@ -42,8 +41,7 @@ const NftsGrid = ({
   noNftHref,
   noNftLinkLabel,
   noNftTitle,
-  handleLikeCount,
-  setLikedNfts,
+  handleNftLike,
   tabId,
 }: Props) => {
   const returnQuantityNFTsAvailable = (NFT: NftType, tabId?: TabsIdType) => {
@@ -93,8 +91,7 @@ const NftsGrid = ({
             item={item}
             mode={GRID_MODE}
             quantity={returnQuantityNFTsAvailable(item, tabId)}
-            handleLikeCount={handleLikeCount}
-            setLikedNfts={setLikedNfts}
+            handleLike={handleNftLike}
           />
         ))}
         {children}

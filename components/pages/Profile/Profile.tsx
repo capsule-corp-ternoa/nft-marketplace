@@ -162,7 +162,7 @@ const Profile = ({ userOwnedlNfts, userOwnedNftsHasNextPage, user }: ProfileProp
             noNftHref="/create"
             noNftLinkLabel="Create your NFT"
             noNftTitle="Nothing to display"
-            handleLikeCount={handleLikeCount}
+            handleNftLike={handleLikeCount}
             tabId={tabId}
           />
         );
@@ -173,16 +173,26 @@ const Profile = ({ userOwnedlNfts, userOwnedNftsHasNextPage, user }: ProfileProp
           await loadMoreNfts(walletId, likedCurrentPage, setLikedCurrentPage, setLikedNftsHasNextPage, setLikedNfts, tabId);
           setIsLoading(false);
         };
+
+        const handleNftLiked = async (action: LIKE_ACTION_TYPE, nft?: NftType): Promise<void> => {
+          if (nft !== undefined) {
+            const isMoreLikedNfts = likedNfts.length < counts[NFT_LIKED_TAB];
+            const { data, hasNextPage } = isMoreLikedNfts ? await getLikedNFTs(walletId, (likedNfts.length).toString(), '1') : { data: [], hasNextPage: false };
+            setLikedNfts((prevState) => prevState.filter(({ id }) => id !== nft.id).concat(data));
+            setLikedNftsHasNextPage(Boolean(hasNextPage));
+          }
+          handleLikeCount(action);
+        };
+
         return (
           <NftsGrid
             NFTs={likedNfts}
             isLoading={!profileDataLoaded || isLoading}
-            isLoadMore={!!likedNftsHasNextPage}
+            isLoadMore={likedNftsHasNextPage}
             loadMore={loadMoreLikedNfts}
             noNftBody="The NFTs you liked are displayed here"
             noNftTitle="Nothing to display"
-            handleLikeCount={handleLikeCount}
-            setLikedNfts={setLikedNfts}
+            handleNftLike={handleNftLiked}
             tabId={tabId}
           />
         );
@@ -206,7 +216,7 @@ const Profile = ({ userOwnedlNfts, userOwnedNftsHasNextPage, user }: ProfileProp
               noNftHref="/"
               noNftLinkLabel="Sell your NFT"
               noNftTitle="Nothing to display"
-              handleLikeCount={handleLikeCount}
+              handleNftLike={handleLikeCount}
               tabId={tabId}
             >
               {/* TODO: add this when NFT sale if available and remove react-responsive */}
@@ -237,7 +247,7 @@ const Profile = ({ userOwnedlNfts, userOwnedNftsHasNextPage, user }: ProfileProp
             loadMore={loadMoreOwnedUnlistedNfts}
             noNftBody="The NFTs you owned and are not for sale are displayed here"
             noNftTitle="Nothing to display"
-            handleLikeCount={handleLikeCount}
+            handleNftLike={handleLikeCount}
             tabId={tabId}
           />
         );
@@ -260,7 +270,7 @@ const Profile = ({ userOwnedlNfts, userOwnedNftsHasNextPage, user }: ProfileProp
             noNftHref="/explore"
             noNftLinkLabel="Explore NFTs"
             noNftTitle="Nothing to display"
-            handleLikeCount={handleLikeCount}
+            handleNftLike={handleLikeCount}
             tabId={tabId}
           />
         );

@@ -59,8 +59,6 @@ export type NftType = {
   seriesLocked?: boolean;
 };
 
-export type NFTsNominalSetState = React.Dispatch<React.SetStateAction<NftType[]>>;
-
 export const NFT_EFFECT_BLUR = 'blur';
 export const NFT_EFFECT_DEFAULT = 'default';
 export const NFT_EFFECT_PROTECT = 'protect';

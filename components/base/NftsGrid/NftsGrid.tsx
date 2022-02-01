@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import NftCard, { GRID_MODE } from 'components/base/NftCard';
+import NftCard from 'components/base/NftCard';
 import NoNFTComponent from 'components/base/NoNFTComponent';
 import Button from 'components/ui/Button';
 import { Loader } from 'components/ui/Icon';
@@ -86,14 +86,12 @@ const NftsGrid = ({
     <>
       <SNFTsContainer>
         {NFTs.map((item: NftType) => (
-          <SNftCardContainer key={item.id}>
-            <NftCard
-              handleLike={handleNftLike}
-              item={item}
-              mode={GRID_MODE}
-              quantity={returnQuantityNFTsAvailable(item, tabId)}
-            />
-          </SNftCardContainer>
+          <SNftCard
+            key={item.id}
+            handleLike={handleNftLike}
+            item={item}
+            quantity={returnQuantityNFTsAvailable(item, tabId)}
+          />
         ))}
         {children}
       </SNFTsContainer>
@@ -156,8 +154,25 @@ const SNFTsContainer = styled.div`
   }
 `;
 
-const SNftCardContainer = styled.div`
+const SNftCard = styled(NftCard)`
   margin: 0 auto;
+  height: ${({ theme }) => theme.sizes.cardHeight.md};
+  width: ${({ theme }) => theme.sizes.cardWidth.md};
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    height: ${({ theme }) => theme.sizes.cardHeight.sm};
+    width: ${({ theme }) => theme.sizes.cardWidth.sm};
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    height: ${({ theme }) => theme.sizes.cardHeight.md};
+    width: ${({ theme }) => theme.sizes.cardWidth.md};
+  }
+
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    height: ${({ theme }) => theme.sizes.cardHeight.sm};
+    width: ${({ theme }) => theme.sizes.cardWidth.sm};
+  }
 `;
 
 export default NftsGrid;

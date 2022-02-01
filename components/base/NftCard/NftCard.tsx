@@ -13,15 +13,12 @@ import { LIKE_ACTION, LIKE_ACTION_TYPE, UNLIKE_ACTION } from 'utils/profile/cons
 import { computeCaps, computeTiime } from 'utils/strings';
 
 import Media from '../Media';
-import { CAROUSEL_MODE, GRID_MODE } from './constants';
-import { ModeType } from './interfaces';
 
 export interface NftCardProps {
   className?: string;
   handleLike?: (action: LIKE_ACTION_TYPE, nft?: NftType) => void;
   isDragging?: boolean;
   item: NftType;
-  mode?: ModeType;
   noHover?: boolean;
   noStatsChips?: boolean;
   noAvailableChip?: boolean;
@@ -40,7 +37,6 @@ const NftCard: React.FC<NftCardProps> = ({
   handleLike,
   isDragging,
   item,
-  mode,
   noHover = false,
   noStatsChips = false,
   noAvailableChip = false,
@@ -120,7 +116,6 @@ const NftCard: React.FC<NftCardProps> = ({
     <SMediaWrapper
       onClick={() => !isDragging && Router.push(`/nft/${item.id}`)}
       className={className}
-      mode={mode}
       onFocus={() => false}
       onBlur={() => false}
       onMouseOut={() => setIsHovering(false)}
@@ -195,7 +190,7 @@ const NftCard: React.FC<NftCardProps> = ({
   );
 };
 
-const SMediaWrapper = styled.div<{ mode?: ModeType }>`
+const SMediaWrapper = styled.div`
   display: flex;
   align-items: center;
   position: relative;
@@ -207,48 +202,13 @@ const SMediaWrapper = styled.div<{ mode?: ModeType }>`
   overflow: hidden;
   transform: translateZ(0);
 
-  ${({ mode, theme }) => {
-    switch (mode) {
-      case CAROUSEL_MODE: {
-        return `
-          height: ${theme.sizes.cardHeight.sm};
-          width: ${theme.sizes.cardWidth.sm};
+  height: ${({ theme }) => theme.sizes.cardHeight.sm};
+  width: ${({ theme }) => theme.sizes.cardWidth.sm};
 
-          ${theme.mediaQueries.xxl} {
-            height: ${theme.sizes.cardHeight.md};
-            width: ${theme.sizes.cardWidth.md};
-          }
-        `;
-      }
-      case GRID_MODE: {
-        return `
-          height: ${theme.sizes.cardHeight.md};
-          width: ${theme.sizes.cardWidth.md};
-
-          ${theme.mediaQueries.sm} {
-            height: ${theme.sizes.cardHeight.sm};
-            width: ${theme.sizes.cardWidth.sm};
-          }
-
-          ${theme.mediaQueries.md} {
-            height: ${theme.sizes.cardHeight.md};
-            width: ${theme.sizes.cardWidth.md};
-          }
-
-          ${theme.mediaQueries.xxl} {
-            height: ${theme.sizes.cardHeight.sm};
-            width: ${theme.sizes.cardWidth.sm};
-          }
-        `;
-      }
-      default: {
-        return `
-          height: ${theme.sizes.cardHeight.sm};
-          width: ${theme.sizes.cardWidth.sm};
-        `;
-      }
-    }
-  }}
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    height: ${({ theme }) => theme.sizes.cardHeight.md};
+    width: ${({ theme }) => theme.sizes.cardWidth.md};
+  }
 `;
 
 const SChipWrapper = styled.div`

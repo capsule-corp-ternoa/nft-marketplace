@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { NftCardWithHover, GRID_MODE } from 'components/base/NftCard';
+import NftCard, { GRID_MODE } from 'components/base/NftCard';
 import NoNFTComponent from 'components/base/NoNFTComponent';
 import Button from 'components/ui/Button';
 import { Loader } from 'components/ui/Icon';
@@ -86,13 +86,14 @@ const NftsGrid = ({
     <>
       <SNFTsContainer>
         {NFTs.map((item: NftType) => (
-          <SNftCardWithHover
-            key={item.id}
-            item={item}
-            mode={GRID_MODE}
-            quantity={returnQuantityNFTsAvailable(item, tabId)}
-            handleLike={handleNftLike}
-          />
+          <SNftCardContainer key={item.id}>
+            <NftCard
+              handleLike={handleNftLike}
+              item={item}
+              mode={GRID_MODE}
+              quantity={returnQuantityNFTsAvailable(item, tabId)}
+            />
+          </SNftCardContainer>
         ))}
         {children}
       </SNFTsContainer>
@@ -155,7 +156,7 @@ const SNFTsContainer = styled.div`
   }
 `;
 
-const SNftCardWithHover = styled(NftCardWithHover)`
+const SNftCardContainer = styled.div`
   margin: 0 auto;
 `;
 

@@ -79,6 +79,8 @@ const Showcase3D = ({ list, selectedIdx, setSelectedItem }: Props) => {
             mode={CAROUSEL_MODE}
             item={item}
             isDragging={isDragging || selectedIdx !== idx}
+            noHover
+            noStatsChips
           />
         </SLabel>
       ))}

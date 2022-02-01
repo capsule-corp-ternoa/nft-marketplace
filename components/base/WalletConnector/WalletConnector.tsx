@@ -6,7 +6,7 @@ import { PairingTypes } from "@walletconnect/types";
 import QRCodeModal from "@walletconnect/legacy-modal";
 import { getAppMetadata } from "@walletconnect/utils";
 import Close from 'components/assets/close';
-import style from './TernoaWallet.module.scss';
+import style from './WalletConnector.module.scss';
 export interface WalletConnectorProps {
   setModalExpand: (b: boolean) => void;
 }
@@ -53,6 +53,9 @@ const WalletConnector: React.FC<WalletConnectorProps> = ({
       });
     });
     (client as WalletConnect).on(CLIENT_EVENTS.pairing.created, async (proposal: PairingTypes.Settled) => {
+      console.log('pairing.created', proposal);
+    });
+    (client as WalletConnect).on(CLIENT_EVENTS.session.created, async (proposal: PairingTypes.Settled) => {
       console.log('pairing.created', proposal);
       QRCodeModal.close();
       setPairingSuccess(true)

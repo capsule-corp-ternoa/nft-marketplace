@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useEffect, useState } from 'react';
 import WalletConnect, { CLIENT_EVENTS } from '@walletconnect/client';
-import { WALLET_CONNECT, CHAINS } from 'utils/chains.const';
+import { WALLET_CONNECT, CHAINS, ternoaCommonRpcMethods } from 'utils/chains.const';
 import { ClientTypes, PairingTypes, SessionTypes } from "@walletconnect/types";
 import QRCodeModal from "@walletconnect/legacy-modal";
 import { getAppMetadata } from "@walletconnect/utils";
@@ -34,9 +34,7 @@ const WalletConnector: React.FC<WalletConnectorProps> = ({
   }, [client]);
   const ternoaChains = [CHAINS.TERNOA.STAGING, CHAINS.TERNOA.TESTNET];
   const ternoaChainIds = ternoaChains.map(chain => chain.id);
-  const ternoaRpcMethods = [...CHAINS.TERNOA.STAGING.rpcMethods, ...CHAINS.TERNOA.TESTNET.rpcMethods].filter((rpc, index, a) => {
-    return a.indexOf(rpc) == index;
-  });
+  const ternoaRpcMethods = ternoaCommonRpcMethods;
   const init = async () => {
     const _client: WalletConnect = await WalletConnect.init({
       projectId: WALLET_CONNECT.projectId,

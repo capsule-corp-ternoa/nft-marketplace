@@ -1,3 +1,4 @@
+export const rpsMethods=["nft_mint",""]
 export const CHAINS = {
     ETH: {
         id: "eip155:1",
@@ -10,11 +11,13 @@ export const CHAINS = {
     TERNOA: {
         STAGING: {
             id: 'polkadot:d44bcfb0e98da45ace37e4df8469e5db',
-            rpcMethods: [],
+            name: 'Ternoa Staging Chaos net',
+            rpcMethods: ["nft_mint"],
         },
         TESTNET: {
             id: 'polkadot:d9adfc7ea82be63ba28088d62b96e927',
-            rpcMethods: [],
+            name: 'Ternoa Testnet',
+            rpcMethods: ["nft_mint"],
         }
     }
 }

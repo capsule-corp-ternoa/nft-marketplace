@@ -22,7 +22,7 @@ const WalletConnector: React.FC<WalletConnectorProps> = ({
   const [modalVisible, setModalVisible] = useState(false);
   const [requestorVisible, setRequestorVisible] = useState(false);
   const [client, setClient] = useState<WalletConnect | null>(null);
-  const [, setUri] = useState<string | null>(null);
+  const [uri, setUri] = useState<string | null>(null);
   useEffect(() => {
     init();
   }, []);
@@ -55,7 +55,7 @@ const WalletConnector: React.FC<WalletConnectorProps> = ({
       // uri should be shared with the Wallet either through QR Code scanning or mobile deep linking
       const { uri: _uri } = proposal.signal.params;
       setUri(_uri);
-      console.log("EVENT", "QR Code Modal open");
+      console.log("EVENT", "QR Code Modal open", _uri);
       QRCodeModal.open(_uri, () => {
         console.log("EVENT", "QR Code Modal closed");
         setModalExpand(false);
@@ -73,12 +73,15 @@ const WalletConnector: React.FC<WalletConnectorProps> = ({
   };
   const onPairingSuccessClick = () => {
     setRequestChainId(CHAINS.TERNOA.STAGING.id)
+    setRequestMethod(ternoaRpcMethods[0])
+    setPairingSuccess(false);
     setRequestorVisible(true);
   }
   const handleClose = () => {
     setModalVisible(false);
   }
   const connect = async () => {
+    console.log('connect', ternoaChainIds, ternoaRpcMethods);
     const _session = await (client as WalletConnect).connect({
       metadata: getAppMetadata(),
       permissions: {
@@ -93,7 +96,7 @@ const WalletConnector: React.FC<WalletConnectorProps> = ({
     console.log('session', _session);
     setSession(_session);
   };
-  const handleRequestMethodChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleRequestMethodChange = (event: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
     setRequestMethod(event.target.value);
 
   };
@@ -126,13 +129,18 @@ const WalletConnector: React.FC<WalletConnectorProps> = ({
           />
           {pairingSuccess ?
             <div className={style.Text}>
-              <div onClick={onPairingSuccessClick}>Paring success!</div>
+              <div onClick={onPairingSuccessClick}>Pairing success!</div>
             </div>
             : null}
           {requestorVisible ?
             <>
               <div className={style.Text}>
-                Method: <input onChange={handleRequestMethodChange} />
+                Method: <select onChange={handleRequestMethodChange} >
+                  {ternoaRpcMethods.map((ternoaRpcMethod) => (
+                    <option selected={requestMethod == ternoaRpcMethod} value={ternoaRpcMethod}>{ternoaRpcMethod}</option>
+                  ))}
+                  Other: <input onChange={handleRequestMethodChange} />
+                </select>
               </div>
               <div className={style.Text}>
                 Params (pass a stringified array): <input onChange={handleRequestParamsChange} />

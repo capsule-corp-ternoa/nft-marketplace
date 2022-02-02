@@ -53,6 +53,7 @@ const FloatingHeader: React.FC = () => {
                 setIsExpanded(false);
               }}
               size="medium"
+              suppressHydrationWarning
               text="Connect Wallet"
               variant="contained"
             />

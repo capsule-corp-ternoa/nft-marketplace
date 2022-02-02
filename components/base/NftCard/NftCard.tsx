@@ -160,22 +160,21 @@ const NftCard: React.FC<NftCardProps> = ({
         <>
           <SHoverFilter isHovering={isHovering} />
           <SHoverContainer isHovering={isHovering}>
-            {isUserLogged && (
-              <SLikeButtonContainer isHovering={isHovering}>
-                <Button
-                  color={isLiked ? 'primary500' : 'neutral600'}
-                  disabled={likeLoading}
-                  icon="heart"
-                  isLoading={likeLoading}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    toggleLikeDislike();
-                  }}
-                  size="small"
-                  variant="contained"
-                />
-              </SLikeButtonContainer>
-            )}
+            <SLikeButtonContainer isHovering={isHovering}>
+              <Button
+                color={isLiked ? 'primary500' : 'neutral600'}
+                disabled={!isUserLogged || likeLoading}
+                icon="heart"
+                isLoading={likeLoading}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleLikeDislike();
+                }}
+                size="small"
+                suppressHydrationWarning
+                variant="contained"
+              />
+            </SLikeButtonContainer>
             <SInfosContainer>
               {isCreator && (
                 <SCreatorContainer onClick={(e) => manageRouting(e, creator)}>

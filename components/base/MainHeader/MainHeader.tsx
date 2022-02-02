@@ -60,6 +60,7 @@ const MainHeader: React.FC = () => {
                     color="contrast"
                     onClick={() => setIsModalWalletExpanded(true)}
                     size="medium"
+                    suppressHydrationWarning
                     text="Connect"
                     variant="outlined"
                   />

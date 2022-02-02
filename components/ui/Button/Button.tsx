@@ -17,6 +17,7 @@ interface Props extends IButton {
   href?: string;
   icon?: IconNameType;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  suppressHydrationWarning?: boolean;
   text?: string;
 }
 
@@ -130,6 +131,7 @@ const Button = ({
   noHover = false,
   onClick,
   size = 'medium',
+  suppressHydrationWarning,
   text,
   variant = 'contained',
 }: Props) => {
@@ -161,6 +163,7 @@ const Button = ({
       onClick={onClick}
       size={size}
       variant={variant}
+      suppressHydrationWarning={suppressHydrationWarning}
     >
       {isLoading ? (
         <SLoader color={color ?? 'invertedContrast'} size={size} variant={variant} />

@@ -104,10 +104,9 @@ const ButtonStyle = css<IButton>`
       case 'invertedContrast':
       case 'neutral600':
       case 'neutral300':
-      case 'neutral600':
       case 'neutral100':
       case 'whiteBlur':
-        return theme.colors.neutral600;
+        return theme.colors.neutral400;
       default:
         return theme.colors[color];
     }

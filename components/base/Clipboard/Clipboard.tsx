@@ -100,7 +100,7 @@ const SLabel = styled.span`
 
 const SCopyIcon = styled(Icon)<{ variant?: AVATAR_VARIANT_TYPE }>`
   width: 1.2rem;
-  fill: ${({ theme }) => theme.colors.neutral600};
+  fill: ${({ theme }) => theme.colors.neutral300};
   margin-left: 0.8rem;
 
   ${({ variant }) =>

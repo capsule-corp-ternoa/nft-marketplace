@@ -101,7 +101,7 @@ const SButtonWrapper = styled.div`
 const SLinkSection = styled.div`
   > * {
     width: 100%;
-    border-bottom: ${({ theme }) => `1px solid ${theme.colors.neutral600}`};
+    border-bottom: ${({ theme }) => `1px solid ${theme.colors.neutral100}`};
     cursor: pointer;
     margin: 1.6rem 0;
     padding-bottom: 0.8rem;

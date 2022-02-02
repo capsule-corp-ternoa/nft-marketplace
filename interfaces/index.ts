@@ -1,3 +1,5 @@
+export type LikedNFTsType = { serieId: string, nftId: string, walletId?: string };
+
 export type UserType = {
   _id: string;
   name: string;
@@ -14,7 +16,7 @@ export type UserType = {
   capsAmount?: string;
   tiimeAmount?: string;
   reviewRequested?:boolean
-  likedNFTs?: { serieId: string, nftId: string, walletId?: string }[];
+  likedNFTs?: LikedNFTsType[];
 };
 
 export type NftType = {
@@ -58,8 +60,6 @@ export type NftType = {
   marketplaceId?: string;
   seriesLocked?: boolean;
 };
-
-export type NFTsNominalSetState = React.Dispatch<React.SetStateAction<NftType[]>>;
 
 export const NFT_EFFECT_BLUR = 'blur';
 export const NFT_EFFECT_DEFAULT = 'default';
@@ -119,25 +119,3 @@ export type CustomResponse<DataType> = {
   hasPreviousPage: boolean;
   data: DataType[]
 }
-
-export const NFT_OWNED_TAB = 'My NFTs';
-export const NFT_ON_SALE_TAB = 'On sale';
-export const NFT_NOT_FOR_SALE_TAB = 'Not for sale';
-export const NFT_CREATED_TAB = 'Created';
-export const NFT_LIKED_TAB = 'Liked';
-export const FOLLOWERS_TAB = 'Followers';
-export const FOLLOWED_TAB = 'Following';
-export const EXPLORE_TAB = 'Explore';
-
-const ALL_TABS_ID = [
-  NFT_OWNED_TAB,
-  NFT_ON_SALE_TAB,
-  NFT_NOT_FOR_SALE_TAB,
-  NFT_CREATED_TAB,
-  NFT_LIKED_TAB,
-  FOLLOWERS_TAB,
-  FOLLOWED_TAB,
-  EXPLORE_TAB,
-] as const;
-
-export type TabsIdType = typeof ALL_TABS_ID[number];

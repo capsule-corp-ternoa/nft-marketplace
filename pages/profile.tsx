@@ -5,20 +5,10 @@ import BetaBanner from 'components/base/BetaBanner';
 import FloatingHeader from 'components/base/FloatingHeader';
 import Footer from 'components/base/Footer';
 import MainHeader from 'components/base/MainHeader';
-import Profile, { USER_PERSONNAL_PROFILE_VARIANT } from 'components/pages/Profile';
+import { Profile } from 'components/pages/Profile';
 import { getOwnedNFTS } from 'actions/nft';
 import { getUser } from 'actions/user';
-import {
-  NftType,
-  FOLLOWERS_TAB,
-  FOLLOWED_TAB,
-  NFT_ON_SALE_TAB,
-  NFT_NOT_FOR_SALE_TAB,
-  NFT_CREATED_TAB,
-  NFT_LIKED_TAB,
-  NFT_OWNED_TAB,
-  UserType,
-} from 'interfaces';
+import { NftType, UserType } from 'interfaces';
 import { appSetUser } from 'redux/app';
 import { useMarketplaceData } from 'redux/hooks';
 import { wrapper } from 'redux/store';
@@ -29,16 +19,6 @@ export interface ProfilePageProps {
   ownedHasNextPage: boolean;
   user: UserType;
 }
-
-const ORDERED_TABS_ID = [
-  NFT_OWNED_TAB,
-  NFT_ON_SALE_TAB,
-  NFT_NOT_FOR_SALE_TAB,
-  NFT_CREATED_TAB,
-  NFT_LIKED_TAB,
-  FOLLOWERS_TAB,
-  FOLLOWED_TAB,
-] as const;
 
 const ProfilePage = ({ owned, ownedHasNextPage, user }: ProfilePageProps) => {
   const { name } = useMarketplaceData();
@@ -53,13 +33,7 @@ const ProfilePage = ({ owned, ownedHasNextPage, user }: ProfilePageProps) => {
       </Head>
       <BetaBanner />
       <MainHeader />
-      <Profile
-        rawUser={user}
-        userOwnedlNfts={owned}
-        userOwnedNftsHasNextPage={ownedHasNextPage}
-        tabs={ORDERED_TABS_ID}
-        variant={USER_PERSONNAL_PROFILE_VARIANT}
-      />
+      <Profile user={user} userOwnedlNfts={owned} userOwnedNftsHasNextPage={ownedHasNextPage} />
       <Footer />
       <FloatingHeader />
     </>

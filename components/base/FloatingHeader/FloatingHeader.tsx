@@ -53,6 +53,7 @@ const FloatingHeader: React.FC = () => {
                 setIsExpanded(false);
               }}
               size="medium"
+              suppressHydrationWarning
               text="Connect Wallet"
               variant="contained"
             />
@@ -117,7 +118,7 @@ const SWrapper = styled.div`
 `;
 
 const SBurgerContainer = styled.button`
-  padding: 1.6rem;
+  padding: 1.2rem 0.8rem;
   display: inline-block;
   cursor: pointer;
   transition-property: opacity, filter;

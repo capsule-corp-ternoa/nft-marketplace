@@ -89,13 +89,13 @@ const SLoader = styled(Loader)`
 `;
 
 const scaleInAnimation = css<{ isHovering: boolean }>`
-  animation-fill-mode: forwards;
   animation: ${scale('1', '1.08')} 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+  animation-fill-mode: forwards;
 `;
 
 const scaleOutAnimation = css<{ isHovering: boolean }>`
-  animation-fill-mode: forwards;
   animation: ${scale('1.08', '1')} 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+  animation-fill-mode: forwards;
 `;
 
 const SImage = styled.img<{ isHovering: boolean }>`

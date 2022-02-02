@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { Picture, AVATAR_VARIANT_MOSAIC } from 'components/base/Avatar';
-import { NftCardWithHover, CAROUSEL_MODE } from 'components/base/NftCard';
+import NftCard from 'components/base/NftCard';
 import Icon from 'components/ui/Icon';
 
 import { UserType, NftType } from 'interfaces/index';
@@ -23,7 +23,7 @@ const ArtCreators = ({ creators, NFTs }: ArtCreatorsProps) => (
         <SNftsContainer>
           {NFTs.map((item) => (
             <div key={item.id}>
-              <NftCardWithHover item={item} mode={CAROUSEL_MODE} />
+              <NftCard item={item} />
             </div>
           ))}
         </SNftsContainer>
@@ -80,7 +80,6 @@ const SNftsContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 2.4rem;
-  margin: 0 auto;
   overflow-x: auto;
   width: 100%;
 

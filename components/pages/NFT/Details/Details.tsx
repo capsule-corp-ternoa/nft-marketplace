@@ -178,7 +178,7 @@ const Details: React.FC<DetailsProps> = ({
       <SRows key={NFTRowId} style={{ ...style, height: (style?.height as any) - GUTTER_SIZE }}>
         <SRowWrapper>
           <SStatusChipMobileWrapper>
-            <Chip color="primary300" size="medium" text="Owner" variant="round" />
+            <Chip color="primary200" size="medium" text="Owner" variant="round" />
           </SStatusChipMobileWrapper>
           <SRowDatas>
             <Avatar
@@ -239,7 +239,7 @@ const Details: React.FC<DetailsProps> = ({
       <SRows key={id} style={{ ...style, height: (style?.height as any) - GUTTER_SIZE }}>
         <SRowWrapper>
           <SStatusChipMobileWrapper>
-            <Chip color="primary300" size="medium" text={typeOfTransaction} variant="round" />
+            <Chip color="primary200" size="medium" text={typeOfTransaction} variant="round" />
           </SStatusChipMobileWrapper>
           <SRowDatas>
             <Avatar
@@ -302,7 +302,7 @@ const Details: React.FC<DetailsProps> = ({
           <SInfosContainer>
             <SInfosCreatorContainer>
               <SStatusChipWrapper>
-                <Chip color="primary300" size="medium" text="Creator" variant="round" />
+                <Chip color="primary200" size="medium" text="Creator" variant="round" />
               </SStatusChipWrapper>
               <Avatar
                 isClickable
@@ -389,6 +389,7 @@ const STabsContainer = styled.div`
 `;
 
 const STab = styled(Button)`
+  box-shadow: none;
   text-transform: capitalize;
 `;
 

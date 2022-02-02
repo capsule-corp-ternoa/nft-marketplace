@@ -56,7 +56,7 @@ const SFooterWrapper = styled(Wrapper)`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: 12rem !important;
+  padding-bottom: 15.2rem !important;
   padding-top: 2.4rem !important;
 
   ${({ theme }) => theme.mediaQueries.lg} {

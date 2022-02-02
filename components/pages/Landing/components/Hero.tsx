@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
 
@@ -20,6 +20,10 @@ export interface HeroProps {
 
 const Hero = ({ capsDollarValue: _capsDollarValue, NFTs, mode }: HeroProps) => {
   const [selectedNFT, setSelectedNFT] = useState<NftType>(NFTs[1]);
+
+  useEffect(() => {
+    setSelectedNFT(NFTs[1]);
+  }, [NFTs]);
 
   return (
     <SHeroContainer>

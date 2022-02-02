@@ -38,13 +38,15 @@ const ProfileMenuDropdown = ({ className, onClose, user }: Props) => {
               walletId={walletId}
             />
             {!isRN && (
-              <Button
-                color="neutral600"
-                icon="powerOff"
-                onClick={handleLogout}
-                size="small"
-                variant="outlined"
-              />
+              <SButtonWrapper>
+                <Button
+                  color="neutral600"
+                  icon="powerOff"
+                  onClick={handleLogout}
+                  size="small"
+                  variant="outlined"
+                />
+              </SButtonWrapper>
             )}
           </SProfileContainer>
 
@@ -92,10 +94,14 @@ const SProfileContainer = styled.div`
   width: 100%;
 `;
 
+const SButtonWrapper = styled.div`
+  margin-left: 1.6rem;
+`;
+
 const SLinkSection = styled.div`
   > * {
     width: 100%;
-    border-bottom: ${({ theme }) => `1px solid ${theme.colors.neutral600}`};
+    border-bottom: ${({ theme }) => `1px solid ${theme.colors.neutral100}`};
     cursor: pointer;
     margin: 1.6rem 0;
     padding-bottom: 0.8rem;

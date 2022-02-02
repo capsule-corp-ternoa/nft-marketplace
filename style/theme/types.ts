@@ -21,6 +21,7 @@ export interface Colors {
   neutral800: string;
   neutral900: string;
   primary100: string;
+  primary200: string;
   primary300: string;
   primary500: string;
   primary700: string;

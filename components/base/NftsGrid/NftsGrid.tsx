@@ -1,13 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { NftCardWithHover, GRID_MODE } from 'components/base/NftCard';
+import NftCard from 'components/base/NftCard';
 import NoNFTComponent from 'components/base/NoNFTComponent';
 import Button from 'components/ui/Button';
 import { Loader } from 'components/ui/Icon';
+import { NftType } from 'interfaces';
 import {
-  NftType,
-  NFTsNominalSetState,
   TabsIdType,
   NFT_OWNED_TAB,
   NFT_ON_SALE_TAB,
@@ -15,7 +14,7 @@ import {
   NFT_CREATED_TAB,
   NFT_LIKED_TAB,
   EXPLORE_TAB,
-} from 'interfaces';
+} from 'components/pages/Profile';
 import { LIKE_ACTION_TYPE } from 'utils/profile/constants';
 
 interface Props {
@@ -28,8 +27,7 @@ interface Props {
   noNftHref?: string;
   noNftLinkLabel?: string;
   noNftTitle: string;
-  handleLikeCount?: (action: LIKE_ACTION_TYPE) => void;
-  setLikedNfts?: NFTsNominalSetState;
+  handleNftLike?: (action: LIKE_ACTION_TYPE, nft?: NftType) => void;
   tabId?: TabsIdType;
 }
 
@@ -43,12 +41,16 @@ const NftsGrid = ({
   noNftHref,
   noNftLinkLabel,
   noNftTitle,
-  handleLikeCount,
-  setLikedNfts,
+  handleNftLike,
   tabId,
 }: Props) => {
   const returnQuantityNFTsAvailable = (NFT: NftType, tabId?: TabsIdType) => {
-    const { totalNft, totalOwnedByRequestingUser, totalOwnedListedInMarketplaceByRequestingUser, totalListedInMarketplace } = NFT;
+    const {
+      totalNft,
+      totalOwnedByRequestingUser,
+      totalOwnedListedInMarketplaceByRequestingUser,
+      totalListedInMarketplace,
+    } = NFT;
     switch (tabId) {
       case NFT_LIKED_TAB:
         return 0;
@@ -61,7 +63,7 @@ const NftsGrid = ({
       case NFT_OWNED_TAB:
         return totalOwnedByRequestingUser ?? 1;
       case EXPLORE_TAB:
-        return totalListedInMarketplace
+        return totalListedInMarketplace;
       case NFT_CREATED_TAB:
       default:
         return totalNft ?? 1;
@@ -84,13 +86,11 @@ const NftsGrid = ({
     <>
       <SNFTsContainer>
         {NFTs.map((item: NftType) => (
-          <SNftCardWithHover
+          <SNftCard
             key={item.id}
+            handleLike={handleNftLike}
             item={item}
-            mode={GRID_MODE}
             quantity={returnQuantityNFTsAvailable(item, tabId)}
-            handleLikeCount={handleLikeCount}
-            setLikedNfts={tabId === NFT_LIKED_TAB ? setLikedNfts : undefined}
           />
         ))}
         {children}
@@ -154,8 +154,25 @@ const SNFTsContainer = styled.div`
   }
 `;
 
-const SNftCardWithHover = styled(NftCardWithHover)`
+const SNftCard = styled(NftCard)`
   margin: 0 auto;
+  height: ${({ theme }) => theme.sizes.cardHeight.md};
+  width: ${({ theme }) => theme.sizes.cardWidth.md};
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    height: ${({ theme }) => theme.sizes.cardHeight.sm};
+    width: ${({ theme }) => theme.sizes.cardWidth.sm};
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    height: ${({ theme }) => theme.sizes.cardHeight.md};
+    width: ${({ theme }) => theme.sizes.cardWidth.md};
+  }
+
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    height: ${({ theme }) => theme.sizes.cardHeight.sm};
+    width: ${({ theme }) => theme.sizes.cardWidth.sm};
+  }
 `;
 
 export default NftsGrid;

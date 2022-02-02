@@ -17,6 +17,7 @@ interface Props extends IButton {
   href?: string;
   icon?: IconNameType;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  suppressHydrationWarning?: boolean;
   text?: string;
 }
 
@@ -39,7 +40,7 @@ const containedColors = (theme: DefaultTheme, color: keyof Colors): string => {
     case 'contrast':
     case 'primary500':
       return theme.colors.invertedContrast;
-    case 'primary300':
+    case 'primary200':
       return theme.colors.primary500;
     case 'invertedContrast':
     case 'whiteBlur':
@@ -104,10 +105,9 @@ const ButtonStyle = css<IButton>`
       case 'invertedContrast':
       case 'neutral600':
       case 'neutral300':
-      case 'neutral600':
       case 'neutral100':
       case 'whiteBlur':
-        return theme.colors.neutral600;
+        return theme.colors.neutral400;
       default:
         return theme.colors[color];
     }
@@ -131,6 +131,7 @@ const Button = ({
   noHover = false,
   onClick,
   size = 'medium',
+  suppressHydrationWarning,
   text,
   variant = 'contained',
 }: Props) => {
@@ -162,6 +163,7 @@ const Button = ({
       onClick={onClick}
       size={size}
       variant={variant}
+      suppressHydrationWarning={suppressHydrationWarning}
     >
       {isLoading ? (
         <SLoader color={color ?? 'invertedContrast'} size={size} variant={variant} />

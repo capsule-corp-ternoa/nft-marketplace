@@ -4,7 +4,7 @@ import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import { breakpointMap } from 'style/theme/base';
 
-import { NftCardWithHover, CAROUSEL_MODE } from 'components/base/NftCard';
+import NftCard from 'components/base/NftCard';
 import Button from 'components/ui/Button';
 
 import { NftType } from 'interfaces/index';
@@ -66,7 +66,7 @@ const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category }) => {
       >
         <SNftsMobileContainer>
           {NFTs.map((item) => (
-            <NftCardWithHover key={item.id} isDragging={isDragging} item={item} mode={CAROUSEL_MODE} />
+            <NftCard key={item.id} isDragging={isDragging} item={item} />
           ))}
         </SNftsMobileContainer>
         <SNftsCarouselContainer
@@ -80,7 +80,7 @@ const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category }) => {
           swipeable={true}
         >
           {NFTs.map((item) => (
-            <NftCardWithHover key={item.id} isDragging={isDragging} item={item} mode={CAROUSEL_MODE} />
+            <NftCard key={item.id} isDragging={isDragging} item={item} />
           ))}
         </SNftsCarouselContainer>
       </SNftsContainer>

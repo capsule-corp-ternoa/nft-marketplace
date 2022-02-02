@@ -1,6 +1,6 @@
 import { AnyAction, Reducer } from 'redux';
 
-import { APP_SET_IS_RN, APP_SET_USER, AppState } from './types';
+import { APP_SET_IS_RN, APP_SET_USER, APP_SET_USER_LIKED_NFTS, AppState } from './types';
 
 export const appDefaultState = {
   isRN: false,
@@ -24,6 +24,18 @@ export const appReducer: Reducer<AppState, AnyAction> = (state = appDefaultState
       return {
         ...state,
         user: value,
+      };
+    }
+
+    case APP_SET_USER_LIKED_NFTS: {
+      const { value } = action;
+
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          likedNFTs: value,
+        },
       };
     }
 

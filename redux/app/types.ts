@@ -8,16 +8,4 @@ export interface AppState {
 // Actions names
 export const APP_SET_IS_RN = 'APP_SET_IS_RN';
 export const APP_SET_USER = 'APP_SET_USER';
-
-// Actions interfaces
-interface SetIsRN {
-  type: typeof APP_SET_IS_RN;
-  value: boolean;
-}
-
-interface SetUser {
-  type: typeof APP_SET_USER;
-  value: UserType;
-}
-
-export type AppActionTypes = SetIsRN | SetUser;
+export const APP_SET_USER_LIKED_NFTS = 'APP_SET_USER_LIKED_NFTS';

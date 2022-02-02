@@ -28,7 +28,7 @@ const ImageBlock = ({ banner, chipLabel, className, description, id, name, onCha
     </label>
     {description && <SDescription>{description}</SDescription>}
     <SUploadLabel htmlFor={id}>
-      <Chip color="primary300" size="medium" text={chipLabel} />
+      <Chip color="primary200" size="medium" text={chipLabel} />
       <HiddenShell>
         <HiddenInput
           accept=".jpg, .jpeg, .png, .gif"

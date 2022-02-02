@@ -7,6 +7,7 @@ export const colors: Colors = {
   contrast: '#0C0B0B',
 
   primary100: '#F5F5FD',
+  primary200: '#ECE3F7',
   primary300: '#C3A2EE',
   primary500: '#7417EA',
   primary700: '#47049C',

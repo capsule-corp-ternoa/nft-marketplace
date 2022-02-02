@@ -11,7 +11,7 @@ const invertedColor = (color?: keyof Colors): keyof Colors => {
   switch (color) {
     case 'primary500':
       return 'invertedContrast';
-    case 'primary300':
+    case 'primary200':
       return 'primary500';
     case 'invertedContrast':
     case 'whiteBlur':

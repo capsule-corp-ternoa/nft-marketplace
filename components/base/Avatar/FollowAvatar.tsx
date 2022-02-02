@@ -99,7 +99,7 @@ const FollowAvatar = ({ className, isVerified, name = 'Ternoa', picture, profile
             <SFollowers>{`${followersCount} followers`}</SFollowers>
             {isFollowButton && (
               <SFollowButtonDesktop
-                color={isFollowing ? 'primary300' : 'invertedContrast'}
+                color={isFollowing ? 'primary200' : 'invertedContrast'}
                 disabled={isFollowLoading}
                 isLoading={isFollowLoading}
                 onClick={handleFollow}
@@ -112,7 +112,7 @@ const FollowAvatar = ({ className, isVerified, name = 'Ternoa', picture, profile
       </SAvatarWrapper>
       {isFollowButton && (
         <SFollowButtonMobile
-          color={isFollowing ? 'primary300' : 'invertedContrast'}
+          color={isFollowing ? 'primary200' : 'invertedContrast'}
           disabled={isFollowLoading}
           isLoading={isFollowLoading}
           onClick={handleFollow}

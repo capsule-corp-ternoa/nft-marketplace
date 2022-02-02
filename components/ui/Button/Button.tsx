@@ -39,7 +39,7 @@ const containedColors = (theme: DefaultTheme, color: keyof Colors): string => {
     case 'contrast':
     case 'primary500':
       return theme.colors.invertedContrast;
-    case 'primary300':
+    case 'primary200':
       return theme.colors.primary500;
     case 'invertedContrast':
     case 'whiteBlur':

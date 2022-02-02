@@ -256,7 +256,7 @@ const NFTPage = ({ NFT, type, isUserFromDappQR }: NFTPageProps) => {
                 {NFT.title}
                 {NFT.isCapsule && (
                   <SChip
-                    color="primary300"
+                    color="primary200"
                     text={
                       <>
                         <SDot />

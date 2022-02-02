@@ -102,7 +102,7 @@ const Avatar = ({
           </SBottomDetails>
         </SDetailsContainer>
       </SAvatarWrapper>
-      {isDiscoverButton && <SDiscoverButton color="primary300" onClick={() => walletId && Router.push(`/${walletId}`)} size="small" text="Discover" />}
+      {isDiscoverButton && <SDiscoverButton color="primary200" onClick={() => walletId && Router.push(`/${walletId}`)} size="small" text="Discover" />}
     </SAvatarContainer>
   );
 };

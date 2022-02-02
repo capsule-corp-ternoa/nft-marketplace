@@ -93,7 +93,7 @@ const SText = styled.div<IChip>`
     switch (color) {
       case 'primary500':
         return theme.colors.invertedContrast;
-      case 'primary300':
+      case 'primary200':
         return theme.colors.primary500;
       case 'invertedContrast':
       case 'whiteBlur':
@@ -121,7 +121,7 @@ const SCross = styled.div<{ color?: keyof Colors }>`
     switch (color) {
       case 'primary500':
         return theme.colors.invertedContrast;
-      case 'primary300':
+      case 'primary200':
         return theme.colors.primary500;
       case 'invertedContrast':
       case 'whiteBlur':

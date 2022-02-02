@@ -102,7 +102,7 @@ const NftUpload = ({
       <SWrapper isSmall={isSecretOption}>
         {isSecretOption && (
           <Chip
-            color="primary300"
+            color="primary200"
             text="Secret option"
             size="small"
             variant="round"

@@ -288,7 +288,7 @@ const SHoverFilter = styled.div<{ isHovering: boolean }>`
 
 const SHoverContainer = styled.div<{ isHovering: boolean }>`
   display: ${({ isHovering }) => (isHovering ? 'flex' : 'none')};
-  justify-content: space-between;
+  justify-content: flex-end;
   flex-direction: column;
   width: 100%;
   height: 100%;
@@ -300,8 +300,9 @@ const SHoverContainer = styled.div<{ isHovering: boolean }>`
 const LikeButtonStyle = css<{ isHovering: boolean }>`
   align-self: flex-end;
   margin: 1.6rem;
-  top: 1.2rem;
-  right: 1.2rem;
+  position: absolute;
+  top: 0;
+  right: 0;
   z-index: 4;
   animation-fill-mode: forwards;
   animation: ${fadeIn} 0.8s cubic-bezier(0.25, 1, 0.5, 1);

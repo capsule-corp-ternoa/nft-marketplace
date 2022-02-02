@@ -2,6 +2,7 @@ import { CustomResponse, NftType } from 'interfaces/index';
 import { MARKETPLACE_ID, NODE_API_URL } from 'utils/constant';
 import { encryptCookie } from 'utils/cookie';
 import { DEFAULT_LIMIT_PAGINATION } from "../utils/constant";
+import Cookies from 'js-cookie';
 
 export const filterNFTs = (data: NftType[]) => data.filter((item) => item.properties?.preview.ipfs)
 
@@ -139,4 +140,34 @@ export const getTotalOnSaleOnMarketplace = async (marketplaceId: string=MARKETPL
   if (!res.ok) throw new Error('error fetching NFT total');
   let result = await res.json()
   return result;
+}
+
+export const likeNFT = async (walletId: string, nftId: string, serieId: string) => {
+  const cookie = Cookies.get("token")
+  if(cookie){
+    const res = await fetch(`${NODE_API_URL}/api/nfts/like/?walletId=${walletId}&nftId=${nftId}&serieId=${serieId}`, {
+      method: 'POST',
+      body:JSON.stringify({cookie}),
+    })
+    if (!res.ok) throw new Error();
+    const NFTLike = await res.json()
+    return NFTLike
+  }else{
+    throw new Error("Unvalid authentication");
+  }
+}
+
+export const unlikeNFT = async (walletId: string, nftId: string, serieId: string) => {
+  const cookie = Cookies.get("token")
+  if(cookie){
+    const res = await fetch(`${NODE_API_URL}/api/nfts/unlike/?walletId=${walletId}&nftId=${nftId}&serieId=${serieId}`, {
+      method: 'POST',
+      body:JSON.stringify({cookie}),
+    })
+    if (!res.ok) throw new Error();
+    const NFTLike = await res.json()
+    return NFTLike
+  }else{
+    throw new Error("Unvalid authentication");
+  }
 }

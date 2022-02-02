@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 
 import { getByTheSameArtistNFTs, getOwnedNFTS, getSeriesData } from 'actions/nft';
-import { likeNFT, unlikeNFT } from 'actions/user';
+import { likeNFT, unlikeNFT } from 'actions/nft';
 import Avatar from 'components/base/Avatar';
 import Media from 'components/base/Media';
 import { ModalBuy, ModalCheckout, ModalShare, ModalShowcase } from 'components/base/Modal';

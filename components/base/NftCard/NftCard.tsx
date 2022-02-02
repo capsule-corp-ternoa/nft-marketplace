@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 import Router from 'next/router';
 import { useDispatch } from 'react-redux';
 
-import { likeNFT, unlikeNFT } from 'actions/user';
+import { likeNFT, unlikeNFT } from 'actions/nft';
 import { Picture } from 'components/base/Avatar';
 import Button from 'components/ui/Button';
 import Chip from 'components/ui/Chip';

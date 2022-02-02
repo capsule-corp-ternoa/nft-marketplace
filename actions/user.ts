@@ -68,33 +68,3 @@ export const reviewRequested = async (walletId: string) => {
     throw new Error("Unvalid authentication");
   }  
 };
-
-export const likeNFT = async (walletId: string, nftId: string, serieId: string) => {
-  const cookie = Cookies.get("token")
-  if(cookie){
-    const res = await fetch(`${NODE_API_URL}/api/users/like/?walletId=${walletId}&nftId=${nftId}&serieId=${serieId}`, {
-      method: 'POST',
-      body:JSON.stringify({cookie}),
-    })
-    if (!res.ok) throw new Error();
-    const NFTLike = await res.json()
-    return NFTLike
-  }else{
-    throw new Error("Unvalid authentication");
-  }
-}
-
-export const unlikeNFT = async (walletId: string, nftId: string, serieId: string) => {
-  const cookie = Cookies.get("token")
-  if(cookie){
-    const res = await fetch(`${NODE_API_URL}/api/users/unlike/?walletId=${walletId}&nftId=${nftId}&serieId=${serieId}`, {
-      method: 'POST',
-      body:JSON.stringify({cookie}),
-    })
-    if (!res.ok) throw new Error();
-    const NFTLike = await res.json()
-    return NFTLike
-  }else{
-    throw new Error("Unvalid authentication");
-  }
-}

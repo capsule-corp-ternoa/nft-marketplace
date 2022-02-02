@@ -128,9 +128,14 @@ const WalletConnector: React.FC<WalletConnectorProps> = ({
             className={style.Close}
           />
           {pairingSuccess ?
-            <div className={style.Text}>
-              <div onClick={onPairingSuccessClick}>Pairing success!</div>
-            </div>
+            <>
+              <div className={style.Text}>
+                <div>Pairing success!</div>
+              </div>
+              <div className={style.Text}>
+                <button onClick={onPairingSuccessClick}>OK</button>
+              </div>
+            </>
             : null}
           {requestorVisible ?
             <>

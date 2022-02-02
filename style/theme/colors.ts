@@ -21,7 +21,7 @@ export const colors: Colors = {
   danger700: '#8B1200',
   danger800: '#5E0C00',
 
-  neutral100: '#EFF0F6',
+  neutral100: '#F7F7F7',
   neutral200: '#D6D7DB',
   neutral300: '#BABABB',
   neutral400: '#A1A1A1',

@@ -389,6 +389,7 @@ const STabsContainer = styled.div`
 `;
 
 const STab = styled(Button)`
+  box-shadow: none;
   text-transform: capitalize;
 `;
 

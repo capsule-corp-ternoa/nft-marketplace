@@ -145,7 +145,7 @@ export const getTotalOnSaleOnMarketplace = async (marketplaceId: string=MARKETPL
 export const likeNFT = async (walletId: string, nftId: string, serieId: string) => {
   const cookie = Cookies.get("token")
   if(cookie){
-    const res = await fetch(`${NODE_API_URL}/api/nfts/like/?walletId=${walletId}&nftId=${nftId}&serieId=${serieId}`, {
+    const res = await fetch(`${NODE_API_URL}/api/nfts/like/?walletId=${walletId}&nftId=${nftId}&seriesId=${serieId}`, {
       method: 'POST',
       body:JSON.stringify({cookie}),
     })
@@ -160,7 +160,7 @@ export const likeNFT = async (walletId: string, nftId: string, serieId: string) 
 export const unlikeNFT = async (walletId: string, nftId: string, serieId: string) => {
   const cookie = Cookies.get("token")
   if(cookie){
-    const res = await fetch(`${NODE_API_URL}/api/nfts/unlike/?walletId=${walletId}&nftId=${nftId}&serieId=${serieId}`, {
+    const res = await fetch(`${NODE_API_URL}/api/nfts/unlike/?walletId=${walletId}&nftId=${nftId}&seriesId=${serieId}`, {
       method: 'POST',
       body:JSON.stringify({cookie}),
     })

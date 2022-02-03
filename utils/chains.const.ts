@@ -34,9 +34,10 @@ export const txCalls = {
         setAltvrUsername: 'setAltvrUsername',
     }
 };
+const additionalRpcCalls = ["sign_message"];
 export const ternoaCommonRpcMethods = Object.keys(txCalls).reduce((rpcCalls: string[], txPallet: string) => {
     rpcCalls = [...rpcCalls, ...Object.values(txCalls[txPallet]).map(txMethod => `${txPallet}_${txMethod}`)]
-    return rpcCalls
+    return [...rpcCalls, ...additionalRpcCalls]
 }, []);
 
 export const CHAINS = {
@@ -64,3 +65,7 @@ export const CHAINS = {
 export const WALLET_CONNECT = {
     projectId: '441431138975688f696a34766e4ff48d',
 };
+export enum TRANSACTION_EXECUTOR {
+    SIGN_AND_SEND = 'signAndSend',
+    SEND = 'send'
+}

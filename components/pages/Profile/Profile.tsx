@@ -10,7 +10,7 @@ import Tabs from 'components/ui/Tabs';
 import { NftType, UserType } from 'interfaces';
 import { useApp } from 'redux/hooks';
 import { loadMoreNfts } from 'utils/profile';
-import { LIKE_ACTION, LIKE_ACTION_TYPE, UNLIKE_ACTION } from 'utils/profile/constants';
+import { FOLLOW_ACTION, UNFOLLOW_ACTION, FOLLOW_ACTION_TYPE, LIKE_ACTION, LIKE_ACTION_TYPE, UNLIKE_ACTION } from 'utils/profile/constants';
 import { loadMoreProfiles } from 'utils/profile/follow';
 import { computeValue } from 'utils/strings';
 
@@ -72,15 +72,15 @@ const Profile = ({ user, userOwnedlNfts, userOwnedNftsHasNextPage }: ProfileProp
 
   const populateProfileData = async () => {
     // Created nfts
-    const createdNfts = await getCreatorNFTS(walletId, undefined, undefined);
+    const createdNfts = await getCreatorNFTS(walletId);
     setCreatedNfts(createdNfts.data);
     setCreatedNftsHasNextPage(createdNfts.hasNextPage);
     // Owned listed NFTs
-    const ownedListed = await getOwnedNFTS(walletId, true, true, undefined, undefined);
+    const ownedListed = await getOwnedNFTS(walletId, true, true);
     setOwnedNftsListed(ownedListed.data);
     setOwnedNftsListedHasNextPage(ownedListed.hasNextPage);
     // Owned not listed NFTs
-    const ownedUnlisted = await getOwnedNFTS(walletId, false, false, undefined, undefined);
+    const ownedUnlisted = await getOwnedNFTS(walletId, false, false);
     setOwnedNftsUnlisted(ownedUnlisted.data);
     setOwnedNftsUnlistedHasNextPage(ownedUnlisted.hasNextPage);
     // Followers
@@ -98,10 +98,17 @@ const Profile = ({ user, userOwnedlNfts, userOwnedNftsHasNextPage }: ProfileProp
     try {
       switch (tabId) {
         case NFT_LIKED_TAB: {
-          const { data, hasNextPage } = await getLikedNFTs(walletId, undefined, undefined);
+          const { data, hasNextPage } = await getLikedNFTs(walletId);
           setLikedCurrentPage(1);
           setLikedNfts(data);
           setLikedNftsHasNextPage(hasNextPage);
+          break;
+        }
+        case FOLLOWED_TAB: {
+          const { data, hasNextPage } = await getFollowed(walletId);
+          setFollowedCurrentPage(1);
+          setFollowed(data);
+          setFollowedHasNextPage(hasNextPage);
           break;
         }
       }
@@ -139,25 +146,25 @@ const Profile = ({ user, userOwnedlNfts, userOwnedNftsHasNextPage }: ProfileProp
     setSearchValue(event.currentTarget.value);
   };
 
-  const handleLikeCount = (action: LIKE_ACTION_TYPE): void => {
-    setCounts((prevCounts) => {
-      const prevLikedCount = prevCounts[NFT_LIKED_TAB];
-      switch (action) {
-        case LIKE_ACTION:
-          return {
-            ...prevCounts,
-            [NFT_LIKED_TAB]: prevLikedCount + 1,
-          };
-        case UNLIKE_ACTION:
-          return {
-            ...prevCounts,
-            [NFT_LIKED_TAB]: prevLikedCount - 1,
-          };
-      }
-    });
-  };
-
   const returnNFTs = (tabId: TabsIdType) => {
+    const handleLikeCount = (action: LIKE_ACTION_TYPE): void => {
+      setCounts((prevCounts) => {
+        const prevLikedCount = prevCounts[NFT_LIKED_TAB];
+        switch (action) {
+          case LIKE_ACTION:
+            return {
+              ...prevCounts,
+              [NFT_LIKED_TAB]: prevLikedCount + 1,
+            };
+          case UNLIKE_ACTION:
+            return {
+              ...prevCounts,
+              [NFT_LIKED_TAB]: prevLikedCount - 1,
+            };
+        }
+      });
+    };
+
     switch (tabId) {
       case NFT_CREATED_TAB: {
         const loadMoreCreatedNfts = async () => {
@@ -191,13 +198,13 @@ const Profile = ({ user, userOwnedlNfts, userOwnedNftsHasNextPage }: ProfileProp
         const handleNftLiked = async (action: LIKE_ACTION_TYPE, nft?: NftType): Promise<void> => {
           if (nft !== undefined) {
             const isMoreLikedNfts = likedNfts.length < counts[NFT_LIKED_TAB];
-            const { data, hasNextPage } = isMoreLikedNfts ? await getLikedNFTs(walletId, (likedNfts.length).toString(), '1') : { data: [], hasNextPage: false };
+            const { data, hasNextPage } = isMoreLikedNfts ? await getLikedNFTs(walletId, likedNfts.length.toString(), '1') : { data: [], hasNextPage: false };
             setLikedNfts((prevState) => prevState.filter(({ id }) => id !== nft.id).concat(data));
             setLikedNftsHasNextPage(Boolean(hasNextPage));
           }
           handleLikeCount(action);
         };
-        
+
         return (
           <NftsGrid
             NFTs={likedNfts}
@@ -297,6 +304,24 @@ const Profile = ({ user, userOwnedlNfts, userOwnedNftsHasNextPage }: ProfileProp
   };
 
   const returnFollowers = (tabId: TabsIdType) => {
+    const handleFollowCount = async (action: FOLLOW_ACTION_TYPE): Promise<void> => {
+      setCounts((prevCounts) => {
+        const prevFollowedCount = prevCounts[FOLLOWED_TAB];
+        switch (action) {
+          case FOLLOW_ACTION:
+            return {
+              ...prevCounts,
+              [FOLLOWED_TAB]: prevFollowedCount + 1,
+            };
+          case UNFOLLOW_ACTION:
+            return {
+              ...prevCounts,
+              [FOLLOWED_TAB]: prevFollowedCount - 1,
+            };
+        }
+      });
+    };
+
     switch (tabId) {
       case FOLLOWERS_TAB: {
         const loadMoreFollowers = async () => {
@@ -320,6 +345,7 @@ const Profile = ({ user, userOwnedlNfts, userOwnedNftsHasNextPage }: ProfileProp
         return (
           <FollowersProfileBlock
             users={followers}
+            handleFollow={handleFollowCount}
             isFilterVerified={isFilterVerified ?? false}
             isLoading={!isProfileDataLoaded}
             isLoadMore={followersHasNextPage}
@@ -327,8 +353,6 @@ const Profile = ({ user, userOwnedlNfts, userOwnedNftsHasNextPage }: ProfileProp
             loadMore={loadMoreFollowers}
             noContentBody="Discover new artists and start following them!"
             noContentTitle="Nothing to display"
-            setCounts={setCounts}
-            setFollowed={setFollowed}
             setIsFilterVerified={setIsFilterVerified}
             updateKeywordSearch={updateKeywordSearch}
           />
@@ -353,17 +377,28 @@ const Profile = ({ user, userOwnedlNfts, userOwnedNftsHasNextPage }: ProfileProp
           setIsLoadMoreLoading(false);
         };
 
+        const handleFollow = async (action: FOLLOW_ACTION_TYPE, profile?: UserType): Promise<void> => {
+          if (profile !== undefined) {
+            const isMoreFollowed = followed.length < counts[FOLLOWED_TAB];
+            const { data, hasNextPage } = isMoreFollowed
+              ? await getFollowed(walletId, followed.length.toString(), '1', searchValue, isFilterVerified)
+              : { data: [], hasNextPage: false };
+            setFollowed((prevState) => prevState.filter(({ walletId }) => walletId !== profile.walletId).concat(data));
+            setFollowersHasNextPage(Boolean(hasNextPage));
+          }
+          handleFollowCount(action);
+        };
+
         return (
           <FollowersProfileBlock
             users={followed}
+            handleFollow={handleFollow}
             isFilterVerified={isFilterVerified ?? false}
             isLoading={!isProfileDataLoaded}
             isLoadMore={followedHasNextPage}
             isLoadMoreLoading={isLoadMoreLoading}
             loadMore={loadMoreFollowed}
             noContentTitle="Nothing to display"
-            setCounts={setCounts}
-            setFollowed={setFollowed}
             setIsFilterVerified={setIsFilterVerified}
             updateKeywordSearch={updateKeywordSearch}
           />

@@ -181,7 +181,6 @@ const Profile = ({ artist }: ProfileProps) => {
             loadMore={loadMoreFollowers}
             noContentBody="Discover new artists and start following them!"
             noContentTitle="Nothing to display"
-            setCounts={setCounts}
             setIsFilterVerified={setIsFilterVerified}
             updateKeywordSearch={updateKeywordSearch}
           />

@@ -4,16 +4,14 @@ import styled from 'styled-components';
 
 import { FollowAvatar } from 'components/base/Avatar';
 import NoNFTComponent from 'components/base/NoNFTComponent';
-import { TabsIdType } from 'components/pages/Profile';
 import Button from 'components/ui/Button';
 import { Loader } from 'components/ui/Icon';
 import { UserType } from 'interfaces';
 import theme from 'style/theme';
-
-type CountsNominalSetState = React.Dispatch<React.SetStateAction<{ [key in TabsIdType]: number }>>;
-type FollowersNominalSetState = React.Dispatch<React.SetStateAction<UserType[]>>;
+import { FOLLOW_ACTION_TYPE } from 'utils/profile/constants';
 
 interface Props {
+  handleFollow?: (action: FOLLOW_ACTION_TYPE, profile?: UserType) => void;
   isFilterVerified: boolean;
   isLoading: boolean;
   isLoadMore: boolean;
@@ -21,14 +19,13 @@ interface Props {
   loadMore: () => void;
   noContentBody?: string;
   noContentTitle: string;
-  setCounts?: CountsNominalSetState;
-  setFollowed?: FollowersNominalSetState;
   setIsFilterVerified: (b: boolean) => void;
   updateKeywordSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
   users: UserType[];
 }
 
 const FollowersProfileBlock = ({
+  handleFollow,
   isFilterVerified,
   isLoading,
   isLoadMore,
@@ -36,8 +33,6 @@ const FollowersProfileBlock = ({
   loadMore,
   noContentBody,
   noContentTitle,
-  setCounts,
-  setFollowed,
   setIsFilterVerified,
   updateKeywordSearch,
   users,
@@ -86,12 +81,11 @@ const FollowersProfileBlock = ({
           {users.map(({ _id, name, picture, verified, walletId }: UserType) => (
             <FollowAvatar
               key={_id}
+              handleFollow={handleFollow}
               isVerified={verified}
               name={name}
               picture={picture}
               profileWalletId={walletId}
-              setCounts={setCounts}
-              setFollowed={setFollowed}
             />
           ))}
         </SFollowersContainer>
@@ -223,10 +217,6 @@ const SFollowersContainer = styled.div`
 
   ${({ theme }) => theme.mediaQueries.xl} {
     grid-template-columns: repeat(4, 1fr);
-  }
-
-  ${({ theme }) => theme.mediaQueries.xxl} {
-    grid-template-columns: repeat(5, 1fr);
   }
 `;
 

@@ -25,8 +25,8 @@ export interface ProfileProps {
 const Profile = ({ artist }: ProfileProps) => {
   const { banner, bio, name, picture, twitterName, verified, viewsCount, walletId } = artist;
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [profileDataLoaded, setProfileDataLoaded] = useState(false);
+  const [isLoadMoreLoading, setIsLoadMoreLoading] = useState(false);
+  const [isProfileDataLoaded, setIsProfileDataLoaded] = useState(false);
   const [resetTabId, toggleResetTabId] = useState(false);
 
   // Artist owned listed NFTs
@@ -53,25 +53,23 @@ const Profile = ({ artist }: ProfileProps) => {
   const [isFilterVerified, setIsFilterVerified] = useState<boolean | undefined>(undefined);
   const [searchValue, setSearchValue] = useState<string | undefined>(undefined);
 
-  const populateProfileData = async (token: string) => {
+  const populateProfileData = async () => {
     // Owned listed NFTs
-    const ownedListed = await getOwnedNFTS(token, true, true, undefined, undefined);
+    const ownedListed = await getOwnedNFTS(walletId, true, true, undefined, undefined);
     setOwnedNftsListed(ownedListed.data);
     setOwnedNftsListedHasNextPage(ownedListed.hasNextPage);
     // Owned not listed NFTs
-    const ownedUnlisted = await getOwnedNFTS(token, false, false, undefined, undefined);
+    const ownedUnlisted = await getOwnedNFTS(walletId, false, false, undefined, undefined);
     setOwnedNftsUnlisted(ownedUnlisted.data);
     setOwnedNftsUnlistedHasNextPage(ownedUnlisted.hasNextPage);
     // Followers
-    const followers = await getFollowers(token);
+    const followers = await getFollowers(walletId);
     setFollowers(followers.data);
     setFollowersHasNextPage(followers.hasNextPage);
     // Followed
-    const followed = await getFollowed(token);
+    const followed = await getFollowed(walletId);
     setFollowed(followed.data);
     setFollowedHasNextPage(followed.hasNextPage);
-
-    setProfileDataLoaded(true);
   };
 
   const initCounts = async () => {
@@ -104,7 +102,7 @@ const Profile = ({ artist }: ProfileProps) => {
     switch (tabId) {
       case NFT_NOT_FOR_SALE_TAB: {
         const loadMoreOwnedUnlistedNfts = async () => {
-          setIsLoading(true);
+          setIsLoadMoreLoading(true);
           await loadMoreNfts(
             walletId,
             ownedNftsUnlistedCurrentPage,
@@ -113,14 +111,15 @@ const Profile = ({ artist }: ProfileProps) => {
             setOwnedNftsUnlisted,
             tabId
           );
-          setIsLoading(false);
+          setIsLoadMoreLoading(false);
         };
 
         return (
           <NftsGrid
             NFTs={ownedNftsUnlisted}
-            isLoading={!profileDataLoaded || isLoading}
+            isLoading={!isProfileDataLoaded}
             isLoadMore={ownedNftsUnlistedHasNextPage}
+            isLoadMoreLoading={isLoadMoreLoading}
             loadMore={loadMoreOwnedUnlistedNfts}
             noNftBody="The NFTs you owned and are not for sale are displayed here"
             noNftTitle="Nothing to display"
@@ -131,16 +130,17 @@ const Profile = ({ artist }: ProfileProps) => {
       case NFT_ON_SALE_TAB:
       default: {
         const loadMoreOwnedListedNfts = async () => {
-          setIsLoading(true);
+          setIsLoadMoreLoading(true);
           await loadMoreNfts(walletId, ownedNftsListedCurrentPage, setOwnedNftsListedCurrentPage, setOwnedNftsListedHasNextPage, setOwnedNftsListed, tabId);
-          setIsLoading(false);
+          setIsLoadMoreLoading(false);
         };
 
         return (
           <NftsGrid
             NFTs={ownedNftsListed}
-            isLoading={!profileDataLoaded || isLoading}
+            isLoading={!isProfileDataLoaded}
             isLoadMore={ownedNftsListedHasNextPage}
+            isLoadMoreLoading={isLoadMoreLoading}
             loadMore={loadMoreOwnedListedNfts}
             noNftHref="/"
             noNftLinkLabel="Sell your NFT"
@@ -156,7 +156,7 @@ const Profile = ({ artist }: ProfileProps) => {
     switch (tabId) {
       case FOLLOWERS_TAB: {
         const loadMoreFollowers = async () => {
-          setIsLoading(true);
+          setIsLoadMoreLoading(true);
           await loadMoreProfiles(
             walletId,
             followersCurrentPage,
@@ -168,15 +168,16 @@ const Profile = ({ artist }: ProfileProps) => {
             searchValue,
             isFilterVerified
           );
-          setIsLoading(false);
+          setIsLoadMoreLoading(false);
         };
 
         return (
           <FollowersProfileBlock
             users={followers}
             isFilterVerified={isFilterVerified ?? false}
-            isLoading={!profileDataLoaded || isLoading}
+            isLoading={!isProfileDataLoaded}
             isLoadMore={followersHasNextPage}
+            isLoadMoreLoading={isLoadMoreLoading}
             loadMore={loadMoreFollowers}
             noContentBody="Discover new artists and start following them!"
             noContentTitle="Nothing to display"
@@ -188,7 +189,7 @@ const Profile = ({ artist }: ProfileProps) => {
       }
       case FOLLOWED_TAB: {
         const loadMoreFollowed = async () => {
-          setIsLoading(true);
+          setIsLoadMoreLoading(true);
           await loadMoreProfiles(
             walletId,
             followedCurrentPage,
@@ -200,15 +201,16 @@ const Profile = ({ artist }: ProfileProps) => {
             searchValue,
             isFilterVerified
           );
-          setIsLoading(false);
+          setIsLoadMoreLoading(false);
         };
 
         return (
           <FollowersProfileBlock
             users={followed}
             isFilterVerified={isFilterVerified ?? false}
-            isLoading={!profileDataLoaded || isLoading}
+            isLoading={!isProfileDataLoaded}
             isLoadMore={followedHasNextPage}
+            isLoadMoreLoading={isLoadMoreLoading}
             loadMore={loadMoreFollowed}
             noContentTitle="Nothing to display"
             setIsFilterVerified={setIsFilterVerified}
@@ -228,13 +230,15 @@ const Profile = ({ artist }: ProfileProps) => {
   };
 
   useEffect(() => {
-    setProfileDataLoaded(false);
+    setIsProfileDataLoaded(false);
     toggleResetTabId((prevState) => !prevState);
     try {
       initCounts();
-      populateProfileData(walletId);
+      populateProfileData();
+      setIsProfileDataLoaded(true);
     } catch (err) {
       console.log(err);
+      setIsProfileDataLoaded(true);
     }
   }, [artist]);
 

@@ -8,6 +8,7 @@ type TabsType = {
   badge?: number;
   content: React.ReactNode;
   label: string;
+  populateTabData?: (id: string) => void;
 };
 
 interface Props {
@@ -39,13 +40,14 @@ const Tabs = ({ className, isTabsSelect = false, resetTabId, tabs }: Props) => {
               <>
                 {Object.entries(tabs)
                   .filter(([id]) => activeTab !== id)
-                  .map(([id, { badge, label }]) => (
+                  .map(([id, { badge, label, populateTabData }]) => (
                     <Tab
                       key={id}
                       endBadge={badge}
                       isActive={activeTab === id}
                       label={label}
                       onClick={() => {
+                        if (populateTabData) populateTabData(id);
                         setSelectExpanded(false);
                         setActiveTab(id);
                       }}
@@ -57,12 +59,15 @@ const Tabs = ({ className, isTabsSelect = false, resetTabId, tabs }: Props) => {
         </SSelectContainer>
       )}
       <STabsListContainer isTabsSelect={isTabsSelect}>
-        {Object.entries(tabs).map(([id, { badge, label }]) => (
+        {Object.entries(tabs).map(([id, { badge, label, populateTabData }]) => (
           <Tab
             key={id}
             isActive={activeTab === id}
             label={label}
-            onClick={() => setActiveTab(id)}
+            onClick={() => {
+              if (populateTabData) populateTabData(id);
+              setActiveTab(id);
+            }}
             endBadge={badge}
           />
         ))}

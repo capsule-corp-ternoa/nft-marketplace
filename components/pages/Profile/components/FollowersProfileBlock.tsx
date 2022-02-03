@@ -17,6 +17,7 @@ interface Props {
   isFilterVerified: boolean;
   isLoading: boolean;
   isLoadMore: boolean;
+  isLoadMoreLoading: boolean;
   loadMore: () => void;
   noContentBody?: string;
   noContentTitle: string;
@@ -31,6 +32,7 @@ const FollowersProfileBlock = ({
   isFilterVerified,
   isLoading,
   isLoadMore,
+  isLoadMoreLoading,
   loadMore,
   noContentBody,
   noContentTitle,
@@ -39,38 +41,46 @@ const FollowersProfileBlock = ({
   setIsFilterVerified,
   updateKeywordSearch,
   users,
-}: Props) => (
-  <>
-    <SSearchContainer>
-      <SSearchLabel>
-        <SSearchInput type="search" onChange={updateKeywordSearch} placeholder="Search" />
-      </SSearchLabel>
-      <SToggle>
-        <SCertifiedLabel>Verified only</SCertifiedLabel>
-        <label>
-          <Switch
-            checked={isFilterVerified}
-            onChange={() => setIsFilterVerified(!isFilterVerified)}
-            offColor={theme.colors.contrast}
-            onColor={theme.colors.primary500}
-            uncheckedIcon={false}
-            checkedIcon={false}
-            width={46}
-            handleDiameter={23}
-          />
-        </label>
-      </SToggle>
-    </SSearchContainer>
-
-    {users === undefined || users.length < 1 ? (
-      isLoading ? (
+}: Props) => {
+  if (isLoading) {
+    return (
+      <SNoNFTContainer>
         <SLoader color="primary500" />
-      ) : (
-        <SNoNFTContainer>
-          <NoNFTComponent body={noContentBody} title={noContentTitle} />
-        </SNoNFTContainer>
-      )
-    ) : (
+      </SNoNFTContainer>
+    );
+  }
+
+  if (users === undefined || users.length < 1) {
+    return (
+      <SNoNFTContainer>
+        <NoNFTComponent body={noContentBody} title={noContentTitle} />
+      </SNoNFTContainer>
+    );
+  }
+
+  return (
+    <>
+      <SSearchContainer>
+        <SSearchLabel>
+          <SSearchInput type="search" onChange={updateKeywordSearch} placeholder="Search" />
+        </SSearchLabel>
+        <SToggle>
+          <SCertifiedLabel>Verified only</SCertifiedLabel>
+          <label>
+            <Switch
+              checked={isFilterVerified}
+              onChange={() => setIsFilterVerified(!isFilterVerified)}
+              offColor={theme.colors.contrast}
+              onColor={theme.colors.primary500}
+              uncheckedIcon={false}
+              checkedIcon={false}
+              width={46}
+              handleDiameter={23}
+            />
+          </label>
+        </SToggle>
+      </SSearchContainer>
+
       <>
         <SFollowersContainer>
           {users.map(({ _id, name, picture, verified, walletId }: UserType) => (
@@ -89,19 +99,19 @@ const FollowersProfileBlock = ({
           <SLoadButtonWrapper>
             <Button
               color="contrast"
-              disabled={isLoading}
-              isLoading={isLoading}
+              disabled={isLoadMoreLoading}
+              isLoading={isLoadMoreLoading}
               onClick={loadMore}
               size="medium"
-              text={isLoading ? 'Loading...' : 'Load more'}
+              text={isLoadMoreLoading ? 'Loading...' : 'Load more'}
               variant="outlined"
             />
           </SLoadButtonWrapper>
         )}
       </>
-    )}
-  </>
-);
+    </>
+  );
+};
 
 const SLoader = styled(Loader)`
   margin: 8rem auto;

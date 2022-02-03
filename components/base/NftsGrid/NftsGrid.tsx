@@ -20,8 +20,9 @@ import { LIKE_ACTION_TYPE } from 'utils/profile/constants';
 interface Props {
   children?: React.ReactNode;
   NFTs?: NftType[];
-  isLoading: boolean;
+  isLoading?: boolean;
   isLoadMore: boolean;
+  isLoadMoreLoading: boolean;
   loadMore?: () => void;
   noNftBody?: string | React.ReactNode;
   noNftHref?: string;
@@ -36,6 +37,7 @@ const NftsGrid = ({
   NFTs,
   isLoading,
   isLoadMore,
+  isLoadMoreLoading,
   loadMore,
   noNftBody,
   noNftHref,
@@ -70,14 +72,18 @@ const NftsGrid = ({
     }
   };
 
+  if (isLoading) {
+    return (
+      <SNoNFTContainer>
+        <SLoader color="primary500" />
+      </SNoNFTContainer>
+    );
+  }
+
   if (NFTs === undefined || NFTs.length < 1) {
     return (
       <SNoNFTContainer>
-        {isLoading ? (
-          <SLoader color="primary500" />
-        ) : (
-          <NoNFTComponent body={noNftBody} href={noNftHref} linkLabel={noNftLinkLabel} title={noNftTitle} />
-        )}
+        <NoNFTComponent body={noNftBody} href={noNftHref} linkLabel={noNftLinkLabel} title={noNftTitle} />
       </SNoNFTContainer>
     );
   }
@@ -99,11 +105,11 @@ const NftsGrid = ({
         <SLoadButtonWrapper>
           <Button
             color="contrast"
-            disabled={isLoading}
-            isLoading={isLoading}
+            disabled={isLoadMoreLoading}
+            isLoading={isLoadMoreLoading}
             onClick={loadMore}
             size="medium"
-            text={isLoading ? 'Loading...' : 'Load more'}
+            text={isLoadMoreLoading ? 'Loading...' : 'Load more'}
             variant="outlined"
           />
         </SLoadButtonWrapper>

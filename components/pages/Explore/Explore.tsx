@@ -20,7 +20,7 @@ const Explore: React.FC<ExploreProps> = ({ NFTS, loadMore, hasNextPage, loading,
       <STitle>{`Explore${totalCount > 0 ? ` (${totalCount} NFTs)` : ""}`}</STitle>
       <NftsGrid
         NFTs={NFTS}
-        isLoading={loading}
+        isLoadMoreLoading={loading}
         isLoadMore={hasNextPage}
         loadMore={loadMore}
         noNftBody={

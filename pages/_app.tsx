@@ -7,6 +7,7 @@ import Router, { useRouter } from 'next/router';
 import NProgress from 'nprogress';
 import type { AppProps } from 'next/app';
 import Cookies from 'js-cookie';
+import cookies from 'next-cookies';
 
 import { getUser } from 'actions/user';
 import Icon from 'components/ui/Icon';
@@ -32,14 +33,14 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const token =
-    (router.query.walletId as string) || (Cookies.get('token') && decryptCookie(Cookies.get('token') as string));
+  const token = pageProps.token ?? ((router.query.walletId as string) || (Cookies.get('token') && decryptCookie(Cookies.get('token') as string)));
 
   useEffect(() => {
     setCookiesConsent(localStorage.getItem('cookiesConsent'));
   }, []);
 
   useEffect(() => {
+    console.log("seEffect _app setIsRN");
     dispatch(appSetIsRN(Boolean(window.isRNApp)));
   }, []);
 
@@ -100,8 +101,7 @@ MyApp.getInitialProps = wrapper.getInitialAppProps((store) => async (context) =>
   if (isServer) {
     if (process.env.NEXT_PUBLIC_APP_LOGO_PATH) store.dispatch(mpSetLogo(process.env.NEXT_PUBLIC_APP_LOGO_PATH));
     if (process.env.NEXT_PUBLIC_APP_NAME) store.dispatch(mpSetName(process.env.NEXT_PUBLIC_APP_NAME));
-    if (process.env.NEXT_PUBLIC_INSTAGRAM_LINK)
-      store.dispatch(mpSetInstagramUrl(process.env.NEXT_PUBLIC_INSTAGRAM_LINK));
+    if (process.env.NEXT_PUBLIC_INSTAGRAM_LINK) store.dispatch(mpSetInstagramUrl(process.env.NEXT_PUBLIC_INSTAGRAM_LINK));
     if (process.env.NEXT_PUBLIC_TWITTER_LINK) store.dispatch(mpSetTwitterUrl(process.env.NEXT_PUBLIC_TWITTER_LINK));
     if (process.env.NEXT_PUBLIC_APP_LINK) store.dispatch(mpSetUrl(process.env.NEXT_PUBLIC_APP_LINK));
   }
@@ -109,6 +109,7 @@ MyApp.getInitialProps = wrapper.getInitialAppProps((store) => async (context) =>
   try {
     const pageProps = {
       ...(await App.getInitialProps(context)).pageProps,
+      token: cookies(context.ctx).token,
     };
 
     return { pageProps };

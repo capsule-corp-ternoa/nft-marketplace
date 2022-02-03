@@ -1,5 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
+import cookies from 'next-cookies';
 
 import BetaBanner from 'components/base/BetaBanner';
 import FloatingHeader from 'components/base/FloatingHeader';
@@ -38,8 +39,8 @@ const EditPage = ({ user }: EditPageProps) => {
   );
 };
 
-export const getServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
-  const token = req.cookies.token && decryptCookie(req.cookies.token as string);
+export const getServerSideProps = wrapper.getServerSideProps((store) => async (ctx) => {
+  const token = cookies(ctx).token && decryptCookie(cookies(ctx).token as string);
   let user: UserType | null = null;
 
   if (token) {

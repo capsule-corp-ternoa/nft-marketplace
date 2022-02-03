@@ -83,14 +83,6 @@ const Profile = ({ user, userOwnedlNfts, userOwnedNftsHasNextPage }: ProfileProp
     const ownedUnlisted = await getOwnedNFTS(walletId, false, false);
     setOwnedNftsUnlisted(ownedUnlisted.data);
     setOwnedNftsUnlistedHasNextPage(ownedUnlisted.hasNextPage);
-    // Followers
-    const followers = await getFollowers(walletId);
-    setFollowers(followers.data);
-    setFollowersHasNextPage(followers.hasNextPage);
-    // Followed
-    const followed = await getFollowed(walletId);
-    setFollowed(followed.data);
-    setFollowedHasNextPage(followed.hasNextPage);
   };
 
   const populateTabData = async (tabId: TabsIdType) => {
@@ -104,11 +96,22 @@ const Profile = ({ user, userOwnedlNfts, userOwnedNftsHasNextPage }: ProfileProp
           setLikedNftsHasNextPage(hasNextPage);
           break;
         }
+        case FOLLOWERS_TAB: {
+          const { data, hasNextPage } = await getFollowers(walletId);
+          setFollowersCurrentPage(1);
+          setFollowers(data);
+          setFollowersHasNextPage(hasNextPage);
+          setSearchValue(undefined);
+          setIsFilterVerified(undefined);
+          break;
+        }
         case FOLLOWED_TAB: {
           const { data, hasNextPage } = await getFollowed(walletId);
           setFollowedCurrentPage(1);
           setFollowed(data);
           setFollowedHasNextPage(hasNextPage);
+          setSearchValue(undefined);
+          setIsFilterVerified(undefined);
           break;
         }
       }

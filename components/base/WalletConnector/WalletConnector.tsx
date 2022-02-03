@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import WalletConnect, { CLIENT_EVENTS } from '@walletconnect/client';
 import { WALLET_CONNECT, CHAINS, ternoaCommonRpcMethods } from 'utils/chains.const';
 import { ClientTypes, PairingTypes, SessionTypes } from "@walletconnect/types";
@@ -16,25 +16,33 @@ const WalletConnector: React.FC<WalletConnectorProps> = ({
 }) => {
   const [pairingSuccess, setPairingSuccess] = useState(false);
   const [session, setSession] = useState<SessionTypes.Settled | null>(null);
-  const [requestMethod, setRequestMethod] = useState<string | null>(null);
-  const [requestParams, setRequestParams] = useState<string | null>(null);
-  const [requestChainId, setRequestChainId] = useState<string | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [requestorVisible, setRequestorVisible] = useState(false);
   const [client, setClient] = useState<WalletConnect | null>(null);
   const [uri, setUri] = useState<string | null>(null);
   const [transactionResult, setTransactionResult] = useState<any>(null);
-  const hasPairing = () => (client as WalletConnect).session.values.length > 0
+  const hasPairing = () => {
+    console.log('sessions', (client as WalletConnect).session.values);
+    return (client as WalletConnect).session.values.length > 0;
+  };
   useEffect(() => {
     init();
   }, []);
   useEffect(() => {
+    if (session) {
+      showRequestorPanel();
+    } else {
+      closeRequestorPanel();
+    }
+  }, [session])
+  useEffect(() => {
     if (client) {
       subscribeToEvents();
       if (hasPairing()) {
-        console.log('has pairing');
-        setSession((client as WalletConnect).session.values[0]);
-        showRequestorPanel();
+        console.log('has pairing', (client as WalletConnect).session.values[0]);
+        const currentSession = (client as WalletConnect).session.values[0];
+        console.log('currentSession', currentSession);
+        setSession(currentSession);
       } else {
         console.log('has NO pairing');
         connect();
@@ -82,10 +90,12 @@ const WalletConnector: React.FC<WalletConnectorProps> = ({
     });
   };
   const showRequestorPanel = () => {
-    setRequestChainId(CHAINS.TERNOA.STAGING.id)
-    setRequestMethod(ternoaRpcMethods[0])
     setRequestorVisible(true);
     setModalVisible(true)
+  }
+  const closeRequestorPanel = () => {
+    setRequestorVisible(false);
+    setModalVisible(false);
   }
   const onPairingSuccessClick = () => {
     setPairingSuccess(false);
@@ -109,34 +119,36 @@ const WalletConnector: React.FC<WalletConnectorProps> = ({
     });
     setSession(_session);
   };
-  const handleRequestMethodChange = (event: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
-    setRequestMethod(event.target.value);
 
-  };
-  const handleRequestParamsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRequestParams(event.target.value);
-  };
-  const handleRequestChainIdChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setRequestChainId(event.target.value);
-  };
-  const onRequestSend = async () => {
+  const onRequestSend = async (requestMethod: string, requestParams: string, requestChainId: string) => {
+    console.log('onRequestSend', requestMethod, requestParams, requestChainId);
+    let parsedParams
+    try {
+      parsedParams = JSON.parse(requestParams);
+    }
+    catch(e) {
+      return setTransactionResult({ status: 'error', message: 'Invalid JSON' });
+     }
     const request: ClientTypes.RequestParams = {
       topic: session?.topic as string,
-      chainId: requestChainId as string,
+      chainId: requestChainId,
       request: {
-        method: requestMethod as string,
-        params: requestParams ? JSON.parse(requestParams) : null,
+        method: requestMethod,
+        params: requestParams ? parsedParams : null,
       },
     }
-    console.log('request', request);
+    console.log('onRequestSend', request, requestChainId, requestMethod, requestParams);
     const result = await client?.request(request).catch(err => {
+      console.log('err', err);
       return { response: { status: 'error', message: err.message } }
     })
     console.log('result', result);
-    setTransactionResult(result.response);
+    if (result && result.response) {
+      setTransactionResult(result.response);
+    }
     setTimeout(() => {
       setTransactionResult(null);
-    }, 5000)
+    }, 10000)
   }
   const onSessionDisconnect = () => {
     const { topic } = session as SessionTypes.Settled;
@@ -152,37 +164,60 @@ const WalletConnector: React.FC<WalletConnectorProps> = ({
       <button onClick={onPairingSuccessClick}>OK</button>
     </div>
   </>);
-  const RequestPanel = () => (
-    <>
-      <div className={style.Text}>
-        Current session: <br />Topic {client?.session.values[0].topic} <br />Account: {client?.session.values[0].state.accounts[0]}
-      </div>
-      <div className={style.Text}>
-        Method: <select onChange={handleRequestMethodChange} >
-          {ternoaRpcMethods.map((ternoaRpcMethod) => (
-            <option selected={requestMethod == ternoaRpcMethod} value={ternoaRpcMethod}>{ternoaRpcMethod}</option>
-          ))}
-                  Other: <input onChange={handleRequestMethodChange} />
-        </select>
-      </div>
-      <div className={style.Text}>
-        Params (pass a stringified array): <input onChange={handleRequestParamsChange} />
-      </div>
-      <div className={style.Text}>
-        Select chain: <select onChange={handleRequestChainIdChange} >
-          {ternoaChains.map(chain => (
-            <option selected={requestChainId == chain.id} value={chain.id}>{chain.name}</option>
-          ))}
-        </select>
-      </div>
-      <div className={style.Text}>
-        <button onClick={onRequestSend}>Send Request!</ button>
-      </div>
-      <div className={style.Text}>
-        <button onClick={onSessionDisconnect}>Disconnect</ button>
-      </div>
-    </>
-  );
+  const RequestPanel = useCallback(({ _handleDisconnect, _handleSend }) => {
+    console.log('Request Panel');
+    const [requestMethod, setRequestMethod] = useState<string | null>(ternoaRpcMethods[0]);
+    const [requestParams, setRequestParams] = useState<string | null>(null);
+    const [requestChainId, setRequestChainId] = useState<string | null>(CHAINS.TERNOA.STAGING.id);
+    const handleRequestMethodChange = (event: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
+      setRequestMethod(event.target.value);
+
+    };
+    const handleRequestParamsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      console.log('handleRequestParamsChange', event.target.value);
+      setRequestParams(event.target.value);
+    };
+    const handleRequestChainIdChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+      setRequestChainId(event.target.value);
+    };
+    const handleDisconnect = () => {
+      _handleDisconnect()
+    }
+    const handleSend = () => {
+      _handleSend(requestMethod, requestParams, requestChainId)
+    }
+    const currentSession = (session as SessionTypes.Settled)
+    return (
+      <>
+        <div className={style.Text}>
+          Current session: <br />Topic {currentSession.topic} <br />Account: {currentSession.state.accounts[0]}
+        </div>
+        <div className={style.Text}>
+          Method: <select key="rpc-method-select" onChange={handleRequestMethodChange} >
+            {ternoaRpcMethods.map((ternoaRpcMethod) => (
+              <option selected={ternoaRpcMethod == requestMethod} value={ternoaRpcMethod}>{ternoaRpcMethod}</option>
+            ))}
+          </select>
+        </div>
+        <div className={style.Text}>
+          Params (pass a stringified array): <input key="rpc-params-input" onChange={handleRequestParamsChange} value={requestParams as string} type="text" />
+        </div>
+        <div className={style.Text}>
+          Select chain: <select key="chain-select" onChange={handleRequestChainIdChange} >
+            {ternoaChains.map(chain => (
+              <option selected={chain.id == requestChainId} key={`option-chain-${chain.id}`} value={chain.id}>{chain.name}</option>
+            ))}
+          </select>
+        </div>
+        <div className={style.Text}>
+          <button onClick={handleSend}>Send Request!</ button>
+        </div>
+        <div className={style.Text}>
+          <button onClick={handleDisconnect}>Disconnect</ button>
+        </div>
+      </>
+    );
+  }, [session]);
   const TransactionResult = () => {
     return (
       <div className={style.Text}>
@@ -190,6 +225,7 @@ const WalletConnector: React.FC<WalletConnectorProps> = ({
       </div>
     );
   };
+
   return <>
     { modalVisible ?
       (<div id="walletConnect" className={style.Background}>
@@ -203,7 +239,7 @@ const WalletConnector: React.FC<WalletConnectorProps> = ({
             : null}
           {requestorVisible ?
             <>
-              <RequestPanel />
+              <RequestPanel key="request-panel" _handleSend={onRequestSend} _handleDisconnect={onSessionDisconnect} />
               {transactionResult ? <TransactionResult /> : null}
             </>
             : null}

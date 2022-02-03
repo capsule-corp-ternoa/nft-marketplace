@@ -1,4 +1,44 @@
-export const ternoaCommonRpcMethods=["nft_mint"]
+export const txPallets = {
+    marketplace: 'marketplace',
+    nfts: 'nfts',
+    balances: 'balances',
+    tiimeBalances: 'tiimeBalances',
+    capsules: 'capsules',
+    associatedAccounts: 'associatedAccounts',
+};
+export const txCalls = {
+    [txPallets.marketplace]: {
+        //marketplace
+        buy: 'buy',
+        list: 'list',
+        unlist: 'unlist',
+    },
+    [txPallets.nfts]: {
+        //nfts
+        burn: 'burn',
+        create: 'create',
+        transfer: 'transfer',
+        finishSeries: 'finishSeries',
+    },
+    [txPallets.tiimeBalances]: {
+        //balances tiimebalances
+        transferKeepAlive: 'transferKeepAlive',
+    },
+    [txPallets.capsules]: {
+        //capsules
+        createFromNft: 'createFromNft',
+        remove: 'remove',
+    },
+    [txPallets.associatedAccounts]: {
+        //associatedAccounts
+        setAltvrUsername: 'setAltvrUsername',
+    }
+};
+export const ternoaCommonRpcMethods = Object.keys(txCalls).reduce((rpcCalls: string[], txPallet: string) => {
+    rpcCalls = [...rpcCalls, ...Object.values(txCalls[txPallet]).map(txMethod => `${txPallet}_${txMethod}`)]
+    return rpcCalls
+}, []);
+
 export const CHAINS = {
     ETH: {
         id: "eip155:1",

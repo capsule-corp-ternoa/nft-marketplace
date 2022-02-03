@@ -15,7 +15,7 @@ import MainHeader from 'components/base/MainHeader';
 import NFTPage from 'components/pages/NFT';
 import { NftType } from 'interfaces';
 import { appSetUser } from 'redux/app';
-import { useApp, useMarketplaceData } from 'redux/hooks';
+import { useMarketplaceData } from 'redux/hooks';
 import { encryptCookie, decryptCookie } from 'utils/cookie';
 import { getUserIp } from 'utils/functions';
 import { MARKETPLACE_ID } from 'utils/constant';
@@ -30,13 +30,12 @@ const NftPage = ({ NFT, capsValue }: NFTPageProps) => {
   const [isUserFromDappQR, setIsUserFromDappQR] = useState(false);
 
   const dispatch = useDispatch();
-  const { isRN } = useApp();
   const { name } = useMarketplaceData();
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     if (
-      isRN &&
+      Boolean(window.isRNApp) &&
       window.walletId &&
       (!Cookies.get('token') || decryptCookie(Cookies.get('token') as string) !== window.walletId)
     ) {
@@ -51,7 +50,7 @@ const NftPage = ({ NFT, capsValue }: NFTPageProps) => {
         })
         .catch((error) => console.log({ error }));
     }
-    if (!isRN && params.get('walletId')) {
+    if (!Boolean(window.isRNApp) && params.get('walletId')) {
       dispatch(appSetUser(null));
     }
     if (window.isRNApp && window.history.length === 1) {

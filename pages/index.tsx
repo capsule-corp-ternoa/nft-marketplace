@@ -15,7 +15,7 @@ import { getUser, getUsers } from 'actions/user';
 import { getNFTs } from 'actions/nft';
 import { NftType, UserType } from 'interfaces';
 import { appSetUser } from 'redux/app';
-import { useApp, useMarketplaceData } from 'redux/hooks';
+import { useMarketplaceData } from 'redux/hooks';
 import { encryptCookie, decryptCookie } from 'utils/cookie';
 
 export interface LandingProps {
@@ -37,14 +37,13 @@ const LandingPage = ({
   totalCountNFT,
 }: LandingProps) => {
   const dispatch = useDispatch();
-  const { isRN } = useApp();
   const { name } = useMarketplaceData();
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     if (
-      isRN &&
-      window.walletId &&
+      Boolean(window.isRNApp) &&
+      Boolean(window.walletId) &&
       (!Cookies.get('token') || decryptCookie(Cookies.get('token') as string) !== window.walletId)
     ) {
       if (params.get('walletId') && params.get('walletId') !== window.walletId) {
@@ -58,7 +57,7 @@ const LandingPage = ({
         })
         .catch((error) => console.log({ error }));
     }
-    if (!isRN && params.get('walletId')) {
+    if (!Boolean(window.isRNApp) && params.get('walletId')) {
       dispatch(appSetUser(null));
     }
   }, []);

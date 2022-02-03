@@ -95,7 +95,7 @@ const NftCard: React.FC<NftCardProps> = ({
         }
         setIsLiked((prevState) => !prevState);
         setLikeLoading(false);
-        if (handleLike) await handleLike(isLiked ? UNLIKE_ACTION : LIKE_ACTION, item);
+        if (handleLike) handleLike(isLiked ? UNLIKE_ACTION : LIKE_ACTION, item);
       }
     } catch (error) {
       console.error(error);

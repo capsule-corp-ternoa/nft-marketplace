@@ -50,7 +50,7 @@ export const loadMoreProfiles = async (
     if (forceLoad) {
       setData([...data]);
     } else {
-      setData((prevState) => [...prevState, ...data]);
+      setData((prevState) => prevState.concat(data));
     }
 
     return data;

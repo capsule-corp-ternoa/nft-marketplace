@@ -3,57 +3,41 @@ import Link from 'next/link';
 import styled from 'styled-components';
 
 import { follow, getFollowersCount, isUserFollowing, unfollow } from 'actions/follower';
-import { FOLLOWED_TAB, TabsIdType } from 'components/pages/Profile';
 import Button from 'components/ui/Button';
 import { UserType } from 'interfaces';
 import { useApp } from 'redux/hooks';
+import { FOLLOW_ACTION, FOLLOW_ACTION_TYPE, UNFOLLOW_ACTION } from 'utils/profile/constants';
 
 import Picture from './components/Picture';
 
-type CountsNominalSetState = React.Dispatch<React.SetStateAction<{ [key in TabsIdType]: number }>>;
-type FollowersNominalSetState = React.Dispatch<React.SetStateAction<UserType[]>>;
-
 interface FollowAvatarProps {
   className?: string;
+  handleFollow?: (action: FOLLOW_ACTION_TYPE, profile?: UserType) => void;
   isVerified: boolean;
   name: string;
   picture?: string;
   profileWalletId: string;
-  setCounts?: CountsNominalSetState;
-  setFollowed?: FollowersNominalSetState;
 }
 
-const FollowAvatar = ({ className, isVerified, name = 'Ternoa', picture, profileWalletId, setCounts, setFollowed }: FollowAvatarProps) => {
+const FollowAvatar = ({ className, handleFollow, isVerified, name = 'Ternoa', picture, profileWalletId }: FollowAvatarProps) => {
   const { user } = useApp();
   const [followersCount, setFollowersCount] = useState(0);
   const [isFollowing, setIsFollowing] = useState(false);
-  const [isFollowLoading, setIsFollowLoading] = useState(false);
+  const [isFollowLoading, setIsFollowLoading] = useState(true);
 
   const isFollowButton = !!user && profileWalletId !== user.walletId;
 
-  const handleFollow = async () => {
+  const onFollow = async () => {
     if (user) {
       setIsFollowLoading(true);
       try {
         if (isFollowing) {
-          await unfollow(profileWalletId, user.walletId);
-          if (setFollowed) setFollowed((prevState) => prevState.filter(({ walletId }) => walletId !== profileWalletId));
-          if (setCounts)
-            setCounts((prevCounts) => ({
-              ...prevCounts,
-              [FOLLOWED_TAB]: prevCounts[FOLLOWED_TAB] - 1,
-            }));
-
+          const res = await unfollow(profileWalletId, user.walletId);
+          if (handleFollow) handleFollow(UNFOLLOW_ACTION, res);
           setFollowersCount((prevCount) => prevCount - 1);
         } else {
           const res = await follow(profileWalletId, user.walletId);
-          if (setFollowed) setFollowed((prevState) => [...prevState, res]);
-          if (setCounts)
-            setCounts((prevCounts) => ({
-              ...prevCounts,
-              [FOLLOWED_TAB]: prevCounts[FOLLOWED_TAB] + 1,
-            }));
-
+          if (handleFollow) handleFollow(FOLLOW_ACTION, res);
           setFollowersCount((prevCount) => prevCount + 1);
         }
 
@@ -75,8 +59,11 @@ const FollowAvatar = ({ className, isVerified, name = 'Ternoa', picture, profile
 
           const count = await getFollowersCount(profileWalletId);
           setFollowersCount(count);
+
+          setIsFollowLoading(false);
         } catch (error) {
           console.log(error);
+          setIsFollowLoading(false);
         }
       }
     };
@@ -102,7 +89,7 @@ const FollowAvatar = ({ className, isVerified, name = 'Ternoa', picture, profile
                 color={isFollowing ? 'primary200' : 'invertedContrast'}
                 disabled={isFollowLoading}
                 isLoading={isFollowLoading}
-                onClick={handleFollow}
+                onClick={onFollow}
                 size="small"
                 text={isFollowing ? 'Unfollow' : 'Follow'}
               />
@@ -115,7 +102,7 @@ const FollowAvatar = ({ className, isVerified, name = 'Ternoa', picture, profile
           color={isFollowing ? 'primary200' : 'invertedContrast'}
           disabled={isFollowLoading}
           isLoading={isFollowLoading}
-          onClick={handleFollow}
+          onClick={onFollow}
           size="small"
           text={isFollowing ? 'Unfollow' : 'Follow'}
         />

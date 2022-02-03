@@ -4,84 +4,88 @@ import styled from 'styled-components';
 
 import { FollowAvatar } from 'components/base/Avatar';
 import NoNFTComponent from 'components/base/NoNFTComponent';
-import { TabsIdType } from 'components/pages/Profile';
 import Button from 'components/ui/Button';
 import { Loader } from 'components/ui/Icon';
 import { UserType } from 'interfaces';
 import theme from 'style/theme';
-
-type CountsNominalSetState = React.Dispatch<React.SetStateAction<{ [key in TabsIdType]: number }>>;
-type FollowersNominalSetState = React.Dispatch<React.SetStateAction<UserType[]>>;
+import { FOLLOW_ACTION_TYPE } from 'utils/profile/constants';
 
 interface Props {
+  handleFollow?: (action: FOLLOW_ACTION_TYPE, profile?: UserType) => void;
   isFilterVerified: boolean;
   isLoading: boolean;
   isLoadMore: boolean;
+  isLoadMoreLoading: boolean;
   loadMore: () => void;
   noContentBody?: string;
   noContentTitle: string;
-  setCounts?: CountsNominalSetState;
-  setFollowed?: FollowersNominalSetState;
   setIsFilterVerified: (b: boolean) => void;
   updateKeywordSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
   users: UserType[];
 }
 
 const FollowersProfileBlock = ({
+  handleFollow,
   isFilterVerified,
   isLoading,
   isLoadMore,
+  isLoadMoreLoading,
   loadMore,
   noContentBody,
   noContentTitle,
-  setCounts,
-  setFollowed,
   setIsFilterVerified,
   updateKeywordSearch,
   users,
-}: Props) => (
-  <>
-    <SSearchContainer>
-      <SSearchLabel>
-        <SSearchInput type="search" onChange={updateKeywordSearch} placeholder="Search" />
-      </SSearchLabel>
-      <SToggle>
-        <SCertifiedLabel>Verified only</SCertifiedLabel>
-        <label>
-          <Switch
-            checked={isFilterVerified}
-            onChange={() => setIsFilterVerified(!isFilterVerified)}
-            offColor={theme.colors.contrast}
-            onColor={theme.colors.primary500}
-            uncheckedIcon={false}
-            checkedIcon={false}
-            width={46}
-            handleDiameter={23}
-          />
-        </label>
-      </SToggle>
-    </SSearchContainer>
-
-    {users === undefined || users.length < 1 ? (
-      isLoading ? (
+}: Props) => {
+  if (isLoading) {
+    return (
+      <SNoNFTContainer>
         <SLoader color="primary500" />
-      ) : (
-        <SNoNFTContainer>
-          <NoNFTComponent body={noContentBody} title={noContentTitle} />
-        </SNoNFTContainer>
-      )
-    ) : (
+      </SNoNFTContainer>
+    );
+  }
+
+  if (users === undefined || users.length < 1) {
+    return (
+      <SNoNFTContainer>
+        <NoNFTComponent body={noContentBody} title={noContentTitle} />
+      </SNoNFTContainer>
+    );
+  }
+
+  return (
+    <>
+      <SSearchContainer>
+        <SSearchLabel>
+          <SSearchInput type="search" onChange={updateKeywordSearch} placeholder="Search" />
+        </SSearchLabel>
+        <SToggle>
+          <SCertifiedLabel>Verified only</SCertifiedLabel>
+          <label>
+            <Switch
+              checked={isFilterVerified}
+              onChange={() => setIsFilterVerified(!isFilterVerified)}
+              offColor={theme.colors.contrast}
+              onColor={theme.colors.primary500}
+              uncheckedIcon={false}
+              checkedIcon={false}
+              width={46}
+              handleDiameter={23}
+            />
+          </label>
+        </SToggle>
+      </SSearchContainer>
+
       <>
         <SFollowersContainer>
           {users.map(({ _id, name, picture, verified, walletId }: UserType) => (
             <FollowAvatar
               key={_id}
+              handleFollow={handleFollow}
               isVerified={verified}
               name={name}
               picture={picture}
               profileWalletId={walletId}
-              setCounts={setCounts}
-              setFollowed={setFollowed}
             />
           ))}
         </SFollowersContainer>
@@ -89,19 +93,19 @@ const FollowersProfileBlock = ({
           <SLoadButtonWrapper>
             <Button
               color="contrast"
-              disabled={isLoading}
-              isLoading={isLoading}
+              disabled={isLoadMoreLoading}
+              isLoading={isLoadMoreLoading}
               onClick={loadMore}
               size="medium"
-              text={isLoading ? 'Loading...' : 'Load more'}
+              text={isLoadMoreLoading ? 'Loading...' : 'Load more'}
               variant="outlined"
             />
           </SLoadButtonWrapper>
         )}
       </>
-    )}
-  </>
-);
+    </>
+  );
+};
 
 const SLoader = styled(Loader)`
   margin: 8rem auto;
@@ -213,10 +217,6 @@ const SFollowersContainer = styled.div`
 
   ${({ theme }) => theme.mediaQueries.xl} {
     grid-template-columns: repeat(4, 1fr);
-  }
-
-  ${({ theme }) => theme.mediaQueries.xxl} {
-    grid-template-columns: repeat(5, 1fr);
   }
 `;
 

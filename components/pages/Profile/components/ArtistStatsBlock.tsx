@@ -33,7 +33,6 @@ const ArtistStatsBlock = ({ artistWalletId, followedCount, followersCount, setCo
       try {
         if (isFollowing) {
           await unfollow(artistWalletId, user.walletId);
-
           setFollowers((prevState) => prevState.filter(({ walletId }) => walletId !== user.walletId));
           setCounts((prevCounts) => ({
             ...prevCounts,
@@ -41,8 +40,7 @@ const ArtistStatsBlock = ({ artistWalletId, followedCount, followersCount, setCo
           }));
         } else {
           await follow(artistWalletId, user.walletId);
-
-          setFollowers((prevState) => [...prevState, user]);
+          setFollowers((prevState) => prevState.concat(user));
           setCounts((prevCounts) => ({
             ...prevCounts,
             [FOLLOWERS_TAB]: prevCounts[FOLLOWERS_TAB] + 1,

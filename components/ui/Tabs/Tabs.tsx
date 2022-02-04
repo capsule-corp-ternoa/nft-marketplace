@@ -5,7 +5,7 @@ import Select from '../Select';
 import Tab from './Tab';
 
 type TabsType = {
-  badge?: number;
+  badge?: number | string;
   content: React.ReactNode;
   label: string;
   populateTabData?: (id: string) => void;

@@ -228,7 +228,7 @@ const Details: React.FC<DetailsProps> = ({
 
   const historyRowData = ({ index, style }: { index: number; style: React.CSSProperties | undefined }) => {
     const NFTTransferRow = historyData[index];
-    const { amount, extrinsic, from, id, quantity, timestamp, to, typeOfTransaction } = NFTTransferRow;
+    const { amount, extrinsicId, from, id, quantity, timestamp, to, typeOfTransaction } = NFTTransferRow;
     const isTransactionCreationOrSale = typeOfTransaction === 'creation' || typeOfTransaction === 'sale';
     const isTransactionViewDisabled = !EXPLORER_URL;
 
@@ -272,7 +272,7 @@ const Details: React.FC<DetailsProps> = ({
           <Button
             color="primary500"
             disabled={isTransactionViewDisabled}
-            href={`${!isTransactionViewDisabled ? `${EXPLORER_URL}/nft/${id}?extrinsic=${extrinsic.id}` : '#'}`}
+            href={`${!isTransactionViewDisabled ? `${EXPLORER_URL}/nft/${id}?extrinsic=${extrinsicId}` : '#'}`}
             size="small"
             text="View"
             variant={isTransactionViewDisabled ? 'contained' : 'outlined'}

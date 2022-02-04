@@ -102,9 +102,7 @@ export type NFTTransferType = {
   typeOfTransaction: string;
   amount: string;
   quantity: number;
-  extrinsic: {
-    id: string;
-  };
+  extrinsicId: string;
 }
 
 export interface INFTLike {

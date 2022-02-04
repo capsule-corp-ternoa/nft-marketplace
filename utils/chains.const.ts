@@ -35,10 +35,12 @@ export const txCalls = {
     }
 };
 const additionalRpcCalls = ["sign_message"];
-export const ternoaCommonRpcMethods = Object.keys(txCalls).reduce((rpcCalls: string[], txPallet: string) => {
+const extrinsics = Object.keys(txCalls).reduce((rpcCalls: string[], txPallet: string) => {
     rpcCalls = [...rpcCalls, ...Object.values(txCalls[txPallet]).map(txMethod => `${txPallet}_${txMethod}`)]
-    return [...rpcCalls, ...additionalRpcCalls]
+    return rpcCalls;
 }, []);
+export const ternoaCommonRpcMethods = [...extrinsics, ...additionalRpcCalls];
+
 
 export const CHAINS = {
     ETH: {

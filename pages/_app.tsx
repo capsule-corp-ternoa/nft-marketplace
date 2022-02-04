@@ -40,7 +40,6 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
   }, []);
 
   useEffect(() => {
-    console.log("seEffect _app setIsRN");
     dispatch(appSetIsRN(Boolean(window.isRNApp)));
   }, []);
 

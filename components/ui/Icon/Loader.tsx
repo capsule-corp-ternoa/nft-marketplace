@@ -41,7 +41,6 @@ const LoaderContainer = styled.div<{ color: keyof Colors, size?: 'small' | 'medi
     position: absolute;
     width: ${({ size }) => size === 'small' ? '1.6rem' : size === 'medium' ? '2rem' : '6.4rem'};
     height: ${({ size }) => size === 'small' ? '1.6rem' : size === 'medium' ? '2rem' : '6.4rem'};
-    margin: 0.8rem;
     border: ${({ size }) => size === 'small' ? '0.2rem solid' : size === 'medium' ? '0.3rem solid' : '0.8rem solid'};
     border-radius: 50%;
     animation: ${rotation} 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;

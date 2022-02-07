@@ -80,7 +80,7 @@ const NFTPage = ({ NFT, type, isUserFromDappQR }: NFTPageProps) => {
 
   useEffect(() => {
     loadSeriesData(NFT.serieId);
-  }, []);
+  }, [NFT.serieId]);
 
   useEffect(() => {
     setNftToBuy((prevState) => ({ ...prevState, ...smallestPriceRow }));

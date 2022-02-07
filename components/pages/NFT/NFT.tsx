@@ -37,6 +37,7 @@ const NFTPage = ({ NFT, type, isUserFromDappQR }: NFTPageProps) => {
       ? user?.likedNFTs?.some(({ nftId }) => nftId === NFT.id)
       : user?.likedNFTs?.some(({ serieId }) => serieId === NFT.serieId)) ?? false
   );
+  const [resetTabId, toggleResetTabId] = useState(false);
   const [likeLoading, setLikeLoading] = useState(false);
   const [modalShareOpen, setModalShareOpen] = useState(false);
   const [byTheSameArtistNFTs, setByTheSameArtistNFTs] = useState<NftType[]>([]);
@@ -88,6 +89,7 @@ const NFTPage = ({ NFT, type, isUserFromDappQR }: NFTPageProps) => {
 
   useEffect(() => {
     loadByTheSameArtistNFTs();
+    toggleResetTabId((prevState) => !prevState);
   }, [NFT]);
 
   useEffect(() => {
@@ -295,6 +297,7 @@ const NFTPage = ({ NFT, type, isUserFromDappQR }: NFTPageProps) => {
               isVR={isVR}
               canUserBuyAgain={canUserBuyAgain}
               setIsModalCheckoutExpanded={setIsModalCheckoutExpanded}
+              resetTabId={resetTabId}
             />
           </SDetailsWrapper>
         </Wrapper>

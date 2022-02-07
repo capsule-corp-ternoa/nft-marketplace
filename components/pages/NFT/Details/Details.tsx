@@ -27,6 +27,7 @@ export interface DetailsProps {
   isUserFromDappQR: boolean;
   isVR: boolean;
   canUserBuyAgain: boolean;
+  resetTabId?: boolean;
 }
 
 const Details: React.FC<DetailsProps> = ({
@@ -37,6 +38,7 @@ const Details: React.FC<DetailsProps> = ({
   isUserFromDappQR,
   isVR,
   canUserBuyAgain,
+  resetTabId,
 }) => {
   const tabs = ['infos', 'owners', 'history', 'bid'];
   const [currentTab, setCurrentTab] = useState(tabs[0]);
@@ -80,10 +82,6 @@ const Details: React.FC<DetailsProps> = ({
     const NFTToBuy = seriesData.find((x) => x.id === getRandomNFTFromArray(serieDataCount[key])) || NFT;
     setNftToBuy(NFTToBuy);
     setIsModalCheckoutExpanded(true);
-  };
-
-  const switchTab = (tab: string) => {
-    setCurrentTab(tab);
   };
 
   const onRowRenderedOwners = ({ overscanStartIndex, overscanStopIndex }: ListOnItemsRenderedProps) => {
@@ -281,6 +279,10 @@ const Details: React.FC<DetailsProps> = ({
     );
   };
 
+  useEffect(() => {
+    setCurrentTab(tabs[0]);
+  }, [resetTabId])
+
   return (
     <>
       <STabsContainer>
@@ -289,7 +291,7 @@ const Details: React.FC<DetailsProps> = ({
             key={tab}
             color={currentTab === tab ? 'contrast' : 'neutral100'}
             disabled={tab === 'bid'}
-            onClick={() => switchTab(tab)}
+            onClick={() => setCurrentTab(tab)}
             size="medium"
             text={tab}
             variant="contained"

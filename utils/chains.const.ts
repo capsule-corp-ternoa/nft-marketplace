@@ -40,8 +40,6 @@ const extrinsics = Object.keys(txCalls).reduce((rpcCalls: string[], txPallet: st
     return rpcCalls;
 }, []);
 export const ternoaCommonRpcMethods = [...extrinsics, ...additionalRpcCalls];
-
-
 export const CHAINS = {
     ETH: {
         id: "eip155:1",

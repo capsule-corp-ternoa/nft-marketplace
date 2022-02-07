@@ -99,7 +99,6 @@ const WalletConnector: React.FC<WalletConnectorProps> = ({
   }
   const onPairingSuccessClick = () => {
     setPairingSuccess(false);
-    showRequestorPanel()
   }
   const handleClose = () => {
     setModalVisible(false);
@@ -123,12 +122,19 @@ const WalletConnector: React.FC<WalletConnectorProps> = ({
   const onRequestSend = async (requestMethod: string, requestParams: string, requestChainId: string) => {
     console.log('onRequestSend', requestMethod, requestParams, requestChainId);
     let parsedParams
-    try {
-      parsedParams = JSON.parse(requestParams);
-    }
-    catch(e) {
-      return setTransactionResult({ status: 'error', message: 'Invalid JSON' });
-     }
+    switch (requestMethod) {
+      case "sign_message":
+        parsedParams = requestParams;
+        break;
+      default:
+        try {
+          parsedParams = JSON.parse(requestParams);
+        }
+        catch(e) {
+          return setTransactionResult({ status: 'error', message: 'Invalid JSON' });
+          }
+          break;
+        }
     const request: ClientTypes.RequestParams = {
       topic: session?.topic as string,
       chainId: requestChainId,
@@ -139,17 +145,12 @@ const WalletConnector: React.FC<WalletConnectorProps> = ({
     }
     console.log('onRequestSend', request, requestChainId, requestMethod, requestParams);
     const result = await client?.request(request).catch(err => {
-      console.log('err', err);
-      return { response: { status: 'error', message: err.message } }
+      console.log('REQUEST err', err);
+      return { status: 'error', message: err.message }
     })
-    console.log('result', result);
-    if (result && result.response) {
-      setTransactionResult(result.response);
-    }
-    setTimeout(() => {
-      setTransactionResult(null);
-    }, 10000)
-  }
+    console.log('REQUEST result', result);
+    setTransactionResult(result);
+}
   const onSessionDisconnect = () => {
     const { topic } = session as SessionTypes.Settled;
     (client as WalletConnect).disconnect({ topic } as ClientTypes.DisconnectParams);
@@ -218,11 +219,19 @@ const WalletConnector: React.FC<WalletConnectorProps> = ({
       </>
     );
   }, [session]);
+  const handleTransactionResultClick = ()=>{
+    setTransactionResult(null);
+  };
   const TransactionResult = () => {
     return (
+      <>
       <div className={style.Text}>
         Transaction result: <br />{transactionResult.status === 'success' ? 'Success' : 'Error'} <br />Message: {transactionResult.message}
       </div>
+        <div className={style.Text}>
+            <button onClick={handleTransactionResultClick}>OK</ button>
+      </div>
+      </>
     );
   };
 
@@ -237,10 +246,9 @@ const WalletConnector: React.FC<WalletConnectorProps> = ({
           {pairingSuccess ?
             <PairingSuccess />
             : null}
-          {requestorVisible ?
+          {requestorVisible && !pairingSuccess ?
             <>
-              <RequestPanel key="request-panel" _handleSend={onRequestSend} _handleDisconnect={onSessionDisconnect} />
-              {transactionResult ? <TransactionResult /> : null}
+            {transactionResult ? <TransactionResult /> :  <RequestPanel key="request-panel" _handleSend={onRequestSend} _handleDisconnect={onSessionDisconnect} />}
             </>
             : null}
         </div>

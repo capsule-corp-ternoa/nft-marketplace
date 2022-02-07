@@ -8,7 +8,7 @@ import Button from 'components/ui/Button';
 import Icon from 'components/ui/Icon';
 import { NftType } from 'interfaces';
 import { useApp } from 'redux/hooks';
-import { computeCaps, computeTiime } from 'utils/strings';
+import { computeCaps } from 'utils/strings';
 
 export interface ModalCheckoutProps {
   NFT: NftType;
@@ -18,9 +18,7 @@ export interface ModalCheckoutProps {
 
 const ModalCheckout: React.FC<ModalCheckoutProps> = ({ setExpanded, setModalBuyExpanded, NFT }) => {
   const { user } = useApp();
-  const { creatorData, price, priceTiime, title } = NFT;
-  const isCapsPrice = Number(price) > 0;
-  const isTiimePrice = Number(priceTiime) > 0;
+  const { creatorData, price, title } = NFT;
 
   return (
     <SBackground>
@@ -55,19 +53,10 @@ const ModalCheckout: React.FC<ModalCheckoutProps> = ({ setExpanded, setModalBuyE
           </SSection>
 
           <SPricingContainer>
-            {isCapsPrice && (
-              <SPrice>
-                <STokenAmount>{computeCaps(Number(price))}</STokenAmount>
-                <STokenUnit>CAPS</STokenUnit>
-              </SPrice>
-            )}
-            {isCapsPrice && isTiimePrice && <SSeparatorLabel>OR</SSeparatorLabel>}
-            {isTiimePrice && (
-              <SPrice>
-                <STokenAmount>{computeTiime(Number(priceTiime))}</STokenAmount>
-                <STokenUnit>TIIME</STokenUnit>
-              </SPrice>
-            )}
+            <SPrice>
+              <STokenAmount>{computeCaps(Number(price))}</STokenAmount>
+              <STokenUnit>CAPS</STokenUnit>
+            </SPrice>
 
             <SSeparatorLine />
             <STransactionInfosContainer>
@@ -230,10 +219,6 @@ const STokenUnit = styled.div`
   font-size: 3.2rem;
   margin-left: 1.6rem;
   text-transform: uppercase;
-`;
-
-const SSeparatorLabel = styled.div`
-  padding: 0.8rem 0;
 `;
 
 const SSeparatorLine = styled.div`

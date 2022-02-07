@@ -64,7 +64,6 @@ const Details: React.FC<DetailsProps> = ({
           marketplaceId: x.marketplaceId,
           owner: x.owner,
           price: x.price,
-          priceTiime: x.priceTiime,
           serieId: x.serieId,
           isCapsule: x.isCapsule,
         } as NftType);

@@ -14,7 +14,6 @@ export type UserType = {
   customUrl?: string;
   personalUrl?: string;
   capsAmount?: string;
-  tiimeAmount?: string;
   reviewRequested?:boolean
   likedNFTs?: LikedNFTsType[];
 };
@@ -40,7 +39,6 @@ export type NftType = {
   isCapsule: boolean;
   timestampList?: string;
   price: string;
-  priceTiime: string;
   description?: string;
   ownerData: UserType;
   creatorData: UserType;
@@ -53,7 +51,6 @@ export type NftType = {
   totalOwnedListedByRequestingUser?: number;
   totalOwnedListedInMarketplaceByRequestingUser?: number;
   smallestPrice?: string;
-  smallestPriceTiime?: string;
   itemId: string;
   categories: CategoryType[];
   viewsCount?: number;

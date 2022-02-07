@@ -12,7 +12,7 @@ import { appSetUserLikedNFTs } from 'redux/app';
 import { useApp } from 'redux/hooks';
 import { fadeIn, ySlide } from 'style/animations';
 import { LIKE_ACTION, LIKE_ACTION_TYPE, UNLIKE_ACTION } from 'utils/profile/constants';
-import { computeCaps, computeTiime } from 'utils/strings';
+import { computeCaps } from 'utils/strings';
 
 import Media from '../Media';
 
@@ -48,7 +48,7 @@ const NftCard: React.FC<NftCardProps> = ({
 }) => {
   const { user } = useApp();
   const dispatch = useDispatch();
-  const { creator, creatorData, id: nftId, properties, serieId, smallestPrice, smallestPriceTiime, totalListedInMarketplace, totalListedNft, totalNft } = item;
+  const { creator, creatorData, id: nftId, properties, serieId, smallestPrice, totalListedInMarketplace, totalListedNft, totalNft } = item;
 
   const [isHovering, setIsHovering] = useState(false);
   const [isLiked, setIsLiked] = useState(
@@ -60,19 +60,10 @@ const NftCard: React.FC<NftCardProps> = ({
   const isCreator = creator !== undefined && creator !== '' && creatorData !== undefined;
   const isUserLogged = user !== undefined && user !== null;
 
-  const smallestCapsPrice = Number(smallestPrice);
-  const smallestTiimePrice = Number(smallestPriceTiime);
-  const isSmallestCapsPrice = smallestCapsPrice > 0;
-  const isSmallestTiimePrice = smallestTiimePrice > 0;
-  const isPrice = isSmallestCapsPrice || isSmallestTiimePrice;
+  const isPrice = Number(smallestPrice) > 0;
   const isSecret = properties?.cryptedMedia.ipfs !== properties?.preview.ipfs;
 
-  const smallestPriceWording = isPrice
-    ? `${isSmallestCapsPrice ? `${computeCaps(smallestCapsPrice)} CAPS` : ''}
-          ${isSmallestCapsPrice && isSmallestTiimePrice ? ' / ' : ''}
-          ${isSmallestTiimePrice ? `${computeTiime(smallestTiimePrice)} TIIME` : ''}`
-    : undefined;
-
+  const smallestPriceWording = isPrice ? `${computeCaps(Number(smallestPrice))} CAPS` : undefined;
   const defaultQuantityAvailable = totalListedInMarketplace ?? totalListedNft ?? 1;
   const quantityAvailable = quantity ?? defaultQuantityAvailable;
 

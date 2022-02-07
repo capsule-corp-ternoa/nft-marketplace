@@ -17,7 +17,7 @@ import { appSetUserLikedNFTs } from 'redux/app';
 import { useApp, useMarketplaceData } from 'redux/hooks';
 import { MARKETPLACE_ID } from 'utils/constant';
 import { getRandomNFTFromArray } from 'utils/functions';
-import { computeCaps, computeTiime } from 'utils/strings';
+import { computeCaps } from 'utils/strings';
 
 import Details from './Details';
 export interface NFTPageProps {
@@ -60,8 +60,7 @@ const NFTPage = ({ NFT, type, isUserFromDappQR }: NFTPageProps) => {
       (a, b) =>
         (a.owner === b.owner ? 0 : !user ? 0 : a.owner === user.walletId ? 1 : b.owner === user.walletId ? -1 : 0) || // take nft which i'm not owner first
         b.listed - a.listed || //listed first
-        Number(a.price) - Number(b.price) || //lowest price first
-        Number(a.priceTiime) - Number(b.priceTiime) // lower pricetiime first
+        Number(a.price) - Number(b.price) //lowest price first
     )[0];
 
   const userCanBuy =
@@ -178,12 +177,8 @@ const NFTPage = ({ NFT, type, isUserFromDappQR }: NFTPageProps) => {
     //get a random row to buy if same price
     const smallestPriceRows = seriesData
       .filter((x) => x.marketplaceId === MARKETPLACE_ID && x.listed === 1 && (!user || x.owner !== user.walletId))
-      .sort(
-        (a, b) =>
-          Number(a.price) - Number(b.price) || //lowest price first
-          Number(a.priceTiime) - Number(b.priceTiime) // lower pricetiime first
-      )
-      .filter((x, _i, arr) => x.price === arr[0].price && x.priceTiime === arr[0].priceTiime);
+      .sort((a, b) => Number(a.price) - Number(b.price)) //lowest price first
+      .filter((x, _i, arr) => x.price === arr[0].price);
     let canBuyAgain = true;
     if (isVR) {
       canBuyAgain = await loadCanUserBuyAgain();
@@ -194,18 +189,7 @@ const NFTPage = ({ NFT, type, isUserFromDappQR }: NFTPageProps) => {
     }
   };
 
-  const smallestCapsPrice = Number(smallestPriceRow?.price);
-  const smallestTiimePrice = Number(smallestPriceRow?.priceTiime);
-  const isSmallestCapsPrice = smallestCapsPrice > 0;
-  const isSmallestTiimePrice = smallestTiimePrice > 0;
-
-  const smallestPriceWording =
-    isSmallestCapsPrice || isSmallestTiimePrice
-      ? `${isSmallestCapsPrice ? `${computeCaps(smallestCapsPrice)} CAPS` : ''}
-          ${isSmallestCapsPrice && isSmallestTiimePrice ? ' / ' : ''}
-          ${isSmallestTiimePrice ? `${computeTiime(smallestTiimePrice)} TIIME` : ''}`
-      : undefined;
-
+  const smallestPriceWording = Number(smallestPriceRow?.price) > 0 ? `${computeCaps(Number(smallestPriceRow.price))} CAPS` : undefined;
   const ctaWording =
     isVR && !isUserFromDappQR
       ? 'Reserved for VR gallery'

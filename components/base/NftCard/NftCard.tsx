@@ -19,8 +19,8 @@ import Media from '../Media';
 export interface NftCardProps {
   className?: string;
   handleLike?: (action: LIKE_ACTION_TYPE, nft?: NftType) => void;
-  isDragging?: boolean;
   item: NftType;
+  noClikeable?: boolean;
   noHover?: boolean;
   noStatsChips?: boolean;
   noAvailableChip?: boolean;
@@ -37,8 +37,8 @@ function manageRouting(e: React.MouseEvent<HTMLDivElement, MouseEvent>, id: stri
 const NftCard: React.FC<NftCardProps> = ({
   className,
   handleLike,
-  isDragging,
   item,
+  noClikeable = false,
   noHover = false,
   noStatsChips = false,
   noAvailableChip = false,
@@ -119,14 +119,15 @@ const NftCard: React.FC<NftCardProps> = ({
 
   return (
     <SMediaWrapper
-      onClick={() => !isDragging && Router.push(`/nft/${item.id}`)}
       className={className}
+      noClikeable={noClikeable}
+      onClick={() => !noClikeable && Router.push(`/nft/${item.id}`)}
       onFocus={() => false}
       onBlur={() => false}
-      onMouseOut={() => setIsHovering(false)}
-      onMouseOver={() => setIsHovering(true)}
+      onMouseOut={() => !noHover && setIsHovering(false)}
+      onMouseOver={() => !noHover && setIsHovering(true)}
     >
-      <Media src={item.properties?.preview.ipfs!} type={type} alt="imgnft" draggable="false" isHovering={!noHover && isHovering} />
+      <Media src={item.properties?.preview.ipfs!} type={type} alt="imgnft" draggable="false" isHovering={isHovering} />
       {!noStatsChips && (
         <>
           {quantityAvailable > 1 && !noAvailableChip && !isHovering && (
@@ -194,7 +195,7 @@ const NftCard: React.FC<NftCardProps> = ({
   );
 };
 
-const SMediaWrapper = styled.div`
+const SMediaWrapper = styled.div<{ noClikeable?: boolean }>`
   display: flex;
   align-items: center;
   position: relative;
@@ -202,7 +203,7 @@ const SMediaWrapper = styled.div`
   border-radius: 12px;
   background: linear-gradient(180deg, #f29fff 0%, #878cff 100%);
   box-shadow: ${({ theme }) => theme.shadows.popupShadow};
-  cursor: pointer;
+  cursor: ${({ noClikeable }) => (noClikeable ? 'auto' : 'pointer')};
   overflow: hidden;
   transform: translateZ(0);
 

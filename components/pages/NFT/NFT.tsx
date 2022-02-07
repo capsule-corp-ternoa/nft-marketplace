@@ -17,7 +17,7 @@ import { appSetUserLikedNFTs } from 'redux/app';
 import { useApp, useMarketplaceData } from 'redux/hooks';
 import { MARKETPLACE_ID } from 'utils/constant';
 import { getRandomNFTFromArray } from 'utils/functions';
-import { computeCaps, computeTiime } from 'utils/strings';
+import { computeCaps } from 'utils/strings';
 
 import Details from './Details';
 export interface NFTPageProps {
@@ -37,6 +37,7 @@ const NFTPage = ({ NFT, type, isUserFromDappQR }: NFTPageProps) => {
       ? user?.likedNFTs?.some(({ nftId }) => nftId === NFT.id)
       : user?.likedNFTs?.some(({ serieId }) => serieId === NFT.serieId)) ?? false
   );
+  const [resetTabId, toggleResetTabId] = useState(false);
   const [likeLoading, setLikeLoading] = useState(false);
   const [modalShareOpen, setModalShareOpen] = useState(false);
   const [byTheSameArtistNFTs, setByTheSameArtistNFTs] = useState<NftType[]>([]);
@@ -60,8 +61,7 @@ const NFTPage = ({ NFT, type, isUserFromDappQR }: NFTPageProps) => {
       (a, b) =>
         (a.owner === b.owner ? 0 : !user ? 0 : a.owner === user.walletId ? 1 : b.owner === user.walletId ? -1 : 0) || // take nft which i'm not owner first
         b.listed - a.listed || //listed first
-        Number(a.price) - Number(b.price) || //lowest price first
-        Number(a.priceTiime) - Number(b.priceTiime) // lower pricetiime first
+        Number(a.price) - Number(b.price) //lowest price first
     )[0];
 
   const userCanBuy =
@@ -81,7 +81,7 @@ const NFTPage = ({ NFT, type, isUserFromDappQR }: NFTPageProps) => {
 
   useEffect(() => {
     loadSeriesData(NFT.serieId);
-  }, []);
+  }, [NFT.serieId]);
 
   useEffect(() => {
     setNftToBuy((prevState) => ({ ...prevState, ...smallestPriceRow }));
@@ -89,6 +89,7 @@ const NFTPage = ({ NFT, type, isUserFromDappQR }: NFTPageProps) => {
 
   useEffect(() => {
     loadByTheSameArtistNFTs();
+    toggleResetTabId((prevState) => !prevState);
   }, [NFT]);
 
   useEffect(() => {
@@ -98,6 +99,14 @@ const NFTPage = ({ NFT, type, isUserFromDappQR }: NFTPageProps) => {
       setCanUserBuyAgain(true);
     }
   }, [isVR]);
+
+  useEffect(() => {
+    setIsLiked(
+      (NFT.serieId === '0'
+        ? user?.likedNFTs?.some(({ nftId }) => nftId === NFT.id)
+        : user?.likedNFTs?.some(({ serieId }) => serieId === NFT.serieId)) ?? false
+    );
+  }, [user?.likedNFTs]);
 
   const loadSeriesData = async (seriesId: string) => {
     try {
@@ -178,12 +187,8 @@ const NFTPage = ({ NFT, type, isUserFromDappQR }: NFTPageProps) => {
     //get a random row to buy if same price
     const smallestPriceRows = seriesData
       .filter((x) => x.marketplaceId === MARKETPLACE_ID && x.listed === 1 && (!user || x.owner !== user.walletId))
-      .sort(
-        (a, b) =>
-          Number(a.price) - Number(b.price) || //lowest price first
-          Number(a.priceTiime) - Number(b.priceTiime) // lower pricetiime first
-      )
-      .filter((x, _i, arr) => x.price === arr[0].price && x.priceTiime === arr[0].priceTiime);
+      .sort((a, b) => Number(a.price) - Number(b.price)) //lowest price first
+      .filter((x, _i, arr) => x.price === arr[0].price);
     let canBuyAgain = true;
     if (isVR) {
       canBuyAgain = await loadCanUserBuyAgain();
@@ -194,18 +199,7 @@ const NFTPage = ({ NFT, type, isUserFromDappQR }: NFTPageProps) => {
     }
   };
 
-  const smallestCapsPrice = Number(smallestPriceRow?.price);
-  const smallestTiimePrice = Number(smallestPriceRow?.priceTiime);
-  const isSmallestCapsPrice = smallestCapsPrice > 0;
-  const isSmallestTiimePrice = smallestTiimePrice > 0;
-
-  const smallestPriceWording =
-    isSmallestCapsPrice || isSmallestTiimePrice
-      ? `${isSmallestCapsPrice ? `${computeCaps(smallestCapsPrice)} CAPS` : ''}
-          ${isSmallestCapsPrice && isSmallestTiimePrice ? ' / ' : ''}
-          ${isSmallestTiimePrice ? `${computeTiime(smallestTiimePrice)} TIIME` : ''}`
-      : undefined;
-
+  const smallestPriceWording = Number(smallestPriceRow?.price) > 0 ? `${computeCaps(Number(smallestPriceRow.price))} CAPS` : undefined;
   const ctaWording =
     isVR && !isUserFromDappQR
       ? 'Reserved for VR gallery'
@@ -241,13 +235,13 @@ const NFTPage = ({ NFT, type, isUserFromDappQR }: NFTPageProps) => {
                 <STopCtasContainer>
                   <Chip color="invertedContrast" icon="eye" size="medium" text={NFT.viewsCount} variant="rectangle" />
                   <Button
-                    color="neutral600"
+                    color={isLiked ? 'primary500' : 'neutral600'}
                     disabled={likeLoading}
                     icon="heart"
                     isLoading={likeLoading}
                     onClick={toggleLikeDislike}
                     size="small"
-                    variant="outlined"
+                    variant={isLiked ? 'contained' : 'outlined'}
                   />
                   <Button color="neutral600" icon="share" onClick={handleShare} size="small" variant="outlined" />
                 </STopCtasContainer>
@@ -311,6 +305,7 @@ const NFTPage = ({ NFT, type, isUserFromDappQR }: NFTPageProps) => {
               isVR={isVR}
               canUserBuyAgain={canUserBuyAgain}
               setIsModalCheckoutExpanded={setIsModalCheckoutExpanded}
+              resetTabId={resetTabId}
             />
           </SDetailsWrapper>
         </Wrapper>

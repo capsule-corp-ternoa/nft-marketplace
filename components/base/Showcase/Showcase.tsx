@@ -66,7 +66,7 @@ const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category }) => {
       >
         <SNftsMobileContainer>
           {NFTs.map((item) => (
-            <NftCard key={item.id} isDragging={isDragging} item={item} />
+            <NftCard key={item.id} noClikeable={isDragging} item={item} />
           ))}
         </SNftsMobileContainer>
         <SNftsCarouselContainer
@@ -80,7 +80,7 @@ const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category }) => {
           swipeable={true}
         >
           {NFTs.map((item) => (
-            <NftCard key={item.id} isDragging={isDragging} item={item} />
+            <NftCard key={item.id} noClikeable={isDragging} item={item} />
           ))}
         </SNftsCarouselContainer>
       </SNftsContainer>

@@ -13,26 +13,27 @@ export async function imgToBlur(image: Jimp, blurredValue: number) {
 }
 
 export async function imgToWatermark(image: Jimp) {
-  const imageWidth = image.getWidth();
-  const imageHeight = image.getHeight();
-  const ratio = imageWidth / imageHeight;
+  try {
+    const imageWidth = image.getWidth();
+    const imageHeight = image.getHeight();
+    const ratio = imageWidth / imageHeight;
 
-  let watermark = await Jimp.read('/TernoaWatermark.png');
-  const watermarkSize = Math.min(
-    (ratio > 1 ? imageHeight : imageWidth) / 4,
-    90
-  );
-  const margin = watermarkSize * 0.2;
+    let watermark = await Jimp.read('/TernoaWatermark.png');
+    const watermarkSize = Math.min((ratio > 1 ? imageHeight : imageWidth) / 4, 90);
+    const margin = watermarkSize * 0.2;
 
-  watermark = watermark.resize(watermarkSize, watermarkSize);
+    watermark = watermark.resize(watermarkSize, watermarkSize);
 
-  let xPos = imageWidth / 2 + margin;
-  let yPos = imageHeight / 2 + watermarkSize - margin;
+    const xPos = imageWidth / 2 + margin;
+    const yPos = imageHeight / 2 + watermarkSize - margin;
 
-  const protectedImage = new Jimp(imageWidth, imageHeight, '#ffffff');
-  protectedImage.composite(image, 0, 0);
-  protectedImage.composite(watermark, xPos, yPos);
-  return await protectedImage.getBase64Async(image.getMIME());
+    const protectedImage = new Jimp(imageWidth, imageHeight, '#ffffff');
+    protectedImage.composite(image, 0, 0);
+    protectedImage.composite(watermark, xPos, yPos);
+    return await protectedImage.getBase64Async(image.getMIME());
+  } catch (err) {
+    console.log(err);
+  }
 }
 
 export const processFile = async (
@@ -63,9 +64,12 @@ export const processFile = async (
 
     return await newprocessedFile;
   } catch (err) {
-    setError('Please try again.');
+    if (String(err).includes('maxMemoryUsageInMB')) {
+      setError('Something went wrong, please try again with another file format or a smaller file size.');
+      return null;
+    }
     console.log(err);
-    return null;
+    return undefined;
   }
 };
 

@@ -44,7 +44,7 @@ export const updateFile = (
       );
       isError = true;
     }
-    if (!isError && file.size > 31000000) {
+    if (!isError && file.size > 30000000) {
       setError('Max file size is 30mb.');
       isError = true;
     }

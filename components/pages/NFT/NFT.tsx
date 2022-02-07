@@ -100,6 +100,14 @@ const NFTPage = ({ NFT, type, isUserFromDappQR }: NFTPageProps) => {
     }
   }, [isVR]);
 
+  useEffect(() => {
+    setIsLiked(
+      (NFT.serieId === '0'
+        ? user?.likedNFTs?.some(({ nftId }) => nftId === NFT.id)
+        : user?.likedNFTs?.some(({ serieId }) => serieId === NFT.serieId)) ?? false
+    );
+  }, [user?.likedNFTs]);
+
   const loadSeriesData = async (seriesId: string) => {
     try {
       const result = await getSeriesData(seriesId);
@@ -227,13 +235,13 @@ const NFTPage = ({ NFT, type, isUserFromDappQR }: NFTPageProps) => {
                 <STopCtasContainer>
                   <Chip color="invertedContrast" icon="eye" size="medium" text={NFT.viewsCount} variant="rectangle" />
                   <Button
-                    color="neutral600"
+                    color={isLiked ? 'primary500' : 'neutral600'}
                     disabled={likeLoading}
                     icon="heart"
                     isLoading={likeLoading}
                     onClick={toggleLikeDislike}
                     size="small"
-                    variant="outlined"
+                    variant={isLiked ? 'contained' : 'outlined'}
                   />
                   <Button color="neutral600" icon="share" onClick={handleShare} size="small" variant="outlined" />
                 </STopCtasContainer>

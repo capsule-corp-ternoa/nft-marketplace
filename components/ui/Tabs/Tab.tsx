@@ -5,11 +5,11 @@ import Chip from '../Chip';
 
 interface Props {
   className?: string;
-  endBadge?: number;
+  endBadge?: number | string;
   isActive?: boolean;
   label: string;
   onClick: () => void;
-  startBadge?: number;
+  startBadge?: number | string;
 }
 
 const Tab = ({
@@ -20,8 +20,8 @@ const Tab = ({
   onClick,
   startBadge,
 }: Props) => {
-  const isEndBadge = endBadge !== undefined && endBadge !== 0;
-  const isStartBadge = startBadge !== undefined && startBadge !== 0;
+  const isEndBadge = endBadge !== undefined && endBadge !== 0 && endBadge !== '0';
+  const isStartBadge = startBadge !== undefined && startBadge !== 0 && endBadge !== '0';
 
   return (
     <STabContainer
@@ -57,7 +57,7 @@ const Tab = ({
   );
 };
 
-const STabContainer = styled.button<{ isActive?: boolean; isBadge?: boolean }>`
+const STabContainer = styled.button<{ isActive?: boolean; isBadge: boolean }>`
   width: 100%;
   display: flex;
   align-items: center;

@@ -166,16 +166,9 @@ const Create = ({
 
       if (originalNFT !== null) {
         if (effect === NFT_EFFECT_BLUR || effect === NFT_EFFECT_PROTECT) {
-          const processedNFT = await processFile(
-            originalNFT,
-            effect,
-            setError,
-            blurValue
-          );
-          if (processedNFT === undefined || processedNFT === null)
-            throw new Error(
-              `Elements are undefined after file processing using ${effect} effect.`
-            );
+          const processedNFT = await processFile(originalNFT, effect, setError, blurValue);
+          if (processedNFT === undefined)
+            throw new Error(`Elements are undefined after file processing using ${effect} effect.`);
           setPreviewNFT(processedNFT);
         } else if (effect === NFT_EFFECT_SECRET) {
           if (coverNFT === null)

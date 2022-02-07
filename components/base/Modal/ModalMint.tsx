@@ -310,7 +310,9 @@ const ModalMint: React.FC<ModalProps> = ({
       error={error}
       setExpanded={setExpanded}
       subtitle={
-        mintReponse === null
+        error
+          ? undefined
+          : mintReponse === null
           ? modalSubtitle
           : mintReponse
           ? 'Mint was added to the blockchain'

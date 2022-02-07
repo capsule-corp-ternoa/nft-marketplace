@@ -21,7 +21,7 @@ const invertedColor = (color?: keyof Colors): keyof Colors => {
 };
 
 interface Props {
-  badge?: number;
+  badge?: number | string;
   children: (f: (b: boolean) => void) => React.ReactNode;
   className?: string;
   color?: keyof Colors;
@@ -38,7 +38,7 @@ const Select = ({
   text,
 }: Props) => {
   const [isExpanded, setSelectExpanded] = useState(false);
-  const isBadge = badge !== undefined && badge !== 0;
+  const isBadge = badge !== undefined && badge !== 0 && badge !== '0';
 
   const toggleSelect = () => {
     return setSelectExpanded((prevState) => !prevState);
@@ -88,7 +88,7 @@ const SelectContainer = styled.div`
   min-width: 23rem;
 `;
 
-const SelectRoot = styled.button<{ color?: keyof Colors; isBadge?: boolean }>`
+const SelectRoot = styled.button<{ color?: keyof Colors; isBadge: boolean }>`
   width: 100%;
   display: flex;
   align-items: center;

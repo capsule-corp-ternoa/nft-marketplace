@@ -18,6 +18,7 @@ export type IconNameType =
   | 'error500'
   | 'eye'
   | 'faqArrow'
+  | 'filters'
   | 'fingerMark'
   | 'fortmatic'
   | 'heart'
@@ -117,6 +118,10 @@ const Icon = ({ className, name }: Props) => {
     case 'faqArrow': {
       const FaqArrow = dynamic(() => import('components/assets/faqarrow'));
       return <FaqArrow className={className} />;
+    }
+    case 'filters': {
+      const Filters = dynamic(() => import('components/assets/Filters'));
+      return <Filters className={className} />;
     }
     case 'fingerMark': {
       const FingerMark = dynamic(() => import('components/assets/FingerMark'));

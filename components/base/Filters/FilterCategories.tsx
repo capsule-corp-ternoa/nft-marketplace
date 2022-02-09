@@ -6,6 +6,7 @@ import { FilterCointainer, FilterTitle, FilterSubtitle } from 'components/layout
 import { FiltersType, CATEGORIES_FILTER } from 'components/pages/Explore';
 import Button from 'components/ui/Button';
 import { CategoryType } from 'interfaces';
+import { emojiMapping } from 'utils/functions';
 
 type FiltersNominalSetState = React.Dispatch<React.SetStateAction<FiltersType>>;
 
@@ -54,19 +55,27 @@ const FilterCategories = ({ categoriesFiltered, setFilters }: FilterCategoriesPr
       <FilterTitle>Categories</FilterTitle>
       <SFilterSubtitle>Filter your search according to your favorites categories</SFilterSubtitle>
       <SCategoriesContainer>
-        {categories.map(({ _id, code, name }) => {
-          const isActive = categoriesFiltered?.some((item) => item === code);
-          return (
-            <Button
-              key={_id}
-              color={isActive ? 'primary500' : 'invertedContrast'}
-              onClick={() => toggleCategory(code)}
-              size="small"
-              text={name}
-              variant={isActive ? 'contained' : 'outlined'}
-            />
-          );
-        })}
+        {categories
+          // Categories with related emoji are displayed first
+          .sort((a, b) => {
+            const aBit = emojiMapping(a.code) === undefined ? 1 : 0;
+            const bBit = emojiMapping(b.code) === undefined ? 1 : 0;
+            return aBit - bBit;
+          })
+          .map(({ _id, code, name }) => {
+            const isActive = categoriesFiltered?.some((item) => item === code);
+            return (
+              <Button
+                key={_id}
+                color={isActive ? 'primary500' : 'invertedContrast'}
+                emoji={emojiMapping(code)}
+                onClick={() => toggleCategory(code)}
+                size="small"
+                text={name}
+                variant={isActive ? 'contained' : 'outlined'}
+              />
+            );
+          })}
       </SCategoriesContainer>
     </FilterCointainer>
   );

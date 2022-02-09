@@ -49,3 +49,12 @@ export const getRandomNFTFromArray = (array: any[]) => {
 }
 
 export const timer = (ms:number) => new Promise(res => setTimeout(res, ms));
+
+export const emojiMapping = (s: string) => {
+  if (s.localeCompare('music', undefined, { sensitivity: 'base' }) === 0) return '🎵';
+  else if (s.localeCompare('art', undefined, { sensitivity: 'base' }) === 0) return '🎨';
+  else if (s.localeCompare('photo', undefined, { sensitivity: 'base' }) === 0) return '📸';
+  else if (s.localeCompare('games', undefined, { sensitivity: 'base' }) === 0) return '👾';
+  
+  return undefined;
+};

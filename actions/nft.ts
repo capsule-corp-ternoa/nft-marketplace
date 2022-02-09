@@ -37,7 +37,7 @@ export const getNFTs = async (codes?: string[], page: string="1", limit: string=
   const paginationOptions = {page, limit}
   const filterOptions: any = {marketplaceId: MARKETPLACE_ID}
   const sortOptions = "created_at:desc"
-  if (codes) filterOptions.categories = codes
+  if (codes && codes.length > 0) filterOptions.categories = codes
   if (listed !== undefined) filterOptions.listed = listed
   const res = await fetch(
     `${NODE_API_URL}/api/NFTs/?pagination=${JSON.stringify(paginationOptions)}&filter=${JSON.stringify(filterOptions)}&sort=${sortOptions}&useCache300=${useCache}`

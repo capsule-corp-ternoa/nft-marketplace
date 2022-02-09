@@ -70,7 +70,7 @@ const ButtonStyle = css<IButton>`
   align-self: center;
   background: ${({ theme, color, variant }) =>
     variant === 'contained' && color ? theme.colors[`${color}`] : 'transparent'};
-  border: ${({ size, variant }) => (variant === 'outlined' ? (size === 'small' ? '1px solid' : '2px solid') : 'none')};
+  border: ${({ size }) => (size === 'small' ? '1px solid' : '2px solid')};
   border-radius: 4rem;
   box-shadow: ${({ disabled, theme }) => (disabled ? 'none' : theme.shadows.popupShadow)};
   cursor: ${({ noHover }) => (noHover ? 'default' : 'pointer')};

@@ -5,7 +5,6 @@ import { getNFTs } from 'actions/nft';
 import { ModalFilters } from 'components/base/Modal';
 import NftsGrid from 'components/base/NftsGrid';
 import Button from 'components/ui/Button';
-import { Loader } from 'components/ui/Icon';
 import { Container, Title, Wrapper } from 'components/layout';
 import { EXPLORE_TAB } from 'components/pages/Profile';
 import { NftType } from 'interfaces/index';
@@ -26,9 +25,9 @@ const Explore: React.FC<ExploreProps> = ({ NFTs, hasNextPage, totalCount }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [dataNfts, setDataNfts] = useState(NFTs);
   const [dataNftsHasNextPage, setDataNftsHasNextPage] = useState(hasNextPage);
-  const [dataTotalCount,] = useState(totalCount ?? 0);
+  const [dataTotalCount] = useState(totalCount ?? 0);
   const [isLoading, setIsLoading] = useState(false);
-  const [isDataFiltered, setIsDataFiltered] = useState(false);
+  const [isDataFilteredReady, setIsDataFilteredReady] = useState(false);
   const [isLoadMoreLoading, setIsLoadMoreLoading] = useState(false);
   const [isModalFiltersExpanded, setIsModalFiltersExpanded] = useState(false);
 
@@ -64,7 +63,7 @@ const Explore: React.FC<ExploreProps> = ({ NFTs, hasNextPage, totalCount }) => {
           hasNextPage: false,
         };
         setCurrentPage(1);
-        setDataNftsHasNextPage(hasNextPage);
+        setDataNftsHasNextPage(hasNextPage ?? false);
         setDataNfts(data);
         setIsLoading(false);
       } catch (err) {
@@ -73,23 +72,10 @@ const Explore: React.FC<ExploreProps> = ({ NFTs, hasNextPage, totalCount }) => {
       }
     };
 
-    if (isDataFiltered) {
+    if (isDataFilteredReady) {
       getFilteredData();
     }
-    return () => {
-      setDataNfts([]);
-    };
-  }, [filters, isDataFiltered]);
-
-  if (isLoading) {
-    return (
-      <Container>
-        <Wrapper>
-          <SLoader color="primary500" />
-        </Wrapper>
-      </Container>
-    );
-  }
+  }, [filters]);
 
   return (
     <>
@@ -99,7 +85,7 @@ const Explore: React.FC<ExploreProps> = ({ NFTs, hasNextPage, totalCount }) => {
             <STitleContainer>
               <STitle>Explore</STitle>
               {/* TODO: add totalCount based on filters, remove isDataFiltered condition */}
-              {dataTotalCount > 0 && !isDataFiltered && <STotalInsight>{`${dataTotalCount} NFTs to discover`}</STotalInsight>}
+              {dataTotalCount > 0 && !isDataFilteredReady && <STotalInsight>{`${dataTotalCount} NFTs to discover`}</STotalInsight>}
             </STitleContainer>
             <SFiltersButtonContainer>
               <Button color="primary500" icon="filters" onClick={toggleModalFiltersExpanded} size="medium" text="Filters" variant="contained" />
@@ -107,8 +93,9 @@ const Explore: React.FC<ExploreProps> = ({ NFTs, hasNextPage, totalCount }) => {
           </STopContainer>
           <NftsGrid
             NFTs={dataNfts}
+            isLoading={isLoading}
             isLoadMoreLoading={isLoadMoreLoading}
-            isLoadMore={hasNextPage}
+            isLoadMore={dataNftsHasNextPage}
             loadMore={loadMoreNfts}
             noNftBody={
               <>
@@ -123,7 +110,9 @@ const Explore: React.FC<ExploreProps> = ({ NFTs, hasNextPage, totalCount }) => {
           />
         </Wrapper>
       </Container>
-      {isModalFiltersExpanded && <ModalFilters setExpanded={setIsModalFiltersExpanded} setFilters={setFilters} setIsDataFiltered={setIsDataFiltered} />}
+      {isModalFiltersExpanded && (
+        <ModalFilters filters={filters} setExpanded={setIsModalFiltersExpanded} setFilters={setFilters} setIsDataFilteredReady={setIsDataFilteredReady} />
+      )}
     </>
   );
 };
@@ -179,10 +168,6 @@ const STotalInsight = styled.span`
 
 const SFiltersButtonContainer = styled.div`
   margin-top: 2.4rem;
-`;
-
-const SLoader = styled(Loader)`
-  margin: 8rem auto;
 `;
 
 export default Explore;

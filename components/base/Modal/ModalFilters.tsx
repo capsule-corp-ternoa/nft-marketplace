@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import ClickAwayListener from 'react-click-away-listener';
 import styled from 'styled-components';
 
-import { FilterCategories } from 'components/base/Filters';
+import { FilterCategories, FilterTypeSales } from 'components/base/Filters';
 import { CATEGORIES_FILTER, FiltersType } from 'components/pages/Explore';
 import Icon from 'components/ui/Icon';
 
@@ -35,6 +35,7 @@ const ModalFilters = ({ filters, setExpanded, setFilters, setIsDataFilteredReady
           <STitle>Filters</STitle>
           <SFiltersContainer>
             <FilterCategories categoriesFiltered={filters[CATEGORIES_FILTER]} setFilters={setFilters} />
+            <FilterTypeSales />
           </SFiltersContainer>
         </SModalContainer>
       </ClickAwayListener>

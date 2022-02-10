@@ -1,42 +1,74 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import ClickAwayListener from 'react-click-away-listener';
 import styled from 'styled-components';
 
-import { FilterCategories, FilterTypeSales } from 'components/base/Filters';
-import { CATEGORIES_FILTER, FiltersType } from 'components/pages/Explore';
+import { FilterCategories, FilterTypeSales } from 'components/base/FiltersSort';
+import { CATEGORIES_FILTER, DataNominalSetState, FiltersType, FiltersSortNominalSetState, PRICE_FILTER, SALE_TYPE_FILTER } from 'components/pages/Explore';
 import Icon from 'components/ui/Icon';
-
-type FiltersNominalSetState = React.Dispatch<React.SetStateAction<FiltersType>>;
-type DataFilteredReadyNominalSetState = React.Dispatch<React.SetStateAction<boolean>>;
+import Select from 'components/ui/Select';
 
 interface ModalFiltersProps {
   filters: FiltersType;
-  setExpanded: (b: boolean) => void;
-  setFilters: FiltersNominalSetState;
-  setIsDataFilteredReady: DataFilteredReadyNominalSetState;
+  setData: DataNominalSetState;
+  setDataHasNextPage: (b: boolean) => void;
+  setDataCurrentPage: (n: number) => void;
+  setDataIsLoading: (b: boolean) => void;
+  setIsExpanded: (b: boolean) => void;
+  setFilters: FiltersSortNominalSetState;
 }
 
-const ModalFilters = ({ filters, setExpanded, setFilters, setIsDataFilteredReady }: ModalFiltersProps) => {
-  useEffect(() => {
-    setIsDataFilteredReady(true);
-  }, []);
+const ModalFilters = ({ filters, setData, setDataHasNextPage, setDataCurrentPage, setDataIsLoading, setIsExpanded, setFilters }: ModalFiltersProps) => {
+  const [currentFilter, setCurrentFilter] = useState(CATEGORIES_FILTER);
 
   return (
     <SModalBackground>
       <ClickAwayListener
         onClickAway={() => {
-          setExpanded(false);
+          setIsExpanded(false);
         }}
       >
         <SModalContainer>
-          <SCloseIcon onClick={() => setExpanded(false)}>
+          <SCloseIcon onClick={() => setIsExpanded(false)}>
             <Icon name="close" />
           </SCloseIcon>
-          <STitle>Filters</STitle>
-          <SFiltersContainer>
-            <FilterCategories categoriesFiltered={filters[CATEGORIES_FILTER]} setFilters={setFilters} />
-            <FilterTypeSales />
-          </SFiltersContainer>
+          <STopContainer>
+            <STitle>Filter</STitle>
+            <Select color="invertedContrast" text={currentFilter}>
+              {(setSelectExpanded) => (
+                <>
+                  {[CATEGORIES_FILTER, PRICE_FILTER, SALE_TYPE_FILTER].map(
+                    (filter, id) =>
+                      filter !== currentFilter && (
+                        <li
+                          key={id}
+                          onClick={() => {
+                            setSelectExpanded(false);
+                            setCurrentFilter(filter);
+                          }}
+                        >
+                          {filter}
+                        </li>
+                      )
+                  )}
+                </>
+              )}
+            </Select>
+          </STopContainer>
+
+          <div>
+            {currentFilter === CATEGORIES_FILTER && (
+              <FilterCategories
+                setData={setData}
+                setDataHasNextPage={setDataHasNextPage}
+                setDataCurrentPage={setDataCurrentPage}
+                setDataIsLoading={setDataIsLoading}
+                setIsModalExpanded={setIsExpanded}
+                setFilters={setFilters}
+                value={filters[CATEGORIES_FILTER]}
+              />
+            )}
+            {currentFilter === SALE_TYPE_FILTER && <FilterTypeSales />}
+          </div>
         </SModalContainer>
       </ClickAwayListener>
     </SModalBackground>
@@ -54,6 +86,7 @@ const SModalBackground = styled.div`
   align-items: center;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 110;
+  overflow-y: hidden;
 `;
 
 const SCloseIcon = styled.div`
@@ -89,16 +122,42 @@ const SModalContainer = styled.div`
   }
 `;
 
+const STopContainer = styled.div`
+  padding-bottom: 2.4rem;
+
+  button,
+  ul {
+    max-width: 20rem;
+    left: 34%;
+  }
+
+  button,
+  li {
+    text-transform: none;
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    display: flex;
+    align-items: center;
+
+    ul {
+      left: 44%;
+    }
+
+    > * {
+      &:not(:first-child) {
+        margin-left: 1.6rem;
+      }
+    }
+  }
+`;
+
 const STitle = styled.h3`
   color: ${({ theme }) => theme.colors.contrast};
   font-family: ${({ theme }) => theme.fonts.bold};
   font-size: 3.2rem;
   margin: 0;
-  padding-bottom: 2.4rem;
-`;
-
-const SFiltersContainer = styled.div`
-  overflow-y: scroll;
+  margin-bottom: 0.4rem;
 `;
 
 export default ModalFilters;

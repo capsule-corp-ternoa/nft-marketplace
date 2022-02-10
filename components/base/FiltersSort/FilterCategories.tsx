@@ -2,27 +2,31 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { getCategories } from 'actions/category';
-import { FilterCointainer, FilterTitle, FilterSubtitle } from 'components/layout';
-import { FiltersType, CATEGORIES_FILTER } from 'components/pages/Explore';
+import { getNFTs } from 'actions/nft';
+import { FilterTitle, FilterSubtitle, FilterClearCta, FilterCtasContainer } from 'components/layout';
+import { DataNominalSetState, FiltersSortNominalSetState, FiltersSortDefaultState, CATEGORIES_FILTER } from 'components/pages/Explore';
 import Button from 'components/ui/Button';
 import { CategoryType } from 'interfaces';
 import { emojiMapping } from 'utils/functions';
 
-type FiltersNominalSetState = React.Dispatch<React.SetStateAction<FiltersType>>;
-
 interface FilterCategoriesProps {
-  categoriesFiltered?: string[];
-  setFilters: FiltersNominalSetState;
+  setData: DataNominalSetState;
+  setDataHasNextPage: (b: boolean) => void;
+  setDataCurrentPage: (n: number) => void;
+  setDataIsLoading: (b: boolean) => void;
+  setFilters: FiltersSortNominalSetState;
+  setIsModalExpanded: (b: boolean) => void;
+  value: string[] | null;
 }
 
-const FilterCategories = ({ categoriesFiltered, setFilters }: FilterCategoriesProps) => {
+const FilterCategories = ({ setData, setDataHasNextPage, setDataCurrentPage, setDataIsLoading, setFilters, setIsModalExpanded, value }: FilterCategoriesProps) => {
   const [categories, setCategories] = useState<CategoryType[]>([]);
 
   const toggleCategory = (code: string) => {
     setFilters((prevState) => {
       const prevCategoriesFiltered = prevState[CATEGORIES_FILTER];
-      if (prevCategoriesFiltered === undefined) {
-        return { ...prevState, [CATEGORIES_FILTER]: [code] };
+      if (prevCategoriesFiltered === null) {
+        return { ...FiltersSortDefaultState, [CATEGORIES_FILTER]: [code] };
       }
 
       const categoryIdx = prevCategoriesFiltered.findIndex((item) => item === code);
@@ -32,6 +36,38 @@ const FilterCategories = ({ categoriesFiltered, setFilters }: FilterCategoriesPr
 
       return { ...prevState, [CATEGORIES_FILTER]: prevCategoriesFiltered.filter((item) => item !== code) };
     });
+  };
+
+  const submit = async () => {
+    const categoriesCodes = value !== null && value.length > 0 ? value : undefined;
+    setDataIsLoading(true);
+    setIsModalExpanded(false);
+    try {
+      const { data, hasNextPage } = (await getNFTs(categoriesCodes, '1', undefined, true)) ?? { data: [], hasNextPage: false };
+      setDataCurrentPage(1);
+      setDataHasNextPage(hasNextPage ?? false);
+      setData(data);
+      setDataIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      setDataIsLoading(false);
+    }
+  };
+
+  const handleClearFilter = async () => {
+    setFilters(FiltersSortDefaultState);
+    setDataIsLoading(true);
+    setIsModalExpanded(false);
+    try {
+      const { data, hasNextPage } = (await getNFTs(undefined, '1', undefined, true, true)) ?? { data: [], hasNextPage: false };
+      setDataCurrentPage(1);
+      setDataHasNextPage(hasNextPage ?? false);
+      setData(data);
+      setDataIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      setDataIsLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -45,13 +81,10 @@ const FilterCategories = ({ categoriesFiltered, setFilters }: FilterCategoriesPr
     };
 
     loadCategories();
-    return () => {
-      setCategories([]);
-    };
   }, []);
 
   return (
-    <FilterCointainer>
+    <div>
       <FilterTitle>Categories</FilterTitle>
       <SFilterSubtitle>Filter your search according to your favorites categories</SFilterSubtitle>
       <SCategoriesContainer>
@@ -63,7 +96,7 @@ const FilterCategories = ({ categoriesFiltered, setFilters }: FilterCategoriesPr
             return aBit - bBit;
           })
           .map(({ _id, code, name }) => {
-            const isActive = categoriesFiltered?.some((item) => item === code);
+            const isActive = value?.some((item) => item === code) ?? false;
             return (
               <Button
                 key={_id}
@@ -77,7 +110,13 @@ const FilterCategories = ({ categoriesFiltered, setFilters }: FilterCategoriesPr
             );
           })}
       </SCategoriesContainer>
-    </FilterCointainer>
+      <FilterCtasContainer>
+        <FilterClearCta onClick={handleClearFilter}>
+          Clear filter
+        </FilterClearCta>
+        <Button color="primary500" onClick={submit} size="small" text="Show related NFTs" variant="contained" />
+      </FilterCtasContainer>
+    </div>
   );
 };
 
@@ -91,6 +130,8 @@ const SCategoriesContainer = styled.div`
   flex-wrap: wrap;
   gap: 1.6rem;
   margin-top: 1.6rem;
+  max-height: 12rem;
+  overflow-y: auto;
 `;
 
 export default FilterCategories;

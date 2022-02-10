@@ -1,16 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import { getNFTs } from 'actions/nft';
-import { ModalFilters } from 'components/base/Modal';
+import { SortDate, SortPopularity } from 'components/base/FiltersSort';
+import { ModalFilters, ModalSort } from 'components/base/Modal';
 import NftsGrid from 'components/base/NftsGrid';
 import Button from 'components/ui/Button';
 import { Container, Title, Wrapper } from 'components/layout';
 import { EXPLORE_TAB } from 'components/pages/Profile';
-import { NftType } from 'interfaces/index';
+import { CustomResponse, NftType } from 'interfaces';
 
-import { CATEGORIES_FILTER } from './constants';
-import { FiltersType } from './interfaces';
+import { FiltersSortDefaultState, CATEGORIES_FILTER } from './constants';
+import { FiltersType, SortTypesType } from './interfaces';
+
+const filterSortPromiseMapping = (filtersSort: FiltersType & SortTypesType, currentPage: number): Promise<CustomResponse<NftType>> => {
+  const categoryCodes = filtersSort[CATEGORIES_FILTER];
+  if (categoryCodes !== null) {
+    return getNFTs(categoryCodes, (currentPage + 1).toString(), undefined, true);
+  } else {
+    console.log('default');
+    return getNFTs(undefined, (currentPage + 1).toString(), undefined, true);
+  }
+};
 
 export interface ExploreProps {
   NFTs: NftType[];
@@ -19,30 +30,35 @@ export interface ExploreProps {
 }
 
 const Explore: React.FC<ExploreProps> = ({ NFTs, hasNextPage, totalCount }) => {
-  const [filters, setFilters] = useState<FiltersType>({
-    [CATEGORIES_FILTER]: undefined,
-  });
+  const [filtersSort, setFiltersSort] = useState<FiltersType & SortTypesType>(FiltersSortDefaultState);
   const [currentPage, setCurrentPage] = useState(1);
   const [dataNfts, setDataNfts] = useState(NFTs);
   const [dataNftsHasNextPage, setDataNftsHasNextPage] = useState(hasNextPage);
   const [dataTotalCount] = useState(totalCount ?? 0);
   const [isLoading, setIsLoading] = useState(false);
-  const [isDataFilteredReady, setIsDataFilteredReady] = useState(false);
   const [isLoadMoreLoading, setIsLoadMoreLoading] = useState(false);
   const [isModalFiltersExpanded, setIsModalFiltersExpanded] = useState(false);
+  const [isModalSortDateExpanded, setIsModalSortDateExpanded] = useState(false);
+  const [isModalSortPopularityExpanded, setIsModalSortPopularityExpanded] = useState(false);
 
   const toggleModalFiltersExpanded = () => {
     setIsModalFiltersExpanded((prevState) => !prevState);
+  };
+
+  const toggleModalSortDateExpanded = () => {
+    setIsModalSortDateExpanded((prevState) => !prevState);
+  };
+
+  const toggleModalSortPopularityExpanded = () => {
+    setIsModalSortPopularityExpanded((prevState) => !prevState);
   };
 
   const loadMoreNfts = async () => {
     setIsLoadMoreLoading(true);
     try {
       if (dataNftsHasNextPage) {
-        const { data, hasNextPage } = (await getNFTs(filters[CATEGORIES_FILTER], (currentPage + 1).toString(), undefined, true)) ?? {
-          data: [],
-          hasNextPage: false,
-        };
+        const promise = filterSortPromiseMapping(filtersSort, currentPage);
+        const { data, hasNextPage } = (await promise) ?? { data: [], hasNextPage: false };
         setCurrentPage((prevCount) => prevCount + 1);
         setDataNftsHasNextPage(hasNextPage);
         setDataNfts((prevState) => prevState.concat(data));
@@ -54,29 +70,6 @@ const Explore: React.FC<ExploreProps> = ({ NFTs, hasNextPage, totalCount }) => {
     }
   };
 
-  useEffect(() => {
-    const getFilteredData = async () => {
-      setIsLoading(true);
-      try {
-        const { data, hasNextPage } = (await getNFTs(filters[CATEGORIES_FILTER], '1', undefined, true)) ?? {
-          data: [],
-          hasNextPage: false,
-        };
-        setCurrentPage(1);
-        setDataNftsHasNextPage(hasNextPage ?? false);
-        setDataNfts(data);
-        setIsLoading(false);
-      } catch (err) {
-        console.log(err);
-        setIsLoading(false);
-      }
-    };
-
-    if (isDataFilteredReady) {
-      getFilteredData();
-    }
-  }, [filters]);
-
   return (
     <>
       <Container>
@@ -84,10 +77,14 @@ const Explore: React.FC<ExploreProps> = ({ NFTs, hasNextPage, totalCount }) => {
           <STopContainer>
             <STitleContainer>
               <STitle>Explore</STitle>
-              {/* TODO: add totalCount based on filters, remove isDataFiltered condition */}
-              {dataTotalCount > 0 && !isDataFilteredReady && <STotalInsight>{`${dataTotalCount} NFTs to discover`}</STotalInsight>}
+              {/* TODO: add totalCount based on filters, remove filtersSort condition */}
+              {dataTotalCount > 0 && !Object.values(filtersSort).some((item) => item !== null) && (
+                <STotalInsight>{`${dataTotalCount} NFTs to discover`}</STotalInsight>
+              )}
             </STitleContainer>
             <SFiltersButtonContainer>
+              <SSortButton onClick={toggleModalSortDateExpanded}>Sort by date</SSortButton>
+              <SSortButton onClick={toggleModalSortPopularityExpanded}>Sort by popularity</SSortButton>
               <Button color="primary500" icon="filters" onClick={toggleModalFiltersExpanded} size="medium" text="Filters" variant="contained" />
             </SFiltersButtonContainer>
           </STopContainer>
@@ -110,8 +107,26 @@ const Explore: React.FC<ExploreProps> = ({ NFTs, hasNextPage, totalCount }) => {
           />
         </Wrapper>
       </Container>
+      {isModalSortDateExpanded && (
+        <ModalSort setIsExpanded={setIsModalSortDateExpanded} title="Sort">
+          <SortDate />
+        </ModalSort>
+      )}
+      {isModalSortPopularityExpanded && (
+        <ModalSort setIsExpanded={setIsModalSortPopularityExpanded} title="Sort">
+          <SortPopularity />
+        </ModalSort>
+      )}
       {isModalFiltersExpanded && (
-        <ModalFilters filters={filters} setExpanded={setIsModalFiltersExpanded} setFilters={setFilters} setIsDataFilteredReady={setIsDataFilteredReady} />
+        <ModalFilters
+          filters={filtersSort}
+          setData={setDataNfts}
+          setDataHasNextPage={setDataNftsHasNextPage}
+          setDataCurrentPage={setCurrentPage}
+          setDataIsLoading={setIsLoading}
+          setIsExpanded={setIsModalFiltersExpanded}
+          setFilters={setFiltersSort}
+        />
       )}
     </>
   );
@@ -167,7 +182,34 @@ const STotalInsight = styled.span`
 `;
 
 const SFiltersButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
   margin-top: 2.4rem;
+
+  > * {
+      &:not(:first-child) {
+        margin-top: 0.8rem;
+      }
+    }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    flex-direction: row;
+    
+    > * {
+      &:not(:first-child) {
+        margin-left: 1.6rem;
+        margin-top: 0;
+      }
+    }
+  }
+`;
+
+const SSortButton = styled.button`
+  color: ${({ theme }) => theme.colors.contrast};
+  font-family: ${({ theme }) => theme.fonts.bold};
+  font-size: 1.6rem;
+  text-decoration-line: underline;
 `;
 
 export default Explore;

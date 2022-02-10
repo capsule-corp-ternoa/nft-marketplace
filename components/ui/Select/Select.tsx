@@ -69,7 +69,7 @@ const Select = ({
               />
             )}
           </SLabelContainer>
-          <SIconContainer isExpanded={isExpanded}>
+          <SIconContainer color={color} isExpanded={isExpanded}>
             <Icon name="arrowBottom" />
           </SIconContainer>
         </SelectRoot>
@@ -94,7 +94,7 @@ const SelectRoot = styled.button<{ color?: keyof Colors; isBadge: boolean }>`
   align-items: center;
   background: ${({ theme, color }) =>
     color ? theme.colors[`${color}`] : theme.colors.invertedContrast};
-  border: none;
+  border: ${({ color, theme }) => (color === 'invertedContrast' ? `2px solid ${theme.colors.neutral200}` : 'none')};
   border-radius: 1.2rem;
   box-shadow: ${({ theme }) => theme.shadows.popupShadow};
   cursor: pointer;
@@ -121,8 +121,8 @@ const SLabelContainer = styled.div`
   font-size: 1.6rem;
 `;
 
-const SIconContainer = styled.div<{ isExpanded?: boolean }>`
-  fill: ${({ theme }) => theme.colors.invertedContrast};
+const SIconContainer = styled.div<{ color?: keyof Colors, isExpanded?: boolean }>`
+  fill: ${({ color, theme }) => theme.colors[invertedColor(color)]};
   width: 1.6rem;
   margin-left: 1.6rem;
   transform: ${({ isExpanded }) =>
@@ -146,6 +146,7 @@ const SelectOptions = styled.ul`
 
   > li {
     color: ${({ theme }) => theme.colors.neutral300};
+    cursor: pointer;
     font-family: ${({ theme }) => theme.fonts.bold};
     font-size: 1.6rem;
     line-height: 1.3;

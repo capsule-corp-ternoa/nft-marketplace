@@ -9,14 +9,24 @@ import Button from 'components/ui/Button';
 import { Container, Title, Wrapper } from 'components/layout';
 import { EXPLORE_TAB } from 'components/pages/Profile';
 import { CustomResponse, NftType } from 'interfaces';
+import { SORT_OPTION_TIMESTAMP_CREATE_ASC, SORT_OPTION_TIMESTAMP_CREATE_DESC } from 'utils/constant';
 
-import { FiltersSortDefaultState, CATEGORIES_FILTER, MOST_LIKED_SORT, MOST_SOLD_SORT, MOST_SOLD_SERIES_SORT, MOST_VIEWED_SORT } from './constants';
+import {
+  FiltersSortDefaultState,
+  CATEGORIES_FILTER,
+  DATE_OLDEST_SORT,
+  DATE_RECENT_SORT,
+  MOST_LIKED_SORT,
+  MOST_SOLD_SORT,
+  MOST_SOLD_SERIES_SORT,
+  MOST_VIEWED_SORT,
+} from './constants';
 import { FiltersType, SortTypesType } from './interfaces';
 
 const filterSortPromiseMapping = (filtersSort: FiltersType & SortTypesType, currentPage: number): Promise<CustomResponse<NftType>> => {
   const categoryCodes = filtersSort[CATEGORIES_FILTER];
   if (categoryCodes !== null) {
-    return getNFTs(categoryCodes, (currentPage + 1).toString(), undefined, true);
+    return getNFTs(categoryCodes, (currentPage + 1).toString(), undefined, undefined, true);
   } else if (filtersSort[MOST_LIKED_SORT] === true) {
     return getMostLikedNFTs((currentPage + 1).toString());
   } else if (filtersSort[MOST_SOLD_SORT] === true) {
@@ -25,9 +35,12 @@ const filterSortPromiseMapping = (filtersSort: FiltersType & SortTypesType, curr
     return getMostSoldSeries((currentPage + 1).toString());
   } else if (filtersSort[MOST_VIEWED_SORT] === true) {
     return getMostViewedNFTs((currentPage + 1).toString());
+  } else if (filtersSort[DATE_OLDEST_SORT] === true) {
+    return getNFTs(undefined, (currentPage + 1).toString(), undefined, SORT_OPTION_TIMESTAMP_CREATE_ASC, true);
+  } else if (filtersSort[DATE_RECENT_SORT] === true) {
+    return getNFTs(undefined, (currentPage + 1).toString(), undefined, SORT_OPTION_TIMESTAMP_CREATE_DESC, true);
   } else {
-    console.log('default');
-    return getNFTs(undefined, (currentPage + 1).toString(), undefined, true);
+    return getNFTs(undefined, (currentPage + 1).toString(), undefined, undefined, true);
   }
 };
 
@@ -85,7 +98,7 @@ const Explore: React.FC<ExploreProps> = ({ NFTs, hasNextPage, totalCount }) => {
     setIsModalSortDateExpanded(false);
     setIsModalSortPopularityExpanded(false);
     try {
-      const { data, hasNextPage } = (await getNFTs(undefined, '1', undefined, true, true)) ?? { data: [], hasNextPage: false };
+      const { data, hasNextPage } = (await getNFTs(undefined, '1', undefined, undefined, true, true)) ?? { data: [], hasNextPage: false };
       setCurrentPage(1);
       setDataNftsHasNextPage(hasNextPage ?? false);
       setDataNfts(data);
@@ -135,7 +148,16 @@ const Explore: React.FC<ExploreProps> = ({ NFTs, hasNextPage, totalCount }) => {
       </Container>
       {isModalSortDateExpanded && (
         <ModalSort setIsExpanded={setIsModalSortDateExpanded} title="Sort">
-          <SortDate />
+          <SortDate
+            handleClearSort={handleClear}
+            setData={setDataNfts}
+            setDataHasNextPage={setDataNftsHasNextPage}
+            setDataCurrentPage={setCurrentPage}
+            setDataIsLoading={setIsLoading}
+            setIsModalExpanded={setIsModalSortDateExpanded}
+            setSort={setFiltersSort}
+            sort={filtersSort}
+          />
         </ModalSort>
       )}
       {isModalSortPopularityExpanded && (

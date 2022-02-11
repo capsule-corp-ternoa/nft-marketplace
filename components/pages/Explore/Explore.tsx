@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import { getNFTs, getBestSellers, getMostLikedNFTs, getMostViewedNFTs } from 'actions/nft';
+import { getNFTs, getMostLikedNFTs, getMostSoldNFTs, getMostSoldSeries, getMostViewedNFTs } from 'actions/nft';
 import { SortDate, SortPopularity } from 'components/base/FiltersSort';
 import { ModalFilters, ModalSort } from 'components/base/Modal';
 import NftsGrid from 'components/base/NftsGrid';
@@ -10,7 +10,7 @@ import { Container, Title, Wrapper } from 'components/layout';
 import { EXPLORE_TAB } from 'components/pages/Profile';
 import { CustomResponse, NftType } from 'interfaces';
 
-import { FiltersSortDefaultState, BEST_SELLER_SORT, CATEGORIES_FILTER, MOST_LIKED_SORT, MOST_VIEWED_SORT } from './constants';
+import { FiltersSortDefaultState, CATEGORIES_FILTER, MOST_LIKED_SORT, MOST_SOLD_SORT, MOST_SOLD_SERIES_SORT, MOST_VIEWED_SORT } from './constants';
 import { FiltersType, SortTypesType } from './interfaces';
 
 const filterSortPromiseMapping = (filtersSort: FiltersType & SortTypesType, currentPage: number): Promise<CustomResponse<NftType>> => {
@@ -19,10 +19,12 @@ const filterSortPromiseMapping = (filtersSort: FiltersType & SortTypesType, curr
     return getNFTs(categoryCodes, (currentPage + 1).toString(), undefined, true);
   } else if (filtersSort[MOST_LIKED_SORT] === true) {
     return getMostLikedNFTs((currentPage + 1).toString());
+  } else if (filtersSort[MOST_SOLD_SORT] === true) {
+    return getMostSoldNFTs((currentPage + 1).toString());
+  } else if (filtersSort[MOST_SOLD_SERIES_SORT] === true) {
+    return getMostSoldSeries((currentPage + 1).toString());
   } else if (filtersSort[MOST_VIEWED_SORT] === true) {
     return getMostViewedNFTs((currentPage + 1).toString());
-  } else if (filtersSort[BEST_SELLER_SORT] === true) {
-    return getBestSellers((currentPage + 1).toString());
   } else {
     console.log('default');
     return getNFTs(undefined, (currentPage + 1).toString(), undefined, true);

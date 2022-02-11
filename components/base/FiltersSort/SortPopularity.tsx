@@ -3,20 +3,21 @@ import styled from 'styled-components';
 
 import Select from 'components/ui/Select';
 
-import { getBestSellers, getMostLikedNFTs, getMostViewedNFTs } from 'actions/nft';
+import { getMostLikedNFTs, getMostSoldNFTs, getMostSoldSeries, getMostViewedNFTs } from 'actions/nft';
 import {
   DataNominalSetState,
   FiltersSortDefaultState,
   FiltersSortNominalSetState,
   SortTypesType,
   MOST_LIKED_SORT,
+  MOST_SOLD_SORT,
+  MOST_SOLD_SERIES_SORT,
   MOST_VIEWED_SORT,
-  BEST_SELLER_SORT,
 } from 'components/pages/Explore';
 import { FilterClearCta, FilterCtasContainer, FilterTitle, FilterSubtitle } from 'components/layout';
 import { CustomResponse, NftType } from 'interfaces';
 
-const sortTypes = [MOST_LIKED_SORT, MOST_VIEWED_SORT, BEST_SELLER_SORT] as const;
+const sortTypes = [MOST_LIKED_SORT, MOST_SOLD_SORT, MOST_SOLD_SERIES_SORT, MOST_VIEWED_SORT] as const;
 type SortTypesIdsTypes = typeof sortTypes[number];
 
 interface SortPopularityProps {
@@ -40,7 +41,7 @@ const SortPopularity = ({
   setSort,
   sort,
 }: SortPopularityProps) => {
-  const currentSort = Object.keys(sort).find((key) => sort[key as SortTypesIdsTypes] !== null);
+  const currentSort = (Object.keys(sort) as Array<keyof typeof sort>).find((key) => sortTypes.includes(key as SortTypesIdsTypes) && sort[key] !== null);
 
   const toggleSort = async (sort: SortTypesIdsTypes | null) => {
     if (sort === null) {
@@ -55,10 +56,12 @@ const SortPopularity = ({
 
         if (sort === MOST_LIKED_SORT) {
           res = await getMostLikedNFTs();
-        } else if (sort === MOST_VIEWED_SORT) {
-          res = await getMostViewedNFTs();
+        } else if (sort === MOST_SOLD_SORT) {
+          res = await getMostSoldNFTs();
+        } else if (sort === MOST_SOLD_SERIES_SORT) {
+          res = await getMostSoldSeries();
         } else {
-          res = await getBestSellers();
+          res = await getMostViewedNFTs();
         }
 
         setDataCurrentPage(1);

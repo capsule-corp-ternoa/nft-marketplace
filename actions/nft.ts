@@ -180,6 +180,22 @@ export const getMostLikedNFTs = async (page: string="1", limit: string=DEFAULT_L
   return result;
 }
 
+export const getMostSoldNFTs = async (page: string="1", limit: string=DEFAULT_LIMIT_PAGINATION): Promise<CustomResponse<NftType>> => {
+  const paginationOptions = {page, limit};
+  const res = await fetch(`${NODE_API_URL}/api/nfts/most-sold/?pagination=${JSON.stringify(paginationOptions)}`);
+  if (!res.ok) throw new Error('error fetching NFT total');
+  let result: CustomResponse<NftType> = await res.json()
+  return result;
+}
+
+export const getMostSoldSeries = async (page: string="1", limit: string=DEFAULT_LIMIT_PAGINATION): Promise<CustomResponse<NftType>> => {
+  const paginationOptions = {page, limit};
+  const res = await fetch(`${NODE_API_URL}/api/nfts/most-sold-series/?pagination=${JSON.stringify(paginationOptions)}`);
+  if (!res.ok) throw new Error('error fetching NFT total');
+  let result: CustomResponse<NftType> = await res.json()
+  return result;
+}
+
 export const getMostViewedNFTs = async (page: string="1", limit: string=DEFAULT_LIMIT_PAGINATION): Promise<CustomResponse<NftType>> => {
   const paginationOptions = {page, limit};
   const res = await fetch(`${NODE_API_URL}/api/nfts/most-viewed/?pagination=${JSON.stringify(paginationOptions)}`);

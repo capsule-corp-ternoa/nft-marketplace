@@ -104,7 +104,7 @@ export async function getServerSideProps() {
   );
   promises.push(
     new Promise<void>((success) => {
-      getNFTs(undefined, '1', '19', true, true)
+      getNFTs(undefined, '1', '19', undefined, true, true)
         .then((result) => {
           regularNfts = result.data;
           success();

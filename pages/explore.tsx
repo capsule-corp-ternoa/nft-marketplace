@@ -42,7 +42,7 @@ export async function getServerSideProps() {
     totalCount: number = 0;
 
   try {
-    const res = await getNFTs(undefined, undefined, undefined, true, true);
+    const res = await getNFTs(undefined, undefined, undefined, undefined, true, true);
     data = res.data;
     dataHasNextPage = res.hasNextPage || false;
   } catch (error) {

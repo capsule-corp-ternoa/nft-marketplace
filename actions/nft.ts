@@ -1,8 +1,10 @@
 import { CustomResponse, NftType } from 'interfaces/index';
 import { MARKETPLACE_ID, NODE_API_URL } from 'utils/constant';
 import { encryptCookie } from 'utils/cookie';
-import { DEFAULT_LIMIT_PAGINATION } from "../utils/constant";
+import { DEFAULT_LIMIT_PAGINATION, SORT_OPTION_CREATED_AT_DESC, SORT_OPTIONS } from '../utils/constant';
 import Cookies from 'js-cookie';
+
+type SortOptionsType = typeof SORT_OPTIONS[number];
 
 export const filterNFTs = (data: NftType[]) => data.filter((item) => item.properties?.preview.ipfs)
 
@@ -33,14 +35,13 @@ export const getCreatorNFTS = async (id: string, page: string="1", limit: string
   return result;
 };
 
-export const getNFTs = async (codes?: string[], page: string="1", limit: string=DEFAULT_LIMIT_PAGINATION, listed? :Boolean, useCache = false) => {
+export const getNFTs = async (codes?: string[], page: string="1", limit: string=DEFAULT_LIMIT_PAGINATION, sortOption: SortOptionsType = SORT_OPTION_CREATED_AT_DESC, listed? :Boolean, useCache = false) => {
   const paginationOptions = {page, limit}
   const filterOptions: any = {marketplaceId: MARKETPLACE_ID}
-  const sortOptions = "created_at:desc"
   if (codes && codes.length > 0) filterOptions.categories = codes
   if (listed !== undefined) filterOptions.listed = listed
   const res = await fetch(
-    `${NODE_API_URL}/api/NFTs/?pagination=${JSON.stringify(paginationOptions)}&filter=${JSON.stringify(filterOptions)}&sort=${sortOptions}&useCache300=${useCache}`
+    `${NODE_API_URL}/api/NFTs/?pagination=${JSON.stringify(paginationOptions)}&filter=${JSON.stringify(filterOptions)}&sort=${sortOption}&useCache300=${useCache}`
   );
   if (!res.ok) throw new Error('error fetching NFTs by categories');
   let result: CustomResponse<NftType> = await res.json();

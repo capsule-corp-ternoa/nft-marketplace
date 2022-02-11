@@ -9,6 +9,7 @@ import Select from 'components/ui/Select';
 
 interface ModalFiltersProps {
   filters: FiltersType;
+  handleClearFilter: () => void;
   setData: DataNominalSetState;
   setDataHasNextPage: (b: boolean) => void;
   setDataCurrentPage: (n: number) => void;
@@ -17,7 +18,7 @@ interface ModalFiltersProps {
   setFilters: FiltersSortNominalSetState;
 }
 
-const ModalFilters = ({ filters, setData, setDataHasNextPage, setDataCurrentPage, setDataIsLoading, setIsExpanded, setFilters }: ModalFiltersProps) => {
+const ModalFilters = ({ filters, handleClearFilter, setData, setDataHasNextPage, setDataCurrentPage, setDataIsLoading, setIsExpanded, setFilters }: ModalFiltersProps) => {
   const [currentFilter, setCurrentFilter] = useState(CATEGORIES_FILTER);
 
   return (
@@ -58,6 +59,7 @@ const ModalFilters = ({ filters, setData, setDataHasNextPage, setDataCurrentPage
           <div>
             {currentFilter === CATEGORIES_FILTER && (
               <FilterCategories
+                handleClearFilter={handleClearFilter}
                 setData={setData}
                 setDataHasNextPage={setDataHasNextPage}
                 setDataCurrentPage={setDataCurrentPage}

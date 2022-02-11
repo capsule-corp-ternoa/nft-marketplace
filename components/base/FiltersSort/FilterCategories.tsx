@@ -10,6 +10,7 @@ import { CategoryType } from 'interfaces';
 import { emojiMapping } from 'utils/functions';
 
 interface FilterCategoriesProps {
+  handleClearFilter: () => void;
   setData: DataNominalSetState;
   setDataHasNextPage: (b: boolean) => void;
   setDataCurrentPage: (n: number) => void;
@@ -19,7 +20,7 @@ interface FilterCategoriesProps {
   value: string[] | null;
 }
 
-const FilterCategories = ({ setData, setDataHasNextPage, setDataCurrentPage, setDataIsLoading, setFilters, setIsModalExpanded, value }: FilterCategoriesProps) => {
+const FilterCategories = ({ handleClearFilter, setData, setDataHasNextPage, setDataCurrentPage, setDataIsLoading, setFilters, setIsModalExpanded, value }: FilterCategoriesProps) => {
   const [categories, setCategories] = useState<CategoryType[]>([]);
 
   const toggleCategory = (code: string) => {
@@ -44,22 +45,6 @@ const FilterCategories = ({ setData, setDataHasNextPage, setDataCurrentPage, set
     setIsModalExpanded(false);
     try {
       const { data, hasNextPage } = (await getNFTs(categoriesCodes, '1', undefined, true)) ?? { data: [], hasNextPage: false };
-      setDataCurrentPage(1);
-      setDataHasNextPage(hasNextPage ?? false);
-      setData(data);
-      setDataIsLoading(false);
-    } catch (error) {
-      console.log(error);
-      setDataIsLoading(false);
-    }
-  };
-
-  const handleClearFilter = async () => {
-    setFilters(FiltersSortDefaultState);
-    setDataIsLoading(true);
-    setIsModalExpanded(false);
-    try {
-      const { data, hasNextPage } = (await getNFTs(undefined, '1', undefined, true, true)) ?? { data: [], hasNextPage: false };
       setDataCurrentPage(1);
       setDataHasNextPage(hasNextPage ?? false);
       setData(data);

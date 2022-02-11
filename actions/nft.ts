@@ -171,3 +171,27 @@ export const unlikeNFT = async (walletId: string, nftId: string, serieId: string
     throw new Error("Unvalid authentication");
   }
 }
+
+export const getMostLikedNFTs = async (page: string="1", limit: string=DEFAULT_LIMIT_PAGINATION): Promise<CustomResponse<NftType>> => {
+  const paginationOptions = {page, limit};
+  const res = await fetch(`${NODE_API_URL}/api/nfts/most-liked/?pagination=${JSON.stringify(paginationOptions)}`);
+  if (!res.ok) throw new Error('error fetching NFT total');
+  let result: CustomResponse<NftType> = await res.json()
+  return result;
+}
+
+export const getMostViewedNFTs = async (page: string="1", limit: string=DEFAULT_LIMIT_PAGINATION): Promise<CustomResponse<NftType>> => {
+  const paginationOptions = {page, limit};
+  const res = await fetch(`${NODE_API_URL}/api/nfts/most-viewed/?pagination=${JSON.stringify(paginationOptions)}`);
+  if (!res.ok) throw new Error('error fetching NFT total');
+  let result: CustomResponse<NftType> = await res.json()
+  return result;
+}
+
+export const getBestSellers = async (page: string="1", limit: string=DEFAULT_LIMIT_PAGINATION): Promise<CustomResponse<NftType>> => {
+  const paginationOptions = {page, limit};
+  const res = await fetch(`${NODE_API_URL}/api/nfts/top-sellers/?pagination=${JSON.stringify(paginationOptions)}`);
+  if (!res.ok) throw new Error('error fetching NFT total');
+  let result: CustomResponse<NftType> = await res.json()
+  return result;
+}

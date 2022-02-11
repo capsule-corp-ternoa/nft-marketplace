@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import { getNFTs } from 'actions/nft';
+import { getNFTs, getBestSellers, getMostLikedNFTs, getMostViewedNFTs } from 'actions/nft';
 import { SortDate, SortPopularity } from 'components/base/FiltersSort';
 import { ModalFilters, ModalSort } from 'components/base/Modal';
 import NftsGrid from 'components/base/NftsGrid';
@@ -10,13 +10,19 @@ import { Container, Title, Wrapper } from 'components/layout';
 import { EXPLORE_TAB } from 'components/pages/Profile';
 import { CustomResponse, NftType } from 'interfaces';
 
-import { FiltersSortDefaultState, CATEGORIES_FILTER } from './constants';
+import { FiltersSortDefaultState, BEST_SELLER_SORT, CATEGORIES_FILTER, MOST_LIKED_SORT, MOST_VIEWED_SORT } from './constants';
 import { FiltersType, SortTypesType } from './interfaces';
 
 const filterSortPromiseMapping = (filtersSort: FiltersType & SortTypesType, currentPage: number): Promise<CustomResponse<NftType>> => {
   const categoryCodes = filtersSort[CATEGORIES_FILTER];
   if (categoryCodes !== null) {
     return getNFTs(categoryCodes, (currentPage + 1).toString(), undefined, true);
+  } else if (filtersSort[MOST_LIKED_SORT] === true) {
+    return getMostLikedNFTs((currentPage + 1).toString());
+  } else if (filtersSort[MOST_VIEWED_SORT] === true) {
+    return getMostViewedNFTs((currentPage + 1).toString());
+  } else if (filtersSort[BEST_SELLER_SORT] === true) {
+    return getBestSellers((currentPage + 1).toString());
   } else {
     console.log('default');
     return getNFTs(undefined, (currentPage + 1).toString(), undefined, true);
@@ -70,6 +76,24 @@ const Explore: React.FC<ExploreProps> = ({ NFTs, hasNextPage, totalCount }) => {
     }
   };
 
+  const handleClear = async () => {
+    setFiltersSort(FiltersSortDefaultState);
+    setIsLoading(true);
+    setIsModalFiltersExpanded(false);
+    setIsModalSortDateExpanded(false);
+    setIsModalSortPopularityExpanded(false);
+    try {
+      const { data, hasNextPage } = (await getNFTs(undefined, '1', undefined, true, true)) ?? { data: [], hasNextPage: false };
+      setCurrentPage(1);
+      setDataNftsHasNextPage(hasNextPage ?? false);
+      setDataNfts(data);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+    }
+  };
+
   return (
     <>
       <Container>
@@ -114,12 +138,22 @@ const Explore: React.FC<ExploreProps> = ({ NFTs, hasNextPage, totalCount }) => {
       )}
       {isModalSortPopularityExpanded && (
         <ModalSort setIsExpanded={setIsModalSortPopularityExpanded} title="Sort">
-          <SortPopularity />
+          <SortPopularity
+            handleClearSort={handleClear}
+            setData={setDataNfts}
+            setDataHasNextPage={setDataNftsHasNextPage}
+            setDataCurrentPage={setCurrentPage}
+            setDataIsLoading={setIsLoading}
+            setIsModalExpanded={setIsModalSortPopularityExpanded}
+            setSort={setFiltersSort}
+            sort={filtersSort}
+          />
         </ModalSort>
       )}
       {isModalFiltersExpanded && (
         <ModalFilters
           filters={filtersSort}
+          handleClearFilter={handleClear}
           setData={setDataNfts}
           setDataHasNextPage={setDataNftsHasNextPage}
           setDataCurrentPage={setCurrentPage}
@@ -188,14 +222,14 @@ const SFiltersButtonContainer = styled.div`
   margin-top: 2.4rem;
 
   > * {
-      &:not(:first-child) {
-        margin-top: 0.8rem;
-      }
+    &:not(:first-child) {
+      margin-top: 0.8rem;
     }
+  }
 
   ${({ theme }) => theme.mediaQueries.lg} {
     flex-direction: row;
-    
+
     > * {
       &:not(:first-child) {
         margin-left: 1.6rem;

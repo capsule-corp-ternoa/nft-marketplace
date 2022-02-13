@@ -41,11 +41,11 @@ const TextInput = ({
   return (
     <InputShell className={className}>
       {label && (
-        <InputLabel>
+        <SInputLabel>
           {label}
           {tooltipText && <STooltip text={tooltipText} />}
           {insight && <SInsight>{insight}</SInsight>}
-        </InputLabel>
+        </SInputLabel>
       )}
       <Label endIcon={endIcon} startIcon={startIcon}>
         {tag && <STagInput
@@ -81,7 +81,6 @@ export const InputStyle = css<{
     isError ? theme.colors.danger500 : 'rgba(0, 0, 0, 0)'};
   border-radius: 0.8rem;
   font-size: 1.6rem;
-  margin-top: 1.6rem;
   outline: none;
   padding: ${({ endIcon, startIcon }) =>
     endIcon ? '1.6rem 5.6rem 1.6rem 1.6rem' : startIcon ? '1.6rem 1.6rem 1.6rem 5.6rem' : '1.6rem'};
@@ -95,6 +94,10 @@ export const InputStyle = css<{
   &::placeholder {
     color: ${({ theme }) => theme.colors.neutral300};
   }
+`;
+
+const SInputLabel = styled(InputLabel)`
+  margin-bottom: 1.6rem;
 `;
 
 export const SInput = styled.input<{ isError?: boolean }>`

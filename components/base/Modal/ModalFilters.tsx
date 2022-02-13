@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import ClickAwayListener from 'react-click-away-listener';
 import styled from 'styled-components';
 
-import { FilterCategories, FilterTypeSales } from 'components/base/FiltersSort';
+import { FilterCategories, FilterPrice, FilterTypeSales } from 'components/base/FiltersSort';
 import { CATEGORIES_FILTER, DataNominalSetState, FiltersType, FiltersSortNominalSetState, PRICE_FILTER, SALE_TYPE_FILTER } from 'components/pages/Explore';
 import Icon from 'components/ui/Icon';
 import Select from 'components/ui/Select';
@@ -67,6 +67,18 @@ const ModalFilters = ({ filters, handleClearFilter, setData, setDataHasNextPage,
                 setIsModalExpanded={setIsExpanded}
                 setFilters={setFilters}
                 value={filters[CATEGORIES_FILTER]}
+              />
+            )}
+            {currentFilter === PRICE_FILTER && (
+              <FilterPrice
+                handleClearFilter={handleClearFilter}
+                setData={setData}
+                setDataHasNextPage={setDataHasNextPage}
+                setDataCurrentPage={setDataCurrentPage}
+                setDataIsLoading={setDataIsLoading}
+                setIsModalExpanded={setIsExpanded}
+                setFilters={setFilters}
+                value={filters[PRICE_FILTER]}
               />
             )}
             {currentFilter === SALE_TYPE_FILTER && <FilterTypeSales />}

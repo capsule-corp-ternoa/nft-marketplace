@@ -13,7 +13,7 @@ import {
 
 export type FiltersType = {
   [CATEGORIES_FILTER]: string[] | null;
-  [PRICE_FILTER]: [number, number] | null;
+  [PRICE_FILTER]: [number | undefined, number | undefined];
   [SALE_TYPE_FILTER]: string[] | null;
 };
 

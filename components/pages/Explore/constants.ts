@@ -13,7 +13,7 @@ export const DATE_RECENT_SORT = 'recently created';
 
 export const FiltersSortDefaultState = {
   [CATEGORIES_FILTER]: null,
-  [PRICE_FILTER]: null,
+  [PRICE_FILTER]: [undefined, undefined],
   [SALE_TYPE_FILTER]: null,
   [MOST_LIKED_SORT]: null,
   [MOST_SOLD_SORT]: null,

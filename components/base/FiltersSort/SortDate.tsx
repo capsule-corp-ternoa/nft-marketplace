@@ -44,9 +44,9 @@ const SortDate = ({ handleClearSort, setData, setDataHasNextPage, setDataCurrent
         let res: CustomResponse<NftType> = { data: [], hasNextPage: false, hasPreviousPage: false };
 
         if (sort === DATE_OLDEST_SORT) {
-          res = await getNFTs(undefined, '1', undefined, SORT_OPTION_TIMESTAMP_CREATE_ASC, true);
+          res = await getNFTs('1', undefined, { listed: true }, SORT_OPTION_TIMESTAMP_CREATE_ASC);
         } else {
-          res = await getNFTs(undefined, '1', undefined, SORT_OPTION_TIMESTAMP_CREATE_DESC, true);
+          res = await getNFTs('1', undefined, { listed: true }, SORT_OPTION_TIMESTAMP_CREATE_DESC);
         }
 
         setDataCurrentPage(1);

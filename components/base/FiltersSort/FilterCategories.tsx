@@ -44,7 +44,7 @@ const FilterCategories = ({ handleClearFilter, setData, setDataHasNextPage, setD
     setDataIsLoading(true);
     setIsModalExpanded(false);
     try {
-      const { data, hasNextPage } = (await getNFTs(categoriesCodes, '1', undefined, undefined, true)) ?? { data: [], hasNextPage: false };
+      const { data, hasNextPage } = (await getNFTs('1', undefined, { categories: categoriesCodes, listed: true })) ?? { data: [], hasNextPage: false };
       setDataCurrentPage(1);
       setDataHasNextPage(hasNextPage ?? false);
       setData(data);

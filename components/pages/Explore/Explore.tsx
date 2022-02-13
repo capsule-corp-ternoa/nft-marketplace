@@ -26,7 +26,7 @@ import { FiltersType, SortTypesType } from './interfaces';
 const filterSortPromiseMapping = (filtersSort: FiltersType & SortTypesType, currentPage: number): Promise<CustomResponse<NftType>> => {
   const categoryCodes = filtersSort[CATEGORIES_FILTER];
   if (categoryCodes !== null) {
-    return getNFTs(categoryCodes, (currentPage + 1).toString(), undefined, undefined, true);
+    return getNFTs((currentPage + 1).toString(), undefined, { categories: categoryCodes, listed: true });
   } else if (filtersSort[MOST_LIKED_SORT] === true) {
     return getMostLikedNFTs((currentPage + 1).toString());
   } else if (filtersSort[MOST_SOLD_SORT] === true) {
@@ -36,11 +36,11 @@ const filterSortPromiseMapping = (filtersSort: FiltersType & SortTypesType, curr
   } else if (filtersSort[MOST_VIEWED_SORT] === true) {
     return getMostViewedNFTs((currentPage + 1).toString());
   } else if (filtersSort[DATE_OLDEST_SORT] === true) {
-    return getNFTs(undefined, (currentPage + 1).toString(), undefined, SORT_OPTION_TIMESTAMP_CREATE_ASC, true);
+    return getNFTs((currentPage + 1).toString(), undefined, { listed: true }, SORT_OPTION_TIMESTAMP_CREATE_ASC);
   } else if (filtersSort[DATE_RECENT_SORT] === true) {
-    return getNFTs(undefined, (currentPage + 1).toString(), undefined, SORT_OPTION_TIMESTAMP_CREATE_DESC, true);
+    return getNFTs((currentPage + 1).toString(), undefined, { listed: true }, SORT_OPTION_TIMESTAMP_CREATE_DESC);
   } else {
-    return getNFTs(undefined, (currentPage + 1).toString(), undefined, undefined, true);
+    return getNFTs((currentPage + 1).toString(), undefined, { listed: true });
   }
 };
 
@@ -98,7 +98,7 @@ const Explore: React.FC<ExploreProps> = ({ NFTs, hasNextPage, totalCount }) => {
     setIsModalSortDateExpanded(false);
     setIsModalSortPopularityExpanded(false);
     try {
-      const { data, hasNextPage } = (await getNFTs(undefined, '1', undefined, undefined, true, true)) ?? { data: [], hasNextPage: false };
+      const { data, hasNextPage } = (await getNFTs('1', undefined, { listed: true }, undefined, true)) ?? { data: [], hasNextPage: false };
       setCurrentPage(1);
       setDataNftsHasNextPage(hasNextPage ?? false);
       setDataNfts(data);

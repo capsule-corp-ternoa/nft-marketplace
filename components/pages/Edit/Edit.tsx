@@ -8,7 +8,7 @@ import { Banner as AvatarBanner } from 'components/base/Avatar';
 import { Advice, Container, Form, FormSideLeft, FormSideRight, Title, Wrapper } from 'components/layout';
 import Button from 'components/ui/Button';
 import Icon from 'components/ui/Icon';
-import { TextArea, TextInput } from 'components/ui/Input';
+import { Input, TextArea } from 'components/ui/Input';
 import Modal from 'components/ui/Modal';
 import { UserType } from 'interfaces';
 import { MARKETPLACE_ID, NODE_API_URL } from 'utils/constant';
@@ -179,7 +179,7 @@ of at least 120x120. Gifs work too."
           </SImagesMobileContainer>
           <Form>
             <FormSideLeft>
-              <STextInput
+              <SInput
                 isError={data.name === ''}
                 label="Display name"
                 onChange={(e) => handleChange(e.target.value, 'name')}
@@ -189,7 +189,7 @@ of at least 120x120. Gifs work too."
               {/* TODO: herotag features added later when specifications are defined */}
               {/* {data.nickname && (
               <>
-                <STextInput
+                <SInput
                   label="@artistname"
                   onChange={(e) => handleChange(e.target.value, 'nickname')}
                   placeholder="Your artist name"
@@ -197,7 +197,7 @@ of at least 120x120. Gifs work too."
                   value={data.nickname || ''}
                 />
                 <SNicknameAvailable>Available nickname !</SNicknameAvailable>
-                <STextInput
+                <SInput
                   disabled
                   endIcon={padlock}
                   label="Your secret-nft.com URL"
@@ -214,7 +214,7 @@ of at least 120x120. Gifs work too."
               />
             </FormSideLeft>
             <FormSideRight>
-              <STextInput
+              <SInput
                 isError={
                   data.twitterName !== undefined &&
                   data.twitterName !== '' &&
@@ -253,7 +253,7 @@ of at least 120x120. Gifs work too."
                   </STwitterNotVerified>
                 )}
               </SClaimTwitterContainer>
-              <STextInput
+              <SInput
                 isError={
                   data.personalUrl !== undefined &&
                   data.personalUrl !== '' &&
@@ -416,7 +416,7 @@ const SBannerBlock = styled(ImageBlock)`
   margin: 5.6rem 0 2.4rem;
 `;
 
-const STextInput = styled(TextInput)`
+const SInput = styled(Input)`
   margin-top: 3.2rem;
   justify-content: space-between;
 

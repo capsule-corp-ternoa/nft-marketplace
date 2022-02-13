@@ -22,7 +22,7 @@ import {
 } from 'interfaces';
 import Autocomplete from 'components/ui/Autocomplete';
 import Button from 'components/ui/Button';
-import { TextArea, TextInput } from 'components/ui/Input';
+import { Input, TextArea } from 'components/ui/Input';
 import Tooltip from 'components/ui/Tooltip';
 
 import { NFTProps } from 'pages/create';
@@ -248,7 +248,7 @@ const Create = ({
                 />
               </InputShell>
             }
-            <TextInput
+            <Input
               label="Name"
               name="name"
               onChange={handleChange}
@@ -284,7 +284,7 @@ const Create = ({
             />
 
             {/* TODO in the future */}
-            {/* <TextInput
+            {/* <Input
                 insight="(max: 10%)"
                 label="Royalties"
                 name="royalties"
@@ -293,7 +293,7 @@ const Create = ({
                 value={royalties}
               />*/}
 
-            <TextInput
+            <Input
               insight="(max: 10)"
               isError={!validateQuantity(quantity, 10)}
               label="Quantity"
@@ -303,7 +303,7 @@ const Create = ({
               value={quantity}
             />
 
-            <TextInput
+            <Input
               endIcon={
                 seriesId !== ''
                   ? isLoading

@@ -18,6 +18,7 @@ interface Props {
   startIcon?: string;
   tag?: string;
   tooltipText?: string;
+  type?: React.HTMLInputTypeAttribute,
   value?: string | number | readonly string[];
 }
 
@@ -34,6 +35,7 @@ const TextInput = ({
   startIcon,
   tag,
   tooltipText,
+  type = 'text',
   value,
 }: Props) => {
   return (
@@ -54,7 +56,7 @@ const TextInput = ({
           readOnly
         />}
         <SInput
-          type="text"
+          type={type}
           disabled={disabled}
           placeholder={placeholder}
           onChange={onChange}

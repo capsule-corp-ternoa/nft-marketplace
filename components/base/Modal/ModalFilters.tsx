@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ClickAwayListener from 'react-click-away-listener';
 import styled from 'styled-components';
 
+import { getNFTs } from 'actions/nft';
 import { FilterCategories, FilterPrice, FilterTypeSales } from 'components/base/FiltersSort';
-import { CATEGORIES_FILTER, DataNominalSetState, FiltersType, FiltersSortNominalSetState, PRICE_FILTER, SALE_TYPE_FILTER } from 'components/pages/Explore';
+import { CATEGORIES_FILTER, DataNominalSetState, FiltersType, FiltersSortNominalSetState, PRICE_FILTER } from 'components/pages/Explore';
+import { FilterClearCta, FilterCtasContainer } from 'components/layout';
+import Button from 'components/ui/Button';
 import Icon from 'components/ui/Icon';
-import Select from 'components/ui/Select';
 
 interface ModalFiltersProps {
   filters: FiltersType;
@@ -18,8 +20,44 @@ interface ModalFiltersProps {
   setFilters: FiltersSortNominalSetState;
 }
 
-const ModalFilters = ({ filters, handleClearFilter, setData, setDataHasNextPage, setDataCurrentPage, setDataIsLoading, setIsExpanded, setFilters }: ModalFiltersProps) => {
-  const [currentFilter, setCurrentFilter] = useState(CATEGORIES_FILTER);
+const ModalFilters = ({
+  filters,
+  handleClearFilter,
+  setData,
+  setDataHasNextPage,
+  setDataCurrentPage,
+  setDataIsLoading,
+  setIsExpanded,
+  setFilters,
+}: ModalFiltersProps) => {
+  const categoryCodes = filters[CATEGORIES_FILTER];
+  const minPrice = filters[PRICE_FILTER][0];
+  const maxPrice = filters[PRICE_FILTER][1];
+
+  const isValidData = Number(minPrice) >= 0 && Number(minPrice) < 1e16 && Number(maxPrice) >= 0 && Number(maxPrice) < 1e16;
+
+  const submit = async () => {
+    setDataIsLoading(true);
+    setIsExpanded(false);
+    try {
+      const { data, hasNextPage } = (await getNFTs('1', undefined, {
+        categories: categoryCodes !== null && categoryCodes.length > 0 ? categoryCodes : undefined,
+        listed: true,
+        priceStartRange: minPrice > 0 ? minPrice : undefined,
+        priceEndRange: maxPrice > 0 ? maxPrice : undefined,
+      })) ?? {
+        data: [],
+        hasNextPage: false,
+      };
+      setDataCurrentPage(1);
+      setDataHasNextPage(hasNextPage ?? false);
+      setData(data);
+      setDataIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      setDataIsLoading(false);
+    }
+  };
 
   return (
     <SModalBackground>
@@ -32,57 +70,17 @@ const ModalFilters = ({ filters, handleClearFilter, setData, setDataHasNextPage,
           <SCloseIcon onClick={() => setIsExpanded(false)}>
             <Icon name="close" />
           </SCloseIcon>
-          <STopContainer>
-            <STitle>Filter</STitle>
-            <Select color="invertedContrast" text={currentFilter}>
-              {(setSelectExpanded) => (
-                <>
-                  {[CATEGORIES_FILTER, PRICE_FILTER, SALE_TYPE_FILTER].map(
-                    (filter, id) =>
-                      filter !== currentFilter && (
-                        <li
-                          key={id}
-                          onClick={() => {
-                            setSelectExpanded(false);
-                            setCurrentFilter(filter);
-                          }}
-                        >
-                          {filter}
-                        </li>
-                      )
-                  )}
-                </>
-              )}
-            </Select>
-          </STopContainer>
+          <STitle>Filter</STitle>
 
-          <div>
-            {currentFilter === CATEGORIES_FILTER && (
-              <FilterCategories
-                handleClearFilter={handleClearFilter}
-                setData={setData}
-                setDataHasNextPage={setDataHasNextPage}
-                setDataCurrentPage={setDataCurrentPage}
-                setDataIsLoading={setDataIsLoading}
-                setIsModalExpanded={setIsExpanded}
-                setFilters={setFilters}
-                value={filters[CATEGORIES_FILTER]}
-              />
-            )}
-            {currentFilter === PRICE_FILTER && (
-              <FilterPrice
-                handleClearFilter={handleClearFilter}
-                setData={setData}
-                setDataHasNextPage={setDataHasNextPage}
-                setDataCurrentPage={setDataCurrentPage}
-                setDataIsLoading={setDataIsLoading}
-                setIsModalExpanded={setIsExpanded}
-                setFilters={setFilters}
-                value={filters[PRICE_FILTER]}
-              />
-            )}
-            {currentFilter === SALE_TYPE_FILTER && <FilterTypeSales />}
-          </div>
+          <SFiltersContainer>
+            <FilterPrice setFilters={setFilters} value={filters[PRICE_FILTER]} />
+            <FilterTypeSales />
+            <FilterCategories setFilters={setFilters} value={categoryCodes} />
+          </SFiltersContainer>
+          <FilterCtasContainer>
+            <FilterClearCta onClick={handleClearFilter}>Clear filter</FilterClearCta>
+            <Button color="primary500" disabled={!isValidData} onClick={submit} size="small" text="Show related NFTs" variant="contained" />
+          </FilterCtasContainer>
         </SModalContainer>
       </ClickAwayListener>
     </SModalBackground>
@@ -136,42 +134,28 @@ const SModalContainer = styled.div`
   }
 `;
 
-const STopContainer = styled.div`
-  padding-bottom: 2.4rem;
-
-  button,
-  ul {
-    max-width: 20rem;
-    left: 34%;
-  }
-
-  button,
-  li {
-    text-transform: none;
-  }
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    display: flex;
-    align-items: center;
-
-    ul {
-      left: 44%;
-    }
-
-    > * {
-      &:not(:first-child) {
-        margin-left: 1.6rem;
-      }
-    }
-  }
-`;
-
 const STitle = styled.h3`
   color: ${({ theme }) => theme.colors.contrast};
   font-family: ${({ theme }) => theme.fonts.bold};
   font-size: 3.2rem;
   margin: 0;
   margin-bottom: 0.4rem;
+`;
+
+const SFiltersContainer = styled.div`
+  overflow-y: scroll;
+
+  > * {
+    margin-right: 2.4rem;
+    padding: 4rem 0;
+
+    &:not(:last-child) {
+      border-bottom: ${({ theme }) => `2px solid ${theme.colors.neutral200}`};
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
 `;
 
 export default ModalFilters;

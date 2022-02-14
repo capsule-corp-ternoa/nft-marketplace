@@ -2,32 +2,25 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { getCategories } from 'actions/category';
-import { getNFTs } from 'actions/nft';
-import { FilterTitle, FilterSubtitle, FilterClearCta, FilterCtasContainer } from 'components/layout';
-import { DataNominalSetState, FiltersSortNominalSetState, FiltersSortDefaultState, CATEGORIES_FILTER } from 'components/pages/Explore';
+import { FilterTitle, FilterSubtitle } from 'components/layout';
+import { FiltersSortNominalSetState, CATEGORIES_FILTER } from 'components/pages/Explore';
 import Button from 'components/ui/Button';
 import { CategoryType } from 'interfaces';
 import { emojiMapping } from 'utils/functions';
 
 interface FilterCategoriesProps {
-  handleClearFilter: () => void;
-  setData: DataNominalSetState;
-  setDataHasNextPage: (b: boolean) => void;
-  setDataCurrentPage: (n: number) => void;
-  setDataIsLoading: (b: boolean) => void;
   setFilters: FiltersSortNominalSetState;
-  setIsModalExpanded: (b: boolean) => void;
   value: string[] | null;
 }
 
-const FilterCategories = ({ handleClearFilter, setData, setDataHasNextPage, setDataCurrentPage, setDataIsLoading, setFilters, setIsModalExpanded, value }: FilterCategoriesProps) => {
+const FilterCategories = ({ setFilters, value }: FilterCategoriesProps) => {
   const [categories, setCategories] = useState<CategoryType[]>([]);
 
   const toggleCategory = (code: string) => {
     setFilters((prevState) => {
       const prevCategoriesFiltered = prevState[CATEGORIES_FILTER];
       if (prevCategoriesFiltered === null) {
-        return { ...FiltersSortDefaultState, [CATEGORIES_FILTER]: [code] };
+        return { ...prevState, [CATEGORIES_FILTER]: [code] };
       }
 
       const categoryIdx = prevCategoriesFiltered.findIndex((item) => item === code);
@@ -37,22 +30,6 @@ const FilterCategories = ({ handleClearFilter, setData, setDataHasNextPage, setD
 
       return { ...prevState, [CATEGORIES_FILTER]: prevCategoriesFiltered.filter((item) => item !== code) };
     });
-  };
-
-  const submit = async () => {
-    const categoriesCodes = value !== null && value.length > 0 ? value : undefined;
-    setDataIsLoading(true);
-    setIsModalExpanded(false);
-    try {
-      const { data, hasNextPage } = (await getNFTs('1', undefined, { categories: categoriesCodes, listed: true })) ?? { data: [], hasNextPage: false };
-      setDataCurrentPage(1);
-      setDataHasNextPage(hasNextPage ?? false);
-      setData(data);
-      setDataIsLoading(false);
-    } catch (error) {
-      console.log(error);
-      setDataIsLoading(false);
-    }
   };
 
   useEffect(() => {
@@ -95,12 +72,6 @@ const FilterCategories = ({ handleClearFilter, setData, setDataHasNextPage, setD
             );
           })}
       </SCategoriesContainer>
-      <FilterCtasContainer>
-        <FilterClearCta onClick={handleClearFilter}>
-          Clear filter
-        </FilterClearCta>
-        <Button color="primary500" onClick={submit} size="small" text="Show related NFTs" variant="contained" />
-      </FilterCtasContainer>
     </div>
   );
 };

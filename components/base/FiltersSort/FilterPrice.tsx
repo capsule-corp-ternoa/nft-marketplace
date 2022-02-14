@@ -15,7 +15,7 @@ interface FilterPriceProps {
   setDataIsLoading: (b: boolean) => void;
   setFilters: FiltersSortNominalSetState;
   setIsModalExpanded: (b: boolean) => void;
-  value: [number | undefined, number | undefined];
+  value: number[];
 }
 
 const FilterPrice = ({
@@ -76,7 +76,7 @@ const FilterPrice = ({
       </SPriceContainer>
       <FilterCtasContainer>
         <FilterClearCta onClick={handleClearFilter}>Clear filter</FilterClearCta>
-        <Button color="primary500" onClick={submit} size="small" text="Show related NFTs" variant="contained" />
+        <Button color="primary500" disabled={!validateValue(value[0]) || !validateValue(value[1])} onClick={submit} size="small" text="Show related NFTs" variant="contained" />
       </FilterCtasContainer>
     </div>
   );

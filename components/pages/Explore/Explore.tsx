@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import { getNFTs, getMostLikedNFTs, getMostSoldNFTs, getMostSoldSeries, getMostViewedNFTs } from 'actions/nft';
-import { SortDate, SortPopularity } from 'components/base/FiltersSort';
 import { ModalFilters, ModalSort } from 'components/base/Modal';
 import NftsGrid from 'components/base/NftsGrid';
 import Button from 'components/ui/Button';
@@ -59,19 +58,14 @@ const Explore: React.FC<ExploreProps> = ({ NFTs, hasNextPage, totalCount }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadMoreLoading, setIsLoadMoreLoading] = useState(false);
   const [isModalFiltersExpanded, setIsModalFiltersExpanded] = useState(false);
-  const [isModalSortDateExpanded, setIsModalSortDateExpanded] = useState(false);
-  const [isModalSortPopularityExpanded, setIsModalSortPopularityExpanded] = useState(false);
+  const [isModalSortExpanded, setIsModalSortExpanded] = useState(false);
 
   const toggleModalFiltersExpanded = () => {
     setIsModalFiltersExpanded((prevState) => !prevState);
   };
 
-  const toggleModalSortDateExpanded = () => {
-    setIsModalSortDateExpanded((prevState) => !prevState);
-  };
-
-  const toggleModalSortPopularityExpanded = () => {
-    setIsModalSortPopularityExpanded((prevState) => !prevState);
+  const toggleModalSortExpanded = () => {
+    setIsModalSortExpanded((prevState) => !prevState);
   };
 
   const loadMoreNfts = async () => {
@@ -95,8 +89,7 @@ const Explore: React.FC<ExploreProps> = ({ NFTs, hasNextPage, totalCount }) => {
     setFiltersSort(FiltersSortDefaultState);
     setIsLoading(true);
     setIsModalFiltersExpanded(false);
-    setIsModalSortDateExpanded(false);
-    setIsModalSortPopularityExpanded(false);
+    setIsModalSortExpanded(false);
     try {
       const { data, hasNextPage } = (await getNFTs('1', undefined, { listed: true }, undefined, true)) ?? { data: [], hasNextPage: false };
       setCurrentPage(1);
@@ -122,8 +115,7 @@ const Explore: React.FC<ExploreProps> = ({ NFTs, hasNextPage, totalCount }) => {
               )}
             </STitleContainer>
             <SFiltersButtonContainer>
-              <SSortButton onClick={toggleModalSortDateExpanded}>Sort by date</SSortButton>
-              <SSortButton onClick={toggleModalSortPopularityExpanded}>Sort by popularity</SSortButton>
+              <SSortButton onClick={toggleModalSortExpanded}>Sort</SSortButton>
               <Button color="primary500" icon="filters" onClick={toggleModalFiltersExpanded} size="medium" text="Filters" variant="contained" />
             </SFiltersButtonContainer>
           </STopContainer>
@@ -146,33 +138,17 @@ const Explore: React.FC<ExploreProps> = ({ NFTs, hasNextPage, totalCount }) => {
           />
         </Wrapper>
       </Container>
-      {isModalSortDateExpanded && (
-        <ModalSort setIsExpanded={setIsModalSortDateExpanded} title="Sort">
-          <SortDate
-            handleClearSort={handleClear}
-            setData={setDataNfts}
-            setDataHasNextPage={setDataNftsHasNextPage}
-            setDataCurrentPage={setCurrentPage}
-            setDataIsLoading={setIsLoading}
-            setIsModalExpanded={setIsModalSortDateExpanded}
-            setSort={setFiltersSort}
-            sort={filtersSort}
-          />
-        </ModalSort>
-      )}
-      {isModalSortPopularityExpanded && (
-        <ModalSort setIsExpanded={setIsModalSortPopularityExpanded} title="Sort">
-          <SortPopularity
-            handleClearSort={handleClear}
-            setData={setDataNfts}
-            setDataHasNextPage={setDataNftsHasNextPage}
-            setDataCurrentPage={setCurrentPage}
-            setDataIsLoading={setIsLoading}
-            setIsModalExpanded={setIsModalSortPopularityExpanded}
-            setSort={setFiltersSort}
-            sort={filtersSort}
-          />
-        </ModalSort>
+      {isModalSortExpanded && (
+        <ModalSort
+          handleClearSort={handleClear}
+          setData={setDataNfts}
+          setDataHasNextPage={setDataNftsHasNextPage}
+          setDataCurrentPage={setCurrentPage}
+          setDataIsLoading={setIsLoading}
+          setIsExpanded={setIsModalSortExpanded}
+          setSort={setFiltersSort}
+          sort={filtersSort}
+        />
       )}
       {isModalFiltersExpanded && (
         <ModalFilters

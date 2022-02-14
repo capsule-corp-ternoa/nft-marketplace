@@ -3,7 +3,7 @@ import ClickAwayListener from 'react-click-away-listener';
 import styled from 'styled-components';
 
 import { getNFTs } from 'actions/nft';
-import { FilterCategories, FilterPrice, FilterTypeSales } from 'components/base/FiltersSort';
+import { FilterCategories, FilterPrice, FilterTypeSales } from 'components/base/Filters';
 import { CATEGORIES_FILTER, DataNominalSetState, FiltersType, FiltersSortNominalSetState, PRICE_FILTER } from 'components/pages/Explore';
 import { FilterClearCta, FilterCtasContainer } from 'components/layout';
 import Button from 'components/ui/Button';

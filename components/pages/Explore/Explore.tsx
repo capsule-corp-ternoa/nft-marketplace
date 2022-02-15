@@ -16,6 +16,7 @@ import {
   CATEGORIES_FILTER,
   CREATION_DATE_FILTER,
   PRICE_FILTER,
+  ALL_SORT_IDS,
   DATE_ASC_SORT,
   DATE_DESC_SORT,
   MOST_LIKED_SORT,
@@ -25,7 +26,7 @@ import {
   PRICE_ASC_SORT,
   PRICE_DESC_SORT,
 } from './constants';
-import { FiltersType, SortTypesType } from './interfaces';
+import { AllSortIdsType, FiltersType, SortTypesType } from './interfaces';
 
 const filterSortPromiseMapping = (filtersSort: FiltersType & SortTypesType, currentPage: number): Promise<CustomResponse<NftType>> => {
   const categoryCodes = filtersSort[CATEGORIES_FILTER];
@@ -76,6 +77,8 @@ const Explore: React.FC<ExploreProps> = ({ NFTs, hasNextPage, totalCount }) => {
   const [isLoadMoreLoading, setIsLoadMoreLoading] = useState(false);
   const [isModalFiltersExpanded, setIsModalFiltersExpanded] = useState(false);
   const [isModalSortExpanded, setIsModalSortExpanded] = useState(false);
+
+  const currentSort = (Object.keys(filtersSort) as Array<AllSortIdsType>).find((key) => ALL_SORT_IDS.includes(key) && filtersSort[key] !== null);
 
   const toggleModalFiltersExpanded = () => {
     setIsModalFiltersExpanded((prevState) => !prevState);
@@ -132,7 +135,15 @@ const Explore: React.FC<ExploreProps> = ({ NFTs, hasNextPage, totalCount }) => {
               )}
             </STitleContainer>
             <SFiltersButtonContainer>
-              <SSortButton onClick={toggleModalSortExpanded}>Sort</SSortButton>
+              <SSortButton onClick={toggleModalSortExpanded}>
+                <SSortButtonWording>Sort</SSortButtonWording>
+                {currentSort !== undefined && (
+                  <>
+                    <span>:</span>
+                    <SCurrentSortLabel>{currentSort}</SCurrentSortLabel>
+                  </>
+                )}
+              </SSortButton>
               <Button color="primary500" icon="filters" onClick={toggleModalFiltersExpanded} size="medium" text="Filters" variant="contained" />
             </SFiltersButtonContainer>
           </STopContainer>
@@ -257,10 +268,21 @@ const SFiltersButtonContainer = styled.div`
 `;
 
 const SSortButton = styled.button`
+  cursor: pointer;
+`;
+
+const SSortButtonWording = styled.span`
   color: ${({ theme }) => theme.colors.contrast};
   font-family: ${({ theme }) => theme.fonts.bold};
   font-size: 1.6rem;
   text-decoration-line: underline;
+`;
+
+const SCurrentSortLabel = styled.span`
+  color: ${({ theme }) => theme.colors.primary500};
+  font-family: ${({ theme }) => theme.fonts.bold};
+  font-size: 1.6rem;
+  margin-left: 0.8rem;
 `;
 
 export default Explore;

@@ -14,6 +14,8 @@ export const DATE_DESC_SORT = 'Recently created';
 export const PRICE_ASC_SORT = 'Price: Low to High';
 export const PRICE_DESC_SORT = 'Price: High to Low';
 
+export const ALL_SORT_IDS = [DATE_ASC_SORT, DATE_DESC_SORT, MOST_LIKED_SORT, MOST_SOLD_SORT, MOST_SOLD_SERIES_SORT, MOST_VIEWED_SORT, PRICE_ASC_SORT, PRICE_DESC_SORT] as const;
+
 export const FiltersSortDefaultState = {
   [CATEGORIES_FILTER]: null,
   [CREATION_DATE_FILTER]: ['', ''],

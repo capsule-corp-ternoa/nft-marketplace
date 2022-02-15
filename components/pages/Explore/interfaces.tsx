@@ -4,6 +4,7 @@ import {
   CREATION_DATE_FILTER,
   PRICE_FILTER,
   SALE_TYPE_FILTER,
+  ALL_SORT_IDS,
   MOST_LIKED_SORT,
   MOST_SOLD_SORT,
   MOST_SOLD_SERIES_SORT,
@@ -31,6 +32,8 @@ export type SortTypesType = {
   [PRICE_ASC_SORT]: boolean | null;
   [PRICE_DESC_SORT]: boolean | null;
 };
+
+export type AllSortIdsType = typeof ALL_SORT_IDS[number];
 
 export type DataNominalSetState = React.Dispatch<React.SetStateAction<NftType[]>>;
 export type FiltersSortNominalSetState = React.Dispatch<React.SetStateAction<FiltersType & SortTypesType>>;

@@ -4,16 +4,17 @@ import styled from 'styled-components';
 
 import { getNFTs, getMostLikedNFTs, getMostSoldNFTs, getMostSoldSeries, getMostViewedNFTs } from 'actions/nft';
 import {
+  AllSortIdsType,
   DataNominalSetState,
   FiltersSortDefaultState,
   FiltersSortNominalSetState,
   SortTypesType,
+  ALL_SORT_IDS,
   DATE_ASC_SORT,
   DATE_DESC_SORT,
   MOST_LIKED_SORT,
   MOST_SOLD_SORT,
   MOST_SOLD_SERIES_SORT,
-  MOST_VIEWED_SORT,
   PRICE_ASC_SORT,
   PRICE_DESC_SORT
 } from 'components/pages/Explore';
@@ -22,9 +23,6 @@ import Select from 'components/ui/Select';
 import { FilterClearCta, FilterCtasContainer, FilterSubtitle } from 'components/layout';
 import { CustomResponse, NftType } from 'interfaces';
 import { SORT_OPTION_PRICE_ASC, SORT_OPTION_PRICE_DESC, SORT_OPTION_TIMESTAMP_CREATE_ASC, SORT_OPTION_TIMESTAMP_CREATE_DESC } from 'utils/constant';
-
-const sortTypes = [DATE_ASC_SORT, DATE_DESC_SORT, MOST_LIKED_SORT, MOST_SOLD_SORT, MOST_SOLD_SERIES_SORT, MOST_VIEWED_SORT, PRICE_ASC_SORT, PRICE_DESC_SORT] as const;
-type SortTypesIdsTypes = typeof sortTypes[number];
 
 interface ModalSortProps {
   handleClearSort: () => void;
@@ -38,9 +36,9 @@ interface ModalSortProps {
 }
 
 const ModalSort = ({ handleClearSort, setData, setDataHasNextPage, setDataCurrentPage, setDataIsLoading, setIsExpanded, setSort, sort }: ModalSortProps) => {
-  const currentSort = (Object.keys(sort) as Array<keyof typeof sort>).find((key) => sortTypes.includes(key) && sort[key] !== null);
+  const currentSort = (Object.keys(sort) as Array<keyof typeof sort>).find((key) => ALL_SORT_IDS.includes(key) && sort[key] !== null);
 
-  const toggleSort = async (sort: SortTypesIdsTypes | null) => {
+  const toggleSort = async (sort: AllSortIdsType | null) => {
     if (sort === null) {
       handleClearSort();
     } else {
@@ -109,7 +107,7 @@ const ModalSort = ({ handleClearSort, setData, setDataHasNextPage, setDataCurren
                         -
                       </li>
                     )}
-                    {sortTypes.map(
+                    {ALL_SORT_IDS.map(
                       (sort, id) =>
                         sort !== currentSort && (
                           <li

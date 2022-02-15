@@ -28,12 +28,24 @@ const FilterPrice = ({ setFilters, value }: FilterPriceProps) => {
 
   return (
     <div>
-      <FilterTitle>Price</FilterTitle>
+      <FilterTitle>Price (CAPS)</FilterTitle>
       <SFilterSubtitle>Filter your search according to your budget</SFilterSubtitle>
       <SPriceContainer>
-        <Input isError={!validateValue(value[0])} name="startPrice" onChange={handleChange} placeholder="Minimum price" value={Number(value[0]) || undefined} />
+        <Input
+          isError={!validateValue(value[0])}
+          name="startPrice"
+          onChange={handleChange}
+          placeholder={Number(value[0]) !== NaN && Number(value[0]) > 0 ? `${Number(value[0])}` : 'Minimum price'}
+          type="number"
+        />
         <SSeparator />
-        <Input isError={!validateValue(value[1])} name="endPrice" onChange={handleChange} placeholder="Maximum price" value={Number(value[1]) || undefined} />
+        <Input
+          isError={!validateValue(value[1])}
+          name="endPrice"
+          onChange={handleChange}
+          placeholder={Number(value[1]) !== NaN && Number(value[1]) > 0 ? `${Number(value[1])}` : 'Maximum price'}
+          type="number"
+        />
       </SPriceContainer>
     </div>
   );

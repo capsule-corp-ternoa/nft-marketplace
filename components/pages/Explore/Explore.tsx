@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import dayjs from 'dayjs';
 import styled from 'styled-components';
 
 import { getNFTs, getMostLikedNFTs, getMostSoldNFTs, getMostSoldSeries, getMostViewedNFTs } from 'actions/nft';
@@ -13,6 +14,8 @@ import { SORT_OPTION_TIMESTAMP_CREATE_ASC, SORT_OPTION_TIMESTAMP_CREATE_DESC } f
 import {
   FiltersSortDefaultState,
   CATEGORIES_FILTER,
+  CREATION_DATE_FILTER,
+  PRICE_FILTER,
   DATE_OLDEST_SORT,
   DATE_RECENT_SORT,
   MOST_LIKED_SORT,
@@ -24,9 +27,10 @@ import { FiltersType, SortTypesType } from './interfaces';
 
 const filterSortPromiseMapping = (filtersSort: FiltersType & SortTypesType, currentPage: number): Promise<CustomResponse<NftType>> => {
   const categoryCodes = filtersSort[CATEGORIES_FILTER];
-  if (categoryCodes !== null) {
-    return getNFTs((currentPage + 1).toString(), undefined, { categories: categoryCodes, listed: true });
-  } else if (filtersSort[MOST_LIKED_SORT] === true) {
+  const [startDateRange, endDateRange] = filtersSort[CREATION_DATE_FILTER];
+  const [minPrice, maxPrice] = filtersSort[PRICE_FILTER];
+
+  if (filtersSort[MOST_LIKED_SORT] === true) {
     return getMostLikedNFTs((currentPage + 1).toString());
   } else if (filtersSort[MOST_SOLD_SORT] === true) {
     return getMostSoldNFTs((currentPage + 1).toString());
@@ -39,7 +43,14 @@ const filterSortPromiseMapping = (filtersSort: FiltersType & SortTypesType, curr
   } else if (filtersSort[DATE_RECENT_SORT] === true) {
     return getNFTs((currentPage + 1).toString(), undefined, { listed: true }, SORT_OPTION_TIMESTAMP_CREATE_DESC);
   } else {
-    return getNFTs((currentPage + 1).toString(), undefined, { listed: true });
+    return getNFTs((currentPage + 1).toString(), undefined, {
+      categories: categoryCodes !== null && categoryCodes.length > 0 ? categoryCodes : undefined,
+      listed: true,
+      priceStartRange: minPrice > 0 ? minPrice : undefined,
+      priceEndRange: maxPrice > 0 ? maxPrice : undefined,
+      timestampCreateStartRange: dayjs(new Date(startDateRange)).isValid() ? new Date(startDateRange) : undefined,
+      timestampCreateEndRange: dayjs(new Date(endDateRange)).isValid() ? new Date(endDateRange) : undefined,
+    });
   }
 };
 

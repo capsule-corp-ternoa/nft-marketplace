@@ -12,6 +12,8 @@ interface Props {
   insight?: string;
   isError?: boolean;
   label?: string | React.ReactNode;
+  max?: string | number;
+  min?: string | number;
   name?: string;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
   placeholder?: string;
@@ -29,6 +31,8 @@ const TextInput = ({
   insight,
   isError,
   label,
+  max,
+  min,
   name,
   onChange,
   placeholder,
@@ -60,6 +64,8 @@ const TextInput = ({
           disabled={disabled}
           placeholder={placeholder}
           onChange={onChange}
+          max={max}
+          min={min}
           name={name}
           value={value}
           isError={isError}

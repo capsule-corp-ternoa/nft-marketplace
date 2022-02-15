@@ -1,6 +1,7 @@
 import { NftType } from 'interfaces';
 import {
   CATEGORIES_FILTER,
+  CREATION_DATE_FILTER,
   PRICE_FILTER,
   SALE_TYPE_FILTER,
   MOST_LIKED_SORT,
@@ -13,6 +14,7 @@ import {
 
 export type FiltersType = {
   [CATEGORIES_FILTER]: string[] | null;
+  [CREATION_DATE_FILTER]: string[];
   [PRICE_FILTER]: number[];
   [SALE_TYPE_FILTER]: string[] | null;
 };

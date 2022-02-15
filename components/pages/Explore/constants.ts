@@ -1,5 +1,6 @@
 // Filters
 export const CATEGORIES_FILTER = 'by Categories';
+export const CREATION_DATE_FILTER = 'by Creation Date';
 export const PRICE_FILTER = 'by Price';
 export const SALE_TYPE_FILTER = 'by Sale Types';
 
@@ -13,6 +14,7 @@ export const DATE_RECENT_SORT = 'recently created';
 
 export const FiltersSortDefaultState = {
   [CATEGORIES_FILTER]: null,
+  [CREATION_DATE_FILTER]: ['', ''],
   [PRICE_FILTER]: [0, 0],
   [SALE_TYPE_FILTER]: null,
   [MOST_LIKED_SORT]: null,

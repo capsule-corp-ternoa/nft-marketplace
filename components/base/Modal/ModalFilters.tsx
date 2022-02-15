@@ -1,10 +1,11 @@
 import React from 'react';
+import dayjs from 'dayjs';
 import ClickAwayListener from 'react-click-away-listener';
 import styled from 'styled-components';
 
 import { getNFTs } from 'actions/nft';
-import { FilterCategories, FilterPrice, FilterTypeSales } from 'components/base/Filters';
-import { CATEGORIES_FILTER, DataNominalSetState, FiltersType, FiltersSortNominalSetState, PRICE_FILTER } from 'components/pages/Explore';
+import { FilterCategories, FilterCreationDate, FilterPrice, FilterTypeSales } from 'components/base/Filters';
+import { DataNominalSetState, FiltersType, FiltersSortNominalSetState, CATEGORIES_FILTER, CREATION_DATE_FILTER, PRICE_FILTER } from 'components/pages/Explore';
 import { FilterClearCta, FilterCtasContainer } from 'components/layout';
 import Button from 'components/ui/Button';
 import Icon from 'components/ui/Icon';
@@ -31,8 +32,8 @@ const ModalFilters = ({
   setFilters,
 }: ModalFiltersProps) => {
   const categoryCodes = filters[CATEGORIES_FILTER];
-  const minPrice = filters[PRICE_FILTER][0];
-  const maxPrice = filters[PRICE_FILTER][1];
+  const [startDateRange, endDateRange] = filters[CREATION_DATE_FILTER];
+  const [minPrice, maxPrice] = filters[PRICE_FILTER];
 
   const isValidData = Number(minPrice) >= 0 && Number(minPrice) < 1e16 && Number(maxPrice) >= 0 && Number(maxPrice) < 1e16;
 
@@ -45,6 +46,8 @@ const ModalFilters = ({
         listed: true,
         priceStartRange: minPrice > 0 ? minPrice : undefined,
         priceEndRange: maxPrice > 0 ? maxPrice : undefined,
+        timestampCreateStartRange: dayjs(new Date(startDateRange)).isValid() ? new Date(startDateRange) : undefined,
+        timestampCreateEndRange: dayjs(new Date(endDateRange)).isValid() ? new Date(endDateRange) : undefined,
       })) ?? {
         data: [],
         hasNextPage: false,
@@ -73,6 +76,7 @@ const ModalFilters = ({
           <STitle>Filter</STitle>
 
           <SFiltersContainer>
+            <FilterCreationDate setFilters={setFilters} value={filters[CREATION_DATE_FILTER]} />
             <FilterPrice setFilters={setFilters} value={filters[PRICE_FILTER]} />
             <FilterTypeSales />
             <FilterCategories setFilters={setFilters} value={categoryCodes} />

@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import Button from 'components/ui/Button';
 import Chip from 'components/ui/Chip';
 
+// TODO: delete on mainnet
 const BetaBanner: React.FC = () => {
   return (
     <SBannerContainer>

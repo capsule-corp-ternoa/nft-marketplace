@@ -8,8 +8,10 @@ import {
   MOST_SOLD_SORT,
   MOST_SOLD_SERIES_SORT,
   MOST_VIEWED_SORT,
-  DATE_OLDEST_SORT,
-  DATE_RECENT_SORT,
+  DATE_ASC_SORT,
+  DATE_DESC_SORT,
+  PRICE_ASC_SORT,
+  PRICE_DESC_SORT,
 } from './constants';
 
 export type FiltersType = {
@@ -24,8 +26,10 @@ export type SortTypesType = {
   [MOST_SOLD_SORT]: boolean | null;
   [MOST_SOLD_SERIES_SORT]: boolean | null;
   [MOST_VIEWED_SORT]: boolean | null;
-  [DATE_OLDEST_SORT]: boolean | null;
-  [DATE_RECENT_SORT]: boolean | null;
+  [DATE_ASC_SORT]: boolean | null;
+  [DATE_DESC_SORT]: boolean | null;
+  [PRICE_ASC_SORT]: boolean | null;
+  [PRICE_DESC_SORT]: boolean | null;
 };
 
 export type DataNominalSetState = React.Dispatch<React.SetStateAction<NftType[]>>;

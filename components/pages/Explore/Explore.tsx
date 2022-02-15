@@ -9,19 +9,21 @@ import Button from 'components/ui/Button';
 import { Container, Title, Wrapper } from 'components/layout';
 import { EXPLORE_TAB } from 'components/pages/Profile';
 import { CustomResponse, NftType } from 'interfaces';
-import { SORT_OPTION_TIMESTAMP_CREATE_ASC, SORT_OPTION_TIMESTAMP_CREATE_DESC } from 'utils/constant';
+import { SORT_OPTION_PRICE_ASC, SORT_OPTION_PRICE_DESC, SORT_OPTION_TIMESTAMP_CREATE_ASC, SORT_OPTION_TIMESTAMP_CREATE_DESC } from 'utils/constant';
 
 import {
   FiltersSortDefaultState,
   CATEGORIES_FILTER,
   CREATION_DATE_FILTER,
   PRICE_FILTER,
-  DATE_OLDEST_SORT,
-  DATE_RECENT_SORT,
+  DATE_ASC_SORT,
+  DATE_DESC_SORT,
   MOST_LIKED_SORT,
   MOST_SOLD_SORT,
   MOST_SOLD_SERIES_SORT,
   MOST_VIEWED_SORT,
+  PRICE_ASC_SORT,
+  PRICE_DESC_SORT,
 } from './constants';
 import { FiltersType, SortTypesType } from './interfaces';
 
@@ -38,10 +40,14 @@ const filterSortPromiseMapping = (filtersSort: FiltersType & SortTypesType, curr
     return getMostSoldSeries((currentPage + 1).toString());
   } else if (filtersSort[MOST_VIEWED_SORT] === true) {
     return getMostViewedNFTs((currentPage + 1).toString());
-  } else if (filtersSort[DATE_OLDEST_SORT] === true) {
+  } else if (filtersSort[DATE_ASC_SORT] === true) {
     return getNFTs((currentPage + 1).toString(), undefined, { listed: true }, SORT_OPTION_TIMESTAMP_CREATE_ASC);
-  } else if (filtersSort[DATE_RECENT_SORT] === true) {
+  } else if (filtersSort[DATE_DESC_SORT] === true) {
     return getNFTs((currentPage + 1).toString(), undefined, { listed: true }, SORT_OPTION_TIMESTAMP_CREATE_DESC);
+  } else if (filtersSort[PRICE_ASC_SORT] === true) {
+    return getNFTs((currentPage + 1).toString(), undefined, { listed: true }, SORT_OPTION_PRICE_ASC);
+  } else if (filtersSort[PRICE_DESC_SORT] === true) {
+    return getNFTs((currentPage + 1).toString(), undefined, { listed: true }, SORT_OPTION_PRICE_DESC);
   } else {
     return getNFTs((currentPage + 1).toString(), undefined, {
       categories: categoryCodes !== null && categoryCodes.length > 0 ? categoryCodes : undefined,

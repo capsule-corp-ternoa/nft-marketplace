@@ -8,20 +8,22 @@ import {
   FiltersSortDefaultState,
   FiltersSortNominalSetState,
   SortTypesType,
-  DATE_OLDEST_SORT,
-  DATE_RECENT_SORT,
+  DATE_ASC_SORT,
+  DATE_DESC_SORT,
   MOST_LIKED_SORT,
   MOST_SOLD_SORT,
   MOST_SOLD_SERIES_SORT,
   MOST_VIEWED_SORT,
+  PRICE_ASC_SORT,
+  PRICE_DESC_SORT
 } from 'components/pages/Explore';
 import Icon from 'components/ui/Icon';
 import Select from 'components/ui/Select';
 import { FilterClearCta, FilterCtasContainer, FilterSubtitle } from 'components/layout';
 import { CustomResponse, NftType } from 'interfaces';
-import { SORT_OPTION_TIMESTAMP_CREATE_ASC, SORT_OPTION_TIMESTAMP_CREATE_DESC } from 'utils/constant';
+import { SORT_OPTION_PRICE_ASC, SORT_OPTION_PRICE_DESC, SORT_OPTION_TIMESTAMP_CREATE_ASC, SORT_OPTION_TIMESTAMP_CREATE_DESC } from 'utils/constant';
 
-const sortTypes = [DATE_OLDEST_SORT, DATE_RECENT_SORT, MOST_LIKED_SORT, MOST_SOLD_SORT, MOST_SOLD_SERIES_SORT, MOST_VIEWED_SORT] as const;
+const sortTypes = [DATE_ASC_SORT, DATE_DESC_SORT, MOST_LIKED_SORT, MOST_SOLD_SORT, MOST_SOLD_SERIES_SORT, MOST_VIEWED_SORT, PRICE_ASC_SORT, PRICE_DESC_SORT] as const;
 type SortTypesIdsTypes = typeof sortTypes[number];
 
 interface ModalSortProps {
@@ -49,10 +51,14 @@ const ModalSort = ({ handleClearSort, setData, setDataHasNextPage, setDataCurren
       try {
         let res: CustomResponse<NftType> = { data: [], hasNextPage: false, hasPreviousPage: false };
 
-        if (sort === DATE_OLDEST_SORT) {
+        if (sort === DATE_ASC_SORT) {
           res = await getNFTs('1', undefined, { listed: true }, SORT_OPTION_TIMESTAMP_CREATE_ASC);
-        } else if (sort === DATE_RECENT_SORT) {
+        } else if (sort === DATE_DESC_SORT) {
           res = await getNFTs('1', undefined, { listed: true }, SORT_OPTION_TIMESTAMP_CREATE_DESC);
+        } else if (sort === PRICE_ASC_SORT) {
+          res = await getNFTs('1', undefined, { listed: true }, SORT_OPTION_PRICE_ASC);
+        } else if (sort === PRICE_DESC_SORT) {
+          res = await getNFTs('1', undefined, { listed: true }, SORT_OPTION_PRICE_DESC);
         } else if (sort === MOST_LIKED_SORT) {
           res = await getMostLikedNFTs();
         } else if (sort === MOST_SOLD_SORT) {
@@ -196,6 +202,10 @@ const SSortContainer = styled.div`
   flex-wrap: wrap;
   gap: 1.6rem;
   margin-top: 1.6rem;
+
+  li {
+    color: ${({ theme }) => theme.colors.contrast};
+  }
 `;
 
 export default ModalSort;

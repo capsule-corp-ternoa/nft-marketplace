@@ -5,12 +5,14 @@ export const PRICE_FILTER = 'by Price';
 export const SALE_TYPE_FILTER = 'by Sale Types';
 
 // Sort Types
-export const MOST_LIKED_SORT = 'by most liked';
-export const MOST_SOLD_SORT = 'by most sold';
-export const MOST_SOLD_SERIES_SORT = 'by most sold series';
-export const MOST_VIEWED_SORT = 'by most viewed';
-export const DATE_OLDEST_SORT = 'oldest';
-export const DATE_RECENT_SORT = 'recently created';
+export const MOST_LIKED_SORT = 'Most liked';
+export const MOST_SOLD_SORT = 'Most sold';
+export const MOST_SOLD_SERIES_SORT = 'Most sold series';
+export const MOST_VIEWED_SORT = 'Most viewed';
+export const DATE_ASC_SORT = 'Oldest';
+export const DATE_DESC_SORT = 'Recently created';
+export const PRICE_ASC_SORT = 'Price: Low to High';
+export const PRICE_DESC_SORT = 'Price: High to Low';
 
 export const FiltersSortDefaultState = {
   [CATEGORIES_FILTER]: null,
@@ -21,6 +23,8 @@ export const FiltersSortDefaultState = {
   [MOST_SOLD_SORT]: null,
   [MOST_SOLD_SERIES_SORT]: null,
   [MOST_VIEWED_SORT]: null,
-  [DATE_OLDEST_SORT]: null,
-  [DATE_RECENT_SORT]: null,
+  [DATE_ASC_SORT]: null,
+  [DATE_DESC_SORT]: null,
+  [PRICE_ASC_SORT]: null,
+  [PRICE_DESC_SORT]: null,
 }

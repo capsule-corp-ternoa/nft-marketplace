@@ -10,25 +10,25 @@ import { emojiMapping } from 'utils/functions';
 
 interface FilterCategoriesProps {
   setFilters: FiltersSortNominalSetState;
-  value: string[] | null;
+  value: CategoryType[] | null;
 }
 
 const FilterCategories = ({ setFilters, value }: FilterCategoriesProps) => {
   const [categories, setCategories] = useState<CategoryType[]>([]);
 
-  const toggleCategory = (code: string) => {
+  const toggleCategory = (category: CategoryType) => {
     setFilters((prevState) => {
       const prevCategoriesFiltered = prevState[CATEGORIES_FILTER];
       if (prevCategoriesFiltered === null) {
-        return { ...FiltersSortDefaultState, [CATEGORIES_FILTER]: [code] };
+        return { ...FiltersSortDefaultState, [CATEGORIES_FILTER]: [category] };
       }
 
-      const categoryIdx = prevCategoriesFiltered.findIndex((item) => item === code);
+      const categoryIdx = prevCategoriesFiltered.findIndex(({ code }) => category.code === code);
       if (categoryIdx < 0) {
-        return { ...prevState, [CATEGORIES_FILTER]: prevCategoriesFiltered.concat(code) };
+        return { ...prevState, [CATEGORIES_FILTER]: prevCategoriesFiltered.concat(category) };
       }
 
-      return { ...prevState, [CATEGORIES_FILTER]: prevCategoriesFiltered.filter((item) => item !== code) };
+      return { ...prevState, [CATEGORIES_FILTER]: prevCategoriesFiltered.filter(({ code }) => category.code !== code) };
     });
   };
 
@@ -57,16 +57,16 @@ const FilterCategories = ({ setFilters, value }: FilterCategoriesProps) => {
             const bBit = emojiMapping(b.code) === undefined ? 1 : 0;
             return aBit - bBit;
           })
-          .map(({ _id, code, name }) => {
-            const isActive = value?.some((item) => item === code) ?? false;
+          .map((category) => {
+            const isActive = value?.some((item) => item.code === category.code) ?? false;
             return (
               <Button
-                key={_id}
+                key={category._id}
                 color={isActive ? 'primary500' : 'invertedContrast'}
-                emoji={emojiMapping(code)}
-                onClick={() => toggleCategory(code)}
+                emoji={emojiMapping(category.code)}
+                onClick={() => toggleCategory(category)}
                 size="small"
-                text={name}
+                text={category.name}
                 variant={isActive ? 'contained' : 'outlined'}
               />
             );

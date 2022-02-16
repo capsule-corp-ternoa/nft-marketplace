@@ -42,9 +42,9 @@ const ModalFilters = ({
   setFilters,
 }: ModalFiltersProps) => {
   const [currentFilter, setCurrentFilter] = useState(PRICE_FILTER);
-  const categoryCodes = filters[CATEGORIES_FILTER];
-  const [startDateRange, endDateRange] = filters[CREATION_DATE_FILTER];
-  const [minPrice, maxPrice] = filters[PRICE_FILTER];
+  const categoryCodes = filters[CATEGORIES_FILTER]?.map(({ code }) => code);
+  const [startDateRange, endDateRange] = filters[CREATION_DATE_FILTER] ?? ['', ''];
+  const [minPrice, maxPrice] = filters[PRICE_FILTER] ?? [0, 0];
 
   const isValidData = Number(minPrice) >= 0 && Number(minPrice) < 1e16 && Number(maxPrice) >= 0 && Number(maxPrice) < 1e16;
 
@@ -53,7 +53,7 @@ const ModalFilters = ({
     setIsExpanded(false);
     try {
       const { data, hasNextPage } = (await getNFTs('1', undefined, {
-        categories: categoryCodes !== null && categoryCodes.length > 0 ? categoryCodes : undefined,
+        categories: categoryCodes !== undefined && categoryCodes.length > 0 ? categoryCodes : undefined,
         listed: true,
         priceStartRange: minPrice > 0 ? minPrice : undefined,
         priceEndRange: maxPrice > 0 ? maxPrice : undefined,
@@ -112,7 +112,7 @@ const ModalFilters = ({
             {currentFilter === CREATION_DATE_FILTER && <FilterCreationDate setFilters={setFilters} value={filters[CREATION_DATE_FILTER]} />}
             {currentFilter === PRICE_FILTER && <FilterPrice setFilters={setFilters} value={filters[PRICE_FILTER]} />}
             {currentFilter === SALE_TYPE_FILTER && <FilterTypeSales />}
-            {currentFilter === CATEGORIES_FILTER && <FilterCategories setFilters={setFilters} value={categoryCodes} />}
+            {currentFilter === CATEGORIES_FILTER && <FilterCategories setFilters={setFilters} value={filters[CATEGORIES_FILTER]} />}
           </div>
           <FilterCtasContainer>
             <FilterClearCta onClick={handleClearFilter}>Clear filter</FilterClearCta>
@@ -183,6 +183,10 @@ const STopContainer = styled.div`
   button,
   li {
     text-transform: none;
+  }
+
+  li {
+    color: ${({ theme }) => theme.colors.contrast};
   }
 
   ${({ theme }) => theme.mediaQueries.lg} {

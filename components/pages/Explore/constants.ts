@@ -20,8 +20,8 @@ export const ALL_FILTER_SORT_IDS = [CATEGORIES_FILTER, CREATION_DATE_FILTER, PRI
 
 export const FiltersSortDefaultState = {
   [CATEGORIES_FILTER]: null,
-  [CREATION_DATE_FILTER]: ['', ''],
-  [PRICE_FILTER]: [0, 0],
+  [CREATION_DATE_FILTER]: null,
+  [PRICE_FILTER]: null,
   [SALE_TYPE_FILTER]: null,
   [MOST_LIKED_SORT]: null,
   [MOST_SOLD_SORT]: null,

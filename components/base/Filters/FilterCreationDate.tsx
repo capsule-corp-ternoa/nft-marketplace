@@ -11,10 +11,12 @@ const TESTNET_DATE = '2021-10-01';
 
 interface FilterCreationDateProps {
   setFilters: FiltersSortNominalSetState;
-  value: string[];
+  value: string[] | null;
 }
 
 const FilterCreationDate = ({ setFilters, value }: FilterCreationDateProps) => {
+  const [startDate, endDate] = value ?? ['', ''];
+
   const getDate = (dateType: 'startDateRange' | 'endDateRange', value: string, prevDate?: string) => {
     const date = dayjs(new Date(value));
 
@@ -38,7 +40,7 @@ const FilterCreationDate = ({ setFilters, value }: FilterCreationDateProps) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFilters((prevState) => {
-      const [prevStartDate, prevEndDate] = prevState[CREATION_DATE_FILTER];
+      const [prevStartDate, prevEndDate] = prevState[CREATION_DATE_FILTER] ?? ['', ''];
       if (e.target.name === 'startDateRange')
         return { ...FiltersSortDefaultState, [CREATION_DATE_FILTER]: [getDate('startDateRange', e.target.value, prevEndDate), prevEndDate] };
 
@@ -58,7 +60,7 @@ const FilterCreationDate = ({ setFilters, value }: FilterCreationDateProps) => {
           min={TESTNET_DATE}
           max={dayjs(new Date()).toJSON().split('T')[0]}
           type="date"
-          value={value[0] || ''}
+          value={startDate}
         />
         <SSeparator />
         <SInput
@@ -68,7 +70,7 @@ const FilterCreationDate = ({ setFilters, value }: FilterCreationDateProps) => {
           min={TESTNET_DATE}
           max={dayjs(new Date()).toJSON().split('T')[0]}
           type="date"
-          value={value[1] || ''}
+          value={endDate}
         />
       </SCreationDateContainer>
     </div>

@@ -103,11 +103,14 @@ export const formatDate = (d: Date) => {
   return `${formatVal(day)}/${formatVal(month)}/${formatVal(year)}, ${formatVal(hours)}:${formatVal(minutes)}`
 }
 
-export const formatPrice = (n: number) => {
-  const formatter = new Intl.NumberFormat('en-US', {
+export const formatPrice = (
+  n: number,
+  options: Intl.NumberFormatOptions = {
     style: 'currency',
     currency: 'USD',
-  });
+  }
+) => {
+  const formatter = new Intl.NumberFormat('en-US', options);
 
   return formatter.format(n);
-}
+};

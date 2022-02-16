@@ -1,4 +1,4 @@
-import { NftType } from 'interfaces';
+import { CategoryType, NftType } from 'interfaces';
 import {
   CATEGORIES_FILTER,
   CREATION_DATE_FILTER,
@@ -18,9 +18,9 @@ import {
 } from './constants';
 
 export type FiltersType = {
-  [CATEGORIES_FILTER]: string[] | null;
-  [CREATION_DATE_FILTER]: string[];
-  [PRICE_FILTER]: number[];
+  [CATEGORIES_FILTER]: CategoryType[] | null;
+  [CREATION_DATE_FILTER]: string[] | null;
+  [PRICE_FILTER]: number[] | null;
   [SALE_TYPE_FILTER]: string[] | null;
 };
 

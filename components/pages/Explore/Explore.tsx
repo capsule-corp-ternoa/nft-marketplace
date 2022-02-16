@@ -6,16 +6,20 @@ import { getNFTs, getMostLikedNFTs, getMostSoldNFTs, getMostSoldSeries, getMostV
 import { ModalFilters, ModalSort } from 'components/base/Modal';
 import NftsGrid from 'components/base/NftsGrid';
 import Button from 'components/ui/Button';
+import Chip from 'components/ui/Chip';
 import { Container, Title, Wrapper } from 'components/layout';
 import { EXPLORE_TAB } from 'components/pages/Profile';
 import { CustomResponse, NftType } from 'interfaces';
 import { SORT_OPTION_PRICE_ASC, SORT_OPTION_PRICE_DESC, SORT_OPTION_TIMESTAMP_CREATE_ASC, SORT_OPTION_TIMESTAMP_CREATE_DESC } from 'utils/constant';
+import { emojiMapping } from 'utils/functions';
+import { formatPrice } from 'utils/strings';
 
 import {
   FiltersSortDefaultState,
   CATEGORIES_FILTER,
   CREATION_DATE_FILTER,
   PRICE_FILTER,
+  ALL_FILTER_IDS,
   ALL_SORT_IDS,
   DATE_ASC_SORT,
   DATE_DESC_SORT,
@@ -26,12 +30,12 @@ import {
   PRICE_ASC_SORT,
   PRICE_DESC_SORT,
 } from './constants';
-import { AllSortIdsType, FiltersType, SortTypesType } from './interfaces';
+import { AllFilterIdsTypes, AllSortIdsType, FiltersType, SortTypesType } from './interfaces';
 
 const filterSortPromiseMapping = (filtersSort: FiltersType & SortTypesType, currentPage: number): Promise<CustomResponse<NftType>> => {
-  const categoryCodes = filtersSort[CATEGORIES_FILTER];
-  const [startDateRange, endDateRange] = filtersSort[CREATION_DATE_FILTER];
-  const [minPrice, maxPrice] = filtersSort[PRICE_FILTER];
+  const categoryCodes = filtersSort[CATEGORIES_FILTER]?.map(({ code }) => code);
+  const [startDateRange, endDateRange] = filtersSort[CREATION_DATE_FILTER] ?? ['', ''];
+  const [minPrice, maxPrice] = filtersSort[PRICE_FILTER] ?? [0, 0];
 
   if (filtersSort[MOST_LIKED_SORT] === true) {
     return getMostLikedNFTs((currentPage + 1).toString());
@@ -51,13 +55,52 @@ const filterSortPromiseMapping = (filtersSort: FiltersType & SortTypesType, curr
     return getNFTs((currentPage + 1).toString(), undefined, { listed: true }, SORT_OPTION_PRICE_DESC);
   } else {
     return getNFTs((currentPage + 1).toString(), undefined, {
-      categories: categoryCodes !== null && categoryCodes.length > 0 ? categoryCodes : undefined,
+      categories: categoryCodes !== undefined && categoryCodes.length > 0 ? categoryCodes : undefined,
       listed: true,
       priceStartRange: minPrice > 0 ? minPrice : undefined,
       priceEndRange: maxPrice > 0 ? maxPrice : undefined,
       timestampCreateStartRange: dayjs(new Date(startDateRange)).isValid() ? new Date(startDateRange) : undefined,
       timestampCreateEndRange: dayjs(new Date(endDateRange)).isValid() ? new Date(endDateRange) : undefined,
     });
+  }
+};
+
+const getFilterValueWording = (currentFilter: AllFilterIdsTypes | undefined, filtersSort: FiltersType & SortTypesType) => {
+  switch (currentFilter) {
+    case PRICE_FILTER: {
+      const [minPrice, maxPrice] = filtersSort[PRICE_FILTER] ?? [0, 0];
+      return [minPrice > 0 && `min: ${formatPrice(minPrice, {})} CAPS`, maxPrice > 0 && `max: ${formatPrice(maxPrice, {})} CAPS`]
+        .filter((item) => item)
+        .join(' - ');
+    }
+    case CREATION_DATE_FILTER: {
+      const [startDate, endDate] = filtersSort[CREATION_DATE_FILTER] ?? ['', ''];
+      return [
+        startDate !== '' && `from: ${dayjs(new Date(startDate)).format('MMM D, YYYY')}`,
+        endDate !== '' && `to: ${dayjs(new Date(endDate)).format('MMM D, YYYY')}`,
+      ]
+        .filter((item) => item)
+        .join(' - ');
+    }
+    case CATEGORIES_FILTER: {
+      try {
+        const categories = filtersSort[CATEGORIES_FILTER] ?? [];
+        return (
+          categories
+            // Categories with related emoji are displayed first
+            .sort((a, b) => {
+              const aBit = emojiMapping(a.code) === undefined ? 1 : 0;
+              const bBit = emojiMapping(b.code) === undefined ? 1 : 0;
+              return aBit - bBit;
+            })
+            .map(({ code, name }) => `${emojiMapping(code)} ${name}`)
+            .join(' - ')
+        );
+      } catch (error) {
+        console.log(error);
+        return undefined;
+      }
+    }
   }
 };
 
@@ -78,7 +121,9 @@ const Explore: React.FC<ExploreProps> = ({ NFTs, hasNextPage, totalCount }) => {
   const [isModalFiltersExpanded, setIsModalFiltersExpanded] = useState(false);
   const [isModalSortExpanded, setIsModalSortExpanded] = useState(false);
 
+  const currentFilter = (Object.keys(filtersSort) as Array<AllFilterIdsTypes>).find((key) => ALL_FILTER_IDS.includes(key) && filtersSort[key] !== null);
   const currentSort = (Object.keys(filtersSort) as Array<AllSortIdsType>).find((key) => ALL_SORT_IDS.includes(key) && filtersSort[key] !== null);
+  const currentFilterValueWording = getFilterValueWording(currentFilter, filtersSort);
 
   const toggleModalFiltersExpanded = () => {
     setIsModalFiltersExpanded((prevState) => !prevState);
@@ -147,6 +192,14 @@ const Explore: React.FC<ExploreProps> = ({ NFTs, hasNextPage, totalCount }) => {
               <Button color="primary500" icon="filters" onClick={toggleModalFiltersExpanded} size="medium" text="Filters" variant="contained" />
             </SFiltersButtonContainer>
           </STopContainer>
+          {currentFilterValueWording !== undefined && (
+            <SCurrentFiltersWrapper>
+              <SCurrentFilterLabel>
+                Filtered<SCurrentSortLabel>{currentFilter}</SCurrentSortLabel>:
+              </SCurrentFilterLabel>
+              <SChip color="invertedContrast" isDeletable onDelete={handleClear} size="medium" text={currentFilterValueWording} variant="rectangle" />
+            </SCurrentFiltersWrapper>
+          )}
           <NftsGrid
             NFTs={dataNfts}
             isLoading={isLoading}
@@ -278,11 +331,38 @@ const SSortButtonWording = styled.span`
   text-decoration-line: underline;
 `;
 
+const SCurrentFilterLabel = styled.span`
+  color: ${({ theme }) => theme.colors.contrast};
+  font-family: ${({ theme }) => theme.fonts.bold};
+  font-size: 1.6rem;
+`;
+
 const SCurrentSortLabel = styled.span`
   color: ${({ theme }) => theme.colors.primary500};
   font-family: ${({ theme }) => theme.fonts.bold};
   font-size: 1.6rem;
   margin-left: 0.8rem;
+`;
+
+const SCurrentFiltersWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.6rem;
+  margin-top: 1.6rem;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    justify-content: flex-start;
+  }
+`;
+
+const SChip = styled(Chip)`
+  > div {
+    white-space: break-spaces;
+    text-align: center;
+  }
 `;
 
 export default Explore;

@@ -7,10 +7,12 @@ import { Input } from 'components/ui/Input';
 
 interface FilterPriceProps {
   setFilters: FiltersSortNominalSetState;
-  value: number[];
+  value: number[] | null;
 }
 
 const FilterPrice = ({ setFilters, value }: FilterPriceProps) => {
+  const [minPrice, maxPrice] = value ?? [0, 0];
+
   const validateValue = (value?: number) => {
     if (value === undefined) return true;
     return Number(value) >= 0 && Number(value) < 1e16;
@@ -18,7 +20,7 @@ const FilterPrice = ({ setFilters, value }: FilterPriceProps) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFilters((prevState) => {
-      const [prevMin, prevMax] = prevState[PRICE_FILTER];
+      const [prevMin, prevMax] = prevState[PRICE_FILTER] ?? [0, 0];
       if (e.target.name === 'startPrice') return { ...FiltersSortDefaultState, [PRICE_FILTER]: [Number(e.target.value), prevMax] };
 
       return { ...FiltersSortDefaultState, [PRICE_FILTER]: [prevMin, Number(e.target.value)] };
@@ -31,18 +33,18 @@ const FilterPrice = ({ setFilters, value }: FilterPriceProps) => {
       <SFilterSubtitle>Filter your search according to your budget</SFilterSubtitle>
       <SPriceContainer>
         <Input
-          isError={!validateValue(value[0])}
+          isError={!validateValue(minPrice)}
           name="startPrice"
           onChange={handleChange}
-          placeholder={Number(value[0]) !== NaN && Number(value[0]) > 0 ? `${Number(value[0])}` : 'Minimum price'}
+          placeholder={minPrice > 0 ? `${minPrice}` : 'Minimum price'}
           type="number"
         />
         <SSeparator />
         <Input
-          isError={!validateValue(value[1])}
+          isError={!validateValue(maxPrice)}
           name="endPrice"
           onChange={handleChange}
-          placeholder={Number(value[1]) !== NaN && Number(value[1]) > 0 ? `${Number(value[1])}` : 'Maximum price'}
+          placeholder={maxPrice > 0 ? `${maxPrice}` : 'Maximum price'}
           type="number"
         />
       </SPriceContainer>

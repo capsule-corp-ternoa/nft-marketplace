@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { getCategories } from 'actions/category';
 import { FilterTitle, FilterSubtitle } from 'components/layout';
-import { FiltersSortNominalSetState, CATEGORIES_FILTER } from 'components/pages/Explore';
+import { FiltersSortDefaultState, FiltersSortNominalSetState, CATEGORIES_FILTER } from 'components/pages/Explore';
 import Button from 'components/ui/Button';
 import { CategoryType } from 'interfaces';
 import { emojiMapping } from 'utils/functions';
@@ -20,7 +20,7 @@ const FilterCategories = ({ setFilters, value }: FilterCategoriesProps) => {
     setFilters((prevState) => {
       const prevCategoriesFiltered = prevState[CATEGORIES_FILTER];
       if (prevCategoriesFiltered === null) {
-        return { ...prevState, [CATEGORIES_FILTER]: [code] };
+        return { ...FiltersSortDefaultState, [CATEGORIES_FILTER]: [code] };
       }
 
       const categoryIdx = prevCategoriesFiltered.findIndex((item) => item === code);

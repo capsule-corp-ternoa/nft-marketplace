@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import styled from 'styled-components';
 
 import { FilterTitle, FilterSubtitle } from 'components/layout';
-import { FiltersSortNominalSetState, CREATION_DATE_FILTER } from 'components/pages/Explore';
+import { FiltersSortDefaultState, FiltersSortNominalSetState, CREATION_DATE_FILTER } from 'components/pages/Explore';
 import { Input } from 'components/ui/Input';
 
 // TODO: Use mainnet date here
@@ -40,9 +40,9 @@ const FilterCreationDate = ({ setFilters, value }: FilterCreationDateProps) => {
     setFilters((prevState) => {
       const [prevStartDate, prevEndDate] = prevState[CREATION_DATE_FILTER];
       if (e.target.name === 'startDateRange')
-        return { ...prevState, [CREATION_DATE_FILTER]: [getDate('startDateRange', e.target.value, prevEndDate), prevEndDate] };
+        return { ...FiltersSortDefaultState, [CREATION_DATE_FILTER]: [getDate('startDateRange', e.target.value, prevEndDate), prevEndDate] };
 
-      return { ...prevState, [CREATION_DATE_FILTER]: [prevStartDate, getDate('endDateRange', e.target.value, prevStartDate)] };
+      return { ...FiltersSortDefaultState, [CREATION_DATE_FILTER]: [prevStartDate, getDate('endDateRange', e.target.value, prevStartDate)] };
     });
   };
 

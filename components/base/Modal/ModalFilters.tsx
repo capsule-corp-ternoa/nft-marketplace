@@ -1,14 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import dayjs from 'dayjs';
 import ClickAwayListener from 'react-click-away-listener';
 import styled from 'styled-components';
 
 import { getNFTs } from 'actions/nft';
 import { FilterCategories, FilterCreationDate, FilterPrice, FilterTypeSales } from 'components/base/Filters';
-import { DataNominalSetState, FiltersType, FiltersSortNominalSetState, CATEGORIES_FILTER, CREATION_DATE_FILTER, PRICE_FILTER } from 'components/pages/Explore';
+import {
+  DataNominalSetState,
+  FiltersType,
+  FiltersSortNominalSetState,
+  ALL_FILTER_IDS,
+  CATEGORIES_FILTER,
+  CREATION_DATE_FILTER,
+  PRICE_FILTER,
+  SALE_TYPE_FILTER,
+} from 'components/pages/Explore';
 import { FilterClearCta, FilterCtasContainer } from 'components/layout';
 import Button from 'components/ui/Button';
 import Icon from 'components/ui/Icon';
+import Select from 'components/ui/Select';
 
 interface ModalFiltersProps {
   filters: FiltersType;
@@ -31,6 +41,7 @@ const ModalFilters = ({
   setIsExpanded,
   setFilters,
 }: ModalFiltersProps) => {
+  const [currentFilter, setCurrentFilter] = useState(PRICE_FILTER);
   const categoryCodes = filters[CATEGORIES_FILTER];
   const [startDateRange, endDateRange] = filters[CREATION_DATE_FILTER];
   const [minPrice, maxPrice] = filters[PRICE_FILTER];
@@ -73,14 +84,36 @@ const ModalFilters = ({
           <SCloseIcon onClick={() => setIsExpanded(false)}>
             <Icon name="close" />
           </SCloseIcon>
-          <STitle>Filter</STitle>
+          <STopContainer>
+            <STitle>Filter</STitle>
+            <Select color="invertedContrast" text={currentFilter}>
+              {(setSelectExpanded) => (
+                <>
+                  {ALL_FILTER_IDS.map(
+                    (filter, id) =>
+                      filter !== currentFilter && (
+                        <li
+                          key={id}
+                          onClick={() => {
+                            setSelectExpanded(false);
+                            setCurrentFilter(filter);
+                          }}
+                        >
+                          {filter}
+                        </li>
+                      )
+                  )}
+                </>
+              )}
+            </Select>
+          </STopContainer>
 
-          <SFiltersContainer>
-            <FilterCreationDate setFilters={setFilters} value={filters[CREATION_DATE_FILTER]} />
-            <FilterPrice setFilters={setFilters} value={filters[PRICE_FILTER]} />
-            <FilterTypeSales />
-            <FilterCategories setFilters={setFilters} value={categoryCodes} />
-          </SFiltersContainer>
+          <div>
+            {currentFilter === CREATION_DATE_FILTER && <FilterCreationDate setFilters={setFilters} value={filters[CREATION_DATE_FILTER]} />}
+            {currentFilter === PRICE_FILTER && <FilterPrice setFilters={setFilters} value={filters[PRICE_FILTER]} />}
+            {currentFilter === SALE_TYPE_FILTER && <FilterTypeSales />}
+            {currentFilter === CATEGORIES_FILTER && <FilterCategories setFilters={setFilters} value={categoryCodes} />}
+          </div>
           <FilterCtasContainer>
             <FilterClearCta onClick={handleClearFilter}>Clear filter</FilterClearCta>
             <Button color="primary500" disabled={!isValidData} onClick={submit} size="small" text="Show related NFTs" variant="contained" />
@@ -138,28 +171,42 @@ const SModalContainer = styled.div`
   }
 `;
 
+const STopContainer = styled.div`
+  padding-bottom: 2.4rem;
+
+  button,
+  ul {
+    max-width: 24rem;
+    left: 41%;
+  }
+
+  button,
+  li {
+    text-transform: none;
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    display: flex;
+    align-items: center;
+
+    ul {
+      left: 50%;
+    }
+
+    > * {
+      &:not(:first-child) {
+        margin-left: 1.6rem;
+      }
+    }
+  }
+`;
+
 const STitle = styled.h3`
   color: ${({ theme }) => theme.colors.contrast};
   font-family: ${({ theme }) => theme.fonts.bold};
   font-size: 3.2rem;
   margin: 0;
   margin-bottom: 0.4rem;
-`;
-
-const SFiltersContainer = styled.div`
-  overflow-y: scroll;
-
-  > * {
-    margin-right: 2.4rem;
-    padding: 4rem 0;
-
-    &:not(:last-child) {
-      border-bottom: ${({ theme }) => `2px solid ${theme.colors.neutral200}`};
-    }
-
-    &:last-child {
-      margin-bottom: 0;
-    }
 `;
 
 export default ModalFilters;

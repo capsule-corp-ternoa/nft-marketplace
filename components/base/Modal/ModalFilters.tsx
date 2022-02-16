@@ -162,7 +162,6 @@ const SModalContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: 2.4rem;
-  max-height: 50rem;
   position: relative;
 
   ${({ theme }) => theme.mediaQueries.lg} {

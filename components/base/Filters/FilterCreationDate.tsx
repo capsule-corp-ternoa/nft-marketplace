@@ -82,17 +82,36 @@ const SFilterSubtitle = styled(FilterSubtitle)`
 `;
 
 const SCreationDateContainer = styled.div`
-  display: flex;
-  align-items: flex-end;
-  gap: 1.6rem;
   margin-top: 3.2rem;
+
+  > * {
+    &:not(:first-child) {
+      margin-top: 1.6rem;
+    }
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    display: flex;
+    align-items: flex-end;
+    gap: 1.6rem;
+
+    > * {
+      &:not(:first-child) {
+        margin-top: 0;
+      }
+    }
+  }
 `;
 
 const SSeparator = styled.div`
-  width: 26px;
-  height: 2px;
-  background: ${({ theme }) => theme.colors.neutral200};
-  margin-bottom: 2.4rem;
+  display: none;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    width: 26px;
+    height: 2px;
+    background: ${({ theme }) => theme.colors.neutral200};
+    margin-bottom: 2.4rem;
+  }
 `;
 
 const SInput = styled(Input)`

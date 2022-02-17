@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled, { css } from 'styled-components';
-import Router from 'next/router';
+import Router, { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 
 import { likeNFT, unlikeNFT } from 'actions/nft';
@@ -11,6 +11,7 @@ import { NftType } from 'interfaces/index';
 import { appSetUserLikedNFTs } from 'redux/app';
 import { useApp } from 'redux/hooks';
 import { fadeIn, ySlide } from 'style/animations';
+import { PRICE_FILTER } from 'utils/constant';
 import { LIKE_ACTION, LIKE_ACTION_TYPE, UNLIKE_ACTION } from 'utils/profile/constants';
 import { computeCaps } from 'utils/strings';
 
@@ -48,7 +49,8 @@ const NftCard: React.FC<NftCardProps> = ({
 }) => {
   const { user } = useApp();
   const dispatch = useDispatch();
-  const { creator, creatorData, id: nftId, properties, serieId, smallestPrice, totalListedInMarketplace, totalListedNft, totalNft } = item;
+  const router = useRouter();
+  const { creator, creatorData, id: nftId, price, properties, serieId, smallestPrice, totalListedInMarketplace, totalListedNft, totalNft } = item;
 
   const [isHovering, setIsHovering] = useState(false);
   const [isLiked, setIsLiked] = useState(
@@ -60,10 +62,11 @@ const NftCard: React.FC<NftCardProps> = ({
   const isCreator = creator !== undefined && creator !== '' && creatorData !== undefined;
   const isUserLogged = user !== undefined && user !== null;
 
-  const isPrice = Number(smallestPrice) > 0;
+  const isPriceFilterActive = router.query.filter === PRICE_FILTER && (Number(router.query.minPrice) > 0 || Number(router.query.maxPrice) > 0);
+  const isPrice = Number( isPriceFilterActive ? price : smallestPrice) > 0;
   const isSecret = properties?.cryptedMedia.ipfs !== properties?.preview.ipfs;
 
-  const smallestPriceWording = isPrice ? `${computeCaps(Number(smallestPrice))} CAPS` : undefined;
+  const priceWording = isPrice ? `${computeCaps(Number(isPriceFilterActive ? price : smallestPrice))} CAPS` : undefined;
   const defaultQuantityAvailable = totalListedInMarketplace ?? totalListedNft ?? 1;
   const quantityAvailable = quantity ?? defaultQuantityAvailable;
 
@@ -140,9 +143,9 @@ const NftCard: React.FC<NftCardProps> = ({
               <Chip color="whiteBlur" icon="secretCards" size="small" text="Secret" variant="round" />
             </SSecretChipWrapper>
           )}
-          {smallestPriceWording && !noPriceChip && !isHovering && (
+          {priceWording && !noPriceChip && !isHovering && (
             <SPriceChipWrapper>
-              <Chip color="whiteBlur" size="small" text={smallestPriceWording} variant="round" />
+              <Chip color="whiteBlur" size="small" text={priceWording} variant="round" />
             </SPriceChipWrapper>
           )}
           <SChipsFilter isTopFilter={isTopFilter} isBottomFilter={isBottomFilter} />
@@ -182,9 +185,8 @@ const NftCard: React.FC<NftCardProps> = ({
                   <SCreatorName isHovering={isHovering}>{creatorData?.name || `Ternoa #${creator.slice(0, 5)}`}</SCreatorName>
                 </SCreatorContainer>
               )}
-              {smallestPriceWording && (
-                <SPriceWrapper isHovering={isHovering}>
-                  <Chip color="whiteBlur" size="small" text={smallestPriceWording} variant="round" />
+              {priceWording && (
+                <SPriceWrapper isHovering={isHovering}>                  <Chip color="whiteBlur" size="small" text={priceWording} variant="round" />
                 </SPriceWrapper>
               )}
             </SInfosContainer>

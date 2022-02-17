@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 import ClickAwayListener from 'react-click-away-listener';
 import styled from 'styled-components';
 
@@ -37,6 +38,7 @@ interface ModalSortProps {
 }
 
 const ModalSort = ({ handleClearSort, setData, setDataHasNextPage, setDataCurrentPage, setDataIsLoading, setIsExpanded, setSort, sort }: ModalSortProps) => {
+  const router = useRouter();
   const currentSort = (Object.keys(sort) as Array<keyof typeof sort>).find((key) => ALL_SORT_IDS.includes(key) && sort[key] !== null);
 
   const toggleSort = async (sort: AllSortIdsType | null) => {
@@ -68,6 +70,7 @@ const ModalSort = ({ handleClearSort, setData, setDataHasNextPage, setDataCurren
           res = await getMostViewedNFTs();
         }
 
+        router.push({ pathname: router.pathname, query: `sort=${sort}` }, undefined, { shallow: true });
         setDataCurrentPage(1);
         setDataHasNextPage(res.hasNextPage ?? false);
         setData(res.data);

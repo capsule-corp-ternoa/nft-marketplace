@@ -11,6 +11,7 @@ import FloatingHeader from 'components/base/FloatingHeader';
 import { getNFTs, getTotalOnSaleOnMarketplace } from 'actions/nft';
 import { NftType } from 'interfaces';
 import { useMarketplaceData } from 'redux/hooks';
+import { sortPromiseMapping } from 'utils/functions';
 
 export interface ExplorePage {
   data: NftType[];
@@ -40,14 +41,15 @@ const ExplorePage = ({ data, dataHasNextPage, totalCount }: ExplorePage) => {
 };
 
 export async function getServerSideProps(context: NextPageContext) {
-  const { codes, minPrice, maxPrice, startDate, endDate } = context.query;
+  const { codes, minPrice, maxPrice, startDate, endDate, sort } = context.query;
 
   let data: NftType[] = [],
     dataHasNextPage: boolean = false,
     totalCount: number = 0;
 
-  try {
-    const res = await getNFTs(
+  const NFTsDataPromise =
+    (typeof sort === 'string' && sortPromiseMapping({ [sort]: true }, 0)) ||
+    getNFTs(
       undefined,
       undefined,
       {
@@ -61,6 +63,9 @@ export async function getServerSideProps(context: NextPageContext) {
       undefined,
       true
     );
+
+  try {
+    const res = await NFTsDataPromise;
     data = res.data;
     dataHasNextPage = res.hasNextPage || false;
   } catch (error) {

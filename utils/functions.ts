@@ -1,5 +1,23 @@
-import { IncomingMessage } from "http"
-import { NextRouter } from "next/router"
+import { IncomingMessage } from "http";
+import { NextRouter } from "next/router";
+
+import { getNFTs, getMostLikedNFTs, getMostSoldNFTs, getMostSoldSeries, getMostViewedNFTs } from 'actions/nft';
+import { CustomResponse, NftType } from 'interfaces';
+import { SortTypesType } from 'interfaces/filters';
+import {
+  DATE_ASC_SORT,
+  DATE_DESC_SORT,
+  MOST_LIKED_SORT,
+  MOST_SOLD_SORT,
+  MOST_SOLD_SERIES_SORT,
+  MOST_VIEWED_SORT,
+  PRICE_ASC_SORT,
+  PRICE_DESC_SORT,
+  SORT_OPTION_PRICE_ASC,
+  SORT_OPTION_PRICE_DESC,
+  SORT_OPTION_TIMESTAMP_CREATE_ASC,
+  SORT_OPTION_TIMESTAMP_CREATE_DESC,
+} from 'utils/constant';
 
 export const getUserIp = (req: IncomingMessage | undefined) => {
   let ip: string | undefined = ""
@@ -57,4 +75,26 @@ export const emojiMapping = (s: string) => {
   else if (s.localeCompare('games', undefined, { sensitivity: 'base' }) === 0) return '👾';
   
   return undefined;
+};
+
+export const sortPromiseMapping = (sort: Partial<SortTypesType>, currentPage: number): Promise<CustomResponse<NftType>> | null => {
+  if (sort[MOST_LIKED_SORT] === true) {
+    return getMostLikedNFTs((currentPage + 1).toString());
+  } else if (sort[MOST_SOLD_SORT] === true) {
+    return getMostSoldNFTs((currentPage + 1).toString());
+  } else if (sort[MOST_SOLD_SERIES_SORT] === true) {
+    return getMostSoldSeries((currentPage + 1).toString());
+  } else if (sort[MOST_VIEWED_SORT] === true) {
+    return getMostViewedNFTs((currentPage + 1).toString());
+  } else if (sort[DATE_ASC_SORT] === true) {
+    return getNFTs((currentPage + 1).toString(), undefined, { listed: true }, SORT_OPTION_TIMESTAMP_CREATE_ASC);
+  } else if (sort[DATE_DESC_SORT] === true) {
+    return getNFTs((currentPage + 1).toString(), undefined, { listed: true }, SORT_OPTION_TIMESTAMP_CREATE_DESC);
+  } else if (sort[PRICE_ASC_SORT] === true) {
+    return getNFTs((currentPage + 1).toString(), undefined, { listed: true }, SORT_OPTION_PRICE_ASC);
+  } else if (sort[PRICE_DESC_SORT] === true) {
+    return getNFTs((currentPage + 1).toString(), undefined, { listed: true }, SORT_OPTION_PRICE_DESC);
+  } else {
+    return null
+  }
 };

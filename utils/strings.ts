@@ -1,7 +1,7 @@
 import { ParsedUrlQuery } from 'querystring';
 
 import { getCategories } from 'actions/category';
-import { FiltersType, SortTypesType } from 'interfaces/filters';
+import { FiltersType } from 'interfaces/filters';
 import { FILTERS_SORT_RESET_STATE, CATEGORIES_FILTER, CREATION_DATE_FILTER, PRICE_FILTER } from 'utils/constant';
 
 function toFixed(num: Number, fixed: number) {
@@ -121,7 +121,7 @@ export const formatPrice = (
   return formatter.format(n);
 };
 
-export const decodeFilterQuery = async (query: ParsedUrlQuery): Promise<Partial<FiltersType & SortTypesType>> => {
+export const decodeFilterQuery = async (query: ParsedUrlQuery): Promise<Partial<FiltersType>> => {
   const { filter } = query;
   switch (filter) {
     case CATEGORIES_FILTER: {

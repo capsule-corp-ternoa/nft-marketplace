@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
-import { getNFTs, getMostLikedNFTs, getMostSoldNFTs, getMostSoldSeries, getMostViewedNFTs } from 'actions/nft';
+import { getNFTs } from 'actions/nft';
 import { ModalFilters, ModalSort } from 'components/base/Modal';
 import NftsGrid from 'components/base/NftsGrid';
 import Button from 'components/ui/Button';
@@ -12,60 +12,23 @@ import { Container, Title, Wrapper } from 'components/layout';
 import { EXPLORE_TAB } from 'components/pages/Profile';
 import { CustomResponse, NftType } from 'interfaces';
 import { AllFilterIdsTypes, AllSortIdsType, FiltersType, SortTypesType } from 'interfaces/filters';
-import {
-  FILTERS_SORT_RESET_STATE,
-  CATEGORIES_FILTER,
-  CREATION_DATE_FILTER,
-  PRICE_FILTER,
-  ALL_FILTER_IDS,
-  ALL_SORT_IDS,
-  DATE_ASC_SORT,
-  DATE_DESC_SORT,
-  MOST_LIKED_SORT,
-  MOST_SOLD_SORT,
-  MOST_SOLD_SERIES_SORT,
-  MOST_VIEWED_SORT,
-  PRICE_ASC_SORT,
-  PRICE_DESC_SORT,
-  SORT_OPTION_PRICE_ASC,
-  SORT_OPTION_PRICE_DESC,
-  SORT_OPTION_TIMESTAMP_CREATE_ASC,
-  SORT_OPTION_TIMESTAMP_CREATE_DESC,
-} from 'utils/constant';
-import { emojiMapping } from 'utils/functions';
+import { FILTERS_SORT_RESET_STATE, CATEGORIES_FILTER, CREATION_DATE_FILTER, PRICE_FILTER, ALL_FILTER_IDS, ALL_SORT_IDS } from 'utils/constant';
+import { emojiMapping, sortPromiseMapping } from 'utils/functions';
 import { decodeFilterQuery, formatPrice } from 'utils/strings';
 
-const filterSortPromiseMapping = (filtersSort: FiltersType & SortTypesType, currentPage: number): Promise<CustomResponse<NftType>> => {
+const getFilteredNfts = (filtersSort: FiltersType & SortTypesType, currentPage: number): Promise<CustomResponse<NftType>> => {
   const categoryCodes = filtersSort[CATEGORIES_FILTER]?.map(({ code }) => code);
   const [startDateRange, endDateRange] = filtersSort[CREATION_DATE_FILTER] ?? ['', ''];
   const [minPrice, maxPrice] = filtersSort[PRICE_FILTER] ?? [0, 0];
 
-  if (filtersSort[MOST_LIKED_SORT] === true) {
-    return getMostLikedNFTs((currentPage + 1).toString());
-  } else if (filtersSort[MOST_SOLD_SORT] === true) {
-    return getMostSoldNFTs((currentPage + 1).toString());
-  } else if (filtersSort[MOST_SOLD_SERIES_SORT] === true) {
-    return getMostSoldSeries((currentPage + 1).toString());
-  } else if (filtersSort[MOST_VIEWED_SORT] === true) {
-    return getMostViewedNFTs((currentPage + 1).toString());
-  } else if (filtersSort[DATE_ASC_SORT] === true) {
-    return getNFTs((currentPage + 1).toString(), undefined, { listed: true }, SORT_OPTION_TIMESTAMP_CREATE_ASC);
-  } else if (filtersSort[DATE_DESC_SORT] === true) {
-    return getNFTs((currentPage + 1).toString(), undefined, { listed: true }, SORT_OPTION_TIMESTAMP_CREATE_DESC);
-  } else if (filtersSort[PRICE_ASC_SORT] === true) {
-    return getNFTs((currentPage + 1).toString(), undefined, { listed: true }, SORT_OPTION_PRICE_ASC);
-  } else if (filtersSort[PRICE_DESC_SORT] === true) {
-    return getNFTs((currentPage + 1).toString(), undefined, { listed: true }, SORT_OPTION_PRICE_DESC);
-  } else {
-    return getNFTs((currentPage + 1).toString(), undefined, {
-      categories: categoryCodes !== undefined && categoryCodes.length > 0 ? categoryCodes : undefined,
-      listed: true,
-      priceStartRange: minPrice > 0 ? minPrice : undefined,
-      priceEndRange: maxPrice > 0 ? maxPrice : undefined,
-      timestampCreateStartRange: dayjs(new Date(startDateRange)).isValid() ? new Date(startDateRange) : undefined,
-      timestampCreateEndRange: dayjs(new Date(endDateRange)).isValid() ? new Date(endDateRange) : undefined,
-    });
-  }
+  return getNFTs((currentPage + 1).toString(), undefined, {
+    categories: categoryCodes !== undefined && categoryCodes.length > 0 ? categoryCodes : undefined,
+    listed: true,
+    priceStartRange: minPrice > 0 ? minPrice : undefined,
+    priceEndRange: maxPrice > 0 ? maxPrice : undefined,
+    timestampCreateStartRange: dayjs(new Date(startDateRange)).isValid() ? new Date(startDateRange) : undefined,
+    timestampCreateEndRange: dayjs(new Date(endDateRange)).isValid() ? new Date(endDateRange) : undefined,
+  });
 };
 
 const getFilterValueWording = (currentFilter: AllFilterIdsTypes | undefined, filtersSort: FiltersType & SortTypesType) => {
@@ -138,7 +101,7 @@ const Explore: React.FC<ExploreProps> = ({ NFTs, hasNextPage, totalCount }) => {
     setIsLoadMoreLoading(true);
     try {
       if (dataNftsHasNextPage) {
-        const promise = filterSortPromiseMapping(filtersSort, currentPage);
+        const promise = sortPromiseMapping(filtersSort, currentPage) ?? getFilteredNfts(filtersSort, currentPage);
         const { data, hasNextPage } = (await promise) ?? { data: [], hasNextPage: false };
         setCurrentPage((prevCount) => prevCount + 1);
         setDataNftsHasNextPage(hasNextPage);
@@ -169,12 +132,16 @@ const Explore: React.FC<ExploreProps> = ({ NFTs, hasNextPage, totalCount }) => {
   };
 
   useEffect(() => {
-    const getQueryFilters = async () => {
-      const newFilter = await decodeFilterQuery(router.query);
-      setFiltersSort((prevState) => ({ ...prevState, ...newFilter }));
+    const getQueryFiltersSort = async () => {
+      if (Object.keys(router.query).includes('filter')) {
+        const newFilter = await decodeFilterQuery(router.query);
+        setFiltersSort((prevState) => ({ ...prevState, ...newFilter }));
+      } else if (typeof router.query.sort === 'string' && ALL_SORT_IDS.includes(router.query.sort as AllSortIdsType)) {
+        setFiltersSort((prevState) => ({ ...prevState, [router.query.sort as AllSortIdsType]: true }));
+      }
     };
 
-    if (router.query) getQueryFilters();
+    if (router.query) getQueryFiltersSort();
   }, []);
 
   return (

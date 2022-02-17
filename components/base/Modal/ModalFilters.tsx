@@ -58,7 +58,9 @@ const ModalFilters = ({
   setFilters,
 }: ModalFiltersProps) => {
   const router = useRouter();
-  const [currentFilter, setCurrentFilter] = useState<AllFilterIdsTypes>(PRICE_FILTER);
+  const [currentFilter, setCurrentFilter] = useState<AllFilterIdsTypes>(
+    (Object.keys(filters) as Array<AllFilterIdsTypes>).find((key) => ALL_FILTER_IDS.includes(key) && filters[key] !== null) ?? PRICE_FILTER
+  );
 
   const categoryCodes = filters[CATEGORIES_FILTER]?.map(({ code }) => code);
   const [startDateRange, endDateRange] = filters[CREATION_DATE_FILTER] ?? ['', ''];

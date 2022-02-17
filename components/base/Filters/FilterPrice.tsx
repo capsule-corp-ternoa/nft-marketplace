@@ -2,8 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { FilterTitle, FilterSubtitle } from 'components/layout';
-import { FiltersSortDefaultState, FiltersSortNominalSetState, PRICE_FILTER } from 'components/pages/Explore';
 import { Input } from 'components/ui/Input';
+import { FiltersSortNominalSetState } from 'interfaces/filters';
+import { FILTERS_SORT_RESET_STATE, PRICE_FILTER } from 'utils/constant';
 
 interface FilterPriceProps {
   setFilters: FiltersSortNominalSetState;
@@ -21,9 +22,9 @@ const FilterPrice = ({ setFilters, value }: FilterPriceProps) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFilters((prevState) => {
       const [prevMin, prevMax] = prevState[PRICE_FILTER] ?? [0, 0];
-      if (e.target.name === 'startPrice') return { ...FiltersSortDefaultState, [PRICE_FILTER]: [Number(e.target.value), prevMax] };
+      if (e.target.name === 'startPrice') return { ...FILTERS_SORT_RESET_STATE, [PRICE_FILTER]: [Number(e.target.value), prevMax] };
 
-      return { ...FiltersSortDefaultState, [PRICE_FILTER]: [prevMin, Number(e.target.value)] };
+      return { ...FILTERS_SORT_RESET_STATE, [PRICE_FILTER]: [prevMin, Number(e.target.value)] };
     });
   };
 

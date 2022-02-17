@@ -1,4 +1,4 @@
-import { CategoryType, NftType } from 'interfaces';
+import { CategoryType } from 'interfaces';
 import {
   CATEGORIES_FILTER,
   CREATION_DATE_FILTER,
@@ -15,7 +15,7 @@ import {
   DATE_DESC_SORT,
   PRICE_ASC_SORT,
   PRICE_DESC_SORT,
-} from './constants';
+} from 'utils/constant';
 
 export type FiltersType = {
   [CATEGORIES_FILTER]: CategoryType[] | null;
@@ -39,5 +39,4 @@ export type AllFilterIdsTypes = typeof ALL_FILTER_IDS[number];
 export type AllSortIdsType = typeof ALL_SORT_IDS[number];
 export type AllFilterSortIdsType = typeof ALL_FILTER_SORT_IDS[number];
 
-export type DataNominalSetState = React.Dispatch<React.SetStateAction<NftType[]>>;
 export type FiltersSortNominalSetState = React.Dispatch<React.SetStateAction<FiltersType & SortTypesType>>;

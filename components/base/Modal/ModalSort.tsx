@@ -3,30 +3,31 @@ import ClickAwayListener from 'react-click-away-listener';
 import styled from 'styled-components';
 
 import { getNFTs, getMostLikedNFTs, getMostSoldNFTs, getMostSoldSeries, getMostViewedNFTs } from 'actions/nft';
+
+import Icon from 'components/ui/Icon';
+import Select from 'components/ui/Select';
+import { FilterClearCta, FilterCtasContainer, FilterSubtitle } from 'components/layout';
+import { CustomResponse, NFTDataNominalSetState, NftType } from 'interfaces';
+import { AllSortIdsType, FiltersSortNominalSetState, SortTypesType } from 'interfaces/filters';
 import {
-  AllSortIdsType,
-  DataNominalSetState,
-  FiltersSortDefaultState,
-  FiltersSortNominalSetState,
-  SortTypesType,
   ALL_SORT_IDS,
   DATE_ASC_SORT,
   DATE_DESC_SORT,
+  FILTERS_SORT_RESET_STATE,
   MOST_LIKED_SORT,
   MOST_SOLD_SORT,
   MOST_SOLD_SERIES_SORT,
   PRICE_ASC_SORT,
-  PRICE_DESC_SORT
-} from 'components/pages/Explore';
-import Icon from 'components/ui/Icon';
-import Select from 'components/ui/Select';
-import { FilterClearCta, FilterCtasContainer, FilterSubtitle } from 'components/layout';
-import { CustomResponse, NftType } from 'interfaces';
-import { SORT_OPTION_PRICE_ASC, SORT_OPTION_PRICE_DESC, SORT_OPTION_TIMESTAMP_CREATE_ASC, SORT_OPTION_TIMESTAMP_CREATE_DESC } from 'utils/constant';
+  PRICE_DESC_SORT,
+  SORT_OPTION_PRICE_ASC,
+  SORT_OPTION_PRICE_DESC,
+  SORT_OPTION_TIMESTAMP_CREATE_ASC,
+  SORT_OPTION_TIMESTAMP_CREATE_DESC,
+} from 'utils/constant';
 
 interface ModalSortProps {
   handleClearSort: () => void;
-  setData: DataNominalSetState;
+  setData: NFTDataNominalSetState;
   setDataHasNextPage: (b: boolean) => void;
   setDataCurrentPage: (n: number) => void;
   setDataIsLoading: (b: boolean) => void;
@@ -44,7 +45,7 @@ const ModalSort = ({ handleClearSort, setData, setDataHasNextPage, setDataCurren
     } else {
       setDataIsLoading(true);
       setIsExpanded(false);
-      setSort({ ...FiltersSortDefaultState, [sort]: true });
+      setSort({ ...FILTERS_SORT_RESET_STATE, [sort]: true });
 
       try {
         let res: CustomResponse<NftType> = { data: [], hasNextPage: false, hasPreviousPage: false };

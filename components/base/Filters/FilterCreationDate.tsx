@@ -3,8 +3,9 @@ import dayjs from 'dayjs';
 import styled from 'styled-components';
 
 import { FilterTitle, FilterSubtitle } from 'components/layout';
-import { FiltersSortDefaultState, FiltersSortNominalSetState, CREATION_DATE_FILTER } from 'components/pages/Explore';
 import { Input } from 'components/ui/Input';
+import { FiltersSortNominalSetState } from 'interfaces/filters';
+import { FILTERS_SORT_RESET_STATE, CREATION_DATE_FILTER } from 'utils/constant';
 
 // TODO: Use mainnet date here
 const TESTNET_DATE = '2021-10-01';
@@ -42,9 +43,9 @@ const FilterCreationDate = ({ setFilters, value }: FilterCreationDateProps) => {
     setFilters((prevState) => {
       const [prevStartDate, prevEndDate] = prevState[CREATION_DATE_FILTER] ?? ['', ''];
       if (e.target.name === 'startDateRange')
-        return { ...FiltersSortDefaultState, [CREATION_DATE_FILTER]: [getDate('startDateRange', e.target.value, prevEndDate), prevEndDate] };
+        return { ...FILTERS_SORT_RESET_STATE, [CREATION_DATE_FILTER]: [getDate('startDateRange', e.target.value, prevEndDate), prevEndDate] };
 
-      return { ...FiltersSortDefaultState, [CREATION_DATE_FILTER]: [prevStartDate, getDate('endDateRange', e.target.value, prevStartDate)] };
+      return { ...FILTERS_SORT_RESET_STATE, [CREATION_DATE_FILTER]: [prevStartDate, getDate('endDateRange', e.target.value, prevStartDate)] };
     });
   };
 

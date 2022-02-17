@@ -3,9 +3,10 @@ import styled from 'styled-components';
 
 import { getCategories } from 'actions/category';
 import { FilterTitle, FilterSubtitle } from 'components/layout';
-import { FiltersSortDefaultState, FiltersSortNominalSetState, CATEGORIES_FILTER } from 'components/pages/Explore';
 import Button from 'components/ui/Button';
 import { CategoryType } from 'interfaces';
+import { FiltersSortNominalSetState } from 'interfaces/filters';
+import { FILTERS_SORT_RESET_STATE, CATEGORIES_FILTER } from 'utils/constant';
 import { emojiMapping } from 'utils/functions';
 
 interface FilterCategoriesProps {
@@ -20,7 +21,7 @@ const FilterCategories = ({ setFilters, value }: FilterCategoriesProps) => {
     setFilters((prevState) => {
       const prevCategoriesFiltered = prevState[CATEGORIES_FILTER];
       if (prevCategoriesFiltered === null) {
-        return { ...FiltersSortDefaultState, [CATEGORIES_FILTER]: [category] };
+        return { ...FILTERS_SORT_RESET_STATE, [CATEGORIES_FILTER]: [category] };
       }
 
       const categoryIdx = prevCategoriesFiltered.findIndex(({ code }) => category.code === code);

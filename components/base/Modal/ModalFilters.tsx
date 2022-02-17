@@ -1,29 +1,45 @@
 import React, { useState } from 'react';
 import dayjs from 'dayjs';
+import { useRouter } from 'next/router';
 import ClickAwayListener from 'react-click-away-listener';
 import styled from 'styled-components';
 
 import { getNFTs } from 'actions/nft';
 import { FilterCategories, FilterCreationDate, FilterPrice, FilterTypeSales } from 'components/base/Filters';
-import {
-  DataNominalSetState,
-  FiltersType,
-  FiltersSortNominalSetState,
-  ALL_FILTER_IDS,
-  CATEGORIES_FILTER,
-  CREATION_DATE_FILTER,
-  PRICE_FILTER,
-  SALE_TYPE_FILTER,
-} from 'components/pages/Explore';
 import { FilterClearCta, FilterCtasContainer } from 'components/layout';
 import Button from 'components/ui/Button';
 import Icon from 'components/ui/Icon';
 import Select from 'components/ui/Select';
+import { NFTDataNominalSetState } from 'interfaces';
+import { AllFilterIdsTypes, FiltersType, FiltersSortNominalSetState } from 'interfaces/filters';
+import { ALL_FILTER_IDS, CATEGORIES_FILTER, CREATION_DATE_FILTER, PRICE_FILTER, SALE_TYPE_FILTER } from 'utils/constant';
+
+// TODO: add type of sales filter when auction are implemented
+const getFilterQuery = (currentFilter: AllFilterIdsTypes, filterValues: FiltersType): string | undefined => {
+  switch (currentFilter) {
+    case PRICE_FILTER: {
+      const [minPrice, maxPrice] = filterValues[PRICE_FILTER] ?? [0, 0];
+      return `filter=${currentFilter}&minPrice=${minPrice}&maxPrice=${maxPrice}`;
+    }
+    case CREATION_DATE_FILTER: {
+      const [startDate, endDate] = filterValues[CREATION_DATE_FILTER] ?? ['', ''];
+      return [`filter=${currentFilter}`, startDate !== '' && `startDate=${startDate}`, endDate !== '' && `endDate=${endDate}`]
+        .filter((item) => item)
+        .join('&');
+    }
+    case CATEGORIES_FILTER: {
+      const categories = filterValues[CATEGORIES_FILTER] ?? [];
+      return `filter=${currentFilter}&codes=[${categories.map(({ code }) => `"${code}"`).join(',')}]`;
+    }
+    default:
+      return undefined;
+  }
+};
 
 interface ModalFiltersProps {
   filters: FiltersType;
   handleClearFilter: () => void;
-  setData: DataNominalSetState;
+  setData: NFTDataNominalSetState;
   setDataHasNextPage: (b: boolean) => void;
   setDataCurrentPage: (n: number) => void;
   setDataIsLoading: (b: boolean) => void;
@@ -41,7 +57,9 @@ const ModalFilters = ({
   setIsExpanded,
   setFilters,
 }: ModalFiltersProps) => {
-  const [currentFilter, setCurrentFilter] = useState(PRICE_FILTER);
+  const router = useRouter();
+  const [currentFilter, setCurrentFilter] = useState<AllFilterIdsTypes>(PRICE_FILTER);
+
   const categoryCodes = filters[CATEGORIES_FILTER]?.map(({ code }) => code);
   const [startDateRange, endDateRange] = filters[CREATION_DATE_FILTER] ?? ['', ''];
   const [minPrice, maxPrice] = filters[PRICE_FILTER] ?? [0, 0];
@@ -49,6 +67,7 @@ const ModalFilters = ({
   const isValidData = Number(minPrice) >= 0 && Number(minPrice) < 1e16 && Number(maxPrice) >= 0 && Number(maxPrice) < 1e16;
 
   const submit = async () => {
+    const query = getFilterQuery(currentFilter, filters);
     setDataIsLoading(true);
     setIsExpanded(false);
     try {
@@ -63,6 +82,7 @@ const ModalFilters = ({
         data: [],
         hasNextPage: false,
       };
+      if (query !== undefined) router.push({ pathname: router.pathname, query }, undefined, { shallow: true });
       setDataCurrentPage(1);
       setDataHasNextPage(hasNextPage ?? false);
       setData(data);

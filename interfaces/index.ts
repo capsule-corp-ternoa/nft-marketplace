@@ -114,3 +114,5 @@ export type CustomResponse<DataType> = {
   hasPreviousPage: boolean;
   data: DataType[]
 }
+
+export type NFTDataNominalSetState = React.Dispatch<React.SetStateAction<NftType[]>>;

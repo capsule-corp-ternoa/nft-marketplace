@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
+import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
 import { getNFTs, getMostLikedNFTs, getMostSoldNFTs, getMostSoldSeries, getMostViewedNFTs } from 'actions/nft';
@@ -10,12 +11,9 @@ import Chip from 'components/ui/Chip';
 import { Container, Title, Wrapper } from 'components/layout';
 import { EXPLORE_TAB } from 'components/pages/Profile';
 import { CustomResponse, NftType } from 'interfaces';
-import { SORT_OPTION_PRICE_ASC, SORT_OPTION_PRICE_DESC, SORT_OPTION_TIMESTAMP_CREATE_ASC, SORT_OPTION_TIMESTAMP_CREATE_DESC } from 'utils/constant';
-import { emojiMapping } from 'utils/functions';
-import { formatPrice } from 'utils/strings';
-
+import { AllFilterIdsTypes, AllSortIdsType, FiltersType, SortTypesType } from 'interfaces/filters';
 import {
-  FiltersSortDefaultState,
+  FILTERS_SORT_RESET_STATE,
   CATEGORIES_FILTER,
   CREATION_DATE_FILTER,
   PRICE_FILTER,
@@ -29,8 +27,13 @@ import {
   MOST_VIEWED_SORT,
   PRICE_ASC_SORT,
   PRICE_DESC_SORT,
-} from './constants';
-import { AllFilterIdsTypes, AllSortIdsType, FiltersType, SortTypesType } from './interfaces';
+  SORT_OPTION_PRICE_ASC,
+  SORT_OPTION_PRICE_DESC,
+  SORT_OPTION_TIMESTAMP_CREATE_ASC,
+  SORT_OPTION_TIMESTAMP_CREATE_DESC,
+} from 'utils/constant';
+import { emojiMapping } from 'utils/functions';
+import { decodeFilterQuery, formatPrice } from 'utils/strings';
 
 const filterSortPromiseMapping = (filtersSort: FiltersType & SortTypesType, currentPage: number): Promise<CustomResponse<NftType>> => {
   const categoryCodes = filtersSort[CATEGORIES_FILTER]?.map(({ code }) => code);
@@ -83,24 +86,21 @@ const getFilterValueWording = (currentFilter: AllFilterIdsTypes | undefined, fil
         .join(' - ');
     }
     case CATEGORIES_FILTER: {
-      try {
-        const categories = filtersSort[CATEGORIES_FILTER] ?? [];
-        return (
-          categories
-            // Categories with related emoji are displayed first
-            .sort((a, b) => {
-              const aBit = emojiMapping(a.code) === undefined ? 1 : 0;
-              const bBit = emojiMapping(b.code) === undefined ? 1 : 0;
-              return aBit - bBit;
-            })
-            .map(({ code, name }) => `${emojiMapping(code)} ${name}`)
-            .join(' - ')
-        );
-      } catch (error) {
-        console.log(error);
-        return undefined;
-      }
+      const categories = filtersSort[CATEGORIES_FILTER] ?? [];
+      return (
+        categories
+          // Categories with related emoji are displayed first
+          .sort((a, b) => {
+            const aBit = emojiMapping(a.code) === undefined ? 1 : 0;
+            const bBit = emojiMapping(b.code) === undefined ? 1 : 0;
+            return aBit - bBit;
+          })
+          .map(({ code, name }) => `${emojiMapping(code)} ${name}`)
+          .join(' - ')
+      );
     }
+    default:
+      return undefined;
   }
 };
 
@@ -111,7 +111,8 @@ export interface ExploreProps {
 }
 
 const Explore: React.FC<ExploreProps> = ({ NFTs, hasNextPage, totalCount }) => {
-  const [filtersSort, setFiltersSort] = useState<FiltersType & SortTypesType>(FiltersSortDefaultState);
+  const router = useRouter();
+  const [filtersSort, setFiltersSort] = useState<FiltersType & SortTypesType>({ ...FILTERS_SORT_RESET_STATE, ...decodeFilterQuery(router.query) });
   const [currentPage, setCurrentPage] = useState(1);
   const [dataNfts, setDataNfts] = useState(NFTs);
   const [dataNftsHasNextPage, setDataNftsHasNextPage] = useState(hasNextPage);
@@ -151,7 +152,7 @@ const Explore: React.FC<ExploreProps> = ({ NFTs, hasNextPage, totalCount }) => {
   };
 
   const handleClear = async () => {
-    setFiltersSort(FiltersSortDefaultState);
+    setFiltersSort(FILTERS_SORT_RESET_STATE);
     setIsLoading(true);
     setIsModalFiltersExpanded(false);
     setIsModalSortExpanded(false);
@@ -166,6 +167,15 @@ const Explore: React.FC<ExploreProps> = ({ NFTs, hasNextPage, totalCount }) => {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    const getQueryFilters = async () => {
+      const newFilter = await decodeFilterQuery(router.query);
+      setFiltersSort((prevState) => ({ ...prevState, ...newFilter }));
+    };
+
+    if (router.query) getQueryFilters();
+  }, []);
 
   return (
     <>
@@ -192,7 +202,7 @@ const Explore: React.FC<ExploreProps> = ({ NFTs, hasNextPage, totalCount }) => {
               <Button color="primary500" icon="filters" onClick={toggleModalFiltersExpanded} size="medium" text="Filters" variant="contained" />
             </SFiltersButtonContainer>
           </STopContainer>
-          {currentFilterValueWording !== undefined && (
+          {currentFilterValueWording !== undefined && currentFilterValueWording !== '' && isModalFiltersExpanded === false && (
             <SCurrentFiltersWrapper>
               <SCurrentFilterLabel>
                 Filtered<SCurrentSortLabel>{currentFilter}</SCurrentSortLabel>:

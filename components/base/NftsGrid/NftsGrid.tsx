@@ -5,7 +5,6 @@ import NftCard from 'components/base/NftCard';
 import NoNFTComponent from 'components/base/NoNFTComponent';
 import Button from 'components/ui/Button';
 import { Loader } from 'components/ui/Icon';
-import { NftType } from 'interfaces';
 import {
   TabsIdType,
   NFT_OWNED_TAB,
@@ -13,8 +12,9 @@ import {
   NFT_NOT_FOR_SALE_TAB,
   NFT_CREATED_TAB,
   NFT_LIKED_TAB,
-  EXPLORE_TAB,
 } from 'components/pages/Profile';
+import { NftType } from 'interfaces';
+
 import { LIKE_ACTION_TYPE } from 'utils/profile/constants';
 
 interface Props {
@@ -51,7 +51,6 @@ const NftsGrid = ({
       totalNft,
       totalOwnedByRequestingUser,
       totalOwnedListedInMarketplaceByRequestingUser,
-      totalListedInMarketplace,
     } = NFT;
     switch (tabId) {
       case NFT_LIKED_TAB:
@@ -64,11 +63,10 @@ const NftsGrid = ({
           : 0;
       case NFT_OWNED_TAB:
         return totalOwnedByRequestingUser ?? 1;
-      case EXPLORE_TAB:
-        return totalListedInMarketplace;
       case NFT_CREATED_TAB:
-      default:
         return totalNft ?? 1;
+      default:
+        return undefined;
     }
   };
 

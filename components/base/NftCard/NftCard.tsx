@@ -7,11 +7,12 @@ import { likeNFT, unlikeNFT } from 'actions/nft';
 import { Picture } from 'components/base/Avatar';
 import Button from 'components/ui/Button';
 import Chip from 'components/ui/Chip';
+import { AllFilterIdsTypes } from 'interfaces/filters';
 import { NftType } from 'interfaces/index';
 import { appSetUserLikedNFTs } from 'redux/app';
 import { useApp } from 'redux/hooks';
 import { fadeIn, ySlide } from 'style/animations';
-import { PRICE_FILTER } from 'utils/constant';
+import { ALL_FILTER_IDS, PRICE_FILTER } from 'utils/constant';
 import { LIKE_ACTION, LIKE_ACTION_TYPE, UNLIKE_ACTION } from 'utils/profile/constants';
 import { computeCaps } from 'utils/strings';
 
@@ -50,7 +51,7 @@ const NftCard: React.FC<NftCardProps> = ({
   const { user } = useApp();
   const dispatch = useDispatch();
   const router = useRouter();
-  const { creator, creatorData, id: nftId, price, properties, serieId, smallestPrice, totalListedInMarketplace, totalListedNft, totalNft } = item;
+  const { creator, creatorData, id: nftId, price, properties, serieId, smallestPrice, totalFiltered, totalListedInMarketplace, totalListedNft, totalNft } = item;
 
   const [isHovering, setIsHovering] = useState(false);
   const [isLiked, setIsLiked] = useState(
@@ -62,12 +63,13 @@ const NftCard: React.FC<NftCardProps> = ({
   const isCreator = creator !== undefined && creator !== '' && creatorData !== undefined;
   const isUserLogged = user !== undefined && user !== null;
 
+  const isFilterActive = typeof (router.query.filter) === 'string' && ALL_FILTER_IDS.includes(router.query.filter as AllFilterIdsTypes);
   const isPriceFilterActive = router.query.filter === PRICE_FILTER && (Number(router.query.minPrice) > 0 || Number(router.query.maxPrice) > 0);
   const isPrice = Number( isPriceFilterActive ? price : smallestPrice) > 0;
   const isSecret = properties?.cryptedMedia.ipfs !== properties?.preview.ipfs;
 
   const priceWording = isPrice ? `${computeCaps(Number(isPriceFilterActive ? price : smallestPrice))} CAPS` : undefined;
-  const defaultQuantityAvailable = totalListedInMarketplace ?? totalListedNft ?? 1;
+  const defaultQuantityAvailable = (isFilterActive && totalFiltered) || (totalListedInMarketplace ?? totalListedNft ?? 1);
   const quantityAvailable = quantity ?? defaultQuantityAvailable;
 
   // Filter gradients flags

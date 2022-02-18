@@ -46,6 +46,7 @@ export type NftType = {
   itemTotal: string;
   totalNft?: number;
   totalListedNft?: number;
+  totalFiltered?: number | null;
   totalListedInMarketplace?: number;
   totalOwnedByRequestingUser?: number;
   totalOwnedListedByRequestingUser?: number;

@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
-import { getNFTs } from 'actions/nft';
+import { getNFTs, getTotalOnSaleOnMarketplace } from 'actions/nft';
 import { ModalFilters, ModalSort } from 'components/base/Modal';
 import NftsGrid from 'components/base/NftsGrid';
 import Button from 'components/ui/Button';
@@ -42,8 +42,8 @@ const getFilterValueWording = (currentFilter: AllFilterIdsTypes | undefined, fil
     case CREATION_DATE_FILTER: {
       const [startDate, endDate] = filtersSort[CREATION_DATE_FILTER] ?? ['', ''];
       return [
-        startDate !== '' && `from: ${dayjs(new Date(startDate)).format('MMM D, YYYY')}`,
-        endDate !== '' && `to: ${dayjs(new Date(endDate)).format('MMM D, YYYY')}`,
+        startDate !== '' && `after: ${dayjs(new Date(startDate)).format('MMM D, YYYY')}`,
+        endDate !== '' && `before: ${dayjs(new Date(endDate)).format('MMM D, YYYY')}`,
       ]
         .filter((item) => item)
         .join(' - ');
@@ -79,7 +79,7 @@ const Explore: React.FC<ExploreProps> = ({ NFTs, hasNextPage, totalCount }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [dataNfts, setDataNfts] = useState(NFTs);
   const [dataNftsHasNextPage, setDataNftsHasNextPage] = useState(hasNextPage);
-  const [dataTotalCount] = useState(totalCount ?? 0);
+  const [dataTotalCount, setDataTotalCount] = useState(totalCount ?? 0);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadMoreLoading, setIsLoadMoreLoading] = useState(false);
   const [isModalFiltersExpanded, setIsModalFiltersExpanded] = useState(false);
@@ -121,6 +121,10 @@ const Explore: React.FC<ExploreProps> = ({ NFTs, hasNextPage, totalCount }) => {
     setIsModalSortExpanded(false);
     try {
       const { data, hasNextPage } = (await getNFTs('1', undefined, { listed: true }, undefined, true)) ?? { data: [], hasNextPage: false };
+      const newTotalCount = (await getTotalOnSaleOnMarketplace()) ?? 0;
+
+      router.push({ pathname: router.pathname, query: undefined }, undefined, { shallow: true });
+      setDataTotalCount(newTotalCount);
       setCurrentPage(1);
       setDataNftsHasNextPage(hasNextPage ?? false);
       setDataNfts(data);
@@ -151,10 +155,7 @@ const Explore: React.FC<ExploreProps> = ({ NFTs, hasNextPage, totalCount }) => {
           <STopContainer>
             <STitleContainer>
               <STitle>Explore</STitle>
-              {/* TODO: add totalCount based on filters, remove filtersSort condition */}
-              {dataTotalCount > 0 && !Object.values(filtersSort).some((item) => item !== null) && (
-                <STotalInsight>{`${dataTotalCount} NFTs to discover`}</STotalInsight>
-              )}
+              {!isLoading && dataTotalCount > 0 && <STotalInsight>{`${dataTotalCount} NFTs to discover`}</STotalInsight>}
             </STitleContainer>
             <SFiltersButtonContainer>
               <SSortButton onClick={toggleModalSortExpanded}>
@@ -216,6 +217,7 @@ const Explore: React.FC<ExploreProps> = ({ NFTs, hasNextPage, totalCount }) => {
           setDataHasNextPage={setDataNftsHasNextPage}
           setDataCurrentPage={setCurrentPage}
           setDataIsLoading={setIsLoading}
+          setDataTotalCount={setDataTotalCount}
           setIsExpanded={setIsModalFiltersExpanded}
           setFilters={setFiltersSort}
         />

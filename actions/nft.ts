@@ -7,8 +7,6 @@ import Cookies from 'js-cookie';
 type FilterOptionsType = {
   ids?: string[]
   idsToExclude?: string[]
-  idsCategories?: string[]
-  idsToExcludeCategories?: string[]
   liked?: string
   series?: string[]
   marketplaceId?: number
@@ -164,6 +162,22 @@ export const getTotalOnSaleOnMarketplace = async (marketplaceId: string=MARKETPL
   let result = await res.json()
   return result;
 }
+
+type FilteredNFTsOptionsType = {
+  categories?: string[]
+  listed?: boolean
+  marketplaceId?: number
+  priceStartRange?: number
+  priceEndRange?: number
+  timestampCreateStartRange?: Date,
+  timestampCreateEndRange?: Date,
+};
+export const getTotalFilteredNFTsOnMarketplace = async (filterOptions: FilteredNFTsOptionsType = {}) => {
+  const res = await fetch(`${NODE_API_URL}/api/nfts/total-filtered/?filter=${JSON.stringify({ ...filterOptions, marketplaceId: Number(MARKETPLACE_ID) })}`)
+  if (!res.ok) throw new Error('error fetching NFT total');
+  let result = await res.json()
+  return result;
+};
 
 export const likeNFT = async (walletId: string, nftId: string, serieId: string) => {
   const cookie = Cookies.get("token")

@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import ClickAwayListener from 'react-click-away-listener';
 import styled from 'styled-components';
 
-import { getNFTs } from 'actions/nft';
+import { getNFTs, getTotalFilteredNFTsOnMarketplace } from 'actions/nft';
 import { FilterCategories, FilterCreationDate, FilterPrice, FilterTypeSales } from 'components/base/Filters';
 import { FilterClearCta, FilterCtasContainer } from 'components/layout';
 import Button from 'components/ui/Button';
@@ -23,9 +23,7 @@ const getFilterQuery = (currentFilter: AllFilterIdsTypes, filterValues: FiltersT
     }
     case CREATION_DATE_FILTER: {
       const [startDate, endDate] = filterValues[CREATION_DATE_FILTER] ?? ['', ''];
-      return [`filter=${currentFilter}`, startDate !== '' && `startDate=${startDate}`, endDate !== '' && `endDate=${endDate}`]
-        .filter((item) => item)
-        .join('&');
+      return [`filter=${currentFilter}`, startDate !== '' && `startDate=${startDate}`, endDate !== '' && `endDate=${endDate}`].filter((item) => item).join('&');
     }
     case CATEGORIES_FILTER: {
       const categories = filterValues[CATEGORIES_FILTER] ?? [];
@@ -43,6 +41,7 @@ interface ModalFiltersProps {
   setDataHasNextPage: (b: boolean) => void;
   setDataCurrentPage: (n: number) => void;
   setDataIsLoading: (b: boolean) => void;
+  setDataTotalCount: (n: number) => void;
   setIsExpanded: (b: boolean) => void;
   setFilters: FiltersSortNominalSetState;
 }
@@ -54,6 +53,7 @@ const ModalFilters = ({
   setDataHasNextPage,
   setDataCurrentPage,
   setDataIsLoading,
+  setDataTotalCount,
   setIsExpanded,
   setFilters,
 }: ModalFiltersProps) => {
@@ -73,18 +73,23 @@ const ModalFilters = ({
     setDataIsLoading(true);
     setIsExpanded(false);
     try {
-      const { data, hasNextPage } = (await getNFTs('1', undefined, {
+      const filterOptions = {
         categories: categoryCodes !== undefined && categoryCodes.length > 0 ? categoryCodes : undefined,
         listed: true,
         priceStartRange: minPrice > 0 ? minPrice : undefined,
         priceEndRange: maxPrice > 0 ? maxPrice : undefined,
         timestampCreateStartRange: dayjs(new Date(startDateRange)).isValid() ? new Date(startDateRange) : undefined,
         timestampCreateEndRange: dayjs(new Date(endDateRange)).isValid() ? new Date(endDateRange) : undefined,
-      })) ?? {
+      };
+
+      const { data, hasNextPage } = (await getNFTs('1', undefined, filterOptions)) ?? {
         data: [],
         hasNextPage: false,
       };
+      const newTotalCount = (await getTotalFilteredNFTsOnMarketplace(filterOptions)) ?? 0;
+
       if (query !== undefined) router.push({ pathname: router.pathname, query }, undefined, { shallow: true });
+      setDataTotalCount(newTotalCount);
       setDataCurrentPage(1);
       setDataHasNextPage(hasNextPage ?? false);
       setData(data);

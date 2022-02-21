@@ -34,16 +34,22 @@ const FilterCategories = ({ setFilters, value }: FilterCategoriesProps) => {
   };
 
   useEffect(() => {
+    let shouldUpdate = true;
     const loadCategories = async () => {
       try {
         const categories = await getCategories();
-        setCategories(categories);
+        if (shouldUpdate) {
+          setCategories(categories);
+        }
       } catch (error) {
         console.log(error);
       }
     };
 
     loadCategories();
+    return () => {
+      shouldUpdate = false;
+  }
   }, []);
 
   return (

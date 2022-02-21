@@ -208,6 +208,11 @@ const SSortContainer = styled.div`
   gap: 1.6rem;
   margin-top: 1.6rem;
 
+  ul {
+    max-height: 21rem;
+    overflow-y: scroll;
+  }
+
   li {
     color: ${({ theme }) => theme.colors.contrast};
   }

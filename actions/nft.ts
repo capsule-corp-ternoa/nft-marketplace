@@ -156,7 +156,7 @@ export const getSeriesData = async (seriesId: string, marketplaceId: string=MARK
   return result;
 }
 
-export const getTotalOnSaleOnMarketplace = async (marketplaceId: string=MARKETPLACE_ID) => {
+export const getTotalOnSaleOnMarketplace = async (marketplaceId: string=MARKETPLACE_ID): Promise<number> => {
   const res = await fetch(`${NODE_API_URL}/api/nfts/total-on-sale/?marketplaceId=${marketplaceId}`)
   if (!res.ok) throw new Error('error fetching NFT total');
   let result = await res.json()
@@ -172,7 +172,7 @@ type FilteredNFTsOptionsType = {
   timestampCreateStartRange?: Date,
   timestampCreateEndRange?: Date,
 };
-export const getTotalFilteredNFTsOnMarketplace = async (filterOptions: FilteredNFTsOptionsType = {}) => {
+export const getTotalFilteredNFTsOnMarketplace = async (filterOptions: FilteredNFTsOptionsType = {}): Promise<number> => {
   const res = await fetch(`${NODE_API_URL}/api/nfts/total-filtered/?filter=${JSON.stringify({ ...filterOptions, marketplaceId: Number(MARKETPLACE_ID) })}`)
   if (!res.ok) throw new Error('error fetching NFT total');
   let result = await res.json()

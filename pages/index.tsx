@@ -12,7 +12,7 @@ import arrayShuffle from 'array-shuffle';
 
 import { getCapsValue } from 'actions/caps';
 import { getUser, getMostFollowedUsers, getTopSellersUsers } from 'actions/user';
-import { getNFTs, getMostLikedNFTs, getMostSoldSeries } from 'actions/nft';
+import { getMostLikedNFTs, getMostSoldSeries, getTotalOnSaleOnMarketplace } from 'actions/nft';
 import { NftType, UserType } from 'interfaces';
 import { appSetUser } from 'redux/app';
 import { useMarketplaceData } from 'redux/hooks';
@@ -89,22 +89,13 @@ const LandingPage = ({
 };
 export async function getServerSideProps() {
   let mostFollowedUsers: UserType[] = [],
-    regularNfts: NftType[] = [],
     bestSellingNfts: NftType[] = [],
     topSellersUsers: UserType[] = [],
     popularNfts: NftType[] = [],
+    totalCountNFT: number = 0,
     capsDollarValue: number | null = null;
   const promises = [];
-  promises.push(
-    new Promise<void>((success) => {
-      getNFTs('1', '19', { listed: true }, undefined, true)
-        .then((result) => {
-          regularNfts = result.data;
-          success();
-        })
-        .catch(error => console.log(error));
-    })
-  );
+
   promises.push(
     new Promise<void>((success) => {
       getMostFollowedUsers()
@@ -148,16 +139,27 @@ export async function getServerSideProps() {
   promises.push(
     new Promise<void>((success) => {
       getCapsValue()
-        .then((_value) => {
-          capsDollarValue = _value;
+        .then((value) => {
+          capsDollarValue = value;
+          success();
+        })
+        .catch(error => console.log(error));
+    })
+  );
+  promises.push(
+    new Promise<void>((success) => {
+      getTotalOnSaleOnMarketplace()
+        .then((value) => {
+          totalCountNFT = value;
           success();
         })
         .catch(error => console.log(error));
     })
   );
   await Promise.all(promises);
-  let heroNFTs = popularNfts.length > 3 ? arrayShuffle(popularNfts).slice(0, 3) : popularNfts; // TODO: Fetch dedicated data when bid is implemented
-  const totalCountNFT = regularNfts.length;
+  
+  const heroNFTs = popularNfts.length > 3 ? arrayShuffle(popularNfts).slice(0, 3) : popularNfts; // TODO: Fetch dedicated data when bid is implemented
+
   return {
     props: {
       capsDollarValue,

@@ -11,7 +11,7 @@ import Landing from 'components/pages/Landing';
 import arrayShuffle from 'array-shuffle';
 
 import { getCapsValue } from 'actions/caps';
-import { getUser, getUsers } from 'actions/user';
+import { getUser, getMostFollowedUsers } from 'actions/user';
 import { getNFTs, getMostLikedNFTs, getMostSoldSeries } from 'actions/nft';
 import { NftType, UserType } from 'interfaces';
 import { appSetUser } from 'redux/app';
@@ -19,18 +19,18 @@ import { useMarketplaceData } from 'redux/hooks';
 import { encryptCookie, decryptCookie } from 'utils/cookie';
 
 export interface LandingProps {
-  users: UserType[];
   capsDollarValue?: number;
   heroNFTs: NftType[];
+  mostFollowedUsers: UserType[];
   popularNfts: NftType[];
   bestSellingNfts: NftType[];
   NFTCreators: NftType[];
   totalCountNFT: number;
 }
 const LandingPage = ({
-  users,
   capsDollarValue,
   heroNFTs,
+  mostFollowedUsers,
   popularNfts,
   bestSellingNfts,
   NFTCreators,
@@ -74,9 +74,9 @@ const LandingPage = ({
       <BetaBanner />
       <MainHeader />
       <Landing
-        users={users}
         capsDollarValue={capsDollarValue}
         heroNFTs={heroNFTs}
+        mostFollowedUsers={mostFollowedUsers}
         popularNfts={popularNfts}
         bestSellingNfts={bestSellingNfts}
         NFTCreators={NFTCreators}
@@ -88,7 +88,7 @@ const LandingPage = ({
   );
 };
 export async function getServerSideProps() {
-  let users: UserType[] = [],
+  let mostFollowedUsers: UserType[] = [],
     regularNfts: NftType[] = [],
     bestSellingNfts: NftType[] = [],
     popularNfts: NftType[] = [],
@@ -96,9 +96,9 @@ export async function getServerSideProps() {
   const promises = [];
   promises.push(
     new Promise<void>((success) => {
-      getUsers(undefined, true)
+      getNFTs('1', '19', { listed: true }, undefined, true)
         .then((result) => {
-          users = result.data;
+          regularNfts = result.data;
           success();
         })
         .catch(error => console.log(error));
@@ -106,9 +106,9 @@ export async function getServerSideProps() {
   );
   promises.push(
     new Promise<void>((success) => {
-      getNFTs('1', '19', { listed: true }, undefined, true)
+      getMostFollowedUsers()
         .then((result) => {
-          regularNfts = result.data;
+          mostFollowedUsers = result.data;
           success();
         })
         .catch(error => console.log(error));
@@ -145,15 +145,14 @@ export async function getServerSideProps() {
     })
   );
   await Promise.all(promises);
-  users = arrayShuffle(users);
   let heroNFTs = popularNfts.length > 3 ? arrayShuffle(popularNfts).slice(0, 3) : popularNfts; // TODO: Fetch dedicated data
   let NFTCreators = arrayShuffle((regularNfts || []).slice(16, 19));
   let totalCountNFT = (regularNfts || []).length;
   return {
     props: {
-      users,
       capsDollarValue,
       heroNFTs,
+      mostFollowedUsers,
       popularNfts,
       bestSellingNfts,
       NFTCreators,

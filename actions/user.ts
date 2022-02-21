@@ -68,3 +68,11 @@ export const reviewRequested = async (walletId: string) => {
     throw new Error("Unvalid authentication");
   }  
 };
+
+export const getMostFollowedUsers = async (page: string="1", limit: string=DEFAULT_LIMIT_PAGINATION): Promise<CustomResponse<UserType>> => {
+  const paginationOptions = { page, limit };
+  const res = await fetch(`${NODE_API_URL}/api/users/most-followed/?pagination=${JSON.stringify(paginationOptions)}`);
+  if (!res.ok) throw new Error('error fetching most followed users');
+  let result: CustomResponse<UserType> = await res.json()
+  return result;
+}

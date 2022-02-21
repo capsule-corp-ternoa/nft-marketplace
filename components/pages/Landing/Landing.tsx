@@ -4,11 +4,9 @@ import styled from 'styled-components';
 
 import { AVATAR_VARIANT_MOSAIC, Picture } from 'components/base/Avatar';
 import NoNFTComponent, { NO_NFT_VARIANT_SOLD_OUT } from 'components/base/NoNFTComponent';
-import Button from 'components/ui/Button';
 import { Container, Wrapper } from 'components/layout';
 import { UserType, NftType } from 'interfaces/index';
 
-import ArtCreators from './components/ArtCreators';
 import Hero from './components/Hero';
 import { HERO_MODE_SELL } from './constants';
 
@@ -23,11 +21,10 @@ export interface LandingProps {
   popularNfts: NftType[];
   bestSellingNfts: NftType[];
   topSellersUsers: UserType[];
-  NFTCreators: NftType[];
   totalCountNFT: number;
 }
 
-const Landing = ({ capsDollarValue, heroNFTs, mostFollowedUsers, popularNfts, bestSellingNfts, topSellersUsers, NFTCreators, totalCountNFT }: LandingProps) => (
+const Landing = ({ capsDollarValue, heroNFTs, mostFollowedUsers, popularNfts, bestSellingNfts, topSellersUsers, totalCountNFT }: LandingProps) => (
   <Container>
     <Wrapper>
       {heroNFTs?.length === 3 && <Hero capsDollarValue={capsDollarValue} NFTs={heroNFTs} mode={HERO_MODE_SELL} />}
@@ -76,22 +73,8 @@ const Landing = ({ capsDollarValue, heroNFTs, mostFollowedUsers, popularNfts, be
         </SUsersContainer>
       </Wrapper>
     )}
-    {NFTCreators?.length > 0 && (
-      <Wrapper>
-        <ArtCreators NFTs={NFTCreators} />
-        <SButtonContainer>
-          <Button color="primary500" href="/explore" size="medium" text="See more" variant="outlined" />
-        </SButtonContainer>
-      </Wrapper>
-    )}
   </Container>
 );
-
-const SButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 4rem;
-`;
 
 const STitle = styled.h3`
   font-family: ${({ theme }) => theme.fonts.bold};

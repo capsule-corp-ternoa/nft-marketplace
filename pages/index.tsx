@@ -25,7 +25,6 @@ export interface LandingProps {
   popularNfts: NftType[];
   bestSellingNfts: NftType[];
   topSellersUsers: UserType[];
-  NFTCreators: NftType[];
   totalCountNFT: number;
 }
 const LandingPage = ({
@@ -35,7 +34,6 @@ const LandingPage = ({
   popularNfts,
   bestSellingNfts,
   topSellersUsers,
-  NFTCreators,
   totalCountNFT,
 }: LandingProps) => {
   const dispatch = useDispatch();
@@ -82,7 +80,6 @@ const LandingPage = ({
         popularNfts={popularNfts}
         bestSellingNfts={bestSellingNfts}
         topSellersUsers={topSellersUsers}
-        NFTCreators={NFTCreators}
         totalCountNFT={totalCountNFT}
       />
       <Footer />
@@ -159,9 +156,8 @@ export async function getServerSideProps() {
     })
   );
   await Promise.all(promises);
-  let heroNFTs = popularNfts.length > 3 ? arrayShuffle(popularNfts).slice(0, 3) : popularNfts; // TODO: Fetch dedicated data
-  let NFTCreators = arrayShuffle((regularNfts || []).slice(16, 19));
-  let totalCountNFT = (regularNfts || []).length;
+  let heroNFTs = popularNfts.length > 3 ? arrayShuffle(popularNfts).slice(0, 3) : popularNfts; // TODO: Fetch dedicated data when bid is implemented
+  const totalCountNFT = regularNfts.length;
   return {
     props: {
       capsDollarValue,
@@ -170,7 +166,6 @@ export async function getServerSideProps() {
       popularNfts,
       bestSellingNfts,
       topSellersUsers,
-      NFTCreators,
       totalCountNFT,
     },
   };

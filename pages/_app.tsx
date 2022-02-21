@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled, { ThemeProvider } from 'styled-components';
 import App from 'next/app';
-import Head from 'next/head';
 import Router, { useRouter } from 'next/router';
+import Script from 'next/script';
 import NProgress from 'nprogress';
 import type { AppProps } from 'next/app';
 import Cookies from 'js-cookie';
@@ -55,25 +55,17 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Head>
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-2ZD3ZDVEZD"></script>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){window.dataLayer.push(arguments)}
-        gtag("js", new Date());
-        gtag("config", "G-2ZD3ZDVEZD");
-    `,
-          }}
-        ></script>
-        {/* Tell the browser to never restore the scroll position on load */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `history.scrollRestoration = "manual"`,
-          }}
-        />
-      </Head>
+      <Script async src="https://www.googletagmanager.com/gtag/js?id=G-2ZD3ZDVEZD"></Script>
+      <Script
+        dangerouslySetInnerHTML={{
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){window.dataLayer.push(arguments)}
+            gtag("js", new Date());
+            gtag("config", "G-2ZD3ZDVEZD");
+        `,
+        }}
+      ></Script>
       <GlobalStyle />
 
       {!cookiesConsent && !hide && (

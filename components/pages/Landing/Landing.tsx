@@ -22,11 +22,12 @@ export interface LandingProps {
   mostFollowedUsers: UserType[];
   popularNfts: NftType[];
   bestSellingNfts: NftType[];
+  topSellersUsers: UserType[];
   NFTCreators: NftType[];
   totalCountNFT: number;
 }
 
-const Landing = ({ capsDollarValue, heroNFTs, mostFollowedUsers, popularNfts, bestSellingNfts, NFTCreators, totalCountNFT }: LandingProps) => (
+const Landing = ({ capsDollarValue, heroNFTs, mostFollowedUsers, popularNfts, bestSellingNfts, topSellersUsers, NFTCreators, totalCountNFT }: LandingProps) => (
   <Container>
     <Wrapper>
       {heroNFTs?.length === 3 && <Hero capsDollarValue={capsDollarValue} NFTs={heroNFTs} mode={HERO_MODE_SELL} />}
@@ -63,6 +64,16 @@ const Landing = ({ capsDollarValue, heroNFTs, mostFollowedUsers, popularNfts, be
     {bestSellingNfts.length > 5 && (
       <Wrapper>
         <Showcase category="Best sellers" NFTs={bestSellingNfts.slice(0, 6)} />
+      </Wrapper>
+    )}
+    {topSellersUsers.length > 11 && (
+      <Wrapper>
+        <STitle>Top sellers</STitle>
+        <SUsersContainer>
+          {topSellersUsers.map(({ _id, name, picture, verified, walletId }) => (
+            <SPicture key={_id} isClickable isTooltip isVerified={verified} name={name} picture={picture} variant={AVATAR_VARIANT_MOSAIC} walletId={walletId} />
+          ))}
+        </SUsersContainer>
       </Wrapper>
     )}
     {NFTCreators?.length > 0 && (

@@ -11,7 +11,7 @@ import Landing from 'components/pages/Landing';
 import arrayShuffle from 'array-shuffle';
 
 import { getCapsValue } from 'actions/caps';
-import { getUser, getMostFollowedUsers } from 'actions/user';
+import { getUser, getMostFollowedUsers, getTopSellersUsers } from 'actions/user';
 import { getNFTs, getMostLikedNFTs, getMostSoldSeries } from 'actions/nft';
 import { NftType, UserType } from 'interfaces';
 import { appSetUser } from 'redux/app';
@@ -24,6 +24,7 @@ export interface LandingProps {
   mostFollowedUsers: UserType[];
   popularNfts: NftType[];
   bestSellingNfts: NftType[];
+  topSellersUsers: UserType[];
   NFTCreators: NftType[];
   totalCountNFT: number;
 }
@@ -33,6 +34,7 @@ const LandingPage = ({
   mostFollowedUsers,
   popularNfts,
   bestSellingNfts,
+  topSellersUsers,
   NFTCreators,
   totalCountNFT,
 }: LandingProps) => {
@@ -79,6 +81,7 @@ const LandingPage = ({
         mostFollowedUsers={mostFollowedUsers}
         popularNfts={popularNfts}
         bestSellingNfts={bestSellingNfts}
+        topSellersUsers={topSellersUsers}
         NFTCreators={NFTCreators}
         totalCountNFT={totalCountNFT}
       />
@@ -91,6 +94,7 @@ export async function getServerSideProps() {
   let mostFollowedUsers: UserType[] = [],
     regularNfts: NftType[] = [],
     bestSellingNfts: NftType[] = [],
+    topSellersUsers: UserType[] = [],
     popularNfts: NftType[] = [],
     capsDollarValue: number | null = null;
   const promises = [];
@@ -109,6 +113,16 @@ export async function getServerSideProps() {
       getMostFollowedUsers()
         .then((result) => {
           mostFollowedUsers = result.data;
+          success();
+        })
+        .catch(error => console.log(error));
+    })
+  );
+  promises.push(
+    new Promise<void>((success) => {
+      getTopSellersUsers()
+        .then((result) => {
+          topSellersUsers = result.data;
           success();
         })
         .catch(error => console.log(error));
@@ -155,6 +169,7 @@ export async function getServerSideProps() {
       mostFollowedUsers,
       popularNfts,
       bestSellingNfts,
+      topSellersUsers,
       NFTCreators,
       totalCountNFT,
     },

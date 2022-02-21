@@ -14,11 +14,6 @@ interface FilterPriceProps {
 const FilterPrice = ({ setFilters, value }: FilterPriceProps) => {
   const [minPrice, maxPrice] = value ?? [0, 0];
 
-  const validateValue = (value?: number) => {
-    if (value === undefined) return true;
-    return Number(value) >= 0 && Number(value) < 1e16;
-  };
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFilters((prevState) => {
       const [prevMin, prevMax] = prevState[PRICE_FILTER] ?? [0, 0];
@@ -34,7 +29,8 @@ const FilterPrice = ({ setFilters, value }: FilterPriceProps) => {
       <SFilterSubtitle>Filter your search according to your budget</SFilterSubtitle>
       <SPriceContainer>
         <Input
-          isError={!validateValue(minPrice)}
+          isError={Number(minPrice) >= 1e16}
+          min="0"
           name="startPrice"
           onChange={handleChange}
           placeholder={minPrice > 0 ? `${minPrice}` : 'Minimum price'}
@@ -42,7 +38,8 @@ const FilterPrice = ({ setFilters, value }: FilterPriceProps) => {
         />
         <SSeparator />
         <Input
-          isError={!validateValue(maxPrice)}
+          isError={Number(maxPrice) >= 1e16}
+          min="0"
           name="endPrice"
           onChange={handleChange}
           placeholder={maxPrice > 0 ? `${maxPrice}` : 'Maximum price'}

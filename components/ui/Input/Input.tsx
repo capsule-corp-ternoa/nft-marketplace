@@ -62,6 +62,8 @@ const TextInput = ({
         <SInput
           type={type}
           disabled={disabled}
+          inputMode={type === 'number' ? 'numeric' : undefined}
+          pattern={type === 'number' ? '[0-9]*' : undefined}
           placeholder={placeholder}
           onChange={onChange}
           max={max}

@@ -32,12 +32,13 @@ interface ModalSortProps {
   setDataHasNextPage: (b: boolean) => void;
   setDataCurrentPage: (n: number) => void;
   setDataIsLoading: (b: boolean) => void;
+  setError: (s: string) => void;
   setIsExpanded: (b: boolean) => void;
   setSort: FiltersSortNominalSetState;
   sort: SortTypesType;
 }
 
-const ModalSort = ({ handleClearSort, setData, setDataHasNextPage, setDataCurrentPage, setDataIsLoading, setIsExpanded, setSort, sort }: ModalSortProps) => {
+const ModalSort = ({ handleClearSort, setData, setDataHasNextPage, setDataCurrentPage, setDataIsLoading, setError, setIsExpanded, setSort, sort }: ModalSortProps) => {
   const router = useRouter();
   const currentSort = (Object.keys(sort) as Array<keyof typeof sort>).find((key) => ALL_SORT_IDS.includes(key) && sort[key] !== null);
 
@@ -74,9 +75,11 @@ const ModalSort = ({ handleClearSort, setData, setDataHasNextPage, setDataCurren
         setDataCurrentPage(1);
         setDataHasNextPage(res.hasNextPage ?? false);
         setData(res.data);
+        setError('');
         setDataIsLoading(false);
       } catch (error) {
         console.log(error);
+        setError('Unable to sort, please try again');
         setDataIsLoading(false);
       }
     }

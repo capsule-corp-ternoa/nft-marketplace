@@ -42,6 +42,7 @@ interface ModalFiltersProps {
   setDataCurrentPage: (n: number) => void;
   setDataIsLoading: (b: boolean) => void;
   setDataTotalCount: (n: number) => void;
+  setError: (s: string) => void;
   setIsExpanded: (b: boolean) => void;
   setFilters: FiltersSortNominalSetState;
 }
@@ -54,6 +55,7 @@ const ModalFilters = ({
   setDataCurrentPage,
   setDataIsLoading,
   setDataTotalCount,
+  setError,
   setIsExpanded,
   setFilters,
 }: ModalFiltersProps) => {
@@ -93,9 +95,11 @@ const ModalFilters = ({
       setDataCurrentPage(1);
       setDataHasNextPage(hasNextPage ?? false);
       setData(data);
+      setError('');
       setDataIsLoading(false);
     } catch (error) {
       console.log(error);
+      setError('Unable to filter, please try again');
       setDataIsLoading(false);
     }
   };

@@ -75,6 +75,7 @@ export interface ExploreProps {
 
 const Explore: React.FC<ExploreProps> = ({ NFTs, hasNextPage, totalCount }) => {
   const router = useRouter();
+  const [error, setError] = useState('');
   const [filtersSort, setFiltersSort] = useState<FiltersType & SortTypesType>({ ...FILTERS_SORT_RESET_STATE, ...decodeFilterQuery(router.query) });
   const [currentPage, setCurrentPage] = useState(1);
   const [dataNfts, setDataNfts] = useState(NFTs);
@@ -170,7 +171,7 @@ const Explore: React.FC<ExploreProps> = ({ NFTs, hasNextPage, totalCount }) => {
               <Button color="primary500" icon="filters" onClick={toggleModalFiltersExpanded} size="medium" text="Filters" variant="contained" />
             </SFiltersButtonContainer>
           </STopContainer>
-          {currentFilterValueWording !== undefined && currentFilterValueWording !== '' && isModalFiltersExpanded === false && (
+          {error === '' && currentFilterValueWording !== undefined && currentFilterValueWording !== '' && isModalFiltersExpanded === false && (
             <SCurrentFiltersWrapper>
               <SCurrentFilterLabel>
                 Filtered<SCurrentSortLabel>{currentFilter}</SCurrentSortLabel>:
@@ -178,6 +179,7 @@ const Explore: React.FC<ExploreProps> = ({ NFTs, hasNextPage, totalCount }) => {
               <SChip color="invertedContrast" isDeletable onDelete={handleClear} size="medium" text={currentFilterValueWording} variant="rectangle" />
             </SCurrentFiltersWrapper>
           )}
+          {error !== '' && <SErrorLabel>{error}</SErrorLabel>}
           <NftsGrid
             NFTs={dataNfts}
             isLoading={isLoading}
@@ -204,6 +206,7 @@ const Explore: React.FC<ExploreProps> = ({ NFTs, hasNextPage, totalCount }) => {
           setDataHasNextPage={setDataNftsHasNextPage}
           setDataCurrentPage={setCurrentPage}
           setDataIsLoading={setIsLoading}
+          setError={setError}
           setIsExpanded={setIsModalSortExpanded}
           setSort={setFiltersSort}
           sort={filtersSort}
@@ -218,6 +221,7 @@ const Explore: React.FC<ExploreProps> = ({ NFTs, hasNextPage, totalCount }) => {
           setDataCurrentPage={setCurrentPage}
           setDataIsLoading={setIsLoading}
           setDataTotalCount={setDataTotalCount}
+          setError={setError}
           setIsExpanded={setIsModalFiltersExpanded}
           setFilters={setFiltersSort}
         />
@@ -341,6 +345,21 @@ const SChip = styled(Chip)`
   > div {
     white-space: break-spaces;
     text-align: center;
+  }
+`;
+
+const SErrorLabel = styled.span`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: ${({ theme }) => theme.colors.danger500};
+  font-family: ${({ theme }) => theme.fonts.bold};
+  font-size: 1.6rem;
+  margin-top: 1.6rem;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    justify-content: flex-start;
   }
 `;
 

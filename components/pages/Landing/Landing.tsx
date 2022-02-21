@@ -52,9 +52,9 @@ const Landing = ({
         />
       )}
     </Wrapper>
-    {popularNfts?.length > 0 && (
+    {popularNfts.length > 5 && (
       <Wrapper>
-        <Showcase category="Most popular" NFTs={popularNfts} />
+        <Showcase category="Most popular" NFTs={popularNfts.slice(0, 6)} />
       </Wrapper>
     )}
     {bestSellingNfts.length > 5 && (

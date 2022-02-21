@@ -12,7 +12,7 @@ import arrayShuffle from 'array-shuffle';
 
 import { getCapsValue } from 'actions/caps';
 import { getUser, getUsers } from 'actions/user';
-import { getNFTs, getMostSoldSeries } from 'actions/nft';
+import { getNFTs, getMostLikedNFTs, getMostSoldSeries } from 'actions/nft';
 import { NftType, UserType } from 'interfaces';
 import { appSetUser } from 'redux/app';
 import { useMarketplaceData } from 'redux/hooks';
@@ -91,6 +91,7 @@ export async function getServerSideProps() {
   let users: UserType[] = [],
     regularNfts: NftType[] = [],
     bestSellingNfts: NftType[] = [],
+    popularNfts: NftType[] = [],
     capsDollarValue: number | null = null;
   const promises = [];
   promises.push(
@@ -108,6 +109,16 @@ export async function getServerSideProps() {
       getNFTs('1', '19', { listed: true }, undefined, true)
         .then((result) => {
           regularNfts = result.data;
+          success();
+        })
+        .catch(error => console.log(error));
+    })
+  );
+  promises.push(
+    new Promise<void>((success) => {
+      getMostLikedNFTs()
+        .then((result) => {
+          popularNfts = result.data;
           success();
         })
         .catch(error => console.log(error));
@@ -135,7 +146,6 @@ export async function getServerSideProps() {
   );
   await Promise.all(promises);
   users = arrayShuffle(users);
-  let popularNfts = arrayShuffle((regularNfts || []).slice(0, 8));
   let heroNFTs = popularNfts.length > 3 ? arrayShuffle(popularNfts).slice(0, 3) : popularNfts; // TODO: Fetch dedicated data
   let NFTCreators = arrayShuffle((regularNfts || []).slice(16, 19));
   let totalCountNFT = (regularNfts || []).length;

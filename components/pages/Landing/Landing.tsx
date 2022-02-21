@@ -1,13 +1,12 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
-import styled from 'styled-components';
 
-import { AVATAR_VARIANT_MOSAIC, Picture } from 'components/base/Avatar';
 import NoNFTComponent, { NO_NFT_VARIANT_SOLD_OUT } from 'components/base/NoNFTComponent';
 import { Container, Wrapper } from 'components/layout';
 import { UserType, NftType } from 'interfaces/index';
 
 import Hero from './components/Hero';
+import UsersShowcase from './components/UsersShowcase';
 import { HERO_MODE_SELL } from './constants';
 
 const Showcase = dynamic(() => import('../../base/Showcase'), {
@@ -45,12 +44,7 @@ const Landing = ({ capsDollarValue, heroNFTs, mostFollowedUsers, popularNfts, be
     </Wrapper>
     {mostFollowedUsers.length > 11 && (
       <Wrapper>
-        <STitle>Trending artists</STitle>
-        <SUsersContainer>
-          {mostFollowedUsers.map(({ _id, name, picture, verified, walletId }) => (
-            <SPicture key={_id} isClickable isTooltip isVerified={verified} name={name} picture={picture} variant={AVATAR_VARIANT_MOSAIC} walletId={walletId} />
-          ))}
-        </SUsersContainer>
+        <UsersShowcase title="Trending artists" users={mostFollowedUsers.slice(0, 12)} />
       </Wrapper>
     )}
     {popularNfts.length > 5 && (
@@ -65,60 +59,10 @@ const Landing = ({ capsDollarValue, heroNFTs, mostFollowedUsers, popularNfts, be
     )}
     {topSellersUsers.length > 11 && (
       <Wrapper>
-        <STitle>Top sellers</STitle>
-        <SUsersContainer>
-          {topSellersUsers.map(({ _id, name, picture, verified, walletId }) => (
-            <SPicture key={_id} isClickable isTooltip isVerified={verified} name={name} picture={picture} variant={AVATAR_VARIANT_MOSAIC} walletId={walletId} />
-          ))}
-        </SUsersContainer>
+        <UsersShowcase title="Top Sellers" users={topSellersUsers.slice(0, 12)} />
       </Wrapper>
     )}
   </Container>
 );
-
-const STitle = styled.h3`
-  font-family: ${({ theme }) => theme.fonts.bold};
-  font-size: 2.4rem;
-  margin: 0;
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    font-size: 3.2rem;
-  }
-`;
-
-const SUsersContainer = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  margin-top: 2.4rem;
-  gap: 1.6rem;
-  overflow-x: auto;
-  min-height: 12rem;
-
-  > * {
-    flex: 1;
-  }
-
-  ${({ theme }) => theme.mediaQueries.xxl} {
-    min-height: auto;
-    overflow-x: visible;
-  }
-`;
-
-const SPicture = styled(Picture)`
-  > span {
-    left: 43%;
-    display: none !important;
-  }
-
-  ${({ theme }) => theme.mediaQueries.xxl} {
-    &:hover {
-      > span {
-        display: block !important;
-      }
-    }
-  }
-`;
 
 export default Landing;

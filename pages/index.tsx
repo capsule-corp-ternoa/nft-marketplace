@@ -12,7 +12,7 @@ import arrayShuffle from 'array-shuffle';
 
 import { getCapsValue } from 'actions/caps';
 import { getUser, getUsers } from 'actions/user';
-import { getNFTs } from 'actions/nft';
+import { getNFTs, getMostSoldSeries } from 'actions/nft';
 import { NftType, UserType } from 'interfaces';
 import { appSetUser } from 'redux/app';
 import { useMarketplaceData } from 'redux/hooks';
@@ -90,6 +90,7 @@ const LandingPage = ({
 export async function getServerSideProps() {
   let users: UserType[] = [],
     regularNfts: NftType[] = [],
+    bestSellingNfts: NftType[] = [],
     capsDollarValue: number | null = null;
   const promises = [];
   promises.push(
@@ -99,7 +100,7 @@ export async function getServerSideProps() {
           users = result.data;
           success();
         })
-        .catch(success);
+        .catch(error => console.log(error));
     })
   );
   promises.push(
@@ -109,7 +110,17 @@ export async function getServerSideProps() {
           regularNfts = result.data;
           success();
         })
-        .catch(success);
+        .catch(error => console.log(error));
+    })
+  );
+  promises.push(
+    new Promise<void>((success) => {
+      getMostSoldSeries()
+        .then((result) => {
+          bestSellingNfts = result.data;
+          success();
+        })
+        .catch(error => console.log(error));
     })
   );
   promises.push(
@@ -119,14 +130,13 @@ export async function getServerSideProps() {
           capsDollarValue = _value;
           success();
         })
-        .catch(success);
+        .catch(error => console.log(error));
     })
   );
   await Promise.all(promises);
   users = arrayShuffle(users);
   let popularNfts = arrayShuffle((regularNfts || []).slice(0, 8));
   let heroNFTs = popularNfts.length > 3 ? arrayShuffle(popularNfts).slice(0, 3) : popularNfts; // TODO: Fetch dedicated data
-  let bestSellingNfts = arrayShuffle((regularNfts || []).slice(8, 16));
   let NFTCreators = arrayShuffle((regularNfts || []).slice(16, 19));
   let totalCountNFT = (regularNfts || []).length;
   return {

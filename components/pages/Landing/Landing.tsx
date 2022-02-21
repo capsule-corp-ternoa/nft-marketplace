@@ -57,9 +57,9 @@ const Landing = ({
         <Showcase category="Most popular" NFTs={popularNfts} />
       </Wrapper>
     )}
-    {bestSellingNfts?.length > 0 && (
+    {bestSellingNfts.length > 5 && (
       <Wrapper>
-        <Showcase category="Best sellers" NFTs={bestSellingNfts} />
+        <Showcase category="Best sellers" NFTs={bestSellingNfts.slice(0, 6)} />
       </Wrapper>
     )}
     {NFTCreators?.length > 0 && (

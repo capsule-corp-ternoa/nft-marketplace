@@ -16,7 +16,7 @@ import { NftType } from 'interfaces';
 import { appSetUserLikedNFTs } from 'redux/app';
 import { useApp, useMarketplaceData } from 'redux/hooks';
 import { MARKETPLACE_ID } from 'utils/constant';
-import { getRandomNFTFromArray } from 'utils/functions';
+import { emojiMapping, getRandomNFTFromArray } from 'utils/functions';
 import { computeCaps } from 'utils/strings';
 
 import Details from './Details';
@@ -263,9 +263,16 @@ const NFTPage = ({ NFT, type, isUserFromDappQR }: NFTPageProps) => {
               </STitle>
               {NFT.categories.length > 0 && (
                 <SCategoriesWrapper>
-                  {NFT.categories.map(({ name, code }) => (
-                    <Chip key={code} color="invertedContrast" text={name} size="medium" variant="rectangle" />
-                  ))}
+                  {NFT.categories
+                    // Categories with related emoji are displayed first
+                    .sort((a, b) => {
+                      const aBit = emojiMapping(a.code) === undefined ? 1 : 0;
+                      const bBit = emojiMapping(b.code) === undefined ? 1 : 0;
+                      return aBit - bBit;
+                    })
+                    .map(({ _id, name, code }) => (
+                      <Chip key={_id} color="invertedContrast" emoji={emojiMapping(code)} text={name} size="medium" variant="rectangle" />
+                    ))}
                 </SCategoriesWrapper>
               )}
               {NFT.description && <SDescription>{NFT.description}</SDescription>}

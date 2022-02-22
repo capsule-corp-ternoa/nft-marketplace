@@ -12,12 +12,15 @@ interface Props {
   insight?: string;
   isError?: boolean;
   label?: string | React.ReactNode;
+  max?: string | number;
+  min?: string | number;
   name?: string;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
   placeholder?: string;
   startIcon?: string;
   tag?: string;
   tooltipText?: string;
+  type?: React.HTMLInputTypeAttribute,
   value?: string | number | readonly string[];
 }
 
@@ -28,22 +31,25 @@ const TextInput = ({
   insight,
   isError,
   label,
+  max,
+  min,
   name,
   onChange,
   placeholder,
   startIcon,
   tag,
   tooltipText,
+  type = 'text',
   value,
 }: Props) => {
   return (
     <InputShell className={className}>
       {label && (
-        <InputLabel>
+        <SInputLabel>
           {label}
           {tooltipText && <STooltip text={tooltipText} />}
           {insight && <SInsight>{insight}</SInsight>}
-        </InputLabel>
+        </SInputLabel>
       )}
       <Label endIcon={endIcon} startIcon={startIcon}>
         {tag && <STagInput
@@ -54,10 +60,14 @@ const TextInput = ({
           readOnly
         />}
         <SInput
-          type="text"
+          type={type}
           disabled={disabled}
+          inputMode={type === 'number' ? 'numeric' : undefined}
+          pattern={type === 'number' ? '[0-9]*' : undefined}
           placeholder={placeholder}
           onChange={onChange}
+          max={max}
+          min={min}
           name={name}
           value={value}
           isError={isError}
@@ -79,7 +89,6 @@ export const InputStyle = css<{
     isError ? theme.colors.danger500 : 'rgba(0, 0, 0, 0)'};
   border-radius: 0.8rem;
   font-size: 1.6rem;
-  margin-top: 1.6rem;
   outline: none;
   padding: ${({ endIcon, startIcon }) =>
     endIcon ? '1.6rem 5.6rem 1.6rem 1.6rem' : startIcon ? '1.6rem 1.6rem 1.6rem 5.6rem' : '1.6rem'};
@@ -93,6 +102,10 @@ export const InputStyle = css<{
   &::placeholder {
     color: ${({ theme }) => theme.colors.neutral300};
   }
+`;
+
+const SInputLabel = styled(InputLabel)`
+  margin-bottom: 1.6rem;
 `;
 
 export const SInput = styled.input<{ isError?: boolean }>`

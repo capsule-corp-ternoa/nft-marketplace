@@ -11,29 +11,29 @@ import Landing from 'components/pages/Landing';
 import arrayShuffle from 'array-shuffle';
 
 import { getCapsValue } from 'actions/caps';
-import { getUser, getUsers } from 'actions/user';
-import { getNFTs } from 'actions/nft';
+import { getUser, getMostFollowedUsers, getTopSellersUsers } from 'actions/user';
+import { getMostLikedNFTs, getMostSoldSeries, getTotalOnSaleOnMarketplace } from 'actions/nft';
 import { NftType, UserType } from 'interfaces';
 import { appSetUser } from 'redux/app';
 import { useMarketplaceData } from 'redux/hooks';
 import { encryptCookie, decryptCookie } from 'utils/cookie';
 
 export interface LandingProps {
-  users: UserType[];
   capsDollarValue?: number;
   heroNFTs: NftType[];
+  mostFollowedUsers: UserType[];
   popularNfts: NftType[];
   bestSellingNfts: NftType[];
-  NFTCreators: NftType[];
+  topSellersUsers: UserType[];
   totalCountNFT: number;
 }
 const LandingPage = ({
-  users,
   capsDollarValue,
   heroNFTs,
+  mostFollowedUsers,
   popularNfts,
   bestSellingNfts,
-  NFTCreators,
+  topSellersUsers,
   totalCountNFT,
 }: LandingProps) => {
   const dispatch = useDispatch();
@@ -74,12 +74,12 @@ const LandingPage = ({
       <BetaBanner />
       <MainHeader />
       <Landing
-        users={users}
         capsDollarValue={capsDollarValue}
         heroNFTs={heroNFTs}
+        mostFollowedUsers={mostFollowedUsers}
         popularNfts={popularNfts}
         bestSellingNfts={bestSellingNfts}
-        NFTCreators={NFTCreators}
+        topSellersUsers={topSellersUsers}
         totalCountNFT={totalCountNFT}
       />
       <Footer />
@@ -88,55 +88,86 @@ const LandingPage = ({
   );
 };
 export async function getServerSideProps() {
-  let users: UserType[] = [],
-    regularNfts: NftType[] = [],
+  let mostFollowedUsers: UserType[] = [],
+    bestSellingNfts: NftType[] = [],
+    topSellersUsers: UserType[] = [],
+    popularNfts: NftType[] = [],
+    totalCountNFT: number = 0,
     capsDollarValue: number | null = null;
   const promises = [];
+
   promises.push(
     new Promise<void>((success) => {
-      getUsers(undefined, true)
+      getMostFollowedUsers()
         .then((result) => {
-          users = result.data;
+          mostFollowedUsers = result.data;
           success();
         })
-        .catch(success);
+        .catch(error => console.log(error));
     })
   );
   promises.push(
     new Promise<void>((success) => {
-      getNFTs(undefined, '1', '19', true, true)
+      getTopSellersUsers()
         .then((result) => {
-          regularNfts = result.data;
+          topSellersUsers = result.data;
           success();
         })
-        .catch(success);
+        .catch(error => console.log(error));
+    })
+  );
+  promises.push(
+    new Promise<void>((success) => {
+      getMostLikedNFTs()
+        .then((result) => {
+          popularNfts = result.data;
+          success();
+        })
+        .catch(error => console.log(error));
+    })
+  );
+  promises.push(
+    new Promise<void>((success) => {
+      getMostSoldSeries()
+        .then((result) => {
+          bestSellingNfts = result.data;
+          success();
+        })
+        .catch(error => console.log(error));
     })
   );
   promises.push(
     new Promise<void>((success) => {
       getCapsValue()
-        .then((_value) => {
-          capsDollarValue = _value;
+        .then((value) => {
+          capsDollarValue = value;
           success();
         })
-        .catch(success);
+        .catch(error => console.log(error));
+    })
+  );
+  promises.push(
+    new Promise<void>((success) => {
+      getTotalOnSaleOnMarketplace()
+        .then((value) => {
+          totalCountNFT = value;
+          success();
+        })
+        .catch(error => console.log(error));
     })
   );
   await Promise.all(promises);
-  users = arrayShuffle(users);
-  let popularNfts = arrayShuffle((regularNfts || []).slice(0, 8));
-  let heroNFTs = popularNfts.length > 3 ? arrayShuffle(popularNfts).slice(0, 3) : popularNfts; // TODO: Fetch dedicated data
-  let bestSellingNfts = arrayShuffle((regularNfts || []).slice(8, 16));
-  let NFTCreators = arrayShuffle((regularNfts || []).slice(16, 19));
-  let totalCountNFT = (regularNfts || []).length;
+  
+  const heroNFTs = popularNfts.length > 3 ? arrayShuffle(popularNfts).slice(0, 3) : popularNfts; // TODO: Fetch dedicated data when bid is implemented
+
   return {
     props: {
-      users,
       capsDollarValue,
       heroNFTs,
+      mostFollowedUsers,
       popularNfts,
       bestSellingNfts,
-      NFTCreators,
+      topSellersUsers,
       totalCountNFT,
     },
   };

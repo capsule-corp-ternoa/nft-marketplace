@@ -81,7 +81,7 @@ const Avatar = ({
 
           <SBottomDetails>
             {label !== undefined && label && typeof label === 'string' ? <SLabel>{label}</SLabel> : label}
-            {twitterName !== undefined && (
+            {twitterName !== undefined && twitterName !== null && (
               <STransactionVariantWrapper variant={variant}>
                 <SLink href={`https://twitter.com/${twitterName}`} target="_blank" title={`${twitterName}'s twitter account`} rel="noopener noreferrer">
                   <STwitterIcon name="socialTwitter" />

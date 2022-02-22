@@ -20,16 +20,9 @@ interface Props {
   walletId?: string;
 }
 
-const Picture = ({
-  isClickable = false,
-  isTooltip = false,
-  isVerified,
-  name = 'Ternoa',
-  picture,
-  variant,
-  walletId,
-}: Props) => (
+const Picture = ({ className, isClickable = false, isTooltip = false, isVerified, name = 'Ternoa', picture, variant, walletId }: Props) => (
   <SPictureContainer
+    className={className}
     isClickable={isClickable}
     isTooltip={isTooltip}
     onClick={() => isClickable && walletId && Router.push(`/${walletId}`)}
@@ -126,7 +119,7 @@ const SLetter = styled.div<{ variant?: AVATAR_VARIANT_TYPE }>`
 
 const SPopoverName = styled.span`
   position: absolute;
-  background: ${({theme}) => theme.colors.contrast};
+  background: ${({ theme }) => theme.colors.contrast};
   border-radius: 0.8rem;
   box-shadow: ${({ theme }) => theme.shadows.popupShadow};
   color: ${({ theme }) => theme.colors.invertedContrast};

@@ -1,14 +1,12 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
-import styled from 'styled-components';
 
 import NoNFTComponent, { NO_NFT_VARIANT_SOLD_OUT } from 'components/base/NoNFTComponent';
-import Button from 'components/ui/Button';
 import { Container, Wrapper } from 'components/layout';
 import { UserType, NftType } from 'interfaces/index';
 
-import ArtCreators from './components/ArtCreators';
 import Hero from './components/Hero';
+import UsersShowcase from './components/UsersShowcase';
 import { HERO_MODE_SELL } from './constants';
 
 const Showcase = dynamic(() => import('../../base/Showcase'), {
@@ -16,24 +14,16 @@ const Showcase = dynamic(() => import('../../base/Showcase'), {
 });
 
 export interface LandingProps {
-  users?: UserType[];
   capsDollarValue?: number;
   heroNFTs: NftType[];
+  mostFollowedUsers: UserType[];
   popularNfts: NftType[];
   bestSellingNfts: NftType[];
-  NFTCreators: NftType[];
+  topSellersUsers: UserType[];
   totalCountNFT: number;
 }
 
-const Landing = ({
-  users: _users,
-  capsDollarValue,
-  heroNFTs,
-  popularNfts,
-  bestSellingNfts,
-  NFTCreators,
-  totalCountNFT,
-}: LandingProps) => (
+const Landing = ({ capsDollarValue, heroNFTs, mostFollowedUsers, popularNfts, bestSellingNfts, topSellersUsers, totalCountNFT }: LandingProps) => (
   <Container>
     <Wrapper>
       {heroNFTs?.length === 3 && <Hero capsDollarValue={capsDollarValue} NFTs={heroNFTs} mode={HERO_MODE_SELL} />}
@@ -52,31 +42,27 @@ const Landing = ({
         />
       )}
     </Wrapper>
-    {popularNfts?.length > 0 && (
+    {mostFollowedUsers.length > 11 && (
       <Wrapper>
-        <Showcase category="Most popular" NFTs={popularNfts} />
+        <UsersShowcase title="Trending artists" users={mostFollowedUsers.slice(0, 12)} />
       </Wrapper>
     )}
-    {bestSellingNfts?.length > 0 && (
+    {popularNfts.length > 5 && (
       <Wrapper>
-        <Showcase category="Best sellers" NFTs={bestSellingNfts} />
+        <Showcase category="Most popular" NFTs={popularNfts.slice(0, 6)} />
       </Wrapper>
     )}
-    {NFTCreators?.length > 0 && (
+    {bestSellingNfts.length > 5 && (
       <Wrapper>
-        <ArtCreators NFTs={NFTCreators} />
-        <SButtonContainer>
-          <Button color="primary500" href="/explore" size="medium" text="See more" variant="outlined" />
-        </SButtonContainer>
+        <Showcase category="Best sellers" NFTs={bestSellingNfts.slice(0, 6)} />
+      </Wrapper>
+    )}
+    {topSellersUsers.length > 11 && (
+      <Wrapper>
+        <UsersShowcase title="Top Sellers" users={topSellersUsers.slice(0, 12)} />
       </Wrapper>
     )}
   </Container>
 );
-
-const SButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 4rem;
-`;
 
 export default Landing;

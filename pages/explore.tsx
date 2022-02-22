@@ -1,55 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Head from 'next/head';
+import { NextPageContext } from 'next';
+import dayjs from 'dayjs';
+
 import BetaBanner from 'components/base/BetaBanner';
 import MainHeader from 'components/base/MainHeader';
 import Explore from 'components/pages/Explore';
 import Footer from 'components/base/Footer';
 import FloatingHeader from 'components/base/FloatingHeader';
-import { getNFTs, getTotalOnSaleOnMarketplace } from 'actions/nft';
+import { getNFTs, getTotalFilteredNFTsOnMarketplace, getTotalOnSaleOnMarketplace } from 'actions/nft';
 import { NftType } from 'interfaces';
 import { useMarketplaceData } from 'redux/hooks';
+import { sortPromiseMapping } from 'utils/functions';
 
 export interface ExplorePage {
   data: NftType[];
   dataHasNextPage: boolean;
-  loading: boolean;
+  totalCount: number;
 }
 
-const ExplorePage = ({ data, dataHasNextPage }: ExplorePage) => {
-  const [dataNfts, setDataNfts] = useState(data);
-  const [dataNftsHasNextPage, setDataNftsHasNextPage] = useState(dataHasNextPage);
-  const [isLoading, setIsLoading] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [dataTotalCount, setDataTotalCount] = useState(0);
-
+const ExplorePage = ({ data, dataHasNextPage, totalCount }: ExplorePage) => {
   const { name } = useMarketplaceData();
-
-  const loadMoreNfts = async () => {
-    setIsLoading(true);
-    try {
-      if (dataNftsHasNextPage) {
-        let result = await getNFTs(undefined, (currentPage + 1).toString(), undefined, true, true);
-        setCurrentPage(currentPage + 1);
-        setDataNftsHasNextPage(result.hasNextPage || false);
-        setDataNfts([...dataNfts, ...result.data]);
-        setIsLoading(false);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const loadTotalCount = async () => {
-    try {
-      setDataTotalCount(await getTotalOnSaleOnMarketplace());
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  useEffect(() => {
-    loadTotalCount();
-  }, []);
 
   return (
     <>
@@ -62,33 +33,49 @@ const ExplorePage = ({ data, dataHasNextPage }: ExplorePage) => {
       </Head>
       <BetaBanner />
       <MainHeader />
-      <Explore
-        NFTS={dataNfts}
-        loadMore={loadMoreNfts}
-        hasNextPage={dataNftsHasNextPage}
-        loading={isLoading}
-        totalCount={dataTotalCount}
-      />
+      <Explore NFTs={data} hasNextPage={dataHasNextPage} totalCount={totalCount} />
       <Footer />
       <FloatingHeader />
     </>
   );
 };
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context: NextPageContext) {
+  const { codes, filter, minPrice, maxPrice, startDate, endDate, sort } = context.query;
+
+  const filterOptions = {
+    categories: typeof codes === 'string' && JSON.parse(codes).length > 0 ? JSON.parse(codes) : undefined,
+    listed: true,
+    priceStartRange: Number(minPrice) > 0 ? Number(minPrice) : undefined,
+    priceEndRange: Number(maxPrice) > 0 ? Number(maxPrice) : undefined,
+    timestampCreateStartRange: typeof startDate === 'string' && dayjs(new Date(startDate)).isValid() ? new Date(startDate) : undefined,
+    timestampCreateEndRange: typeof endDate === 'string' && dayjs(new Date(endDate)).isValid() ? new Date(endDate) : undefined,
+  };
+
   let data: NftType[] = [],
-    dataHasNextPage: boolean = false;
+    dataHasNextPage: boolean = false,
+    totalCount: number = 0;
+
+  const NFTsDataPromise =
+    (typeof sort === 'string' && sortPromiseMapping({ [sort]: true }, 0)) || getNFTs(undefined, undefined, filterOptions, undefined, true);
 
   try {
-    const res = await getNFTs(undefined, undefined, undefined, true, true);
+    const res = await NFTsDataPromise;
     data = res.data;
     dataHasNextPage = res.hasNextPage || false;
   } catch (error) {
     console.log(error);
   }
 
+  const totalCountPromise = typeof filter === 'string' ? getTotalFilteredNFTsOnMarketplace(filterOptions) : getTotalOnSaleOnMarketplace();
+  try {
+    totalCount = await totalCountPromise;
+  } catch (error) {
+    console.log(error);
+  }
+
   return {
-    props: { data, dataHasNextPage },
+    props: { data, dataHasNextPage, totalCount },
   };
 }
 

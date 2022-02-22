@@ -46,6 +46,7 @@ export type NftType = {
   itemTotal: string;
   totalNft?: number;
   totalListedNft?: number;
+  totalFiltered?: number | null;
   totalListedInMarketplace?: number;
   totalOwnedByRequestingUser?: number;
   totalOwnedListedByRequestingUser?: number;
@@ -114,3 +115,5 @@ export type CustomResponse<DataType> = {
   hasPreviousPage: boolean;
   data: DataType[]
 }
+
+export type NFTDataNominalSetState = React.Dispatch<React.SetStateAction<NftType[]>>;

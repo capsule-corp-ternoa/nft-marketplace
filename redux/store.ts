@@ -18,4 +18,4 @@ export const initialState: RootState = {
 
 const store = createStore(reducer, initialState);
 
-export const wrapper = createWrapper<Store<RootState>>(() => store, { debug: true });
+export const wrapper = createWrapper<Store<RootState>>(() => store, { debug: false });

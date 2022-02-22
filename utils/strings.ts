@@ -1,3 +1,9 @@
+import { ParsedUrlQuery } from 'querystring';
+
+import { getCategories } from 'actions/category';
+import { FiltersType } from 'interfaces/filters';
+import { FILTERS_SORT_RESET_STATE, CATEGORIES_FILTER, CREATION_DATE_FILTER, PRICE_FILTER } from 'utils/constant';
+
 function toFixed(num: Number, fixed: number) {
   if (!num) {
     return null;
@@ -103,11 +109,41 @@ export const formatDate = (d: Date) => {
   return `${formatVal(day)}/${formatVal(month)}/${formatVal(year)}, ${formatVal(hours)}:${formatVal(minutes)}`
 }
 
-export const formatPrice = (n: number) => {
-  const formatter = new Intl.NumberFormat('en-US', {
+export const formatPrice = (
+  n: number,
+  options: Intl.NumberFormatOptions = {
     style: 'currency',
     currency: 'USD',
-  });
+  }
+) => {
+  const formatter = new Intl.NumberFormat('en-US', options);
 
   return formatter.format(n);
-}
+};
+
+export const decodeFilterQuery = async (query: ParsedUrlQuery): Promise<Partial<FiltersType>> => {
+  const { filter } = query;
+  switch (filter) {
+    case CATEGORIES_FILTER: {
+      const { codes } = query;
+      if (typeof codes !== 'string' || JSON.parse(codes).length === 0) return FILTERS_SORT_RESET_STATE;
+      try {
+        const categories = await getCategories(JSON.parse(codes));
+        return { [CATEGORIES_FILTER]: categories };
+      } catch (error) {
+        console.log(error);
+        return FILTERS_SORT_RESET_STATE;
+      }
+    }
+    case CREATION_DATE_FILTER: {
+      const { startDate, endDate } = query;
+      return { [CREATION_DATE_FILTER]: [startDate?.toString() ?? '', endDate?.toString() ?? ''] };
+    }
+    case PRICE_FILTER: {
+      const { minPrice, maxPrice } = query;
+      return { [PRICE_FILTER]: [Number(minPrice) ?? 0, Number(maxPrice) ?? 0] };
+    }
+    default:
+      return FILTERS_SORT_RESET_STATE;
+  }
+};

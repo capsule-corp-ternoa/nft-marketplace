@@ -1,7 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import Icon, { IconNameType } from 'components/ui/Icon';
 import { Colors } from 'style/theme/types';
+
+import Emoji from '../Emoji';
+import Icon, { IconNameType } from '../Icon';
 
 interface IChip {
   color?: keyof Colors;
@@ -13,6 +15,7 @@ interface IChip {
 
 interface Props extends IChip {
   className?: string;
+  emoji?: string;
   icon?: IconNameType;
   onDelete?: () => void;
   text?: string | React.ReactNode;
@@ -21,6 +24,7 @@ interface Props extends IChip {
 const Chip = ({
   className,
   color,
+  emoji,
   icon,
   noBorder = false,
   onDelete,
@@ -37,9 +41,8 @@ const Chip = ({
       size={size}
       variant={variant}
     >
-      {icon && (
-        <SIcon isIconOnly={text === undefined} name={icon} size={size} />
-      )}
+      {emoji && <SEmoji isEmojiOnly={text === undefined} size={size} symbol={emoji} />}
+      {icon && <SIcon isIconOnly={text === undefined} name={icon} size={size} />}
       {text && (
         <SText color={color} size={size}>
           {text}
@@ -79,6 +82,11 @@ const SIcon = styled(Icon) <{ isIconOnly: boolean; size: 'small' | 'medium' }>`
   height: ${({ size }) => (size === 'small' ? '1.2rem' : '2rem')};
   margin-right: ${({ isIconOnly, size }) =>
     isIconOnly ? 0 : size === 'small' ? '0.4rem' : '0.8rem'};
+`;
+
+const SEmoji = styled(Emoji) <{ isEmojiOnly: boolean; size: 'small' | 'medium' }>`
+  margin-right: ${({ isEmojiOnly, size }) =>
+    isEmojiOnly ? 0 : size === 'small' ? '0.4rem' : '0.8rem'};
 `;
 
 const SText = styled.div<IChip>`

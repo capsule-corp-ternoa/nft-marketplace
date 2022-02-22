@@ -1,7 +1,9 @@
 import React from 'react';
 import styled, { css, DefaultTheme } from 'styled-components';
-import Icon, { IconNameType, Loader } from 'components/ui/Icon';
 import { Colors } from 'style/theme/types';
+
+import Emoji from '../Emoji';
+import Icon, { IconNameType, Loader } from '../Icon';
 
 interface IButton {
   color?: keyof Colors;
@@ -14,6 +16,7 @@ interface IButton {
 }
 interface Props extends IButton {
   className?: string;
+  emoji?: string;
   href?: string;
   icon?: IconNameType;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
@@ -70,7 +73,7 @@ const ButtonStyle = css<IButton>`
   align-self: center;
   background: ${({ theme, color, variant }) =>
     variant === 'contained' && color ? theme.colors[`${color}`] : 'transparent'};
-  border: ${({ size, variant }) => (variant === 'outlined' ? (size === 'small' ? '1px solid' : '2px solid') : 'none')};
+  border: ${({ size }) => (size === 'small' ? '1px solid' : '2px solid')};
   border-radius: 4rem;
   box-shadow: ${({ disabled, theme }) => (disabled ? 'none' : theme.shadows.popupShadow)};
   cursor: ${({ noHover }) => (noHover ? 'default' : 'pointer')};
@@ -125,6 +128,7 @@ const Button = ({
   className,
   color,
   disabled,
+  emoji,
   href,
   icon,
   isLoading = false,
@@ -147,6 +151,7 @@ const Button = ({
         size={size}
         variant={variant}
       >
+        {emoji && <SEmoji isEmojiOnly={text === undefined} size={size} symbol={emoji} />}
         {icon && <SIcon isIconOnly={text === undefined} name={icon} size={size} />}
         {text}
       </SAnchor>
@@ -169,6 +174,7 @@ const Button = ({
         <SLoader color={color ?? 'invertedContrast'} size={size} variant={variant} />
       ) : (
         <>
+          {emoji && <SEmoji isEmojiOnly={text === undefined} size={size} symbol={emoji} />}
           {icon && <SIcon isIconOnly={text === undefined} name={icon} size={size} />}
           {text}
         </>
@@ -190,6 +196,10 @@ const SIcon = styled(Icon)<{ isIconOnly: boolean; size: 'small' | 'medium' }>`
   width: ${({ size }) => (size === 'small' ? '1.6rem' : '2rem')};
   height: ${({ size }) => (size === 'small' ? '1.6rem' : '2rem')};
   margin-right: ${({ isIconOnly, size }) => (isIconOnly ? 0 : size === 'small' ? '1.2rem' : '1.6rem')};
+`;
+
+const SEmoji = styled(Emoji)<{ isEmojiOnly: boolean; size: 'small' | 'medium' }>`
+  margin-right: ${({ isEmojiOnly, size }) => (isEmojiOnly ? 0 : size === 'small' ? '1.2rem' : '1.6rem')};
 `;
 
 const SAnchor = styled.a.withConfig({

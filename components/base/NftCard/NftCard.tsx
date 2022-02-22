@@ -4,7 +4,7 @@ import Router, { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 
 import { likeNFT, unlikeNFT } from 'actions/nft';
-import { Picture } from 'components/base/Avatar';
+import Avatar from 'components/base/Avatar';
 import Button from 'components/ui/Button';
 import Chip from 'components/ui/Chip';
 import { AllFilterIdsTypes } from 'interfaces/filters';
@@ -176,12 +176,12 @@ const NftCard: React.FC<NftCardProps> = ({
               {isCreator && (
                 <SCreatorContainer onClick={(e) => manageRouting(e, creator)}>
                   <SCreatorPicture isHovering={isHovering}>
-                    <Picture
-                      isClickable
-                      isVerified={creatorData?.verified}
-                      name={creatorData?.name}
-                      picture={creatorData?.picture}
-                      walletId={creatorData?.walletId}
+                    <Avatar
+                      isPictureOnly
+                      isVerified={creatorData.verified}
+                      name={creatorData.name}
+                      picture={creatorData.picture}
+                      walletId={creatorData.walletId}
                     />
                   </SCreatorPicture>
                   <SCreatorName isHovering={isHovering}>{creatorData?.name || `Ternoa #${creator.slice(0, 5)}`}</SCreatorName>

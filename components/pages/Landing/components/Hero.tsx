@@ -38,7 +38,6 @@ const Hero = ({ capsDollarValue: _capsDollarValue, NFTs, mode }: HeroProps) => {
         </Link>
         {selectedNFT.creatorData && (
           <SAvatar
-            isClickable
             isVerified={selectedNFT.creatorData.verified}
             label="(Creator)"
             name={selectedNFT.creatorData.name}

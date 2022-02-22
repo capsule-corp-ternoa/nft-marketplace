@@ -225,7 +225,6 @@ const NFTPage = ({ NFT, type, isUserFromDappQR }: NFTPageProps) => {
             <SInfosContainer>
               <STopInfosContainer>
                 <Avatar
-                  isClickable
                   isVerified={NFT.creatorData?.verified}
                   name={NFT.creatorData?.name}
                   picture={NFT.creatorData?.picture}

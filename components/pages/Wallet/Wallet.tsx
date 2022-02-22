@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { AVATAR_VARIANT_BANNER, Picture } from 'components/base/Avatar';
+import Avatar, { AVATAR_VARIANT_BANNER } from 'components/base/Avatar';
 import Clipboard from 'components/base/Clipboard';
 import { Container, Title, Wrapper } from 'components/layout';
 import { UserType } from 'interfaces';
@@ -19,8 +19,8 @@ const Wallet = ({ user }: WalletProps) => {
       <Wrapper>
         <Title>My wallet</Title>
         <SWalletContainer>
-          <Picture
-            isClickable
+          <Avatar
+            isPictureOnly
             name={name}
             isVerified={verified}
             picture={picture}

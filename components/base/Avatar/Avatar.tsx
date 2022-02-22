@@ -15,7 +15,6 @@ import { getNameColor, getNameFontSize } from './utils';
 interface Props {
   className?: string;
   isAddressDisplayed?: boolean;
-  isClickable?: boolean;
   isDiscoverButton?: boolean;
   isNameEllipsis?: boolean;
   isPictureOnly?: boolean;
@@ -28,13 +27,12 @@ interface Props {
   picture?: string;
   twitterName?: string;
   variant?: AVATAR_VARIANT_TYPE;
-  walletId?: string;
+  walletId: string;
 }
 
 const Avatar = ({
   className,
   isAddressDisplayed,
-  isClickable,
   isDiscoverButton,
   isNameEllipsis,
   isPictureOnly,
@@ -51,7 +49,11 @@ const Avatar = ({
 }: Props) => {
   if (isPictureOnly) {
     return (
-      <Picture isClickable={isClickable} isTooltip={isTooltip} isVerified={isVerified} name={name} picture={picture} variant={variant} walletId={walletId} />
+      <Link href={`/${walletId}`} passHref>
+        <a>
+          <Picture isTooltip={isTooltip} isVerified={isVerified} name={name} picture={picture} variant={variant} />
+        </a>
+      </Link>
     );
   }
 
@@ -59,15 +61,17 @@ const Avatar = ({
     <SAvatarContainer className={className} variant={variant}>
       <SAvatarWrapper variant={variant}>
         <STransactionVariantWrapper variant={variant}>
-          <Picture
-            isClickable={isClickable}
-            isTooltip={isTooltip}
-            isVerified={isVerified}
-            name={name}
-            picture={picture}
-            variant={variant}
-            walletId={walletId}
-          />
+        <Link href={`/${walletId}`} passHref>
+            <a>
+              <Picture
+                isTooltip={isTooltip}
+                isVerified={isVerified}
+                name={name}
+                picture={picture}
+                variant={variant}
+              />
+            </a>
+          </Link>
         </STransactionVariantWrapper>
         <SDetailsContainer variant={variant}>
           <STopDetails>

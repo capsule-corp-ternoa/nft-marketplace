@@ -179,7 +179,6 @@ const Details: React.FC<DetailsProps> = ({
           </SStatusChipMobileWrapper>
           <SRowDatas>
             <Avatar
-              isClickable
               isNameEllipsis
               isVerified={verified}
               name={name}
@@ -241,7 +240,6 @@ const Details: React.FC<DetailsProps> = ({
           <SRowDatas>
             <Avatar
               isAddressDisplayed
-              isClickable
               isNameEllipsis
               isVerified={isTransactionCreationOrSale ? toData?.verified : fromData?.verified}
               name={isTransactionCreationOrSale ? toData?.name : fromData?.name}
@@ -306,7 +304,6 @@ const Details: React.FC<DetailsProps> = ({
                 <Chip color="primary200" size="medium" text="Creator" variant="round" />
               </SStatusChipWrapper>
               <Avatar
-                isClickable
                 isVerified={NFT.creatorData?.verified}
                 name={NFT.creatorData?.name}
                 picture={NFT.creatorData?.picture}

@@ -40,7 +40,6 @@ const ModalCheckout: React.FC<ModalCheckoutProps> = ({ setExpanded, setModalBuyE
               {creatorData && (
                 <SAvatarContainer>
                   <Avatar
-                    isClickable
                     isVerified={creatorData.verified}
                     name={creatorData.name}
                     picture={creatorData.picture}

@@ -8,7 +8,7 @@ import { UserType } from 'interfaces';
 import { useApp } from 'redux/hooks';
 import { FOLLOW_ACTION, FOLLOW_ACTION_TYPE, UNFOLLOW_ACTION } from 'utils/profile/constants';
 
-import Picture from './components/Picture';
+import Avatar from './Avatar';
 
 interface FollowAvatarProps {
   className?: string;
@@ -74,7 +74,7 @@ const FollowAvatar = ({ className, handleFollow, isVerified, name = 'Ternoa', pi
   return (
     <SAvatarContainer className={className}>
       <SAvatarWrapper>
-        <Picture isClickable isVerified={isVerified} name={name} picture={picture} walletId={profileWalletId} />
+        <Avatar isPictureOnly isVerified={isVerified} name={name} picture={picture} walletId={profileWalletId} />
         <SDetailsContainer>
           <STopDetails>
             <Link href={`/${profileWalletId}`} passHref>

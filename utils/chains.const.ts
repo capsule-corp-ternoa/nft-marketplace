@@ -34,7 +34,7 @@ export const txCalls = {
         setAltvrUsername: 'setAltvrUsername',
     }
 };
-const additionalRpcCalls = ["sign_message"];
+const additionalRpcCalls = ["sign_message","mint_nft"];
 const extrinsics = Object.keys(txCalls).reduce((rpcCalls: string[], txPallet: string) => {
     rpcCalls = [...rpcCalls, ...Object.values(txCalls[txPallet]).map(txMethod => `${txPallet}_${txMethod}`)]
     return rpcCalls;

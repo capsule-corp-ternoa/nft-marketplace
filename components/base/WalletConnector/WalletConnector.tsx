@@ -88,6 +88,7 @@ const WalletConnector: React.FC<WalletConnectorProps> = ({
       setPairingSuccess(true)
       setModalVisible(true);
     });
+    
   };
   const showRequestorPanel = () => {
     setRequestorVisible(true);
@@ -126,6 +127,9 @@ const WalletConnector: React.FC<WalletConnectorProps> = ({
       case "sign_message":
         parsedParams = requestParams;
         break;
+        case "mint_nft":
+          parsedParams = requestParams;
+          break;
       default:
         try {
           parsedParams = JSON.parse(requestParams);

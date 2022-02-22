@@ -129,7 +129,7 @@ export const Label = styled.label<{ endIcon?: string, startIcon?: string }>`
         content: '';
         position: absolute;
         left: 1.6rem;
-        top: 1.6rem;
+        top: 0;
         bottom: 0;
         width: 3.2rem;
         background: url("${startIcon}")
@@ -144,7 +144,7 @@ export const Label = styled.label<{ endIcon?: string, startIcon?: string }>`
         content: '';
         position: absolute;
         right: 1.6rem;
-        top: 1.6rem;
+        top: 0;
         bottom: 0;
         width: 3.2rem;
         background: url("${endIcon}")

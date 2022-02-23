@@ -213,7 +213,6 @@ const SLabel = styled.label`
   margin: 0 auto 4rem;
   transition: transform 0.4s ease;
   cursor: pointer;
-  touch-action: none;
 `;
 
 export default Showcase3D;

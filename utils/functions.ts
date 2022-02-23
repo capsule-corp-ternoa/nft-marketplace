@@ -73,7 +73,9 @@ export const emojiMapping = (s: string) => {
   else if (s.localeCompare('art', undefined, { sensitivity: 'base' }) === 0) return '🎨';
   else if (s.localeCompare('photo', undefined, { sensitivity: 'base' }) === 0) return '📸';
   else if (s.localeCompare('games', undefined, { sensitivity: 'base' }) === 0) return '👾';
-  
+  else if (s.localeCompare('meme', undefined, { sensitivity: 'base' }) === 0) return '🤡';
+  else if (s.localeCompare('design', undefined, { sensitivity: 'base' }) === 0) return '✨';
+
   return undefined;
 };
 

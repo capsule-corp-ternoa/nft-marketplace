@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
@@ -26,8 +26,6 @@ export interface ShowcaseProps {
 }
 
 const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category }) => {
-  const [isDragging, setIsDragging] = useState(false);
-
   let carousel: Carousel | null = new Carousel({
     responsive: {},
     children: <></>,
@@ -58,15 +56,10 @@ const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category }) => {
           />
         </SNavContainer>
       </STopContainer>
-      <SNftsContainer
-        onMouseDown={() => setIsDragging(false)}
-        onMouseMove={() => setIsDragging(true)}
-        onTouchStart={() => setIsDragging(false)}
-        onTouchMove={() => setIsDragging(true)}
-      >
+      <SNftsContainer>
         <SNftsMobileContainer>
           {NFTs.map((item) => (
-            <NftCard key={item.id} notClickeable={isDragging} item={item} />
+            <NftCard key={item.id} item={item} />
           ))}
         </SNftsMobileContainer>
         <SNftsCarouselContainer
@@ -80,7 +73,7 @@ const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category }) => {
           swipeable={true}
         >
           {NFTs.map((item) => (
-            <NftCard key={item.id} notClickeable={isDragging} item={item} />
+            <NftCard key={item.id} item={item} />
           ))}
         </SNftsCarouselContainer>
       </SNftsContainer>

@@ -118,7 +118,7 @@ const NftCard: React.FC<NftCardProps> = ({
   }, []);
 
   return (
-    <SMediaWrapper
+    <SMediaContainer
       className={className}
       onFocus={() => false}
       onBlur={() => false}
@@ -126,13 +126,15 @@ const NftCard: React.FC<NftCardProps> = ({
       onMouseOver={() => !noHover && setIsHovering(true)}
     >
       {notClickeable ? (
-        <Media
-          src={item.properties?.preview.ipfs!}
-          type={type}
-          alt="imgnft"
-          draggable="false"
-          isHovering={isHovering}
-        />
+        <SMediaWrapper>
+          <Media
+            src={item.properties?.preview.ipfs!}
+            type={type}
+            alt="imgnft"
+            draggable="false"
+            isHovering={isHovering}
+          />
+        </SMediaWrapper>
       ) : (
         <Link href={`/nft/${item.id}`} passHref>
           <SMediaLink isHovering={isHovering}>
@@ -207,7 +209,7 @@ const NftCard: React.FC<NftCardProps> = ({
           </SInfosContainer>
         </>
       )}
-    </SMediaWrapper>
+    </SMediaContainer>
   );
 };
 
@@ -239,7 +241,7 @@ const shadowBackground = css<{ isHovering: boolean }>`
   }
 `;
 
-const SMediaWrapper = styled.div`
+const SMediaContainer = styled.div`
   display: flex;
   align-items: center;
   position: relative;
@@ -257,6 +259,13 @@ const SMediaWrapper = styled.div`
     height: ${({ theme }) => theme.sizes.cardHeight.md};
     width: ${({ theme }) => theme.sizes.cardWidth.md};
   }
+`;
+
+const SMediaWrapper = styled.div`
+  height: 100%;
+  width: 100%;
+  display: flex;
+  position: absolute;
 `;
 
 const SMediaLink = styled.a<{ isHovering: boolean }>`

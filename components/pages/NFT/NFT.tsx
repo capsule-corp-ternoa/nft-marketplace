@@ -317,7 +317,7 @@ const NFTPage = ({ NFT, type, isUserFromDappQR }: NFTPageProps) => {
         </Wrapper>
         {byTheSameArtistNFTs.length > 0 && (
           <Wrapper>
-            <Showcase category="By the same artist" NFTs={byTheSameArtistNFTs} />
+            <Showcase title="By the same artist" NFTs={byTheSameArtistNFTs} />
           </Wrapper>
         )}
       </Container>

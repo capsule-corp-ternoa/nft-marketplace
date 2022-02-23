@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 import NoNFTComponent, { NO_NFT_VARIANT_SOLD_OUT } from 'components/base/NoNFTComponent';
 import { Container, Wrapper } from 'components/layout';
 import { UserType, NftType } from 'interfaces/index';
+import { MOST_LIKED_SORT, MOST_SOLD_SERIES_SORT } from 'utils/constant';
 
 import Hero from './components/Hero';
 import UsersShowcase from './components/UsersShowcase';
@@ -49,12 +50,12 @@ const Landing = ({ capsDollarValue, heroNFTs, mostFollowedUsers, popularNfts, be
     )}
     {popularNfts.length > 0 && (
       <Wrapper>
-        <Showcase category="Most popular" NFTs={popularNfts} />
+        <Showcase title="Most popular" NFTs={popularNfts} href={`/explore?sort=${MOST_LIKED_SORT}`} />
       </Wrapper>
     )}
     {bestSellingNfts.length > 0 && (
       <Wrapper>
-        <Showcase category="Best sellers" NFTs={bestSellingNfts} />
+        <Showcase title="Best sellers" NFTs={bestSellingNfts} href={`/explore?sort=${MOST_SOLD_SERIES_SORT}`} />
       </Wrapper>
     )}
     {topSellersUsers.length > 0 && (

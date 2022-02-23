@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { useDrag } from '@use-gesture/react';
 import styled from 'styled-components';
 
@@ -11,10 +12,11 @@ const DRAGGING_OFFSET = 40;
 
 export interface ShowcaseProps {
   NFTs: NftType[];
-  category: string;
+  title: string;
+  href?: string;
 }
 
-const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category }) => {
+const Showcase: React.FC<ShowcaseProps> = ({ NFTs, title, href }) => {
   const [isDragging, setIsDragging] = useState(false);
 
   const bind = useDrag(async ({ movement: [x] }) => {
@@ -33,7 +35,12 @@ const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category }) => {
   return (
     <SShowcaseContainer>
       <STopContainer>
-        <STitle>{category}</STitle>
+        <STitle>{title}</STitle>
+        {href !== undefined && (
+          <Link href={href} passHref>
+            <SLink href={href}>SEE ALL</SLink>
+          </Link>
+        )}
       </STopContainer>
       <SNftsContainer {...bind()}>
         {NFTs.map((item) => (
@@ -66,6 +73,16 @@ const STitle = styled.h3`
 
   ${({ theme }) => theme.mediaQueries.lg} {
     font-size: 3.2rem;
+  }
+`;
+
+const SLink = styled.a`
+  color: ${({ theme }) => theme.colors.neutral500};
+  font-family: ${({ theme }) => theme.fonts.bold};
+  font-size: 1.6rem;
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.primary500};
   }
 `;
 

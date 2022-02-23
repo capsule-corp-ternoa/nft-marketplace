@@ -81,21 +81,21 @@ export const emojiMapping = (s: string) => {
 
 export const sortPromiseMapping = (sort: Partial<SortTypesType>, currentPage: number): Promise<CustomResponse<NftType>> | null => {
   if (sort[MOST_LIKED_SORT] === true) {
-    return getMostLikedNFTs((currentPage + 1).toString());
+    return getMostLikedNFTs((currentPage + 1).toString(), undefined, true);
   } else if (sort[MOST_SOLD_SORT] === true) {
-    return getMostSoldNFTs((currentPage + 1).toString());
+    return getMostSoldNFTs((currentPage + 1).toString(), undefined, true);
   } else if (sort[MOST_SOLD_SERIES_SORT] === true) {
-    return getMostSoldSeries((currentPage + 1).toString());
+    return getMostSoldSeries((currentPage + 1).toString(), undefined, true);
   } else if (sort[MOST_VIEWED_SORT] === true) {
-    return getMostViewedNFTs((currentPage + 1).toString());
+    return getMostViewedNFTs((currentPage + 1).toString(), undefined, true);
   } else if (sort[DATE_ASC_SORT] === true) {
-    return getNFTs((currentPage + 1).toString(), undefined, { listed: true }, SORT_OPTION_TIMESTAMP_CREATE_ASC);
+    return getNFTs((currentPage + 1).toString(), undefined, { listed: true }, SORT_OPTION_TIMESTAMP_CREATE_ASC, true);
   } else if (sort[DATE_DESC_SORT] === true) {
-    return getNFTs((currentPage + 1).toString(), undefined, { listed: true }, SORT_OPTION_TIMESTAMP_CREATE_DESC);
+    return getNFTs((currentPage + 1).toString(), undefined, { listed: true }, SORT_OPTION_TIMESTAMP_CREATE_DESC, true);
   } else if (sort[PRICE_ASC_SORT] === true) {
-    return getNFTs((currentPage + 1).toString(), undefined, { listed: true }, SORT_OPTION_PRICE_ASC);
+    return getNFTs((currentPage + 1).toString(), undefined, { listed: true }, SORT_OPTION_PRICE_ASC, true);
   } else if (sort[PRICE_DESC_SORT] === true) {
-    return getNFTs((currentPage + 1).toString(), undefined, { listed: true }, SORT_OPTION_PRICE_DESC);
+    return getNFTs((currentPage + 1).toString(), undefined, { listed: true }, SORT_OPTION_PRICE_DESC, true);
   } else {
     return null
   }

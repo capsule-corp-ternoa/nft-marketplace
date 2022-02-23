@@ -84,7 +84,7 @@ const ModalFilters = ({
         timestampCreateEndRange: dayjs(new Date(endDateRange)).isValid() ? new Date(endDateRange) : undefined,
       };
 
-      const { data, hasNextPage } = (await getNFTs('1', undefined, filterOptions)) ?? {
+      const { data, hasNextPage } = (await getNFTs('1', undefined, filterOptions, undefined, true)) ?? {
         data: [],
         hasNextPage: false,
       };

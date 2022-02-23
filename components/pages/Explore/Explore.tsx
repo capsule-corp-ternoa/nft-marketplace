@@ -28,7 +28,7 @@ const getFilteredNfts = (filtersSort: FiltersType & SortTypesType, currentPage: 
     priceEndRange: maxPrice > 0 ? maxPrice : undefined,
     timestampCreateStartRange: dayjs(new Date(startDateRange)).isValid() ? new Date(startDateRange) : undefined,
     timestampCreateEndRange: dayjs(new Date(endDateRange)).isValid() ? new Date(endDateRange) : undefined,
-  });
+  }, undefined, true);
 };
 
 const getFilterValueWording = (currentFilter: AllFilterIdsTypes | undefined, filtersSort: FiltersType & SortTypesType) => {

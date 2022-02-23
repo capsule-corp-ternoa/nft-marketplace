@@ -54,21 +54,21 @@ const ModalSort = ({ handleClearSort, setData, setDataHasNextPage, setDataCurren
         let res: CustomResponse<NftType> = { data: [], hasNextPage: false, hasPreviousPage: false };
 
         if (sort === DATE_ASC_SORT) {
-          res = await getNFTs('1', undefined, { listed: true }, SORT_OPTION_TIMESTAMP_CREATE_ASC);
+          res = await getNFTs('1', undefined, { listed: true }, SORT_OPTION_TIMESTAMP_CREATE_ASC, true);
         } else if (sort === DATE_DESC_SORT) {
-          res = await getNFTs('1', undefined, { listed: true }, SORT_OPTION_TIMESTAMP_CREATE_DESC);
+          res = await getNFTs('1', undefined, { listed: true }, SORT_OPTION_TIMESTAMP_CREATE_DESC, true);
         } else if (sort === PRICE_ASC_SORT) {
-          res = await getNFTs('1', undefined, { listed: true }, SORT_OPTION_PRICE_ASC);
+          res = await getNFTs('1', undefined, { listed: true }, SORT_OPTION_PRICE_ASC, true);
         } else if (sort === PRICE_DESC_SORT) {
-          res = await getNFTs('1', undefined, { listed: true }, SORT_OPTION_PRICE_DESC);
+          res = await getNFTs('1', undefined, { listed: true }, SORT_OPTION_PRICE_DESC, true);
         } else if (sort === MOST_LIKED_SORT) {
-          res = await getMostLikedNFTs();
+          res = await getMostLikedNFTs('1', undefined, true);
         } else if (sort === MOST_SOLD_SORT) {
-          res = await getMostSoldNFTs();
+          res = await getMostSoldNFTs('1', undefined, true);
         } else if (sort === MOST_SOLD_SERIES_SORT) {
-          res = await getMostSoldSeries();
+          res = await getMostSoldSeries('1', undefined, true);
         } else {
-          res = await getMostViewedNFTs();
+          res = await getMostViewedNFTs('1', undefined, true);
         }
 
         router.push({ pathname: router.pathname, query: `sort=${sort}` }, undefined, { shallow: true });

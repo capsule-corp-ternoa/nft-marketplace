@@ -172,8 +172,8 @@ type FilteredNFTsOptionsType = {
   timestampCreateStartRange?: Date,
   timestampCreateEndRange?: Date,
 };
-export const getTotalFilteredNFTsOnMarketplace = async (filterOptions: FilteredNFTsOptionsType = {}): Promise<number> => {
-  const res = await fetch(`${NODE_API_URL}/api/nfts/total-filtered/?filter=${JSON.stringify({ ...filterOptions, marketplaceId: Number(MARKETPLACE_ID) })}`)
+export const getTotalFilteredNFTsOnMarketplace = async (filterOptions: FilteredNFTsOptionsType = {}, useCache = false): Promise<number> => {
+  const res = await fetch(`${NODE_API_URL}/api/nfts/total-filtered/?filter=${JSON.stringify({ ...filterOptions, marketplaceId: Number(MARKETPLACE_ID) })}&useCache300=${useCache}`)
   if (!res.ok) throw new Error('error fetching NFT total');
   let result = await res.json()
   return result;

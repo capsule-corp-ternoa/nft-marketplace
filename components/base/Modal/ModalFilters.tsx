@@ -88,7 +88,7 @@ const ModalFilters = ({
         data: [],
         hasNextPage: false,
       };
-      const newTotalCount = (await getTotalFilteredNFTsOnMarketplace(filterOptions)) ?? 0;
+      const newTotalCount = (await getTotalFilteredNFTsOnMarketplace(filterOptions, true)) ?? 0;
 
       if (query !== undefined) router.push({ pathname: router.pathname, query }, undefined, { shallow: true });
       setDataTotalCount(newTotalCount);

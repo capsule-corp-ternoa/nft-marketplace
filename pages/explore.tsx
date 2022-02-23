@@ -67,7 +67,7 @@ export async function getServerSideProps(context: NextPageContext) {
     console.log(error);
   }
 
-  const totalCountPromise = typeof filter === 'string' ? getTotalFilteredNFTsOnMarketplace(filterOptions) : getTotalOnSaleOnMarketplace();
+  const totalCountPromise = typeof filter === 'string' ? getTotalFilteredNFTsOnMarketplace(filterOptions, true) : getTotalOnSaleOnMarketplace();
   try {
     totalCount = await totalCountPromise;
   } catch (error) {

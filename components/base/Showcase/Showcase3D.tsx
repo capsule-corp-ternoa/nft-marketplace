@@ -36,6 +36,8 @@ const Showcase3D = ({ list, selectedIdx, setSelectedItem }: Props) => {
   },
   {
     preventScroll: true,
+    preventDefault: true,
+    filterTaps: true
   });
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

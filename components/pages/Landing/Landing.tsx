@@ -42,24 +42,24 @@ const Landing = ({ capsDollarValue, heroNFTs, mostFollowedUsers, popularNfts, be
         />
       )}
     </Wrapper>
-    {mostFollowedUsers.length > 11 && (
+    {mostFollowedUsers.length > 0 && (
       <Wrapper>
-        <UsersShowcase title="Trending artists" users={mostFollowedUsers.slice(0, 12)} />
+        <UsersShowcase title="Trending artists" users={mostFollowedUsers} />
       </Wrapper>
     )}
-    {popularNfts.length > 5 && (
+    {popularNfts.length > 0 && (
       <Wrapper>
-        <Showcase category="Most popular" NFTs={popularNfts.slice(0, 6)} />
+        <Showcase category="Most popular" NFTs={popularNfts} />
       </Wrapper>
     )}
-    {bestSellingNfts.length > 5 && (
+    {bestSellingNfts.length > 0 && (
       <Wrapper>
-        <Showcase category="Best sellers" NFTs={bestSellingNfts.slice(0, 6)} />
+        <Showcase category="Best sellers" NFTs={bestSellingNfts} />
       </Wrapper>
     )}
-    {topSellersUsers.length > 11 && (
+    {topSellersUsers.length > 0 && (
       <Wrapper>
-        <UsersShowcase title="Top Sellers" users={topSellersUsers.slice(0, 12)} />
+        <UsersShowcase title="Top Sellers" users={topSellersUsers} />
       </Wrapper>
     )}
   </Container>

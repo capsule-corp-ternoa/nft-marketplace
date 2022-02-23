@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { AVATAR_VARIANT_MOSAIC, Picture } from 'components/base/Avatar';
+import Avatar, { AVATAR_VARIANT_MOSAIC } from 'components/base/Avatar';
 import { UserType } from 'interfaces';
 
 interface Props {
@@ -14,7 +14,7 @@ const UsersShowcase = ({ title, users }: Props) => (
     {title && <STitle>{title}</STitle>}
     <SUsersContainer>
       {users.map(({ _id, name, picture, verified, walletId }) => (
-        <SPicture key={_id} isClickable isTooltip isVerified={verified} name={name} picture={picture} variant={AVATAR_VARIANT_MOSAIC} walletId={walletId} />
+      <SAvatar key={_id} isPictureOnly isTooltip isVerified={verified} name={name} picture={picture} variant={AVATAR_VARIANT_MOSAIC} walletId={walletId} />
       ))}
     </SUsersContainer>
   </>
@@ -40,19 +40,14 @@ const SUsersContainer = styled.div`
   overflow-x: auto;
   min-height: 11rem;
 
-  > * {
-    flex: 1;
-  }
-
   ${({ theme }) => theme.mediaQueries.xxl} {
     min-height: auto;
     overflow-x: visible;
   }
 `;
 
-const SPicture = styled(Picture)`
+const SAvatar = styled(Avatar)`
   > span {
-    left: 43%;
     display: none !important;
   }
 

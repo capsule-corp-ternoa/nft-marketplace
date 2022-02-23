@@ -118,7 +118,7 @@ export async function getServerSideProps() {
   );
   promises.push(
     new Promise<void>((success) => {
-      getMostLikedNFTs()
+      getMostLikedNFTs("1", "6")
         .then((result) => {
           popularNfts = result.data;
           success();
@@ -128,7 +128,7 @@ export async function getServerSideProps() {
   );
   promises.push(
     new Promise<void>((success) => {
-      getMostSoldSeries()
+      getMostSoldSeries("1", "6")
         .then((result) => {
           bestSellingNfts = result.data;
           success();

@@ -50,7 +50,7 @@ const Avatar = ({
     return (
       <Link href={`/${walletId}`}>
         <a>
-          <Picture isTooltip={isTooltip} isVerified={isVerified} name={name} picture={picture} variant={variant} />
+          <Picture className={className} isTooltip={isTooltip} isVerified={isVerified} name={name} picture={picture} variant={variant} />
         </a>
       </Link>
     );

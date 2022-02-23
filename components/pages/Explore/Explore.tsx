@@ -28,7 +28,7 @@ const getFilteredNfts = (filtersSort: FiltersType & SortTypesType, currentPage: 
     priceEndRange: maxPrice > 0 ? maxPrice : undefined,
     timestampCreateStartRange: dayjs(new Date(startDateRange)).isValid() ? new Date(startDateRange) : undefined,
     timestampCreateEndRange: dayjs(new Date(endDateRange)).isValid() ? new Date(endDateRange) : undefined,
-  });
+  }, undefined, true);
 };
 
 const getFilterValueWording = (currentFilter: AllFilterIdsTypes | undefined, filtersSort: FiltersType & SortTypesType) => {
@@ -58,7 +58,7 @@ const getFilterValueWording = (currentFilter: AllFilterIdsTypes | undefined, fil
             const bBit = emojiMapping(b.code) === undefined ? 1 : 0;
             return aBit - bBit;
           })
-          .map(({ code, name }) => `${emojiMapping(code)} ${name}`)
+          .map(({ code, name }) => emojiMapping(code) !== undefined ? `${emojiMapping(code)} ${name}` : name)
           .join(' - ')
       );
     }

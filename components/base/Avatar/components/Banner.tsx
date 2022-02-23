@@ -14,7 +14,7 @@ interface Props {
   nickname?: string;
   picture?: string;
   twitterName?: string;
-  walletId?: string;
+  walletId: string;
 }
 
 const Banner = ({

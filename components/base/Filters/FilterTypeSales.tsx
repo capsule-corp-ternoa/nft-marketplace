@@ -10,7 +10,7 @@ const FilterTypeSales = () => (
     <SFilterSubtitle>Filter your search based on your type of purchase</SFilterSubtitle>
     <STypeSalesContainer>
       <Button color="primary500" emoji="🛒 " size="small" text="Direct sales" variant="contained" />
-      <Button color="invertedContrast" disabled emoji="🏷 " size="small" text="Auction" variant="outlined" />
+      <Button color="invertedContrast" disabled emoji="⏳ " size="small" text="Auction" variant="outlined" />
     </STypeSalesContainer>
   </div>
 );

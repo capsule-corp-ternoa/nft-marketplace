@@ -1,6 +1,5 @@
 import React from 'react';
 import Link from 'next/link';
-import Router from 'next/router';
 import styled from 'styled-components';
 
 import Clipboard from 'components/base/Clipboard';
@@ -15,7 +14,6 @@ import { getNameColor, getNameFontSize } from './utils';
 interface Props {
   className?: string;
   isAddressDisplayed?: boolean;
-  isClickable?: boolean;
   isDiscoverButton?: boolean;
   isNameEllipsis?: boolean;
   isPictureOnly?: boolean;
@@ -28,13 +26,12 @@ interface Props {
   picture?: string;
   twitterName?: string;
   variant?: AVATAR_VARIANT_TYPE;
-  walletId?: string;
+  walletId: string;
 }
 
 const Avatar = ({
   className,
   isAddressDisplayed,
-  isClickable,
   isDiscoverButton,
   isNameEllipsis,
   isPictureOnly,
@@ -51,7 +48,11 @@ const Avatar = ({
 }: Props) => {
   if (isPictureOnly) {
     return (
-      <Picture isClickable={isClickable} isTooltip={isTooltip} isVerified={isVerified} name={name} picture={picture} variant={variant} walletId={walletId} />
+      <Link href={`/user/${walletId}`}>
+        <a>
+          <Picture className={className} isTooltip={isTooltip} isVerified={isVerified} name={name} picture={picture} variant={variant} />
+        </a>
+      </Link>
     );
   }
 
@@ -59,20 +60,22 @@ const Avatar = ({
     <SAvatarContainer className={className} variant={variant}>
       <SAvatarWrapper variant={variant}>
         <STransactionVariantWrapper variant={variant}>
-          <Picture
-            isClickable={isClickable}
-            isTooltip={isTooltip}
-            isVerified={isVerified}
-            name={name}
-            picture={picture}
-            variant={variant}
-            walletId={walletId}
-          />
+        <Link href={`/user/${walletId}`}>
+            <a>
+              <Picture
+                isTooltip={isTooltip}
+                isVerified={isVerified}
+                name={name}
+                picture={picture}
+                variant={variant}
+              />
+            </a>
+          </Link>
         </STransactionVariantWrapper>
         <SDetailsContainer variant={variant}>
           <STopDetails>
-            <Link href={`/${walletId}`} passHref>
-              <SName href={`/${walletId}`} isNameEllipsis={isNameEllipsis} variant={variant}>
+            <Link href={`/user/${walletId}`} passHref>
+              <SName href={`/user/${walletId}`} isNameEllipsis={isNameEllipsis} variant={variant}>
                 {name}
               </SName>
             </Link>
@@ -102,7 +105,11 @@ const Avatar = ({
           </SBottomDetails>
         </SDetailsContainer>
       </SAvatarWrapper>
-      {isDiscoverButton && <SDiscoverButton color="primary200" onClick={() => walletId && Router.push(`/${walletId}`)} size="small" text="Discover" />}
+      {isDiscoverButton && (
+        <Link href={`/user/${walletId}`} passHref>
+          <SDiscoverButton color="primary200" href={`/user/${walletId}`} size="small" text="Discover" />
+        </Link>
+      )}
     </SAvatarContainer>
   );
 };

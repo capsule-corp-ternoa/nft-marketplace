@@ -1,5 +1,4 @@
 import React from 'react';
-import Router from 'next/router';
 import styled, { css } from 'styled-components';
 import gradient from 'random-gradient';
 
@@ -11,28 +10,21 @@ import { getPictureSize, getPictureFontSize } from '../utils';
 interface Props {
   className?: string;
   isBanner?: boolean;
-  isClickable?: boolean;
   isTooltip?: boolean;
   isVerified?: boolean;
   name?: string;
   picture?: string;
   variant?: AVATAR_VARIANT_TYPE;
-  walletId?: string;
 }
 
-const Picture = ({ className, isClickable = false, isTooltip = false, isVerified, name = 'Ternoa', picture, variant, walletId }: Props) => (
-  <SPictureContainer
-    className={className}
-    isClickable={isClickable}
-    isTooltip={isTooltip}
-    onClick={() => isClickable && walletId && Router.push(`/${walletId}`)}
-  >
+const Picture = ({ className, isTooltip = false, isVerified, name = 'Ternoa', picture, variant }: Props) => (
+  <SPictureContainer className={className} isTooltip={isTooltip}>
     <SPictureWrapper variant={variant}>
       {isVerified && <SIcon name="badge" />}
       {picture ? (
-        <SImage draggable="false" isClickable={isClickable} src={picture} />
+        <SImage draggable="false" src={picture} />
       ) : (
-        <SInitials isClickable={isClickable} name={name}>
+        <SInitials name={name}>
           <SLetter variant={variant}>{name?.charAt(0) ?? 'T'}</SLetter>
         </SInitials>
       )}
@@ -41,9 +33,8 @@ const Picture = ({ className, isClickable = false, isTooltip = false, isVerified
   </SPictureContainer>
 );
 
-const SPictureContainer = styled.div<{ isClickable?: boolean; isTooltip?: boolean }>`
+const SPictureContainer = styled.div<{ isTooltip?: boolean }>`
   position: relative;
-  cursor: ${({ isClickable }) => (isClickable ? 'pointer' : 'default')};
 
   > span {
     display: none;
@@ -77,7 +68,7 @@ const SIcon = styled(Icon)`
   z-index: 10;
 `;
 
-const ImageStyle = css<{ isClickable?: boolean }>`
+const ImageStyle = css`
   object-fit: cover;
   width: 100%;
   height: 100%;
@@ -89,22 +80,17 @@ const ImageStyle = css<{ isClickable?: boolean }>`
   position: absolute;
   transition: border 0.05s ease-out;
 
-  ${({ isClickable, theme }) =>
-    isClickable &&
-    `
-      &:hover {
-        border: 3px solid;
-        border-color: ${theme.colors.primary500};
-      }
-    }
-  `}
+  &:hover {
+    border: 3px solid;
+    border-color: ${({ theme }) => theme.colors.primary500};
+  }
 `;
 
 const SImage = styled.img`
   ${ImageStyle}
 `;
 
-const SInitials = styled.div<{ isClickable?: boolean; name: string }>`
+const SInitials = styled.div<{ name: string }>`
   ${ImageStyle}
 
   background: ${({ name }) => gradient(name)};

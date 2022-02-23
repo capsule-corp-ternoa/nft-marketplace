@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import styled, { css } from 'styled-components';
-import Router, { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 
 import { likeNFT, unlikeNFT } from 'actions/nft';
-import { Picture } from 'components/base/Avatar';
+import Avatar from 'components/base/Avatar';
 import Button from 'components/ui/Button';
 import Chip from 'components/ui/Chip';
 import { AllFilterIdsTypes } from 'interfaces/filters';
@@ -17,12 +17,13 @@ import { LIKE_ACTION, LIKE_ACTION_TYPE, UNLIKE_ACTION } from 'utils/profile/cons
 import { computeCaps } from 'utils/strings';
 
 import Media from '../Media';
+import Link from 'next/link';
 
 export interface NftCardProps {
   className?: string;
   handleLike?: (action: LIKE_ACTION_TYPE, nft?: NftType) => void;
   item: NftType;
-  noClikeable?: boolean;
+  notClickeable?: boolean;
   noHover?: boolean;
   noStatsChips?: boolean;
   noAvailableChip?: boolean;
@@ -31,16 +32,11 @@ export interface NftCardProps {
   quantity?: number;
 }
 
-function manageRouting(e: React.MouseEvent<HTMLDivElement, MouseEvent>, id: string) {
-  e.stopPropagation();
-  Router.push(`/${id}`);
-}
-
 const NftCard: React.FC<NftCardProps> = ({
   className,
   handleLike,
   item,
-  noClikeable = false,
+  notClickeable = false,
   noHover = false,
   noStatsChips = false,
   noAvailableChip = false,
@@ -55,7 +51,9 @@ const NftCard: React.FC<NftCardProps> = ({
 
   const [isHovering, setIsHovering] = useState(false);
   const [isLiked, setIsLiked] = useState(
-    (serieId === '0' ? user?.likedNFTs?.some(({ nftId }) => nftId === item.id) : user?.likedNFTs?.some(({ serieId }) => serieId === item.serieId)) ?? false
+    (serieId === '0'
+      ? user?.likedNFTs?.some(({ nftId }) => nftId === item.id)
+      : user?.likedNFTs?.some(({ serieId }) => serieId === item.serieId)) ?? false
   );
   const [likeLoading, setLikeLoading] = useState(false);
   const [type, setType] = useState<string | null>(null);
@@ -71,10 +69,6 @@ const NftCard: React.FC<NftCardProps> = ({
   const priceWording = isPrice ? `${computeCaps(Number(isPriceFilterActive ? price : smallestPrice))} CAPS` : undefined;
   const defaultQuantityAvailable = (isFilterActive && totalFiltered) || (totalListedInMarketplace ?? totalListedNft ?? 1);
   const quantityAvailable = quantity ?? defaultQuantityAvailable;
-
-  // Filter gradients flags
-  const isTopFilter = (quantityAvailable > 1 && !noAvailableChip) || (isSecret && !noSecretChip);
-  const isBottomFilter = isPrice && !noPriceChip;
 
   const toggleLikeDislike = async () => {
     try {
@@ -101,8 +95,9 @@ const NftCard: React.FC<NftCardProps> = ({
 
   useEffect(() => {
     setIsLiked(
-      (serieId === '0' ? user?.likedNFTs?.some(({ nftId }) => nftId === item.id) : user?.likedNFTs?.some(({ serieId }) => serieId === item.serieId)) ??
-        false
+      (serieId === '0'
+        ? user?.likedNFTs?.some(({ nftId }) => nftId === item.id)
+        : user?.likedNFTs?.some(({ serieId }) => serieId === item.serieId)) ?? false
     );
   }, [user?.likedNFTs]);
 
@@ -125,81 +120,126 @@ const NftCard: React.FC<NftCardProps> = ({
   return (
     <SMediaWrapper
       className={className}
-      noClikeable={noClikeable}
-      onClick={() => !noClikeable && Router.push(`/nft/${item.id}`)}
       onFocus={() => false}
       onBlur={() => false}
       onMouseOut={() => !noHover && setIsHovering(false)}
       onMouseOver={() => !noHover && setIsHovering(true)}
     >
-      <Media src={item.properties?.preview.ipfs!} type={type} alt="imgnft" draggable="false" isHovering={isHovering} />
+      {notClickeable ? (
+        <Media
+          src={item.properties?.preview.ipfs!}
+          type={type}
+          alt="imgnft"
+          draggable="false"
+          isHovering={isHovering}
+        />
+      ) : (
+        <Link href={`/nft/${item.id}`} passHref>
+          <SMediaLink isHovering={isHovering}>
+            <Media
+              src={item.properties?.preview.ipfs!}
+              type={type}
+              alt="imgnft"
+              draggable="false"
+              isHovering={isHovering}
+            />
+          </SMediaLink>
+        </Link>
+      )}
       {!noStatsChips && (
         <>
           {quantityAvailable > 1 && !noAvailableChip && !isHovering && (
-            <SAvailableChipWrapper>
-              <Chip color="whiteBlur" size="small" text={`${quantityAvailable} of ${totalNft}`} variant="round" />
-            </SAvailableChipWrapper>
+            <SAvailableChip
+              color="whiteBlur"
+              size="small"
+              text={`${quantityAvailable} of ${totalNft}`}
+              variant="round"
+            />
           )}
           {isSecret && !noSecretChip && !isHovering && (
-            <SSecretChipWrapper>
-              <Chip color="whiteBlur" icon="secretCards" size="small" text="Secret" variant="round" />
-            </SSecretChipWrapper>
+            <SSecretChip color="whiteBlur" icon="secretCards" size="small" text="Secret" variant="round" />
           )}
           {priceWording && !noPriceChip && !isHovering && (
-            <SPriceChipWrapper>
-              <Chip color="whiteBlur" size="small" text={priceWording} variant="round" />
-            </SPriceChipWrapper>
+            <SPriceChip color="whiteBlur" size="small" text={priceWording} variant="round" />
           )}
-          <SChipsFilter isTopFilter={isTopFilter} isBottomFilter={isBottomFilter} />
         </>
       )}
       {!noHover && (
         <>
-          <SHoverFilter isHovering={isHovering} />
-          <SHoverContainer isHovering={isHovering}>
-            <SLikeButtonContainer isHovering={isHovering}>
-              <Button
-                color={isLiked ? 'primary500' : 'neutral600'}
-                disabled={!isUserLogged || likeLoading}
-                icon="heart"
-                isLoading={likeLoading}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggleLikeDislike();
-                }}
-                size="small"
-                suppressHydrationWarning
-                variant="contained"
-              />
-            </SLikeButtonContainer>
-            <SInfosContainer>
-              {isCreator && (
-                <SCreatorContainer onClick={(e) => manageRouting(e, creator)}>
-                  <SCreatorPicture isHovering={isHovering}>
-                    <Picture
-                      isClickable
-                      isVerified={creatorData?.verified}
-                      name={creatorData?.name}
-                      picture={creatorData?.picture}
-                      walletId={creatorData?.walletId}
-                    />
-                  </SCreatorPicture>
-                  <SCreatorName isHovering={isHovering}>{creatorData?.name || `Ternoa #${creator.slice(0, 5)}`}</SCreatorName>
-                </SCreatorContainer>
-              )}
-              {priceWording && (
-                <SPriceWrapper isHovering={isHovering}>                  <Chip color="whiteBlur" size="small" text={priceWording} variant="round" />
-                </SPriceWrapper>
-              )}
-            </SInfosContainer>
-          </SHoverContainer>
+          <SLikeButtonContainer isHovering={isHovering}>
+            <Button
+              color={isLiked ? 'primary500' : 'neutral400'}
+              disabled={!isUserLogged || likeLoading}
+              icon="heart"
+              isLoading={likeLoading}
+              onClick={toggleLikeDislike}
+              size="small"
+              suppressHydrationWarning
+              variant="contained"
+            />
+          </SLikeButtonContainer>
+          <SInfosContainer isHovering={isHovering}>
+            {isCreator && (
+              <SCreatorContainer>
+                <SCreatorPicture isHovering={isHovering}>
+                  <Avatar
+                    isPictureOnly
+                    isVerified={creatorData.verified}
+                    name={creatorData.name}
+                    picture={creatorData.picture}
+                    walletId={creatorData.walletId}
+                  />
+                </SCreatorPicture>
+                <SCreatorName isHovering={isHovering}>
+                  <Link href={`/${creatorData.walletId}`}>
+                    <a>
+                      {creatorData.name || `Ternoa #${creator.slice(0, 5)}`}
+                    </a>
+                  </Link>
+                </SCreatorName>
+              </SCreatorContainer>
+            )}
+            {priceWording && (
+              <SPriceWrapper isHovering={isHovering}>
+                <Chip color="whiteBlur" size="small" text={priceWording} variant="round" />
+              </SPriceWrapper>
+            )}
+          </SInfosContainer>
         </>
       )}
     </SMediaWrapper>
   );
 };
 
-const SMediaWrapper = styled.div<{ noClikeable?: boolean }>`
+const ySlideStyle = css<{ isHovering: boolean }>`
+  animation: ${ySlide('40px', '0px')} 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+  animation-fill-mode: forwards;
+`;
+
+const ySlideFadeStyle = css<{ isHovering: boolean }>`
+  animation: ${ySlide('30px', '0px')} 0.8s cubic-bezier(0.25, 1, 0.5, 1), ${fadeIn} 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+  animation-fill-mode: forwards;
+`;
+
+const yLongSlideFadeStyle = css<{ isHovering: boolean }>`
+  animation: ${ySlide('20px', '0px')} 0.8s cubic-bezier(0.25, 1, 0.5, 1), ${fadeIn} 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+  animation-fill-mode: forwards;
+`;
+
+const shadowBackground = css<{ isHovering: boolean }>`
+  &:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(180deg,rgba(57,57,57,0) 50%,#030303 99%);
+    ${({ isHovering }) => isHovering && yLongSlideFadeStyle}
+  }
+`;
+
+const SMediaWrapper = styled.div`
   display: flex;
   align-items: center;
   position: relative;
@@ -207,7 +247,6 @@ const SMediaWrapper = styled.div<{ noClikeable?: boolean }>`
   border-radius: 12px;
   background: linear-gradient(180deg, #f29fff 0%, #878cff 100%);
   box-shadow: ${({ theme }) => theme.shadows.popupShadow};
-  cursor: ${({ noClikeable }) => (noClikeable ? 'auto' : 'pointer')};
   overflow: hidden;
   transform: translateZ(0);
 
@@ -220,76 +259,41 @@ const SMediaWrapper = styled.div<{ noClikeable?: boolean }>`
   }
 `;
 
-const SChipWrapper = styled.div`
-  background: transparent;
+const SMediaLink = styled.a<{ isHovering: boolean }>`
+  height: 100%;
+  width: 100%;
+  display: flex;
   position: absolute;
+
+  ${({ isHovering }) => isHovering && shadowBackground}
+}
+`;
+
+const SAvailableChip = styled(Chip)`
+  position: absolute;
+  top: 1.6rem;
+  left: 1.6rem;
+  box-shadow: ${({ theme }) => theme.shadows.popupShadow};
   z-index: 4;
 `;
 
-const SAvailableChipWrapper = styled(SChipWrapper)`
-  top: 1.6rem;
-  left: 1.6rem;
-`;
-
-const SSecretChipWrapper = styled(SChipWrapper)`
+const SSecretChip = styled(Chip)`
+  position: absolute;
   top: 1.6rem;
   right: 1.6rem;
+  box-shadow: ${({ theme }) => theme.shadows.popupShadow};
+  z-index: 4;
 `;
 
-const SPriceChipWrapper = styled(SChipWrapper)`
+const SPriceChip = styled(Chip)`
+  position: absolute;
   width: fit-content;
   bottom: 2.4rem;
   left: 0;
   right: 0;
   margin: 0 auto;
-`;
-
-const SChipsFilter = styled.div<{ isTopFilter?: boolean; isBottomFilter?: boolean }>`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-  background: ${({ isTopFilter, isBottomFilter }) => `${isTopFilter ? 'linear-gradient(0deg, rgba(57, 57, 57, 0) 70%, #0303039e 100%)' : 'none'},
-  ${isBottomFilter ? 'linear-gradient(180deg, rgba(57, 57, 57, 0) 70%, #0303039e 100%)' : 'none'}`};
-  border-radius: 1.2rem;
-`;
-
-const ySlideStyle = css<{ isHovering: boolean }>`
-  animation-fill-mode: forwards;
-  animation: ${ySlide('40px', '0px')} 0.8s cubic-bezier(0.25, 1, 0.5, 1);
-`;
-
-const ySlideFadeStyle = css<{ isHovering: boolean }>`
-  animation-fill-mode: forwards;
-  animation: ${ySlide('30px', '0px')} 0.8s cubic-bezier(0.25, 1, 0.5, 1), ${fadeIn} 0.8s cubic-bezier(0.25, 1, 0.5, 1);
-`;
-
-const yLongSlideFadeStyle = css<{ isHovering: boolean }>`
-  animation-fill-mode: forwards;
-  animation: ${ySlide('20px', '0px')} 0.8s cubic-bezier(0.25, 1, 0.5, 1), ${fadeIn} 0.8s cubic-bezier(0.25, 1, 0.5, 1);
-`;
-
-const SHoverFilter = styled.div<{ isHovering: boolean }>`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-  transition: all 0.5s ease-out;
-  background: linear-gradient(180deg, rgba(57, 57, 57, 0) 60%, #030303 92.5%);
-  border-radius: 12px;
-
-  ${({ isHovering }) => isHovering && ySlideFadeStyle}
-`;
-
-const SHoverContainer = styled.div<{ isHovering: boolean }>`
-  display: ${({ isHovering }) => (isHovering ? 'flex' : 'none')};
-  justify-content: flex-end;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  z-index: 2;
-  border-radius: 1.2rem;
+  box-shadow: ${({ theme }) => theme.shadows.popupShadow};
+  z-index: 4;
 `;
 
 const LikeButtonStyle = css<{ isHovering: boolean }>`
@@ -304,16 +308,18 @@ const LikeButtonStyle = css<{ isHovering: boolean }>`
 `;
 
 const SLikeButtonContainer = styled.div<{ isHovering: boolean }>`
+  display: ${({ isHovering }) => (isHovering ? 'block' : 'none')};
   ${({ isHovering }) => isHovering && LikeButtonStyle}
 `;
 
-const SInfosContainer = styled.div`
-  display: flex;
+const SInfosContainer = styled.div<{ isHovering: boolean }>`
+  display: ${({ isHovering }) => (isHovering ? 'flex' : 'none')};
   flex-direction: column;
+  align-self: flex-end;
   width: 100%;
   justify-content: center;
   align-items: center;
-  margin-bottom: 2.4rem;
+  padding-bottom: 2.4rem;
 `;
 
 const SCreatorContainer = styled.div`
@@ -330,6 +336,7 @@ const SCreatorPicture = styled.div<{ isHovering: boolean }>`
 
 const SCreatorName = styled.div<{ isHovering: boolean }>`
   color: ${({ theme }) => theme.colors.invertedContrast};
+  font-family: ${({ theme }) => theme.fonts.bold};
   font-size: 1.2rem;
   margin-top: 1.2rem;
 

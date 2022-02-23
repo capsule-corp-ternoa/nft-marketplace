@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import styled, { css } from 'styled-components';
+import React, { memo, useEffect, useState } from 'react';
+import styled from 'styled-components';
 
 import { Loader } from 'components/ui/Icon';
 import { NFT_FILE_TYPE_IMAGE, NFT_FILE_TYPE_VIDEO } from 'interfaces/index';
 import { timer } from 'utils/functions';
-import { scale } from 'style/animations';
 export interface MediaProps {
-  isHovering?: boolean;
   src: string;
   type: string | null;
   fallbackSrc?: string;
@@ -16,13 +14,7 @@ export interface MediaProps {
 const defaultFallback = './media-placeholder.svg';
 const totalRetries = 5;
 
-const Media: React.FC<MediaProps & Record<string, any>> = ({
-  isHovering,
-  src,
-  type,
-  fallbackSrc = defaultFallback,
-  ...rest
-}) => {
+const Media: React.FC<MediaProps & Record<string, any>> = ({ src, type, fallbackSrc = defaultFallback }) => {
   const [mediaSrc, setMediaSrc] = useState<string | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(false);
   const [fetchStatusOk, setFetchStatusOk] = useState<boolean | null>(null);
@@ -71,10 +63,10 @@ const Media: React.FC<MediaProps & Record<string, any>> = ({
   return (
     <>
       {type !== null && (mediaSrc === fallbackSrc || mediaType === NFT_FILE_TYPE_IMAGE) ? (
-        <SImage src={mediaSrc} isHovering={Boolean(isHovering)} {...rest} />
+        <SImage src={mediaSrc} alt="imgnft" draggable="false" />
       ) : (
         mediaType === NFT_FILE_TYPE_VIDEO && (
-          <SVideo isHovering={Boolean(isHovering)} playsInline autoPlay muted loop {...rest}>
+          <SVideo playsInline autoPlay muted loop draggable="false">
             <source id="outputVideo" src={mediaSrc} />
           </SVideo>
         )
@@ -88,34 +80,20 @@ const SLoader = styled(Loader)`
   align-self: center;
 `;
 
-const scaleInAnimation = css<{ isHovering: boolean }>`
-  animation: ${scale('1', '1.08')} 0.8s cubic-bezier(0.25, 1, 0.5, 1);
-  animation-fill-mode: forwards;
-`;
-
-const scaleOutAnimation = css<{ isHovering: boolean }>`
-  animation: ${scale('1.08', '1')} 0.8s cubic-bezier(0.25, 1, 0.5, 1);
-  animation-fill-mode: forwards;
-`;
-
-const SImage = styled.img<{ isHovering: boolean }>`
+const SImage = styled.img`
   object-fit: cover;
   position: absolute;
   width: 100%;
   height: 100%;
   border-radius: 1.2rem;
-
-  ${({ isHovering }) => (isHovering ? scaleInAnimation : scaleOutAnimation)}
 `;
 
-const SVideo = styled.video<{ isHovering: boolean }>`
+const SVideo = styled.video`
   object-fit: cover;
   position: absolute;
   width: 100%;
   height: 100%;
   border-radius: 1.2rem;
-
-  ${({ isHovering }) => (isHovering ? scaleInAnimation : scaleOutAnimation)}
 `;
 
-export default Media;
+export default memo(Media);

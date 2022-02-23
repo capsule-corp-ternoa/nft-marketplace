@@ -213,7 +213,7 @@ const NFTPage = ({ NFT, type, isUserFromDappQR }: NFTPageProps) => {
         <Wrapper>
           <SNftWrapper>
             <SMediaWrapper>
-              <Media src={NFT.properties?.preview.ipfs!} type={type} alt="imgnft" draggable="false" />
+              <Media src={NFT.properties?.preview.ipfs!} type={type} />
               <SScaleButton
                 color="invertedContrast"
                 icon="scale"

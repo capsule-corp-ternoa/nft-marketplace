@@ -13,7 +13,7 @@ export interface ModalShowcaseProps {
 const ModalShowcase: React.FC<ModalShowcaseProps> = ({ media, setExpanded, type }) => (
   <Modal setExpanded={setExpanded} variant={MODAL_SHOWCASE_VARIANT}>
     <SMediaContainer>
-      <Media src={media} type={type} alt="imgnft" draggable="false" />
+      <Media src={media} type={type} />
     </SMediaContainer>
   </Modal>
 );

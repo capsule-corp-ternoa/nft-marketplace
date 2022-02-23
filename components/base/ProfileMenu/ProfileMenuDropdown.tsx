@@ -64,7 +64,7 @@ const ProfileMenuDropdown = ({ className, onClose, user }: Props) => {
             </div>
           </SLinkSection>
         </SDropdownWrapper>
-        <SCapsAnchor href={`/${walletId}`}>My artist profile</SCapsAnchor>
+        <SCapsAnchor href={`/user/${walletId}`}>My artist profile</SCapsAnchor>
       </SDropdownContainer>
     </ClickAwayListener>
   );

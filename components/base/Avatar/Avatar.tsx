@@ -48,7 +48,7 @@ const Avatar = ({
 }: Props) => {
   if (isPictureOnly) {
     return (
-      <Link href={`/${walletId}`}>
+      <Link href={`/user/${walletId}`}>
         <a>
           <Picture className={className} isTooltip={isTooltip} isVerified={isVerified} name={name} picture={picture} variant={variant} />
         </a>
@@ -60,7 +60,7 @@ const Avatar = ({
     <SAvatarContainer className={className} variant={variant}>
       <SAvatarWrapper variant={variant}>
         <STransactionVariantWrapper variant={variant}>
-        <Link href={`/${walletId}`}>
+        <Link href={`/user/${walletId}`}>
             <a>
               <Picture
                 isTooltip={isTooltip}
@@ -74,8 +74,8 @@ const Avatar = ({
         </STransactionVariantWrapper>
         <SDetailsContainer variant={variant}>
           <STopDetails>
-            <Link href={`/${walletId}`} passHref>
-              <SName href={`/${walletId}`} isNameEllipsis={isNameEllipsis} variant={variant}>
+            <Link href={`/user/${walletId}`} passHref>
+              <SName href={`/user/${walletId}`} isNameEllipsis={isNameEllipsis} variant={variant}>
                 {name}
               </SName>
             </Link>
@@ -106,8 +106,8 @@ const Avatar = ({
         </SDetailsContainer>
       </SAvatarWrapper>
       {isDiscoverButton && (
-        <Link href={`/${walletId}`} passHref>
-          <SDiscoverButton color="primary200" href={`/${walletId}`} size="small" text="Discover" />
+        <Link href={`/user/${walletId}`} passHref>
+          <SDiscoverButton color="primary200" href={`/user/${walletId}`} size="small" text="Discover" />
         </Link>
       )}
     </SAvatarContainer>

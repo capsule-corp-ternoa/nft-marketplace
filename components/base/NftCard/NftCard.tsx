@@ -11,7 +11,7 @@ import { AllFilterIdsTypes } from 'interfaces/filters';
 import { NftType } from 'interfaces/index';
 import { appSetUserLikedNFTs } from 'redux/app';
 import { useApp } from 'redux/hooks';
-import { fadeIn, ySlide } from 'style/animations';
+import { fadeIn, scale, ySlide } from 'style/animations';
 import { ALL_FILTER_IDS, PRICE_FILTER } from 'utils/constant';
 import { LIKE_ACTION, LIKE_ACTION_TYPE, UNLIKE_ACTION } from 'utils/profile/constants';
 import { computeCaps } from 'utils/strings';
@@ -125,29 +125,11 @@ const NftCard: React.FC<NftCardProps> = ({
       onMouseOut={() => !noHover && setIsHovering(false)}
       onMouseOver={() => !noHover && setIsHovering(true)}
     >
-      {notClickeable ? (
-        <SMediaWrapper>
-          <Media
-            src={item.properties?.preview.ipfs!}
-            type={type}
-            alt="imgnft"
-            draggable="false"
-            isHovering={isHovering}
-          />
-        </SMediaWrapper>
-      ) : (
-        <Link href={`/nft/${item.id}`} passHref>
-          <SMediaLink isHovering={isHovering}>
-            <Media
-              src={item.properties?.preview.ipfs!}
-              type={type}
-              alt="imgnft"
-              draggable="false"
-              isHovering={isHovering}
-            />
-          </SMediaLink>
-        </Link>
-      )}
+      <Link href={`/nft/${item.id}`} passHref={!notClickeable}>
+        <SMediaLink isHovering={isHovering} notClickeable={notClickeable}>
+          <Media src={item.properties?.preview.ipfs!} type={type} />
+        </SMediaLink>
+      </Link>
       {!noStatsChips && (
         <>
           {quantityAvailable > 1 && !noAvailableChip && !isHovering && (
@@ -228,6 +210,16 @@ const yLongSlideFadeStyle = css<{ isHovering: boolean }>`
   animation-fill-mode: forwards;
 `;
 
+const scaleInAnimation = css<{ isHovering: boolean }>`
+  animation: ${scale('1', '1.08')} 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+  animation-fill-mode: forwards;
+`;
+
+const scaleOutAnimation = css<{ isHovering: boolean }>`
+  animation: ${scale('1.08', '1')} 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+  animation-fill-mode: forwards;
+`;
+
 const shadowBackground = css<{ isHovering: boolean }>`
   &:after {
     content: '';
@@ -261,20 +253,18 @@ const SMediaContainer = styled.div`
   }
 `;
 
-const SMediaWrapper = styled.div`
+const SMediaLink = styled.a<{ isHovering: boolean, notClickeable: boolean }>`
   height: 100%;
   width: 100%;
   display: flex;
   position: absolute;
-`;
-
-const SMediaLink = styled.a<{ isHovering: boolean }>`
-  height: 100%;
-  width: 100%;
-  display: flex;
-  position: absolute;
+  pointer-events: ${({ notClickeable }) => notClickeable ? 'none' : 'auto'};
 
   ${({ isHovering }) => isHovering && shadowBackground}
+
+  > img, video {
+    ${({ isHovering }) => (isHovering ? scaleInAnimation : scaleOutAnimation)}
+  }
 }
 `;
 

@@ -1,24 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useDrag } from '@use-gesture/react';
 import styled from 'styled-components';
-import Carousel from 'react-multi-carousel';
-import 'react-multi-carousel/lib/styles.css';
-import { breakpointMap } from 'style/theme/base';
 
 import NftCard from 'components/base/NftCard';
-import Button from 'components/ui/Button';
 
 import { NftType } from 'interfaces/index';
+import { timer } from 'utils/functions';
 
-const responsive = {
-  desktop: {
-    breakpoint: { max: 3000, min: breakpointMap.xl },
-    items: 4.6,
-  },
-  tablet: {
-    breakpoint: { max: breakpointMap.xl - 1, min: breakpointMap.lg },
-    items: 4.2,
-  },
-};
+const DRAGGING_OFFSET = 40;
 
 export interface ShowcaseProps {
   NFTs: NftType[];
@@ -26,56 +15,30 @@ export interface ShowcaseProps {
 }
 
 const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category }) => {
-  let carousel: Carousel | null = new Carousel({
-    responsive: {},
-    children: <></>,
+  const [isDragging, setIsDragging] = useState(false);
+
+  const bind = useDrag(async ({ movement: [x] }) => {
+    if (Math.abs(x) > DRAGGING_OFFSET) {
+      setIsDragging(true);
+      await timer(500);
+      setIsDragging(false);
+    }
+  },
+  {
+    preventScroll: true,
+    preventDefault: true,
+    filterTaps: true
   });
 
   return (
     <SShowcaseContainer>
       <STopContainer>
         <STitle>{category}</STitle>
-        <SNavContainer>
-          <Button
-            color="neutral100"
-            icon="arrowLeft"
-            onClick={() => {
-              carousel?.previous(1);
-            }}
-            size="small"
-            variant="contained"
-          />
-          <Button
-            color="neutral100"
-            icon="arrowRight"
-            onClick={() => {
-              carousel?.next(1);
-            }}
-            size="small"
-            variant="contained"
-          />
-        </SNavContainer>
       </STopContainer>
-      <SNftsContainer>
-        <SNftsMobileContainer>
-          {NFTs.map((item) => (
-            <NftCard key={item.id} item={item} />
-          ))}
-        </SNftsMobileContainer>
-        <SNftsCarouselContainer
-          ref={(el) => {
-            carousel = el;
-          }}
-          responsive={responsive}
-          infinite
-          ssr={false}
-          arrows={false}
-          swipeable={true}
-        >
-          {NFTs.map((item) => (
-            <NftCard key={item.id} item={item} />
-          ))}
-        </SNftsCarouselContainer>
+      <SNftsContainer {...bind()}>
+        {NFTs.map((item) => (
+          <SNftCard key={item.id} notClickeable={isDragging} item={item} />
+        ))}
       </SNftsContainer>
     </SShowcaseContainer>
   );
@@ -106,46 +69,24 @@ const STitle = styled.h3`
   }
 `;
 
-const SNavContainer = styled.div`
-  display: none;
-
-  > * {
-    &:not(:first-child) {
-      margin-left: 0.8rem;
-    }
-  }
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    display: flex;
-  }
-`;
-
 const SNftsContainer = styled.div`
   width: 100%;
   display: flex;
   overflow-x: auto;
   justify-content: flex-start;
   margin-top: 2.4rem;
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    display: inline;
-  }
-`;
-
-const SNftsMobileContainer = styled.div`
-  display: flex;
   gap: 3.2rem;
 
-  ${({ theme }) => theme.mediaQueries.lg} {
-    display: none;
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    gap: 3.4rem;
+    overflow-x: visible;
   }
 `;
 
-const SNftsCarouselContainer = styled(Carousel)`
-  ${({ theme }) => theme.mediaQueries.lg} {
-    display: flex;
-    overflow-y: visible;
-  }
+const SNftCard = styled(NftCard)`
+  flex-shrink: 0;
+  height: ${({ theme }) => theme.sizes.cardHeight.sm};
+  width: ${({ theme }) => theme.sizes.cardWidth.sm};
 `;
 
 export default Showcase;

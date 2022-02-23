@@ -36,7 +36,7 @@ const Media: React.FC<MediaProps & Record<string, any>> = ({
     if (res && res.status === 200) return res;
     // set image src to fallback on firt failed fetch
     if (retries === totalRetries) setMediaSrc(fallbackSrc);
-    if (retries > 0) {
+    if (retries > 0 && url !== undefined) {
       console.log(`Fetch retry triggered for url (${url}) - retries remaining:`, retries - 1);
       await timer(delay);
       return await fetchRetry(url, retries - 1);

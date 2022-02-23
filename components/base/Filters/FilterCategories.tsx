@@ -59,8 +59,6 @@ const FilterCategories = ({ setFilters, value }: FilterCategoriesProps) => {
     };
   }, []);
 
-  console.log({ isLoading });
-
   return (
     <div>
       <FilterTitle>Categories</FilterTitle>

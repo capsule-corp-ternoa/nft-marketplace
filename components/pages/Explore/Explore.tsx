@@ -156,7 +156,7 @@ const Explore: React.FC<ExploreProps> = ({ NFTs, hasNextPage, totalCount }) => {
           <STopContainer>
             <STitleContainer>
               <STitle>Explore</STitle>
-              {!isLoading && dataTotalCount > 0 && <STotalInsight>{`${dataTotalCount} NFTs to discover`}</STotalInsight>}
+              {!isLoading && dataTotalCount > 0 && router.query.sort === undefined && <STotalInsight>{`${dataTotalCount} NFTs to discover`}</STotalInsight>}
             </STitleContainer>
             <SFiltersButtonContainer>
               <SSortButton onClick={toggleModalSortExpanded}>

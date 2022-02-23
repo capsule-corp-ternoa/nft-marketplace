@@ -58,7 +58,7 @@ const getFilterValueWording = (currentFilter: AllFilterIdsTypes | undefined, fil
             const bBit = emojiMapping(b.code) === undefined ? 1 : 0;
             return aBit - bBit;
           })
-          .map(({ code, name }) => `${emojiMapping(code)} ${name}`)
+          .map(({ code, name }) => emojiMapping(code) !== undefined ? `${emojiMapping(code)} ${name}` : name)
           .join(' - ')
       );
     }

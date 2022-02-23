@@ -33,7 +33,7 @@ const ModalCheckout: React.FC<ModalCheckoutProps> = ({ setExpanded, setModalBuyE
 
           <SSection>
             <SNftCardContainer>
-              <NftCard item={NFT} noClikeable noHover noStatsChips />
+              <NftCard item={NFT} notClickeable noHover noStatsChips />
             </SNftCardContainer>
             <SDetailsWrapper>
               <STitle>{title}</STitle>

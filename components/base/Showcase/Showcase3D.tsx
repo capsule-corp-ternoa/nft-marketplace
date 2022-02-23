@@ -77,7 +77,7 @@ const Showcase3D = ({ list, selectedIdx, setSelectedItem }: Props) => {
         >
           <NftCard
             item={item}
-            noClikeable={isDragging || selectedIdx !== idx}
+            notClickeable={isDragging || selectedIdx !== idx}
             noHover
             noStatsChips
           />

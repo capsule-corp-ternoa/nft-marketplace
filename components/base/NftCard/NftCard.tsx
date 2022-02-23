@@ -23,7 +23,7 @@ export interface NftCardProps {
   className?: string;
   handleLike?: (action: LIKE_ACTION_TYPE, nft?: NftType) => void;
   item: NftType;
-  noClikeable?: boolean;
+  notClickeable?: boolean;
   noHover?: boolean;
   noStatsChips?: boolean;
   noAvailableChip?: boolean;
@@ -36,6 +36,7 @@ const NftCard: React.FC<NftCardProps> = ({
   className,
   handleLike,
   item,
+  notClickeable = false,
   noHover = false,
   noStatsChips = false,
   noAvailableChip = false,
@@ -124,17 +125,27 @@ const NftCard: React.FC<NftCardProps> = ({
       onMouseOut={() => !noHover && setIsHovering(false)}
       onMouseOver={() => !noHover && setIsHovering(true)}
     >
-      <Link href={`/nft/${item.id}`} passHref>
-        <SMediaLink isHovering={isHovering}>
-          <Media
-            src={item.properties?.preview.ipfs!}
-            type={type}
-            alt="imgnft"
-            draggable="false"
-            isHovering={isHovering}
-          />
-        </SMediaLink>
-      </Link>
+      {notClickeable ? (
+        <Media
+          src={item.properties?.preview.ipfs!}
+          type={type}
+          alt="imgnft"
+          draggable="false"
+          isHovering={isHovering}
+        />
+      ) : (
+        <Link href={`/nft/${item.id}`} passHref>
+          <SMediaLink isHovering={isHovering}>
+            <Media
+              src={item.properties?.preview.ipfs!}
+              type={type}
+              alt="imgnft"
+              draggable="false"
+              isHovering={isHovering}
+            />
+          </SMediaLink>
+        </Link>
+      )}
       {!noStatsChips && (
         <>
           {quantityAvailable > 1 && !noAvailableChip && !isHovering && (

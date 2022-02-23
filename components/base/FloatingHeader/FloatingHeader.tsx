@@ -21,13 +21,13 @@ const FloatingHeader: React.FC = () => {
       <SHeaderContainer isExpanded={isExpanded}>
         {isExpanded && (
           <SExpandedHeaderWrapper>
-            <Link href="/create">
+            <Link href="/create" passHref>
               <SLink>Create</SLink>
             </Link>
-            <Link href="/explore">
+            <Link href="/explore" passHref>
               <SLink>Explore</SLink>
             </Link>
-            <Link href="/faq">
+            <Link href="/faq" passHref>
               <SLink>How it works</SLink>
             </Link>
           </SExpandedHeaderWrapper>

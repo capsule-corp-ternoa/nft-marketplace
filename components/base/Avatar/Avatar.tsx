@@ -1,6 +1,5 @@
 import React from 'react';
 import Link from 'next/link';
-import Router from 'next/router';
 import styled from 'styled-components';
 
 import Clipboard from 'components/base/Clipboard';
@@ -49,7 +48,7 @@ const Avatar = ({
 }: Props) => {
   if (isPictureOnly) {
     return (
-      <Link href={`/${walletId}`} passHref>
+      <Link href={`/${walletId}`}>
         <a>
           <Picture isTooltip={isTooltip} isVerified={isVerified} name={name} picture={picture} variant={variant} />
         </a>
@@ -61,7 +60,7 @@ const Avatar = ({
     <SAvatarContainer className={className} variant={variant}>
       <SAvatarWrapper variant={variant}>
         <STransactionVariantWrapper variant={variant}>
-        <Link href={`/${walletId}`} passHref>
+        <Link href={`/${walletId}`}>
             <a>
               <Picture
                 isTooltip={isTooltip}
@@ -106,7 +105,11 @@ const Avatar = ({
           </SBottomDetails>
         </SDetailsContainer>
       </SAvatarWrapper>
-      {isDiscoverButton && <SDiscoverButton color="primary200" onClick={() => walletId && Router.push(`/${walletId}`)} size="small" text="Discover" />}
+      {isDiscoverButton && (
+        <Link href={`/${walletId}`} passHref>
+          <SDiscoverButton color="primary200" href={`/${walletId}`} size="small" text="Discover" />
+        </Link>
+      )}
     </SAvatarContainer>
   );
 };

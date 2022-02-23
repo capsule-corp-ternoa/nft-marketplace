@@ -33,10 +33,9 @@ const Showcase3D = ({ list, selectedIdx, setSelectedItem }: Props) => {
       await timer(500);
       setIsDragging(false);
     }
-  }, {
-    pointer: {
-      touch: true
-    }
+  },
+  {
+    preventScroll: true,
   });
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

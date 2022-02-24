@@ -33,7 +33,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const token = pageProps.token ?? ((router.query.walletId as string) || (Cookies.get('token') && decryptCookie(Cookies.get('token') as string)));
+  const token = pageProps.token ? decryptCookie(pageProps.token) : ((router.query.walletId as string) || (Cookies.get('token') && decryptCookie(Cookies.get('token') as string)));
 
   useEffect(() => {
     setCookiesConsent(localStorage.getItem('cookiesConsent'));

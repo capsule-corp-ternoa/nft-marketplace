@@ -257,7 +257,6 @@ const SMediaLink = styled.a<{ isHovering: boolean }>`
   height: 100%;
   width: 100%;
   display: flex;
-  position: absolute;
 
   ${({ isHovering }) => isHovering && shadowBackground}
 
@@ -312,6 +311,7 @@ const SLikeButtonContainer = styled.div<{ isHovering: boolean }>`
 
 const SInfosContainer = styled.div<{ isHovering: boolean }>`
   display: ${({ isHovering }) => (isHovering ? 'flex' : 'none')};
+  position: absolute;
   flex-direction: column;
   align-self: flex-end;
   width: 100%;

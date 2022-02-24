@@ -89,12 +89,17 @@ const SLink = styled.a`
 const SNftsContainer = styled.div`
   width: 100%;
   display: flex;
-  overflow-x: auto;
+  overflow-x: scroll;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid transparent;
   justify-content: flex-start;
+  align-items: center;
   margin-top: 2.4rem;
   gap: 3.2rem;
+  min-height: 34rem;
 
   ${({ theme }) => theme.mediaQueries.xxl} {
+    min-height: auto;
     gap: 3.4rem;
     overflow-x: visible;
   }

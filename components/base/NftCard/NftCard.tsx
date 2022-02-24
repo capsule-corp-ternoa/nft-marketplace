@@ -126,7 +126,7 @@ const NftCard: React.FC<NftCardProps> = ({
       onMouseOver={() => !noHover && setIsHovering(true)}
     >
       <Link href={`/nft/${item.id}`} passHref={!notClickeable}>
-        <SMediaLink isHovering={isHovering}>
+        <SMediaLink isHovering={isHovering} notClickeable={notClickeable}>
           <Media src={item.properties?.preview.ipfs!} type={type} />
         </SMediaLink>
       </Link>
@@ -253,10 +253,12 @@ const SMediaContainer = styled.div`
   }
 `;
 
-const SMediaLink = styled.a<{ isHovering: boolean }>`
+const SMediaLink = styled.a<{ isHovering: boolean, notClickeable: boolean }>`
   height: 100%;
   width: 100%;
   display: flex;
+  position: absolute;
+  pointer-events: ${({ notClickeable }) => notClickeable ? 'none' : 'auto'};
 
   ${({ isHovering }) => isHovering && shadowBackground}
 

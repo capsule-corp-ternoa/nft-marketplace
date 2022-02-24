@@ -46,13 +46,13 @@
     "react-virtualized-auto-sizer": "^1.0.6",
     "react-window": "^1.8.6",
     "skynet-js": "^3.0.2",
-    "socket.io-client": "^4.4.1",
+    "socket.io-client": "^4.2.0",
     "styled-components": "^5.3.3",
     "utf-8-validate": "^5.0.7",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@netlify/plugin-nextjs": "^4.2.7",
+    "@netlify/plugin-nextjs": "^3.9.2",
     "@types/crypto-js": "^4.0.2",
     "@types/js-cookie": "^3.0.0",
     "@types/mime-types": "^2.1.1",

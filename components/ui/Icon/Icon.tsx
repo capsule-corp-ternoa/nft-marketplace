@@ -18,6 +18,7 @@ export type IconNameType =
   | 'error500'
   | 'eye'
   | 'faqArrow'
+  | 'filters'
   | 'fingerMark'
   | 'fortmatic'
   | 'heart'
@@ -118,6 +119,10 @@ const Icon = ({ className, name }: Props) => {
       const FaqArrow = dynamic(() => import('components/assets/faqarrow'));
       return <FaqArrow className={className} />;
     }
+    case 'filters': {
+      const Filters = dynamic(() => import('components/assets/Filters'));
+      return <Filters className={className} />;
+    }
     case 'fingerMark': {
       const FingerMark = dynamic(() => import('components/assets/FingerMark'));
       return <FingerMark className={className} />;
@@ -195,8 +200,8 @@ const Icon = ({ className, name }: Props) => {
       return <SecretCards className={className} />;
     }
     case 'share': {
-      const SoundOff = dynamic(() => import('components/assets/SoundOff'));
-      return <SoundOff className={className} />;
+      const Share = dynamic(() => import('components/assets/share'));
+      return <Share className={className} />;
     }
     case 'socialDiscord': {
       const Discord = dynamic(() => import('components/assets/SocialMedias/Discord'));

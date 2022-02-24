@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { InputLabel, InputShell, Insight } from 'components/layout';
 
 import Tooltip from '../Tooltip';
-import { InputStyle } from './TextInput';
+import { InputStyle } from './Input';
 
 interface Props {
   className?: string;

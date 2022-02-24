@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDrag } from '@use-gesture/react';
 import styled from 'styled-components';
 
-import NftCard, { CAROUSEL_MODE } from 'components/base/NftCard';
+import NftCard from 'components/base/NftCard';
 import { NftType } from 'interfaces/index';
 import { timer } from 'utils/functions' 
 
@@ -33,6 +33,11 @@ const Showcase3D = ({ list, selectedIdx, setSelectedItem }: Props) => {
       await timer(500);
       setIsDragging(false);
     }
+  },
+  {
+    preventScroll: true,
+    preventDefault: true,
+    filterTaps: true
   });
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,9 +81,10 @@ const Showcase3D = ({ list, selectedIdx, setSelectedItem }: Props) => {
           {...bind()}
         >
           <NftCard
-            mode={CAROUSEL_MODE}
             item={item}
-            isDragging={isDragging || selectedIdx !== idx}
+            notClickeable={isDragging || selectedIdx !== idx}
+            noHover
+            noStatsChips
           />
         </SLabel>
       ))}
@@ -192,14 +198,14 @@ const SInput = styled.input`
   width: 6.4rem;
   height: ${`${INPUT_HEIGHT_REM}rem`};
   border: ${({ theme }) =>
-    `${`${INPUT_HEIGHT_REM / 2}rem`} solid ${theme.colors.neutral500}`};
+    `${`${INPUT_HEIGHT_REM / 2}rem`} solid ${theme.colors.neutral100}`};
   border-radius: ${`${INPUT_HEIGHT_REM / 2}rem`};
   cursor: pointer;
   margin: 0;
 
   &:checked {
     border: ${({ theme }) =>
-      `${`${INPUT_HEIGHT_REM / 2}rem`} solid ${theme.colors.primary}`};
+      `${`${INPUT_HEIGHT_REM / 2}rem`} solid ${theme.colors.primary500}`};
   }
 `;
 
@@ -212,7 +218,6 @@ const SLabel = styled.label`
   margin: 0 auto 4rem;
   transition: transform 0.4s ease;
   cursor: pointer;
-  touch-action: none;
 `;
 
 export default Showcase3D;

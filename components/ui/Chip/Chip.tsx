@@ -1,7 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import Icon, { IconNameType } from 'components/ui/Icon';
 import { Colors } from 'style/theme/types';
+
+import Emoji from '../Emoji';
+import Icon, { IconNameType } from '../Icon';
 
 interface IChip {
   color?: keyof Colors;
@@ -13,6 +15,7 @@ interface IChip {
 
 interface Props extends IChip {
   className?: string;
+  emoji?: string;
   icon?: IconNameType;
   onDelete?: () => void;
   text?: string | React.ReactNode;
@@ -21,6 +24,7 @@ interface Props extends IChip {
 const Chip = ({
   className,
   color,
+  emoji,
   icon,
   noBorder = false,
   onDelete,
@@ -35,12 +39,10 @@ const Chip = ({
       isDeletable={!!onDelete}
       noBorder={noBorder}
       size={size}
-      suppressHydrationWarning
       variant={variant}
     >
-      {icon && (
-        <SIcon isIconOnly={text === undefined} name={icon} size={size} />
-      )}
+      {emoji && <SEmoji isEmojiOnly={text === undefined} size={size} symbol={emoji} />}
+      {icon && <SIcon isIconOnly={text === undefined} name={icon} size={size} />}
       {text && (
         <SText color={color} size={size}>
           {text}
@@ -68,7 +70,7 @@ const SChipContainer = styled.div<IChip>`
   border: ${({ color, noBorder }) =>
     !noBorder && color === 'invertedContrast' ? '2px dashed' : 'none'};
   border-color: ${({ color, theme }) =>
-    color === 'invertedContrast' ? theme.colors.neutral400 : 'none'};
+    color === 'invertedContrast' ? theme.colors.neutral600 : 'none'};
   border-radius: ${({ isDeletable, variant }) =>
     isDeletable || variant === 'rectangle' ? '0.8rem' : '6.4rem'};
   padding: ${({ size }) =>
@@ -82,6 +84,11 @@ const SIcon = styled(Icon) <{ isIconOnly: boolean; size: 'small' | 'medium' }>`
     isIconOnly ? 0 : size === 'small' ? '0.4rem' : '0.8rem'};
 `;
 
+const SEmoji = styled(Emoji) <{ isEmojiOnly: boolean; size: 'small' | 'medium' }>`
+  margin-right: ${({ isEmojiOnly, size }) =>
+    isEmojiOnly ? 0 : size === 'small' ? '0.4rem' : '0.8rem'};
+`;
+
 const SText = styled.div<IChip>`
   display: flex;
   align-items: center;
@@ -92,10 +99,10 @@ const SText = styled.div<IChip>`
 
   color: ${({ theme, color }) => {
     switch (color) {
-      case 'primary':
+      case 'primary500':
         return theme.colors.invertedContrast;
-      case 'primaryLight':
-        return theme.colors.primary;
+      case 'primary200':
+        return theme.colors.primary500;
       case 'invertedContrast':
       case 'whiteBlur':
       default:
@@ -120,10 +127,10 @@ const SCross = styled.div<{ color?: keyof Colors }>`
 
   background: ${({ theme, color }) => {
     switch (color) {
-      case 'primary':
+      case 'primary500':
         return theme.colors.invertedContrast;
-      case 'primaryLight':
-        return theme.colors.primary;
+      case 'primary200':
+        return theme.colors.primary500;
       case 'invertedContrast':
       case 'whiteBlur':
       default:

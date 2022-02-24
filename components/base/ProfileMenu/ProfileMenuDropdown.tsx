@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Cookies from 'js-cookie';
 import styled from 'styled-components';
 import ClickAwayListener from 'react-click-away-listener';
-import { useAppSelector } from 'redux/hooks';
+import { useApp } from 'redux/hooks';
 
 import Avatar from 'components/base/Avatar';
 import Clipboard from 'components/base/Clipboard';
@@ -19,7 +19,7 @@ interface Props {
 const ProfileMenuDropdown = ({ className, onClose, user }: Props) => {
   const { name, picture, verified, walletId } = user;
 
-  const isRN = useAppSelector((state) => state.rn.isRN);
+  const { isRN } = useApp();
 
   const handleLogout = () => {
     Cookies.remove('token');
@@ -38,13 +38,15 @@ const ProfileMenuDropdown = ({ className, onClose, user }: Props) => {
               walletId={walletId}
             />
             {!isRN && (
-              <Button
-                color="whiteBlur"
-                icon="powerOff"
-                onClick={handleLogout}
-                size="small"
-                variant="outlined"
-              />
+              <SButtonWrapper>
+                <Button
+                  color="neutral600"
+                  icon="powerOff"
+                  onClick={handleLogout}
+                  size="small"
+                  variant="outlined"
+                />
+              </SButtonWrapper>
             )}
           </SProfileContainer>
 
@@ -62,7 +64,7 @@ const ProfileMenuDropdown = ({ className, onClose, user }: Props) => {
             </div>
           </SLinkSection>
         </SDropdownWrapper>
-        <SCapsAnchor href={`/${walletId}`}>My artist profile</SCapsAnchor>
+        <SCapsAnchor href={`/user/${walletId}`}>My artist profile</SCapsAnchor>
       </SDropdownContainer>
     </ClickAwayListener>
   );
@@ -70,7 +72,7 @@ const ProfileMenuDropdown = ({ className, onClose, user }: Props) => {
 
 const SDropdownContainer = styled.div`
   background: ${({ theme }) => theme.colors.invertedContrast};
-  box-shadow: 0px 0px 9px rgba(0, 0, 0, 0.15);
+  box-shadow: ${({ theme }) => theme.shadows.popupShadow};
   border-radius: 1.6rem;
   display: flex;
   flex-direction: column;
@@ -92,10 +94,14 @@ const SProfileContainer = styled.div`
   width: 100%;
 `;
 
+const SButtonWrapper = styled.div`
+  margin-left: 1.6rem;
+`;
+
 const SLinkSection = styled.div`
   > * {
     width: 100%;
-    border-bottom: ${({ theme }) => `1px solid ${theme.colors.neutral400}`};
+    border-bottom: ${({ theme }) => `1px solid ${theme.colors.neutral100}`};
     cursor: pointer;
     margin: 1.6rem 0;
     padding-bottom: 0.8rem;
@@ -114,7 +120,7 @@ const SAnchor = styled.a`
   font-size: 1.2rem;
 
   &:hover {
-    color: ${({ theme }) => theme.colors.primary};
+    color: ${({ theme }) => theme.colors.primary500};
   }
 `;
 

@@ -1,38 +1,35 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { NftCardWithHover, GRID_MODE } from 'components/base/NftCard';
+import NftCard from 'components/base/NftCard';
 import NoNFTComponent from 'components/base/NoNFTComponent';
 import Button from 'components/ui/Button';
 import { Loader } from 'components/ui/Icon';
 import {
-  NftType,
-  NFTsNominalSetState,
-  UserType,
   TabsIdType,
   NFT_OWNED_TAB,
   NFT_ON_SALE_TAB,
   NFT_NOT_FOR_SALE_TAB,
   NFT_CREATED_TAB,
   NFT_LIKED_TAB,
-  EXPLORE_TAB,
-} from 'interfaces';
+} from 'components/pages/Profile';
+import { NftType } from 'interfaces';
+
 import { LIKE_ACTION_TYPE } from 'utils/profile/constants';
 
 interface Props {
   children?: React.ReactNode;
   NFTs?: NftType[];
-  isLoading: boolean;
+  isLoading?: boolean;
   isLoadMore: boolean;
+  isLoadMoreLoading: boolean;
   loadMore?: () => void;
   noNftBody?: string | React.ReactNode;
   noNftHref?: string;
   noNftLinkLabel?: string;
   noNftTitle: string;
-  handleLikeCount?: (action: LIKE_ACTION_TYPE) => void;
-  setLikedNfts?: NFTsNominalSetState;
+  handleNftLike?: (action: LIKE_ACTION_TYPE, nft?: NftType) => void;
   tabId?: TabsIdType;
-  user?: UserType;
 }
 
 const NftsGrid = ({
@@ -40,18 +37,21 @@ const NftsGrid = ({
   NFTs,
   isLoading,
   isLoadMore,
+  isLoadMoreLoading,
   loadMore,
   noNftBody,
   noNftHref,
   noNftLinkLabel,
   noNftTitle,
-  handleLikeCount,
-  setLikedNfts,
-  user,
+  handleNftLike,
   tabId,
 }: Props) => {
   const returnQuantityNFTsAvailable = (NFT: NftType, tabId?: TabsIdType) => {
-    const { totalNft, totalOwnedByRequestingUser, totalOwnedListedInMarketplaceByRequestingUser, totalListedInMarketplace } = NFT;
+    const {
+      totalNft,
+      totalOwnedByRequestingUser,
+      totalOwnedListedInMarketplaceByRequestingUser,
+    } = NFT;
     switch (tabId) {
       case NFT_LIKED_TAB:
         return 0;
@@ -63,22 +63,25 @@ const NftsGrid = ({
           : 0;
       case NFT_OWNED_TAB:
         return totalOwnedByRequestingUser ?? 1;
-      case EXPLORE_TAB:
-        return totalListedInMarketplace
       case NFT_CREATED_TAB:
-      default:
         return totalNft ?? 1;
+      default:
+        return undefined;
     }
   };
+
+  if (isLoading) {
+    return (
+      <SNoNFTContainer>
+        <SLoader color="primary500" />
+      </SNoNFTContainer>
+    );
+  }
 
   if (NFTs === undefined || NFTs.length < 1) {
     return (
       <SNoNFTContainer>
-        {isLoading ? (
-          <SLoader color="primary" />
-        ) : (
-          <NoNFTComponent body={noNftBody} href={noNftHref} linkLabel={noNftLinkLabel} title={noNftTitle} />
-        )}
+        <NoNFTComponent body={noNftBody} href={noNftHref} linkLabel={noNftLinkLabel} title={noNftTitle} />
       </SNoNFTContainer>
     );
   }
@@ -87,14 +90,11 @@ const NftsGrid = ({
     <>
       <SNFTsContainer>
         {NFTs.map((item: NftType) => (
-          <SNftCardWithHover
+          <SNftCard
             key={item.id}
+            handleLike={handleNftLike}
             item={item}
-            mode={GRID_MODE}
             quantity={returnQuantityNFTsAvailable(item, tabId)}
-            handleLikeCount={handleLikeCount}
-            setLikedNfts={tabId === NFT_LIKED_TAB ? setLikedNfts : undefined}
-            user={user}
           />
         ))}
         {children}
@@ -102,12 +102,12 @@ const NftsGrid = ({
       {isLoadMore && loadMore && (
         <SLoadButtonWrapper>
           <Button
-            color="invertedContrast"
-            disabled={isLoading}
-            isLoading={isLoading}
+            color="contrast"
+            disabled={isLoadMoreLoading}
+            isLoading={isLoadMoreLoading}
             onClick={loadMore}
             size="medium"
-            text={isLoading ? 'Loading...' : 'Load more'}
+            text={isLoadMoreLoading ? 'Loading...' : 'Load more'}
             variant="outlined"
           />
         </SLoadButtonWrapper>
@@ -147,10 +147,36 @@ const SNFTsContainer = styled.div`
   ${({ theme }) => theme.mediaQueries.md} {
     grid-template-columns: ${({ theme }) => `repeat(auto-fill, ${theme.sizes.cardWidth.md})`};
   }
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    gap: 4rem 2.4rem;
+    justify-content: space-between;
+  }
+
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    grid-template-columns: ${({ theme }) => `repeat(auto-fill, ${theme.sizes.cardWidth.sm})`};
+  }
 `;
 
-const SNftCardWithHover = styled(NftCardWithHover)`
+const SNftCard = styled(NftCard)`
   margin: 0 auto;
+  height: ${({ theme }) => theme.sizes.cardHeight.md};
+  width: ${({ theme }) => theme.sizes.cardWidth.md};
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    height: ${({ theme }) => theme.sizes.cardHeight.sm};
+    width: ${({ theme }) => theme.sizes.cardWidth.sm};
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    height: ${({ theme }) => theme.sizes.cardHeight.md};
+    width: ${({ theme }) => theme.sizes.cardWidth.md};
+  }
+
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    height: ${({ theme }) => theme.sizes.cardHeight.sm};
+    width: ${({ theme }) => theme.sizes.cardWidth.sm};
+  }
 `;
 
 export default NftsGrid;

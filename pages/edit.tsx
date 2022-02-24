@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { NextPageContext } from 'next';
+import React from 'react';
 import Head from 'next/head';
 import cookies from 'next-cookies';
 
@@ -7,60 +6,59 @@ import BetaBanner from 'components/base/BetaBanner';
 import FloatingHeader from 'components/base/FloatingHeader';
 import Footer from 'components/base/Footer';
 import MainHeader from 'components/base/MainHeader';
-import SuccessPopup from 'components/base/SuccessPopup';
-import TernoaWallet from 'components/base/TernoaWallet';
 import Edit from 'components/pages/Edit';
 
 import { getUser } from 'actions/user';
 import { UserType } from 'interfaces';
+import { appSetUser } from 'redux/app';
+import { useMarketplaceData } from 'redux/hooks';
+import { wrapper } from 'redux/store';
 import { decryptCookie } from 'utils/cookie';
 
-export interface EditPageProps {
+interface EditPageProps {
   user: UserType;
-  token: string;
 }
 
 const EditPage = ({ user }: EditPageProps) => {
-  const [modalExpand, setModalExpand] = useState(false);
-  const [successPopup, setSuccessPopup] = useState(false);
+  const { name } = useMarketplaceData();
 
   return (
     <>
       <Head>
-        <title>
-          {process.env.NEXT_PUBLIC_APP_NAME
-            ? process.env.NEXT_PUBLIC_APP_NAME
-            : 'SecretNFT'}{' '}
-          - My account
-        </title>
+        <title>{name} - My account</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta name="description" content="Ternoa - Your profile." />
         <meta name="og:image" content="ternoa-social-banner.jpg" />
       </Head>
-      {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
-      {successPopup && <SuccessPopup setSuccessPopup={setSuccessPopup} />}
       <BetaBanner />
-      <MainHeader user={user} setModalExpand={setModalExpand} />
-      <Edit user={user} setSuccessPopup={setSuccessPopup} />
+      <MainHeader />
+      <Edit user={user} />
       <Footer />
-      <FloatingHeader user={user} setModalExpand={setModalExpand} />
+      <FloatingHeader />
     </>
   );
 };
 
-export async function getServerSideProps(ctx: NextPageContext) {
-  let user = null;
-  const token =
-    cookies(ctx).token && decryptCookie(cookies(ctx).token as string);
-  if (token) user = await getUser(token).catch(() => null);
+export const getServerSideProps = wrapper.getServerSideProps((store) => async (ctx) => {
+  const token = cookies(ctx).token && decryptCookie(cookies(ctx).token as string);
+  let user: UserType | null = null;
+
+  if (token) {
+    try {
+      user = await getUser(token, true);
+      store.dispatch(appSetUser(user));
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   if (!user) {
     return {
       notFound: true,
     };
   }
-  return {
-    props: { user },
-  };
-}
+
+  return { props: { user } };
+});
 
 export default EditPage;

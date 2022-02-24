@@ -57,7 +57,7 @@ const FormSideLayout = styled.div`
 
 export const FormSideLeft = styled(FormSideLayout)`
   ${({ theme }) => theme.mediaQueries.md} {
-    border-right: 1px solid #e0e0e0;
+    border-right: ${({ theme }) => `1px solid ${theme.colors.neutral600}`};
     padding-right: 4.8rem;
   }
 
@@ -89,7 +89,7 @@ export const InputShell = styled.div`
 export const InputLabel = styled.h4`
   display: flex;
   align-items: center;
-  font-family: 'Airbnb Cereal App Bold';
+  font-family: ${({ theme }) => theme.fonts.bold};
   font-size: 2rem;
   line-height: 1.3;
   margin: 0;
@@ -99,11 +99,10 @@ const InputStyle = css<{
   isError?: boolean;
 }>`
   width: 100%;
-  background: #f7f7f7;
+  background: ${({ theme }) => theme.colors.neutral100};
   border: 0.2rem solid;
-  border-color: ${({ isError }) => (isError ? '#ff5555' : 'rgba(0, 0, 0, 0)')};
+  border-color: ${({ isError, theme }) => (isError ? theme.colors.danger500 : theme.colors.contrast)};
   border-radius: 0.8rem;
-  font-family: 'Airbnb Cereal App Book';
   font-size: 1.6rem;
   margin-top: 1.6rem;
   outline: none;
@@ -111,11 +110,11 @@ const InputStyle = css<{
 
   &:focus {
     border: 0.2rem solid;
-    border-color: ${({ isError }) => (isError ? '#ff5555' : '#7417EA')};
+    border-color: ${({ isError, theme }) => (isError ? theme.colors.danger500 : theme.colors.primary500)};
   }
 
   &::placeholder {
-    color: #c1c1c1;
+    color: ${({ theme }) => theme.colors.neutral300};
   }
 `;
 
@@ -130,7 +129,7 @@ export const Label = styled.label<{ endIcon?: string, startIcon?: string }>`
         content: '';
         position: absolute;
         left: 1.6rem;
-        top: 1.6rem;
+        top: 0;
         bottom: 0;
         width: 3.2rem;
         background: url("${startIcon}")
@@ -145,7 +144,7 @@ export const Label = styled.label<{ endIcon?: string, startIcon?: string }>`
         content: '';
         position: absolute;
         right: 1.6rem;
-        top: 1.6rem;
+        top: 0;
         bottom: 0;
         width: 3.2rem;
         background: url("${endIcon}")

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
 
 import {
@@ -7,7 +6,6 @@ import {
   AVATAR_VARIANT_BANNER,
 } from 'components/base/Avatar';
 import Icon from 'components/ui/Icon';
-import { breakpointMap } from 'style/theme/base';
 import { clipboardCopy } from 'utils/functions';
 import { middleEllipsis } from 'utils/strings';
 
@@ -28,10 +26,6 @@ const Clipboard = ({
 }: Props) => {
   const [isCopyIndicator, setIsCopyIndicator] = useState(false);
 
-  const isMobile = useMediaQuery({
-    query: `(max-width: ${breakpointMap.md - 1}px)`,
-  });
-
   useEffect(() => {
     if (isCopyIndicator) {
       const timer = setTimeout(() => {
@@ -49,7 +43,7 @@ const Clipboard = ({
         setIsCopyIndicator(true);
       }}
     >
-      {isEllipsis ? middleEllipsis(address, isMobile ? 12 : 20) : address}
+      {isEllipsis ? middleEllipsis(address, 12) : address}
       {isCopyIndicator ? (
         <SSuccessContainer variant={variant}>
           <SCheckIcon name="checkMark" />
@@ -67,14 +61,14 @@ const SAddressWrapper = styled.span`
   cursor: pointer;
   display: flex;
   align-items: center;
-  color: ${({ theme }) => theme.colors.neutral200};
+  color: ${({ theme }) => theme.colors.neutral600};
   font-family: ${({ theme }) => theme.fonts.light};
   font-size: 1.2rem;
 
   ${({ theme }) => theme.mediaQueries.lg} {
     &:hover {
-      color: ${({ theme }) => theme.colors.primary};
-      fill: ${({ theme }) => theme.colors.primary};
+      color: ${({ theme }) => theme.colors.primary500};
+      fill: ${({ theme }) => theme.colors.primary500};
     }
   }
 `;
@@ -95,7 +89,7 @@ const SSuccessContainer = styled.div<{ variant?: AVATAR_VARIANT_TYPE }>`
 
 const SCheckIcon = styled(Icon)`
   width: 1.2rem;
-  fill: ${({ theme }) => theme.colors.primary};
+  fill: ${({ theme }) => theme.colors.primary500};
   margin-left: 0.8rem;
 `;
 
@@ -106,7 +100,7 @@ const SLabel = styled.span`
 
 const SCopyIcon = styled(Icon)<{ variant?: AVATAR_VARIANT_TYPE }>`
   width: 1.2rem;
-  fill: ${({ theme }) => theme.colors.neutral400};
+  fill: ${({ theme }) => theme.colors.neutral300};
   margin-left: 0.8rem;
 
   ${({ variant }) =>

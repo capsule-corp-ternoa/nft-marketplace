@@ -1,64 +1,60 @@
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { MediaStyle } from 'components/layout/Media';
 import { Loader } from 'components/ui/Icon';
 import { NFT_FILE_TYPE_IMAGE, NFT_FILE_TYPE_VIDEO } from 'interfaces/index';
 import { timer } from 'utils/functions';
 export interface MediaProps {
-  isHovering?: boolean;
   src: string;
   type: string | null;
   fallbackSrc?: string;
   retries?: number;
 }
 
-const defaultFallback = './media-placeholder.svg'
-const totalRetries = 5
+const defaultFallback = './media-placeholder.svg';
+const totalRetries = 5;
 
-const Media: React.FC<MediaProps & Record<string,any>> = ({
-  isHovering,
-  src, 
-  type,
-  fallbackSrc=defaultFallback,
-  ...rest 
-}) => {
+const Media: React.FC<MediaProps & Record<string, any>> = ({ src, type, fallbackSrc = defaultFallback }) => {
   const [mediaSrc, setMediaSrc] = useState<string | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(false);
-  const [fetchStatusOk, setFetchStatusOk] = useState<boolean | null>(null)
+  const [fetchStatusOk, setFetchStatusOk] = useState<boolean | null>(null);
   const mediaType = type?.slice(0, 5);
-  const fetchRetry = async (url:string, retries:number = totalRetries, delay:number = 5000):Promise<Response | void> => {
-    const res = await fetch(url).catch(()=>{})
-    if (res && res.status === 200) return res
+  const fetchRetry = async (
+    url: string,
+    retries: number = totalRetries,
+    delay: number = 5000
+  ): Promise<Response | void> => {
+    const res = await fetch(url).catch(() => {});
+    if (res && res.status === 200) return res;
     // set image src to fallback on firt failed fetch
-    if (retries === totalRetries) setMediaSrc(fallbackSrc)
-    if (retries > 0){
-        console.log(`Fetch retry triggered for url (${url}) - retries remaining:`, retries - 1)
-        await timer(delay)
-        return await fetchRetry(url, retries - 1)
-    }else{
-        return res
+    if (retries === totalRetries) setMediaSrc(fallbackSrc);
+    if (retries > 0 && url !== undefined) {
+      console.log(`Fetch retry triggered for url (${url}) - retries remaining:`, retries - 1);
+      await timer(delay);
+      return await fetchRetry(url, retries - 1);
+    } else {
+      return res;
     }
-  }
+  };
   const checkSrcAvailable = async () => {
-    try{
-      const res = await fetchRetry(src)
-      if (res) setFetchStatusOk((res as Response).status === 200)
-    }catch(err){
-      console.log(err)
+    try {
+      const res = await fetchRetry(src);
+      if (res) setFetchStatusOk((res as Response).status === 200);
+    } catch (err) {
+      console.log(err);
     }
-  } 
-  useEffect(()=>{
+  };
+  useEffect(() => {
     setIsLoading(true);
-    checkSrcAvailable()
-  }, [src])
-  useEffect(()=>{
-    if (fetchStatusOk){
-      setMediaSrc(src)
+    checkSrcAvailable();
+  }, [src]);
+  useEffect(() => {
+    if (fetchStatusOk) {
+      setMediaSrc(src);
       setIsLoading(false);
-      setFetchStatusOk(false)
+      setFetchStatusOk(false);
     }
-  }, [fetchStatusOk])
+  }, [fetchStatusOk]);
 
   if (mediaSrc === undefined || isLoading) {
     return <SLoader />;
@@ -66,16 +62,11 @@ const Media: React.FC<MediaProps & Record<string,any>> = ({
 
   return (
     <>
-      {type !== null &&
-      (mediaSrc === fallbackSrc || mediaType === NFT_FILE_TYPE_IMAGE) ? (
-        <SImage
-          src={mediaSrc}
-          isHovering={isHovering}
-          {...rest}
-        />
+      {type !== null && (mediaSrc === fallbackSrc || mediaType === NFT_FILE_TYPE_IMAGE) ? (
+        <SImage src={mediaSrc} alt="imgnft" draggable="false" />
       ) : (
         mediaType === NFT_FILE_TYPE_VIDEO && (
-          <SVideo playsInline autoPlay muted loop {...rest}>
+          <SVideo playsInline autoPlay muted loop draggable="false">
             <source id="outputVideo" src={mediaSrc} />
           </SVideo>
         )
@@ -90,11 +81,19 @@ const SLoader = styled(Loader)`
 `;
 
 const SImage = styled.img`
-  ${MediaStyle}
+  object-fit: cover;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 1.2rem;
 `;
 
 const SVideo = styled.video`
-  ${MediaStyle}
+  object-fit: cover;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 1.2rem;
 `;
 
-export default Media;
+export default memo(Media);

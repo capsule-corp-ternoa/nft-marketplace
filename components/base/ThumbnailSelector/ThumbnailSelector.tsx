@@ -137,15 +137,15 @@ const SThumbnailSelector = styled.div`
 
 const SThumbnailTime = styled.div`
   font-family: 'Airbnb Cereal App Bold';
-  color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.primary500};
 `;
 
 const SThumbnailVideo = styled.video`
   width: 60%;
   align-self: center;
-  border: solid 2px ${({ theme }) => theme.colors.primary};
+  border: solid 2px ${({ theme }) => theme.colors.primary500};
   border-radius:0.8rem;
-  background-color:${({ theme }) => theme.colors.primary};
+  background-color:${({ theme }) => theme.colors.primary500};
   pointer-events: none;
   margin-top: 1.6rem;
 `;

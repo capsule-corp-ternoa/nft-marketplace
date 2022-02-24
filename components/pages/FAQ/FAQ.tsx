@@ -1,33 +1,26 @@
 import React from 'react';
+import styled from 'styled-components'
 
-import style from './FAQ.module.scss';
-import Footer from 'components/base/Footer';
-import FloatingHeader from 'components/base/FloatingHeader';
+import { Container, Title, Wrapper } from 'components/layout';
+import { useMarketplaceData } from 'redux/hooks';
+
 import Section from './Section';
 
-import { UserType } from 'interfaces/index';
+const FAQ = () => {
+  const { name } = useMarketplaceData();
 
-export interface FAQProps {
-  user: UserType;
-  setModalExpand: (b: boolean) => void;
-}
-
-const FAQ = ({ user, setModalExpand }: FAQProps) => {
-  const sec = [
+  const sections = [
     {
-      question: `What is ${process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : "SecretNFT"} Marketplace ?`,
-      answer:
-        `“${process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : "SecretNFT"}” is a NFTs marketplace for digital creators. Discover Tokenized Digital Art. Artists issue authenticated single edition digital artworks. These are certified on the Ternoa blockchain to prevent forgery. Each artwork is authentically created by an artist in the network, and tokenized as a collectible digital item that you can own, display and trade.`,
+      question: `What is ${name} Marketplace ?`,
+      answer: `“${name}” is a NFTs marketplace for digital creators. Discover Tokenized Digital Art. Artists issue authenticated single edition digital artworks. These are certified on the Ternoa blockchain to prevent forgery. Each artwork is authentically created by an artist in the network, and tokenized as a collectible digital item that you can own, display and trade.`,
     },
     {
       question: 'How to submit your NFT as an artist?',
-      answer:
-        `In beta version, you fill our form here. Soon you will be able to upload your creations on “${process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : "SecretNFT"}”.`,
+      answer: `In beta version, you fill our form here. Soon you will be able to upload your creations on “${name}”.`,
     },
     {
-      question: `What do I use for payment when buying on ${process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : "SecretNFT"} ?`,
-      answer:
-        `“${process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : "SecretNFT"}” is on Ternoa Chain, so all the platform use CAPS for transactions.`,
+      question: `What do I use for payment when buying on ${name} ?`,
+      answer: `“${name}” is on Ternoa Chain, so all the platform use CAPS for transactions.`,
     },
     {
       question: 'What is CAPS and why do i need some ?',
@@ -36,26 +29,39 @@ const FAQ = ({ user, setModalExpand }: FAQProps) => {
     },
     {
       question: 'What are “test CAPS”?',
-      answer:
-        '“Test CAPS” are CAPS usable on our testnet. Real CAPS will come on mainnet.',
+      answer: '“Test CAPS” are CAPS usable on our testnet. Real CAPS will come on mainnet.',
     },
   ];
-  function returnSections() {
-    return sec.map((x, index) => {
-      return <Section key={index} section={x} />;
-    });
-  }
+  
   return (
-    <div className={style.Container}>
-      <div className={style.Wrapper}>
-        <h1 className={style.Title}>How it works ?</h1>
-        <span className={style.FAQ}>FAQ</span>
-        <div className={style.Inner}>{returnSections()}</div>
-      </div>
-      <FloatingHeader user={user} setModalExpand={setModalExpand} />
-      <Footer />
-    </div>
+    <Container>
+      <Wrapper>
+        <Title>How it works ?</Title>
+        <SSubtitle>FAQ</SSubtitle>
+        <SSectionsWrapper>
+          {sections.map((x, index) => <Section key={index} section={x} />)}
+        </SSectionsWrapper>
+      </Wrapper>
+    </Container>
   );
 };
+
+const SSubtitle = styled.div`
+  font-size: 3.2rem;
+  text-align: center;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    font-size: 4rem;
+    text-align: left;
+  }
+`;
+
+const SSectionsWrapper = styled.div`
+  margin-top: 0.8rem;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    margin-top: 8rem;
+  }
+`;
 
 export default FAQ;

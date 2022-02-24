@@ -1,21 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
-import BetaBanner from 'components/base/BetaBanner';
-import MainHeader from 'components/base/MainHeader';
-import TernoaWallet from 'components/base/TernoaWallet';
-import Create from 'components/pages/Create';
-import ModalMint from 'components/pages/Create/ModalMint';
-import cookies from 'next-cookies';
 import Router from 'next/router';
+
 import { getCategories } from 'actions/category';
-import { getUser } from 'actions/user';
-import { CategoryType, UserType } from 'interfaces';
-import { NextPageContext } from 'next';
-import { decryptCookie } from 'utils/cookie';
+import BetaBanner from 'components/base/BetaBanner';
+import FloatingHeader from 'components/base/FloatingHeader';
+import Footer from 'components/base/Footer';
+import MainHeader from 'components/base/MainHeader';
+import { ModalMint } from 'components/base/Modal';
+import Create from 'components/pages/Create';
+import { CategoryType } from 'interfaces';
+import { useApp, useMarketplaceData } from 'redux/hooks';
 
 export interface CreatePageProps {
   categories: CategoryType[];
-  user: UserType;
 }
 
 export interface NFTProps {
@@ -27,21 +25,23 @@ export interface NFTProps {
   seriesId: string;
 }
 
-const CreatePage = ({ categories, user }: CreatePageProps) => {
+const CreatePage = ({ categories }: CreatePageProps) => {
+  const { user } = useApp();
+  const { name } = useMarketplaceData();
+
   const isNftCreationEnabled =
     process.env.NEXT_PUBLIC_IS_NFT_CREATION_ENABLED === undefined
       ? true
       : process.env.NEXT_PUBLIC_IS_NFT_CREATION_ENABLED === 'true';
 
   const [error, setError] = useState('');
-  const [modalExpand, setModalExpand] = useState(false);
-  const [modalCreate, setModalCreate] = useState(false);
+  const [isModalMintExpanded, setIsModalMintExpanded] = useState(false);
   const [previewNFT, setPreviewNFT] = useState<File | null>(null); // Public NFT media
   const [output, setOutput] = useState<string[]>([]);
   const [originalNFT, setOriginalNFT] = useState<File | null>(null); // Crypted NFT media
   const [uploadSize, setUploadSize] = useState(0);
-  const [stateSocket, setStateSocket] = useState<any>(null)
-  const [thumbnailTimecode, setThumbnailTimecode] = useState(0)
+  const [stateSocket, setStateSocket] = useState<any>(null);
+  const [thumbnailTimecode, setThumbnailTimecode] = useState(0);
   const [NFTData, setNFTData] = useState<NFTProps>({
     categories: [],
     description: '',
@@ -56,6 +56,7 @@ const CreatePage = ({ categories, user }: CreatePageProps) => {
     quantity: quantity,
   });
   const [runNFTMintData, setRunNFTMintData] = useState<any>(null);
+
   useEffect(() => {
     if (!isNftCreationEnabled) {
       Router.push('/');
@@ -70,35 +71,29 @@ const CreatePage = ({ categories, user }: CreatePageProps) => {
     }
   }, [quantity, previewNFT, originalNFT]);
 
-  useEffect(()=> {
-    if (error !== ''){
-      setModalCreate(true)
+  useEffect(() => {
+    if (error !== '') {
+      setIsModalMintExpanded(true);
     }
-  }, [error])
+  }, [error]);
 
-  useEffect(()=> {
-    if (!modalCreate){
-      setError('')
+  useEffect(() => {
+    if (!isModalMintExpanded) {
+      setError('');
       if (stateSocket) stateSocket.close();
     }
-  }, [modalCreate])
+  }, [isModalMintExpanded]);
 
   return (
     <>
       <Head>
-        <title>
-          {process.env.NEXT_PUBLIC_APP_NAME
-            ? process.env.NEXT_PUBLIC_APP_NAME
-            : 'SecretNFT'}{' '}
-          - Create your NFT
-        </title>
+        <title>{name} - Create your NFT</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta name="description" content="SecretNFT Marketplace, by Ternoa." />
         <meta name="og:image" content="ternoa-social-banner.jpg" />
       </Head>
       <>
-        {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
-        {modalCreate && (
+        {isModalMintExpanded && (
           <ModalMint
             error={error}
             previewNFT={previewNFT}
@@ -111,23 +106,21 @@ const CreatePage = ({ categories, user }: CreatePageProps) => {
             stateSocket={stateSocket}
             setStateSocket={setStateSocket}
             setError={setError}
-            setModalCreate={setModalCreate}
+            setExpanded={setIsModalMintExpanded}
             setRunNFTMintData={setRunNFTMintData}
             thumbnailTimecode={thumbnailTimecode}
           />
         )}
         <BetaBanner />
-        <MainHeader user={user} setModalExpand={setModalExpand} />
+        <MainHeader />
         {isNftCreationEnabled && (
           <Create
             categoriesOptions={categories}
             NFTData={NFTData}
             originalNFT={originalNFT}
             QRData={QRData}
-            user={user}
             setError={setError}
-            setModalExpand={setModalExpand}
-            setModalCreate={setModalCreate}
+            setIsModalMintExpanded={setIsModalMintExpanded}
             setNFTData={setNFTData}
             setOutput={setOutput}
             setOriginalNFT={setOriginalNFT}
@@ -137,46 +130,24 @@ const CreatePage = ({ categories, user }: CreatePageProps) => {
             setThumbnailTimecode={setThumbnailTimecode}
           />
         )}
+        <Footer />
+        <FloatingHeader />
       </>
     </>
   );
 };
 
-export async function getServerSideProps(ctx: NextPageContext) {
+export async function getServerSideProps() {
   let categories: CategoryType[] = [];
-  let user = null;
 
-  const promises = [];
-
-  const token =
-    cookies(ctx).token && decryptCookie(cookies(ctx).token as string);
-  if (token) {
-    promises.push(
-      new Promise<void>((success) => {
-        getUser(token)
-          .then((_user) => {
-            user = _user;
-            success();
-          })
-          .catch(success);
-      })
-    );
+  try {
+    categories = await getCategories();
+  } catch (error) {
+    console.log(error);
   }
 
-  promises.push(
-    new Promise<void>((success) => {
-      getCategories()
-        .then((result) => {
-          categories = result;
-          success();
-        })
-        .catch(success);
-    })
-  );
-
-  await Promise.all(promises);
   return {
-    props: { categories, user },
+    props: { categories },
   };
 }
 

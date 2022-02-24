@@ -1,149 +1,90 @@
-import React, { useState } from 'react';
-import Switch from 'react-switch';
-import Carousel from 'react-multi-carousel';
-import 'react-multi-carousel/lib/styles.css';
-import { useMediaQuery } from 'react-responsive';
-import { breakpointMap } from 'style/theme/base';
+import React from 'react';
+import Link from 'next/link';
+import styled from 'styled-components';
 
-import style from './Showcase.module.scss';
+import NftCard from 'components/base/NftCard';
 
-import { NftCardWithHover, CAROUSEL_MODE } from 'components/base/NftCard';
-import ArrowLeft from 'components/assets/arrowLeft';
-import ArrowRight from 'components/assets/arrowRight';
-
-import { NftType, UserType } from 'interfaces/index';
-
-const responsive = {
-  desktop: {
-    breakpoint: { max: 3000, min: breakpointMap.xxl },
-    items: 4.2,
-  },
-  tablet: {
-    breakpoint: { max: (breakpointMap.xxl - 1), min: breakpointMap.lg },
-    items: 4.2,
-  },
-  tablet2: {
-    breakpoint: { max: (breakpointMap.lg - 1), min: breakpointMap.md },
-    items: 3.5,
-  },
-  mobile: {
-    breakpoint: { max: (breakpointMap.md - 1), min: breakpointMap.sm },
-    items: 2.4,
-  },
-  mobile2: {
-    breakpoint: { max: (breakpointMap.sm - 1), min: 0 },
-    items: 1.8,
-  },
-};
-
+import { NftType } from 'interfaces/index';
 export interface ShowcaseProps {
   NFTs: NftType[];
-  category: string;
-  user?: UserType;
+  title: string;
+  href?: string;
 }
 
-const Showcase: React.FC<ShowcaseProps> = ({ NFTs, category, user }) => {
-  const [isFiltered, setIsFiltered] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
+const Showcase: React.FC<ShowcaseProps> = ({ NFTs, title, href }) => (
+  <SShowcaseContainer>
+    <STopContainer>
+      <STitle>{title}</STitle>
+      {href !== undefined && (
+        <Link href={href} passHref>
+          <SLink href={href}>SEE ALL</SLink>
+        </Link>
+      )}
+    </STopContainer>
+    <SNftsContainer>
+      {NFTs.map((item) => (
+        <SNftCard key={item.id} item={item} />
+      ))}
+    </SNftsContainer>
+  </SShowcaseContainer>
+);
 
-  const isMobile = useMediaQuery({ query: `(max-width: ${breakpointMap.md - 1}px)` });
+const SShowcaseContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+`;
 
-  let carousel: Carousel | null = new Carousel({
-    responsive: {},
-    children: <></>,
-  });
+const STopContainer = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+`;
 
-  return (
-    <div className={style.Showcase}>
-      <div className={style.Top}>
-        <div className={style.Infos}>
-          <h3 className={style.Title}>{category}</h3>
-          <div className={`${style.Toggle} ${style.Hide}`}>
-            <label>
-              <Switch
-                checked={isFiltered}
-                onChange={() => setIsFiltered(!isFiltered)}
-                offColor="#000000"
-                onColor="#7417ea"
-                uncheckedIcon={false}
-                checkedIcon={false}
-                width={46}
-                handleDiameter={23}
-                className={style.SwitchShell}
-              />
-            </label>
-            <span className={style.Label}>Certified only</span>
-          </div>
-        </div>
-        {!isMobile && (
-          <div className={style.Nav}>
-            <div
-              onClick={() => {
-                carousel?.previous(1);
-              }}
-              className={style.NavButton}
-            >
-              <ArrowLeft className={style.ArrowSVG} />
-            </div>
+const STitle = styled.h3`
+  font-family: ${({ theme }) => theme.fonts.bold};
+  font-size: 2.4rem;
+  margin: 0;
 
-            <div
-              onClick={() => {
-                carousel?.next(1);
-              }}
-              className={style.NavButton}
-            >
-              <ArrowRight className={style.ArrowSVG} />
-            </div>
-          </div>
-        )}
-      </div>
-      <div className={style.Wrapper}>
-        <div
-          className={style.NFTContainer}
-          onMouseDown={() => setIsDragging(false)}
-          onMouseMove={() => setIsDragging(true)}
-          onTouchStart={() => setIsDragging(false)}
-          onTouchMove={() => setIsDragging(true)}
-        >
-          {isMobile ? (
-            NFTs.map((item) => (
-              <div key={item.id} className={style.NFTShell}>
-                <NftCardWithHover
-                  isDragging={isDragging}
-                  item={item}
-                  mode={CAROUSEL_MODE}
-                  user={user}
-                />
-              </div>
-            ))
-          ) : (
-            <Carousel
-              ref={(el) => {
-                carousel = el;
-              }}
-              responsive={responsive}
-              infinite
-              ssr={false}
-              arrows={false}
-              className={style.CarouselContainer}
-              swipeable={true}
-            >
-              {NFTs.map((item) => (
-                <div key={item.id} className={style.NFTShell}>
-                  <NftCardWithHover
-                    isDragging={isDragging}
-                    item={item}
-                    mode={CAROUSEL_MODE}
-                    user={user}
-                  />
-                </div>
-              ))}
-            </Carousel>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-};
+  ${({ theme }) => theme.mediaQueries.lg} {
+    font-size: 3.2rem;
+  }
+`;
+
+const SLink = styled.a`
+  color: ${({ theme }) => theme.colors.neutral500};
+  font-family: ${({ theme }) => theme.fonts.bold};
+  font-size: 1.6rem;
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.primary500};
+  }
+`;
+
+const SNftsContainer = styled.div`
+  width: 100%;
+  display: flex;
+  overflow-x: auto;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 2.4rem;
+  gap: 3.2rem;
+  min-height: 34rem;
+
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    min-height: auto;
+    gap: 3.4rem;
+    overflow-x: visible;
+  }
+`;
+
+const SNftCard = styled(NftCard)`
+  flex-shrink: 0;
+  height: ${({ theme }) => theme.sizes.cardHeight.sm};
+  width: ${({ theme }) => theme.sizes.cardWidth.sm};
+`;
 
 export default Showcase;

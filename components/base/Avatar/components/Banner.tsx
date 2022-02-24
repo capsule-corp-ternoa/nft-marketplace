@@ -3,7 +3,8 @@ import styled from 'styled-components';
 
 import Icon from 'components/ui/Icon';
 
-import Avatar, { AVATAR_VARIANT_BANNER } from '../Avatar';
+import Avatar from '../Avatar';
+import { AVATAR_VARIANT_BANNER } from '../constants';
 
 interface Props {
   bio?: string;
@@ -13,7 +14,7 @@ interface Props {
   nickname?: string;
   picture?: string;
   twitterName?: string;
-  walletId?: string;
+  walletId: string;
 }
 
 const Banner = ({
@@ -70,7 +71,7 @@ const SInfosContainer = styled.div`
 
   ${({ theme }) => theme.mediaQueries.lg} {
     align-items: flex-start;
-    border-left: ${({theme}) => `1px solid ${theme.colors.neutral400}`};
+    border-left: ${({theme}) => `1px solid ${theme.colors.neutral600}`};
     height: 100%;
     margin: 0 0 0 8rem;
     padding: 1.6rem 0 1.6rem 2.4rem;

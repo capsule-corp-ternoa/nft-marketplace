@@ -1,2 +1,4 @@
-export { default } from './Profile';
-export { ARTIST_PROFILE_VARIANT, USER_PERSONNAL_PROFILE_VARIANT } from './Profile';
+export { default as ArtistProfile } from './ArtistProfile';
+export { default as Profile } from './Profile';
+export * from './constants';
+export type { TabsIdType } from './interfaces';

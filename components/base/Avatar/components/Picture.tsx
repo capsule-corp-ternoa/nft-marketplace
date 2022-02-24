@@ -1,82 +1,30 @@
 import React from 'react';
-import Router from 'next/router';
 import styled, { css } from 'styled-components';
 import gradient from 'random-gradient';
 
 import Icon from 'components/ui/Icon';
 
-import {
-  AVATAR_VARIANT_BADGE,
-  AVATAR_VARIANT_BANNER,
-  AVATAR_VARIANT_EDIT,
-  AVATAR_VARIANT_MOSAIC,
-  AVATAR_VARIANT_TYPE,
-} from '../Avatar';
+import { AVATAR_VARIANT_TYPE } from '../interfaces';
+import { getPictureSize, getPictureFontSize } from '../utils';
 
 interface Props {
   className?: string;
   isBanner?: boolean;
-  isClickable?: boolean;
   isTooltip?: boolean;
   isVerified?: boolean;
   name?: string;
   picture?: string;
   variant?: AVATAR_VARIANT_TYPE;
-  walletId?: string;
 }
 
-const pictureSize = (variant?: AVATAR_VARIANT_TYPE) => {
-  switch (variant) {
-    case AVATAR_VARIANT_BANNER:
-      return '12rem';
-    case AVATAR_VARIANT_EDIT:
-      return '9.6rem';
-    case AVATAR_VARIANT_BADGE:
-      return '3.6rem';
-    case AVATAR_VARIANT_MOSAIC:
-      return '8rem';
-    default:
-      return '5.6rem';
-  }
-};
-
-const fontSize = (variant?: AVATAR_VARIANT_TYPE) => {
-  switch (variant) {
-    case AVATAR_VARIANT_BANNER:
-      return '5.6rem';
-    case AVATAR_VARIANT_EDIT:
-      return '3.2rem';
-    case AVATAR_VARIANT_BADGE:
-      return '2rem';
-    case AVATAR_VARIANT_MOSAIC:
-      return '2.8rem';
-    default:
-      return '2.4rem';
-  }
-};
-
-const Picture = ({
-  className,
-  isClickable,
-  isTooltip,
-  isVerified,
-  name = 'Ternoa',
-  picture,
-  variant,
-  walletId,
-}: Props) => (
-  <SPictureContainer
-    className={className}
-    isClickable={isClickable}
-    isTooltip={isTooltip}
-    onClick={() => isClickable && walletId && Router.push(`/${walletId}`)}
-  >
+const Picture = ({ className, isTooltip = false, isVerified, name = 'Ternoa', picture, variant }: Props) => (
+  <SPictureContainer className={className} isTooltip={isTooltip}>
     <SPictureWrapper variant={variant}>
       {isVerified && <SIcon name="badge" />}
       {picture ? (
-        <SImage draggable="false" isClickable={isClickable} src={picture} />
+        <SImage draggable="false" src={picture} />
       ) : (
-        <SInitials isClickable={isClickable} name={name}>
+        <SInitials name={name}>
           <SLetter variant={variant}>{name?.charAt(0) ?? 'T'}</SLetter>
         </SInitials>
       )}
@@ -85,12 +33,8 @@ const Picture = ({
   </SPictureContainer>
 );
 
-const SPictureContainer = styled.div<{
-  isClickable?: boolean;
-  isTooltip?: boolean;
-}>`
+const SPictureContainer = styled.div<{ isTooltip?: boolean }>`
   position: relative;
-  cursor: ${({ isClickable }) => (isClickable ? 'pointer' : 'default')};
 
   > span {
     display: none;
@@ -108,11 +52,11 @@ const SPictureContainer = styled.div<{
 `;
 
 const SPictureWrapper = styled.div<{ variant?: AVATAR_VARIANT_TYPE }>`
-  width: ${({ variant }) => pictureSize(variant)};
-  height: ${({ variant }) => pictureSize(variant)};
+  width: ${({ variant }) => getPictureSize(variant)};
+  height: ${({ variant }) => getPictureSize(variant)};
   position: relative;
   border-radius: 50%;
-  box-shadow: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.25);
+  box-shadow: ${({ theme }) => theme.shadows.popupShadow};
   z-index: 5;
 `;
 
@@ -124,7 +68,7 @@ const SIcon = styled(Icon)`
   z-index: 10;
 `;
 
-const ImageStyle = css<{ isClickable?: boolean }>`
+const ImageStyle = css`
   object-fit: cover;
   width: 100%;
   height: 100%;
@@ -132,26 +76,21 @@ const ImageStyle = css<{ isClickable?: boolean }>`
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-  box-shadow: 0 0.4rem 0.4rem rgba(0, 0, 0, 0.25);
+  box-shadow: ${({ theme }) => theme.shadows.popupShadow};
   position: absolute;
   transition: border 0.05s ease-out;
 
-  ${({ isClickable, theme }) =>
-    isClickable &&
-    `
-      &:hover {
-        border: 3px solid;
-        border-color: ${theme.colors.primary};
-      }
-    }
-  `}
+  &:hover {
+    border: 3px solid;
+    border-color: ${({ theme }) => theme.colors.primary500};
+  }
 `;
 
 const SImage = styled.img`
   ${ImageStyle}
 `;
 
-const SInitials = styled.div<{ isClickable?: boolean; name: string }>`
+const SInitials = styled.div<{ name: string }>`
   ${ImageStyle}
 
   background: ${({ name }) => gradient(name)};
@@ -160,15 +99,15 @@ const SInitials = styled.div<{ isClickable?: boolean; name: string }>`
 const SLetter = styled.div<{ variant?: AVATAR_VARIANT_TYPE }>`
   color: ${({ theme }) => theme.colors.invertedContrast};
   font-family: ${({ theme }) => theme.fonts.medium};
-  font-size: ${({ variant }) => fontSize(variant)};
+  font-size: ${({ variant }) => getPictureFontSize(variant)};
   text-transform: uppercase;
 `;
 
 const SPopoverName = styled.span`
   position: absolute;
-  background: ${({theme}) => theme.colors.contrast};
+  background: ${({ theme }) => theme.colors.contrast};
   border-radius: 0.8rem;
-  box-shadow: 0px 0px 14.5243px 5.0835px rgb(0 0 0 / 10%);
+  box-shadow: ${({ theme }) => theme.shadows.popupShadow};
   color: ${({ theme }) => theme.colors.invertedContrast};
   font-family: ${({ theme }) => theme.fonts.bold};
   font-size: 1.4rem;

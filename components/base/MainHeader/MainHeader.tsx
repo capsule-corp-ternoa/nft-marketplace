@@ -1,48 +1,42 @@
 import React, { useState } from 'react';
-import { useMediaQuery } from 'react-responsive';
 import Link from 'next/link';
 import styled from 'styled-components';
 
+import { ModalWallet } from 'components/base/Modal';
 import { ProfileMenuBadge, ProfileMenuDropdown } from 'components/base/ProfileMenu';
 import Button from 'components/ui/Button';
 import Icon from 'components/ui/Icon';
 import { Container, Wrapper } from 'components/layout';
 
-import { UserType } from 'interfaces/index';
 import { computeCaps } from 'utils/strings';
-import { breakpointMap } from 'style/theme/base';
+import { useApp } from 'redux/hooks';
 
-export interface HeaderProps {
-  user: UserType;
-  setModalExpand: (b: boolean) => void;
-}
-
-const MainHeader: React.FC<HeaderProps> = ({ setModalExpand, user }) => {
+const MainHeader: React.FC = () => {
+  const [isModalWalletExpanded, setIsModalWalletExpanded] = useState(false);
   const [isProfileMenuExpanded, setIsProfileMenuExpanded] = useState(false);
+
+  const { user } = useApp();
+
   const isNftCreationEnabled =
     process.env.NEXT_PUBLIC_IS_NFT_CREATION_ENABLED === undefined
       ? true
       : process.env.NEXT_PUBLIC_IS_NFT_CREATION_ENABLED === 'true';
 
-  const isMobileTablet = useMediaQuery({
-    query: `(max-width: ${breakpointMap.lg - 1}px)`,
-  });
-
   return (
-    <Container>
-      <SWrapper>
-        <Link href="/">
-          <a>
-            <SLogo name="logoTernoaBlack" />
-          </a>
-        </Link>
-        {!isMobileTablet && (
+    <>
+      <Container>
+        <SWrapper>
+          <Link href="/">
+            <a>
+              <SLogo name="logoTernoaBlack" />
+            </a>
+          </Link>
           <SNavContainer>
             <SNavLinksContainer>
               <Link href="/explore" passHref>
                 <SLinkItem>Explore</SLinkItem>
               </Link>
-              <Link href="/faq" >
+              <Link href="/faq">
                 <SLinkItem>How it works</SLinkItem>
               </Link>
             </SNavLinksContainer>
@@ -50,13 +44,7 @@ const MainHeader: React.FC<HeaderProps> = ({ setModalExpand, user }) => {
               {isNftCreationEnabled && (
                 <Link href="/create" passHref>
                   <>
-                    <Button
-                      color="invertedContrast"
-                      href="/create"
-                      size="medium"
-                      text="Create NFT"
-                      variant="outlined"
-                    />
+                    <Button color="contrast" href="/create" size="medium" text="Create NFT" variant="outlined" />
                   </>
                 </Link>
               )}
@@ -68,22 +56,24 @@ const MainHeader: React.FC<HeaderProps> = ({ setModalExpand, user }) => {
                   user={user}
                 />
               ) : (
-                <Button
-                  color="contrast"
-                  onClick={() => setModalExpand(true)}
-                  size="medium"
-                  text="Connect"
-                  variant="outlined"
-                />
-              )}
-            </SNavButtonsCointainer>
-          </SNavContainer>
-        )}
-        {user && isProfileMenuExpanded && (
-          <SProfileMenuDropdown onClose={() => setIsProfileMenuExpanded(false)} user={user} />
-        )}
-      </SWrapper>
-    </Container>
+                  <Button
+                    color="contrast"
+                    onClick={() => setIsModalWalletExpanded(true)}
+                    size="medium"
+                    suppressHydrationWarning
+                    text="Connect"
+                    variant="outlined"
+                  />
+                )}
+              </SNavButtonsCointainer>
+            </SNavContainer>
+          {user && isProfileMenuExpanded && (
+            <SProfileMenuDropdown onClose={() => setIsProfileMenuExpanded(false)} user={user} />
+          )}
+        </SWrapper>
+      </Container>
+      {isModalWalletExpanded && <ModalWallet setExpanded={setIsModalWalletExpanded} />}
+    </>
   );
 };
 
@@ -91,9 +81,13 @@ const SWrapper = styled(Wrapper)`
   flex-direction: row;
   justify-content: center;
   position: relative;
+  padding-top: 3.2rem !important;
+  padding-bottom: 3.2rem !important;
 
   ${({ theme }) => theme.mediaQueries.lg} {
     justify-content: space-between;
+    padding-top: 4rem !important;
+    padding-bottom: 4rem !important;
   }
 `;
 
@@ -103,8 +97,12 @@ const SLogo = styled(Icon)`
 `;
 
 const SNavContainer = styled.div`
-  display: flex;
-  align-items: center;
+  display: none;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    display: flex;
+    align-items: center;
+  }
 `;
 
 const SNavLinksContainer = styled.div`
@@ -119,12 +117,11 @@ const SNavLinksContainer = styled.div`
 `;
 
 const SLinkItem = styled.a`
-  color: ${({theme}) => theme.colors.contrast};
+  color: ${({ theme }) => theme.colors.contrast};
   cursor: pointer;
-  font-family: ${({theme}) => theme.fonts.bold};
+  font-family: ${({ theme }) => theme.fonts.bold};
   font-size: 1.6rem;
 `;
-
 
 const SNavButtonsCointainer = styled.div`
   display: flex;

@@ -1,53 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
 
 import { reviewRequested as requestReview } from 'actions/user';
 // import { padlock } from 'components/assets';
 import { Banner as AvatarBanner } from 'components/base/Avatar';
-import {
-  Advice,
-  Container,
-  Form,
-  FormSideLeft,
-  FormSideRight,
-  Title,
-  Wrapper,
-} from 'components/layout';
-import ModalEdit from 'components/pages/Edit/components/ModalEdit/ModalEdit';
-import TwitterErrorModal from 'components/pages/Edit/components/TwitterErrorModal/TwitterErrorModal';
+import { Advice, Container, Form, FormSideLeft, FormSideRight, Title, Wrapper } from 'components/layout';
 import Button from 'components/ui/Button';
 import Icon from 'components/ui/Icon';
-import { TextArea, TextInput } from 'components/ui/Input';
+import { Input, TextArea } from 'components/ui/Input';
+import Modal from 'components/ui/Modal';
 import { UserType } from 'interfaces';
-import { breakpointMap } from 'style/theme/base';
 import { MARKETPLACE_ID, NODE_API_URL } from 'utils/constant';
 import { uploadIPFS } from 'utils/nftEncryption';
 import { validateTwitter, validateUrl } from 'utils/strings';
 
-import { ImageBlock } from './components';
+import ImageBlock from './components/ImageBlock';
+import ModalEdit from './components/ModalEdit';
 
 interface Props {
   user: UserType;
-  setSuccessPopup: (b: boolean) => void;
 }
 
-const Edit = ({ user, setSuccessPopup }: Props) => {
+const Edit = ({ user }: Props) => {
   const router = useRouter();
-  const {
-    banner,
-    bio,
-    name,
-    personalUrl,
-    picture,
-    reviewRequested,
-    twitterName,
-    twitterVerified,
-    verified,
-    walletId,
-  } = user;
+  const { banner, bio, name, personalUrl, picture, reviewRequested, twitterName, twitterVerified, verified, walletId } =
+    user;
 
+  const [isCertificationModalExpanded, setIsCertificationModalExpanded] = useState(false);
+  const [isEditModalExpanded, setIsEditModalExpanded] = useState(false);
+  const [isTwitterErrorModalExpanded, setIsTwitterErrorModalExpanded] = useState(false);
   const [data, setData] = useState({
     walletId,
     name,
@@ -64,33 +46,16 @@ const Edit = ({ user, setSuccessPopup }: Props) => {
     reviewRequested,
     verified,
   });
-  const [modalEditOpen, setModalEditOpen] = useState(false);
-  const [twitterErrorModal, setTwitterErrorModal] = useState(false);
 
   const isDataValid =
     data &&
     data.name &&
     data.name.length > 0 &&
     (!data.customUrl || data.customUrl === '' || validateUrl(data.customUrl)) &&
-    (!data.personalUrl ||
-      data.personalUrl === '' ||
-      validateUrl(data.personalUrl)) &&
-    (!data.twitterName ||
-      data.twitterName === '' ||
-      validateTwitter(data.twitterName));
+    (!data.personalUrl || data.personalUrl === '' || validateUrl(data.personalUrl)) &&
+    (!data.twitterName || data.twitterName === '' || validateTwitter(data.twitterName));
 
-  const isMobile = useMediaQuery({
-    query: `(max-width: ${breakpointMap.md - 1}px)`,
-  });
-  const isTablet = useMediaQuery({
-    query: `(max-width: ${breakpointMap.lg - 1}px)`,
-  });
-
-  const isVerificationAvailable =
-    twitterName &&
-    twitterName.length > 2 &&
-    !twitterVerified &&
-    MARKETPLACE_ID === '0';
+  const isVerificationAvailable = twitterName && twitterName.length > 2 && !twitterVerified && MARKETPLACE_ID === '0';
   const verificationLabel = data.verified
     ? 'Certified'
     : data.reviewRequested
@@ -106,7 +71,7 @@ const Edit = ({ user, setSuccessPopup }: Props) => {
       try {
         let res = await requestReview(walletId);
         if (res) {
-          setSuccessPopup(true);
+          setIsCertificationModalExpanded(true);
           setData({ ...data, reviewRequested: res.reviewRequested });
         }
       } catch (error) {
@@ -132,13 +97,11 @@ const Edit = ({ user, setSuccessPopup }: Props) => {
       if (isDataValid) {
         //save picture and banner to pinata before sending api if exist and different
         let updateData = { ...data };
-        if (data.banner?.slice(0, 4) === 'blob')
-          updateData.banner = await fileToUrl(data.banner, 'banner');
-        if (data.picture?.slice(0, 4) === 'blob')
-          updateData.picture = await fileToUrl(data.picture, 'picture');
+        if (data.banner?.slice(0, 4) === 'blob') updateData.banner = await fileToUrl(data.banner, 'banner');
+        if (data.picture?.slice(0, 4) === 'blob') updateData.picture = await fileToUrl(data.picture, 'picture');
         setData(updateData);
         //show update modal
-        setModalEditOpen(true);
+        setIsEditModalExpanded(true);
       }
     } catch (err) {
       console.log(err);
@@ -147,28 +110,28 @@ const Edit = ({ user, setSuccessPopup }: Props) => {
 
   useEffect(() => {
     if (router.query?.twitterValidated === 'false') {
-      setTwitterErrorModal(true);
+      setIsTwitterErrorModalExpanded(true);
       router.query = {};
     }
   }, [router.query]);
 
   return (
-    <Container>
-      <SBannerContainer>
-        <SBannerIMG src={data.banner} draggable="false" alt="banner" />
-        {isTablet && (
-          <SReturnButtonMobile
-            color="invertedContrast"
-            icon="arrowLeft"
-            href="/profile"
-            size="small"
-            text="Return"
-            variant="contained"
-          />
-        )}
-      </SBannerContainer>
-      <SWrapper>
-        {!isTablet && (
+    <>
+      <Container>
+        <SBannerContainer>
+          <SBannerIMG src={data.banner} draggable="false" alt="banner" />
+          <SReturnButtonContainer>
+            <Button
+              color="invertedContrast"
+              icon="arrowLeft"
+              href="/profile"
+              size="small"
+              text="Return"
+              variant="contained"
+            />
+          </SReturnButtonContainer>
+        </SBannerContainer>
+        <SWrapper>
           <SAvatarBannerContainer>
             <AvatarBanner
               bio={bio}
@@ -178,41 +141,30 @@ const Edit = ({ user, setSuccessPopup }: Props) => {
               twitterName={twitterName}
               walletId={walletId}
             />
-            <Button
-              color="whiteBlur"
-              icon="arrowLeft"
-              href="/profile"
-              text="Return"
-              size="small"
-              variant="outlined"
-            />
+            <Button color="neutral600" icon="arrowLeft" href="/profile" text="Return" size="small" variant="outlined" />
           </SAvatarBannerContainer>
-        )}
-        <STopContainer>
-          <STitle>Edit your profile</STitle>
-          <SCertifiedButtonCOntainer>
-            <Button
-              color="whiteBlur"
-              icon={data.verified || data.reviewRequested ? 'badge' : undefined}
-              noHover={data.verified || data.reviewRequested}
-              onClick={handleCertificationReview}
-              size="small"
-              text={verificationLabel}
-              variant="outlined"
-            />
-          </SCertifiedButtonCOntainer>
-        </STopContainer>
-        {isMobile && (
-          <>
+          <STopContainer>
+            <STitle>Edit your profile</STitle>
+            <SCertifiedButtonCOntainer>
+              <Button
+                color="neutral600"
+                icon={data.verified || data.reviewRequested ? 'badge' : undefined}
+                noHover={data.verified || data.reviewRequested}
+                onClick={handleCertificationReview}
+                size="small"
+                text={verificationLabel}
+                variant="outlined"
+              />
+            </SCertifiedButtonCOntainer>
+          </STopContainer>
+          <SImagesMobileContainer>
             <SPictureBlock
               chipLabel="Upload avatar"
               description="We recommend an image
 of at least 120x120. Gifs work too."
               id="uploadPicture"
               name={name}
-              onChange={(file: File) =>
-                handleChange(URL.createObjectURL(file), 'picture')
-              }
+              onChange={(file: File) => handleChange(URL.createObjectURL(file), 'picture')}
               picture={data.picture}
             />
 
@@ -222,25 +174,22 @@ of at least 120x120. Gifs work too."
               description="We recommend an image
           of at least 1800x280"
               id="uploadBanner"
-              onChange={(file: File) =>
-                handleChange(URL.createObjectURL(file), 'banner')
-              }
+              onChange={(file: File) => handleChange(URL.createObjectURL(file), 'banner')}
             />
-          </>
-        )}
-        <Form>
-          <FormSideLeft>
-            <STextInput
-              isError={data.name === ''}
-              label="Display name"
-              onChange={(e) => handleChange(e.target.value, 'name')}
-              placeholder="Your name"
-              value={data.name || ''}
-            />
-            {/* TODO: herotag features added later when specifications are defined */}
-            {/* {data.nickname && (
+          </SImagesMobileContainer>
+          <Form>
+            <FormSideLeft>
+              <SInput
+                isError={data.name === ''}
+                label="Display name"
+                onChange={(e) => handleChange(e.target.value, 'name')}
+                placeholder="Your name"
+                value={data.name || ''}
+              />
+              {/* TODO: herotag features added later when specifications are defined */}
+              {/* {data.nickname && (
               <>
-                <STextInput
+                <SInput
                   label="@artistname"
                   onChange={(e) => handleChange(e.target.value, 'nickname')}
                   placeholder="Your artist name"
@@ -248,7 +197,7 @@ of at least 120x120. Gifs work too."
                   value={data.nickname || ''}
                 />
                 <SNicknameAvailable>Available nickname !</SNicknameAvailable>
-                <STextInput
+                <SInput
                   disabled
                   endIcon={padlock}
                   label="Your secret-nft.com URL"
@@ -257,67 +206,65 @@ of at least 120x120. Gifs work too."
                 />
               </>
             )} */}
-            <STextArea
-              label="Bio"
-              placeholder="Tell something about you in a few words..."
-              onChange={(e) => handleChange(e.target.value, 'bio')}
-              value={data.bio}
-            />
-          </FormSideLeft>
-          <FormSideRight>
-            <STextInput
-              isError={
-                data.twitterName !== undefined &&
-                data.twitterName !== '' &&
-                data.twitterName !== null &&
-                !validateTwitter(data.twitterName)
-              }
-              label={
-                <STwitterInputLabel>
-                  <STwitterLabel>Twitter username</STwitterLabel>
-                  {data.twitterVerified ? (
-                    <STwitterVerified>
-                      <span>Verified</span>
-                      <SIcon name="badge" />
-                    </STwitterVerified>
-                  ) : (
-                    isVerificationAvailable && (
-                      <STwitterVerificationLink
-                        href={`${NODE_API_URL}/api/users/verifyTwitter/${data.walletId}`}
-                        target="_self"
-                        rel="noreferrer noopener"
-                      >
-                        Verify your Twitter account ({twitterName})
-                      </STwitterVerificationLink>
-                    )
-                  )}
-                </STwitterInputLabel>
-              }
-              placeholder="Twitter @username"
-              onChange={(e) => handleChange(e.target.value, 'twitterName')}
-              value={data.twitterName || ''}
-            />
-            <SClaimTwitterContainer>
-              {isVerificationAvailable && (
-                <STwitterNotVerified>
-                  Verify your Twitter account in order to get the verification
-                  badge
-                </STwitterNotVerified>
-              )}
-            </SClaimTwitterContainer>
-            <STextInput
-              isError={
-                data.personalUrl !== undefined &&
-                data.personalUrl !== '' &&
-                data.personalUrl !== null &&
-                !validateUrl(data.personalUrl)
-              }
-              label="Personal site or portfolio"
-              placeholder="https://"
-              onChange={(e) => handleChange(e.target.value, 'personalUrl')}
-              value={data.personalUrl || ''}
-            />
-            {!isMobile && (
+              <STextArea
+                label="Bio"
+                placeholder="Tell something about you in a few words..."
+                onChange={(e) => handleChange(e.target.value, 'bio')}
+                value={data.bio}
+              />
+            </FormSideLeft>
+            <FormSideRight>
+              <SInput
+                isError={
+                  data.twitterName !== undefined &&
+                  data.twitterName !== '' &&
+                  data.twitterName !== null &&
+                  !validateTwitter(data.twitterName)
+                }
+                label={
+                  <STwitterInputLabel>
+                    <STwitterLabel>Twitter username</STwitterLabel>
+                    {data.twitterVerified ? (
+                      <STwitterVerified>
+                        <span>Verified</span>
+                        <SIcon name="badge" />
+                      </STwitterVerified>
+                    ) : (
+                      isVerificationAvailable && (
+                        <STwitterVerificationLink
+                          href={`${NODE_API_URL}/api/users/verifyTwitter/${data.walletId}`}
+                          target="_self"
+                          rel="noreferrer noopener"
+                        >
+                          Verify your Twitter account ({twitterName})
+                        </STwitterVerificationLink>
+                      )
+                    )}
+                  </STwitterInputLabel>
+                }
+                placeholder="Twitter @username"
+                onChange={(e) => handleChange(e.target.value, 'twitterName')}
+                value={data.twitterName || ''}
+              />
+              <SClaimTwitterContainer>
+                {isVerificationAvailable && (
+                  <STwitterNotVerified>
+                    Verify your Twitter account in order to get the verification badge
+                  </STwitterNotVerified>
+                )}
+              </SClaimTwitterContainer>
+              <SInput
+                isError={
+                  data.personalUrl !== undefined &&
+                  data.personalUrl !== '' &&
+                  data.personalUrl !== null &&
+                  !validateUrl(data.personalUrl)
+                }
+                label="Personal site or portfolio"
+                placeholder="https://"
+                onChange={(e) => handleChange(e.target.value, 'personalUrl')}
+                value={data.personalUrl || ''}
+              />
               <SImagesContainer>
                 <SPictureBlock
                   chipLabel="Upload avatar"
@@ -325,9 +272,7 @@ of at least 120x120. Gifs work too."
 of at least 120x120. Gifs work too."
                   id="uploadPicture"
                   name={name}
-                  onChange={(file: File) =>
-                    handleChange(URL.createObjectURL(file), 'picture')
-                  }
+                  onChange={(file: File) => handleChange(URL.createObjectURL(file), 'picture')}
                   picture={data.picture}
                 />
 
@@ -337,36 +282,56 @@ of at least 120x120. Gifs work too."
                   description="We recommend an image
           of at least 1800x280"
                   id="uploadBanner"
-                  onChange={(file: File) =>
-                    handleChange(URL.createObjectURL(file), 'banner')
-                  }
+                  onChange={(file: File) => handleChange(URL.createObjectURL(file), 'banner')}
                 />
               </SImagesContainer>
-            )}
-          </FormSideRight>
-        </Form>
-        <SAdvice>
-          To update your settings you should sign message through your wallet.
-          Click 'Update profile' then sign the message.
-        </SAdvice>
-        <SButton
-          color="primary"
-          disabled={!isDataValid}
-          onClick={() => handleUpdate()}
-          text="Update  your profile"
-        />
-        {modalEditOpen && (
-          <ModalEdit setModalExpand={setModalEditOpen} data={data} />
-        )}
-        {twitterErrorModal && (
-          <TwitterErrorModal setModalExpand={setTwitterErrorModal} />
-        )}
-      </SWrapper>
-    </Container>
+            </FormSideRight>
+          </Form>
+          <SAdvice>
+            To update your settings you should sign message through your wallet. Click 'Update profile' then sign the
+            message.
+          </SAdvice>
+          <SButton color="primary500" disabled={!isDataValid} onClick={() => handleUpdate()} text="Update  your profile" />
+          {isEditModalExpanded && <ModalEdit setExpanded={setIsEditModalExpanded} data={data} />}
+          {isTwitterErrorModalExpanded && (
+            <Modal
+              setExpanded={setIsTwitterErrorModalExpanded}
+              subtitle="Twitter validation failed, please check your information and try again"
+              title="Twitter validation"
+            >
+              <SModalButton
+                color="invertedContrast"
+                onClick={() => setIsTwitterErrorModalExpanded(false)}
+                size="medium"
+                text="Back to profile edit"
+                variant="contained"
+              />
+            </Modal>
+          )}
+        </SWrapper>
+      </Container>
+      {isCertificationModalExpanded && (
+        <Modal
+          setExpanded={setIsCertificationModalExpanded}
+          subtitle="Your profile is under review. After review it will be certified."
+          title="Review requested"
+        >
+          <SModalButton
+            color="invertedContrast"
+            onClick={() => setIsCertificationModalExpanded(false)}
+            size="medium"
+            text="Continue"
+            variant="contained"
+          />
+        </Modal>
+      )}
+    </>
   );
 };
 
 const SAvatarBannerContainer = styled.div`
+  display: none;
+
   ${({ theme }) => theme.mediaQueries.md} {
     width: 100%;
     display: flex;
@@ -434,9 +399,13 @@ const SBannerIMG = styled.img`
   height: 100%;
 `;
 
-const SReturnButtonMobile = styled(Button)`
+const SReturnButtonContainer = styled.div`
   margin: 0 auto -1.8rem;
   z-index: 10;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    display: none;
+  }
 `;
 
 const SPictureBlock = styled(ImageBlock)`
@@ -447,7 +416,7 @@ const SBannerBlock = styled(ImageBlock)`
   margin: 5.6rem 0 2.4rem;
 `;
 
-const STextInput = styled(TextInput)`
+const SInput = styled(Input)`
   margin-top: 3.2rem;
   justify-content: space-between;
 
@@ -487,26 +456,26 @@ const STextArea = styled(TextArea)`
 
 // const SNicknameAvailable = styled.span`
 //   align-self: flex-start;
-//   color: ${({ theme }) => theme.colors.success};
+//   color: ${({ theme }) => theme.colors.success500};
 //   font-size: 1.2rem;
 //   margin: 1.2rem 0 0 1.6rem;
 // `;
 
 const SClaimTwitterContainer = styled.div`
   align-self: flex-start;
-  color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.primary500};
   font-size: 1.2rem;
   margin: 1.2rem 0 0;
 `;
 
 const STwitterNotVerified = styled.div`
-  color: ${({ theme }) => theme.colors.neutral200};
+  color: ${({ theme }) => theme.colors.neutral600};
 `;
 
 const STwitterVerified = styled.div`
   display: flex;
   align-items: center;
-  color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.primary500};
   font-size: 1.2rem;
   margin: 0.4rem 0 0 1.6rem;
   text-align: left;
@@ -518,7 +487,7 @@ const STwitterVerified = styled.div`
 `;
 
 const STwitterVerificationLink = styled.a`
-  color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.primary500};
   font-size: 1.2rem;
   margin: 0.4rem 0 0;
   text-align: left;
@@ -535,7 +504,19 @@ const SIcon = styled(Icon)`
   margin-left: 0.2rem;
 `;
 
+const SImagesMobileContainer = styled.div`
+  ${({ theme }) => theme.mediaQueries.md} {
+    display: none;
+  }
+`;
+
 const SImagesContainer = styled.div`
+  display: none;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    display: inline-block;
+  }
+
   ${({ theme }) => theme.mediaQueries.xxl} {
     display: flex;
     align-items: center;
@@ -565,6 +546,13 @@ const SButton = styled(Button)`
 
   ${({ theme }) => theme.mediaQueries.xl} {
     margin: 4.8rem 0 9.6rem;
+  }
+`;
+
+const SModalButton = styled(Button)`
+  &:hover {
+    background: ${({ theme }) => theme.colors.invertedContrast};
+    color: ${({ theme }) => theme.colors.contrast};
   }
 `;
 

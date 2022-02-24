@@ -9,10 +9,10 @@ import { Colors } from 'style/theme/types';
 
 const invertedColor = (color?: keyof Colors): keyof Colors => {
   switch (color) {
-    case 'primary':
+    case 'primary500':
       return 'invertedContrast';
-    case 'primaryLight':
-      return 'primary';
+    case 'primary200':
+      return 'primary500';
     case 'invertedContrast':
     case 'whiteBlur':
     default:
@@ -21,7 +21,7 @@ const invertedColor = (color?: keyof Colors): keyof Colors => {
 };
 
 interface Props {
-  badge?: number;
+  badge?: number | string;
   children: (f: (b: boolean) => void) => React.ReactNode;
   className?: string;
   color?: keyof Colors;
@@ -38,7 +38,7 @@ const Select = ({
   text,
 }: Props) => {
   const [isExpanded, setSelectExpanded] = useState(false);
-  const isBadge = badge !== undefined && badge !== 0;
+  const isBadge = badge !== undefined && badge !== 0 && badge !== '0';
 
   const toggleSelect = () => {
     return setSelectExpanded((prevState) => !prevState);
@@ -50,13 +50,12 @@ const Select = ({
         setSelectExpanded(false);
       }}
     >
-      <SelectContainer className={className} suppressHydrationWarning>
+      <SelectContainer className={className}>
         <SelectRoot
           color={color}
           disabled={disabled}
           isBadge={isBadge}
           onClick={toggleSelect}
-          suppressHydrationWarning
         >
           <SLabelContainer>
             {text}
@@ -70,7 +69,7 @@ const Select = ({
               />
             )}
           </SLabelContainer>
-          <SIconContainer isExpanded={isExpanded}>
+          <SIconContainer color={color} isExpanded={isExpanded}>
             <Icon name="arrowBottom" />
           </SIconContainer>
         </SelectRoot>
@@ -89,15 +88,15 @@ const SelectContainer = styled.div`
   min-width: 23rem;
 `;
 
-const SelectRoot = styled.button<{ color?: keyof Colors; isBadge?: boolean }>`
+const SelectRoot = styled.button<{ color?: keyof Colors; isBadge: boolean }>`
   width: 100%;
   display: flex;
   align-items: center;
   background: ${({ theme, color }) =>
     color ? theme.colors[`${color}`] : theme.colors.invertedContrast};
-  border: none;
+  border: ${({ color, theme }) => (color === 'invertedContrast' ? `2px solid ${theme.colors.neutral200}` : 'none')};
   border-radius: 1.2rem;
-  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.25);
+  box-shadow: ${({ theme }) => theme.shadows.popupShadow};
   cursor: pointer;
   outline: none;
   padding: ${({ isBadge }) => (isBadge ? '1.2rem 2.4rem' : '2rem 2.4rem')};
@@ -122,8 +121,8 @@ const SLabelContainer = styled.div`
   font-size: 1.6rem;
 `;
 
-const SIconContainer = styled.div<{ isExpanded?: boolean }>`
-  fill: ${({ theme }) => theme.colors.invertedContrast};
+const SIconContainer = styled.div<{ color?: keyof Colors, isExpanded?: boolean }>`
+  fill: ${({ color, theme }) => theme.colors[invertedColor(color)]};
   width: 1.6rem;
   margin-left: 1.6rem;
   transform: ${({ isExpanded }) =>
@@ -133,9 +132,9 @@ const SIconContainer = styled.div<{ isExpanded?: boolean }>`
 
 const SelectOptions = styled.ul`
   width: 100%;
-  background: ${({ theme }) => theme.colors.neutral500};
+  background: ${({ theme }) => theme.colors.neutral100};
   border-radius: 1.2rem;
-  box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: ${({ theme }) => theme.shadows.popupShadow};
   list-style-type: none;
   margin: -2rem 0 0;
   padding: 4rem 2rem 2rem;
@@ -147,6 +146,7 @@ const SelectOptions = styled.ul`
 
   > li {
     color: ${({ theme }) => theme.colors.neutral300};
+    cursor: pointer;
     font-family: ${({ theme }) => theme.fonts.bold};
     font-size: 1.6rem;
     line-height: 1.3;

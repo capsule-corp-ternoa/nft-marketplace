@@ -9,7 +9,7 @@ interface Props {
   size?: 'small' | 'medium';
 }
 
-const Loader = ({ className, color = 'invertedContrast', size = 'medium' }: Props) => (
+const Loader = ({ className, color = 'invertedContrast', size }: Props) => (
   <LoaderContainer className={className} color={color} size={size}>
     <div></div>
     <div></div>
@@ -32,17 +32,16 @@ const LoaderContainer = styled.div<{ color: keyof Colors, size?: 'small' | 'medi
   align-items: center;
   justify-content: center;
   position: relative;
-  width: ${({ size }) => size === 'small' ? '3.2rem' : '8rem'};
-  height: ${({ size }) => size === 'small' ? '3.2rem' : '8rem'};
+  width: ${({ size }) => size === 'small' ? '1.6rem' : size === 'medium' ? '2rem' : '8rem'};
+  height: ${({ size }) => size === 'small' ? '1.6rem' : size === 'medium' ? '2rem' : '8rem'};
 
   div {
     box-sizing: border-box;
     display: block;
     position: absolute;
-    width: ${({ size }) => size === 'small' ? '2.4rem' : '6.4rem'};
-    height: ${({ size }) => size === 'small' ? '2.4rem' : '6.4rem'};
-    margin: 0.8rem;
-    border: ${({ size }) => size === 'small' ? '0.3rem solid' : '0.8rem solid'};
+    width: ${({ size }) => size === 'small' ? '1.6rem' : size === 'medium' ? '2rem' : '6.4rem'};
+    height: ${({ size }) => size === 'small' ? '1.6rem' : size === 'medium' ? '2rem' : '6.4rem'};
+    border: ${({ size }) => size === 'small' ? '0.2rem solid' : size === 'medium' ? '0.3rem solid' : '0.8rem solid'};
     border-radius: 50%;
     animation: ${rotation} 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
     border-color: ${({ color, theme }) =>

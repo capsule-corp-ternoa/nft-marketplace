@@ -1,55 +1,33 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
-import { useDrag } from '@use-gesture/react';
 import styled from 'styled-components';
 
 import NftCard from 'components/base/NftCard';
 
 import { NftType } from 'interfaces/index';
-import { timer } from 'utils/functions';
-
-const DRAGGING_OFFSET = 40;
-
 export interface ShowcaseProps {
   NFTs: NftType[];
   title: string;
   href?: string;
 }
 
-const Showcase: React.FC<ShowcaseProps> = ({ NFTs, title, href }) => {
-  const [isDragging, setIsDragging] = useState(false);
-
-  const bind = useDrag(async ({ movement: [x] }) => {
-    if (Math.abs(x) > DRAGGING_OFFSET) {
-      setIsDragging(true);
-      await timer(500);
-      setIsDragging(false);
-    }
-  },
-  {
-    preventScroll: true,
-    preventDefault: true,
-    filterTaps: true
-  });
-
-  return (
-    <SShowcaseContainer>
-      <STopContainer>
-        <STitle>{title}</STitle>
-        {href !== undefined && (
-          <Link href={href} passHref>
-            <SLink href={href}>SEE ALL</SLink>
-          </Link>
-        )}
-      </STopContainer>
-      <SNftsContainer {...bind()}>
-        {NFTs.map((item) => (
-          <SNftCard key={item.id} notClickeable={isDragging} item={item} />
-        ))}
-      </SNftsContainer>
-    </SShowcaseContainer>
-  );
-};
+const Showcase: React.FC<ShowcaseProps> = ({ NFTs, title, href }) => (
+  <SShowcaseContainer>
+    <STopContainer>
+      <STitle>{title}</STitle>
+      {href !== undefined && (
+        <Link href={href} passHref>
+          <SLink href={href}>SEE ALL</SLink>
+        </Link>
+      )}
+    </STopContainer>
+    <SNftsContainer>
+      {NFTs.map((item) => (
+        <SNftCard key={item.id} item={item} />
+      ))}
+    </SNftsContainer>
+  </SShowcaseContainer>
+);
 
 const SShowcaseContainer = styled.div`
   display: flex;
@@ -89,9 +67,7 @@ const SLink = styled.a`
 const SNftsContainer = styled.div`
   width: 100%;
   display: flex;
-  overflow-x: scroll;
-  -webkit-overflow-scrolling: touch;
-  border: 1px solid transparent;
+  overflow-x: auto;
   justify-content: flex-start;
   align-items: center;
   margin-top: 2.4rem;

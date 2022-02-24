@@ -1,5 +1,4 @@
 import React from 'react';
-import { useMediaQuery } from 'react-responsive';
 import styled, { css } from 'styled-components';
 import Icon from 'components/ui/Icon';
 import { NftUpload } from 'components/base/NftPreview';
@@ -14,8 +13,7 @@ import {
 } from 'interfaces';
 import Chip from 'components/ui/Chip';
 import Slider from 'components/ui/Slider';
-import { breakpointMap } from 'style/theme/base';
-import { useAppSelector } from 'redux/hooks';
+import { useApp } from 'redux/hooks';
 
 interface Props {
   blurValue: number;
@@ -34,7 +32,7 @@ const DefaultEffect = css`
   height: 100%;
   border-radius: 1.2rem;
   background: linear-gradient(180deg, #f29fff 0%, #878cff 100%);
-  box-shadow: 0px 0px 14.5243px 5.0835px rgba(0, 0, 0, 0.15);
+  box-shadow: ${({ theme }) => theme.shadows.popupShadow};
   object-fit: cover;
   overflow: hidden;
   position: absolute;
@@ -52,23 +50,10 @@ const SVideo = styled.video`
 
 function returnType(NFTarg: File, blurredValue: number = 0) {
   if (NFTarg!.type.substr(0, 5) === NFT_FILE_TYPE_IMAGE) {
-    return (
-      <SImage
-        alt="img"
-        blurredValue={blurredValue}
-        id="output"
-        src={URL.createObjectURL(NFTarg)}
-      />
-    );
+    return <SImage alt="img" blurredValue={blurredValue} id="output" src={URL.createObjectURL(NFTarg)} />;
   } else if (NFTarg!.type.substr(0, 5) === NFT_FILE_TYPE_VIDEO) {
     return (
-      <SVideo
-        autoPlay
-        muted
-        playsInline
-        loop
-        key={NFTarg.name + NFTarg.lastModified}
-      >
+      <SVideo autoPlay muted playsInline loop key={NFTarg.name + NFTarg.lastModified}>
         <source id="outputVideo" src={URL.createObjectURL(NFTarg)} />
       </SVideo>
     );
@@ -86,11 +71,7 @@ const NftCardWithEffects = ({
   setEffect,
   setError,
 }: Props) => {
-  const isRN = useAppSelector((state) => state.rn.isRN)
-  const isTablet = useMediaQuery({
-    minWidth: breakpointMap.md,
-    maxWidth: breakpointMap.lg - 1,
-  });
+  const { isRN } = useApp();
 
   const handleBlurredChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { target } = event;
@@ -99,9 +80,7 @@ const NftCardWithEffects = ({
     setBlurValue(newBlur);
   };
 
-  const handleSecretFileUpload = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleSecretFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     updateFile(
       event,
       setError,
@@ -117,14 +96,7 @@ const NftCardWithEffects = ({
     <SWrapper className={className}>
       {returnType(originalNFT, effect === NFT_EFFECT_BLUR ? blurValue : 0)}
       {effect === NFT_EFFECT_BLUR && (
-        <SSlider
-          id="blurredSlider"
-          max={15}
-          min={1}
-          onChange={handleBlurredChange}
-          step={1}
-          value={blurValue}
-        />
+        <SSlider id="blurredSlider" max={15} min={1} onChange={handleBlurredChange} step={1} value={blurValue} />
       )}
       {effect === NFT_EFFECT_PROTECT && <SIcon name="whiteWaterMark" />}
       {effect === NFT_EFFECT_SECRET && (
@@ -134,21 +106,13 @@ const NftCardWithEffects = ({
               <NftUpload
                 content={
                   <SecretUploadDescription>
-                    <SecretUploadTopDescription>
-                      Upload the preview of your secret.
-                    </SecretUploadTopDescription>
-                    {!isTablet && (
-                      <span>
-                        Once purchased, the owner will be able to see your NFT
-                      </span>
-                    )}
+                    <SecretUploadTopDescription>Upload the preview of your secret.</SecretUploadTopDescription>
+                    <SPurchaseAdvise>Once purchased, the owner will be able to see your NFT</SPurchaseAdvise>
                   </SecretUploadDescription>
                 }
                 inputId="uploadOriginalNft"
                 isSecretOption
-                note={`JPEG, JPG, PNG, GIF ${
-                  !isRN ? ', MP4 or MOV' : ''
-                }. Max 30mb.`}
+                note={`JPEG, JPG, PNG, GIF ${!isRN ? ', MP4 or MOV' : ''}. Max 30mb.`}
                 onChange={handleSecretFileUpload}
               />
             ) : (
@@ -161,15 +125,9 @@ const NftCardWithEffects = ({
               />
             )}
           </SCoverWrapper>
-          {(!isTablet || coverNFT) && (
-            <SChip
-              color="whiteBlur"
-              icon="fingerMark"
-              size="medium"
-              text="Secret"
-              variant="round"
-            />
-          )}
+          <SSecretChipContainer isCoverNft={Boolean(coverNFT)}>
+            <Chip color="whiteBlur" icon="fingerMark" size="medium" text="Secret" variant="round" />
+          </SSecretChipContainer>
         </SSecretWrapper>
       )}
     </SWrapper>
@@ -260,14 +218,33 @@ const SecretUploadDescription = styled.div`
 `;
 
 const SecretUploadTopDescription = styled.span`
-  color: #7417ea;
+  color: ${({ theme }) => theme.colors.primary500};
   font-family: ${({ theme }) => theme.fonts.bold};
   margin-bottom: 0.8rem;
 `;
 
-const SChip = styled(Chip)`
-  width: fit-content;
+const SPurchaseAdvise = styled.span`
+  display: inline-block;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    display: none;
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    display: inline-block;
+  }
+`;
+
+const SSecretChipContainer = styled.div<{ isCoverNft?: boolean }>`
   margin: 1.6rem auto 0;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    display: ${({ isCoverNft }) => (isCoverNft ? 'flex' : 'none')};
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    display: flex;
+  }
 `;
 
 export default React.memo(NftCardWithEffects);

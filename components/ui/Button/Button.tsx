@@ -1,7 +1,9 @@
 import React from 'react';
 import styled, { css, DefaultTheme } from 'styled-components';
-import Icon, { IconNameType , Loader } from 'components/ui/Icon';
 import { Colors } from 'style/theme/types';
+
+import Emoji from '../Emoji';
+import Icon, { IconNameType, Loader } from '../Icon';
 
 interface IButton {
   color?: keyof Colors;
@@ -14,13 +16,19 @@ interface IButton {
 }
 interface Props extends IButton {
   className?: string;
+  emoji?: string;
   href?: string;
   icon?: IconNameType;
-  onClick?: () => void;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  suppressHydrationWarning?: boolean;
   text?: string;
 }
 
 const handleColor = (theme: DefaultTheme, color?: keyof Colors, variant?: 'contained' | 'outlined'): string => {
+  if (color === undefined) {
+    return theme.colors.contrast;
+  }
+
   switch (variant) {
     case 'contained':
       return containedColors(theme, color);
@@ -30,13 +38,13 @@ const handleColor = (theme: DefaultTheme, color?: keyof Colors, variant?: 'conta
   }
 };
 
-const containedColors = (theme: DefaultTheme, color?: keyof Colors): string => {
+const containedColors = (theme: DefaultTheme, color: keyof Colors): string => {
   switch (color) {
     case 'contrast':
-    case 'primary':
+    case 'primary500':
       return theme.colors.invertedContrast;
-    case 'primaryLight':
-      return theme.colors.primary;
+    case 'primary200':
+      return theme.colors.primary500;
     case 'invertedContrast':
     case 'whiteBlur':
     default:
@@ -44,12 +52,17 @@ const containedColors = (theme: DefaultTheme, color?: keyof Colors): string => {
   }
 };
 
-const outlinedColors = (theme: DefaultTheme, color?: keyof Colors): string => {
+const outlinedColors = (theme: DefaultTheme, color: keyof Colors): string => {
   switch (color) {
-    case 'primary':
-      return theme.colors.primary;
-    default:
+    case 'invertedContrast':
+    case 'neutral600':
+    case 'neutral300':
+    case 'neutral600':
+    case 'neutral100':
+    case 'whiteBlur':
       return theme.colors.contrast;
+    default:
+      return theme.colors[color];
   }
 };
 
@@ -59,22 +72,15 @@ const ButtonStyle = css<IButton>`
   align-items: center;
   align-self: center;
   background: ${({ theme, color, variant }) =>
-    variant === 'contained' && color
-      ? theme.colors[`${color}`]
-      : 'transparent'};
-  border: ${({ size, variant }) => (variant === 'outlined' ? size === 'small' ? '1px solid' : '2px solid' : 'none')};
+    variant === 'contained' && color ? theme.colors[`${color}`] : 'transparent'};
+  border: ${({ size }) => (size === 'small' ? '1px solid' : '2px solid')};
   border-radius: 4rem;
-  box-shadow: 0 0 0.8rem 0.4rem rgba(0, 0, 0, 0.05);
+  box-shadow: ${({ disabled, theme }) => (disabled ? 'none' : theme.shadows.popupShadow)};
   cursor: ${({ noHover }) => (noHover ? 'default' : 'pointer')};
   font-family: ${({ theme }) => theme.fonts.bold};
   font-size: ${({ size }) => (size === 'small' ? '1.2rem' : '1.6rem')};
   opacity: ${({ disabled }) => (disabled ? '0.4' : '1')};
-  padding: ${({ isIconOnly, size }) =>
-    isIconOnly
-      ? '1.2rem'
-      : size === 'small'
-      ? '0.8rem 2.4rem'
-      : '1.2rem 3.2rem'};
+  padding: ${({ isIconOnly, size }) => (isIconOnly ? '1.2rem' : size === 'small' ? '0.8rem 2rem' : '1.2rem 3.2rem')};
   pointer-events: ${({ disabled, noHover }) => (disabled || noHover ? 'none' : 'auto')};
   text-align: center;
   transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
@@ -94,31 +100,42 @@ const ButtonStyle = css<IButton>`
     }`}
 
   border-color: ${({ theme, color }) => {
+    if (color === undefined) {
+      return theme.colors.contrast;
+    }
+
     switch (color) {
-      case 'primary':
-        return theme.colors.primary;
-      case 'contrast':
       case 'invertedContrast':
-        return theme.colors.contrast;
+      case 'neutral600':
+      case 'neutral300':
+      case 'neutral100':
       case 'whiteBlur':
-      default:
         return theme.colors.neutral400;
+      default:
+        return theme.colors[color];
     }
   }};
 
   color: ${({ theme, color, variant }) => handleColor(theme, color, variant)};
+
+  svg,
+  path {
+    fill: ${({ theme, color, variant }) => handleColor(theme, color, variant)};
+  }
 `;
 
 const Button = ({
   className,
   color,
   disabled,
+  emoji,
   href,
   icon,
   isLoading = false,
   noHover = false,
   onClick,
   size = 'medium',
+  suppressHydrationWarning,
   text,
   variant = 'contained',
 }: Props) => {
@@ -134,9 +151,8 @@ const Button = ({
         size={size}
         variant={variant}
       >
-        {icon && (
-          <SIcon isIconOnly={text === undefined} name={icon} size={size} />
-        )}
+        {emoji && <SEmoji isEmojiOnly={text === undefined} size={size} symbol={emoji} />}
+        {icon && <SIcon isIconOnly={text === undefined} name={icon} size={size} />}
         {text}
       </SAnchor>
     );
@@ -152,14 +168,14 @@ const Button = ({
       onClick={onClick}
       size={size}
       variant={variant}
+      suppressHydrationWarning={suppressHydrationWarning}
     >
       {isLoading ? (
-        <SLoader color={color ?? 'invertedContrast'} size="small" variant={variant} />
+        <SLoader color={color ?? 'invertedContrast'} size={size} variant={variant} />
       ) : (
         <>
-          {icon && (
-            <SIcon isIconOnly={text === undefined} name={icon} size={size} />
-          )}
+          {emoji && <SEmoji isEmojiOnly={text === undefined} size={size} symbol={emoji} />}
+          {icon && <SIcon isIconOnly={text === undefined} name={icon} size={size} />}
           {text}
         </>
       )}
@@ -167,26 +183,34 @@ const Button = ({
   );
 };
 
-const SLoader = styled(Loader)<{ color: keyof Colors, variant?: 'contained' | 'outlined' }>`
+const SLoader = styled(Loader)<{ color: keyof Colors; variant?: 'contained' | 'outlined' }>`
   margin: 0 auto;
 
   div {
-    border-color: ${({ color, theme, variant }) => `${handleColor(theme, color, variant)} transparent transparent transparent`};
+    border-color: ${({ color, theme, variant }) =>
+      `${handleColor(theme, color, variant)} transparent transparent transparent`};
   }
 `;
 
 const SIcon = styled(Icon)<{ isIconOnly: boolean; size: 'small' | 'medium' }>`
-  width: ${({ size }) => (size === 'small' ? '1.2rem' : '2rem')};
-  height: ${({ size }) => (size === 'small' ? '1.2rem' : '2rem')};
-  margin-right: ${({ isIconOnly, size }) =>
-    isIconOnly ? 0 : size === 'small' ? '0.8rem' : '1.6rem'};
+  width: ${({ size }) => (size === 'small' ? '1.6rem' : '2rem')};
+  height: ${({ size }) => (size === 'small' ? '1.6rem' : '2rem')};
+  margin-right: ${({ isIconOnly, size }) => (isIconOnly ? 0 : size === 'small' ? '1.2rem' : '1.6rem')};
 `;
 
-const SAnchor = styled.a<IButton>`
+const SEmoji = styled(Emoji)<{ isEmojiOnly: boolean; size: 'small' | 'medium' }>`
+  margin-right: ${({ isEmojiOnly, size }) => (isEmojiOnly ? 0 : size === 'small' ? '1.2rem' : '1.6rem')};
+`;
+
+const SAnchor = styled.a.withConfig({
+  shouldForwardProp: (prop) => !['color', 'isIconOnly', 'noHover', 'size', 'variant'].includes(prop),
+})<IButton>`
   ${ButtonStyle}
 `;
 
-const SButton = styled.button<IButton>`
+const SButton = styled.button.withConfig({
+  shouldForwardProp: (prop) => !['color', 'isIconOnly', 'noHover', 'size', 'variant'].includes(prop),
+})<IButton>`
   ${ButtonStyle}
 `;
 

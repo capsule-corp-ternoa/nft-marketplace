@@ -1,38 +1,23 @@
 import React from 'react';
 import Link from 'next/link';
-import Router from 'next/router';
-import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
 
 import Clipboard from 'components/base/Clipboard';
 import Button from 'components/ui/Button';
 import Icon from 'components/ui/Icon';
-import { breakpointMap } from 'style/theme/base';
 
 import Picture from './components/Picture';
-
-export const AVATAR_VARIANT_BADGE = 'badge';
-export const AVATAR_VARIANT_BANNER = 'banner';
-export const AVATAR_VARIANT_EDIT = 'edit';
-export const AVATAR_VARIANT_MOSAIC = 'mosaic';
-export type AVATAR_VARIANT_TYPE =
-  | typeof AVATAR_VARIANT_BADGE
-  | typeof AVATAR_VARIANT_BANNER
-  | typeof AVATAR_VARIANT_EDIT
-  | typeof AVATAR_VARIANT_MOSAIC;
+import { AVATAR_VARIANT_BANNER, AVATAR_VARIANT_TRANSACTION } from './constants';
+import { AVATAR_VARIANT_TYPE } from './interfaces';
+import { getNameColor, getNameFontSize } from './utils';
 
 interface Props {
   className?: string;
-  followers?: number;
-  followLabel?: string;
-  handleFollow?: () => void;
   isAddressDisplayed?: boolean;
-  isClickable?: boolean;
   isDiscoverButton?: boolean;
-  isFollowButton?: boolean;
+  isNameEllipsis?: boolean;
   isPictureOnly?: boolean;
   isTooltip?: boolean;
-  isUnfollow?: boolean;
   isVerified?: boolean;
   label?: string | React.ReactNode;
   name?: string;
@@ -41,20 +26,16 @@ interface Props {
   picture?: string;
   twitterName?: string;
   variant?: AVATAR_VARIANT_TYPE;
-  walletId?: string;
+  walletId: string;
 }
 
 const Avatar = ({
   className,
-  followers,
-  handleFollow,
   isAddressDisplayed,
-  isClickable,
   isDiscoverButton,
-  isFollowButton,
+  isNameEllipsis,
   isPictureOnly,
   isTooltip,
-  isUnfollow,
   isVerified,
   label,
   name = 'Ternoa',
@@ -65,101 +46,69 @@ const Avatar = ({
   variant,
   walletId,
 }: Props) => {
-  const isTablet = useMediaQuery({
-    query: `(max-width: ${breakpointMap.lg - 1}px)`,
-  });
-
   if (isPictureOnly) {
     return (
-      <Picture
-        isClickable={isClickable}
-        isTooltip={isTooltip}
-        isVerified={isVerified}
-        name={name}
-        picture={picture}
-        variant={variant}
-        walletId={walletId}
-      />
+      <Link href={`/user/${walletId}`}>
+        <a>
+          <Picture className={className} isTooltip={isTooltip} isVerified={isVerified} name={name} picture={picture} variant={variant} />
+        </a>
+      </Link>
     );
   }
 
   return (
     <SAvatarContainer className={className} variant={variant}>
       <SAvatarWrapper variant={variant}>
-        <Picture
-          isClickable={isClickable}
-          isTooltip={isTooltip}
-          isVerified={isVerified}
-          name={name}
-          picture={picture}
-          variant={variant}
-          walletId={walletId}
-        />
+        <STransactionVariantWrapper variant={variant}>
+        <Link href={`/user/${walletId}`}>
+            <a>
+              <Picture
+                isTooltip={isTooltip}
+                isVerified={isVerified}
+                name={name}
+                picture={picture}
+                variant={variant}
+              />
+            </a>
+          </Link>
+        </STransactionVariantWrapper>
         <SDetailsContainer variant={variant}>
           <STopDetails>
-            <Link href={`/${walletId}`} passHref>
-              <SName href={`/${walletId}`} variant={variant}>{name}</SName>
+            <Link href={`/user/${walletId}`} passHref>
+              <SName href={`/user/${walletId}`} isNameEllipsis={isNameEllipsis} variant={variant}>
+                {name}
+              </SName>
             </Link>
             {nickname !== undefined && <SNickname>{nickname}</SNickname>}
           </STopDetails>
 
-          <SBottomDetails isMarginTop={!isTablet && isFollowButton}>
-            {label !== undefined && label && typeof label === "string" ? <SLabel>{label}</SLabel> : label}
-            {followers !== undefined && (
-              <SFollowers>{`${followers} followers`}</SFollowers>
-            )}
-            {twitterName !== undefined && (
-              <SLink
-                href={`https://twitter.com/${twitterName}`}
-                target="_blank"
-                title={`${twitterName}'s twitter account`}
-                rel="noopener noreferrer"
-              >
-                <STwitterIcon name="socialTwitter" />
-                <STwitterNickname>{twitterName}</STwitterNickname>
-              </SLink>
+          <SBottomDetails>
+            {label !== undefined && label && typeof label === 'string' ? <SLabel>{label}</SLabel> : label}
+            {twitterName !== undefined && twitterName !== null && (
+              <STransactionVariantWrapper variant={variant}>
+                <SLink href={`https://twitter.com/${twitterName}`} target="_blank" title={`${twitterName}'s twitter account`} rel="noopener noreferrer">
+                  <STwitterIcon name="socialTwitter" />
+                  <STwitterNickname>{twitterName}</STwitterNickname>
+                </SLink>
+              </STransactionVariantWrapper>
             )}
             {personalUrl !== undefined && (
-              <SLink
-                href={personalUrl}
-                target="_blank"
-                title="personalPage"
-                rel="noopener noreferrer"
-              >
+              <SLink href={personalUrl} target="_blank" title="personalPage" rel="noopener noreferrer">
                 {personalUrl.replace(/(^\w+:|^)\/\//, '')}
               </SLink>
             )}
             {isAddressDisplayed && walletId && (
-              <Clipboard address={walletId} isCopyLabelIndicator={false} isEllipsis variant={variant} />
-            )}
-            {!isTablet && isFollowButton && (
-              <SFollowButton
-                color={isUnfollow ? 'primaryLight' : 'invertedContrast'}
-                onClick={handleFollow}
-                size="small"
-                text={isUnfollow ? 'Unfollow' : 'Follow'}
-              />
+              <STransactionVariantWrapper variant={variant}>
+                <Clipboard address={walletId} isCopyLabelIndicator={false} isEllipsis variant={variant} />
+              </STransactionVariantWrapper>
             )}
           </SBottomDetails>
         </SDetailsContainer>
       </SAvatarWrapper>
       {isDiscoverButton && (
-        <SDiscoverButton
-          color="primaryLight"
-          onClick={() =>
-            walletId && Router.push(`/${walletId}`)
-          }
-          size="small"
-          text="Discover"
-        />
-      )}
-      {isTablet && isFollowButton && (
-        <SFollowButton
-          color={isUnfollow ? 'primaryLight' : 'invertedContrast'}
-          onClick={handleFollow}
-          size="small"
-          text={isUnfollow ? 'Unfollow' : 'Follow'}
-        />
+        <Link href={`/user/${walletId}`} passHref>
+          <SDiscoverButton color="primary200" href={`/user/${walletId}`} size="small" text="Discover" />
+        </Link>
       )}
     </SAvatarContainer>
   );
@@ -171,11 +120,9 @@ const SAvatarContainer = styled.div<{ variant?: AVATAR_VARIANT_TYPE }>`
 `;
 
 const SAvatarWrapper = styled.div<{ variant?: AVATAR_VARIANT_TYPE }>`
-  width: ${({ variant }) =>
-    variant === AVATAR_VARIANT_BANNER ? '100%' : 'auto'};
+  width: ${({ variant }) => (variant === AVATAR_VARIANT_BANNER ? '100%' : 'auto')};
   display: flex;
-  flex-direction: ${({ variant }) =>
-    variant === AVATAR_VARIANT_BANNER ? 'column' : 'row'};
+  flex-direction: ${({ variant }) => (variant === AVATAR_VARIANT_BANNER ? 'column' : 'row')};
   align-items: center;
 
   ${({ theme }) => theme.mediaQueries.lg} {
@@ -183,21 +130,29 @@ const SAvatarWrapper = styled.div<{ variant?: AVATAR_VARIANT_TYPE }>`
   }
 `;
 
+const STransactionVariantWrapper = styled.div<{ variant?: AVATAR_VARIANT_TYPE }>`
+  display: ${({ variant }) => (variant === AVATAR_VARIANT_TRANSACTION ? 'none' : 'block')};
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    display: block;
+  }
+`;
+
 const SDetailsContainer = styled.div<{ variant?: AVATAR_VARIANT_TYPE }>`
   display: flex;
   flex-direction: column;
-  align-items: ${({ variant }) =>
-    variant === AVATAR_VARIANT_BANNER ? 'center' : 'flex-start'};
-  margin-top: ${({ variant }) =>
-    variant === AVATAR_VARIANT_BANNER ? '1.6rem' : 0};
-  margin-left: ${({ variant }) =>
-    variant === AVATAR_VARIANT_BANNER ? 0 : '1.6rem'};
+  align-items: ${({ variant }) => (variant === AVATAR_VARIANT_BANNER ? 'center' : 'flex-start')};
+  margin-top: ${({ variant }) => (variant === AVATAR_VARIANT_BANNER ? '1.6rem' : 0)};
+  margin-left: ${({ variant }) => (variant === AVATAR_VARIANT_BANNER || variant === AVATAR_VARIANT_TRANSACTION ? 0 : '1.6rem')};
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin-left: ${({ variant }) => (variant === AVATAR_VARIANT_TRANSACTION ? '1.6rem' : variant === AVATAR_VARIANT_BANNER ? 0 : '1.6rem')};
+  }
 
   ${({ theme }) => theme.mediaQueries.lg} {
     align-items: flex-start;
     margin-top: 0;
-    margin-left: ${({ variant }) =>
-      variant === AVATAR_VARIANT_BANNER ? '3.2rem' : '1.6rem'};
+    margin-left: ${({ variant }) => (variant === AVATAR_VARIANT_BANNER ? '3.2rem' : '1.6rem')};
   }
 `;
 
@@ -212,10 +167,9 @@ const STopDetails = styled.div`
   }
 `;
 
-const SBottomDetails = styled.div<{ isMarginTop?: boolean }>`
+const SBottomDetails = styled.div`
   display: flex;
   align-items: center;
-  margin-top: ${({ isMarginTop }) => isMarginTop ? '0.4rem' : 0};
 
   > * {
     &:not(:first-child) {
@@ -224,18 +178,32 @@ const SBottomDetails = styled.div<{ isMarginTop?: boolean }>`
   }
 `;
 
-const SName = styled.a<{ variant?: AVATAR_VARIANT_TYPE }>`
-  color: ${({ theme, variant }) =>
-    variant === AVATAR_VARIANT_BANNER
-      ? theme.colors.primary
-      : theme.colors.contrast};
+const SName = styled.a<{ isNameEllipsis?: boolean; variant?: AVATAR_VARIANT_TYPE }>`
+  color: ${({ theme, variant }) => getNameColor(theme, variant)};
   font-family: ${({ theme }) => theme.fonts.bold};
-  font-size: ${({ variant }) =>
-    variant === AVATAR_VARIANT_BANNER ? '3.2rem' : '1.6rem'};
+  font-size: ${({ variant }) => getNameFontSize(variant)};
+
+  ${({ isNameEllipsis }) =>
+    isNameEllipsis &&
+    `
+    display: inline-block;
+    width: 12rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  `}
 
   &:hover {
-    color: ${({ theme }) => theme.colors.primary};
+    color: ${({ theme }) => theme.colors.primary500};
     cursor: pointer;
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    ${({ variant }) =>
+      variant === AVATAR_VARIANT_TRANSACTION &&
+      `
+        font-size: 1.6rem;
+    `}
   }
 `;
 
@@ -244,20 +212,15 @@ const SLabel = styled.div`
   font-size: 1.6rem;
 `;
 
-const SFollowers = styled.span`
-  color: ${({ theme }) => theme.colors.neutral300};
-  font-size: 1.2rem;
-`;
-
 const SNickname = styled.span`
-  color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.primary500};
   font-size: 1.6rem;
 `;
 
 const SLink = styled.a`
   display: flex;
   align-items: center;
-  color: ${({ theme }) => theme.colors.neutral200};
+  color: ${({ theme }) => theme.colors.neutral600};
   font-size: 1.6rem;
 `;
 
@@ -269,11 +232,6 @@ const STwitterIcon = styled(Icon)`
 const STwitterNickname = styled.span`
   margin-left: 0.4rem;
   font-size: 1.2rem;
-`;
-
-const SFollowButton = styled(Button)`
-  font-size: 1.2rem;
-  padding: 0.4rem 1.2rem;
 `;
 
 const SDiscoverButton = styled(Button)`

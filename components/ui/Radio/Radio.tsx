@@ -66,7 +66,7 @@ const RadioInput = styled.input`
     width: 1.2rem;
     height: 1.2rem;
     border-radius: 50%;
-    background: ${({ theme }) => theme.colors.primary};
+    background: ${({ theme }) => theme.colors.primary500};
     transform: scale(0);
     transition: 120ms transform ease-in-out;
     box-shadow: inset 1.2rem 1.2rem var(--form-control-color);

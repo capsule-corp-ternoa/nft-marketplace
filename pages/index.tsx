@@ -1,143 +1,173 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import Head from 'next/head';
+import Cookies from 'js-cookie';
+import { useDispatch } from 'react-redux';
+
 import BetaBanner from 'components/base/BetaBanner';
+import FloatingHeader from 'components/base/FloatingHeader';
+import Footer from 'components/base/Footer';
 import MainHeader from 'components/base/MainHeader';
 import Landing from 'components/pages/Landing';
-import TernoaWallet from 'components/base/TernoaWallet';
 import arrayShuffle from 'array-shuffle';
-import cookies from 'next-cookies';
 
 import { getCapsValue } from 'actions/caps';
-import { getUser, getUsers } from 'actions/user';
-import { getNFTs } from 'actions/nft';
+import { getUser, getMostFollowedUsers, getTopSellersUsers } from 'actions/user';
+import { getMostLikedNFTs, getMostSoldSeries, getTotalOnSaleOnMarketplace } from 'actions/nft';
 import { NftType, UserType } from 'interfaces';
-import { NextPageContext } from 'next';
-import { decryptCookie, setUserFromDApp } from 'utils/cookie';
+import { appSetUser } from 'redux/app';
+import { useMarketplaceData } from 'redux/hooks';
+import { encryptCookie, decryptCookie } from 'utils/cookie';
 
 export interface LandingProps {
-  user: UserType;
-  users: UserType[];
   capsDollarValue?: number;
   heroNFTs: NftType[];
+  mostFollowedUsers: UserType[];
   popularNfts: NftType[];
   bestSellingNfts: NftType[];
-  NFTCreators: NftType[];
+  topSellersUsers: UserType[];
   totalCountNFT: number;
 }
 const LandingPage = ({
-  user,
-  users,
   capsDollarValue,
   heroNFTs,
+  mostFollowedUsers,
   popularNfts,
   bestSellingNfts,
-  NFTCreators,
+  topSellersUsers,
   totalCountNFT,
 }: LandingProps) => {
-  const [modalExpand, setModalExpand] = useState(false);
-  const [walletUser, setWalletUser] = useState(user);
+  const dispatch = useDispatch();
+  const { name } = useMarketplaceData();
 
   useEffect(() => {
-    setUserFromDApp(setWalletUser)
+    const params = new URLSearchParams(window.location.search);
+    if (
+      Boolean(window.isRNApp) &&
+      Boolean(window.walletId) &&
+      (!Cookies.get('token') || decryptCookie(Cookies.get('token') as string) !== window.walletId)
+    ) {
+      if (params.get('walletId') && params.get('walletId') !== window.walletId) {
+        dispatch(appSetUser(null));
+      }
+      Cookies.remove('token');
+      getUser(window.walletId, true)
+        .then((user) => {
+          dispatch(appSetUser(user));
+          Cookies.set('token', encryptCookie(window.walletId), { expires: 1 });
+        })
+        .catch((error) => console.log({ error }));
+    }
+    if (!Boolean(window.isRNApp) && params.get('walletId')) {
+      dispatch(appSetUser(null));
+    }
   }, []);
-  
+
   return (
     <>
       <Head>
-        <title>
-          {process.env.NEXT_PUBLIC_APP_NAME
-            ? process.env.NEXT_PUBLIC_APP_NAME
-            : 'SecretNFT'}{' '}
-          - Welcome
-        </title>
+        <title>{name} - Welcome</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta name="description" content="SecretNFT Marketplace, by Ternoa." />
         <meta name="og:image" content="ternoa-social-banner.jpg" />
         <meta property="og:image" content="ternoa-social-banner.jpg" />
       </Head>
-      {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
       <BetaBanner />
-      <MainHeader
-        user={walletUser as UserType}
-        setModalExpand={setModalExpand}
-      />
+      <MainHeader />
       <Landing
-        setModalExpand={setModalExpand}
-        user={walletUser as UserType}
-        users={users}
         capsDollarValue={capsDollarValue}
         heroNFTs={heroNFTs}
+        mostFollowedUsers={mostFollowedUsers}
         popularNfts={popularNfts}
         bestSellingNfts={bestSellingNfts}
-        NFTCreators={NFTCreators}
+        topSellersUsers={topSellersUsers}
         totalCountNFT={totalCountNFT}
       />
+      <Footer />
+      <FloatingHeader />
     </>
   );
 };
-export async function getServerSideProps(ctx: NextPageContext) {
-  const token =
-    (ctx.query.walletId as string) ||
-    (cookies(ctx).token && decryptCookie(cookies(ctx).token as string));
-  let users: UserType[] = [],
-    user: UserType | null = null,
-    regularNfts: NftType[] = [],
+export async function getServerSideProps() {
+  let mostFollowedUsers: UserType[] = [],
+    bestSellingNfts: NftType[] = [],
+    topSellersUsers: UserType[] = [],
+    popularNfts: NftType[] = [],
+    totalCountNFT: number = 0,
     capsDollarValue: number | null = null;
   const promises = [];
+
   promises.push(
     new Promise<void>((success) => {
-      getUsers(undefined,true)
+      getMostFollowedUsers("1", "12", true)
         .then((result) => {
-          users = result.data;
+          mostFollowedUsers = result.data;
           success();
         })
-        .catch(success);
+        .catch(error => console.log(error));
     })
   );
-  if (token) {
-    promises.push(
-      new Promise<void>((success) => {
-        getUser(token, true)
-          .then((_user) => {
-            user = _user;
-            success();
-          })
-          .catch(success);
-      })
-    );
-  }
   promises.push(
     new Promise<void>((success) => {
-      getNFTs(undefined, '1', '19', true, true)
+      getTopSellersUsers("1", "12", true)
         .then((result) => {
-          regularNfts = result.data;
+          topSellersUsers = result.data;
           success();
         })
-        .catch(success);
+        .catch(error => console.log(error));
     })
   );
-  promises.push(new Promise<void>((success) => {
-    getCapsValue().then(_value => {
-      capsDollarValue = _value
-      success();
-    }).catch(success);
-  }));
+  promises.push(
+    new Promise<void>((success) => {
+      getMostLikedNFTs("1", "6", true)
+        .then((result) => {
+          popularNfts = result.data;
+          success();
+        })
+        .catch(error => console.log(error));
+    })
+  );
+  promises.push(
+    new Promise<void>((success) => {
+      getMostSoldSeries("1", "6", true)
+        .then((result) => {
+          bestSellingNfts = result.data;
+          success();
+        })
+        .catch(error => console.log(error));
+    })
+  );
+  promises.push(
+    new Promise<void>((success) => {
+      getCapsValue()
+        .then((value) => {
+          capsDollarValue = value;
+          success();
+        })
+        .catch(error => console.log(error));
+    })
+  );
+  promises.push(
+    new Promise<void>((success) => {
+      getTotalOnSaleOnMarketplace()
+        .then((value) => {
+          totalCountNFT = value;
+          success();
+        })
+        .catch(error => console.log(error));
+    })
+  );
   await Promise.all(promises);
-  users = arrayShuffle(users);
-  let popularNfts = arrayShuffle((regularNfts || []).slice(0, 8));
-  let heroNFTs = popularNfts.length > 3 ? arrayShuffle(popularNfts).slice(0, 3) : popularNfts; // TODO: Fetch dedicated data
-  let bestSellingNfts = arrayShuffle((regularNfts || []).slice(8, 16));
-  let NFTCreators = arrayShuffle((regularNfts || []).slice(16, 19));
-  let totalCountNFT = (regularNfts || []).length;
+  
+  const heroNFTs = popularNfts.length > 3 ? arrayShuffle(popularNfts).slice(0, 3) : popularNfts; // TODO: Fetch dedicated data when bid is implemented
+
   return {
     props: {
-      user,
-      users,
       capsDollarValue,
       heroNFTs,
+      mostFollowedUsers,
       popularNfts,
       bestSellingNfts,
-      NFTCreators,
+      topSellersUsers,
       totalCountNFT,
     },
   };

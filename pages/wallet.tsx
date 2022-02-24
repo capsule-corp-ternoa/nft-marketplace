@@ -1,14 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Head from 'next/head';
-import BetaBanner from 'components/base/BetaBanner';
-import MainHeader from 'components/base/MainHeader';
-import TernoaWallet from 'components/base/TernoaWallet';
-import Wallet from 'components/pages/Wallet';
 import cookies from 'next-cookies';
 
 import { getUser } from 'actions/user';
+import BetaBanner from 'components/base/BetaBanner';
+import FloatingHeader from 'components/base/FloatingHeader';
+import Footer from 'components/base/Footer';
+import MainHeader from 'components/base/MainHeader';
+import Wallet from 'components/pages/Wallet';
+
 import { UserType } from 'interfaces';
-import { NextPageContext } from 'next';
+import { appSetUser } from 'redux/app';
+import { useMarketplaceData } from 'redux/hooks';
+import { wrapper } from 'redux/store';
 import { decryptCookie } from 'utils/cookie';
 
 export interface WalletPageProps {
@@ -17,39 +21,43 @@ export interface WalletPageProps {
 }
 
 const WalletPage = ({ user }: WalletPageProps) => {
-  const [modalExpand, setModalExpand] = useState(false);
+  const { name } = useMarketplaceData();
+  
+  return <>
+    <Head>
+      <title>{name} - Wallet</title>
+      <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      <meta name="description" content="Ternoa Wallet" />
+      <meta name="og:image" content="ternoa-social-banner.jpg" />
+    </Head>
+    <BetaBanner />
+    <MainHeader />
+    <Wallet user={user} />
+    <Footer />
+    <FloatingHeader />
+  </>
+}
 
-  return (
-    <>
-      <Head>
-        <title>{process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : "SecretNFT"} - Wallet</title>
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-        <meta name="description" content="Ternoa Wallet" />
-        <meta name="og:image" content="ternoa-social-banner.jpg" />
-      </Head>
-      {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
-      <BetaBanner />
-      <MainHeader user={user} setModalExpand={setModalExpand} />
-      <Wallet
-        user={user}
-        setModalExpand={setModalExpand}
-      />
-    </>
-  );
-};
-
-export async function getServerSideProps(ctx: NextPageContext) {
-  let user = null;
+export const getServerSideProps = wrapper.getServerSideProps((store) => async (ctx) => {
   const token = cookies(ctx).token && decryptCookie(cookies(ctx).token as string);
-  if (token) user = await getUser(token).catch(() => null);
+  let user: UserType | null = null;
+
+  if (token) {
+    try {
+      user = await getUser(token, true);
+      store.dispatch(appSetUser(user));
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   if (!user) {
     return {
       notFound: true,
     };
   }
-  return {
-    props: { user },
-  };
-}
+
+  return { props: { user } };
+});
 
 export default WalletPage;

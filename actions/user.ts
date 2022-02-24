@@ -69,32 +69,18 @@ export const reviewRequested = async (walletId: string) => {
   }  
 };
 
-export const likeNFT = async (walletId: string, nftId: string, serieId: string) => {
-  const cookie = Cookies.get("token")
-  if(cookie){
-    const res = await fetch(`${NODE_API_URL}/api/users/like/?walletId=${walletId}&nftId=${nftId}&serieId=${serieId}`, {
-      method: 'POST',
-      body:JSON.stringify({cookie}),
-    })
-    if (!res.ok) throw new Error();
-    const NFTLike = await res.json()
-    return NFTLike
-  }else{
-    throw new Error("Unvalid authentication");
-  }
+export const getMostFollowedUsers = async (page: string="1", limit: string=DEFAULT_LIMIT_PAGINATION, useCache = false): Promise<CustomResponse<UserType>> => {
+  const paginationOptions = { page, limit };
+  const res = await fetch(`${NODE_API_URL}/api/users/most-followed/?pagination=${JSON.stringify(paginationOptions)}&useCache300=${useCache}`);
+  if (!res.ok) throw new Error('error fetching most followed users');
+  let result: CustomResponse<UserType> = await res.json()
+  return result;
 }
 
-export const unlikeNFT = async (walletId: string, nftId: string, serieId: string) => {
-  const cookie = Cookies.get("token")
-  if(cookie){
-    const res = await fetch(`${NODE_API_URL}/api/users/unlike/?walletId=${walletId}&nftId=${nftId}&serieId=${serieId}`, {
-      method: 'POST',
-      body:JSON.stringify({cookie}),
-    })
-    if (!res.ok) throw new Error();
-    const NFTLike = await res.json()
-    return NFTLike
-  }else{
-    throw new Error("Unvalid authentication");
-  }
+export const getTopSellersUsers = async (page: string="1", limit: string=DEFAULT_LIMIT_PAGINATION, useCache = false): Promise<CustomResponse<UserType>> => {
+  const paginationOptions = { page, limit };
+  const res = await fetch(`${NODE_API_URL}/api/users/top-sellers/?pagination=${JSON.stringify(paginationOptions)}&useCache300=${useCache}`);
+  if (!res.ok) throw new Error('error fetching top sellers users');
+  let result: CustomResponse<UserType> = await res.json()
+  return result;
 }

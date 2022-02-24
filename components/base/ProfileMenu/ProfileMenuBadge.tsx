@@ -19,7 +19,7 @@ const ProfileMenuBadge = ({
   tokenSymbol,
   user,
 }: Props) => {
-  const { name, picture, verified, walletId } = user;
+  const { name, picture, verified } = user;
 
   return (
     <SBadgeContainer className={className} onClick={onClick}>
@@ -27,13 +27,14 @@ const ProfileMenuBadge = ({
         <STokenAmount>{tokenAmount}</STokenAmount>
         <STokenSymbol>{tokenSymbol}</STokenSymbol>
       </STokenContainer>
-      <SPicture
-        isVerified={verified}
-        name={name}
-        picture={picture}
-        variant={AVATAR_VARIANT_BADGE}
-        walletId={walletId}
-      />
+      <SPictureContainer>
+        <Picture
+          isVerified={verified}
+          name={name}
+          picture={picture}
+          variant={AVATAR_VARIANT_BADGE}
+        />
+      </SPictureContainer>
     </SBadgeContainer>
   );
 };
@@ -84,7 +85,7 @@ const STokenSymbol = styled.span`
   }
 `;
 
-const SPicture = styled(Picture)`
+const SPictureContainer = styled.div`
   cursor: pointer;
 `;
 

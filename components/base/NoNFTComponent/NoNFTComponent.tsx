@@ -23,14 +23,14 @@ const NoNFTComponent = ({ body, className, href, linkLabel, title, variant }: Pr
     <Container className={className}>
       <Wrapper>
         <SIcon name="noNFTImage" />
-        <STitle color={variant === NO_NFT_VARIANT_SOLD_OUT ? 'primary' : 'contrast'}>{title}</STitle>
+        <STitle color={variant === NO_NFT_VARIANT_SOLD_OUT ? 'primary500' : 'contrast'}>{title}</STitle>
         {body && <SBody>{body}</SBody>}
         {href && (
           <SLinkWrapper>
             <Link href={href} passHref>
               <>
                 <Button
-                  color="invertedContrast"
+                  color="contrast"
                   href={href}
                   text={linkLabel}
                   size="medium"

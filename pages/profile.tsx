@@ -1,75 +1,49 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Head from 'next/head';
-import BetaBanner from 'components/base/BetaBanner';
-import MainHeader from 'components/base/MainHeader';
-import TernoaWallet from 'components/base/TernoaWallet';
-import Profile, { USER_PERSONNAL_PROFILE_VARIANT } from 'components/pages/Profile';
-import SuccessPopup from 'components/base/SuccessPopup';
-import { getOwnedNFTS } from 'actions/nft';
 import cookies from 'next-cookies';
+
+import BetaBanner from 'components/base/BetaBanner';
+import FloatingHeader from 'components/base/FloatingHeader';
+import Footer from 'components/base/Footer';
+import MainHeader from 'components/base/MainHeader';
+import { Profile } from 'components/pages/Profile';
+import { getOwnedNFTS } from 'actions/nft';
 import { getUser } from 'actions/user';
-import {
-  NftType,
-  UserType,
-  FOLLOWERS_TAB,
-  FOLLOWED_TAB,
-  NFT_ON_SALE_TAB,
-  NFT_NOT_FOR_SALE_TAB,
-  NFT_CREATED_TAB,
-  NFT_LIKED_TAB,
-  NFT_OWNED_TAB,
-} from 'interfaces';
-import { NextPageContext } from 'next';
+import { NftType, UserType } from 'interfaces';
+import { appSetUser } from 'redux/app';
+import { useMarketplaceData } from 'redux/hooks';
+import { wrapper } from 'redux/store';
 import { decryptCookie } from 'utils/cookie';
 
 export interface ProfilePageProps {
-  user: UserType;
   owned: NftType[];
   ownedHasNextPage: boolean;
-  loading: boolean;
+  user: UserType;
 }
 
-const ORDERED_TABS_ID = [
-  NFT_OWNED_TAB,
-  NFT_ON_SALE_TAB,
-  NFT_NOT_FOR_SALE_TAB,
-  NFT_CREATED_TAB,
-  NFT_LIKED_TAB,
-  FOLLOWERS_TAB,
-  FOLLOWED_TAB,
-] as const;
-
-const ProfilePage = ({ user, owned, ownedHasNextPage }: ProfilePageProps) => {
-  const [modalExpand, setModalExpand] = useState(false);
-  const [successPopup, setSuccessPopup] = useState(false);
+const ProfilePage = ({ owned, ownedHasNextPage, user }: ProfilePageProps) => {
+  const { name } = useMarketplaceData();
 
   return (
     <>
       <Head>
-        <title>{process.env.NEXT_PUBLIC_APP_NAME ? process.env.NEXT_PUBLIC_APP_NAME : 'SecretNFT'} - My account</title>
+        <title>{name} - My account</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta name="description" content="Ternoa - Your profile." />
         <meta name="og:image" content="ternoa-social-banner.jpg" />
       </Head>
-      {modalExpand && <TernoaWallet setModalExpand={setModalExpand} />}
-      {successPopup && <SuccessPopup setSuccessPopup={setSuccessPopup} />}
       <BetaBanner />
-      <MainHeader user={user} setModalExpand={setModalExpand} />
-      <Profile
-        user={user}
-        userOwnedlNfts={owned}
-        userOwnedNftsHasNextPage={ownedHasNextPage}
-        setModalExpand={setModalExpand}
-        tabs={ORDERED_TABS_ID}
-        variant={USER_PERSONNAL_PROFILE_VARIANT}
-      />
+      <MainHeader />
+      <Profile user={user} userOwnedlNfts={owned} userOwnedNftsHasNextPage={ownedHasNextPage} />
+      <Footer />
+      <FloatingHeader />
     </>
   );
 };
 
-export async function getServerSideProps(ctx: NextPageContext) {
+export const getServerSideProps = wrapper.getServerSideProps((store) => async (ctx) => {
   const token = cookies(ctx).token && decryptCookie(cookies(ctx).token as string);
-  let user = null,
+  let user: UserType | null = null,
     owned: NftType[] = [],
     ownedHasNextPage: boolean = false;
   const promises = [];
@@ -79,6 +53,7 @@ export async function getServerSideProps(ctx: NextPageContext) {
         getUser(token, true)
           .then((_user) => {
             user = _user;
+            store.dispatch(appSetUser(_user));
             success();
           })
           .catch(success);
@@ -97,11 +72,13 @@ export async function getServerSideProps(ctx: NextPageContext) {
     );
   }
   await Promise.all(promises);
+
   if (!user) {
     return {
       notFound: true,
     };
   }
+
   return {
     props: {
       user,
@@ -109,6 +86,6 @@ export async function getServerSideProps(ctx: NextPageContext) {
       ownedHasNextPage,
     },
   };
-}
+});
 
 export default ProfilePage;

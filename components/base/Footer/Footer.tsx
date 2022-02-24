@@ -1,86 +1,121 @@
 import React from 'react';
-import  styled from 'styled-components';
+import styled from 'styled-components';
 
 import Icon from 'components/ui/Icon';
-
-import style from './Footer.module.scss';
+import { Container, Wrapper } from 'components/layout';
+import { useMarketplaceData } from 'redux/hooks';
 
 const Footer = () => {
-  const twitterLink = process.env.NEXT_PUBLIC_TWITTER_LINK ? process.env.NEXT_PUBLIC_TWITTER_LINK : "https://twitter.com/SecretNFT_"
-  const instagramLink = process.env.NEXT_PUBLIC_INSTAGRAM_LINK ? process.env.NEXT_PUBLIC_INSTAGRAM_LINK : "https://www.instagram.com/ternoa_/"
+  const { instagramUrl, name, twitterUrl } = useMarketplaceData();
+
   return (
-    <div className={style.Footer}>
-      <SIcon name="waterMark" />
-      <SSocialsContainer>
-        {twitterLink!=="false" && <a href={twitterLink} target="_blank">
-          <SMediaIcon name="socialTwitter" />
-        </a>}
-        {instagramLink!=="false" && <a href={instagramLink} target="_blank">
-          <SMediaIcon name="socialInstagram" />
-        </a>}
-      </SSocialsContainer>
-      <div className={style.FooterBar}>
-        <div className={style.Legals}>
-          <div className={style.Link}>{process.env.NEXT_PUBLIC_APP_NAME || "SecretNFT"}</div>
-          <div className={style.Link}>All rights reserved</div>
-          <a
+    <SFooterContainer>
+      <SFooterWrapper>
+        <SLegalsContainer>
+          <SLabel>{`© ${name}`}</SLabel>
+          <SLabel>All rights reserved</SLabel>
+          <SLink
             href="https://ternoahelp.zendesk.com/hc/fr/articles/4409410791185-Terms-of-use"
-            className={style.Link}
             target="_blank"
-						rel="noreferrer noopener"
+            rel="noreferrer noopener"
           >
             Terms
-          </a>
-          <a
+          </SLink>
+          <SLink
             href="https://ternoahelp.zendesk.com/hc/fr/articles/4409410776337-Privacy-Policy"
-            className={style.Link}
             target="_blank"
-						rel="noreferrer noopener"
+            rel="noreferrer noopener"
           >
             Privacy
-          </a>
-        </div>
-        {/* <div className={style.Languages}></div> */}
-      </div>
-    </div>
+          </SLink>
+        </SLegalsContainer>
+        <SSocialsContainer>
+          {twitterUrl !== 'false' && (
+            <a href={twitterUrl} target="_blank">
+              <SMediaIcon name="socialTwitter" />
+            </a>
+          )}
+          {instagramUrl !== 'false' && (
+            <a href={instagramUrl} target="_blank">
+              <SMediaIcon name="socialInstagram" />
+            </a>
+          )}
+        </SSocialsContainer>
+      </SFooterWrapper>
+    </SFooterContainer>
   );
 };
 
-const SSocialsContainer = styled.div`
+const SFooterContainer = styled(Container)`
   width: 100%;
+  background: ${({ theme }) => theme.colors.contrast};
+  margin-top: auto;
+`;
+
+const SFooterWrapper = styled(Wrapper)`
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 15.2rem !important;
+  padding-top: 2.4rem !important;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    padding-bottom: 2.4rem !important;
+  }
+`;
+
+const SLegalsContainer = styled.div`
   display: flex;
-  margin: 9rem 0 3.2rem;
+  flex-direction: column;
+  align-items: flex-start;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    flex-direction: row;
+    > * {
+      &:not(:first-child) {
+        margin-left: 1.6rem;
+      }
+    }
+  }
+`;
+
+const SLabel = styled.span`
+  color: ${({ theme }) => theme.colors.neutral600};
+  font-size: 1.6rem;
+`;
+
+const SLink = styled.a`
+  color: ${({ theme }) => theme.colors.neutral600};
+  cursor: pointer;
+  font-family: ${({ theme }) => theme.fonts.bold};
+  font-size: 1.6rem;
+  margin-top: 0.8rem;
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.primary500};
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin-top: 0;
+  }
+`;
+
+const SSocialsContainer = styled.div`
+  display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 2;
 
   > a {
     &:not(:first-child) {
       margin-left: 3.2rem;
     }
   }
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    margin: 9rem 0 8rem;
-  }
-`;
-
-const SIcon = styled(Icon)`
-  width: 16rem;
-  position: absolute;
-  left: 25%;
-  top: 2rem;
-  z-index: 1;
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    width: 11.2rem;
-  }
 `;
 
 const SMediaIcon = styled(Icon)`
   width: 1.6rem;
   cursor: pointer;
-  fill: white;
+  fill: ${({ theme }) => theme.colors.invertedContrast};
   z-index: 10;
 
   ${({ theme }) => theme.mediaQueries.lg} {

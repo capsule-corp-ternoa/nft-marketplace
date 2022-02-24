@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import emojiRegex from 'emoji-regex';
 import { checkMark, errorMark, loadingSpinner500 } from 'components/assets';
-import Footer from 'components/base/Footer';
-import FloatingHeader from 'components/base/FloatingHeader';
 import {
   Advice,
   Container,
@@ -21,11 +19,10 @@ import {
   NFT_EFFECT_SECRET,
   CategoryType,
   NftEffectType,
-  UserType,
 } from 'interfaces';
 import Autocomplete from 'components/ui/Autocomplete';
 import Button from 'components/ui/Button';
-import { TextArea, TextInput } from 'components/ui/Input';
+import { Input, TextArea } from 'components/ui/Input';
 import Tooltip from 'components/ui/Tooltip';
 
 import { NFTProps } from 'pages/create';
@@ -33,6 +30,7 @@ import { canAddToSeries } from 'actions/nft';
 import { processFile } from 'utils/imageProcessing/image';
 import mime from 'mime-types'
 import ThumbnailSelector from 'components/base/ThumbnailSelector';
+import { useApp } from 'redux/hooks';
 
 const DEFAULT_BLUR_VALUE = 5;
 
@@ -46,10 +44,8 @@ export interface CreateProps {
   NFTData: NFTProps;
   originalNFT: File | null;
   QRData: QRDataType;
-  user: UserType;
   setError: (err: string) => void;
-  setModalExpand: (b: boolean) => void;
-  setModalCreate: (b: boolean) => void;
+  setIsModalMintExpanded: (b: boolean) => void;
   setNFTData: (o: NFTProps) => void;
   setOriginalNFT: (f: File | null) => void;
   setOutput: (s: string[]) => void;
@@ -64,10 +60,8 @@ const Create = ({
   NFTData: initalValue,
   originalNFT,
   QRData,
-  user,
   setError,
-  setModalExpand,
-  setModalCreate,
+  setIsModalMintExpanded,
   setNFTData: setNftDataToParent,
   setOriginalNFT,
   setOutput,
@@ -76,6 +70,8 @@ const Create = ({
   thumbnailTimecode,
   setThumbnailTimecode,
 }: CreateProps) => {
+  const { user } = useApp();
+  
   const [blurValue, setBlurValue] = useState<number>(DEFAULT_BLUR_VALUE);
   const [coverNFT, setCoverNFT] = useState<File | null>(null); // Cover NFT used for secret effect
   const [effect, setEffect] = useState<NftEffectType>(NFT_EFFECT_DEFAULT);
@@ -166,20 +162,13 @@ const Create = ({
   const initMintingNFT = async () => {
     try {
       if (!user) throw new Error('Please login to create an NFT.');
-      setModalCreate(true);
+      setIsModalMintExpanded(true);
 
       if (originalNFT !== null) {
         if (effect === NFT_EFFECT_BLUR || effect === NFT_EFFECT_PROTECT) {
-          const processedNFT = await processFile(
-            originalNFT,
-            effect,
-            setError,
-            blurValue
-          );
-          if (processedNFT === undefined || processedNFT === null)
-            throw new Error(
-              `Elements are undefined after file processing using ${effect} effect.`
-            );
+          const processedNFT = await processFile(originalNFT, effect, setError, blurValue);
+          if (processedNFT === undefined)
+            throw new Error(`Elements are undefined after file processing using ${effect} effect.`);
           setPreviewNFT(processedNFT);
         } else if (effect === NFT_EFFECT_SECRET) {
           if (coverNFT === null)
@@ -259,7 +248,7 @@ const Create = ({
                 />
               </InputShell>
             }
-            <TextInput
+            <Input
               label="Name"
               name="name"
               onChange={handleChange}
@@ -295,7 +284,7 @@ const Create = ({
             />
 
             {/* TODO in the future */}
-            {/* <TextInput
+            {/* <Input
                 insight="(max: 10%)"
                 label="Royalties"
                 name="royalties"
@@ -304,7 +293,7 @@ const Create = ({
                 value={royalties}
               />*/}
 
-            <TextInput
+            <Input
               insight="(max: 10)"
               isError={!validateQuantity(quantity, 10)}
               label="Quantity"
@@ -314,7 +303,7 @@ const Create = ({
               value={quantity}
             />
 
-            <TextInput
+            <Input
               endIcon={
                 seriesId !== ''
                   ? isLoading
@@ -339,14 +328,12 @@ const Create = ({
           Information cannot be modified after NFT is created !
         </SAdvice>
         <SButton
-          color='primary'
+          color='primary500'
           disabled={!(isDataValid && user)}
           onClick={uploadFiles}
           text="Create NFT"
         />
       </Wrapper>
-      <Footer />
-      <FloatingHeader user={user} setModalExpand={setModalExpand} />
     </Container>
   );
 };
@@ -441,11 +428,7 @@ const SAdvice = styled(Advice)`
 `;
 
 const SButton = styled(Button)`
-  margin: 4.8rem 0;
-
-  ${({ theme }) => theme.mediaQueries.xl} {
-    margin: 4.8rem 0 9.6rem;
-  }
+  margin-top: 4.8rem;
 `;
 
 export default Create;

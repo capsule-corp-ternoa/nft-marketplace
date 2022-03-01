@@ -57,7 +57,7 @@ const Media: React.FC<MediaProps & Record<string, any>> = ({ src, type, fallback
   }, [fetchStatusOk]);
 
   if (mediaSrc === undefined || isLoading) {
-    return <SLoader />;
+    return <SLoader useLottie />;
   }
 
   return (

@@ -8,11 +8,10 @@ import FloatingHeader from 'components/base/FloatingHeader';
 import Footer from 'components/base/Footer';
 import MainHeader from 'components/base/MainHeader';
 import Landing from 'components/pages/Landing';
-import arrayShuffle from 'array-shuffle';
 
 import { getCapsValue } from 'actions/caps';
 import { getUser, getMostFollowedUsers, getTopSellersUsers } from 'actions/user';
-import { getMostLikedNFTs, getMostSoldSeries, getTotalOnSaleOnMarketplace } from 'actions/nft';
+import { getMostLikedNFTs, getMostSoldSeries, getNFTs, getTotalOnSaleOnMarketplace } from 'actions/nft';
 import { NftType, UserType } from 'interfaces';
 import { appSetUser } from 'redux/app';
 import { useMarketplaceData } from 'redux/hooks';
@@ -89,6 +88,7 @@ const LandingPage = ({
 };
 export async function getServerSideProps() {
   let mostFollowedUsers: UserType[] = [],
+    heroNFTs:  NftType[] = [],
     bestSellingNfts: NftType[] = [],
     topSellersUsers: UserType[] = [],
     popularNfts: NftType[] = [],
@@ -111,6 +111,16 @@ export async function getServerSideProps() {
       getTopSellersUsers("1", "12", true)
         .then((result) => {
           topSellersUsers = result.data;
+          success();
+        })
+        .catch(error => console.log(error));
+    })
+  );
+  promises.push(
+    new Promise<void>((success) => {
+      getNFTs("1", "3", { listed: true }, undefined, true)
+        .then((result) => {
+          heroNFTs = result.data;
           success();
         })
         .catch(error => console.log(error));
@@ -157,8 +167,6 @@ export async function getServerSideProps() {
     })
   );
   await Promise.all(promises);
-  
-  const heroNFTs = popularNfts.length > 3 ? arrayShuffle(popularNfts).slice(0, 3) : popularNfts; // TODO: Fetch dedicated data when bid is implemented
 
   return {
     props: {

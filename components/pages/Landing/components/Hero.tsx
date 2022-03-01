@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
 
 import Countdown from 'components/base/Countdown';
+import NftCard from 'components/base/NftCard';
 import { Showcase3D } from 'components/base/Showcase';
 import Avatar from 'components/base/Avatar';
 import Button from 'components/ui/Button';
@@ -19,19 +20,15 @@ export interface HeroProps {
 }
 
 const Hero = ({ capsDollarValue: _capsDollarValue, NFTs, mode }: HeroProps) => {
-  const [selectedNFT, setSelectedNFT] = useState<NftType>(NFTs[1]);
-
-  useEffect(() => {
-    setSelectedNFT(NFTs[1]);
-  }, [NFTs]);
+  const [selectedNFT, setSelectedNFT] = useState<NftType>(NFTs[1] ?? NFTs[0]);
 
   return (
     <SHeroContainer>
-      <Showcase3D
-        list={NFTs}
-        selectedIdx={NFTs.findIndex(({ id }) => id === selectedNFT.id)}
-        setSelectedItem={setSelectedNFT}
-      />
+      {NFTs.length === 3 ? (
+        <Showcase3D list={NFTs} selectedIdx={NFTs.findIndex(({ id }) => id === selectedNFT.id)} setSelectedItem={setSelectedNFT} />
+      ) : (
+        <NftCard item={selectedNFT} noHover noStatsChips />
+      )}
       <SDetailsWrapper>
         <Link href={`/nft/${selectedNFT.id}`} passHref>
           <STitle>{selectedNFT.title}</STitle>
@@ -47,12 +44,8 @@ const Hero = ({ capsDollarValue: _capsDollarValue, NFTs, mode }: HeroProps) => {
         )}
         <SSellWrapper>
           <SSell mode={mode}>
-            <SBidLabel>
-              {mode === HERO_MODE_AUCTION ? 'Current bid' : 'Price'}
-            </SBidLabel>
-            <SBidCapsPrice>
-              {`${computeCaps(Number(selectedNFT.price))} CAPS`}
-            </SBidCapsPrice>
+            <SBidLabel>{mode === HERO_MODE_AUCTION ? 'Current bid' : 'Price'}</SBidLabel>
+            <SBidCapsPrice>{`${computeCaps(Number(selectedNFT.price))} CAPS`}</SBidCapsPrice>
             {/* TODO: enable on mainnet */}
             {/* {capsDollarValue && (
               <SBidDollarsPrice>
@@ -77,11 +70,7 @@ const Hero = ({ capsDollarValue: _capsDollarValue, NFTs, mode }: HeroProps) => {
           )}
         </SSellWrapper>
         <SButtonWrapper>
-          <Button
-            color="primary500"
-            href={`/nft/${selectedNFT.id}`}
-            text={mode === HERO_MODE_AUCTION ? 'Place a bid' : 'Buy'}
-          />
+          <Button color="primary500" href={`/nft/${selectedNFT.id}`} text={mode === HERO_MODE_AUCTION ? 'Place a bid' : 'Buy'} />
           {/* TODO: When notification are implemented */}
           {/* <Button color="invertedContrast" icon="bell" variant='outlined' /> */}
         </SButtonWrapper>
@@ -180,8 +169,7 @@ const SellSideLayout = styled.div<{
   width: ${({ mode }) => (mode === HERO_MODE_SELL ? '100%' : '50%')};
   height: 100%;
   display: flex;
-  align-items: ${({ mode }) =>
-    mode === HERO_MODE_SELL ? 'center' : 'flex-start'};
+  align-items: ${({ mode }) => (mode === HERO_MODE_SELL ? 'center' : 'flex-start')};
   flex-direction: column;
 
   ${({ theme }) => theme.mediaQueries.lg} {

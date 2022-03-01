@@ -59,7 +59,7 @@ const Landing = ({ capsDollarValue, heroNFTs, mostFollowedUsers, popularNfts, be
     <>
       <Container>
         <Wrapper>
-          {heroNFTs?.length === 3 && <Hero capsDollarValue={capsDollarValue} NFTs={heroNFTs} mode={HERO_MODE_SELL} />}
+          {heroNFTs.length > 0 && <Hero capsDollarValue={capsDollarValue} NFTs={heroNFTs} mode={HERO_MODE_SELL} />}
           {totalCountNFT === 0 && (
             <NoNFTComponent
               body={
@@ -128,7 +128,7 @@ const SArtistHighlightNFTsWrapper = styled.div`
   margin-top: 3.2rem;
 
   ${({ theme }) => theme.mediaQueries.lg} {
-    margin-top: 7.2rem;
+    margin-top: 5.6rem;
   }
 `;
 

@@ -13,14 +13,16 @@ export interface ShowcaseProps {
 
 const Showcase: React.FC<ShowcaseProps> = ({ NFTs, title, href }) => (
   <SShowcaseContainer>
-    <STopContainer>
-      {title !== undefined && <STitle>{title}</STitle>}
-      {href !== undefined && (
-        <Link href={href} passHref>
-          <SLink href={href}>SEE ALL</SLink>
-        </Link>
-      )}
-    </STopContainer>
+    {(title !== undefined || href !== undefined) && (
+      <STopContainer>
+        {title !== undefined && <STitle>{title}</STitle>}
+        {href !== undefined && (
+          <Link href={href} passHref>
+            <SLink href={href}>SEE ALL</SLink>
+          </Link>
+        )}
+      </STopContainer>
+    )}
     <SNftsContainer>
       {NFTs.map((item) => (
         <SNftCard key={item.id} item={item} />
@@ -71,9 +73,12 @@ const SNftsContainer = styled.div`
   overflow-x: auto;
   justify-content: flex-start;
   align-items: center;
-  margin-top: 2.4rem;
   gap: 3.2rem;
   min-height: 34rem;
+
+  &:not(:first-child) {
+    margin-top: 2.4rem;
+  }
 
   ${({ theme }) => theme.mediaQueries.xxl} {
     min-height: auto;

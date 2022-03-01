@@ -19,7 +19,7 @@ import { encryptCookie, decryptCookie } from 'utils/cookie';
 
 export interface LandingProps {
   capsDollarValue?: number;
-  heroNFTs: NftType[];
+  recentNFTs: NftType[];
   mostFollowedUsers: UserType[];
   popularNfts: NftType[];
   bestSellingNfts: NftType[];
@@ -28,7 +28,7 @@ export interface LandingProps {
 }
 const LandingPage = ({
   capsDollarValue,
-  heroNFTs,
+  recentNFTs,
   mostFollowedUsers,
   popularNfts,
   bestSellingNfts,
@@ -74,7 +74,7 @@ const LandingPage = ({
       <MainHeader />
       <Landing
         capsDollarValue={capsDollarValue}
-        heroNFTs={heroNFTs}
+        recentNFTs={recentNFTs}
         mostFollowedUsers={mostFollowedUsers}
         popularNfts={popularNfts}
         bestSellingNfts={bestSellingNfts}
@@ -88,7 +88,7 @@ const LandingPage = ({
 };
 export async function getServerSideProps() {
   let mostFollowedUsers: UserType[] = [],
-    heroNFTs:  NftType[] = [],
+    recentNFTs:  NftType[] = [],
     bestSellingNfts: NftType[] = [],
     topSellersUsers: UserType[] = [],
     popularNfts: NftType[] = [],
@@ -118,9 +118,9 @@ export async function getServerSideProps() {
   );
   promises.push(
     new Promise<void>((success) => {
-      getNFTs("1", "3", { listed: true }, undefined, true)
+      getNFTs("1", "6", { listed: true }, undefined, true)
         .then((result) => {
-          heroNFTs = result.data;
+          recentNFTs = result.data;
           success();
         })
         .catch(error => console.log(error));
@@ -171,7 +171,7 @@ export async function getServerSideProps() {
   return {
     props: {
       capsDollarValue,
-      heroNFTs,
+      recentNFTs,
       mostFollowedUsers,
       popularNfts,
       bestSellingNfts,

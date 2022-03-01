@@ -20,7 +20,7 @@ const Showcase = dynamic(() => import('../../base/Showcase'), {
 
 export interface LandingProps {
   capsDollarValue?: number;
-  heroNFTs: NftType[];
+  recentNFTs: NftType[];
   mostFollowedUsers: UserType[];
   popularNfts: NftType[];
   bestSellingNfts: NftType[];
@@ -28,7 +28,7 @@ export interface LandingProps {
   totalCountNFT: number;
 }
 
-const Landing = ({ capsDollarValue, heroNFTs, mostFollowedUsers, popularNfts, bestSellingNfts, topSellersUsers, totalCountNFT }: LandingProps) => {
+const Landing = ({ capsDollarValue, recentNFTs, mostFollowedUsers, popularNfts, bestSellingNfts, topSellersUsers, totalCountNFT }: LandingProps) => {
   const [artistHighlight, setArtistHighlight] = useState<ArtistHighlightType | undefined>(undefined);
   const [artistHighlightNFTs, setArtistHighlightNFTs] = useState<NftType[]>([]);
 
@@ -59,7 +59,7 @@ const Landing = ({ capsDollarValue, heroNFTs, mostFollowedUsers, popularNfts, be
     <>
       <Container>
         <Wrapper>
-          {heroNFTs.length > 0 && <Hero capsDollarValue={capsDollarValue} NFTs={heroNFTs} mode={HERO_MODE_SELL} />}
+          {recentNFTs.length > 0 && <Hero capsDollarValue={capsDollarValue} NFTs={recentNFTs} mode={HERO_MODE_SELL} />}
           {totalCountNFT === 0 && (
             <NoNFTComponent
               body={
@@ -90,6 +90,11 @@ const Landing = ({ capsDollarValue, heroNFTs, mostFollowedUsers, popularNfts, be
         {bestSellingNfts.length > 0 && (
           <Wrapper>
             <Showcase title="Best sellers" NFTs={bestSellingNfts} href={`/explore?sort=${MOST_SOLD_SERIES_SORT}`} />
+          </Wrapper>
+        )}
+        {popularNfts.length === 0 && bestSellingNfts.length === 0 && recentNFTs.length > 0 && (
+          <Wrapper>
+            <Showcase title="NFTs on sale" NFTs={recentNFTs} href={`/explore`} />
           </Wrapper>
         )}
         {topSellersUsers.length > 0 && (
@@ -125,7 +130,7 @@ const SArtistHighlightContainer = styled(Container)`
 `;
 
 const SArtistHighlightNFTsWrapper = styled.div`
-  margin-top: 3.2rem;
+  margin-top: 4rem;
 
   ${({ theme }) => theme.mediaQueries.lg} {
     margin-top: 5.6rem;

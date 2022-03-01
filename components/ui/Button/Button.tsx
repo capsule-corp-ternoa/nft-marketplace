@@ -71,8 +71,7 @@ const ButtonStyle = css<IButton>`
   justify-content: center;
   align-items: center;
   align-self: center;
-  background: ${({ theme, color, variant }) =>
-    variant === 'contained' && color ? theme.colors[`${color}`] : 'transparent'};
+  background: ${({ theme, color, variant }) => (variant === 'contained' && color ? theme.colors[`${color}`] : 'transparent')};
   border: ${({ size }) => (size === 'small' ? '1px solid' : '2px solid')};
   border-radius: 4rem;
   box-shadow: ${({ disabled, theme }) => (disabled ? 'none' : theme.shadows.popupShadow)};
@@ -124,71 +123,76 @@ const ButtonStyle = css<IButton>`
   }
 `;
 
-const Button = ({
-  className,
-  color,
-  disabled,
-  emoji,
-  href,
-  icon,
-  isLoading = false,
-  noHover = false,
-  onClick,
-  size = 'medium',
-  suppressHydrationWarning,
-  text,
-  variant = 'contained',
-}: Props) => {
-  if (href !== null && href !== undefined) {
-    return (
-      <SAnchor
-        className={className}
-        color={color}
-        disabled={disabled}
-        href={href}
-        isIconOnly={text === undefined}
-        noHover={noHover}
-        size={size}
-        variant={variant}
-      >
-        {emoji && <SEmoji isEmojiOnly={text === undefined} size={size} symbol={emoji} />}
-        {icon && <SIcon isIconOnly={text === undefined} name={icon} size={size} />}
-        {text}
-      </SAnchor>
-    );
-  }
-
-  return (
-    <SButton
-      className={className}
-      color={color}
-      disabled={disabled}
-      isIconOnly={text === undefined}
-      noHover={noHover}
-      onClick={onClick}
-      size={size}
-      variant={variant}
-      suppressHydrationWarning={suppressHydrationWarning}
-    >
-      {isLoading ? (
-        <SLoader color={color ?? 'invertedContrast'} size={size} variant={variant} />
-      ) : (
-        <>
+const Button = React.forwardRef<HTMLAnchorElement, Props>(
+  (
+    {
+      className,
+      color,
+      disabled,
+      emoji,
+      href,
+      icon,
+      isLoading = false,
+      noHover = false,
+      onClick,
+      size = 'medium',
+      suppressHydrationWarning,
+      text,
+      variant = 'contained',
+    },
+    ref
+  ) => {
+    if (href !== null && href !== undefined) {
+      return (
+        <SAnchor
+          className={className}
+          color={color}
+          disabled={disabled}
+          href={href}
+          isIconOnly={text === undefined}
+          noHover={noHover}
+          ref={ref}
+          size={size}
+          variant={variant}
+        >
           {emoji && <SEmoji isEmojiOnly={text === undefined} size={size} symbol={emoji} />}
           {icon && <SIcon isIconOnly={text === undefined} name={icon} size={size} />}
           {text}
-        </>
-      )}
-    </SButton>
-  );
-};
+        </SAnchor>
+      );
+    }
+
+    return (
+      <SButton
+        className={className}
+        color={color}
+        disabled={disabled}
+        isIconOnly={text === undefined}
+        noHover={noHover}
+        onClick={onClick}
+        size={size}
+        variant={variant}
+        suppressHydrationWarning={suppressHydrationWarning}
+      >
+        {isLoading ? (
+          <SLoader color={color ?? 'invertedContrast'} size={size} variant={variant} />
+        ) : (
+          <>
+            {emoji && <SEmoji isEmojiOnly={text === undefined} size={size} symbol={emoji} />}
+            {icon && <SIcon isIconOnly={text === undefined} name={icon} size={size} />}
+            {text}
+          </>
+        )}
+      </SButton>
+    );
+  }
+);
 
 const SLoader = styled(Loader)<{ color: keyof Colors; variant?: 'contained' | 'outlined' }>`
   margin: 0 auto;
 
   div {
-    border-color: ${({ color, theme, variant }) =>
-      `${handleColor(theme, color, variant)} transparent transparent transparent`};
+    border-color: ${({ color, theme, variant }) => `${handleColor(theme, color, variant)} transparent transparent transparent`};
   }
 `;
 

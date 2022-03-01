@@ -7,14 +7,14 @@ import NftCard from 'components/base/NftCard';
 import { NftType } from 'interfaces/index';
 export interface ShowcaseProps {
   NFTs: NftType[];
-  title: string;
+  title?: string;
   href?: string;
 }
 
 const Showcase: React.FC<ShowcaseProps> = ({ NFTs, title, href }) => (
   <SShowcaseContainer>
     <STopContainer>
-      <STitle>{title}</STitle>
+      {title !== undefined && <STitle>{title}</STitle>}
       {href !== undefined && (
         <Link href={href} passHref>
           <SLink href={href}>SEE ALL</SLink>
@@ -58,6 +58,7 @@ const SLink = styled.a`
   color: ${({ theme }) => theme.colors.neutral500};
   font-family: ${({ theme }) => theme.fonts.bold};
   font-size: 1.6rem;
+  margin-left: 0.8rem;
 
   &:hover {
     color: ${({ theme }) => theme.colors.primary500};

@@ -41,6 +41,10 @@ export const Wrapper = styled.div`
       padding-top: 9.6rem;
     }
 
+    &:not(:first-child) {
+      padding-top: 6.4rem;
+    }
+
     &:last-child {
       padding-bottom: 12rem;
     }

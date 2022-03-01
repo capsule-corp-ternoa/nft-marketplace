@@ -1,5 +1,26 @@
 export type LikedNFTsType = { serieId: string, nftId: string, walletId?: string };
 
+export type ArtistHighlightType = {
+  _id: string;
+  walletId: string;
+  nonce: string;
+  reviewRequested: boolean;
+  verified: boolean;
+  artist: boolean;
+  nbFollowers: number;
+  nbFollowing: number;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  picture: string;
+  banner: string;
+  bio: string;
+  twitterName: string;
+  twitterVerified: boolean;
+  twitterVerificationToken: string;
+  viewsCount: number;
+};
+
 export type UserType = {
   _id: string;
   name: string;

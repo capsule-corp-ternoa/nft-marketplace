@@ -1,4 +1,4 @@
-import { CustomResponse, UserType } from 'interfaces/index';
+import { CustomResponse, ArtistHighlightType, UserType } from 'interfaces/index';
 import { DEFAULT_LIMIT_PAGINATION, NODE_API_URL } from "../utils/constant";
 import Cookies from 'js-cookie';
 
@@ -83,3 +83,10 @@ export const getTopSellersUsers = async (page: string="1", limit: string=DEFAULT
   let result: CustomResponse<UserType> = await res.json()
   return result;
 }
+
+export const getArtistHighlight = async (): Promise<ArtistHighlightType> => {
+  const res = await fetch(`${NODE_API_URL}/api/users/artist-highlight`);
+  if (!res.ok) throw new Error('No suitable artist to highlight was found');
+  let result: ArtistHighlightType = await res.json();
+  return result;
+};

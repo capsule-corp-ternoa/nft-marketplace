@@ -60,7 +60,7 @@ const Avatar = ({
     <SAvatarContainer className={className} variant={variant}>
       <SAvatarWrapper variant={variant}>
         <STransactionVariantWrapper variant={variant}>
-        <Link href={`/user/${walletId}`}>
+          <Link href={`/user/${walletId}`}>
             <a>
               <Picture
                 isTooltip={isTooltip}
@@ -106,9 +106,11 @@ const Avatar = ({
         </SDetailsContainer>
       </SAvatarWrapper>
       {isDiscoverButton && (
-        <Link href={`/user/${walletId}`} passHref>
-          <SDiscoverButton color="primary200" href={`/user/${walletId}`} size="small" text="Discover" />
-        </Link>
+        <SDiscoverButtonWrapper>
+          <Link href={`/user/${walletId}`} passHref>
+            <SDiscoverButton color="primary200" href={`/user/${walletId}`} size="medium" text="Discover" />
+          </Link>
+        </SDiscoverButtonWrapper>
       )}
     </SAvatarContainer>
   );
@@ -232,6 +234,14 @@ const STwitterIcon = styled(Icon)`
 const STwitterNickname = styled.span`
   margin-left: 0.4rem;
   font-size: 1.2rem;
+`;
+
+const SDiscoverButtonWrapper = styled.div`
+  display: none;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    display: flex;
+  }
 `;
 
 const SDiscoverButton = styled(Button)`

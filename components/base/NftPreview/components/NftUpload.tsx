@@ -82,7 +82,7 @@ const NftUpload = ({
   if (isMinimal) {
     return (
       <>
-        <Label className={className} htmlFor={inputId}>
+      <Label className={className} htmlFor={inputId} title='Upload a file'>
           {content}
         </Label>
         <HiddenShell>

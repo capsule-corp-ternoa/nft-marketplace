@@ -4,6 +4,7 @@ import Eye from 'components/assets/eye';
 import { NftCardWithEffects, NftUpload } from 'components/base/NftPreview';
 import { updateFile } from 'components/base/NftPreview/components/NftUpload';
 import { HiddenInput, HiddenShell, Subtitle } from 'components/layout';
+import Icon from 'components/ui/Icon';
 import Radio from 'components/ui/Radio';
 import Select from 'components/ui/Select';
 import {
@@ -95,7 +96,17 @@ const NftPreview = ({
         </Subtitle>
         {originalNFT.name && (
           <SReuploadWrapper>
-            <NftUpload content={originalNFT.name} inputId="reUploadNft" isMinimal onChange={handleFileUpload} />
+            <NftUpload
+              content={
+                <>
+                  <SUploadIcon name="upload" />
+                  <span>{originalNFT.name}</span>
+                </>
+              }
+              inputId="reUploadNft"
+              isMinimal
+              onChange={handleFileUpload}
+            />
           </SReuploadWrapper>
         )}
       </SHeader>
@@ -172,6 +183,18 @@ const NftPreview = ({
   );
 };
 
+const SUploadIcon = styled(Icon)`
+  height: 2rem;
+  width: 2rem;
+  margin-right: 0.8rem;
+  position: relative;
+  top: 0.6rem;
+
+  path {
+    fill: ${({ theme }) => theme.colors.primary500};
+  }
+`
+
 const SHeader = styled.div`
   display: flex;
   flex-direction: column;
@@ -196,7 +219,6 @@ const SReuploadWrapper = styled.div`
 
   ${({ theme }) => theme.mediaQueries.md} {
     margin: 0 0 0 2.4rem;
-    padding-top: 0.6rem;
   }
 `;
 

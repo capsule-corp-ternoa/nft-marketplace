@@ -36,7 +36,7 @@ const MainHeader: React.FC = () => {
               <Link href="/explore" passHref>
                 <SLinkItem>Explore</SLinkItem>
               </Link>
-              <Link href="/faq">
+              <Link href="/faq" passHref>
                 <SLinkItem>How it works</SLinkItem>
               </Link>
             </SNavLinksContainer>

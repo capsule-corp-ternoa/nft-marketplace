@@ -333,7 +333,7 @@ const Details: React.FC<DetailsProps> = ({
                 </List>
               )}
             </AutoSizer>
-            {NFT.totalNft && seriesData.length < NFT.totalNft && <SLoader color="primary500" />}
+            {NFT.totalNft && seriesData.length < NFT.totalNft && <SLoader color="contrast" useLottie />}
           </SRowsContainer>
         )}
         {currentTab === 'history' &&
@@ -354,7 +354,7 @@ const Details: React.FC<DetailsProps> = ({
               </AutoSizer>
             </SRowsContainer>
           ) : (
-            <SLoader color="primary500" />
+            <SLoader color="contrast" useLottie />
           ))}
         {currentTab === 'bid' && <div></div>}
       </SContentContainer>
@@ -554,7 +554,7 @@ const SDatasDetails = styled.div`
 `;
 
 const SLoader = styled(Loader)`
-  margin: 4rem auto;
+  margin: 8rem auto;
 `;
 
 export default Details;

@@ -30,7 +30,7 @@ const Loader = ({ className, color = 'invertedContrast', useLottie = false, size
             renderer: 'svg',
             loop: true,
             autoplay: true,
-            path: '/lottieLoaderWhite.json',
+            path: color === 'contrast' ? '/lottieLoaderBlack.json' : '/lottieLoaderWhite.json',
           });
           return () => animation.destroy();
         }
@@ -45,7 +45,7 @@ const Loader = ({ className, color = 'invertedContrast', useLottie = false, size
   }, [lottie]);
 
   return useLottie && lottieLoaded ? (
-    <LottieLoaderContainer ref={ref} />
+    <LottieLoaderContainer className={className} ref={ref} size={size} />
   ) : (
     <LoaderContainer className={className} color={color} size={size}>
       <div></div>
@@ -65,9 +65,9 @@ const rotation = keyframes`
   }
 `;
 
-const LottieLoaderContainer = styled.div`
-  height: 6.4rem;
-  width: 6.4rem;
+const LottieLoaderContainer = styled.div<{ size?: 'small' | 'medium' }>`
+  height: ${({ size }) => (size === 'small' ? '2.4rem' : size === 'medium' ? '3.2rem' : '6.4rem')};
+  width: ${({ size }) => (size === 'small' ? '2.4rem' : size === 'medium' ? '3.2rem' : '6.4rem')};
   align-self: center;
   margin: 0 auto;
 `;

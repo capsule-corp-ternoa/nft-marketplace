@@ -65,7 +65,7 @@ const FilterCategories = ({ setFilters, value }: FilterCategoriesProps) => {
       <SFilterSubtitle>Filter your search according to your favorites categories</SFilterSubtitle>
       <SCategoriesContainer>
         {isLoading ? (
-          <SLoader color="primary500" size="medium" />
+          <SLoader color="contrast" size="medium" useLottie />
         ) : (
           categories
             // Categories with related emoji are displayed first

@@ -40,7 +40,7 @@ const FollowersProfileBlock = ({
   if (isLoading) {
     return (
       <SNoNFTContainer>
-        <SLoader color="primary500" />
+        <SLoader color="contrast" useLottie />
       </SNoNFTContainer>
     );
   }

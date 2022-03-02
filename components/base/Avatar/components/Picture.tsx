@@ -22,7 +22,7 @@ const Picture = ({ className, isTooltip = false, isVerified, name = 'Ternoa', pi
     <SPictureWrapper variant={variant}>
       {isVerified && <SIcon name="badge" />}
       {picture ? (
-        <SImage draggable="false" src={picture} />
+        <SImage draggable="false" src={picture} alt={name} />
       ) : (
         <SInitials name={name}>
           <SLetter variant={variant}>{name?.charAt(0) ?? 'T'}</SLetter>

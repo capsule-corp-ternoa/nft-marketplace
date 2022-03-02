@@ -24,8 +24,8 @@ const Hero = ({ capsDollarValue: _capsDollarValue, NFTs, mode }: HeroProps) => {
 
   return (
     <SHeroContainer>
-      {NFTs.length === 3 ? (
-        <Showcase3D list={NFTs} selectedIdx={NFTs.findIndex(({ id }) => id === selectedNFT.id)} setSelectedItem={setSelectedNFT} />
+      {NFTs.length > 2 ? (
+        <Showcase3D list={NFTs.slice(0, 3)} selectedIdx={NFTs.findIndex(({ id }) => id === selectedNFT.id)} setSelectedItem={setSelectedNFT} />
       ) : (
         <NftCard item={selectedNFT} noHover noStatsChips />
       )}

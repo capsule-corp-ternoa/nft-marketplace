@@ -70,21 +70,6 @@ const Profile = ({ user, userOwnedlNfts, userOwnedNftsHasNextPage }: ProfileProp
   const [isFilterVerified, setIsFilterVerified] = useState<boolean | undefined>(undefined);
   const [searchValue, setSearchValue] = useState<string | undefined>(undefined);
 
-  const populateProfileData = async () => {
-    // Created nfts
-    const createdNfts = await getCreatorNFTS(walletId);
-    setCreatedNfts(createdNfts.data);
-    setCreatedNftsHasNextPage(createdNfts.hasNextPage);
-    // Owned listed NFTs
-    const ownedListed = await getOwnedNFTS(walletId, true, true);
-    setOwnedNftsListed(ownedListed.data);
-    setOwnedNftsListedHasNextPage(ownedListed.hasNextPage);
-    // Owned not listed NFTs
-    const ownedUnlisted = await getOwnedNFTS(walletId, false, false);
-    setOwnedNftsUnlisted(ownedUnlisted.data);
-    setOwnedNftsUnlistedHasNextPage(ownedUnlisted.hasNextPage);
-  };
-
   const populateTabData = async (tabId: TabsIdType) => {
     setIsProfileDataLoaded(false);
     try {
@@ -118,30 +103,6 @@ const Profile = ({ user, userOwnedlNfts, userOwnedNftsHasNextPage }: ProfileProp
       setIsProfileDataLoaded(true);
     } catch (error) {
       console.log(error);
-    }
-  };
-
-  const initCounts = async () => {
-    try {
-      if (walletId) {
-        const stats = await getUserNFTsStat(walletId, true);
-        if (stats) {
-          const { countOwned, countOwnedListed, countOwnedUnlisted, countCreated, countFollowers, countFollowed } = stats;
-
-          setCounts((prevCounts) => ({
-            ...prevCounts,
-            [NFT_OWNED_TAB]: countOwned,
-            [NFT_ON_SALE_TAB]: countOwnedListed,
-            [NFT_NOT_FOR_SALE_TAB]: countOwnedUnlisted,
-            [NFT_CREATED_TAB]: countCreated,
-            [NFT_LIKED_TAB]: userLikedNFTs?.length || 0,
-            [FOLLOWERS_TAB]: countFollowers,
-            [FOLLOWED_TAB]: countFollowed,
-          }));
-        }
-      }
-    } catch (err) {
-      console.log(err);
     }
   };
 
@@ -419,16 +380,64 @@ const Profile = ({ user, userOwnedlNfts, userOwnedNftsHasNextPage }: ProfileProp
   };
 
   useEffect(() => {
+    let shouldUpdate = true;
+
+    const initCounts = async () => {
+      try {
+        if (walletId) {
+          const stats = await getUserNFTsStat(walletId, true);
+          if (stats) {
+            const { countOwned, countOwnedListed, countOwnedUnlisted, countCreated, countFollowers, countFollowed } = stats;
+
+            if (shouldUpdate) {
+              setCounts((prevCounts) => ({
+                ...prevCounts,
+                [NFT_OWNED_TAB]: countOwned,
+                [NFT_ON_SALE_TAB]: countOwnedListed,
+                [NFT_NOT_FOR_SALE_TAB]: countOwnedUnlisted,
+                [NFT_CREATED_TAB]: countCreated,
+                [NFT_LIKED_TAB]: userLikedNFTs?.length || 0,
+                [FOLLOWERS_TAB]: countFollowers,
+                [FOLLOWED_TAB]: countFollowed,
+              }));
+            }
+          }
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    const populateProfileData = async () => {
+      // Created nfts
+      const createdNfts = await getCreatorNFTS(walletId);
+      if (shouldUpdate) {
+        setCreatedNfts(createdNfts.data);
+        setCreatedNftsHasNextPage(createdNfts.hasNextPage);
+      }
+      // Owned listed NFTs
+      const ownedListed = await getOwnedNFTS(walletId, true, true, undefined, undefined);
+      if (shouldUpdate) {
+        setOwnedNftsListed(ownedListed.data);
+        setOwnedNftsListedHasNextPage(ownedListed.hasNextPage);
+      }
+      // Owned not listed NFTs
+      const ownedUnlisted = await getOwnedNFTS(walletId, false, false, undefined, undefined);
+      if (shouldUpdate) {
+        setOwnedNftsUnlisted(ownedUnlisted.data);
+        setOwnedNftsUnlistedHasNextPage(ownedUnlisted.hasNextPage);
+      }
+    };
+
     setIsProfileDataLoaded(false);
     toggleResetTabId((prevState) => !prevState);
-    try {
-      initCounts();
-      populateProfileData();
-      setIsProfileDataLoaded(true);
-    } catch (err) {
-      console.log(err);
-      setIsProfileDataLoaded(true);
-    }
+    initCounts();
+    populateProfileData();
+    if (shouldUpdate) setIsProfileDataLoaded(true);
+
+    return () => {
+      shouldUpdate = false;
+    };
   }, []);
 
   useEffect(() => {

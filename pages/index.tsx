@@ -39,6 +39,7 @@ const LandingPage = ({
   const { name } = useMarketplaceData();
 
   useEffect(() => {
+    let shouldUpdate = true;
     const params = new URLSearchParams(window.location.search);
     if (
       Boolean(window.isRNApp) &&
@@ -51,14 +52,20 @@ const LandingPage = ({
       Cookies.remove('token');
       getUser(window.walletId, true)
         .then((user) => {
-          dispatch(appSetUser(user));
-          Cookies.set('token', encryptCookie(window.walletId), { expires: 1 });
+          if (shouldUpdate) {
+            dispatch(appSetUser(user));
+            Cookies.set('token', encryptCookie(window.walletId), { expires: 1 });
+          }
         })
         .catch((error) => console.log({ error }));
     }
     if (!Boolean(window.isRNApp) && params.get('walletId')) {
       dispatch(appSetUser(null));
     }
+
+    return () => {
+      shouldUpdate = false;
+    };
   }, []);
 
   return (

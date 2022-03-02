@@ -93,11 +93,34 @@ const NFTPage = ({ NFT, type, isUserFromDappQR }: NFTPageProps) => {
   }, [NFT]);
 
   useEffect(() => {
+    let shouldUpdate = true;
+    const loadCanUserBuyAgain = async () => {
+      if (user) {
+        try {
+          const res = await getOwnedNFTS(
+            user.walletId,
+            false,
+            undefined,
+            undefined,
+            undefined,
+            seriesData?.map((x) => x.id)
+          );
+          const canUserBuyAgainValue = res.totalCount === 0;
+          if (shouldUpdate) setCanUserBuyAgain(canUserBuyAgainValue);
+        } catch (err) {
+          if (shouldUpdate) setCanUserBuyAgain(false);
+        }
+      }
+    };
+
     if (isVR) {
       loadCanUserBuyAgain();
     } else {
       setCanUserBuyAgain(true);
     }
+    return () => {
+      shouldUpdate = false;
+    };
   }, [isVR]);
 
   useEffect(() => {

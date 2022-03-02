@@ -44,13 +44,18 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
   }, []);
 
   useEffect(() => {
+    let shouldUpdate = true;
     if (token && !user) {
       getUser(token, true)
         .then((result) => {
-          dispatch(appSetUser(result));
+          if (shouldUpdate) dispatch(appSetUser(result));
         })
         .catch((error) => console.log({ error }));
     }
+
+    return () => {
+      shouldUpdate = false;
+    };
   }, []);
 
   return (

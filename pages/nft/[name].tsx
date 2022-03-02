@@ -33,6 +33,7 @@ const NftPage = ({ NFT, capsValue }: NFTPageProps) => {
   const { name } = useMarketplaceData();
 
   useEffect(() => {
+    let shouldUpdate = true;
     const params = new URLSearchParams(window.location.search);
     if (
       Boolean(window.isRNApp) &&
@@ -45,8 +46,10 @@ const NftPage = ({ NFT, capsValue }: NFTPageProps) => {
       Cookies.remove('token');
       getUser(window.walletId, true)
         .then((user) => {
-          dispatch(appSetUser(user));
-          Cookies.set('token', encryptCookie(window.walletId), { expires: 1 });
+          if (shouldUpdate) {
+            dispatch(appSetUser(user));
+            Cookies.set('token', encryptCookie(window.walletId), { expires: 1 });
+          }
         })
         .catch((error) => console.log({ error }));
     }
@@ -56,13 +59,18 @@ const NftPage = ({ NFT, capsValue }: NFTPageProps) => {
     if (window.isRNApp && window.history.length === 1) {
       setIsUserFromDappQR(true);
     }
+    
+    return () => {
+      shouldUpdate = false;
+    };
   }, []);
 
   useEffect(() => {
+    let shouldUpdate = true;
     async function callBack() {
       try {
         let res = await fetch(NFT.properties?.preview.ipfs!, { method: 'HEAD' });
-        setType(res.headers.get('Content-Type'));
+        if (shouldUpdate) setType(res.headers.get('Content-Type'));
         return res;
       } catch (err) {
         console.log('Error :', err);
@@ -70,6 +78,9 @@ const NftPage = ({ NFT, capsValue }: NFTPageProps) => {
     }
 
     callBack();
+    return () => {
+      shouldUpdate = false;
+    };
   }, []);
 
   return (

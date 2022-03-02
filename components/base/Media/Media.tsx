@@ -36,18 +36,25 @@ const Media: React.FC<MediaProps & Record<string, any>> = ({ src, type, fallback
       return res;
     }
   };
-  const checkSrcAvailable = async () => {
-    try {
-      const res = await fetchRetry(src);
-      if (res) setFetchStatusOk((res as Response).status === 200);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  
   useEffect(() => {
+    let shouldUpdate = true;
+    const checkSrcAvailable = async () => {
+      try {
+        const res = await fetchRetry(src);
+        if (res && shouldUpdate) setFetchStatusOk((res as Response).status === 200);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
     setIsLoading(true);
     checkSrcAvailable();
+    return () => {
+      shouldUpdate = false;
+    };
   }, [src]);
+
   useEffect(() => {
     if (fetchStatusOk) {
       setMediaSrc(src);

@@ -51,24 +51,30 @@ const FollowAvatar = ({ className, handleFollow, isVerified, name = 'Ternoa', pi
   };
 
   useEffect(() => {
+    let shouldUpdate = true;
     const initStatus = async () => {
       if (user) {
         try {
           const { isFollowing } = await isUserFollowing(profileWalletId, user.walletId);
-          setIsFollowing(isFollowing);
+          if (shouldUpdate) setIsFollowing(isFollowing);
 
           const count = await getFollowersCount(profileWalletId);
-          setFollowersCount(count);
+          if (shouldUpdate) {
+            setFollowersCount(count);
+            setIsFollowLoading(false);
+          }
 
-          setIsFollowLoading(false);
         } catch (error) {
           console.log(error);
-          setIsFollowLoading(false);
+          if (shouldUpdate) setIsFollowLoading(false);
         }
       }
     };
 
     initStatus();
+    return () => {
+      shouldUpdate = false;
+    };
   }, []);
 
   return (

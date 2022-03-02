@@ -20,10 +20,15 @@ const SuccessPage = () => {
   }, []);
 
   useEffect(() => {
+    let timer: NodeJS.Timeout;
     if (isRedirect === 'true') {
-      setTimeout(() => {
+      timer = setTimeout(() => {
         router.push(String(returnUrl));
       }, 5000);
+    }
+
+    return () => {
+      if (isRedirect === 'true') clearTimeout(timer);
     }
   }, []);
 

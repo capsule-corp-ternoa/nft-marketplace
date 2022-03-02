@@ -102,12 +102,13 @@ const NftCard: React.FC<NftCardProps> = ({
   }, [user?.likedNFTs]);
 
   useEffect(() => {
+    let shouldUpdate = true;
     async function callBack() {
       try {
         let res = await fetch(item.properties?.preview.ipfs!, {
           method: 'HEAD',
         });
-        setType(res.headers.get('Content-Type'));
+        if (shouldUpdate) setType(res.headers.get('Content-Type'));
         return res;
       } catch (err) {
         console.log('Error :', err);
@@ -115,6 +116,9 @@ const NftCard: React.FC<NftCardProps> = ({
     }
 
     callBack();
+    return () => {
+      shouldUpdate = false;
+    };
   }, []);
 
   return (

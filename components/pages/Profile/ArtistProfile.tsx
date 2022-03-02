@@ -53,47 +53,6 @@ const Profile = ({ artist }: ProfileProps) => {
   const [isFilterVerified, setIsFilterVerified] = useState<boolean | undefined>(undefined);
   const [searchValue, setSearchValue] = useState<string | undefined>(undefined);
 
-  const populateProfileData = async () => {
-    // Owned listed NFTs
-    const ownedListed = await getOwnedNFTS(walletId, true, true, undefined, undefined);
-    setOwnedNftsListed(ownedListed.data);
-    setOwnedNftsListedHasNextPage(ownedListed.hasNextPage);
-    // Owned not listed NFTs
-    const ownedUnlisted = await getOwnedNFTS(walletId, false, false, undefined, undefined);
-    setOwnedNftsUnlisted(ownedUnlisted.data);
-    setOwnedNftsUnlistedHasNextPage(ownedUnlisted.hasNextPage);
-    // Followers
-    const followers = await getFollowers(walletId);
-    setFollowers(followers.data);
-    setFollowersHasNextPage(followers.hasNextPage);
-    // Followed
-    const followed = await getFollowed(walletId);
-    setFollowed(followed.data);
-    setFollowedHasNextPage(followed.hasNextPage);
-  };
-
-  const initCounts = async () => {
-    try {
-      if (walletId) {
-        const stats = await getUserNFTsStat(walletId, true);
-        if (stats) {
-          const { countOwned, countOwnedListed, countOwnedUnlisted, countFollowers, countFollowed } = stats;
-
-          setCounts((prevCounts) => ({
-            ...prevCounts,
-            [NFT_OWNED_TAB]: countOwned,
-            [NFT_ON_SALE_TAB]: countOwnedListed,
-            [NFT_NOT_FOR_SALE_TAB]: countOwnedUnlisted,
-            [FOLLOWERS_TAB]: countFollowers,
-            [FOLLOWED_TAB]: countFollowed,
-          }));
-        }
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   const updateKeywordSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.currentTarget.value);
   };
@@ -229,16 +188,67 @@ const Profile = ({ artist }: ProfileProps) => {
   };
 
   useEffect(() => {
+    let shouldUpdate = true;
+    const initCounts = async () => {
+      try {
+        if (walletId) {
+          const stats = await getUserNFTsStat(walletId, true);
+          if (stats) {
+            const { countOwned, countOwnedListed, countOwnedUnlisted, countFollowers, countFollowed } = stats;
+
+            if (shouldUpdate) {
+              setCounts((prevCounts) => ({
+                ...prevCounts,
+                [NFT_OWNED_TAB]: countOwned,
+                [NFT_ON_SALE_TAB]: countOwnedListed,
+                [NFT_NOT_FOR_SALE_TAB]: countOwnedUnlisted,
+                [FOLLOWERS_TAB]: countFollowers,
+                [FOLLOWED_TAB]: countFollowed,
+              }));
+            }
+          }
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    const populateProfileData = async () => {
+      // Owned listed NFTs
+      const ownedListed = await getOwnedNFTS(walletId, true, true, undefined, undefined);
+      if (shouldUpdate) {
+        setOwnedNftsListed(ownedListed.data);
+        setOwnedNftsListedHasNextPage(ownedListed.hasNextPage);
+      }
+      // Owned not listed NFTs
+      const ownedUnlisted = await getOwnedNFTS(walletId, false, false, undefined, undefined);
+      if (shouldUpdate) {
+        setOwnedNftsUnlisted(ownedUnlisted.data);
+        setOwnedNftsUnlistedHasNextPage(ownedUnlisted.hasNextPage);
+      }
+      // Followers
+      const followers = await getFollowers(walletId);
+      if (shouldUpdate) {
+        setFollowers(followers.data);
+        setFollowersHasNextPage(followers.hasNextPage);
+      }
+      // Followed
+      const followed = await getFollowed(walletId);
+      if (shouldUpdate) {
+        setFollowed(followed.data);
+        setFollowedHasNextPage(followed.hasNextPage);
+      }
+    };
+
     setIsProfileDataLoaded(false);
     toggleResetTabId((prevState) => !prevState);
-    try {
-      initCounts();
-      populateProfileData();
-      setIsProfileDataLoaded(true);
-    } catch (err) {
-      console.log(err);
-      setIsProfileDataLoaded(true);
-    }
+    initCounts();
+    populateProfileData();
+    if (shouldUpdate) setIsProfileDataLoaded(true);
+
+    return () => {
+      shouldUpdate = false;
+    };
   }, [artist]);
 
   useEffect(() => {

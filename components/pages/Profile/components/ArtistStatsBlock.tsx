@@ -57,11 +57,12 @@ const ArtistStatsBlock = ({ artistWalletId, followedCount, followersCount, setCo
   };
 
   useEffect(() => {
+    let shouldUpdate = true;
     const getFollowingStatus = async () => {
       if (user) {
         try {
           const { isFollowing } = await isUserFollowing(artistWalletId, user.walletId);
-          setIsFollowing(isFollowing);
+          if (shouldUpdate) setIsFollowing(isFollowing);
         } catch (error) {
           console.log(error);
         }
@@ -69,6 +70,9 @@ const ArtistStatsBlock = ({ artistWalletId, followedCount, followersCount, setCo
     };
 
     getFollowingStatus();
+    return () => {
+      shouldUpdate = false;
+    };
   }, []);
 
   return (

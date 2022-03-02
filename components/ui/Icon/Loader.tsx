@@ -16,12 +16,21 @@ const Loader = ({ className, color = 'invertedContrast', useLottie = false, size
   const [lottieLoaded, setLottieLoaded] = useState(false);
 
   useEffect(() => {
+    let shouldImport = true;
     if (useLottie) {
-      import('lottie-web').then((Lottie) => setLottie(Lottie.default));
+      import('lottie-web').then((Lottie) => {
+        if (shouldImport) {
+          setLottie(Lottie.default);
+        }
+      });
     }
+    return () => {
+      shouldImport = false;
+    };
   }, []);
 
   useEffect(() => {
+    let shouldUpdate = true;
     const getLottieLoader = async () => {
       try {
         if (lottie && ref.current) {
@@ -32,16 +41,21 @@ const Loader = ({ className, color = 'invertedContrast', useLottie = false, size
             autoplay: true,
             path: color === 'contrast' ? '/lottieLoaderBlack.json' : '/lottieLoaderWhite.json',
           });
-          return () => animation.destroy();
+          if (shouldUpdate) return () => animation.destroy();
         }
       } catch (error) {
         console.log(error);
       }
     };
-    setTimeout(() => {}, 2000);
 
+    const timer = setTimeout(() => {}, 2000);
     getLottieLoader();
-    setLottieLoaded(true);
+    if (shouldUpdate) setLottieLoaded(true);
+
+    return () => {
+      shouldUpdate = false;
+      clearTimeout(timer);
+    };
   }, [lottie]);
 
   return useLottie && lottieLoaded ? (

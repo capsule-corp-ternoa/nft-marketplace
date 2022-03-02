@@ -137,16 +137,20 @@ const Explore: React.FC<ExploreProps> = ({ NFTs, hasNextPage, totalCount }) => {
   };
 
   useEffect(() => {
+    let shouldUpdate = true;
     const getQueryFiltersSort = async () => {
       if (Object.keys(router.query).includes('filter')) {
         const newFilter = await decodeFilterQuery(router.query);
-        setFiltersSort((prevState) => ({ ...prevState, ...newFilter }));
+        if (shouldUpdate) setFiltersSort((prevState) => ({ ...prevState, ...newFilter }));
       } else if (typeof router.query.sort === 'string' && ALL_SORT_IDS.includes(router.query.sort as AllSortIdsType)) {
-        setFiltersSort((prevState) => ({ ...prevState, [router.query.sort as AllSortIdsType]: true }));
+        if (shouldUpdate) setFiltersSort((prevState) => ({ ...prevState, [router.query.sort as AllSortIdsType]: true }));
       }
     };
 
     if (router.query) getQueryFiltersSort();
+    return () => {
+      shouldUpdate = false;
+    };
   }, []);
 
   return (

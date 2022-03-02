@@ -49,7 +49,24 @@ const Details: React.FC<DetailsProps> = ({
   const [historyLoading, setHistoryLoading] = useState(false);
 
   useEffect(() => {
+    let shouldUpdate = true;
+    const loadHistoryData = async () => {
+      try {
+        setHistoryLoading(true);
+        const data: CustomResponse<NFTTransferType> = await getHistory(NFT.id, NFT.serieId, true);
+        if (!data || !data.data) throw new Error('No data found');
+        if (shouldUpdate) setHistoryData(data.data);
+        if (shouldUpdate) setHistoryLoading(false);
+      } catch (err) {
+        if (shouldUpdate) setHistoryLoading(false);
+        console.log(err);
+      }
+    };
+
     loadHistoryData();
+    return () => {
+      shouldUpdate = false;
+    };
   }, [NFT.id, NFT.serieId]);
 
   useEffect(() => {
@@ -128,19 +145,6 @@ const Details: React.FC<DetailsProps> = ({
         setUsersData({ ...usersData, ...usersObject });
       }
     } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const loadHistoryData = async () => {
-    try {
-      setHistoryLoading(true);
-      const data: CustomResponse<NFTTransferType> = await getHistory(NFT.id, NFT.serieId, true);
-      if (!data || !data.data) throw new Error('No data found');
-      setHistoryData(data.data);
-      setHistoryLoading(false);
-    } catch (err) {
-      setHistoryLoading(false);
       console.log(err);
     }
   };

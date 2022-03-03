@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import styled, { css } from 'styled-components'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useDispatch } from 'react-redux'
+import { useMediaQuery } from 'react-responsive'
 
 import { likeNFT, unlikeNFT } from 'actions/nft'
 import Avatar from 'components/base/Avatar'
@@ -12,12 +14,12 @@ import { NftType } from 'interfaces/index'
 import { appSetUserLikedNFTs } from 'redux/app'
 import { useApp } from 'redux/hooks'
 import { fadeIn, scale, ySlide } from 'style/animations'
+import { breakpointMap } from 'style/theme/base'
 import { ALL_FILTER_IDS, PRICE_FILTER } from 'utils/constant'
 import { LIKE_ACTION, LIKE_ACTION_TYPE, UNLIKE_ACTION } from 'utils/profile/constants'
 import { computeCaps } from 'utils/strings'
 
 import Media from '../Media'
-import Link from 'next/link'
 
 export interface NftCardProps {
   className?: string
@@ -47,6 +49,10 @@ const NftCard: React.FC<NftCardProps> = ({
   const { user } = useApp()
   const dispatch = useDispatch()
   const router = useRouter()
+  const isDesktopOrLaptop = useMediaQuery({
+    query: `(min-width: ${breakpointMap.lg})`,
+  })
+
   const {
     creator,
     creatorData,
@@ -148,8 +154,8 @@ const NftCard: React.FC<NftCardProps> = ({
       className={className}
       onFocus={() => false}
       onBlur={() => false}
-      onMouseOut={() => !noHover && setIsHovering(false)}
-      onMouseOver={() => !noHover && setIsHovering(true)}
+      onMouseOut={() => isDesktopOrLaptop && !noHover && setIsHovering(false)}
+      onMouseOver={() => isDesktopOrLaptop && !noHover && setIsHovering(true)}
     >
       <Link href={`/nft/${item.id}`} passHref>
         <SMediaLink isHovering={isHovering} notClickeable={notClickeable} title={item.title}>

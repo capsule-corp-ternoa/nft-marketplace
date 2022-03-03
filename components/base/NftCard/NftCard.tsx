@@ -281,7 +281,7 @@ const SMediaLink = styled.a<{ isHovering: boolean; notClickeable: boolean }>`
   height: 100%;
   width: 100%;
   display: flex;
-  position: absolute;
+  position: relative;
   pointer-events: ${({ notClickeable }) => (notClickeable ? 'none' : 'auto')};
 
   ${({ isHovering }) => isHovering && shadowBackground}

@@ -5,7 +5,10 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint --fix . --ext .js,.jsx,.ts,.tsx",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint:fix": "eslint --fix . --ext .js,.jsx,.ts,.tsx",
+    "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx}\"",
+    "format:write": "prettier --write \"**/*.{js,jsx,ts,tsx}\"",
     "type-check": "tsc",
     "export": "next build && next export"
   },

@@ -44,7 +44,8 @@ const SUsersContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  margin-top: 2.4rem;
+  margin: 2.4rem -1.6rem 0;
+  padding: 0 1.6rem;
   gap: 3.2rem;
   overflow-x: auto;
   min-height: 11rem;

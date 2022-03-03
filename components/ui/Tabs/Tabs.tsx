@@ -25,7 +25,8 @@ const Tabs = ({ className, isTabsSelect = false, resetTabId, tabs }: Props) => {
 
   useEffect(() => {
     setActiveTab(Object.keys(tabs)[0])
-  }, [resetTabId, tabs])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [resetTabId])
 
   return (
     <div className={className}>

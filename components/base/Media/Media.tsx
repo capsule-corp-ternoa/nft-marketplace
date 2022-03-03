@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import { Loader } from 'components/ui/Icon'
 import { NFT_FILE_TYPE_IMAGE, NFT_FILE_TYPE_VIDEO } from 'interfaces/index'
 import { timer } from 'utils/functions'
+import { shimmer, toBase64 } from 'utils/imageProcessing/image'
 export interface MediaProps {
   src: string
   type: string | null
@@ -15,24 +16,6 @@ export interface MediaProps {
 
 const defaultFallback = './media-placeholder.svg'
 const totalRetries = 5
-
-const shimmer = (w: number, h: number) => `
-    <svg width="${w}" height="${h}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-      <defs>
-        <linearGradient id="g">
-          <stop stop-color="#f29fff" offset="20%" />
-          <stop stop-color="#878cff" offset="50%" />
-          <stop stop-color="#f29fff" offset="70%" />
-        </linearGradient>
-      </defs>
-      <rect width="${w}" height="${h}" fill="#f29fff" />
-      <rect id="r" width="${w}" height="${h}" fill="url(#g)" />
-      <animate xlink:href="#r" attributeName="x" from="-${w}" to="${w}" dur="1s" repeatCount="indefinite"  />
-    </svg>
-  `
-
-const toBase64 = (str: string) =>
-  typeof window === 'undefined' ? Buffer.from(str).toString('base64') : window.btoa(str)
 
 const Media: React.FC<MediaProps & Record<string, any>> = ({ src, type, fallbackSrc = defaultFallback }) => {
   const [mediaSrc, setMediaSrc] = useState<string | undefined>(undefined)

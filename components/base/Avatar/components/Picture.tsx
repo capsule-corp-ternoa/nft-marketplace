@@ -4,6 +4,7 @@ import gradient from 'random-gradient'
 import Image from 'next/image'
 
 import Icon from 'components/ui/Icon'
+import { shimmer, toBase64 } from 'utils/imageProcessing/image'
 
 import { AVATAR_VARIANT_TYPE } from '../interfaces'
 import { getPictureSize, getPictureFontSize } from '../utils'
@@ -23,7 +24,19 @@ const Picture = ({ className, isTooltip = false, isVerified, name = 'Ternoa', pi
     <SPictureWrapper variant={variant}>
       {isVerified && <SIcon name="badge" />}
       {picture ? (
-        <SImage draggable="false" src={picture} alt={name} layout="fill" objectFit="cover" sizes="20vw" quality={50} />
+        <SImageWrapper>
+          <SImage
+            draggable="false"
+            src={picture}
+            alt={name}
+            placeholder="blur"
+            blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(120, 120))}`}
+            layout="fill"
+            objectFit="cover"
+            sizes="20vw"
+            quality={50}
+          />
+        </SImageWrapper>
       ) : (
         <SInitials name={name}>
           <SLetter variant={variant}>{name?.charAt(0) ?? 'T'}</SLetter>
@@ -67,6 +80,14 @@ const SIcon = styled(Icon)`
   bottom: 3%;
   right: -3%;
   z-index: 10;
+`
+
+const SImageWrapper = styled.div`
+  height: 100%;
+  width: 100%;
+  border-radius: 50% !important;
+  overflow: hidden;
+  position: relative;
 `
 
 const ImageStyle = css`

@@ -285,7 +285,7 @@ const NFTPage = ({ NFT, type, isUserFromDappQR }: NFTPageProps) => {
                   <Chip color="invertedContrast" icon="eye" size="medium" text={NFT.viewsCount} variant="rectangle" />
                   <Button
                     color={isLiked ? 'primary500' : 'neutral600'}
-                    disabled={likeLoading}
+                    disabled={user === undefined || user === null || likeLoading}
                     icon="heart"
                     isLoading={likeLoading}
                     onClick={toggleLikeDislike}

@@ -48,7 +48,9 @@ const Loader = ({ className, color = 'invertedContrast', useLottie = false, size
       }
     };
 
-    const timer = setTimeout(() => {}, 2000);
+    const timer = setTimeout(() => {
+      return;
+    }, 2000);
     getLottieLoader();
     if (shouldUpdate) setLottieLoaded(true);
 

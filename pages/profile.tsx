@@ -45,7 +45,7 @@ export const getServerSideProps = wrapper.getServerSideProps((store) => async (c
   const token = cookies(ctx).token && decryptCookie(cookies(ctx).token as string);
   let user: UserType | null = null,
     owned: NftType[] = [],
-    ownedHasNextPage: boolean = false;
+    ownedHasNextPage = false;
   const promises = [];
   if (token) {
     promises.push(

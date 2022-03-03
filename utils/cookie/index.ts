@@ -13,8 +13,8 @@ export const encryptCookie = (cookie: string) => {
 export const decryptCookie = (cookie: string) => {
     try{
         if (!process.env.NEXT_PUBLIC_SECRET_COOKIE) return cookie
-        let bytes = cryptoJs.AES.decrypt(cookie, process.env.NEXT_PUBLIC_SECRET_COOKIE)
-        let decryptedCookie = bytes.toString(cryptoJs.enc.Utf8)
+        const bytes = cryptoJs.AES.decrypt(cookie, process.env.NEXT_PUBLIC_SECRET_COOKIE)
+        const decryptedCookie = bytes.toString(cryptoJs.enc.Utf8)
         return decryptedCookie
     }catch(err){
         return ""

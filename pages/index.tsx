@@ -99,7 +99,7 @@ export async function getServerSideProps() {
     bestSellingNfts: NftType[] = [],
     topSellersUsers: UserType[] = [],
     popularNfts: NftType[] = [],
-    totalCountNFT: number = 0,
+    totalCountNFT = 0,
     capsDollarValue: number | null = null;
   const promises = [];
 

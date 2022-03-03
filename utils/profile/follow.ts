@@ -14,7 +14,7 @@ export const loadMoreProfiles = async (
   setHasNextPage: HasNextPageNominalSetState,
   setData: DataNominalSetState,
   tabId: TabsIdType,
-  forceLoad: boolean = false,
+  forceLoad = false,
   searchValue?: string,
   isFilterVerified?: boolean
 ): Promise<UserType[]> => {

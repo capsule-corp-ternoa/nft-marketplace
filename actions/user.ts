@@ -41,7 +41,7 @@ export const getAccountBalance = async (id: string) => {
   return data.capsAmout;
 };
 
-export const getUsers = async (walletIds?: string[], artist?: boolean, verified?: boolean, page: string = "1", limit: string = DEFAULT_LIMIT_PAGINATION) => {
+export const getUsers = async (walletIds?: string[], artist?: boolean, verified?: boolean, page = "1", limit: string = DEFAULT_LIMIT_PAGINATION) => {
   const paginationOptions = {page, limit}
   const filter:any = {}
   if (walletIds) filter.walletIds = walletIds
@@ -68,25 +68,25 @@ export const reviewRequested = async (walletId: string) => {
   }  
 };
 
-export const getMostFollowedUsers = async (page: string="1", limit: string=DEFAULT_LIMIT_PAGINATION, useCache = false): Promise<CustomResponse<UserType>> => {
+export const getMostFollowedUsers = async (page="1", limit: string=DEFAULT_LIMIT_PAGINATION, useCache = false): Promise<CustomResponse<UserType>> => {
   const paginationOptions = { page, limit };
   const res = await fetch(`${NODE_API_URL}/api/users/most-followed/?pagination=${JSON.stringify(paginationOptions)}&useCache300=${useCache}`);
   if (!res.ok) throw new Error('error fetching most followed users');
-  let result: CustomResponse<UserType> = await res.json()
+  const result: CustomResponse<UserType> = await res.json()
   return result;
 }
 
-export const getTopSellersUsers = async (page: string="1", limit: string=DEFAULT_LIMIT_PAGINATION, useCache = false): Promise<CustomResponse<UserType>> => {
+export const getTopSellersUsers = async (page="1", limit: string=DEFAULT_LIMIT_PAGINATION, useCache = false): Promise<CustomResponse<UserType>> => {
   const paginationOptions = { page, limit };
   const res = await fetch(`${NODE_API_URL}/api/users/top-sellers/?pagination=${JSON.stringify(paginationOptions)}&useCache300=${useCache}`);
   if (!res.ok) throw new Error('error fetching top sellers users');
-  let result: CustomResponse<UserType> = await res.json()
+  const result: CustomResponse<UserType> = await res.json()
   return result;
 }
 
 export const getArtistHighlight = async (): Promise<ArtistHighlightType> => {
   const res = await fetch(`${NODE_API_URL}/api/users/artist-highlight`);
   if (!res.ok) throw new Error('No suitable artist to highlight was found');
-  let result: ArtistHighlightType = await res.json();
+  const result: ArtistHighlightType = await res.json();
   return result;
 };

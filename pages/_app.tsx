@@ -62,6 +62,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
     <ThemeProvider theme={theme}>
       <Script async src="https://www.googletagmanager.com/gtag/js?id=G-2ZD3ZDVEZD"></Script>
       <Script
+        id="gtag"
         dangerouslySetInnerHTML={{
           __html: `
             window.dataLayer = window.dataLayer || [];

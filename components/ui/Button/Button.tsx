@@ -218,4 +218,5 @@ const SButton = styled.button.withConfig({
   ${ButtonStyle}
 `;
 
+Button.displayName = "Button";
 export default Button;

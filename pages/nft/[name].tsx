@@ -67,13 +67,16 @@ const NftPage = ({ NFT, capsValue }: NFTPageProps) => {
 
   useEffect(() => {
     let shouldUpdate = true;
+    const ipfsLink = NFT.properties?.preview.ipfs;
     async function callBack() {
-      try {
-        let res = await fetch(NFT.properties?.preview.ipfs!, { method: 'HEAD' });
-        if (shouldUpdate) setType(res.headers.get('Content-Type'));
-        return res;
-      } catch (err) {
-        console.log('Error :', err);
+      if (ipfsLink !== undefined) {
+        try {
+          const res = await fetch(ipfsLink, { method: 'HEAD' });
+          if (shouldUpdate) setType(res.headers.get('Content-Type'));
+          return res;
+        } catch (err) {
+          console.log('Error :', err);
+        }
       }
     }
 
@@ -107,9 +110,9 @@ const NftPage = ({ NFT, capsValue }: NFTPageProps) => {
 export async function getServerSideProps(ctx: NextPageContext) {
   const token = cookies(ctx).token && decryptCookie(cookies(ctx).token as string);
   let NFT: NftType | null = null,
-    capsValue: number = 0;
+    capsValue = 0;
   const promises = [];
-  let ip = getUserIp(ctx.req);
+  const ip = getUserIp(ctx.req);
 
   promises.push(
     new Promise<void>((success) => {

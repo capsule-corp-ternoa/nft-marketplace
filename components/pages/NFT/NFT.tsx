@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
+import { useRouter } from 'next/router'
 
 import { getByTheSameArtistNFTs, getOwnedNFTS, getSeriesData } from 'actions/nft';
 import { likeNFT, unlikeNFT } from 'actions/nft';
@@ -31,6 +32,7 @@ const NFTPage = ({ NFT, type, isUserFromDappQR }: NFTPageProps) => {
   const dispatch = useDispatch();
   const { user } = useApp();
   const { url } = useMarketplaceData();
+  const router = useRouter();
 
   const [isLiked, setIsLiked] = useState(
     (NFT.serieId === '0'
@@ -47,6 +49,8 @@ const NFTPage = ({ NFT, type, isUserFromDappQR }: NFTPageProps) => {
   const [isModalBuyExpanded, setIsModalBuyExpanded] = useState(false);
   const [isModalCheckoutExpanded, setIsModalCheckoutExpanded] = useState(false);
   const [isModalShowcaseExpanded, setIsModalShowcaseExpanded] = useState(false);
+
+  const ipfsMediaSrc = NFT.properties?.preview.ipfs;
 
   const isVR = NFT.categories.findIndex((x) => x.code === 'vr') !== -1 && NFT.creator === NFT.owner;
   const shareSubject = 'Check out this Secret NFT';
@@ -130,6 +134,11 @@ const NFTPage = ({ NFT, type, isUserFromDappQR }: NFTPageProps) => {
         : user?.likedNFTs?.some(({ serieId }) => serieId === NFT.serieId)) ?? false
     );
   }, [user?.likedNFTs]);
+
+  if (ipfsMediaSrc == undefined) {
+    router.push('/404');
+    return null;
+  }
 
   const loadSeriesData = async (seriesId: string) => {
     try {
@@ -236,7 +245,7 @@ const NFTPage = ({ NFT, type, isUserFromDappQR }: NFTPageProps) => {
         <Wrapper>
           <SNftWrapper>
             <SMediaWrapper>
-              <Media src={NFT.properties?.preview.ipfs!} type={type} />
+              <Media src={ipfsMediaSrc} type={type} />
               <SScaleButton
                 color="invertedContrast"
                 icon="scale"
@@ -355,7 +364,7 @@ const NFTPage = ({ NFT, type, isUserFromDappQR }: NFTPageProps) => {
         />
       )}
       {isModalShowcaseExpanded && (
-        <ModalShowcase media={NFT.properties?.preview.ipfs!} setExpanded={setIsModalShowcaseExpanded} type={type} />
+        <ModalShowcase media={ipfsMediaSrc} setExpanded={setIsModalShowcaseExpanded} type={type} />
       )}
       {isModalCheckoutExpanded && (
         <ModalCheckout

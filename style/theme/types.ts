@@ -73,4 +73,4 @@ export type Sizes = {
 
 export interface Shadows {
   popupShadow: string;
-};
+}

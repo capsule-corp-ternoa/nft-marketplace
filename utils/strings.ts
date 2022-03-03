@@ -4,7 +4,7 @@ import { getCategories } from 'actions/category';
 import { FiltersType } from 'interfaces/filters';
 import { FILTERS_SORT_RESET_STATE, CATEGORIES_FILTER, CREATION_DATE_FILTER, PRICE_FILTER } from 'utils/constant';
 
-function toFixed(num: Number, fixed: number) {
+function toFixed(num: number, fixed: number) {
   if (!num) {
     return null;
   }
@@ -52,7 +52,7 @@ export function computeValue(n: number) {
   }
 }
 
-export function computeCaps(n: number, decimals: number = 4) {
+export function computeCaps(n: number, decimals = 4) {
   if (typeof n !== 'number') {
     return (<any>n).toString();
   }
@@ -81,7 +81,7 @@ export function computeCaps(n: number, decimals: number = 4) {
   return Number(n).toString();
 }
 
-export function middleEllipsis(s: string, n: number = 10): string {
+export function middleEllipsis(s: string, n = 10): string {
   if (s.length < n) return s;
   const start = s.slice(0, n / 2 - 1);
   const end = s.slice(-(n / 2 - 2));

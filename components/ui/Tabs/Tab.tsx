@@ -28,7 +28,7 @@ const Tab = ({
       className={className}
       isActive={isActive}
       isBadge={isEndBadge || isStartBadge}
-      onClick={isActive ? () => {} : onClick}
+      onClick={isActive ? () => { return; } : onClick}
     >
       {isStartBadge && (
         <SStartBadgeContainer>

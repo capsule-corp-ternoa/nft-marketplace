@@ -2,6 +2,7 @@ import { createGlobalStyle } from 'styled-components';
 import { TernoaTheme } from 'style/theme';
 
 declare module 'styled-components' {
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
   export interface DefaultTheme extends TernoaTheme {}
 }
 

@@ -22,7 +22,7 @@ export const updateFile = (
   isRN = false
 ) => {
   const { target } = event;
-  let file = target?.files?.[0];
+  const file = target?.files?.[0];
   let isError = false;
 
   if (file !== null && file !== undefined) {

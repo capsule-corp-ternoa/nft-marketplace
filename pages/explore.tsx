@@ -53,8 +53,8 @@ export async function getServerSideProps(context: NextPageContext) {
   };
 
   let data: NftType[] = [],
-    dataHasNextPage: boolean = false,
-    totalCount: number = 0;
+    dataHasNextPage = false,
+    totalCount = 0;
 
   const NFTsDataPromise =
     (typeof sort === 'string' && sortPromiseMapping({ [sort]: true }, 0)) || getNFTs(undefined, undefined, filterOptions, undefined, true);

@@ -4,6 +4,8 @@ import TernoaIpfsApi from './ipfs.helper'
 import { ipfsGatewayUri } from './ipfs.const';
 import { timer } from '../functions' 
 
+type ProgressDataNominalSetState = React.Dispatch<React.SetStateAction<number[]>>;
+
 const ipfsApi = new TernoaIpfsApi();
 
 const cryptFilePgp = async (file: File, publicPGP: string) => {
@@ -27,7 +29,7 @@ export const cryptAndUploadNFT = async (
   secretNFT: File, 
   secretNFTType: string, 
   publicPGP: string, 
-  setProgressData?: Function,
+  setProgressData?: ProgressDataNominalSetState,
   progressIndex?:number
 ) => {
   return new Promise(async (resolve, reject) => {
@@ -50,7 +52,7 @@ export const cryptAndUploadNFT = async (
   })
 }
 
-export const uploadIPFS = async(file: File, setProgressData?: Function, progressIndex?:number, getLink: boolean=false) => {
+export const uploadIPFS = async(file: File, setProgressData?: ProgressDataNominalSetState, progressIndex?:number, getLink=false) => {
   try{
     const mediaType = mime.lookup(file.name);
     const result = await ipfsApi.addFile(file, setProgressData, progressIndex);

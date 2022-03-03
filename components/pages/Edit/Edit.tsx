@@ -69,7 +69,7 @@ const Edit = ({ user }: Props) => {
   const handleCertificationReview = async () => {
     if (!data.verified || !data.reviewRequested) {
       try {
-        let res = await requestReview(walletId);
+        const res = await requestReview(walletId);
         if (res) {
           setIsCertificationModalExpanded(true);
           setData({ ...data, reviewRequested: res.reviewRequested });
@@ -81,10 +81,10 @@ const Edit = ({ user }: Props) => {
   };
 
   const fileToUrl = async (x: string, name: string) => {
-    let blob = await (await fetch(x)).blob();
-    let file = new File([blob], name);
-    let resUpload = await uploadIPFS(file, undefined, undefined, true);
-    let { hashOrURL: url } = resUpload;
+    const blob = await (await fetch(x)).blob();
+    const file = new File([blob], name);
+    const resUpload = await uploadIPFS(file, undefined, undefined, true);
+    const { hashOrURL: url } = resUpload;
     if (url) {
       return url;
     } else {
@@ -96,7 +96,7 @@ const Edit = ({ user }: Props) => {
     try {
       if (isDataValid) {
         //save picture and banner to pinata before sending api if exist and different
-        let updateData = { ...data };
+        const updateData = { ...data };
         if (data.banner?.slice(0, 4) === 'blob') updateData.banner = await fileToUrl(data.banner, 'banner');
         if (data.picture?.slice(0, 4) === 'blob') updateData.picture = await fileToUrl(data.picture, 'picture');
         setData(updateData);
@@ -288,7 +288,7 @@ of at least 120x120. Gifs work too."
             </FormSideRight>
           </Form>
           <SAdvice>
-            To update your settings you should sign message through your wallet. Click 'Update profile' then sign the
+            To update your settings you should sign message through your wallet. Click &apos;Update profile&apos; then sign the
             message.
           </SAdvice>
           <SButton color="primary500" disabled={!isDataValid} onClick={() => handleUpdate()} text="Update  your profile" />

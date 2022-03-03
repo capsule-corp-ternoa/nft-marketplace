@@ -6,6 +6,6 @@ export const getCategories = async (codes?: string[]) => {
     if (codes) filter.codes = codes
     const res = await fetch(`${NODE_API_URL}/api/categories/?filter=${JSON.stringify(filter)}`);
     if (!res.ok) throw new Error();
-    let result = await res.json() as CategoryType[];
+    const result = await res.json() as CategoryType[];
     return result;
 };

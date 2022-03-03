@@ -40,6 +40,7 @@ const Details: React.FC<DetailsProps> = ({
   canUserBuyAgain,
   resetTabId,
 }) => {
+  const { user } = useApp();
   const tabs = ['infos', 'owners', 'history', 'bid'];
   const [currentTab, setCurrentTab] = useState(tabs[0]);
   const [usersData, setUsersData] = useState({} as any);
@@ -102,7 +103,7 @@ const Details: React.FC<DetailsProps> = ({
   };
 
   const onRowRenderedOwners = ({ overscanStartIndex, overscanStopIndex }: ListOnItemsRenderedProps) => {
-    let ownersToLoad = [];
+    const ownersToLoad = [];
     if (serieDataGrouped.length > 0) {
       for (let i = overscanStartIndex; i <= overscanStopIndex; i++) {
         if (serieDataGrouped[i] && !usersData[serieDataGrouped[i].owner]) {
@@ -116,7 +117,7 @@ const Details: React.FC<DetailsProps> = ({
   };
 
   const onRowRenderedHistory = ({ overscanStartIndex, overscanStopIndex }: ListOnItemsRenderedProps) => {
-    let usersToLoad = [];
+    const usersToLoad = [];
     if (historyData.length > 0) {
       for (let i = overscanStartIndex; i <= overscanStopIndex; i++) {
         if (historyData[i]) {
@@ -136,8 +137,8 @@ const Details: React.FC<DetailsProps> = ({
 
   const loadDisplayedUsers = async (walletIds: string[]) => {
     try {
-      let users = await getUsers(walletIds);
-      let usersObject = {} as any;
+      const users = await getUsers(walletIds);
+      const usersObject = {} as any;
       if (users && users.data.length > 0) {
         users.data.forEach((u) => {
           usersObject[u.walletId] = u;
@@ -150,7 +151,6 @@ const Details: React.FC<DetailsProps> = ({
   };
 
   const ownerRowData = ({ index, style }: { index: number; style: React.CSSProperties | undefined }) => {
-    const { user } = useApp();
     const NFTRow = serieDataGrouped && serieDataGrouped.length > 0 ? serieDataGrouped[index] : null;
     const NFTRowId = NFTRow ? NFTRow.id : null;
     const NFTRowOwner = NFTRow ? NFTRow.owner : '';

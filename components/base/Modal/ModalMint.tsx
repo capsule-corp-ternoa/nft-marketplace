@@ -19,6 +19,8 @@ import { generateVideoThumbnail } from 'utils/imageProcessing/image';
 import { cryptAndUploadNFT, uploadIPFS } from 'utils/nftEncryption';
 import { connect as connectIo, socketWaitForEvent } from 'utils/socket/socket.helper';
 
+type ProgressDataNominalSetState = React.Dispatch<React.SetStateAction<number[]>>;
+
 export interface ModalProps {
   error: string;
   NFTData: NFTProps;
@@ -217,7 +219,7 @@ const ModalMint: React.FC<ModalProps> = ({
     }
   }, [runNFTMintData, stateSocket]);
 
-  async function uploadNFT(publicPGPs: string[], setProgressData?: Function) {
+  async function uploadNFT(publicPGPs: string[], setProgressData?: ProgressDataNominalSetState) {
     if (!originalNFT) throw new Error();
     let uploadIndex = 0;
     let videoThumbnailHash = '';

@@ -3,7 +3,7 @@ import { NftEffectType, NFT_EFFECT_BLUR, NFT_EFFECT_PROTECT } from 'interfaces';
 
 export async function imgToBlur(image: Jimp, blurredValue: number) {
   try {
-    let blurred = new Jimp(image.getWidth(), image.getHeight(), '#ffffff');
+    const blurred = new Jimp(image.getWidth(), image.getHeight(), '#ffffff');
     blurred.composite(image, 0, 0);
     blurred.blur(blurredValue);
     return await blurred.getBase64Async(image.getMIME());
@@ -86,7 +86,7 @@ export const generateVideoThumbnail = (file: File, thumbnailTimecode: number) =>
     video.preload = "metadata"
     video.onloadeddata = async () => {
       if (video.currentTime === timecode){
-        let ctx = canvas.getContext("2d");
+        const ctx = canvas.getContext("2d");
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
         if (ctx){
@@ -109,11 +109,3 @@ export const generateVideoThumbnail = (file: File, thumbnailTimecode: number) =>
     };
   });
 }
-
-export function blobToDataURL(blob: Blob, callback: Function) {
-  var a = new FileReader();
-  a.onload = function(e) {if (e?.target) callback(e.target.result);}
-  a.readAsDataURL(blob);
-}
-
-

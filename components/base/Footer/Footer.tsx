@@ -31,12 +31,12 @@ const Footer = () => {
         </SLegalsContainer>
         <SSocialsContainer>
           {twitterUrl !== 'false' && (
-            <a href={twitterUrl} target="_blank">
+            <a href={twitterUrl} target="_blank" rel="noreferrer">
               <SMediaIcon name="socialTwitter" />
             </a>
           )}
           {instagramUrl !== 'false' && (
-            <a href={instagramUrl} target="_blank">
+            <a href={instagramUrl} target="_blank" rel="noreferrer">
               <SMediaIcon name="socialInstagram" />
             </a>
           )}

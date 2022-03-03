@@ -77,10 +77,9 @@ const Media: React.FC<MediaProps & Record<string, any>> = ({ src, type, fallback
           draggable="false"
           placeholder="blur"
           blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(420, 672))}`}
-          layout="fill"
-          sizes="50vw"
-          objectFit="cover"
-          objectPosition="50% 50%"
+          layout="responsive"
+          height="672"
+          width="420"
           quality={50}
         />
       ) : (

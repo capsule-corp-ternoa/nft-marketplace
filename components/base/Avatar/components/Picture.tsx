@@ -31,9 +31,9 @@ const Picture = ({ className, isTooltip = false, isVerified, name = 'Ternoa', pi
             alt={name}
             placeholder="blur"
             blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(120, 120))}`}
-            layout="fill"
-            objectFit="cover"
-            sizes="20vw"
+            layout="responsive"
+            height="120"
+            width="120"
             quality={50}
           />
         </SImageWrapper>

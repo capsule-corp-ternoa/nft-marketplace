@@ -20,6 +20,10 @@ const moduleExports = {
   images: {
     domains: ['ipfs.ternoa.dev', 'ipfs-dev.ternoa.dev', 'marketplacemedias.fra1.digitaloceanspaces.com'],
   },
+  i18n: {
+    locales: ['en'],
+    defaultLocale: 'en',
+  },
 }
 
 const SentryWebpackPluginOptions = {

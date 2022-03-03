@@ -57,7 +57,7 @@ const STitle = styled.h3`
 `
 
 const SLink = styled.a`
-  color: ${({ theme }) => theme.colors.neutral500};
+  color: ${({ theme }) => theme.colors.neutral600};
   font-family: ${({ theme }) => theme.fonts.bold};
   font-size: 1.6rem;
   margin-left: 0.8rem;

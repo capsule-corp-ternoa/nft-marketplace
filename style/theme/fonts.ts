@@ -9,6 +9,8 @@ export const fonts: Fonts = {
   regular: 'Airbnb Cereal App Book'
 }
 
-export default {
+const fontsBase = {
   fonts,
 };
+
+export default fontsBase;

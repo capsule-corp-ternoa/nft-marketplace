@@ -31,6 +31,7 @@ const NftPage = ({ NFT, capsValue }: NFTPageProps) => {
 
   const dispatch = useDispatch();
   const { name } = useMarketplaceData();
+  const ipfsMediaSrc = NFT.properties?.preview.ipfs;
 
   useEffect(() => {
     let shouldUpdate = true;
@@ -63,15 +64,14 @@ const NftPage = ({ NFT, capsValue }: NFTPageProps) => {
     return () => {
       shouldUpdate = false;
     };
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     let shouldUpdate = true;
-    const ipfsLink = NFT.properties?.preview.ipfs;
     async function callBack() {
-      if (ipfsLink !== undefined) {
+      if (ipfsMediaSrc !== undefined) {
         try {
-          const res = await fetch(ipfsLink, { method: 'HEAD' });
+          const res = await fetch(ipfsMediaSrc, { method: 'HEAD' });
           if (shouldUpdate) setType(res.headers.get('Content-Type'));
           return res;
         } catch (err) {
@@ -84,7 +84,7 @@ const NftPage = ({ NFT, capsValue }: NFTPageProps) => {
     return () => {
       shouldUpdate = false;
     };
-  }, []);
+  }, [ipfsMediaSrc]);
 
   return (
     <>

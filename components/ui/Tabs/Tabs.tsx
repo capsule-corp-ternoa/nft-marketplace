@@ -25,7 +25,7 @@ const Tabs = ({ className, isTabsSelect = false, resetTabId, tabs }: Props) => {
 
   useEffect(() => {
     setActiveTab(Object.keys(tabs)[0]);
-  }, [resetTabId])
+  }, [resetTabId, tabs])
 
   return (
     <div className={className}>

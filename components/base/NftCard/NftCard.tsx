@@ -48,7 +48,7 @@ const NftCard: React.FC<NftCardProps> = ({
   const dispatch = useDispatch();
   const router = useRouter();
   const { creator, creatorData, id: nftId, price, properties, serieId, smallestPrice, totalFiltered, totalListedInMarketplace, totalListedNft, totalNft } = item;
-  const ipfsLink = properties?.preview.ipfs;
+  const ipfsMediaSrc = properties?.preview.ipfs;
 
   const [isHovering, setIsHovering] = useState(false);
   const [isLiked, setIsLiked] = useState(
@@ -97,17 +97,17 @@ const NftCard: React.FC<NftCardProps> = ({
   useEffect(() => {
     setIsLiked(
       (serieId === '0'
-        ? user?.likedNFTs?.some(({ nftId }) => nftId === item.id)
-        : user?.likedNFTs?.some(({ serieId }) => serieId === item.serieId)) ?? false
+        ? user?.likedNFTs?.some(({ nftId: likedNftId }) => nftId === likedNftId)
+        : user?.likedNFTs?.some(({ serieId: likedNftSerieId }) => serieId === likedNftSerieId)) ?? false
     );
-  }, [user?.likedNFTs]);
+  }, [nftId, serieId, user?.likedNFTs]);
 
   useEffect(() => {
     let shouldUpdate = true;
     async function callBack() {
-      if (ipfsLink !== undefined) {
+      if (ipfsMediaSrc !== undefined) {
         try {
-          const res = await fetch(ipfsLink, {
+          const res = await fetch(ipfsMediaSrc, {
             method: 'HEAD',
           });
           if (shouldUpdate) setType(res.headers.get('Content-Type'));
@@ -122,9 +122,9 @@ const NftCard: React.FC<NftCardProps> = ({
     return () => {
       shouldUpdate = false;
     };
-  }, []);
+  }, [ipfsMediaSrc]);
 
-  if (ipfsLink === undefined) {
+  if (ipfsMediaSrc === undefined) {
     return null;
   }
 
@@ -138,7 +138,7 @@ const NftCard: React.FC<NftCardProps> = ({
     >
       <Link href={`/nft/${item.id}`} passHref={!notClickeable}>
         <SMediaLink isHovering={isHovering} notClickeable={notClickeable}>
-          <Media src={ipfsLink} type={type} />
+          <Media src={ipfsMediaSrc} type={type} />
         </SMediaLink>
       </Link>
       {!noStatsChips && (

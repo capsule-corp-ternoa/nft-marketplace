@@ -36,7 +36,7 @@ const Countdown = ({ date }: Props) => {
     return () => {
       clearInterval(interval);
     };
-  }, []);
+  }, [date]);
 
   return (
     <SContainer>

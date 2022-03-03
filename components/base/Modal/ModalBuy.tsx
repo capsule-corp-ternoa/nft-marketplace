@@ -72,6 +72,7 @@ const ModalBuy: React.FC<ModalBuyProps> = ({ setExpanded, id, seriesId }) => {
     return function cleanup() {
       socket.close();
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

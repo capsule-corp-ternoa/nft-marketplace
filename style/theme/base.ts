@@ -22,7 +22,9 @@ const mediaQueries: MediaQueries = {
   xxl: `@media screen and (min-width: ${breakpointMap.xxl}px)`,
 };
 
-export default {
+const base = {
   breakpoints,
   mediaQueries,
 };
+
+export default base;

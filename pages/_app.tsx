@@ -41,7 +41,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 
   useEffect(() => {
     dispatch(appSetIsRN(Boolean(window.isRNApp)));
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     let shouldUpdate = true;
@@ -56,7 +56,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
     return () => {
       shouldUpdate = false;
     };
-  }, []);
+  }, [dispatch, token, user]);
 
   return (
     <ThemeProvider theme={theme}>

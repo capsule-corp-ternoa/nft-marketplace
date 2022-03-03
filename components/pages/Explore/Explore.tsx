@@ -151,7 +151,7 @@ const Explore: React.FC<ExploreProps> = ({ NFTs, hasNextPage, totalCount }) => {
     return () => {
       shouldUpdate = false;
     };
-  }, []);
+  }, [router.query]);
 
   return (
     <>

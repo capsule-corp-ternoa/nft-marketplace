@@ -75,7 +75,7 @@ const FollowAvatar = ({ className, handleFollow, isVerified, name = 'Ternoa', pi
     return () => {
       shouldUpdate = false;
     };
-  }, []);
+  }, [profileWalletId, user]);
 
   return (
     <SAvatarContainer className={className}>

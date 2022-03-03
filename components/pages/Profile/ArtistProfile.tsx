@@ -249,7 +249,7 @@ const Profile = ({ artist }: ProfileProps) => {
     return () => {
       shouldUpdate = false;
     };
-  }, [artist]);
+  }, [walletId]);
 
   useEffect(() => {
     if (searchValue !== undefined || isFilterVerified !== undefined) {
@@ -279,6 +279,7 @@ const Profile = ({ artist }: ProfileProps) => {
       }, 1000);
       return () => clearTimeout(timer);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchValue, isFilterVerified]);
 
   return (

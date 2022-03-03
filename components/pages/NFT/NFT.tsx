@@ -84,7 +84,20 @@ const NFTPage = ({ NFT, type, isUserFromDappQR }: NFTPageProps) => {
       : false);
 
   useEffect(() => {
+    let shouldUpdate = true;
+    const loadSeriesData = async (seriesId: string) => {
+      try {
+        const result = await getSeriesData(seriesId);
+        if (shouldUpdate) setSeriesData(result.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
     loadSeriesData(NFT.serieId);
+    return () => {
+      shouldUpdate = false;
+    };
   }, [NFT.serieId]);
 
   useEffect(() => {
@@ -92,8 +105,22 @@ const NFTPage = ({ NFT, type, isUserFromDappQR }: NFTPageProps) => {
   }, [smallestPriceRow]);
 
   useEffect(() => {
+    let shouldUpdate = true;
+    const loadByTheSameArtistNFTs = async () => {
+      try {
+        const NFTs = await getByTheSameArtistNFTs(NFT.creator, '1', '7');
+        if (shouldUpdate) setByTheSameArtistNFTs(NFTs.data.filter((x) => x.serieId !== NFT.serieId));
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     loadByTheSameArtistNFTs();
     toggleResetTabId((prevState) => !prevState);
+
+    return () => {
+      shouldUpdate = false;
+    };
   }, [NFT]);
 
   useEffect(() => {
@@ -125,7 +152,7 @@ const NFTPage = ({ NFT, type, isUserFromDappQR }: NFTPageProps) => {
     return () => {
       shouldUpdate = false;
     };
-  }, [isVR]);
+  }, [isVR, seriesData, user]);
 
   useEffect(() => {
     setIsLiked(
@@ -133,21 +160,12 @@ const NFTPage = ({ NFT, type, isUserFromDappQR }: NFTPageProps) => {
         ? user?.likedNFTs?.some(({ nftId }) => nftId === NFT.id)
         : user?.likedNFTs?.some(({ serieId }) => serieId === NFT.serieId)) ?? false
     );
-  }, [user?.likedNFTs]);
+  }, [NFT.id, NFT.serieId, user?.likedNFTs]);
 
   if (ipfsMediaSrc == undefined) {
     router.push('/404');
     return null;
   }
-
-  const loadSeriesData = async (seriesId: string) => {
-    try {
-      const result = await getSeriesData(seriesId);
-      setSeriesData(result.data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   const loadCanUserBuyAgain = async () => {
     if (user) {
@@ -170,11 +188,6 @@ const NFTPage = ({ NFT, type, isUserFromDappQR }: NFTPageProps) => {
     } else {
       return false;
     }
-  };
-
-  const loadByTheSameArtistNFTs = async () => {
-    const NFTs = await getByTheSameArtistNFTs(NFT.creator, '1', '7');
-    setByTheSameArtistNFTs(NFTs.data.filter((x) => x.serieId !== NFT.serieId));
   };
 
   const toggleLikeDislike = async () => {

@@ -37,6 +37,7 @@ const ThumbnailSelector = ({
       setThumbnailTimecode(0)
       getThumbnailDuration()
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [thumbnailNFT])
 
   /* If source change, we reload the video (for IOS) */

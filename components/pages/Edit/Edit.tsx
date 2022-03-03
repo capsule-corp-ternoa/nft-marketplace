@@ -113,7 +113,7 @@ const Edit = ({ user }: Props) => {
       setIsTwitterErrorModalExpanded(true);
       router.query = {};
     }
-  }, [router.query]);
+  }, [router]);
 
   return (
     <>

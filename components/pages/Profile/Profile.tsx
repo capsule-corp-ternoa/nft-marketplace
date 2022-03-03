@@ -438,6 +438,7 @@ const Profile = ({ user, userOwnedlNfts, userOwnedNftsHasNextPage }: ProfileProp
     return () => {
       shouldUpdate = false;
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -468,6 +469,7 @@ const Profile = ({ user, userOwnedlNfts, userOwnedNftsHasNextPage }: ProfileProp
       }, 1000);
       return () => clearTimeout(timer);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchValue, isFilterVerified]);
 
   return (

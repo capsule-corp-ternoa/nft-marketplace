@@ -82,6 +82,7 @@ const CreatePage = ({ categories }: CreatePageProps) => {
       setError('');
       if (stateSocket) stateSocket.close();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isModalMintExpanded]);
 
   return (

@@ -66,7 +66,7 @@ const LandingPage = ({
     return () => {
       shouldUpdate = false;
     };
-  }, []);
+  }, [dispatch]);
 
   return (
     <>

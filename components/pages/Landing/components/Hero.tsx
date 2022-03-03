@@ -19,7 +19,7 @@ export interface HeroProps {
   mode: HERO_MODE_TYPE;
 }
 
-const Hero = ({ capsDollarValue: _capsDollarValue, NFTs, mode }: HeroProps) => {
+const Hero = ({ NFTs, mode }: HeroProps) => {
   const [selectedNFT, setSelectedNFT] = useState<NftType>(NFTs[1] ?? NFTs[0]);
 
   return (

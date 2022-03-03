@@ -49,9 +49,9 @@ const SVideo = styled.video`
 `;
 
 function returnType(NFTarg: File, blurredValue = 0) {
-  if (NFTarg!.type.substr(0, 5) === NFT_FILE_TYPE_IMAGE) {
+  if (NFTarg.type.slice(0, 5) === NFT_FILE_TYPE_IMAGE) {
     return <SImage alt="img" blurredValue={blurredValue} id="output" src={URL.createObjectURL(NFTarg)} />;
-  } else if (NFTarg!.type.substr(0, 5) === NFT_FILE_TYPE_VIDEO) {
+  } else if (NFTarg.type.slice(0, 5) === NFT_FILE_TYPE_VIDEO) {
     return (
       <SVideo autoPlay muted playsInline loop key={NFTarg.name + NFTarg.lastModified}>
         <source id="outputVideo" src={URL.createObjectURL(NFTarg)} />

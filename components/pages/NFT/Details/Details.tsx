@@ -19,6 +19,8 @@ import { useApp } from 'redux/hooks';
 const ITEM_SIZE = 88;
 const GUTTER_SIZE = 5;
 
+const tabs = ['infos', 'owners', 'history', 'bid'];
+
 export interface DetailsProps {
   NFT: NftType;
   seriesData: NftType[];
@@ -41,7 +43,6 @@ const Details: React.FC<DetailsProps> = ({
   resetTabId,
 }) => {
   const { user } = useApp();
-  const tabs = ['infos', 'owners', 'history', 'bid'];
   const [currentTab, setCurrentTab] = useState(tabs[0]);
   const [usersData, setUsersData] = useState({} as any);
   const [serieDataGrouped, setSerieDataGrouped] = useState([] as NftType[]);

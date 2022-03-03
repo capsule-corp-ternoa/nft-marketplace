@@ -17,7 +17,7 @@ const SuccessPage = () => {
     if (!(title && buttonText && returnUrl && isRedirect !== undefined)) {
       router.push('/');
     }
-  }, []);
+  }, [buttonText, isRedirect, returnUrl, router, title]);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -30,7 +30,7 @@ const SuccessPage = () => {
     return () => {
       if (isRedirect === 'true') clearTimeout(timer);
     }
-  }, []);
+  }, [isRedirect, returnUrl, router]);
 
   return (
     <>

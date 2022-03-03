@@ -27,7 +27,7 @@ const Loader = ({ className, color = 'invertedContrast', useLottie = false, size
     return () => {
       shouldImport = false;
     };
-  }, []);
+  }, [useLottie]);
 
   useEffect(() => {
     let shouldUpdate = true;
@@ -58,7 +58,7 @@ const Loader = ({ className, color = 'invertedContrast', useLottie = false, size
       shouldUpdate = false;
       clearTimeout(timer);
     };
-  }, [lottie]);
+  }, [color, lottie]);
 
   return useLottie && lottieLoaded ? (
     <LottieLoaderContainer className={className} ref={ref} size={size} />

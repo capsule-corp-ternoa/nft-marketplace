@@ -73,7 +73,7 @@ const ArtistStatsBlock = ({ artistWalletId, followedCount, followersCount, setCo
     return () => {
       shouldUpdate = false;
     };
-  }, []);
+  }, [artistWalletId, user]);
 
   return (
     <SStatsContainer>

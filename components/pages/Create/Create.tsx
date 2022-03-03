@@ -85,6 +85,27 @@ const Create = ({
   )
 
   useEffect(() => {
+    let shouldUpdate = true;
+    const checkAddToSerie = async () => {
+      try {
+        const regex = emojiRegex()
+        if (user) {
+          if (regex.test(seriesId)) throw new Error("Invalid character")
+          const canAdd = await canAddToSeries(seriesId, user.walletId);
+          if (shouldUpdate) setCanAddToSeriesValue(canAdd);
+        } else {
+          if (shouldUpdate) setCanAddToSeriesValue(true);
+        }
+        if (shouldUpdate) setIsLoading(false);
+      } catch (err: any) {
+        if (shouldUpdate) {
+          setCanAddToSeriesValue(false);
+          setIsLoading(false);
+        }
+        console.log(err.message ? err.message : err);
+      }
+    };
+
     setIsLoading(true);
     const timer = setTimeout(() => {
       if (!seriesId || seriesId === '') {
@@ -94,26 +115,11 @@ const Create = ({
         checkAddToSerie();
       }
     }, 1000);
-    return () => clearTimeout(timer);
-  }, [seriesId, user]);
-
-  const checkAddToSerie = async () => {
-    try {
-      const regex = emojiRegex()
-      if (user) {
-        if (regex.test(seriesId)) throw new Error("Invalid character")
-        const canAdd = await canAddToSeries(seriesId, user.walletId);
-        setCanAddToSeriesValue(canAdd);
-      } else {
-        setCanAddToSeriesValue(true);
-      }
-      setIsLoading(false);
-    } catch (err: any) {
-      setCanAddToSeriesValue(false);
-      setIsLoading(false);
-      console.log(err.message ? err.message : err);
+    return () => {
+      clearTimeout(timer);
+      shouldUpdate = false;
     }
-  };
+  }, [seriesId, user]);
 
   const validateQuantity = (value: number, limit: number) => {
     return value > 0 && value <= limit;

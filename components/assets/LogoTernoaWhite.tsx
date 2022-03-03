@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import { useMarketplaceData } from 'redux/hooks';
 
 interface LogoProps {
@@ -10,11 +11,14 @@ const LogoTernoa = ({ className, onClick }: LogoProps) => {
   const { logo } = useMarketplaceData();
 
   return logo ?
-      <img
-        src={logo}
-        className={className}
-        onClick={onClick} 
-      />
+    <Image
+      src={logo}
+      alt="Marketplace Logo"
+      className={className}
+      onClick={onClick}
+      width={500}
+      height={500}
+    />
     :
       <svg 
         xmlns="http://www.w3.org/2000/svg"

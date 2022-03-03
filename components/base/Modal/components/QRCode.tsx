@@ -32,7 +32,7 @@ const Code: React.FC<CodeProps> = ({ data, action }) => (
 
 const SContainer = styled.div`
   background-color: ${({ theme }) => theme.colors.invertedContrast};
-  border-radius: 12px;
+  border-radius: 1.2rem;
   padding: 2.4rem;
 `
 

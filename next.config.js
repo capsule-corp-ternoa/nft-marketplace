@@ -17,6 +17,9 @@ const moduleExports = {
     // ssr and displayName are configured by default
     styledComponents: true,
   },
+  images: {
+    domains: ['ipfs.ternoa.dev', 'ipfs-dev.ternoa.dev', 'marketplacemedias.fra1.digitaloceanspaces.com'],
+  },
 }
 
 const SentryWebpackPluginOptions = {

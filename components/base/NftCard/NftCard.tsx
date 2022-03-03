@@ -262,7 +262,7 @@ const SMediaContainer = styled.div`
   align-items: center;
   position: relative;
   box-sizing: border-box;
-  border-radius: 12px;
+  border-radius: 1.2rem;
   background: linear-gradient(180deg, #f29fff 0%, #878cff 100%);
   box-shadow: ${({ theme }) => theme.shadows.popupShadow};
   overflow: hidden;

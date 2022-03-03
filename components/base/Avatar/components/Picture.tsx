@@ -1,6 +1,7 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
 import gradient from 'random-gradient'
+import Image from 'next/image'
 
 import Icon from 'components/ui/Icon'
 
@@ -22,7 +23,7 @@ const Picture = ({ className, isTooltip = false, isVerified, name = 'Ternoa', pi
     <SPictureWrapper variant={variant}>
       {isVerified && <SIcon name="badge" />}
       {picture ? (
-        <SImage draggable="false" src={picture} alt={name} />
+        <SImage draggable="false" src={picture} alt={name} layout="fill" objectFit="cover" sizes="20vw" quality={50} />
       ) : (
         <SInitials name={name}>
           <SLetter variant={variant}>{name?.charAt(0) ?? 'T'}</SLetter>
@@ -76,17 +77,16 @@ const ImageStyle = css`
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-  box-shadow: ${({ theme }) => theme.shadows.popupShadow};
   position: absolute;
   transition: border 0.05s ease-out;
 
   &:hover {
-    border: 3px solid;
-    border-color: ${({ theme }) => theme.colors.primary500};
+    border: 3px solid !important;
+    border-color: ${({ theme }) => theme.colors.primary500} !important;
   }
 `
 
-const SImage = styled.img`
+const SImage = styled(Image)`
   ${ImageStyle}
 `
 

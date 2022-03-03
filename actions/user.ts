@@ -6,9 +6,8 @@ export const getUser = async (token: string, populateLikes=false) => {
   const res = await fetch(
     `${NODE_API_URL}/api/users/${token}?populateLikes=${populateLikes}`
   );
-
-  if (!res.ok) throw new Error();
   const userData = await res.json();
+  if (userData?.errors?.length > 0) throw new Error(userData.errors[0].message)
   const capsResponse = await fetch(
     `${NODE_API_URL}/api/users/${token}/caps`
   );

@@ -42,25 +42,32 @@ const ModalWallet: React.FC<ModalWalletProps> = ({ setExpanded }) => {
 
     socket.on('CONNECTION_FAILURE', (data) => setError(data.msg));
     socket.on('RECEIVE_WALLET_ID', async (data) => {
-      //console.log('SEND_WALLET_ID', data);
       const walletId = data.walletId as string;
-      let isUserCreated = false;
+      let user = null
       try {
-        const user = await getUser(walletId);
-        if (!user.walletId) {
-          const response = await fetch(`${NODE_API_URL}/api/users/create`, {
-            method: 'POST',
-            body: JSON.stringify({ walletId }),
-          });
-          const created = await response.json();
-          if (created.walletId) isUserCreated = true;
-        } else {
-          isUserCreated = true;
+        try{
+          user = await getUser(walletId);
+        }catch(err: any){
+          if (err.message === "User can't be found Error" && walletId.startsWith("5") && walletId.length === 48){
+            const response = await fetch(`${NODE_API_URL}/api/users/create`, {
+              method: 'POST',
+              body: JSON.stringify({ walletId }),
+            });
+            const res = await response.json();
+            if (res.walletId || res?.errors?.length > 0 && res.errors[0].message === "Wallet user already exists"){
+              user = { walletId }
+            }else{
+              throw new Error("Error while creating user")
+            }
+          }else{
+            throw err
+          }
         }
       } catch (err) {
+        user = null
         console.log(err);
       }
-      if (isUserCreated) {
+      if (user) {
         Cookies.set('token', encryptCookie(walletId), {
           //sameSite: 'strict',
           expires: 1,

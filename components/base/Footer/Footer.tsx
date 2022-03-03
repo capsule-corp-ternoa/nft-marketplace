@@ -31,12 +31,12 @@ const Footer = () => {
         </SLegalsContainer>
         <SSocialsContainer>
           {twitterUrl !== 'false' && (
-            <a href={twitterUrl} target="_blank" rel="noreferrer">
+            <a href={twitterUrl} target="_blank" rel="noreferrer" title="Official Twitter account">
               <SMediaIcon name="socialTwitter" />
             </a>
           )}
           {instagramUrl !== 'false' && (
-            <a href={instagramUrl} target="_blank" rel="noreferrer">
+            <a href={instagramUrl} target="_blank" rel="noreferrer" title="Official Instagram account">
               <SMediaIcon name="socialInstagram" />
             </a>
           )}
@@ -80,19 +80,19 @@ const SLegalsContainer = styled.div`
 `
 
 const SLabel = styled.span`
-  color: ${({ theme }) => theme.colors.neutral600};
+  color: ${({ theme }) => theme.colors.neutral200};
   font-size: 1.6rem;
 `
 
 const SLink = styled.a`
-  color: ${({ theme }) => theme.colors.neutral600};
+  color: ${({ theme }) => theme.colors.neutral200};
   cursor: pointer;
   font-family: ${({ theme }) => theme.fonts.bold};
   font-size: 1.6rem;
   margin-top: 0.8rem;
 
   &:hover {
-    color: ${({ theme }) => theme.colors.primary500};
+    color: ${({ theme }) => theme.colors.primary300};
   }
 
   ${({ theme }) => theme.mediaQueries.sm} {

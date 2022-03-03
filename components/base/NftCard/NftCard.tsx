@@ -151,8 +151,8 @@ const NftCard: React.FC<NftCardProps> = ({
       onMouseOut={() => !noHover && setIsHovering(false)}
       onMouseOver={() => !noHover && setIsHovering(true)}
     >
-      <Link href={`/nft/${item.id}`} passHref={!notClickeable}>
-        <SMediaLink isHovering={isHovering} notClickeable={notClickeable}>
+      <Link href={`/nft/${item.id}`} passHref>
+        <SMediaLink isHovering={isHovering} notClickeable={notClickeable} title={item.title}>
           <Media src={ipfsMediaSrc} type={type} />
         </SMediaLink>
       </Link>

@@ -27,7 +27,7 @@ const MainHeader: React.FC = () => {
       <Container>
         <SWrapper>
           <Link href="/">
-            <a>
+            <a title="Marketplace homepage">
               <SLogo name="logoTernoaBlack" />
             </a>
           </Link>

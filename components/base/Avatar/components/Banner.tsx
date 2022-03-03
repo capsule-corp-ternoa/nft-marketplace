@@ -93,8 +93,10 @@ const SBio = styled.span`
   text-align: center;
 
   ${({ theme }) => theme.mediaQueries.lg} {
-    margin-top: 0.4rem;
+    margin-top: 0.8rem;
     text-align: left;
+    max-height: 12rem;
+    overflow-y: scroll;
   }
 `
 

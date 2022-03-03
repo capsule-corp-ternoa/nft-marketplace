@@ -1,21 +1,21 @@
-import React from 'react';
-import Link from 'next/link';
-import styled from 'styled-components';
-import { Container, Wrapper } from 'components/layout';
-import Icon from 'components/ui/Icon';
-import Button from 'components/ui/Button';
-import { Colors } from 'style/theme/types';
+import React from 'react'
+import Link from 'next/link'
+import styled from 'styled-components'
+import { Container, Wrapper } from 'components/layout'
+import Icon from 'components/ui/Icon'
+import Button from 'components/ui/Button'
+import { Colors } from 'style/theme/types'
 
-export const NO_NFT_VARIANT_SOLD_OUT = 'sold_out';
-export type NO_NFT_VARIANT_TYPE = typeof NO_NFT_VARIANT_SOLD_OUT;
+export const NO_NFT_VARIANT_SOLD_OUT = 'sold_out'
+export type NO_NFT_VARIANT_TYPE = typeof NO_NFT_VARIANT_SOLD_OUT
 
 interface Props {
-  body?: string | React.ReactNode;
-  className?: string;
-  href?: string;
-  linkLabel?: string;
-  title: string;
-  variant?: NO_NFT_VARIANT_TYPE;
+  body?: string | React.ReactNode
+  className?: string
+  href?: string
+  linkLabel?: string
+  title: string
+  variant?: NO_NFT_VARIANT_TYPE
 }
 
 const NoNFTComponent = ({ body, className, href, linkLabel, title, variant }: Props) => {
@@ -29,28 +29,22 @@ const NoNFTComponent = ({ body, className, href, linkLabel, title, variant }: Pr
           <SLinkWrapper>
             <Link href={href} passHref>
               <>
-                <Button
-                  color="contrast"
-                  href={href}
-                  text={linkLabel}
-                  size="medium"
-                  variant="outlined"
-                />
+                <Button color="contrast" href={href} text={linkLabel} size="medium" variant="outlined" />
               </>
             </Link>
           </SLinkWrapper>
         )}
       </Wrapper>
     </Container>
-  );
-};
+  )
+}
 
 const SIcon = styled(Icon)`
   min-height: 22rem;
   width: 16rem;
   height: auto;
   margin: 0 auto;
-`;
+`
 
 const STitle = styled.span<{ color: keyof Colors }>`
   color: ${({ color, theme }) => theme.colors[color]};
@@ -58,14 +52,14 @@ const STitle = styled.span<{ color: keyof Colors }>`
   font-size: 1.6rem;
   margin-top: 2.4rem;
   text-align: center;
-`;
+`
 
 const SBody = styled.span`
   color: ${({ theme }) => theme.colors.contrast};
   font-family: ${({ theme }) => theme.fonts.light};
   font-size: 1.4rem;
   text-align: center;
-`;
+`
 
 const SLinkWrapper = styled.div`
   width: fit-content;
@@ -74,6 +68,6 @@ const SLinkWrapper = styled.div`
   ${({ theme }) => theme.mediaQueries.xxl} {
     margin-top: 6.4rem;
   }
-`;
+`
 
-export default NoNFTComponent;
+export default NoNFTComponent

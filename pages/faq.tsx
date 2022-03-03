@@ -1,14 +1,14 @@
-import React from 'react';
-import Head from 'next/head';
-import BetaBanner from 'components/base/BetaBanner';
-import Footer from 'components/base/Footer';
-import FloatingHeader from 'components/base/FloatingHeader';
-import MainHeader from 'components/base/MainHeader';
-import FAQ from 'components/pages/FAQ';
-import { useMarketplaceData } from 'redux/hooks';
+import React from 'react'
+import Head from 'next/head'
+import BetaBanner from 'components/base/BetaBanner'
+import Footer from 'components/base/Footer'
+import FloatingHeader from 'components/base/FloatingHeader'
+import MainHeader from 'components/base/MainHeader'
+import FAQ from 'components/pages/FAQ'
+import { useMarketplaceData } from 'redux/hooks'
 
 const FAQPage = () => {
-  const { name } = useMarketplaceData();
+  const { name } = useMarketplaceData()
 
   return (
     <>
@@ -24,7 +24,7 @@ const FAQPage = () => {
       <Footer />
       <FloatingHeader />
     </>
-  );
-};
+  )
+}
 
-export default FAQPage;
+export default FAQPage

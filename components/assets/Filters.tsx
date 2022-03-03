@@ -1,7 +1,7 @@
-import React from 'react';
+import React from 'react'
 
 interface FiltersProps {
-  className?: string;
+  className?: string
 }
 
 const Filters = ({ className }: FiltersProps) => (
@@ -11,6 +11,6 @@ const Filters = ({ className }: FiltersProps) => (
       fill="white"
     />
   </svg>
-);
+)
 
-export default Filters;
+export default Filters

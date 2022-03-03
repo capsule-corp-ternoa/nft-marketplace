@@ -1,59 +1,67 @@
-import React, { useEffect, useState } from 'react';
-import dynamic from 'next/dynamic';
-import styled from 'styled-components';
+import React, { useEffect, useState } from 'react'
+import dynamic from 'next/dynamic'
+import styled from 'styled-components'
 
-import { getNFTs } from 'actions/nft';
-import { getArtistHighlight } from 'actions/user';
-import Avatar, { AVATAR_VARIANT_EDIT } from 'components/base/Avatar';
-import NoNFTComponent, { NO_NFT_VARIANT_SOLD_OUT } from 'components/base/NoNFTComponent';
-import { Container, Wrapper } from 'components/layout';
-import { ArtistHighlightType, UserType, NftType } from 'interfaces/index';
-import { MOST_LIKED_SORT, MOST_SOLD_SERIES_SORT } from 'utils/constant';
+import { getNFTs } from 'actions/nft'
+import { getArtistHighlight } from 'actions/user'
+import Avatar, { AVATAR_VARIANT_EDIT } from 'components/base/Avatar'
+import NoNFTComponent, { NO_NFT_VARIANT_SOLD_OUT } from 'components/base/NoNFTComponent'
+import { Container, Wrapper } from 'components/layout'
+import { ArtistHighlightType, UserType, NftType } from 'interfaces/index'
+import { MOST_LIKED_SORT, MOST_SOLD_SERIES_SORT } from 'utils/constant'
 
-import Hero from './components/Hero';
-import UsersShowcase from './components/UsersShowcase';
-import { HERO_MODE_SELL } from './constants';
+import Hero from './components/Hero'
+import UsersShowcase from './components/UsersShowcase'
+import { HERO_MODE_SELL } from './constants'
 
 const Showcase = dynamic(() => import('../../base/Showcase'), {
   ssr: false,
-});
+})
 
 export interface LandingProps {
-  capsDollarValue?: number;
-  recentNFTs: NftType[];
-  mostFollowedUsers: UserType[];
-  popularNfts: NftType[];
-  bestSellingNfts: NftType[];
-  topSellersUsers: UserType[];
-  totalCountNFT: number;
+  capsDollarValue?: number
+  recentNFTs: NftType[]
+  mostFollowedUsers: UserType[]
+  popularNfts: NftType[]
+  bestSellingNfts: NftType[]
+  topSellersUsers: UserType[]
+  totalCountNFT: number
 }
 
-const Landing = ({ capsDollarValue, recentNFTs, mostFollowedUsers, popularNfts, bestSellingNfts, topSellersUsers, totalCountNFT }: LandingProps) => {
-  const [artistHighlight, setArtistHighlight] = useState<ArtistHighlightType | undefined>(undefined);
-  const [artistHighlightNFTs, setArtistHighlightNFTs] = useState<NftType[]>([]);
+const Landing = ({
+  capsDollarValue,
+  recentNFTs,
+  mostFollowedUsers,
+  popularNfts,
+  bestSellingNfts,
+  topSellersUsers,
+  totalCountNFT,
+}: LandingProps) => {
+  const [artistHighlight, setArtistHighlight] = useState<ArtistHighlightType | undefined>(undefined)
+  const [artistHighlightNFTs, setArtistHighlightNFTs] = useState<NftType[]>([])
 
   useEffect(() => {
-    let shouldUpdate = true;
+    let shouldUpdate = true
     const loadArtistHighlightData = async () => {
       try {
-        const artist = await getArtistHighlight();
-        if (artist.walletId === undefined) throw new Error('');
-        const artistNFTs = await getNFTs('1', '6', { owner: artist.walletId });
+        const artist = await getArtistHighlight()
+        if (artist.walletId === undefined) throw new Error('')
+        const artistNFTs = await getNFTs('1', '6', { owner: artist.walletId })
 
         if (shouldUpdate) {
-          setArtistHighlight(artist);
-          setArtistHighlightNFTs(artistNFTs.data);
+          setArtistHighlight(artist)
+          setArtistHighlightNFTs(artistNFTs.data)
         }
       } catch (error) {
-        console.log(error);
+        console.log(error)
       }
-    };
+    }
 
-    loadArtistHighlightData();
+    loadArtistHighlightData()
     return () => {
-      shouldUpdate = false;
-    };
-  }, []);
+      shouldUpdate = false
+    }
+  }, [])
 
   return (
     <>
@@ -122,12 +130,12 @@ const Landing = ({ capsDollarValue, recentNFTs, mostFollowedUsers, popularNfts, 
         </SArtistHighlightContainer>
       )}
     </>
-  );
-};
+  )
+}
 
 const SArtistHighlightContainer = styled(Container)`
   background: ${({ theme }) => theme.colors.neutral100};
-`;
+`
 
 const SArtistHighlightNFTsWrapper = styled.div`
   margin-top: 4rem;
@@ -135,6 +143,6 @@ const SArtistHighlightNFTsWrapper = styled.div`
   ${({ theme }) => theme.mediaQueries.lg} {
     margin-top: 5.6rem;
   }
-`;
+`
 
-export default Landing;
+export default Landing

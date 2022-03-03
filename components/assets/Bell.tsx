@@ -1,16 +1,11 @@
-import React from 'react';
+import React from 'react'
 
 interface BellProps {
-  className?: string;
+  className?: string
 }
 
 const Bell = ({ className }: BellProps) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className={className}
-    fill="none"
-    viewBox="0 0 18 21"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 18 21">
     <path
       fillRule="evenodd"
       clipRule="evenodd"
@@ -22,6 +17,6 @@ const Bell = ({ className }: BellProps) => (
       fill="#B1B1B1"
     />
   </svg>
-);
+)
 
-export default Bell;
+export default Bell

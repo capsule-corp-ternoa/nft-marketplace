@@ -1,18 +1,18 @@
-import React from 'react';
-import ClickAwayListener from 'react-click-away-listener';
-import styled from 'styled-components';
+import React from 'react'
+import ClickAwayListener from 'react-click-away-listener'
+import styled from 'styled-components'
 
-import Icon from '../Icon';
-import { MODAL_CONTAINER_VARIANT, MODAL_SHOWCASE_VARIANT } from './constants';
-import { MODAL_VARIANT_TYPE } from './interfaces';
+import Icon from '../Icon'
+import { MODAL_CONTAINER_VARIANT, MODAL_SHOWCASE_VARIANT } from './constants'
+import { MODAL_VARIANT_TYPE } from './interfaces'
 
 export interface ModalProps {
-  children?: React.ReactNode;
-  error?: string;
-  setExpanded: (b: boolean) => void;
-  subtitle?: string;
-  title?: string;
-  variant?: MODAL_VARIANT_TYPE;
+  children?: React.ReactNode
+  error?: string
+  setExpanded: (b: boolean) => void
+  subtitle?: string
+  title?: string
+  variant?: MODAL_VARIANT_TYPE
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -31,7 +31,7 @@ const Modal: React.FC<ModalProps> = ({
     )}
     <ClickAwayListener
       onClickAway={() => {
-        setExpanded(false);
+        setExpanded(false)
       }}
     >
       {
@@ -52,7 +52,7 @@ const Modal: React.FC<ModalProps> = ({
       }
     </ClickAwayListener>
   </SModalBackground>
-);
+)
 
 const SModalBackground = styled.div`
   width: 100%;
@@ -65,7 +65,7 @@ const SModalBackground = styled.div`
   align-items: center;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 110;
-`;
+`
 
 const SCloseIcon = styled.div`
   display: flex;
@@ -77,14 +77,14 @@ const SCloseIcon = styled.div`
   width: 2rem;
   height: 2rem;
   cursor: pointer;
-`;
+`
 
 const SCloseIconShowcase = styled(SCloseIcon)`
   top: 5.6rem;
   right: 5.6rem;
   width: 3.2rem;
   height: 3.2rem;
-`;
+`
 
 const SModalContainer = styled.div`
   width: 340px;
@@ -100,7 +100,7 @@ const SModalContainer = styled.div`
     width: 56rem;
     padding: 5.6rem 4rem;
   }
-`;
+`
 
 const STitle = styled.h3`
   color: ${({ theme }) => theme.colors.invertedContrast};
@@ -108,7 +108,7 @@ const STitle = styled.h3`
   font-size: 2.4rem;
   margin: 0;
   text-align: center;
-`;
+`
 
 const SSubtitle = styled.div`
   color: ${({ theme }) => theme.colors.invertedContrast};
@@ -116,20 +116,20 @@ const SSubtitle = styled.div`
   font-size: 1.6rem;
   margin-top: 0.8rem;
   text-align: center;
-`;
+`
 
 const SBody = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 4rem;
-`;
+`
 
 const SError = styled.div`
   color: ${({ theme }) => theme.colors.danger500};
   font-family: ${({ theme }) => theme.fonts.medium};
   font-size: 1.6rem;
   margin-top: 4rem;
-`;
+`
 
-export default Modal;
+export default Modal

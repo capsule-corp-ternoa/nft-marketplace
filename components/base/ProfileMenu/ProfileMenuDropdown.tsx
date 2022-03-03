@@ -1,51 +1,40 @@
-import React from 'react';
-import Link from 'next/link';
-import Cookies from 'js-cookie';
-import styled from 'styled-components';
-import ClickAwayListener from 'react-click-away-listener';
-import { useApp } from 'redux/hooks';
+import React from 'react'
+import Link from 'next/link'
+import Cookies from 'js-cookie'
+import styled from 'styled-components'
+import ClickAwayListener from 'react-click-away-listener'
+import { useApp } from 'redux/hooks'
 
-import Avatar from 'components/base/Avatar';
-import Clipboard from 'components/base/Clipboard';
-import Button from 'components/ui/Button';
-import { UserType } from 'interfaces';
+import Avatar from 'components/base/Avatar'
+import Clipboard from 'components/base/Clipboard'
+import Button from 'components/ui/Button'
+import { UserType } from 'interfaces'
 
 interface Props {
-  className?: string;
-  onClose: () => void;
-  user: UserType;
+  className?: string
+  onClose: () => void
+  user: UserType
 }
 
 const ProfileMenuDropdown = ({ className, onClose, user }: Props) => {
-  const { name, picture, verified, walletId } = user;
+  const { name, picture, verified, walletId } = user
 
-  const { isRN } = useApp();
+  const { isRN } = useApp()
 
   const handleLogout = () => {
-    Cookies.remove('token');
-    window.location.href = '/';
-  };
+    Cookies.remove('token')
+    window.location.href = '/'
+  }
 
   return (
     <ClickAwayListener onClickAway={onClose}>
       <SDropdownContainer className={className}>
         <SDropdownWrapper>
           <SProfileContainer>
-            <Avatar
-              isVerified={verified}
-              name={name}
-              picture={picture}
-              walletId={walletId}
-            />
+            <Avatar isVerified={verified} name={name} picture={picture} walletId={walletId} />
             {!isRN && (
               <SButtonWrapper>
-                <Button
-                  color="neutral600"
-                  icon="powerOff"
-                  onClick={handleLogout}
-                  size="small"
-                  variant="outlined"
-                />
+                <Button color="neutral600" icon="powerOff" onClick={handleLogout} size="small" variant="outlined" />
               </SButtonWrapper>
             )}
           </SProfileContainer>
@@ -67,8 +56,8 @@ const ProfileMenuDropdown = ({ className, onClose, user }: Props) => {
         <SCapsAnchor href={`/user/${walletId}`}>My artist profile</SCapsAnchor>
       </SDropdownContainer>
     </ClickAwayListener>
-  );
-};
+  )
+}
 
 const SDropdownContainer = styled.div`
   background: ${({ theme }) => theme.colors.invertedContrast};
@@ -79,24 +68,24 @@ const SDropdownContainer = styled.div`
   z-index: 100;
   position: absolute;
   width: 26rem;
-`;
+`
 
 const SDropdownWrapper = styled.div`
   padding: 0.8rem 1.6rem;
   display: flex;
   flex-direction: column;
-`;
+`
 
 const SProfileContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
-`;
+`
 
 const SButtonWrapper = styled.div`
   margin-left: 1.6rem;
-`;
+`
 
 const SLinkSection = styled.div`
   > * {
@@ -113,7 +102,7 @@ const SLinkSection = styled.div`
       padding-bottom: 0;
     }
   }
-`;
+`
 
 const SAnchor = styled.a`
   font-family: ${({ theme }) => theme.fonts.bold};
@@ -122,7 +111,7 @@ const SAnchor = styled.a`
   &:hover {
     color: ${({ theme }) => theme.colors.primary500};
   }
-`;
+`
 
 const SCapsAnchor = styled.a`
   width: 100%;
@@ -135,6 +124,6 @@ const SCapsAnchor = styled.a`
   padding: 1.6rem;
   font-family: ${({ theme }) => theme.fonts.bold};
   font-size: 1.2rem;
-`;
+`
 
-export default ProfileMenuDropdown;
+export default ProfileMenuDropdown

@@ -1,35 +1,35 @@
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import styled from 'styled-components';
+import React, { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
+import styled from 'styled-components'
 
-import { reviewRequested as requestReview } from 'actions/user';
+import { reviewRequested as requestReview } from 'actions/user'
 // import { padlock } from 'components/assets';
-import { Banner as AvatarBanner } from 'components/base/Avatar';
-import { Advice, Container, Form, FormSideLeft, FormSideRight, Title, Wrapper } from 'components/layout';
-import Button from 'components/ui/Button';
-import Icon from 'components/ui/Icon';
-import { Input, TextArea } from 'components/ui/Input';
-import Modal from 'components/ui/Modal';
-import { UserType } from 'interfaces';
-import { MARKETPLACE_ID, NODE_API_URL } from 'utils/constant';
-import { uploadIPFS } from 'utils/nftEncryption';
-import { validateTwitter, validateUrl } from 'utils/strings';
+import { Banner as AvatarBanner } from 'components/base/Avatar'
+import { Advice, Container, Form, FormSideLeft, FormSideRight, Title, Wrapper } from 'components/layout'
+import Button from 'components/ui/Button'
+import Icon from 'components/ui/Icon'
+import { Input, TextArea } from 'components/ui/Input'
+import Modal from 'components/ui/Modal'
+import { UserType } from 'interfaces'
+import { MARKETPLACE_ID, NODE_API_URL } from 'utils/constant'
+import { uploadIPFS } from 'utils/nftEncryption'
+import { validateTwitter, validateUrl } from 'utils/strings'
 
-import ImageBlock from './components/ImageBlock';
-import ModalEdit from './components/ModalEdit';
+import ImageBlock from './components/ImageBlock'
+import ModalEdit from './components/ModalEdit'
 
 interface Props {
-  user: UserType;
+  user: UserType
 }
 
 const Edit = ({ user }: Props) => {
-  const router = useRouter();
+  const router = useRouter()
   const { banner, bio, name, personalUrl, picture, reviewRequested, twitterName, twitterVerified, verified, walletId } =
-    user;
+    user
 
-  const [isCertificationModalExpanded, setIsCertificationModalExpanded] = useState(false);
-  const [isEditModalExpanded, setIsEditModalExpanded] = useState(false);
-  const [isTwitterErrorModalExpanded, setIsTwitterErrorModalExpanded] = useState(false);
+  const [isCertificationModalExpanded, setIsCertificationModalExpanded] = useState(false)
+  const [isEditModalExpanded, setIsEditModalExpanded] = useState(false)
+  const [isTwitterErrorModalExpanded, setIsTwitterErrorModalExpanded] = useState(false)
   const [data, setData] = useState({
     walletId,
     name,
@@ -45,7 +45,7 @@ const Edit = ({ user }: Props) => {
       'https://images.unsplash.com/photo-1579546929518-9e396f3cc809?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2250&q=80',
     reviewRequested,
     verified,
-  });
+  })
 
   const isDataValid =
     data &&
@@ -53,67 +53,67 @@ const Edit = ({ user }: Props) => {
     data.name.length > 0 &&
     (!data.customUrl || data.customUrl === '' || validateUrl(data.customUrl)) &&
     (!data.personalUrl || data.personalUrl === '' || validateUrl(data.personalUrl)) &&
-    (!data.twitterName || data.twitterName === '' || validateTwitter(data.twitterName));
+    (!data.twitterName || data.twitterName === '' || validateTwitter(data.twitterName))
 
-  const isVerificationAvailable = twitterName && twitterName.length > 2 && !twitterVerified && MARKETPLACE_ID === '0';
+  const isVerificationAvailable = twitterName && twitterName.length > 2 && !twitterVerified && MARKETPLACE_ID === '0'
   const verificationLabel = data.verified
     ? 'Certified'
     : data.reviewRequested
     ? 'Certification review pending'
-    : 'Want to be certified ? Make a request';
+    : 'Want to be certified ? Make a request'
 
   const handleChange = (value: any, field: string) => {
-    setData({ ...data, [field]: value });
-  };
+    setData({ ...data, [field]: value })
+  }
 
   const handleCertificationReview = async () => {
     if (!data.verified || !data.reviewRequested) {
       try {
-        const res = await requestReview(walletId);
+        const res = await requestReview(walletId)
         if (res) {
-          setIsCertificationModalExpanded(true);
-          setData({ ...data, reviewRequested: res.reviewRequested });
+          setIsCertificationModalExpanded(true)
+          setData({ ...data, reviewRequested: res.reviewRequested })
         }
       } catch (error) {
-        console.error(error);
+        console.error(error)
       }
     }
-  };
+  }
 
   const fileToUrl = async (x: string, name: string) => {
-    const blob = await (await fetch(x)).blob();
-    const file = new File([blob], name);
-    const resUpload = await uploadIPFS(file, undefined, undefined, true);
-    const { hashOrURL: url } = resUpload;
+    const blob = await (await fetch(x)).blob()
+    const file = new File([blob], name)
+    const resUpload = await uploadIPFS(file, undefined, undefined, true)
+    const { hashOrURL: url } = resUpload
     if (url) {
-      return url;
+      return url
     } else {
-      throw new Error('Error while saving media');
+      throw new Error('Error while saving media')
     }
-  };
+  }
 
   const handleUpdate = async () => {
     try {
       if (isDataValid) {
         //save picture and banner to pinata before sending api if exist and different
-        const updateData = { ...data };
-        if (data.banner?.slice(0, 4) === 'blob') updateData.banner = await fileToUrl(data.banner, 'banner');
-        if (data.picture?.slice(0, 4) === 'blob') updateData.picture = await fileToUrl(data.picture, 'picture');
-        setData(updateData);
+        const updateData = { ...data }
+        if (data.banner?.slice(0, 4) === 'blob') updateData.banner = await fileToUrl(data.banner, 'banner')
+        if (data.picture?.slice(0, 4) === 'blob') updateData.picture = await fileToUrl(data.picture, 'picture')
+        setData(updateData)
         //show update modal
-        setIsEditModalExpanded(true);
+        setIsEditModalExpanded(true)
       }
     } catch (err) {
-      console.log(err);
+      console.log(err)
     }
-  };
+  }
 
   useEffect(() => {
     if (router.query?.twitterValidated === 'false') {
-      setIsTwitterErrorModalExpanded(true);
-      router.query = {};
+      setIsTwitterErrorModalExpanded(true)
+      router.query = {}
     }
-  }, [router]);
+  }, [router])
 
   return (
     <>
@@ -288,10 +288,15 @@ of at least 120x120. Gifs work too."
             </FormSideRight>
           </Form>
           <SAdvice>
-            To update your settings you should sign message through your wallet. Click &apos;Update profile&apos; then sign the
-            message.
+            To update your settings you should sign message through your wallet. Click &apos;Update profile&apos; then
+            sign the message.
           </SAdvice>
-          <SButton color="primary500" disabled={!isDataValid} onClick={() => handleUpdate()} text="Update  your profile" />
+          <SButton
+            color="primary500"
+            disabled={!isDataValid}
+            onClick={() => handleUpdate()}
+            text="Update  your profile"
+          />
           {isEditModalExpanded && <ModalEdit setExpanded={setIsEditModalExpanded} data={data} />}
           {isTwitterErrorModalExpanded && (
             <Modal
@@ -326,8 +331,8 @@ of at least 120x120. Gifs work too."
         </Modal>
       )}
     </>
-  );
-};
+  )
+}
 
 const SAvatarBannerContainer = styled.div`
   display: none;
@@ -339,7 +344,7 @@ const SAvatarBannerContainer = styled.div`
     justify-content: space-between;
     margin-top: 0;
   }
-`;
+`
 
 const STopContainer = styled.div`
   width: 100%;
@@ -353,14 +358,14 @@ const STopContainer = styled.div`
     margin-top: 8rem;
     justify-content: space-between;
   }
-`;
+`
 
 const STitle = styled(Title)`
   ${({ theme }) => theme.mediaQueries.md} {
     align-self: flex-start;
     font-size: 3.2rem;
   }
-`;
+`
 
 const SCertifiedButtonCOntainer = styled.div`
   margin-top: 1.6rem;
@@ -373,11 +378,11 @@ const SCertifiedButtonCOntainer = styled.div`
   ${({ theme }) => theme.mediaQueries.md} {
     margin-top: 0;
   }
-`;
+`
 
 const SWrapper = styled(Wrapper)`
   align-items: center;
-`;
+`
 
 const SBannerContainer = styled.div`
   display: flex;
@@ -390,14 +395,14 @@ const SBannerContainer = styled.div`
   ${({ theme }) => theme.mediaQueries.xxl} {
     height: 28rem;
   }
-`;
+`
 
 const SBannerIMG = styled.img`
   position: absolute;
   object-fit: cover;
   width: 100%;
   height: 100%;
-`;
+`
 
 const SReturnButtonContainer = styled.div`
   margin: 0 auto -1.8rem;
@@ -406,15 +411,15 @@ const SReturnButtonContainer = styled.div`
   ${({ theme }) => theme.mediaQueries.md} {
     display: none;
   }
-`;
+`
 
 const SPictureBlock = styled(ImageBlock)`
   margin-top: 3.2rem;
-`;
+`
 
 const SBannerBlock = styled(ImageBlock)`
   margin: 5.6rem 0 2.4rem;
-`;
+`
 
 const SInput = styled(Input)`
   margin-top: 3.2rem;
@@ -425,7 +430,7 @@ const SInput = styled(Input)`
       width: 1.6rem;
     }
   }
-`;
+`
 
 const STwitterInputLabel = styled.div`
   width: 100%;
@@ -438,13 +443,13 @@ const STwitterInputLabel = styled.div`
     justify-content: space-between;
     align-items: center;
   }
-`;
+`
 
 const STwitterLabel = styled.span`
   flex: 1 0 auto;
   font-family: ${({ theme }) => theme.fonts.bold};
   font-size: 2rem;
-`;
+`
 
 const STextArea = styled(TextArea)`
   margin-top: 3.2rem;
@@ -452,7 +457,7 @@ const STextArea = styled(TextArea)`
   ${({ theme }) => theme.mediaQueries.md} {
     flex: 1;
   }
-`;
+`
 
 // const SNicknameAvailable = styled.span`
 //   align-self: flex-start;
@@ -466,11 +471,11 @@ const SClaimTwitterContainer = styled.div`
   color: ${({ theme }) => theme.colors.primary500};
   font-size: 1.2rem;
   margin: 1.2rem 0 0;
-`;
+`
 
 const STwitterNotVerified = styled.div`
   color: ${({ theme }) => theme.colors.neutral600};
-`;
+`
 
 const STwitterVerified = styled.div`
   display: flex;
@@ -484,7 +489,7 @@ const STwitterVerified = styled.div`
     margin: 0 0 0 1.6rem;
     text-align: right;
   }
-`;
+`
 
 const STwitterVerificationLink = styled.a`
   color: ${({ theme }) => theme.colors.primary500};
@@ -496,19 +501,19 @@ const STwitterVerificationLink = styled.a`
     margin: 0 0 0 1.6rem;
     text-align: right;
   }
-`;
+`
 
 const SIcon = styled(Icon)`
   width: 1.6rem;
   height: 1.6rem;
   margin-left: 0.2rem;
-`;
+`
 
 const SImagesMobileContainer = styled.div`
   ${({ theme }) => theme.mediaQueries.md} {
     display: none;
   }
-`;
+`
 
 const SImagesContainer = styled.div`
   display: none;
@@ -522,7 +527,7 @@ const SImagesContainer = styled.div`
     align-items: center;
     justify-content: space-between;
   }
-`;
+`
 
 const SAdvice = styled(Advice)`
   margin: 4rem auto 0;
@@ -535,7 +540,7 @@ const SAdvice = styled(Advice)`
     align-self: flex-start;
     text-align: left;
   }
-`;
+`
 
 const SButton = styled(Button)`
   margin: 4.8rem 0;
@@ -547,13 +552,13 @@ const SButton = styled(Button)`
   ${({ theme }) => theme.mediaQueries.xl} {
     margin: 4.8rem 0 9.6rem;
   }
-`;
+`
 
 const SModalButton = styled(Button)`
   &:hover {
     background: ${({ theme }) => theme.colors.invertedContrast};
     color: ${({ theme }) => theme.colors.contrast};
   }
-`;
+`
 
-export default Edit;
+export default Edit

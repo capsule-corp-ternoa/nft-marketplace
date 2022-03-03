@@ -1,81 +1,87 @@
-import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
-import styled from 'styled-components';
+import React, { useEffect, useState } from 'react'
+import Link from 'next/link'
+import styled from 'styled-components'
 
-import { follow, getFollowersCount, isUserFollowing, unfollow } from 'actions/follower';
-import Button from 'components/ui/Button';
-import { UserType } from 'interfaces';
-import { useApp } from 'redux/hooks';
-import { FOLLOW_ACTION, FOLLOW_ACTION_TYPE, UNFOLLOW_ACTION } from 'utils/profile/constants';
+import { follow, getFollowersCount, isUserFollowing, unfollow } from 'actions/follower'
+import Button from 'components/ui/Button'
+import { UserType } from 'interfaces'
+import { useApp } from 'redux/hooks'
+import { FOLLOW_ACTION, FOLLOW_ACTION_TYPE, UNFOLLOW_ACTION } from 'utils/profile/constants'
 
-import Avatar from './Avatar';
+import Avatar from './Avatar'
 
 interface FollowAvatarProps {
-  className?: string;
-  handleFollow?: (action: FOLLOW_ACTION_TYPE, profile?: UserType) => void;
-  isVerified: boolean;
-  name: string;
-  picture?: string;
-  profileWalletId: string;
+  className?: string
+  handleFollow?: (action: FOLLOW_ACTION_TYPE, profile?: UserType) => void
+  isVerified: boolean
+  name: string
+  picture?: string
+  profileWalletId: string
 }
 
-const FollowAvatar = ({ className, handleFollow, isVerified, name = 'Ternoa', picture, profileWalletId }: FollowAvatarProps) => {
-  const { user } = useApp();
-  const [followersCount, setFollowersCount] = useState(0);
-  const [isFollowing, setIsFollowing] = useState(false);
-  const [isFollowLoading, setIsFollowLoading] = useState(true);
+const FollowAvatar = ({
+  className,
+  handleFollow,
+  isVerified,
+  name = 'Ternoa',
+  picture,
+  profileWalletId,
+}: FollowAvatarProps) => {
+  const { user } = useApp()
+  const [followersCount, setFollowersCount] = useState(0)
+  const [isFollowing, setIsFollowing] = useState(false)
+  const [isFollowLoading, setIsFollowLoading] = useState(true)
 
-  const isFollowButton = !!user && profileWalletId !== user.walletId;
+  const isFollowButton = !!user && profileWalletId !== user.walletId
 
   const onFollow = async () => {
     if (user) {
-      setIsFollowLoading(true);
+      setIsFollowLoading(true)
       try {
         if (isFollowing) {
-          const res = await unfollow(profileWalletId, user.walletId);
-          if (handleFollow) handleFollow(UNFOLLOW_ACTION, res);
-          setFollowersCount((prevCount) => prevCount - 1);
+          const res = await unfollow(profileWalletId, user.walletId)
+          if (handleFollow) handleFollow(UNFOLLOW_ACTION, res)
+          setFollowersCount((prevCount) => prevCount - 1)
         } else {
-          const res = await follow(profileWalletId, user.walletId);
-          if (handleFollow) handleFollow(FOLLOW_ACTION, res);
-          setFollowersCount((prevCount) => prevCount + 1);
+          const res = await follow(profileWalletId, user.walletId)
+          if (handleFollow) handleFollow(FOLLOW_ACTION, res)
+          setFollowersCount((prevCount) => prevCount + 1)
         }
 
-        setIsFollowing((prevState) => !prevState);
-        setIsFollowLoading(false);
+        setIsFollowing((prevState) => !prevState)
+        setIsFollowLoading(false)
       } catch (err) {
-        setIsFollowLoading(false);
-        console.error(err);
+        setIsFollowLoading(false)
+        console.error(err)
       }
     }
-  };
+  }
 
   useEffect(() => {
-    let shouldUpdate = true;
+    let shouldUpdate = true
     const initStatus = async () => {
       if (user) {
         try {
-          const { isFollowing } = await isUserFollowing(profileWalletId, user.walletId);
-          if (shouldUpdate) setIsFollowing(isFollowing);
+          const { isFollowing } = await isUserFollowing(profileWalletId, user.walletId)
+          if (shouldUpdate) setIsFollowing(isFollowing)
 
-          const count = await getFollowersCount(profileWalletId);
+          const count = await getFollowersCount(profileWalletId)
           if (shouldUpdate) {
-            setFollowersCount(count);
-            setIsFollowLoading(false);
+            setFollowersCount(count)
+            setIsFollowLoading(false)
           }
-
         } catch (error) {
-          console.log(error);
-          if (shouldUpdate) setIsFollowLoading(false);
+          console.log(error)
+          if (shouldUpdate) setIsFollowLoading(false)
         }
       }
-    };
+    }
 
-    initStatus();
+    initStatus()
     return () => {
-      shouldUpdate = false;
-    };
-  }, [profileWalletId, user]);
+      shouldUpdate = false
+    }
+  }, [profileWalletId, user])
 
   return (
     <SAvatarContainer className={className}>
@@ -114,13 +120,13 @@ const FollowAvatar = ({ className, handleFollow, isVerified, name = 'Ternoa', pi
         />
       )}
     </SAvatarContainer>
-  );
-};
+  )
+}
 
 const SAvatarContainer = styled.div`
   display: flex;
   justify-content: space-between;
-`;
+`
 
 const SAvatarWrapper = styled.div`
   width: auto;
@@ -131,7 +137,7 @@ const SAvatarWrapper = styled.div`
   ${({ theme }) => theme.mediaQueries.lg} {
     flex-direction: row;
   }
-`;
+`
 
 const SDetailsContainer = styled.div`
   display: flex;
@@ -143,7 +149,7 @@ const SDetailsContainer = styled.div`
   ${({ theme }) => theme.mediaQueries.lg} {
     align-items: flex-start;
   }
-`;
+`
 
 const STopDetails = styled.div`
   display: flex;
@@ -154,7 +160,7 @@ const STopDetails = styled.div`
       margin-left: 0.8rem;
     }
   }
-`;
+`
 
 const SBottomDetails = styled.div`
   display: flex;
@@ -169,7 +175,7 @@ const SBottomDetails = styled.div`
   ${({ theme }) => theme.mediaQueries.lg} {
     margin-top: 0.4rem;
   }
-`;
+`
 
 const SName = styled.a`
   color: ${({ theme }) => theme.colors.contrast};
@@ -180,17 +186,17 @@ const SName = styled.a`
     color: ${({ theme }) => theme.colors.primary500};
     cursor: pointer;
   }
-`;
+`
 
 const SFollowers = styled.span`
   color: ${({ theme }) => theme.colors.neutral300};
   font-size: 1.2rem;
-`;
+`
 
 const SFollowButton = styled(Button)`
   font-size: 1.2rem;
   padding: 0.4rem 1.2rem;
-`;
+`
 
 const SFollowButtonMobile = styled(SFollowButton)`
   display: inline-block;
@@ -199,7 +205,7 @@ const SFollowButtonMobile = styled(SFollowButton)`
   ${({ theme }) => theme.mediaQueries.lg} {
     display: none;
   }
-`;
+`
 
 const SFollowButtonDesktop = styled(SFollowButton)`
   display: none;
@@ -207,6 +213,6 @@ const SFollowButtonDesktop = styled(SFollowButton)`
   ${({ theme }) => theme.mediaQueries.lg} {
     display: inline-block;
   }
-`;
+`
 
-export default FollowAvatar;
+export default FollowAvatar

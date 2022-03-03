@@ -1,15 +1,11 @@
-import React from 'react';
+import React from 'react'
 
 interface SoundOnProps {
-  className?: string;
+  className?: string
 }
 
 const SoundOn = ({ className }: SoundOnProps) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className={className}
-    viewBox="0 0 14 13"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 14 13">
     <g fill="none" fillRule="evenodd" stroke="none" strokeWidth="1">
       <g fill="#000000" fillRule="nonzero" transform="translate(-1326 -557)">
         <g transform="translate(1326 557)">
@@ -21,6 +17,6 @@ const SoundOn = ({ className }: SoundOnProps) => (
       </g>
     </g>
   </svg>
-);
+)
 
-export default SoundOn;
+export default SoundOn

@@ -1,15 +1,11 @@
-import React from 'react';
+import React from 'react'
 
 interface SoundOffProps {
-  className?: string;
+  className?: string
 }
 
 const SoundOff = ({ className }: SoundOffProps) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className={className}
-    viewBox="0 0 12 12"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 12 12">
     <g fill="none" fillRule="evenodd" stroke="none" strokeWidth="1">
       <g fill="#000000" fillRule="nonzero" transform="translate(-608 -1113)">
         <g transform="translate(608 1113)">
@@ -19,6 +15,6 @@ const SoundOff = ({ className }: SoundOffProps) => (
       </g>
     </g>
   </svg>
-);
+)
 
-export default SoundOff;
+export default SoundOff

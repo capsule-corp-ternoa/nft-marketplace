@@ -1,1 +1,1 @@
-declare module 'asmcrypto-lite';
+declare module 'asmcrypto-lite'

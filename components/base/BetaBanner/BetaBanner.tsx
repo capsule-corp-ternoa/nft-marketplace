@@ -1,9 +1,9 @@
-import React from 'react';
-import Link from 'next/link';
-import styled from 'styled-components';
+import React from 'react'
+import Link from 'next/link'
+import styled from 'styled-components'
 
-import Button from 'components/ui/Button';
-import Chip from 'components/ui/Chip';
+import Button from 'components/ui/Button'
+import Chip from 'components/ui/Chip'
 
 // TODO: delete on mainnet
 const BetaBanner: React.FC = () => {
@@ -26,8 +26,8 @@ const BetaBanner: React.FC = () => {
         </SButtonContainer>
       </Link>
     </SBannerContainer>
-  );
-};
+  )
+}
 
 const SBannerContainer = styled.div`
   width: 100%;
@@ -44,7 +44,7 @@ const SBannerContainer = styled.div`
   ${({ theme }) => theme.mediaQueries.md} {
     flex-direction: row;
   }
-`;
+`
 
 const SText = styled.div`
   color: ${({ theme }) => theme.colors.invertedContrast};\
@@ -56,13 +56,13 @@ const SText = styled.div`
   font-size: 1.6rem;
   gap: 0.2rem 0.6rem;
   margin: 0;
-`;
+`
 
 const SLink = styled.a`
   color: ${({ theme }) => theme.colors.invertedContrast};
   text-decoration: underline;
   text-underline-offset: 1px;
-`;
+`
 
 const SButtonContainer = styled.div`
   margin-top: 1.6rem;
@@ -78,6 +78,6 @@ const SButtonContainer = styled.div`
     margin-left: 1.6rem;
     margin-top: 0;
   }
-`;
+`
 
-export default BetaBanner;
+export default BetaBanner

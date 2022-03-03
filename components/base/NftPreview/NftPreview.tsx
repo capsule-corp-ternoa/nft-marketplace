@@ -1,12 +1,12 @@
-import React from 'react';
-import styled from 'styled-components';
-import Eye from 'components/assets/eye';
-import { NftCardWithEffects, NftUpload } from 'components/base/NftPreview';
-import { updateFile } from 'components/base/NftPreview/components/NftUpload';
-import { HiddenInput, HiddenShell, Subtitle } from 'components/layout';
-import Icon from 'components/ui/Icon';
-import Radio from 'components/ui/Radio';
-import Select from 'components/ui/Select';
+import React from 'react'
+import styled from 'styled-components'
+import Eye from 'components/assets/eye'
+import { NftCardWithEffects, NftUpload } from 'components/base/NftPreview'
+import { updateFile } from 'components/base/NftPreview/components/NftUpload'
+import { HiddenInput, HiddenShell, Subtitle } from 'components/layout'
+import Icon from 'components/ui/Icon'
+import Radio from 'components/ui/Radio'
+import Select from 'components/ui/Select'
 import {
   NftEffectType,
   NFT_EFFECT_BLUR,
@@ -15,21 +15,21 @@ import {
   NFT_EFFECT_SECRET,
   NFT_FILE_TYPE_GIF,
   NFT_FILE_TYPE_VIDEO,
-} from 'interfaces';
-import { useApp } from 'redux/hooks';
+} from 'interfaces'
+import { useApp } from 'redux/hooks'
 
 interface Props {
-  blurValue: number;
-  className?: string;
-  coverNFT: File | null;
-  effect: NftEffectType;
-  originalNFT: File | null;
-  setBlurValue: (n: number) => void;
-  setCoverNFT: (f: File | null) => void;
-  setEffect: (effect: NftEffectType) => void;
-  setError: (err: string) => void;
-  setIsLoading: (b: boolean) => void;
-  setOriginalNFT: (f: File | null) => void;
+  blurValue: number
+  className?: string
+  coverNFT: File | null
+  effect: NftEffectType
+  originalNFT: File | null
+  setBlurValue: (n: number) => void
+  setCoverNFT: (f: File | null) => void
+  setEffect: (effect: NftEffectType) => void
+  setError: (err: string) => void
+  setIsLoading: (b: boolean) => void
+  setOriginalNFT: (f: File | null) => void
 }
 
 const NFT_EFFECTS_ORDERED: NftEffectType[] = [
@@ -37,7 +37,7 @@ const NFT_EFFECTS_ORDERED: NftEffectType[] = [
   NFT_EFFECT_PROTECT,
   NFT_EFFECT_SECRET,
   NFT_EFFECT_BLUR,
-];
+]
 
 const NftPreview = ({
   blurValue,
@@ -51,29 +51,29 @@ const NftPreview = ({
   setError,
   setOriginalNFT,
 }: Props) => {
-  const { isRN } = useApp();
+  const { isRN } = useApp()
 
   const handleAllowedEffect = (file: File, effect: NftEffectType) => {
     switch (effect) {
       case NFT_EFFECT_BLUR:
       case NFT_EFFECT_PROTECT:
-        return !file.type.includes(NFT_FILE_TYPE_VIDEO) && file.type !== NFT_FILE_TYPE_GIF;
+        return !file.type.includes(NFT_FILE_TYPE_VIDEO) && file.type !== NFT_FILE_TYPE_GIF
       default:
-        return true;
+        return true
     }
-  };
+  }
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     updateFile(
       event,
       setError,
       (file: File) => {
-        setOriginalNFT(file);
-        setEffect(NFT_EFFECT_DEFAULT);
+        setOriginalNFT(file)
+        setEffect(NFT_EFFECT_DEFAULT)
       },
       isRN
-    );
-  };
+    )
+  }
 
   if (originalNFT === null) {
     return (
@@ -84,7 +84,7 @@ const NftPreview = ({
         note={`JPEG, JPG, PNG, GIF ${!isRN ? ', MP4 or MOV' : ''}. Max 30mb.`}
         onChange={handleFileUpload}
       />
-    );
+    )
   }
 
   return (
@@ -133,8 +133,8 @@ const NftPreview = ({
                       <li
                         key={id}
                         onClick={() => {
-                          setSelectExpanded(false);
-                          setEffect(effectType);
+                          setSelectExpanded(false)
+                          setEffect(effectType)
                         }}
                       >
                         {effectType}
@@ -180,8 +180,8 @@ const NftPreview = ({
         ))}
       </SFieldset>
     </div>
-  );
-};
+  )
+}
 
 const SUploadIcon = styled(Icon)`
   height: 2rem;
@@ -206,13 +206,13 @@ const SHeader = styled.div`
     margin-top: 4rem;
     justify-content: start;
   }
-`;
+`
 
 const SEyeIcon = styled(Eye)`
   width: 2.4rem;
   margin-right: 1rem;
   fill: black;
-`;
+`
 
 const SReuploadWrapper = styled.div`
   margin: 1.6rem 0 0;
@@ -220,7 +220,7 @@ const SReuploadWrapper = styled.div`
   ${({ theme }) => theme.mediaQueries.md} {
     margin: 0 0 0 2.4rem;
   }
-`;
+`
 
 const SWrapper = styled.div`
   display: flex;
@@ -231,24 +231,24 @@ const SWrapper = styled.div`
   ${({ theme }) => theme.mediaQueries.md} {
     display: none;
   }
-`;
+`
 
 const SMobileCardWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
   filter: drop-shadow(0px 0px 10.4276px rgba(0, 0, 0, 0.25));
-`;
+`
 
 const SSelect = styled(Select)`
   margin-top: 2.4rem;
-`;
+`
 
 const SSeparator = styled.div`
   width: 15rem;
   border-bottom: ${({ theme }) => `2px solid ${theme.colors.neutral600}`};
   margin-top: 3.2rem;
-`;
+`
 
 const SFieldset = styled.fieldset`
   display: none;
@@ -262,7 +262,7 @@ const SFieldset = styled.fieldset`
     border: none;
     padding: 0;
   }
-`;
+`
 
 const SLabelWrapper = styled.label<{ isSelected?: boolean }>`
   display: flex;
@@ -274,7 +274,7 @@ const SLabelWrapper = styled.label<{ isSelected?: boolean }>`
     flex: 1 1 0;
     max-width: 280px;
   }
-`;
+`
 
 const SLabel = styled.label<{ isSelected?: boolean }>`
   width: 100%;
@@ -295,16 +295,16 @@ const SLabel = styled.label<{ isSelected?: boolean }>`
     border: 3px dashed;
     border-color: ${theme.colors.primary500};
   `}
-`;
+`
 
 const SCardWrapper = styled.div<{ isSelected: boolean }>`
   width: 100%;
   height: auto;
   opacity: ${({ isSelected }) => (isSelected ? 1 : 0.4)};
-`;
+`
 
 const SRadio = styled(Radio)`
   margin-top: 3.2rem;
-`;
+`
 
-export default React.memo(NftPreview);
+export default React.memo(NftPreview)

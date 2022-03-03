@@ -6,11 +6,11 @@ export const fonts: Fonts = {
   extraBold: 'Airbnb Cereal App Extra Bold',
   light: 'Airbnb Cereal App Light',
   medium: 'Airbnb Cereal App Medium',
-  regular: 'Airbnb Cereal App Book'
+  regular: 'Airbnb Cereal App Book',
 }
 
 const fontsBase = {
   fonts,
-};
+}
 
-export default fontsBase;
+export default fontsBase

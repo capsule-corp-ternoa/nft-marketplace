@@ -1,12 +1,12 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from 'react'
+import styled from 'styled-components'
 
-import Icon from 'components/ui/Icon';
-import { Container, Wrapper } from 'components/layout';
-import { useMarketplaceData } from 'redux/hooks';
+import Icon from 'components/ui/Icon'
+import { Container, Wrapper } from 'components/layout'
+import { useMarketplaceData } from 'redux/hooks'
 
 const Footer = () => {
-  const { instagramUrl, name, twitterUrl } = useMarketplaceData();
+  const { instagramUrl, name, twitterUrl } = useMarketplaceData()
 
   return (
     <SFooterContainer>
@@ -43,14 +43,14 @@ const Footer = () => {
         </SSocialsContainer>
       </SFooterWrapper>
     </SFooterContainer>
-  );
-};
+  )
+}
 
 const SFooterContainer = styled(Container)`
   width: 100%;
   background: ${({ theme }) => theme.colors.contrast};
   margin-top: auto;
-`;
+`
 
 const SFooterWrapper = styled(Wrapper)`
   flex-direction: row;
@@ -62,7 +62,7 @@ const SFooterWrapper = styled(Wrapper)`
   ${({ theme }) => theme.mediaQueries.lg} {
     padding-bottom: 2.4rem !important;
   }
-`;
+`
 
 const SLegalsContainer = styled.div`
   display: flex;
@@ -77,12 +77,12 @@ const SLegalsContainer = styled.div`
       }
     }
   }
-`;
+`
 
 const SLabel = styled.span`
   color: ${({ theme }) => theme.colors.neutral600};
   font-size: 1.6rem;
-`;
+`
 
 const SLink = styled.a`
   color: ${({ theme }) => theme.colors.neutral600};
@@ -98,7 +98,7 @@ const SLink = styled.a`
   ${({ theme }) => theme.mediaQueries.sm} {
     margin-top: 0;
   }
-`;
+`
 
 const SSocialsContainer = styled.div`
   display: flex;
@@ -110,7 +110,7 @@ const SSocialsContainer = styled.div`
       margin-left: 3.2rem;
     }
   }
-`;
+`
 
 const SMediaIcon = styled(Icon)`
   width: 1.6rem;
@@ -121,6 +121,6 @@ const SMediaIcon = styled(Icon)`
   ${({ theme }) => theme.mediaQueries.lg} {
     width: 2.4rem;
   }
-`;
+`
 
-export default Footer;
+export default Footer

@@ -20,6 +20,6 @@ export const sizes: Sizes = {
 
 const sizesBase = {
   sizes,
-};
+}
 
-export default sizesBase;
+export default sizesBase

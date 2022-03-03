@@ -1,35 +1,35 @@
-import { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { FixedSizeList as List, ListOnItemsRenderedProps } from 'react-window';
-import AutoSizer from 'react-virtualized-auto-sizer';
-import { UserType, NftType, NFTTransferType, CustomResponse } from 'interfaces';
-import { computeCaps, formatDate } from 'utils/strings';
-import Link from 'next/link';
-import { middleEllipsis } from '../../../../utils/strings';
-import { getUsers } from 'actions/user';
-import Avatar, { AVATAR_VARIANT_BADGE, AVATAR_VARIANT_TRANSACTION } from 'components/base/Avatar';
-import Button from 'components/ui/Button';
-import Chip from 'components/ui/Chip';
-import { EXPLORER_URL, MARKETPLACE_ID } from 'utils/constant';
-import { Loader } from 'components/ui/Icon';
-import { getRandomNFTFromArray } from 'utils/functions';
-import { getHistory } from 'actions/nft';
-import { useApp } from 'redux/hooks';
+import { useEffect, useState } from 'react'
+import styled from 'styled-components'
+import { FixedSizeList as List, ListOnItemsRenderedProps } from 'react-window'
+import AutoSizer from 'react-virtualized-auto-sizer'
+import { UserType, NftType, NFTTransferType, CustomResponse } from 'interfaces'
+import { computeCaps, formatDate } from 'utils/strings'
+import Link from 'next/link'
+import { middleEllipsis } from '../../../../utils/strings'
+import { getUsers } from 'actions/user'
+import Avatar, { AVATAR_VARIANT_BADGE, AVATAR_VARIANT_TRANSACTION } from 'components/base/Avatar'
+import Button from 'components/ui/Button'
+import Chip from 'components/ui/Chip'
+import { EXPLORER_URL, MARKETPLACE_ID } from 'utils/constant'
+import { Loader } from 'components/ui/Icon'
+import { getRandomNFTFromArray } from 'utils/functions'
+import { getHistory } from 'actions/nft'
+import { useApp } from 'redux/hooks'
 
-const ITEM_SIZE = 88;
-const GUTTER_SIZE = 5;
+const ITEM_SIZE = 88
+const GUTTER_SIZE = 5
 
-const tabs = ['infos', 'owners', 'history', 'bid'];
+const tabs = ['infos', 'owners', 'history', 'bid']
 
 export interface DetailsProps {
-  NFT: NftType;
-  seriesData: NftType[];
-  setNftToBuy: (NFT: NftType) => void;
-  setIsModalCheckoutExpanded: (b: boolean) => void;
-  isUserFromDappQR: boolean;
-  isVR: boolean;
-  canUserBuyAgain: boolean;
-  resetTabId?: boolean;
+  NFT: NftType
+  seriesData: NftType[]
+  setNftToBuy: (NFT: NftType) => void
+  setIsModalCheckoutExpanded: (b: boolean) => void
+  isUserFromDappQR: boolean
+  isVR: boolean
+  canUserBuyAgain: boolean
+  resetTabId?: boolean
 }
 
 const Details: React.FC<DetailsProps> = ({
@@ -42,43 +42,43 @@ const Details: React.FC<DetailsProps> = ({
   canUserBuyAgain,
   resetTabId,
 }) => {
-  const { user } = useApp();
-  const [currentTab, setCurrentTab] = useState(tabs[0]);
-  const [usersData, setUsersData] = useState({} as any);
-  const [serieDataGrouped, setSerieDataGrouped] = useState([] as NftType[]);
-  const [serieDataCount, setSerieDataCount] = useState({} as any);
-  const [historyData, setHistoryData] = useState<NFTTransferType[]>([]);
-  const [historyLoading, setHistoryLoading] = useState(false);
+  const { user } = useApp()
+  const [currentTab, setCurrentTab] = useState(tabs[0])
+  const [usersData, setUsersData] = useState({} as any)
+  const [serieDataGrouped, setSerieDataGrouped] = useState([] as NftType[])
+  const [serieDataCount, setSerieDataCount] = useState({} as any)
+  const [historyData, setHistoryData] = useState<NFTTransferType[]>([])
+  const [historyLoading, setHistoryLoading] = useState(false)
 
   useEffect(() => {
-    let shouldUpdate = true;
+    let shouldUpdate = true
     const loadHistoryData = async () => {
       try {
-        setHistoryLoading(true);
-        const data: CustomResponse<NFTTransferType> = await getHistory(NFT.id, NFT.serieId, true);
-        if (!data || !data.data) throw new Error('No data found');
-        if (shouldUpdate) setHistoryData(data.data);
-        if (shouldUpdate) setHistoryLoading(false);
+        setHistoryLoading(true)
+        const data: CustomResponse<NFTTransferType> = await getHistory(NFT.id, NFT.serieId, true)
+        if (!data || !data.data) throw new Error('No data found')
+        if (shouldUpdate) setHistoryData(data.data)
+        if (shouldUpdate) setHistoryLoading(false)
       } catch (err) {
-        if (shouldUpdate) setHistoryLoading(false);
-        console.log(err);
+        if (shouldUpdate) setHistoryLoading(false)
+        console.log(err)
       }
-    };
+    }
 
-    loadHistoryData();
+    loadHistoryData()
     return () => {
-      shouldUpdate = false;
-    };
-  }, [NFT.id, NFT.serieId]);
+      shouldUpdate = false
+    }
+  }, [NFT.id, NFT.serieId])
 
   useEffect(() => {
-    const serieDataGroupedArray = [] as NftType[];
-    const serieDataCountObject = {} as any;
+    const serieDataGroupedArray = [] as NftType[]
+    const serieDataCountObject = {} as any
     seriesData.forEach((x) => {
       // Compute rows to display && count number of listed / unlisted for each row
-      const key = `${x.owner}-${x.listed}-${x.price}-${x.marketplaceId}-${x.isCapsule}`;
+      const key = `${x.owner}-${x.listed}-${x.price}-${x.marketplaceId}-${x.isCapsule}`
       if (!serieDataCountObject[key]) {
-        serieDataCountObject[key] = [x.id];
+        serieDataCountObject[key] = [x.id]
         serieDataGroupedArray.push({
           id: x.id,
           listed: x.listed,
@@ -87,82 +87,82 @@ const Details: React.FC<DetailsProps> = ({
           price: x.price,
           serieId: x.serieId,
           isCapsule: x.isCapsule,
-        } as NftType);
+        } as NftType)
       } else {
-        serieDataCountObject[key].push(x.id);
+        serieDataCountObject[key].push(x.id)
       }
-    });
-    setSerieDataGrouped(serieDataGroupedArray);
-    setSerieDataCount(serieDataCountObject);
-  }, [seriesData]);
+    })
+    setSerieDataGrouped(serieDataGroupedArray)
+    setSerieDataCount(serieDataCountObject)
+  }, [seriesData])
 
   const handleCustomBuy = (NFT: NftType) => {
-    const key = `${NFT.owner}-${NFT.listed}-${NFT.price}-${NFT.marketplaceId}-${NFT.isCapsule}`;
-    const NFTToBuy = seriesData.find((x) => x.id === getRandomNFTFromArray(serieDataCount[key])) || NFT;
-    setNftToBuy(NFTToBuy);
-    setIsModalCheckoutExpanded(true);
-  };
+    const key = `${NFT.owner}-${NFT.listed}-${NFT.price}-${NFT.marketplaceId}-${NFT.isCapsule}`
+    const NFTToBuy = seriesData.find((x) => x.id === getRandomNFTFromArray(serieDataCount[key])) || NFT
+    setNftToBuy(NFTToBuy)
+    setIsModalCheckoutExpanded(true)
+  }
 
   const onRowRenderedOwners = ({ overscanStartIndex, overscanStopIndex }: ListOnItemsRenderedProps) => {
-    const ownersToLoad = [];
+    const ownersToLoad = []
     if (serieDataGrouped.length > 0) {
       for (let i = overscanStartIndex; i <= overscanStopIndex; i++) {
         if (serieDataGrouped[i] && !usersData[serieDataGrouped[i].owner]) {
-          ownersToLoad.push(serieDataGrouped[i].owner);
+          ownersToLoad.push(serieDataGrouped[i].owner)
         }
       }
       if (ownersToLoad.length > 0) {
-        loadDisplayedUsers(ownersToLoad);
+        loadDisplayedUsers(ownersToLoad)
       }
     }
-  };
+  }
 
   const onRowRenderedHistory = ({ overscanStartIndex, overscanStopIndex }: ListOnItemsRenderedProps) => {
-    const usersToLoad = [];
+    const usersToLoad = []
     if (historyData.length > 0) {
       for (let i = overscanStartIndex; i <= overscanStopIndex; i++) {
         if (historyData[i]) {
           if (historyData[i].from.startsWith('5') && !usersData[historyData[i].from]) {
-            usersToLoad.push(historyData[i].from);
+            usersToLoad.push(historyData[i].from)
           }
           if (historyData[i].to.startsWith('5') && !usersData[historyData[i].to]) {
-            usersToLoad.push(historyData[i].to);
+            usersToLoad.push(historyData[i].to)
           }
         }
       }
       if (usersToLoad.length > 0) {
-        loadDisplayedUsers(usersToLoad);
+        loadDisplayedUsers(usersToLoad)
       }
     }
-  };
+  }
 
   const loadDisplayedUsers = async (walletIds: string[]) => {
     try {
-      const users = await getUsers(walletIds);
-      const usersObject = {} as any;
+      const users = await getUsers(walletIds)
+      const usersObject = {} as any
       if (users && users.data.length > 0) {
         users.data.forEach((u) => {
-          usersObject[u.walletId] = u;
-        });
-        setUsersData({ ...usersData, ...usersObject });
+          usersObject[u.walletId] = u
+        })
+        setUsersData({ ...usersData, ...usersObject })
       }
     } catch (err) {
-      console.log(err);
+      console.log(err)
     }
-  };
+  }
 
   const ownerRowData = ({ index, style }: { index: number; style: React.CSSProperties | undefined }) => {
-    const NFTRow = serieDataGrouped && serieDataGrouped.length > 0 ? serieDataGrouped[index] : null;
-    const NFTRowId = NFTRow ? NFTRow.id : null;
-    const NFTRowOwner = NFTRow ? NFTRow.owner : '';
-    const NFTRowPrice = NFTRow ? NFTRow.price : '';
-    const NFTRowListed = NFTRow ? NFTRow.listed : '';
-    const NFTRowMarketplaceId = NFTRow ? NFTRow.marketplaceId : '';
-    const ownerData = (usersData[NFTRowOwner] ?? {}) as UserType;
-    const { name, picture, twitterName, verified } = ownerData;
+    const NFTRow = serieDataGrouped && serieDataGrouped.length > 0 ? serieDataGrouped[index] : null
+    const NFTRowId = NFTRow ? NFTRow.id : null
+    const NFTRowOwner = NFTRow ? NFTRow.owner : ''
+    const NFTRowPrice = NFTRow ? NFTRow.price : ''
+    const NFTRowListed = NFTRow ? NFTRow.listed : ''
+    const NFTRowMarketplaceId = NFTRow ? NFTRow.marketplaceId : ''
+    const ownerData = (usersData[NFTRowOwner] ?? {}) as UserType
+    const { name, picture, twitterName, verified } = ownerData
 
-    const key = `${NFTRowOwner}-${NFTRowListed}-${NFTRowPrice}-${NFTRowMarketplaceId}-${NFTRow?.isCapsule}`;
-    const NFTRowTypeWording = (NFTRow?.isCapsule ? 'capsule' : 'edition') + (serieDataCount[key].length > 1 ? 's' : '');
+    const key = `${NFTRowOwner}-${NFTRowListed}-${NFTRowPrice}-${NFTRowMarketplaceId}-${NFTRow?.isCapsule}`
+    const NFTRowTypeWording = (NFTRow?.isCapsule ? 'capsule' : 'edition') + (serieDataCount[key].length > 1 ? 's' : '')
     const userCanBuy =
       (!isVR || (isVR && isUserFromDappQR && canUserBuyAgain)) &&
       (user
@@ -174,7 +174,7 @@ const Details: React.FC<DetailsProps> = ({
           Number(user.capsAmount) >= Number(NFTRowPrice) &&
           user.walletId !== NFTRowOwner &&
           NFTRowMarketplaceId === MARKETPLACE_ID
-        : NFTRowListed === 1 && NFTRowMarketplaceId === MARKETPLACE_ID);
+        : NFTRowListed === 1 && NFTRowMarketplaceId === MARKETPLACE_ID)
 
     return (
       <SRows key={NFTRowId} style={{ ...style, height: (style?.height as any) - GUTTER_SIZE }}>
@@ -224,17 +224,17 @@ const Details: React.FC<DetailsProps> = ({
           />
         </SChipButtonWrapper>
       </SRows>
-    );
-  };
+    )
+  }
 
   const historyRowData = ({ index, style }: { index: number; style: React.CSSProperties | undefined }) => {
-    const NFTTransferRow = historyData[index];
-    const { amount, extrinsicId, from, id, quantity, timestamp, to, typeOfTransaction } = NFTTransferRow;
-    const isTransactionCreationOrSale = typeOfTransaction === 'creation' || typeOfTransaction === 'sale';
-    const isTransactionViewDisabled = !EXPLORER_URL;
+    const NFTTransferRow = historyData[index]
+    const { amount, extrinsicId, from, id, quantity, timestamp, to, typeOfTransaction } = NFTTransferRow
+    const isTransactionCreationOrSale = typeOfTransaction === 'creation' || typeOfTransaction === 'sale'
+    const isTransactionViewDisabled = !EXPLORER_URL
 
-    const fromData = (usersData[from] ?? null) as UserType;
-    const toData = (usersData[to] ?? null) as UserType;
+    const fromData = (usersData[from] ?? null) as UserType
+    const toData = (usersData[to] ?? null) as UserType
 
     return (
       <SRows key={id} style={{ ...style, height: (style?.height as any) - GUTTER_SIZE }}>
@@ -279,11 +279,11 @@ const Details: React.FC<DetailsProps> = ({
           />
         </SChipButtonWrapper>
       </SRows>
-    );
-  };
+    )
+  }
 
   useEffect(() => {
-    setCurrentTab(tabs[0]);
+    setCurrentTab(tabs[0])
   }, [resetTabId])
 
   return (
@@ -364,8 +364,8 @@ const Details: React.FC<DetailsProps> = ({
         {currentTab === 'bid' && <div></div>}
       </SContentContainer>
     </>
-  );
-};
+  )
+}
 
 const STabsContainer = styled.div`
   display: flex;
@@ -389,17 +389,17 @@ const STabsContainer = styled.div`
       }
     }
   }
-`;
+`
 
 const STab = styled(Button)`
   box-shadow: none;
   text-transform: capitalize;
-`;
+`
 
 const SContentContainer = styled.div`
   margin-top: 1.6rem;
   height: 29vh;
-`;
+`
 
 const SInfosContainer = styled.div`
   display: flex;
@@ -414,7 +414,7 @@ const SInfosContainer = styled.div`
     flex-direction: row;
     height: ${`${ITEM_SIZE - GUTTER_SIZE}px`};
   }
-`;
+`
 
 const SInfosCreatorContainer = styled.div`
   display: flex;
@@ -424,7 +424,7 @@ const SInfosCreatorContainer = styled.div`
   ${({ theme }) => theme.mediaQueries.lg} {
     flex-direction: row;
   }
-`;
+`
 
 const SInfosDataContainer = styled.div`
   display: flex;
@@ -439,11 +439,11 @@ const SInfosDataContainer = styled.div`
     justify-content: flex-start;
     align-items: baseline;
   }
-`;
+`
 
 const SInfoDatasTitle = styled.small`
   font-size: 1.2rem;
-`;
+`
 
 const SInfoDatasContent = styled.div`
   font-family: ${({ theme }) => theme.fonts.bold};
@@ -453,12 +453,12 @@ const SInfoDatasContent = styled.div`
   ${({ theme }) => theme.mediaQueries.lg} {
     margin-left: 0.4rem;
   }
-`;
+`
 
 const SRowsContainer = styled.div`
   height: 29vh;
   width: auto;
-`;
+`
 
 const SRows = styled.div`
   display: flex;
@@ -468,12 +468,12 @@ const SRows = styled.div`
   border-radius: 1.2rem;
   overflow: auto hidden;
   padding: 1.2rem;
-`;
+`
 
 const SRowWrapper = styled.div`
   display: flex;
   align-items: center;
-`;
+`
 
 const SRowDatas = styled.div`
   display: flex;
@@ -486,7 +486,7 @@ const SRowDatas = styled.div`
     align-items: center;
     justify-content: space-between;
   }
-`;
+`
 
 const SRowDatasDetails = styled.div`
   color: ${({ theme }) => theme.colors.contrast};
@@ -501,7 +501,7 @@ const SRowDatasDetails = styled.div`
     font-family: ${({ theme }) => theme.fonts.bold};
     font-size: 1.6rem;
   }
-`;
+`
 
 const SRowDatasSubDetails = styled.div`
   color: ${({ theme }) => theme.colors.neutral600};
@@ -511,16 +511,16 @@ const SRowDatasSubDetails = styled.div`
   ${({ theme }) => theme.mediaQueries.sm} {
     font-size: 1.2rem;
   }
-`;
+`
 
 const SChipButtonWrapper = styled.div`
   margin: 1.2rem;
   text-transform: capitalize;
-`;
+`
 
 const SStatusChipWrapper = styled(SChipButtonWrapper)`
   min-width: 10rem;
-`;
+`
 
 const SStatusChipMobileWrapper = styled(SStatusChipWrapper)`
   display: none;
@@ -528,7 +528,7 @@ const SStatusChipMobileWrapper = styled(SStatusChipWrapper)`
   ${({ theme }) => theme.mediaQueries.md} {
     display: inline-block;
   }
-`;
+`
 
 const SStatusLink = styled.a`
   display: -webkit-box;
@@ -547,7 +547,7 @@ const SStatusLink = styled.a`
     font-family: ${({ theme }) => theme.fonts.bold};
     font-size: 1.6rem;
   }
-`;
+`
 
 const SDatasDetails = styled.div`
   margin-top: 0.4rem;
@@ -556,10 +556,10 @@ const SDatasDetails = styled.div`
     margin-top: 0;
     margin-left: 1.6rem;
   }
-`;
+`
 
 const SLoader = styled(Loader)`
   margin: 8rem auto;
-`;
+`
 
-export default Details;
+export default Details

@@ -1,31 +1,35 @@
-import React, { useState } from 'react';
-import Link from 'next/link';
-import styled from 'styled-components';
+import React, { useState } from 'react'
+import Link from 'next/link'
+import styled from 'styled-components'
 
-import Countdown from 'components/base/Countdown';
-import NftCard from 'components/base/NftCard';
-import { Showcase3D } from 'components/base/Showcase';
-import Avatar from 'components/base/Avatar';
-import Button from 'components/ui/Button';
-import { NftType } from 'interfaces/index';
-import { computeCaps } from 'utils/strings';
+import Countdown from 'components/base/Countdown'
+import NftCard from 'components/base/NftCard'
+import { Showcase3D } from 'components/base/Showcase'
+import Avatar from 'components/base/Avatar'
+import Button from 'components/ui/Button'
+import { NftType } from 'interfaces/index'
+import { computeCaps } from 'utils/strings'
 
-import { HERO_MODE_AUCTION, HERO_MODE_SELL } from '../constants';
-import { HERO_MODE_TYPE } from '../interfaces';
+import { HERO_MODE_AUCTION, HERO_MODE_SELL } from '../constants'
+import { HERO_MODE_TYPE } from '../interfaces'
 
 export interface HeroProps {
-  capsDollarValue?: number;
-  NFTs: NftType[];
-  mode: HERO_MODE_TYPE;
+  capsDollarValue?: number
+  NFTs: NftType[]
+  mode: HERO_MODE_TYPE
 }
 
 const Hero = ({ NFTs, mode }: HeroProps) => {
-  const [selectedNFT, setSelectedNFT] = useState<NftType>(NFTs[1] ?? NFTs[0]);
+  const [selectedNFT, setSelectedNFT] = useState<NftType>(NFTs[1] ?? NFTs[0])
 
   return (
     <SHeroContainer>
       {NFTs.length > 2 ? (
-        <Showcase3D list={NFTs.slice(0, 3)} selectedIdx={NFTs.findIndex(({ id }) => id === selectedNFT.id)} setSelectedItem={setSelectedNFT} />
+        <Showcase3D
+          list={NFTs.slice(0, 3)}
+          selectedIdx={NFTs.findIndex(({ id }) => id === selectedNFT.id)}
+          setSelectedItem={setSelectedNFT}
+        />
       ) : (
         <NftCard item={selectedNFT} noHover noStatsChips />
       )}
@@ -70,14 +74,18 @@ const Hero = ({ NFTs, mode }: HeroProps) => {
           )}
         </SSellWrapper>
         <SButtonWrapper>
-          <Button color="primary500" href={`/nft/${selectedNFT.id}`} text={mode === HERO_MODE_AUCTION ? 'Place a bid' : 'Buy'} />
+          <Button
+            color="primary500"
+            href={`/nft/${selectedNFT.id}`}
+            text={mode === HERO_MODE_AUCTION ? 'Place a bid' : 'Buy'}
+          />
           {/* TODO: When notification are implemented */}
           {/* <Button color="invertedContrast" icon="bell" variant='outlined' /> */}
         </SButtonWrapper>
       </SDetailsWrapper>
     </SHeroContainer>
-  );
-};
+  )
+}
 
 const SHeroContainer = styled.div`
   width: 100%;
@@ -96,7 +104,7 @@ const SHeroContainer = styled.div`
   ${({ theme }) => theme.mediaQueries.xxl} {
     padding: 0 4rem 0 10.4rem;
   }
-`;
+`
 
 const SDetailsWrapper = styled.div`
   width: 100%;
@@ -122,7 +130,7 @@ const SDetailsWrapper = styled.div`
   ${({ theme }) => theme.mediaQueries.xxl} {
     max-width: 42%;
   }
-`;
+`
 
 const STitle = styled.a`
   width: fit-content;
@@ -145,7 +153,7 @@ const STitle = styled.a`
     margin: 0;
     text-align: left;
   }
-`;
+`
 
 const SAvatar = styled(Avatar)`
   justify-content: center;
@@ -154,17 +162,17 @@ const SAvatar = styled(Avatar)`
   ${({ theme }) => theme.mediaQueries.lg} {
     justify-content: flex-start;
   }
-`;
+`
 
 const SSellWrapper = styled.div`
   width: 100%;
   display: flex;
   align-items: flex-start;
   margin-top: 2.4rem;
-`;
+`
 
 const SellSideLayout = styled.div<{
-  mode: typeof HERO_MODE_AUCTION | typeof HERO_MODE_SELL;
+  mode: typeof HERO_MODE_AUCTION | typeof HERO_MODE_SELL
 }>`
   width: ${({ mode }) => (mode === HERO_MODE_SELL ? '100%' : '50%')};
   height: 100%;
@@ -175,7 +183,7 @@ const SellSideLayout = styled.div<{
   ${({ theme }) => theme.mediaQueries.lg} {
     align-items: flex-start;
   }
-`;
+`
 
 const SSell = styled(SellSideLayout)`
   padding-right: ${({ mode }) => (mode === HERO_MODE_AUCTION ? '1.2rem' : 0)};
@@ -187,7 +195,7 @@ const SSell = styled(SellSideLayout)`
   ${({ theme }) => theme.mediaQueries.lg} {
     padding-right: ${({ mode }) => (mode === HERO_MODE_AUCTION ? '3.2rem' : 0)};
   }
-`;
+`
 
 const SBid = styled(SellSideLayout)`
   border-left: 1px solid #e0e0e0;
@@ -200,7 +208,7 @@ const SBid = styled(SellSideLayout)`
   ${({ theme }) => theme.mediaQueries.lg} {
     padding-left: 3.2rem;
   }
-`;
+`
 
 const SBidLabel = styled.span`
   color: ${({ theme }) => theme.colors.neutral600};
@@ -209,7 +217,7 @@ const SBidLabel = styled.span`
   ${({ theme }) => theme.mediaQueries.sm} {
     font-size: 1.6rem;
   }
-`;
+`
 
 const SBidCapsPrice = styled.span`
   color: ${({ theme }) => theme.colors.primary500};
@@ -220,7 +228,7 @@ const SBidCapsPrice = styled.span`
   ${({ theme }) => theme.mediaQueries.sm} {
     font-size: 2.4rem;
   }
-`;
+`
 
 // const SBidDollarsPrice = styled.span`
 //   color: ${({ theme }) => theme.colors.contrast};
@@ -234,7 +242,7 @@ const SBidCapsPrice = styled.span`
 const SBidCountdown = styled.div`
   width: 100%;
   margin-top: 0.8rem;
-`;
+`
 
 const SButtonWrapper = styled.div`
   width: 100%;
@@ -257,6 +265,6 @@ const SButtonWrapper = styled.div`
     justify-content: flex-start;
     margin-top: 5.6rem;
   }
-`;
+`
 
-export default Hero;
+export default Hero

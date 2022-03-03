@@ -1,5 +1,5 @@
-import { createGlobalStyle } from 'styled-components';
-import { TernoaTheme } from 'style/theme';
+import { createGlobalStyle } from 'styled-components'
+import { TernoaTheme } from 'style/theme'
 
 declare module 'styled-components' {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -78,6 +78,6 @@ const GlobalStyle = createGlobalStyle`
     -ms-transform: rotate(3deg) translate(0px, -4px);
     transform: rotate(3deg) translate(0px, -4px);
   }
-`;
+`
 
-export default GlobalStyle;
+export default GlobalStyle

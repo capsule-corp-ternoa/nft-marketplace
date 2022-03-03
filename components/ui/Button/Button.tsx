@@ -1,56 +1,56 @@
-import React from 'react';
-import styled, { css, DefaultTheme } from 'styled-components';
-import { Colors } from 'style/theme/types';
+import React from 'react'
+import styled, { css, DefaultTheme } from 'styled-components'
+import { Colors } from 'style/theme/types'
 
-import Emoji from '../Emoji';
-import Icon, { IconNameType, Loader } from '../Icon';
+import Emoji from '../Emoji'
+import Icon, { IconNameType, Loader } from '../Icon'
 
 interface IButton {
-  color?: keyof Colors;
-  disabled?: boolean;
-  isIconOnly?: boolean;
-  isLoading?: boolean;
-  noHover?: boolean;
-  size?: 'small' | 'medium';
-  variant?: 'contained' | 'outlined';
+  color?: keyof Colors
+  disabled?: boolean
+  isIconOnly?: boolean
+  isLoading?: boolean
+  noHover?: boolean
+  size?: 'small' | 'medium'
+  variant?: 'contained' | 'outlined'
 }
 interface Props extends IButton {
-  className?: string;
-  emoji?: string;
-  href?: string;
-  icon?: IconNameType;
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;
-  suppressHydrationWarning?: boolean;
-  text?: string;
+  className?: string
+  emoji?: string
+  href?: string
+  icon?: IconNameType
+  onClick?: React.MouseEventHandler<HTMLButtonElement>
+  suppressHydrationWarning?: boolean
+  text?: string
 }
 
 const handleColor = (theme: DefaultTheme, color?: keyof Colors, variant?: 'contained' | 'outlined'): string => {
   if (color === undefined) {
-    return theme.colors.contrast;
+    return theme.colors.contrast
   }
 
   switch (variant) {
     case 'contained':
-      return containedColors(theme, color);
+      return containedColors(theme, color)
     case 'outlined':
     default:
-      return outlinedColors(theme, color);
+      return outlinedColors(theme, color)
   }
-};
+}
 
 const containedColors = (theme: DefaultTheme, color: keyof Colors): string => {
   switch (color) {
     case 'contrast':
     case 'primary500':
-      return theme.colors.invertedContrast;
+      return theme.colors.invertedContrast
     case 'primary200':
-      return theme.colors.primary500;
+      return theme.colors.primary500
     case 'invertedContrast':
     case 'whiteBlur':
     default:
-      return theme.colors.contrast;
+      return theme.colors.contrast
   }
-};
+}
 
 const outlinedColors = (theme: DefaultTheme, color: keyof Colors): string => {
   switch (color) {
@@ -60,18 +60,19 @@ const outlinedColors = (theme: DefaultTheme, color: keyof Colors): string => {
     case 'neutral600':
     case 'neutral100':
     case 'whiteBlur':
-      return theme.colors.contrast;
+      return theme.colors.contrast
     default:
-      return theme.colors[color];
+      return theme.colors[color]
   }
-};
+}
 
 const ButtonStyle = css<IButton>`
   display: flex;
   justify-content: center;
   align-items: center;
   align-self: center;
-  background: ${({ theme, color, variant }) => (variant === 'contained' && color ? theme.colors[`${color}`] : 'transparent')};
+  background: ${({ theme, color, variant }) =>
+    variant === 'contained' && color ? theme.colors[`${color}`] : 'transparent'};
   border: ${({ size }) => (size === 'small' ? '1px solid' : '2px solid')};
   border-radius: 4rem;
   box-shadow: ${({ disabled, theme }) => (disabled ? 'none' : theme.shadows.popupShadow)};
@@ -100,7 +101,7 @@ const ButtonStyle = css<IButton>`
 
   border-color: ${({ theme, color }) => {
     if (color === undefined) {
-      return theme.colors.contrast;
+      return theme.colors.contrast
     }
 
     switch (color) {
@@ -109,9 +110,9 @@ const ButtonStyle = css<IButton>`
       case 'neutral300':
       case 'neutral100':
       case 'whiteBlur':
-        return theme.colors.neutral400;
+        return theme.colors.neutral400
       default:
-        return theme.colors[color];
+        return theme.colors[color]
     }
   }};
 
@@ -121,7 +122,7 @@ const ButtonStyle = css<IButton>`
   path {
     fill: ${({ theme, color, variant }) => handleColor(theme, color, variant)};
   }
-`;
+`
 
 const Button = React.forwardRef<HTMLAnchorElement, Props>(
   (
@@ -159,7 +160,7 @@ const Button = React.forwardRef<HTMLAnchorElement, Props>(
           {icon && <SIcon isIconOnly={text === undefined} name={icon} size={size} />}
           {text}
         </SAnchor>
-      );
+      )
     }
 
     return (
@@ -184,39 +185,40 @@ const Button = React.forwardRef<HTMLAnchorElement, Props>(
           </>
         )}
       </SButton>
-    );
+    )
   }
-);
+)
 
 const SLoader = styled(Loader)<{ color: keyof Colors; variant?: 'contained' | 'outlined' }>`
   margin: 0 auto;
 
   div {
-    border-color: ${({ color, theme, variant }) => `${handleColor(theme, color, variant)} transparent transparent transparent`};
+    border-color: ${({ color, theme, variant }) =>
+      `${handleColor(theme, color, variant)} transparent transparent transparent`};
   }
-`;
+`
 
 const SIcon = styled(Icon)<{ isIconOnly: boolean; size: 'small' | 'medium' }>`
   width: ${({ size }) => (size === 'small' ? '1.6rem' : '2rem')};
   height: ${({ size }) => (size === 'small' ? '1.6rem' : '2rem')};
   margin-right: ${({ isIconOnly, size }) => (isIconOnly ? 0 : size === 'small' ? '1.2rem' : '1.6rem')};
-`;
+`
 
 const SEmoji = styled(Emoji)<{ isEmojiOnly: boolean; size: 'small' | 'medium' }>`
   margin-right: ${({ isEmojiOnly, size }) => (isEmojiOnly ? 0 : size === 'small' ? '1.2rem' : '1.6rem')};
-`;
+`
 
 const SAnchor = styled.a.withConfig({
   shouldForwardProp: (prop) => !['color', 'isIconOnly', 'noHover', 'size', 'variant'].includes(prop),
 })<IButton>`
   ${ButtonStyle}
-`;
+`
 
 const SButton = styled.button.withConfig({
   shouldForwardProp: (prop) => !['color', 'isIconOnly', 'noHover', 'size', 'variant'].includes(prop),
 })<IButton>`
   ${ButtonStyle}
-`;
+`
 
-Button.displayName = "Button";
-export default Button;
+Button.displayName = 'Button'
+export default Button

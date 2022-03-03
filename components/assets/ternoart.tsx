@@ -1,16 +1,11 @@
-import React from 'react';
+import React from 'react'
 
 interface TernoartProps {
-  className?: string;
+  className?: string
 }
 
 const Ternoart = ({ className }: TernoartProps) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className={className}
-    fill="none"
-    viewBox="0 0 182 247"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 182 247">
     <g fillRule="evenodd" clipRule="evenodd" filter="url(#filter0_fTRNT)">
       <path
         fill="#C3A2EE"
@@ -42,29 +37,15 @@ const Ternoart = ({ className }: TernoartProps) => (
         filterUnits="userSpaceOnUse"
       >
         <feFlood floodOpacity="0" result="BackgroundImageFix"></feFlood>
-        <feBlend
-          in="SourceGraphic"
-          in2="BackgroundImageFix"
-          result="shape"
-        ></feBlend>
-        <feGaussianBlur
-          result="effect1_foregroundBlur"
-          stdDeviation="4.5"
-        ></feGaussianBlur>
+        <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"></feBlend>
+        <feGaussianBlur result="effect1_foregroundBlur" stdDeviation="4.5"></feGaussianBlur>
       </filter>
-      <linearGradient
-        id="paint0_linearTRNT"
-        x1="91.468"
-        x2="91.468"
-        y1="9"
-        y2="237.375"
-        gradientUnits="userSpaceOnUse"
-      >
+      <linearGradient id="paint0_linearTRNT" x1="91.468" x2="91.468" y1="9" y2="237.375" gradientUnits="userSpaceOnUse">
         <stop offset="0.271" stopColor="#fff"></stop>
         <stop offset="0.938" stopColor="#fff" stopOpacity="0"></stop>
       </linearGradient>
     </defs>
   </svg>
-);
+)
 
-export default Ternoart;
+export default Ternoart

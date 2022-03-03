@@ -1,27 +1,27 @@
-import React from 'react';
-import Switch from 'react-switch';
-import styled from 'styled-components';
+import React from 'react'
+import Switch from 'react-switch'
+import styled from 'styled-components'
 
-import { FollowAvatar } from 'components/base/Avatar';
-import NoNFTComponent from 'components/base/NoNFTComponent';
-import Button from 'components/ui/Button';
-import { Loader } from 'components/ui/Icon';
-import { UserType } from 'interfaces';
-import theme from 'style/theme';
-import { FOLLOW_ACTION_TYPE } from 'utils/profile/constants';
+import { FollowAvatar } from 'components/base/Avatar'
+import NoNFTComponent from 'components/base/NoNFTComponent'
+import Button from 'components/ui/Button'
+import { Loader } from 'components/ui/Icon'
+import { UserType } from 'interfaces'
+import theme from 'style/theme'
+import { FOLLOW_ACTION_TYPE } from 'utils/profile/constants'
 
 interface Props {
-  handleFollow?: (action: FOLLOW_ACTION_TYPE, profile?: UserType) => void;
-  isFilterVerified: boolean;
-  isLoading: boolean;
-  isLoadMore: boolean;
-  isLoadMoreLoading: boolean;
-  loadMore: () => void;
-  noContentBody?: string;
-  noContentTitle: string;
-  setIsFilterVerified: (b: boolean) => void;
-  updateKeywordSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  users: UserType[];
+  handleFollow?: (action: FOLLOW_ACTION_TYPE, profile?: UserType) => void
+  isFilterVerified: boolean
+  isLoading: boolean
+  isLoadMore: boolean
+  isLoadMoreLoading: boolean
+  loadMore: () => void
+  noContentBody?: string
+  noContentTitle: string
+  setIsFilterVerified: (b: boolean) => void
+  updateKeywordSearch: (event: React.ChangeEvent<HTMLInputElement>) => void
+  users: UserType[]
 }
 
 const FollowersProfileBlock = ({
@@ -42,7 +42,7 @@ const FollowersProfileBlock = ({
       <SNoNFTContainer>
         <SLoader color="contrast" useLottie />
       </SNoNFTContainer>
-    );
+    )
   }
 
   if (users === undefined || users.length < 1) {
@@ -50,7 +50,7 @@ const FollowersProfileBlock = ({
       <SNoNFTContainer>
         <NoNFTComponent body={noContentBody} title={noContentTitle} />
       </SNoNFTContainer>
-    );
+    )
   }
 
   return (
@@ -104,24 +104,24 @@ const FollowersProfileBlock = ({
         )}
       </>
     </>
-  );
-};
+  )
+}
 
 const SLoader = styled(Loader)`
   margin: 8rem auto;
-`;
+`
 
 const SNoNFTContainer = styled.div`
   display: flex;
   align-items; center;
   margin-top: 8rem;
-`;
+`
 
 const SLoadButtonWrapper = styled.div`
   button {
     margin: 1.6rem auto 3.2rem;
   }
-`;
+`
 
 const SSearchContainer = styled.div`
   width: 100%;
@@ -138,7 +138,7 @@ const SSearchContainer = styled.div`
   ${({ theme }) => theme.mediaQueries.lg} {
     justify-content: flex-start;
   }
-`;
+`
 
 const SSearchLabel = styled.label`
   position: relative;
@@ -153,7 +153,7 @@ const SSearchLabel = styled.label`
     background: url("data:image/svg+xml,%3Csvg width='15' height='15' viewBox='0 0 15 15' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M6.3 10.8C8.78528 10.8 10.8 8.78528 10.8 6.3C10.8 3.81472 8.78528 1.8 6.3 1.8C3.81472 1.8 1.8 3.81472 1.8 6.3C1.8 8.78528 3.81472 10.8 6.3 10.8ZM6.3 12.6C9.77939 12.6 12.6 9.77939 12.6 6.3C12.6 2.82061 9.77939 0 6.3 0C2.82061 0 0 2.82061 0 6.3C0 9.77939 2.82061 12.6 6.3 12.6Z' fill='%23686464'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M14.3712 14.3712C14.024 14.7185 13.461 14.7185 13.1137 14.3712L9.62877 10.8863C9.28151 10.539 9.28151 9.97603 9.62877 9.62877C9.97603 9.28151 10.539 9.28151 10.8863 9.62877L14.3712 13.1137C14.7185 13.461 14.7185 14.024 14.3712 14.3712Z' fill='%23686464'/%3E%3C/svg%3E%0A")
       center / contain no-repeat;
   }
-`;
+`
 
 const SSearchInput = styled.input`
   width: 28rem;
@@ -168,7 +168,7 @@ const SSearchInput = styled.input`
   ${({ theme }) => theme.mediaQueries.lg} {
     width: 32rem;
   }
-`;
+`
 
 const SToggle = styled.div`
   display: flex;
@@ -183,7 +183,7 @@ const SToggle = styled.div`
   ${({ theme }) => theme.mediaQueries.lg} {
     margin: 0 0 0 2.4rem;
   }
-`;
+`
 
 const SCertifiedLabel = styled.span`
   font-family: ${({ theme }) => theme.fonts.medium};
@@ -193,7 +193,7 @@ const SCertifiedLabel = styled.span`
   align-items: center;
   text-align: right;
   margin-right: 0.8rem;
-`;
+`
 
 const SFollowersContainer = styled.div`
   display: grid;
@@ -218,6 +218,6 @@ const SFollowersContainer = styled.div`
   ${({ theme }) => theme.mediaQueries.xl} {
     grid-template-columns: repeat(4, 1fr);
   }
-`;
+`
 
-export default FollowersProfileBlock;
+export default FollowersProfileBlock

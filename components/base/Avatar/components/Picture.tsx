@@ -1,20 +1,20 @@
-import React from 'react';
-import styled, { css } from 'styled-components';
-import gradient from 'random-gradient';
+import React from 'react'
+import styled, { css } from 'styled-components'
+import gradient from 'random-gradient'
 
-import Icon from 'components/ui/Icon';
+import Icon from 'components/ui/Icon'
 
-import { AVATAR_VARIANT_TYPE } from '../interfaces';
-import { getPictureSize, getPictureFontSize } from '../utils';
+import { AVATAR_VARIANT_TYPE } from '../interfaces'
+import { getPictureSize, getPictureFontSize } from '../utils'
 
 interface Props {
-  className?: string;
-  isBanner?: boolean;
-  isTooltip?: boolean;
-  isVerified?: boolean;
-  name?: string;
-  picture?: string;
-  variant?: AVATAR_VARIANT_TYPE;
+  className?: string
+  isBanner?: boolean
+  isTooltip?: boolean
+  isVerified?: boolean
+  name?: string
+  picture?: string
+  variant?: AVATAR_VARIANT_TYPE
 }
 
 const Picture = ({ className, isTooltip = false, isVerified, name = 'Ternoa', picture, variant }: Props) => (
@@ -31,7 +31,7 @@ const Picture = ({ className, isTooltip = false, isVerified, name = 'Ternoa', pi
     </SPictureWrapper>
     <SPopoverName>{name}</SPopoverName>
   </SPictureContainer>
-);
+)
 
 const SPictureContainer = styled.div<{ isTooltip?: boolean }>`
   position: relative;
@@ -49,7 +49,7 @@ const SPictureContainer = styled.div<{ isTooltip?: boolean }>`
       }
     }
   `}
-`;
+`
 
 const SPictureWrapper = styled.div<{ variant?: AVATAR_VARIANT_TYPE }>`
   width: ${({ variant }) => getPictureSize(variant)};
@@ -58,7 +58,7 @@ const SPictureWrapper = styled.div<{ variant?: AVATAR_VARIANT_TYPE }>`
   border-radius: 50%;
   box-shadow: ${({ theme }) => theme.shadows.popupShadow};
   z-index: 5;
-`;
+`
 
 const SIcon = styled(Icon)`
   position: absolute;
@@ -66,7 +66,7 @@ const SIcon = styled(Icon)`
   bottom: 3%;
   right: -3%;
   z-index: 10;
-`;
+`
 
 const ImageStyle = css`
   object-fit: cover;
@@ -84,24 +84,24 @@ const ImageStyle = css`
     border: 3px solid;
     border-color: ${({ theme }) => theme.colors.primary500};
   }
-`;
+`
 
 const SImage = styled.img`
   ${ImageStyle}
-`;
+`
 
 const SInitials = styled.div<{ name: string }>`
   ${ImageStyle}
 
   background: ${({ name }) => gradient(name)};
-`;
+`
 
 const SLetter = styled.div<{ variant?: AVATAR_VARIANT_TYPE }>`
   color: ${({ theme }) => theme.colors.invertedContrast};
   font-family: ${({ theme }) => theme.fonts.medium};
   font-size: ${({ variant }) => getPictureFontSize(variant)};
   text-transform: uppercase;
-`;
+`
 
 const SPopoverName = styled.span`
   position: absolute;
@@ -118,6 +118,6 @@ const SPopoverName = styled.span`
   text-align: center;
   transform: translateX(calc(-50%));
   z-index: 10;
-`;
+`
 
-export default Picture;
+export default Picture

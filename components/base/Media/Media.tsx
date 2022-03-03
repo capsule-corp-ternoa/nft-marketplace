@@ -1,71 +1,69 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { memo, useEffect, useState } from 'react';
-import styled from 'styled-components';
+import React, { memo, useEffect, useState } from 'react'
+import styled from 'styled-components'
 
-import { Loader } from 'components/ui/Icon';
-import { NFT_FILE_TYPE_IMAGE, NFT_FILE_TYPE_VIDEO } from 'interfaces/index';
-import { timer } from 'utils/functions';
+import { Loader } from 'components/ui/Icon'
+import { NFT_FILE_TYPE_IMAGE, NFT_FILE_TYPE_VIDEO } from 'interfaces/index'
+import { timer } from 'utils/functions'
 export interface MediaProps {
-  src: string;
-  type: string | null;
-  fallbackSrc?: string;
-  retries?: number;
+  src: string
+  type: string | null
+  fallbackSrc?: string
+  retries?: number
 }
 
-const defaultFallback = './media-placeholder.svg';
-const totalRetries = 5;
+const defaultFallback = './media-placeholder.svg'
+const totalRetries = 5
 
 const Media: React.FC<MediaProps & Record<string, any>> = ({ src, type, fallbackSrc = defaultFallback }) => {
-  const [mediaSrc, setMediaSrc] = useState<string | undefined>(undefined);
-  const [isLoading, setIsLoading] = useState(false);
-  const [fetchStatusOk, setFetchStatusOk] = useState<boolean | null>(null);
-  const mediaType = type?.slice(0, 5);
-  const fetchRetry = async (
-    url: string,
-    retries: number = totalRetries,
-    delay = 5000
-  ): Promise<Response | void> => {
-    const res = await fetch(url).catch((error) => {console.log(error)});
-    if (res && res.status === 200) return res;
+  const [mediaSrc, setMediaSrc] = useState<string | undefined>(undefined)
+  const [isLoading, setIsLoading] = useState(false)
+  const [fetchStatusOk, setFetchStatusOk] = useState<boolean | null>(null)
+  const mediaType = type?.slice(0, 5)
+  const fetchRetry = async (url: string, retries: number = totalRetries, delay = 5000): Promise<Response | void> => {
+    const res = await fetch(url).catch((error) => {
+      console.log(error)
+    })
+    if (res && res.status === 200) return res
     // set image src to fallback on firt failed fetch
-    if (retries === totalRetries) setMediaSrc(fallbackSrc);
+    if (retries === totalRetries) setMediaSrc(fallbackSrc)
     if (retries > 0 && url !== undefined) {
-      console.log(`Fetch retry triggered for url (${url}) - retries remaining:`, retries - 1);
-      await timer(delay);
-      return await fetchRetry(url, retries - 1);
+      console.log(`Fetch retry triggered for url (${url}) - retries remaining:`, retries - 1)
+      await timer(delay)
+      return await fetchRetry(url, retries - 1)
     } else {
-      return res;
+      return res
     }
-  };
-  
+  }
+
   useEffect(() => {
-    let shouldUpdate = true;
+    let shouldUpdate = true
     const checkSrcAvailable = async () => {
       try {
-        const res = await fetchRetry(src);
-        if (res && shouldUpdate) setFetchStatusOk((res as Response).status === 200);
+        const res = await fetchRetry(src)
+        if (res && shouldUpdate) setFetchStatusOk((res as Response).status === 200)
       } catch (err) {
-        console.log(err);
+        console.log(err)
       }
-    };
+    }
 
-    setIsLoading(true);
-    checkSrcAvailable();
+    setIsLoading(true)
+    checkSrcAvailable()
     return () => {
-      shouldUpdate = false;
-    };
-  }, [src]);
+      shouldUpdate = false
+    }
+  }, [src])
 
   useEffect(() => {
     if (fetchStatusOk) {
-      setMediaSrc(src);
-      setIsLoading(false);
-      setFetchStatusOk(false);
+      setMediaSrc(src)
+      setIsLoading(false)
+      setFetchStatusOk(false)
     }
-  }, [fetchStatusOk]);
+  }, [fetchStatusOk])
 
   if (mediaSrc === undefined || isLoading) {
-    return <SLoader useLottie />;
+    return <SLoader useLottie />
   }
 
   return (
@@ -80,13 +78,13 @@ const Media: React.FC<MediaProps & Record<string, any>> = ({ src, type, fallback
         )
       )}
     </>
-  );
-};
+  )
+}
 
 const SLoader = styled(Loader)`
   margin: 0 auto;
   align-self: center;
-`;
+`
 
 const SImage = styled.img`
   object-fit: cover;
@@ -94,7 +92,7 @@ const SImage = styled.img`
   width: 100%;
   height: 100%;
   border-radius: 1.2rem;
-`;
+`
 
 const SVideo = styled.video`
   object-fit: cover;
@@ -102,6 +100,6 @@ const SVideo = styled.video`
   width: 100%;
   height: 100%;
   border-radius: 1.2rem;
-`;
+`
 
-export default memo(Media);
+export default memo(Media)

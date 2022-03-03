@@ -1,62 +1,64 @@
-import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import styled, { ThemeProvider } from 'styled-components';
-import App from 'next/app';
-import Router, { useRouter } from 'next/router';
-import Script from 'next/script';
-import NProgress from 'nprogress';
-import type { AppProps } from 'next/app';
-import Cookies from 'js-cookie';
-import cookies from 'next-cookies';
+import { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import styled, { ThemeProvider } from 'styled-components'
+import App from 'next/app'
+import Router, { useRouter } from 'next/router'
+import Script from 'next/script'
+import NProgress from 'nprogress'
+import type { AppProps } from 'next/app'
+import Cookies from 'js-cookie'
+import cookies from 'next-cookies'
 
-import { getUser } from 'actions/user';
-import Icon from 'components/ui/Icon';
-import { appSetIsRN, appSetUser } from 'redux/app';
-import { mpSetInstagramUrl, mpSetLogo, mpSetName, mpSetTwitterUrl, mpSetUrl } from 'redux/marketplaceData';
-import { useApp } from 'redux/hooks';
-import { wrapper } from 'redux/store';
-import GlobalStyle from 'style/Global';
-import theme from 'style/theme';
-import { isServer } from 'utils/server';
-import { decryptCookie } from 'utils/cookie';
+import { getUser } from 'actions/user'
+import Icon from 'components/ui/Icon'
+import { appSetIsRN, appSetUser } from 'redux/app'
+import { mpSetInstagramUrl, mpSetLogo, mpSetName, mpSetTwitterUrl, mpSetUrl } from 'redux/marketplaceData'
+import { useApp } from 'redux/hooks'
+import { wrapper } from 'redux/store'
+import GlobalStyle from 'style/Global'
+import theme from 'style/theme'
+import { isServer } from 'utils/server'
+import { decryptCookie } from 'utils/cookie'
 
-import 'style/fonts.css';
+import 'style/fonts.css'
 
-Router.events.on('routeChangeStart', () => NProgress.start());
-Router.events.on('routeChangeComplete', () => NProgress.done());
-Router.events.on('routeChangeError', () => NProgress.done());
+Router.events.on('routeChangeStart', () => NProgress.start())
+Router.events.on('routeChangeComplete', () => NProgress.done())
+Router.events.on('routeChangeError', () => NProgress.done())
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
-  const [cookiesConsent, setCookiesConsent] = useState<string | null>(null);
-  const [hide, setHide] = useState(false);
-  const { user } = useApp();
-  const dispatch = useDispatch();
-  const router = useRouter();
+  const [cookiesConsent, setCookiesConsent] = useState<string | null>(null)
+  const [hide, setHide] = useState(false)
+  const { user } = useApp()
+  const dispatch = useDispatch()
+  const router = useRouter()
 
-  const token = pageProps.token ? decryptCookie(pageProps.token) : ((router.query.walletId as string) || (Cookies.get('token') && decryptCookie(Cookies.get('token') as string)));
-
-  useEffect(() => {
-    setCookiesConsent(localStorage.getItem('cookiesConsent'));
-  }, []);
+  const token = pageProps.token
+    ? decryptCookie(pageProps.token)
+    : (router.query.walletId as string) || (Cookies.get('token') && decryptCookie(Cookies.get('token') as string))
 
   useEffect(() => {
-    dispatch(appSetIsRN(Boolean(window.isRNApp)));
-  }, [dispatch]);
+    setCookiesConsent(localStorage.getItem('cookiesConsent'))
+  }, [])
 
   useEffect(() => {
-    let shouldUpdate = true;
+    dispatch(appSetIsRN(Boolean(window.isRNApp)))
+  }, [dispatch])
+
+  useEffect(() => {
+    let shouldUpdate = true
     if (token && !user) {
       getUser(token, true)
         .then((result) => {
-          if (shouldUpdate) dispatch(appSetUser(result));
+          if (shouldUpdate) dispatch(appSetUser(result))
         })
-        .catch((error) => console.log({ error }));
+        .catch((error) => console.log({ error }))
     }
 
     return () => {
-      shouldUpdate = false;
-    };
-  }, [dispatch, token, user]);
+      shouldUpdate = false
+    }
+  }, [dispatch, token, user])
 
   return (
     <ThemeProvider theme={theme}>
@@ -80,8 +82,8 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
           <SCookiesLink href="https://intercom.help/ternoa/fr/collections/2774679-legal">Learn more</SCookiesLink>
           <SClose
             onClick={() => {
-              localStorage.setItem('cookiesConsent', 'true');
-              setHide(true);
+              localStorage.setItem('cookiesConsent', 'true')
+              setHide(true)
             }}
           >
             <Icon name="close" />
@@ -91,32 +93,33 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 
       <Component {...pageProps} />
     </ThemeProvider>
-  );
-};
+  )
+}
 
 MyApp.getInitialProps = wrapper.getInitialAppProps((store) => async (context) => {
   if (isServer) {
-    if (process.env.NEXT_PUBLIC_APP_LOGO_PATH) store.dispatch(mpSetLogo(process.env.NEXT_PUBLIC_APP_LOGO_PATH));
-    if (process.env.NEXT_PUBLIC_APP_NAME) store.dispatch(mpSetName(process.env.NEXT_PUBLIC_APP_NAME));
-    if (process.env.NEXT_PUBLIC_INSTAGRAM_LINK) store.dispatch(mpSetInstagramUrl(process.env.NEXT_PUBLIC_INSTAGRAM_LINK));
-    if (process.env.NEXT_PUBLIC_TWITTER_LINK) store.dispatch(mpSetTwitterUrl(process.env.NEXT_PUBLIC_TWITTER_LINK));
-    if (process.env.NEXT_PUBLIC_APP_LINK) store.dispatch(mpSetUrl(process.env.NEXT_PUBLIC_APP_LINK));
+    if (process.env.NEXT_PUBLIC_APP_LOGO_PATH) store.dispatch(mpSetLogo(process.env.NEXT_PUBLIC_APP_LOGO_PATH))
+    if (process.env.NEXT_PUBLIC_APP_NAME) store.dispatch(mpSetName(process.env.NEXT_PUBLIC_APP_NAME))
+    if (process.env.NEXT_PUBLIC_INSTAGRAM_LINK)
+      store.dispatch(mpSetInstagramUrl(process.env.NEXT_PUBLIC_INSTAGRAM_LINK))
+    if (process.env.NEXT_PUBLIC_TWITTER_LINK) store.dispatch(mpSetTwitterUrl(process.env.NEXT_PUBLIC_TWITTER_LINK))
+    if (process.env.NEXT_PUBLIC_APP_LINK) store.dispatch(mpSetUrl(process.env.NEXT_PUBLIC_APP_LINK))
   }
 
   try {
     const pageProps = {
       ...(await App.getInitialProps(context)).pageProps,
       token: cookies(context.ctx).token,
-    };
+    }
 
-    return { pageProps };
+    return { pageProps }
   } catch (err) {
-    console.log(err);
-    return { pageProps: {} };
+    console.log(err)
+    return { pageProps: {} }
   }
-});
+})
 
-export default wrapper.withRedux(MyApp);
+export default wrapper.withRedux(MyApp)
 
 const SCookiesWrapper = styled.div`
   display: flex;
@@ -137,13 +140,13 @@ const SCookiesWrapper = styled.div`
     bottom: 4rem;
     left: 4rem;
   }
-`;
+`
 
 const SCookiesLink = styled.a`
   color: ${({ theme }) => theme.colors.primary500};
   font-family: ${({ theme }) => theme.fonts.bold};
   margin-left: 0.8rem;
-`;
+`
 
 const SClose = styled.button`
   cursor: pointer;
@@ -154,4 +157,4 @@ const SClose = styled.button`
     height: 1.2rem;
     fill: ${({ theme }) => theme.colors.invertedContrast};
   }
-`;
+`

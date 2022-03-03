@@ -5,6 +5,7 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
+    "lint": "eslint --fix . --ext .js,.jsx,.ts,.tsx",
     "type-check": "tsc",
     "export": "next build && next export"
   },
@@ -18,7 +19,6 @@
     "crypto-js": "^4.1.1",
     "dayjs": "^1.10.7",
     "emoji-regex": "^10.0.0",
-    "eslint": "^7.32.0",
     "file-to-array-buffer": "^1.0.0",
     "i18next": "^21.4.1",
     "i18next-browser-languagedetector": "^6.1.2",
@@ -68,6 +68,11 @@
     "@types/react-window": "^1.8.5",
     "@types/styled-components": "^5.1.15",
     "@types/uuid": "^8.3.1",
+    "@typescript-eslint/eslint-plugin": "^5.13.0",
+    "eslint": "^8.10.0",
+    "eslint-config-next": "^12.1.0",
+    "eslint-config-prettier": "^8.5.0",
+    "prettier": "^2.5.1",
     "typescript": "4.4",
     "webpack-node-externals": "^3.0.0"
   },

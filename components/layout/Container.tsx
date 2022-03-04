@@ -14,39 +14,37 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  padding: 5.6rem 3.2rem;
+  padding: 2.4rem 3.2rem;
+
+  &:first-child {
+    padding-top: 4rem;
+  }
 
   &:last-child {
-    padding-bottom: 7.2rem;
+    padding-bottom: 6.4rem;
   }
 
   ${({ theme }) => theme.mediaQueries.md} {
-    padding: 3.2rem 4rem;
+    padding: 2.4rem 4rem;
   }
 
   ${({ theme }) => theme.mediaQueries.lg} {
-    &:not(:first-child) {
-      padding-top: 4.8rem;
-    }
+    padding: 3.2rem 4rem;
 
     &:last-child {
-      padding-bottom: 9.6rem;
+      padding-bottom: 6.4rem;
     }
   }
 
   ${({ theme }) => theme.mediaQueries.xl} {
-    padding: 5.6rem 6.4rem;
+    padding: 3.2rem 6.4rem;
 
     &:first-child {
-      padding-top: 9.6rem;
-    }
-
-    &:not(:first-child) {
-      padding-top: 6.4rem;
+      padding-top: 5.6rem;
     }
 
     &:last-child {
-      padding-bottom: 12rem;
+      padding-bottom: 9.6rem;
     }
   }
 

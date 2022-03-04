@@ -1,1 +1,1 @@
-declare module 'skynet-js';
+declare module 'skynet-js'

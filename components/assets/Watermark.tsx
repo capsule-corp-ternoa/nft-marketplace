@@ -1,16 +1,11 @@
-import React from 'react';
+import React from 'react'
 
 interface WaterMarkProps {
-  className?: string;
+  className?: string
 }
 
 const WaterMark = ({ className }: WaterMarkProps) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className={className}
-    fill="none"
-    viewBox="0 0 247 246"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 247 246">
     <path
       fill="#1B1B1B"
       fillRule="evenodd"
@@ -19,6 +14,6 @@ const WaterMark = ({ className }: WaterMarkProps) => (
       opacity="0.5"
     />
   </svg>
-);
+)
 
-export default WaterMark;
+export default WaterMark

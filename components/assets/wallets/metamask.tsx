@@ -1,22 +1,13 @@
-import React from 'react';
+import React from 'react'
 
 interface MetamaskProps {
-  className?: string;
+  className?: string
 }
 
 const Metamask = ({ className }: MetamaskProps) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className={className}
-    fill="none"
-    viewBox="0 0 33 31"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 33 31">
     <g strokeLinecap="round" strokeLinejoin="round" clipPath="url(#clip0META)">
-      <path
-        fill="#E2761B"
-        stroke="#E2761B"
-        d="M31.298.065l-12.826 9.65 2.372-5.693L31.298.065z"
-      />
+      <path fill="#E2761B" stroke="#E2761B" d="M31.298.065l-12.826 9.65 2.372-5.693L31.298.065z" />
       <path
         fill="#E4761B"
         stroke="#E4761B"
@@ -79,6 +70,6 @@ const Metamask = ({ className }: MetamaskProps) => (
       </clipPath>
     </defs>
   </svg>
-);
+)
 
-export default Metamask;
+export default Metamask

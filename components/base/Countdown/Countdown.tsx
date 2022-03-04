@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import dayjs from 'dayjs';
-import styled from 'styled-components';
+import React, { useEffect, useState } from 'react'
+import dayjs from 'dayjs'
+import styled from 'styled-components'
 
 type CountdownType = {
-  days: string;
-  hours: string;
-  minutes: string;
-  seconds: string;
-};
+  days: string
+  hours: string
+  minutes: string
+  seconds: string
+}
 
 interface Props {
-  date: Date;
+  date: Date
 }
 
 const Countdown = ({ date }: Props) => {
@@ -19,24 +19,24 @@ const Countdown = ({ date }: Props) => {
     hours: '00',
     minutes: '00',
     seconds: '00',
-  });
+  })
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const then = dayjs(date, 'DD HH mm ss');
-      const now = dayjs();
-      const newCountdown = dayjs(then.valueOf() - now.valueOf());
-      const days = newCountdown.format('DD');
-      const hours = newCountdown.format('HH');
-      const minutes = newCountdown.format('mm');
-      const seconds = newCountdown.format('ss');
+      const then = dayjs(date, 'DD HH mm ss')
+      const now = dayjs()
+      const newCountdown = dayjs(then.valueOf() - now.valueOf())
+      const days = newCountdown.format('DD')
+      const hours = newCountdown.format('HH')
+      const minutes = newCountdown.format('mm')
+      const seconds = newCountdown.format('ss')
 
-      setCountdown({ days, hours, minutes, seconds });
-    }, 1000);
+      setCountdown({ days, hours, minutes, seconds })
+    }, 1000)
     return () => {
-      clearInterval(interval);
-    };
-  }, []);
+      clearInterval(interval)
+    }
+  }, [date])
 
   return (
     <SContainer>
@@ -71,8 +71,8 @@ const Countdown = ({ date }: Props) => {
         <SLabel>SECS</SLabel>
       </SGroup>
     </SContainer>
-  );
-};
+  )
+}
 
 const SContainer = styled.div`
   display: flex;
@@ -83,14 +83,14 @@ const SContainer = styled.div`
       margin-left: 0.6rem;
     }
   }
-`;
+`
 
 const SGroup = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-`;
+`
 
 const STimeGroup = styled.div`
   display: flex;
@@ -101,7 +101,7 @@ const STimeGroup = styled.div`
       margin-right: 0.1rem;
     }
   }
-`;
+`
 
 const SUnit = styled.div`
   width: 1.2rem;
@@ -119,7 +119,7 @@ const SUnit = styled.div`
     height: 2.4rem;
     font-size: 1.6rem;
   }
-`;
+`
 
 const SLabel = styled.div`
   color: ${({ theme }) => theme.colors.neutral600};
@@ -130,6 +130,6 @@ const SLabel = styled.div`
   ${({ theme }) => theme.mediaQueries.sm} {
     font-size: 1rem;
   }
-`;
+`
 
-export default Countdown;
+export default Countdown

@@ -1,16 +1,11 @@
-import React from 'react';
+import React from 'react'
 
 interface Props {
-  className?: string;
+  className?: string
 }
 
 const SecretCards = ({ className }: Props) => (
-  <svg
-    className={className}
-    viewBox="0 0 15 15"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
+  <svg className={className} viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path
       fillRule="evenodd"
       clipRule="evenodd"
@@ -30,6 +25,6 @@ const SecretCards = ({ className }: Props) => (
       fill="black"
     />
   </svg>
-);
+)
 
-export default SecretCards;
+export default SecretCards

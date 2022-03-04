@@ -1,34 +1,33 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from 'react'
+import styled from 'styled-components'
 
-import Chip from '../Chip';
+import Chip from '../Chip'
 
 interface Props {
-  className?: string;
-  endBadge?: number | string;
-  isActive?: boolean;
-  label: string;
-  onClick: () => void;
-  startBadge?: number | string;
+  className?: string
+  endBadge?: number | string
+  isActive?: boolean
+  label: string
+  onClick: () => void
+  startBadge?: number | string
 }
 
-const Tab = ({
-  endBadge,
-  className,
-  isActive,
-  label,
-  onClick,
-  startBadge,
-}: Props) => {
-  const isEndBadge = endBadge !== undefined && endBadge !== 0 && endBadge !== '0';
-  const isStartBadge = startBadge !== undefined && startBadge !== 0 && endBadge !== '0';
+const Tab = ({ endBadge, className, isActive, label, onClick, startBadge }: Props) => {
+  const isEndBadge = endBadge !== undefined && endBadge !== 0 && endBadge !== '0'
+  const isStartBadge = startBadge !== undefined && startBadge !== 0 && endBadge !== '0'
 
   return (
     <STabContainer
       className={className}
       isActive={isActive}
       isBadge={isEndBadge || isStartBadge}
-      onClick={isActive ? () => {} : onClick}
+      onClick={
+        isActive
+          ? () => {
+              return
+            }
+          : onClick
+      }
     >
       {isStartBadge && (
         <SStartBadgeContainer>
@@ -54,8 +53,8 @@ const Tab = ({
         </SEndBadgeContainer>
       )}
     </STabContainer>
-  );
-};
+  )
+}
 
 const STabContainer = styled.button<{ isActive?: boolean; isBadge: boolean }>`
   width: 100%;
@@ -70,7 +69,7 @@ const STabContainer = styled.button<{ isActive?: boolean; isBadge: boolean }>`
   font-size: 1.6rem;
   line-height: 1.3;
   outline: none;
-  padding: ${({ isBadge }) => isBadge ? '0.8rem 0' : '1.6rem 0'};
+  padding: ${({ isBadge }) => (isBadge ? '0.8rem 0' : '1.6rem 0')};
 
   ${({ theme }) => theme.mediaQueries.lg} {
     width: auto;
@@ -82,7 +81,7 @@ const STabContainer = styled.button<{ isActive?: boolean; isBadge: boolean }>`
     border-radius: 1.2rem;
     box-shadow: ${({ theme }) => theme.shadows.popupShadow};
     color: ${({ theme }) => theme.colors.invertedContrast};
-    padding: ${({ isBadge }) => isBadge ? '0.8rem 1.6rem' : '1.6rem'};
+    padding: ${({ isBadge }) => (isBadge ? '0.8rem 1.6rem' : '1.6rem')};
 
     ${({ isActive, theme }) =>
       !isActive &&
@@ -100,14 +99,14 @@ const STabContainer = styled.button<{ isActive?: boolean; isBadge: boolean }>`
       }
     `}
   }
-`;
+`
 
 const SEndBadgeContainer = styled.div`
   margin-left: 1.6rem;
-`;
+`
 
 const SStartBadgeContainer = styled.div`
   margin-right: 1.6rem;
-`;
+`
 
-export default Tab;
+export default Tab

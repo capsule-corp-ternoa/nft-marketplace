@@ -1,12 +1,12 @@
-import styled from 'styled-components';
-import { breakpointMap } from 'style/theme/base';
+import styled from 'styled-components'
+import { breakpointMap } from 'style/theme/base'
 
 export const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-`;
+`
 
 export const Wrapper = styled.div`
   width: 100%;
@@ -41,6 +41,10 @@ export const Wrapper = styled.div`
       padding-top: 9.6rem;
     }
 
+    &:not(:first-child) {
+      padding-top: 6.4rem;
+    }
+
     &:last-child {
       padding-bottom: 12rem;
     }
@@ -49,4 +53,4 @@ export const Wrapper = styled.div`
   ${({ theme }) => theme.mediaQueries.xxl} {
     max-width: ${breakpointMap.xxl}px;
   }
-`;
+`

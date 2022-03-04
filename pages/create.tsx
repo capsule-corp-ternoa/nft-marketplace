@@ -1,47 +1,47 @@
-import React, { useState, useEffect } from 'react';
-import Head from 'next/head';
-import Router from 'next/router';
+import React, { useState, useEffect } from 'react'
+import Head from 'next/head'
+import Router from 'next/router'
 
-import { getCategories } from 'actions/category';
-import BetaBanner from 'components/base/BetaBanner';
-import FloatingHeader from 'components/base/FloatingHeader';
-import Footer from 'components/base/Footer';
-import MainHeader from 'components/base/MainHeader';
-import { ModalMint } from 'components/base/Modal';
-import Create from 'components/pages/Create';
-import { CategoryType } from 'interfaces';
-import { useApp, useMarketplaceData } from 'redux/hooks';
+import { getCategories } from 'actions/category'
+import BetaBanner from 'components/base/BetaBanner'
+import FloatingHeader from 'components/base/FloatingHeader'
+import Footer from 'components/base/Footer'
+import MainHeader from 'components/base/MainHeader'
+import { ModalMint } from 'components/base/Modal'
+import Create from 'components/pages/Create'
+import { CategoryType } from 'interfaces'
+import { useApp, useMarketplaceData } from 'redux/hooks'
 
 export interface CreatePageProps {
-  categories: CategoryType[];
+  categories: CategoryType[]
 }
 
 export interface NFTProps {
-  categories: CategoryType[];
-  description: string;
-  name: string;
-  quantity: number;
-  royalties: number;
-  seriesId: string;
+  categories: CategoryType[]
+  description: string
+  name: string
+  quantity: number
+  royalties: number
+  seriesId: string
 }
 
 const CreatePage = ({ categories }: CreatePageProps) => {
-  const { user } = useApp();
-  const { name } = useMarketplaceData();
+  const { user } = useApp()
+  const { name } = useMarketplaceData()
 
   const isNftCreationEnabled =
     process.env.NEXT_PUBLIC_IS_NFT_CREATION_ENABLED === undefined
       ? true
-      : process.env.NEXT_PUBLIC_IS_NFT_CREATION_ENABLED === 'true';
+      : process.env.NEXT_PUBLIC_IS_NFT_CREATION_ENABLED === 'true'
 
-  const [error, setError] = useState('');
-  const [isModalMintExpanded, setIsModalMintExpanded] = useState(false);
-  const [previewNFT, setPreviewNFT] = useState<File | null>(null); // Public NFT media
-  const [output, setOutput] = useState<string[]>([]);
-  const [originalNFT, setOriginalNFT] = useState<File | null>(null); // Crypted NFT media
-  const [uploadSize, setUploadSize] = useState(0);
-  const [stateSocket, setStateSocket] = useState<any>(null);
-  const [thumbnailTimecode, setThumbnailTimecode] = useState(0);
+  const [error, setError] = useState('')
+  const [isModalMintExpanded, setIsModalMintExpanded] = useState(false)
+  const [previewNFT, setPreviewNFT] = useState<File | null>(null) // Public NFT media
+  const [output, setOutput] = useState<string[]>([])
+  const [originalNFT, setOriginalNFT] = useState<File | null>(null) // Crypted NFT media
+  const [uploadSize, setUploadSize] = useState(0)
+  const [stateSocket, setStateSocket] = useState<any>(null)
+  const [thumbnailTimecode, setThumbnailTimecode] = useState(0)
   const [NFTData, setNFTData] = useState<NFTProps>({
     categories: [],
     description: '',
@@ -49,40 +49,41 @@ const CreatePage = ({ categories }: CreatePageProps) => {
     quantity: 1,
     royalties: 0,
     seriesId: '',
-  });
-  const { quantity } = NFTData;
+  })
+  const { quantity } = NFTData
   const [QRData, setQRData] = useState({
     walletId: user ? user.walletId : '',
     quantity: quantity,
-  });
-  const [runNFTMintData, setRunNFTMintData] = useState<any>(null);
+  })
+  const [runNFTMintData, setRunNFTMintData] = useState<any>(null)
 
   useEffect(() => {
     if (!isNftCreationEnabled) {
-      Router.push('/');
+      Router.push('/')
     }
-  }, [isNftCreationEnabled]);
+  }, [isNftCreationEnabled])
 
   useEffect(() => {
     if (originalNFT && quantity && Number(quantity) > 0) {
-      const previewSize = previewNFT ? previewNFT.size : originalNFT.size;
-      const originalSize = originalNFT.size * Number(quantity);
-      setUploadSize(previewSize + originalSize);
+      const previewSize = previewNFT ? previewNFT.size : originalNFT.size
+      const originalSize = originalNFT.size * Number(quantity)
+      setUploadSize(previewSize + originalSize)
     }
-  }, [quantity, previewNFT, originalNFT]);
+  }, [quantity, previewNFT, originalNFT])
 
   useEffect(() => {
     if (error !== '') {
-      setIsModalMintExpanded(true);
+      setIsModalMintExpanded(true)
     }
-  }, [error]);
+  }, [error])
 
   useEffect(() => {
     if (!isModalMintExpanded) {
-      setError('');
-      if (stateSocket) stateSocket.close();
+      setError('')
+      if (stateSocket) stateSocket.close()
     }
-  }, [isModalMintExpanded]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isModalMintExpanded])
 
   return (
     <>
@@ -134,21 +135,21 @@ const CreatePage = ({ categories }: CreatePageProps) => {
         <FloatingHeader />
       </>
     </>
-  );
-};
+  )
+}
 
 export async function getServerSideProps() {
-  let categories: CategoryType[] = [];
+  let categories: CategoryType[] = []
 
   try {
-    categories = await getCategories();
+    categories = await getCategories()
   } catch (error) {
-    console.log(error);
+    console.log(error)
   }
 
   return {
     props: { categories },
-  };
+  }
 }
 
-export default CreatePage;
+export default CreatePage

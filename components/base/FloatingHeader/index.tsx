@@ -1,1 +1,1 @@
-export { default } from "./FloatingHeader";
+export { default } from './FloatingHeader'

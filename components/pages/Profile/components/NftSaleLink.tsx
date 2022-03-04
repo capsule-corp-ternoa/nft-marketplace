@@ -1,6 +1,6 @@
-import React from 'react';
-import Link from 'next/link';
-import styled from 'styled-components';
+import React from 'react'
+import Link from 'next/link'
+import styled from 'styled-components'
 
 const NftSaleLink = () => (
   <SSaleLinkWrapper>
@@ -15,7 +15,7 @@ const NftSaleLink = () => (
       </>
     </Link>
   </SSaleLinkWrapper>
-);
+)
 
 const SSaleLinkWrapper = styled.div`
   max-width: 26rem;
@@ -30,7 +30,7 @@ const SSaleLinkWrapper = styled.div`
     margin: 0 0 0 -0.8rem;
     padding: 0.8rem;
   }
-`;
+`
 
 const SSaleContainer = styled.a`
   cursor: pointer;
@@ -46,7 +46,7 @@ const SSaleContainer = styled.a`
     justify-content: center;
     margin: 0;
   }
-`;
+`
 
 const SSaleIcon = styled.div`
   width: 5rem;
@@ -63,7 +63,7 @@ const SSaleIcon = styled.div`
     font-size: 5.4rem;
     transform: translate(4%, -5%);
   }
-`;
+`
 
 const SSaleLabel = styled.span`
   color: ${({ theme }) => theme.colors.contrast};
@@ -72,6 +72,6 @@ const SSaleLabel = styled.span`
   ${({ theme }) => theme.mediaQueries.lg} {
     margin-top: 2.4rem;
   }
-`;
+`
 
-export default NftSaleLink;
+export default NftSaleLink

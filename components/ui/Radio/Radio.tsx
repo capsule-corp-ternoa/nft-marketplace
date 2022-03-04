@@ -1,27 +1,18 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from 'react'
+import styled from 'styled-components'
 
 interface Props {
-  checked?: boolean;
-  className?: string;
-  id?: string;
-  label?: string;
-  name?: string;
-  onChange?: () => void;
-  readOnly?: boolean;
-  value?: string;
+  checked?: boolean
+  className?: string
+  id?: string
+  label?: string
+  name?: string
+  onChange?: () => void
+  readOnly?: boolean
+  value?: string
 }
 
-const Radio = ({
-  checked,
-  className,
-  id,
-  label,
-  name,
-  onChange,
-  readOnly,
-  value,
-}: Props) => (
+const Radio = ({ checked, className, id, label, name, onChange, readOnly, value }: Props) => (
   <RadioContainer className={className}>
     <RadioInput
       type="radio"
@@ -34,7 +25,7 @@ const Radio = ({
     />
     {label}
   </RadioContainer>
-);
+)
 
 const RadioContainer = styled.label`
   display: flex;
@@ -46,7 +37,7 @@ const RadioContainer = styled.label`
   font-size: 1.6rem;
   line-height: 1.2;
   text-transform: capitalize;
-`;
+`
 
 const RadioInput = styled.input`
   width: 2.4rem;
@@ -75,6 +66,6 @@ const RadioInput = styled.input`
   &:checked::before {
     transform: scale(1);
   }
-`;
+`
 
-export default Radio;
+export default Radio

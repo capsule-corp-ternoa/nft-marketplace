@@ -96,6 +96,11 @@ const Landing = ({
             <Showcase title="Most popular" NFTs={popularNfts} href={`/explore?sort=${MOST_LIKED_SORT}`} />
           </Wrapper>
         )}
+        {topSellersUsers.length > 0 && (
+          <Wrapper>
+            <UsersShowcase title="Top Sellers" users={topSellersUsers} />
+          </Wrapper>
+        )}
         {bestSellingNfts.length > 0 && (
           <Wrapper>
             <Showcase title="Best sellers" NFTs={bestSellingNfts} href={`/explore?sort=${MOST_SOLD_SERIES_SORT}`} />
@@ -106,15 +111,12 @@ const Landing = ({
             <Showcase title="NFTs on sale" NFTs={recentNFTs} href={`/explore`} />
           </Wrapper>
         )}
-        {topSellersUsers.length > 0 && (
-          <Wrapper>
-            <UsersShowcase title="Top Sellers" users={topSellersUsers} />
-          </Wrapper>
-        )}
       </Container>
       {artistHighlight !== undefined && artistHighlightNFTs.length > 0 && (
         <SArtistHighlightContainer>
           <Wrapper>
+            <STitle>Artist of the week</STitle>
+            <SAvatarWrapper>
             <Avatar
               isDiscoverButton
               isVerified={artistHighlight.verified}
@@ -124,6 +126,7 @@ const Landing = ({
               variant={AVATAR_VARIANT_EDIT}
               walletId={artistHighlight.walletId}
             />
+            </SAvatarWrapper>
             <SArtistHighlightNFTsWrapper>
               <Showcase NFTs={artistHighlightNFTs} />
             </SArtistHighlightNFTsWrapper>
@@ -133,6 +136,20 @@ const Landing = ({
     </>
   )
 }
+
+const STitle = styled.h3`
+  font-family: ${({ theme }) => theme.fonts.bold};
+  font-size: 2.4rem;
+  margin: 0;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    font-size: 3.2rem;
+  }
+`
+
+const SAvatarWrapper = styled.div`
+  margin-top: 3.2rem;
+`;
 
 const SArtistHighlightContainer = styled(Container)`
   background: ${({ theme }) => theme.colors.neutral100};

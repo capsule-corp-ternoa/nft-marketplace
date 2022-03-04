@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 import styled from 'styled-components'
 
-import { getNFTs } from 'actions/nft'
+import { getNFTs, getUserNFTsStat } from 'actions/nft'
 import { getArtistHighlight } from 'actions/user'
 import Avatar, { AVATAR_VARIANT_EDIT } from 'components/base/Avatar'
 import NoNFTComponent, { NO_NFT_VARIANT_SOLD_OUT } from 'components/base/NoNFTComponent'
@@ -46,10 +46,11 @@ const Landing = ({
       try {
         const artist = await getArtistHighlight()
         if (artist.walletId === undefined) throw new Error('')
+        const { countFollowers } = await getUserNFTsStat(artist.walletId, true) ?? {}
         const artistNFTs = await getNFTs('1', '6', { owner: artist.walletId })
 
         if (shouldUpdate) {
-          setArtistHighlight(artist)
+          setArtistHighlight({...artist, nbFollowers: countFollowers})
           setArtistHighlightNFTs(artistNFTs.data)
         }
       } catch (error) {
@@ -117,7 +118,7 @@ const Landing = ({
             <Avatar
               isDiscoverButton
               isVerified={artistHighlight.verified}
-              label={`${artistHighlight.nbFollowers} followers`}
+              label={artistHighlight.nbFollowers > 0 ? `${artistHighlight.nbFollowers} followers` : undefined}
               name={artistHighlight.name}
               picture={artistHighlight.picture}
               variant={AVATAR_VARIANT_EDIT}

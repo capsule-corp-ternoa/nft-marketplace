@@ -50,7 +50,7 @@ const NftCard: React.FC<NftCardProps> = ({
   const dispatch = useDispatch()
   const router = useRouter()
   const isDesktopOrLaptop = useMediaQuery({
-    query: `(min-width: ${breakpointMap.lg})`,
+    query: `(min-width: ${breakpointMap.lg}px)`,
   })
 
   const {
@@ -292,7 +292,7 @@ const SMediaLink = styled.a<{ isHovering: boolean; notClickeable: boolean }>`
 
   ${({ isHovering }) => isHovering && shadowBackground}
 
-  > img, video {
+  img, video {
     ${({ isHovering }) => (isHovering ? scaleInAnimation : scaleOutAnimation)}
   }
 }

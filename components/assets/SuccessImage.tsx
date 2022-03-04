@@ -1,15 +1,11 @@
-import React from 'react';
+import React from 'react'
 
 interface SuccessImageProps {
-  className?: string;
+  className?: string
 }
 
 const SuccessImage = ({ className }: SuccessImageProps) => (
-  <svg
-    viewBox="0 0 589 473"
-    xmlns="http://www.w3.org/2000/svg"
-    className={className}
-  >
+  <svg viewBox="0 0 589 473" xmlns="http://www.w3.org/2000/svg" className={className}>
     <g opacity="0.3">
       <path
         d="M378.256 289.183C376.429 287.03 375.328 284.32 375.118 281.462L379.543 279.536C379.753 282.394 380.855 285.104 382.681 287.257L378.256 289.183Z"
@@ -3152,6 +3148,6 @@ const SuccessImage = ({ className }: SuccessImageProps) => (
       </linearGradient>
     </defs>
   </svg>
-);
+)
 
-export default SuccessImage;
+export default SuccessImage

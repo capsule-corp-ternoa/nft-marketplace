@@ -1,5 +1,5 @@
-import React from 'react';
-import { Error, ERROR_PAGE_500 } from 'components/pages/Error';
+import React from 'react'
+import { Error, ERROR_PAGE_500 } from 'components/pages/Error'
 
 const ErrorPage = () => (
   <Error
@@ -8,6 +8,6 @@ const ErrorPage = () => (
     title="Error 500"
     variant={ERROR_PAGE_500}
   />
-);
+)
 
-export default ErrorPage;
+export default ErrorPage

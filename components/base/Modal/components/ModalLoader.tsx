@@ -1,5 +1,5 @@
-import React from 'react';
-import styled, { css, keyframes } from 'styled-components';
+import React from 'react'
+import styled, { css, keyframes } from 'styled-components'
 
 const ModalLoader = () => (
   <SLoaderContainer>
@@ -7,13 +7,13 @@ const ModalLoader = () => (
     <SDot />
     <SDot />
   </SLoaderContainer>
-);
+)
 
 const SLoaderContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`;
+`
 
 const yPingPong = keyframes`
   0% {
@@ -25,11 +25,11 @@ const yPingPong = keyframes`
   100% {
     transform: translateY(0px);
   }
-`;
+`
 
 const yPingPongAnimation = css`
   animation: ${yPingPong} 0.8s cubic-bezier(0.25, 1, 0.5, 1) infinite;
-`;
+`
 
 const SDot = styled.span`
   width: 0.8rem;
@@ -46,6 +46,6 @@ const SDot = styled.span`
   &:nth-child(3) {
     animation-delay: 200ms;
   }
-`;
+`
 
-export default ModalLoader;
+export default ModalLoader

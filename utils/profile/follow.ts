@@ -1,11 +1,10 @@
-import { getFollowed, getFollowers} from 'actions/follower';
-import { TabsIdType, FOLLOWED_TAB, FOLLOWERS_TAB } from 'components/pages/Profile';
-import { UserType } from 'interfaces';
+import { getFollowed, getFollowers } from 'actions/follower'
+import { TabsIdType, FOLLOWED_TAB, FOLLOWERS_TAB } from 'components/pages/Profile'
+import { UserType } from 'interfaces'
 
-type CurrentPageNominalSetState = React.Dispatch<React.SetStateAction<number>>;
-type DataNominalSetState = React.Dispatch<React.SetStateAction<UserType[]>>;
-type HasNextPageNominalSetState = React.Dispatch<React.SetStateAction<boolean>>;
-
+type CurrentPageNominalSetState = React.Dispatch<React.SetStateAction<number>>
+type DataNominalSetState = React.Dispatch<React.SetStateAction<UserType[]>>
+type HasNextPageNominalSetState = React.Dispatch<React.SetStateAction<boolean>>
 
 export const loadMoreProfiles = async (
   userWalletId: string,
@@ -14,13 +13,13 @@ export const loadMoreProfiles = async (
   setHasNextPage: HasNextPageNominalSetState,
   setData: DataNominalSetState,
   tabId: TabsIdType,
-  forceLoad: boolean = false,
+  forceLoad = false,
   searchValue?: string,
   isFilterVerified?: boolean
 ): Promise<UserType[]> => {
   try {
-    const pageToLoad = forceLoad ? 0 : currentPage;
-    let promise;
+    const pageToLoad = forceLoad ? 0 : currentPage
+    let promise
     switch (tabId) {
       case FOLLOWED_TAB:
         promise = getFollowed(
@@ -29,8 +28,8 @@ export const loadMoreProfiles = async (
           undefined,
           searchValue || undefined,
           isFilterVerified || undefined
-        );
-        break;
+        )
+        break
       case FOLLOWERS_TAB:
       default:
         promise = getFollowers(
@@ -39,23 +38,23 @@ export const loadMoreProfiles = async (
           undefined,
           searchValue || undefined,
           isFilterVerified || undefined
-        );
-        break;
+        )
+        break
     }
 
-    const { data, hasNextPage } = await promise;
-    setCurrentPage((prevState) => prevState + 1);
-    setHasNextPage(hasNextPage || false);
+    const { data, hasNextPage } = await promise
+    setCurrentPage((prevState) => prevState + 1)
+    setHasNextPage(hasNextPage || false)
 
     if (forceLoad) {
-      setData([...data]);
+      setData([...data])
     } else {
-      setData((prevState) => prevState.concat(data));
+      setData((prevState) => prevState.concat(data))
     }
 
-    return data;
+    return data
   } catch (err) {
-    console.log(err);
-    return [];
+    console.log(err)
+    return []
   }
-};
+}

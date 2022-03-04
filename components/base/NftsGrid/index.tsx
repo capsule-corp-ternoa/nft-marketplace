@@ -1,1 +1,1 @@
-export { default } from './NftsGrid';
+export { default } from './NftsGrid'

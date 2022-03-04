@@ -1,1 +1,1 @@
-export { default } from './ThumbnailSelector';
+export { default } from './ThumbnailSelector'

@@ -1,17 +1,17 @@
-import React from 'react';
-import Link from 'next/link';
-import styled from 'styled-components';
-import { Container, Wrapper } from 'components/layout';
-import Button from 'components/ui/Button';
-import Icon from 'components/ui/Icon';
+import React from 'react'
+import Link from 'next/link'
+import styled from 'styled-components'
+import { Container, Wrapper } from 'components/layout'
+import Button from 'components/ui/Button'
+import Icon from 'components/ui/Icon'
 
-export const ERROR_PAGE_404 = 'error404';
-export const ERROR_PAGE_500 = 'error500';
+export const ERROR_PAGE_404 = 'error404'
+export const ERROR_PAGE_500 = 'error500'
 
 export interface ErrorProps {
-  description?: string;
-  title: string;
-  variant: typeof ERROR_PAGE_404 | typeof ERROR_PAGE_500;
+  description?: string
+  title: string
+  variant: typeof ERROR_PAGE_404 | typeof ERROR_PAGE_500
 }
 
 const Error = ({ description, title, variant }: ErrorProps) => (
@@ -23,26 +23,22 @@ const Error = ({ description, title, variant }: ErrorProps) => (
       <SLinkWrapper>
         <Link href="/" passHref>
           <>
-            <Button
-              color={variant === 'error500' ? 'danger400' : 'primary500'}
-              href="/"
-              text="Return to home"
-            />
+            <Button color={variant === 'error500' ? 'danger400' : 'primary500'} href="/" text="Return to home" />
           </>
         </Link>
       </SLinkWrapper>
     </SWrapper>
   </Container>
-);
+)
 
 const SWrapper = styled(Wrapper)`
   align-items: center;
-`;
+`
 
 const SIcon = styled(Icon)`
   height: 24rem;
   width: auto;
-`;
+`
 
 const STitle = styled.span`
   color: ${({ theme }) => theme.colors.contrast};
@@ -55,7 +51,7 @@ const STitle = styled.span`
     font-size: 4rem;
     margin-top: 7.2rem;
   }
-`;
+`
 
 const SDescription = styled.span`
   color: ${({ theme }) => theme.colors.contrast};
@@ -68,7 +64,7 @@ const SDescription = styled.span`
     margin-top: 3.2rem;
     max-width: 40rem;
   }
-`;
+`
 
 const SLinkWrapper = styled.div`
   margin-top: 5.6rem;
@@ -76,6 +72,6 @@ const SLinkWrapper = styled.div`
   ${({ theme }) => theme.mediaQueries.xxl} {
     margin-top: 6.4rem;
   }
-`;
+`
 
-export default Error;
+export default Error

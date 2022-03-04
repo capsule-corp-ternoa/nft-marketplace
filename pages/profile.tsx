@@ -1,28 +1,28 @@
-import React from 'react';
-import Head from 'next/head';
-import cookies from 'next-cookies';
+import React from 'react'
+import Head from 'next/head'
+import cookies from 'next-cookies'
 
-import BetaBanner from 'components/base/BetaBanner';
-import FloatingHeader from 'components/base/FloatingHeader';
-import Footer from 'components/base/Footer';
-import MainHeader from 'components/base/MainHeader';
-import { Profile } from 'components/pages/Profile';
-import { getOwnedNFTS } from 'actions/nft';
-import { getUser } from 'actions/user';
-import { NftType, UserType } from 'interfaces';
-import { appSetUser } from 'redux/app';
-import { useMarketplaceData } from 'redux/hooks';
-import { wrapper } from 'redux/store';
-import { decryptCookie } from 'utils/cookie';
+import BetaBanner from 'components/base/BetaBanner'
+import FloatingHeader from 'components/base/FloatingHeader'
+import Footer from 'components/base/Footer'
+import MainHeader from 'components/base/MainHeader'
+import { Profile } from 'components/pages/Profile'
+import { getOwnedNFTS } from 'actions/nft'
+import { getUser } from 'actions/user'
+import { NftType, UserType } from 'interfaces'
+import { appSetUser } from 'redux/app'
+import { useMarketplaceData } from 'redux/hooks'
+import { wrapper } from 'redux/store'
+import { decryptCookie } from 'utils/cookie'
 
 export interface ProfilePageProps {
-  owned: NftType[];
-  ownedHasNextPage: boolean;
-  user: UserType;
+  owned: NftType[]
+  ownedHasNextPage: boolean
+  user: UserType
 }
 
 const ProfilePage = ({ owned, ownedHasNextPage, user }: ProfilePageProps) => {
-  const { name } = useMarketplaceData();
+  const { name } = useMarketplaceData()
 
   return (
     <>
@@ -38,45 +38,45 @@ const ProfilePage = ({ owned, ownedHasNextPage, user }: ProfilePageProps) => {
       <Footer />
       <FloatingHeader />
     </>
-  );
-};
+  )
+}
 
 export const getServerSideProps = wrapper.getServerSideProps((store) => async (ctx) => {
-  const token = cookies(ctx).token && decryptCookie(cookies(ctx).token as string);
+  const token = cookies(ctx).token && decryptCookie(cookies(ctx).token as string)
   let user: UserType | null = null,
     owned: NftType[] = [],
-    ownedHasNextPage: boolean = false;
-  const promises = [];
+    ownedHasNextPage = false
+  const promises = []
   if (token) {
     promises.push(
       new Promise<void>((success) => {
         getUser(token, true)
           .then((_user) => {
-            user = _user;
-            store.dispatch(appSetUser(_user));
-            success();
+            user = _user
+            store.dispatch(appSetUser(_user))
+            success()
           })
-          .catch(success);
+          .catch(success)
       })
-    );
+    )
     promises.push(
       new Promise<void>((success) => {
         getOwnedNFTS(token, false, undefined, undefined, undefined)
           .then((result) => {
-            owned = result.data;
-            ownedHasNextPage = result.hasNextPage || false;
-            success();
+            owned = result.data
+            ownedHasNextPage = result.hasNextPage || false
+            success()
           })
-          .catch(success);
+          .catch(success)
       })
-    );
+    )
   }
-  await Promise.all(promises);
+  await Promise.all(promises)
 
   if (!user) {
     return {
       notFound: true,
-    };
+    }
   }
 
   return {
@@ -85,7 +85,7 @@ export const getServerSideProps = wrapper.getServerSideProps((store) => async (c
       owned,
       ownedHasNextPage,
     },
-  };
-});
+  }
+})
 
-export default ProfilePage;
+export default ProfilePage

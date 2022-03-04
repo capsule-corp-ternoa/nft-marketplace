@@ -1,4 +1,4 @@
-import { keyframes, Keyframes } from 'styled-components';
+import { keyframes, Keyframes } from 'styled-components'
 
 export const fadeIn = keyframes`
   0% {
@@ -7,7 +7,7 @@ export const fadeIn = keyframes`
   100% {
     opaciy: 1;
   }
-`;
+`
 
 export const ySlide = (yStart: string, yEnd: string): Keyframes => keyframes`
   0% {
@@ -16,7 +16,7 @@ export const ySlide = (yStart: string, yEnd: string): Keyframes => keyframes`
   100% {
     transform: translateY(${yEnd});
   }
-`;
+`
 
 export const scale = (start: string, end: string): Keyframes => keyframes`
   0% {
@@ -25,4 +25,4 @@ export const scale = (start: string, end: string): Keyframes => keyframes`
   100% {
     transform: scale(${end});
   }
-`;
+`

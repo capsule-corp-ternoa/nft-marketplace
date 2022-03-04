@@ -1,8 +1,8 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from 'react'
+import styled from 'styled-components'
 
-import { FilterTitle, FilterSubtitle } from 'components/layout';
-import Button from 'components/ui/Button';
+import { FilterTitle, FilterSubtitle } from 'components/layout'
+import Button from 'components/ui/Button'
 
 const FilterTypeSales = () => (
   <div>
@@ -13,11 +13,11 @@ const FilterTypeSales = () => (
       <Button color="invertedContrast" disabled emoji="⏳ " size="small" text="Auction" variant="outlined" />
     </STypeSalesContainer>
   </div>
-);
+)
 
 const SFilterSubtitle = styled(FilterSubtitle)`
   margin-top: 0.4rem;
-`;
+`
 
 const STypeSalesContainer = styled.div`
   display: flex;
@@ -25,6 +25,6 @@ const STypeSalesContainer = styled.div`
   flex-wrap: wrap;
   gap: 1.6rem;
   margin-top: 1.6rem;
-`;
+`
 
-export default FilterTypeSales;
+export default FilterTypeSales

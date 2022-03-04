@@ -5,7 +5,7 @@ import {
   AVATAR_VARIANT_EDIT,
   AVATAR_VARIANT_MOSAIC,
   AVATAR_VARIANT_TRANSACTION,
-} from './constants';
+} from './constants'
 
 export type AVATAR_VARIANT_TYPE =
   | typeof AVATAR_VARIANT_BADGE
@@ -13,4 +13,4 @@ export type AVATAR_VARIANT_TYPE =
   | typeof AVATAR_VARIANT_CHECKOUT
   | typeof AVATAR_VARIANT_EDIT
   | typeof AVATAR_VARIANT_MOSAIC
-  | typeof AVATAR_VARIANT_TRANSACTION;
+  | typeof AVATAR_VARIANT_TRANSACTION

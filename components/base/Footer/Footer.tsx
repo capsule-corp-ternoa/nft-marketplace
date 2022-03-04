@@ -1,12 +1,12 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from 'react'
+import styled from 'styled-components'
 
-import Icon from 'components/ui/Icon';
-import { Container, Wrapper } from 'components/layout';
-import { useMarketplaceData } from 'redux/hooks';
+import Icon from 'components/ui/Icon'
+import { Container, Wrapper } from 'components/layout'
+import { useMarketplaceData } from 'redux/hooks'
 
 const Footer = () => {
-  const { instagramUrl, name, twitterUrl } = useMarketplaceData();
+  const { instagramUrl, name, twitterUrl } = useMarketplaceData()
 
   return (
     <SFooterContainer>
@@ -31,26 +31,26 @@ const Footer = () => {
         </SLegalsContainer>
         <SSocialsContainer>
           {twitterUrl !== 'false' && (
-            <a href={twitterUrl} target="_blank">
+            <a href={twitterUrl} target="_blank" rel="noreferrer" title="Official Twitter account">
               <SMediaIcon name="socialTwitter" />
             </a>
           )}
           {instagramUrl !== 'false' && (
-            <a href={instagramUrl} target="_blank">
+            <a href={instagramUrl} target="_blank" rel="noreferrer" title="Official Instagram account">
               <SMediaIcon name="socialInstagram" />
             </a>
           )}
         </SSocialsContainer>
       </SFooterWrapper>
     </SFooterContainer>
-  );
-};
+  )
+}
 
 const SFooterContainer = styled(Container)`
   width: 100%;
   background: ${({ theme }) => theme.colors.contrast};
   margin-top: auto;
-`;
+`
 
 const SFooterWrapper = styled(Wrapper)`
   flex-direction: row;
@@ -62,7 +62,7 @@ const SFooterWrapper = styled(Wrapper)`
   ${({ theme }) => theme.mediaQueries.lg} {
     padding-bottom: 2.4rem !important;
   }
-`;
+`
 
 const SLegalsContainer = styled.div`
   display: flex;
@@ -77,28 +77,28 @@ const SLegalsContainer = styled.div`
       }
     }
   }
-`;
+`
 
 const SLabel = styled.span`
-  color: ${({ theme }) => theme.colors.neutral600};
+  color: ${({ theme }) => theme.colors.neutral200};
   font-size: 1.6rem;
-`;
+`
 
 const SLink = styled.a`
-  color: ${({ theme }) => theme.colors.neutral600};
+  color: ${({ theme }) => theme.colors.neutral200};
   cursor: pointer;
   font-family: ${({ theme }) => theme.fonts.bold};
   font-size: 1.6rem;
   margin-top: 0.8rem;
 
   &:hover {
-    color: ${({ theme }) => theme.colors.primary500};
+    color: ${({ theme }) => theme.colors.primary300};
   }
 
   ${({ theme }) => theme.mediaQueries.sm} {
     margin-top: 0;
   }
-`;
+`
 
 const SSocialsContainer = styled.div`
   display: flex;
@@ -110,7 +110,7 @@ const SSocialsContainer = styled.div`
       margin-left: 3.2rem;
     }
   }
-`;
+`
 
 const SMediaIcon = styled(Icon)`
   width: 1.6rem;
@@ -121,6 +121,6 @@ const SMediaIcon = styled(Icon)`
   ${({ theme }) => theme.mediaQueries.lg} {
     width: 2.4rem;
   }
-`;
+`
 
-export default Footer;
+export default Footer

@@ -1,1 +1,1 @@
-export { default } from './Clipboard';
+export { default } from './Clipboard'

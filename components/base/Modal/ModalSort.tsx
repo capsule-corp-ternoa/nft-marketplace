@@ -1,15 +1,15 @@
-import React from 'react';
-import { useRouter } from 'next/router';
-import ClickAwayListener from 'react-click-away-listener';
-import styled from 'styled-components';
+import React from 'react'
+import { useRouter } from 'next/router'
+import ClickAwayListener from 'react-click-away-listener'
+import styled from 'styled-components'
 
-import { getNFTs, getMostLikedNFTs, getMostSoldNFTs, getMostSoldSeries, getMostViewedNFTs } from 'actions/nft';
+import { getNFTs, getMostLikedNFTs, getMostSoldNFTs, getMostSoldSeries, getMostViewedNFTs } from 'actions/nft'
 
-import Icon from 'components/ui/Icon';
-import Select from 'components/ui/Select';
-import { FilterClearCta, FilterCtasContainer, FilterSubtitle } from 'components/layout';
-import { CustomResponse, NFTDataNominalSetState, NftType } from 'interfaces';
-import { AllSortIdsType, FiltersSortNominalSetState, SortTypesType } from 'interfaces/filters';
+import Icon from 'components/ui/Icon'
+import Select from 'components/ui/Select'
+import { FilterClearCta, FilterCtasContainer, FilterSubtitle } from 'components/layout'
+import { CustomResponse, NFTDataNominalSetState, NftType } from 'interfaces'
+import { AllSortIdsType, FiltersSortNominalSetState, SortTypesType } from 'interfaces/filters'
 import {
   ALL_SORT_IDS,
   DATE_ASC_SORT,
@@ -24,72 +24,84 @@ import {
   SORT_OPTION_PRICE_DESC,
   SORT_OPTION_TIMESTAMP_CREATE_ASC,
   SORT_OPTION_TIMESTAMP_CREATE_DESC,
-} from 'utils/constant';
+} from 'utils/constant'
 
 interface ModalSortProps {
-  handleClearSort: () => void;
-  setData: NFTDataNominalSetState;
-  setDataHasNextPage: (b: boolean) => void;
-  setDataCurrentPage: (n: number) => void;
-  setDataIsLoading: (b: boolean) => void;
-  setError: (s: string) => void;
-  setIsExpanded: (b: boolean) => void;
-  setSort: FiltersSortNominalSetState;
-  sort: SortTypesType;
+  handleClearSort: () => void
+  setData: NFTDataNominalSetState
+  setDataHasNextPage: (b: boolean) => void
+  setDataCurrentPage: (n: number) => void
+  setDataIsLoading: (b: boolean) => void
+  setError: (s: string) => void
+  setIsExpanded: (b: boolean) => void
+  setSort: FiltersSortNominalSetState
+  sort: SortTypesType
 }
 
-const ModalSort = ({ handleClearSort, setData, setDataHasNextPage, setDataCurrentPage, setDataIsLoading, setError, setIsExpanded, setSort, sort }: ModalSortProps) => {
-  const router = useRouter();
-  const currentSort = (Object.keys(sort) as Array<keyof typeof sort>).find((key) => ALL_SORT_IDS.includes(key) && sort[key] !== null);
+const ModalSort = ({
+  handleClearSort,
+  setData,
+  setDataHasNextPage,
+  setDataCurrentPage,
+  setDataIsLoading,
+  setError,
+  setIsExpanded,
+  setSort,
+  sort,
+}: ModalSortProps) => {
+  const router = useRouter()
+  const currentSort = (Object.keys(sort) as Array<keyof typeof sort>).find(
+    (key) => ALL_SORT_IDS.includes(key) && sort[key] !== null
+  )
 
   const toggleSort = async (sort: AllSortIdsType | null) => {
     if (sort === null) {
-      handleClearSort();
+      handleClearSort()
     } else {
-      setDataIsLoading(true);
-      setIsExpanded(false);
-      setSort({ ...FILTERS_SORT_RESET_STATE, [sort]: true });
+      setDataIsLoading(true)
+      setIsExpanded(false)
+      setSort({ ...FILTERS_SORT_RESET_STATE, [sort]: true })
 
       try {
-        let res: CustomResponse<NftType> = { data: [], hasNextPage: false, hasPreviousPage: false };
+        let res: CustomResponse<NftType> = { data: [], hasNextPage: false, hasPreviousPage: false }
 
         if (sort === DATE_ASC_SORT) {
-          res = await getNFTs('1', undefined, { listed: true }, SORT_OPTION_TIMESTAMP_CREATE_ASC, true);
+          res = await getNFTs('1', undefined, { listed: true }, SORT_OPTION_TIMESTAMP_CREATE_ASC, true)
         } else if (sort === DATE_DESC_SORT) {
-          res = await getNFTs('1', undefined, { listed: true }, SORT_OPTION_TIMESTAMP_CREATE_DESC, true);
+          res = await getNFTs('1', undefined, { listed: true }, SORT_OPTION_TIMESTAMP_CREATE_DESC, true)
         } else if (sort === PRICE_ASC_SORT) {
-          res = await getNFTs('1', undefined, { listed: true }, SORT_OPTION_PRICE_ASC, true);
+          res = await getNFTs('1', undefined, { listed: true }, SORT_OPTION_PRICE_ASC, true)
         } else if (sort === PRICE_DESC_SORT) {
-          res = await getNFTs('1', undefined, { listed: true }, SORT_OPTION_PRICE_DESC, true);
+          res = await getNFTs('1', undefined, { listed: true }, SORT_OPTION_PRICE_DESC, true)
         } else if (sort === MOST_LIKED_SORT) {
-          res = await getMostLikedNFTs('1', undefined, true);
+          res = await getMostLikedNFTs('1', undefined, true)
         } else if (sort === MOST_SOLD_SORT) {
-          res = await getMostSoldNFTs('1', undefined, true);
+          res = await getMostSoldNFTs('1', undefined, true)
         } else if (sort === MOST_SOLD_SERIES_SORT) {
-          res = await getMostSoldSeries('1', undefined, true);
+          res = await getMostSoldSeries('1', undefined, true)
         } else {
-          res = await getMostViewedNFTs('1', undefined, true);
+          res = await getMostViewedNFTs('1', undefined, true)
         }
 
-        router.push({ pathname: router.pathname, query: `sort=${sort}` }, undefined, { shallow: true });
-        setDataCurrentPage(1);
-        setDataHasNextPage(res.hasNextPage ?? false);
-        setData(res.data);
-        setError('');
-        setDataIsLoading(false);
+        router.push({ pathname: router.pathname, query: `sort=${sort}` }, undefined, { shallow: true })
+        setDataCurrentPage(1)
+        setDataHasNextPage(res.hasNextPage ?? false)
+        setData(res.data)
+        setError('')
+        setDataIsLoading(false)
       } catch (error) {
-        console.log(error);
-        setError('Unable to sort, please try again');
-        setDataIsLoading(false);
+        console.log(error)
+        setError('Unable to sort, please try again')
+        setDataIsLoading(false)
       }
     }
-  };
+  }
 
   return (
     <SModalBackground>
       <ClickAwayListener
         onClickAway={() => {
-          setIsExpanded(false);
+          setIsExpanded(false)
         }}
       >
         <SModalContainer>
@@ -107,8 +119,8 @@ const ModalSort = ({ handleClearSort, setData, setDataHasNextPage, setDataCurren
                     {currentSort !== undefined && (
                       <li
                         onClick={() => {
-                          setSelectExpanded(false);
-                          toggleSort(null);
+                          setSelectExpanded(false)
+                          toggleSort(null)
                         }}
                       >
                         -
@@ -120,8 +132,8 @@ const ModalSort = ({ handleClearSort, setData, setDataHasNextPage, setDataCurren
                           <li
                             key={id}
                             onClick={() => {
-                              setSelectExpanded(false);
-                              toggleSort(sort);
+                              setSelectExpanded(false)
+                              toggleSort(sort)
                             }}
                           >
                             {sort}
@@ -139,8 +151,8 @@ const ModalSort = ({ handleClearSort, setData, setDataHasNextPage, setDataCurren
         </SModalContainer>
       </ClickAwayListener>
     </SModalBackground>
-  );
-};
+  )
+}
 
 const SModalBackground = styled.div`
   width: 100%;
@@ -154,7 +166,7 @@ const SModalBackground = styled.div`
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 110;
   overflow-y: hidden;
-`;
+`
 
 const SCloseIcon = styled.div`
   display: flex;
@@ -171,7 +183,7 @@ const SCloseIcon = styled.div`
     top: 4.8rem;
     right: 4rem;
   }
-`;
+`
 
 const SModalContainer = styled.div`
   width: 340px;
@@ -187,7 +199,7 @@ const SModalContainer = styled.div`
     width: 56rem;
     padding: 4rem 4rem;
   }
-`;
+`
 
 const STitle = styled.h3`
   color: ${({ theme }) => theme.colors.contrast};
@@ -195,11 +207,11 @@ const STitle = styled.h3`
   font-size: 3.2rem;
   margin: 0;
   margin-bottom: 3.2rem;
-`;
+`
 
 const SFilterSubtitle = styled(FilterSubtitle)`
   margin-top: 0.4rem;
-`;
+`
 
 const SSortContainer = styled.div`
   display: flex;
@@ -216,6 +228,6 @@ const SSortContainer = styled.div`
   li {
     color: ${({ theme }) => theme.colors.contrast};
   }
-`;
+`
 
-export default ModalSort;
+export default ModalSort

@@ -1,4 +1,4 @@
-import { Breakpoints, MediaQueries } from './types';
+import { Breakpoints, MediaQueries } from './types'
 
 export const breakpointMap: { [key: string]: number } = {
   xs: 480,
@@ -7,11 +7,9 @@ export const breakpointMap: { [key: string]: number } = {
   lg: 992,
   xl: 1200,
   xxl: 1440,
-};
+}
 
-const breakpoints: Breakpoints = Object.values(breakpointMap).map(
-  (breakpoint) => `${breakpoint}px`
-);
+const breakpoints: Breakpoints = Object.values(breakpointMap).map((breakpoint) => `${breakpoint}px`)
 
 const mediaQueries: MediaQueries = {
   xs: `@media screen and (min-width: ${breakpointMap.xs}px)`,
@@ -20,9 +18,11 @@ const mediaQueries: MediaQueries = {
   lg: `@media screen and (min-width: ${breakpointMap.lg}px)`,
   xl: `@media screen and (min-width: ${breakpointMap.xl}px)`,
   xxl: `@media screen and (min-width: ${breakpointMap.xxl}px)`,
-};
+}
 
-export default {
+const base = {
   breakpoints,
   mediaQueries,
-};
+}
+
+export default base

@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled, { css } from 'styled-components'
 
 export const HiddenShell = styled.div`
   position: absolute;
@@ -7,7 +7,7 @@ export const HiddenShell = styled.div`
   height: 100%;
   cursor: pointer;
   display: none;
-`;
+`
 
 export const HiddenInput = styled.input`
   width: 100%;
@@ -19,7 +19,7 @@ export const HiddenInput = styled.input`
   -khtml-opacity: 0;
   -moz-opacity: 0;
   cursor: pointer;
-`;
+`
 
 export const Form = styled.form`
   width: 100%;
@@ -34,7 +34,7 @@ export const Form = styled.form`
     flex-direction: row;
     margin-top: 9.6rem;
   }
-`;
+`
 
 const FormSideLayout = styled.div`
   width: 100%;
@@ -53,7 +53,7 @@ const FormSideLayout = styled.div`
       margin-top: 0;
     }
   }
-`;
+`
 
 export const FormSideLeft = styled(FormSideLayout)`
   ${({ theme }) => theme.mediaQueries.md} {
@@ -64,7 +64,7 @@ export const FormSideLeft = styled(FormSideLayout)`
   ${({ theme }) => theme.mediaQueries.xl} {
     padding-right: 13.6rem;
   }
-`;
+`
 
 export const FormSideRight = styled(FormSideLayout)`
   margin-top: 4rem;
@@ -77,14 +77,14 @@ export const FormSideRight = styled(FormSideLayout)`
   ${({ theme }) => theme.mediaQueries.xl} {
     padding-left: 13.6rem;
   }
-`;
+`
 
 export const InputShell = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
   position: relative;
-`;
+`
 
 export const InputLabel = styled.h4`
   display: flex;
@@ -93,10 +93,10 @@ export const InputLabel = styled.h4`
   font-size: 2rem;
   line-height: 1.3;
   margin: 0;
-`;
+`
 
 const InputStyle = css<{
-  isError?: boolean;
+  isError?: boolean
 }>`
   width: 100%;
   background: ${({ theme }) => theme.colors.neutral100};
@@ -116,9 +116,9 @@ const InputStyle = css<{
   &::placeholder {
     color: ${({ theme }) => theme.colors.neutral300};
   }
-`;
+`
 
-export const Label = styled.label<{ endIcon?: string, startIcon?: string }>`
+export const Label = styled.label<{ endIcon?: string; startIcon?: string }>`
   position: relative;
   display: flex;
 
@@ -151,15 +151,15 @@ export const Label = styled.label<{ endIcon?: string, startIcon?: string }>`
           center / contain no-repeat;
       }
     `};
-`;
+`
 
 export const Input = styled.input<{ isError?: boolean }>`
   ${InputStyle}
-`;
+`
 
 export const Textarea = styled.textarea`
   flex: 1;
   resize: none;
 
   ${InputStyle}
-`;
+`

@@ -1,54 +1,54 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import randomstring from 'randomstring';
+import React, { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
+import randomstring from 'randomstring'
 
-import { ModalLoader, QRCode } from 'components/base/Modal';
-import Modal from 'components/ui/Modal';
-import { useApp } from 'redux/hooks';
-import { SOCKET_URL } from 'utils/constant';
-import { navigateToSuccess } from 'utils/functions';
-import { connect as connectIo } from 'utils/socket/socket.helper';
+import { ModalLoader, QRCode } from 'components/base/Modal'
+import Modal from 'components/ui/Modal'
+import { useApp } from 'redux/hooks'
+import { SOCKET_URL } from 'utils/constant'
+import { navigateToSuccess } from 'utils/functions'
+import { connect as connectIo } from 'utils/socket/socket.helper'
 
 export interface ModalBuyProps {
-  setExpanded: (b: boolean) => void;
-  id: string;
-  seriesId: string;
+  setExpanded: (b: boolean) => void
+  id: string
+  seriesId: string
 }
 
 const ModalBuy: React.FC<ModalBuyProps> = ({ setExpanded, id, seriesId }) => {
-  const [session] = useState(randomstring.generate());
-  const router = useRouter();
-  const [error, setError] = useState('');
-  const [showQR, setShowQR] = useState(false);
-  const { isRN } = useApp();
+  const [session] = useState(randomstring.generate())
+  const router = useRouter()
+  const [error, setError] = useState('')
+  const [showQR, setShowQR] = useState(false)
+  const { isRN } = useApp()
 
   useEffect(() => {
-    console.log('socket connect on session', session);
-    const socket = connectIo(`/socket/buyNft`, { session, socketUrl: SOCKET_URL });
+    console.log('socket connect on session', session)
+    const socket = connectIo(`/socket/buyNft`, { session, socketUrl: SOCKET_URL })
     socket.on('connect_error', (e) => {
-      console.error('connection error socket', e);
-      setExpanded(false);
-    });
+      console.error('connection error socket', e)
+      setExpanded(false)
+    })
 
     socket.on('CONNECTION_SUCCESS', () => {
       if (window.isRNApp) {
-        const data = { session, socketUrl: SOCKET_URL, nft_id: id, series_id: seriesId };
+        const data = { session, socketUrl: SOCKET_URL, nft_id: id, series_id: seriesId }
         setTimeout(function () {
-          window.ReactNativeWebView.postMessage(JSON.stringify({ action: 'BUY', data }));
-        }, 2000);
+          window.ReactNativeWebView.postMessage(JSON.stringify({ action: 'BUY', data }))
+        }, 2000)
       } else {
-        setShowQR(true);
+        setShowQR(true)
       }
-    });
+    })
 
-    socket.on('CONNECTION_FAILURE', (data) => setError(data.msg));
+    socket.on('CONNECTION_FAILURE', (data) => setError(data.msg))
     socket.on('NFT_BUY', (data) => {
       if (!data.success) {
-        setError('Something went wrong. Please try again.');
+        setError('Something went wrong. Please try again.')
       }
-      socket.emit('NFT_BUY_RECEIVED');
-      socket.close();
+      socket.emit('NFT_BUY_RECEIVED')
+      socket.close()
       if (data.success) {
         setTimeout(() => {
           navigateToSuccess(
@@ -62,17 +62,18 @@ const ModalBuy: React.FC<ModalBuyProps> = ({ setExpanded, id, seriesId }) => {
              ${id ? `NFT id : ${id}` : ''},
              ${seriesId ? `Series id : ${seriesId}` : ''}
             `
-          );
-        }, 1000);
+          )
+        }, 1000)
       }
-    });
+    })
     socket.on('disconnect', () => {
-      setExpanded(false);
-    });
+      setExpanded(false)
+    })
     return function cleanup() {
-      socket.close();
-    };
-  }, []);
+      socket.close()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <Modal
@@ -87,7 +88,7 @@ const ModalBuy: React.FC<ModalBuyProps> = ({ setExpanded, id, seriesId }) => {
         <ModalLoader />
       )}
     </Modal>
-  );
-};
+  )
+}
 
-export default ModalBuy;
+export default ModalBuy

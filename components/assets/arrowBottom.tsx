@@ -1,17 +1,13 @@
-import React from 'react';
+import React from 'react'
 
 interface ArrowBottomProps {
-  className?: string;
+  className?: string
 }
 
 const ArrowBottom = ({ className }: ArrowBottomProps) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className={className}
-    viewBox="0 0 24 24"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24">
     <path d="M5 3l3.057-3L20 12 8.057 24 5 21l9-9z"></path>
   </svg>
-);
+)
 
-export default ArrowBottom;
+export default ArrowBottom

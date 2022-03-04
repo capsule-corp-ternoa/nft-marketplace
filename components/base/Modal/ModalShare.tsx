@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import {
   FacebookShareButton,
   LinkedinShareButton,
@@ -12,19 +12,19 @@ import {
   TelegramIcon,
   TwitterIcon,
   WhatsappIcon,
-} from 'react-share';
-import styled from 'styled-components';
+} from 'react-share'
+import styled from 'styled-components'
 
-import Clipboard from 'components/base/Clipboard';
-import Modal from 'components/ui/Modal';
+import Clipboard from 'components/base/Clipboard'
+import Modal from 'components/ui/Modal'
 
 export interface ModalWalletProps {
-  setExpanded: (b: boolean) => void;
-  subtitle?: string;
-  subject: string;
-  text: string;
-  title?: string;
-  url: string;
+  setExpanded: (b: boolean) => void
+  subtitle?: string
+  subject: string
+  text: string
+  title?: string
+  url: string
 }
 
 const ModalShare: React.FC<ModalWalletProps> = ({ setExpanded, subtitle, title, subject, text, url }) => (
@@ -53,7 +53,7 @@ const ModalShare: React.FC<ModalWalletProps> = ({ setExpanded, subtitle, title, 
       <SClipboard address={url} />
     </>
   </Modal>
-);
+)
 
 const SSocialsContainer = styled.div`
   display: flex;
@@ -63,7 +63,7 @@ const SSocialsContainer = styled.div`
       margin-left: 0.8rem;
     }
   }
-`;
+`
 
 const SClipboard = styled(Clipboard)`
   border: solid 1px rgb(0, 0, 0, 0);
@@ -78,6 +78,6 @@ const SClipboard = styled(Clipboard)`
       border-color: ${({ theme }) => theme.colors.invertedContrast};
     }
   }
-`;
+`
 
-export default ModalShare;
+export default ModalShare

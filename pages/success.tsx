@@ -1,31 +1,36 @@
-import React, { useEffect } from 'react';
-import Head from 'next/head';
-import BetaBanner from 'components/base/BetaBanner';
-import FloatingHeader from 'components/base/FloatingHeader';
-import Footer from 'components/base/Footer';
-import MainHeader from 'components/base/MainHeader';
-import { useRouter } from 'next/router';
-import Success from 'components/pages/Success';
-import { useMarketplaceData } from 'redux/hooks';
+import React, { useEffect } from 'react'
+import Head from 'next/head'
+import BetaBanner from 'components/base/BetaBanner'
+import FloatingHeader from 'components/base/FloatingHeader'
+import Footer from 'components/base/Footer'
+import MainHeader from 'components/base/MainHeader'
+import { useRouter } from 'next/router'
+import Success from 'components/pages/Success'
+import { useMarketplaceData } from 'redux/hooks'
 
 const SuccessPage = () => {
-  const { name } = useMarketplaceData();
-  const router = useRouter();
-  const { title, text, buttonText, returnUrl, isRedirect, subText } = router.query;
+  const { name } = useMarketplaceData()
+  const router = useRouter()
+  const { title, text, buttonText, returnUrl, isRedirect, subText } = router.query
 
   useEffect(() => {
     if (!(title && buttonText && returnUrl && isRedirect !== undefined)) {
-      router.push('/');
+      router.push('/')
     }
-  }, []);
+  }, [buttonText, isRedirect, returnUrl, router, title])
 
   useEffect(() => {
+    let timer: NodeJS.Timeout
     if (isRedirect === 'true') {
-      setTimeout(() => {
-        router.push(String(returnUrl));
-      }, 5000);
+      timer = setTimeout(() => {
+        router.push(String(returnUrl))
+      }, 5000)
     }
-  }, []);
+
+    return () => {
+      if (isRedirect === 'true') clearTimeout(timer)
+    }
+  }, [isRedirect, returnUrl, router])
 
   return (
     <>
@@ -47,7 +52,7 @@ const SuccessPage = () => {
       <Footer />
       <FloatingHeader />
     </>
-  );
-};
+  )
+}
 
-export default SuccessPage;
+export default SuccessPage

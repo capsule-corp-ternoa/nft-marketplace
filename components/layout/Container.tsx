@@ -1,12 +1,12 @@
-import styled from 'styled-components';
-import { breakpointMap } from 'style/theme/base';
+import styled from 'styled-components'
+import { breakpointMap } from 'style/theme/base'
 
 export const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-`;
+`
 
 export const Wrapper = styled.div`
   width: 100%;
@@ -14,19 +14,33 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  padding: 5.6rem 3.2rem;
+  padding: 2.4rem 3.2rem;
+
+  &:first-child {
+    padding-top: 4rem;
+  }
 
   &:last-child {
-    padding-bottom: 7.2rem;
+    padding-bottom: 6.4rem;
   }
 
   ${({ theme }) => theme.mediaQueries.md} {
-    padding: 3.2rem 4rem;
+    padding: 2.4rem 4rem;
   }
 
   ${({ theme }) => theme.mediaQueries.lg} {
-    &:not(:first-child) {
-      padding-top: 4.8rem;
+    padding: 3.2rem 4rem;
+
+    &:last-child {
+      padding-bottom: 6.4rem;
+    }
+  }
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    padding: 3.2rem 6.4rem;
+
+    &:first-child {
+      padding-top: 5.6rem;
     }
 
     &:last-child {
@@ -34,19 +48,7 @@ export const Wrapper = styled.div`
     }
   }
 
-  ${({ theme }) => theme.mediaQueries.xl} {
-    padding: 5.6rem 6.4rem;
-
-    &:first-child {
-      padding-top: 9.6rem;
-    }
-
-    &:last-child {
-      padding-bottom: 12rem;
-    }
-  }
-
   ${({ theme }) => theme.mediaQueries.xxl} {
     max-width: ${breakpointMap.xxl}px;
   }
-`;
+`

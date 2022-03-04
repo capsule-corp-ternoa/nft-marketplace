@@ -1,13 +1,13 @@
-import React from 'react';
+import React from 'react'
 import styled from 'styled-components'
 
-import { Container, Title, Wrapper } from 'components/layout';
-import { useMarketplaceData } from 'redux/hooks';
+import { Container, Title, Wrapper } from 'components/layout'
+import { useMarketplaceData } from 'redux/hooks'
 
-import Section from './Section';
+import Section from './Section'
 
 const FAQ = () => {
-  const { name } = useMarketplaceData();
+  const { name } = useMarketplaceData()
 
   const sections = [
     {
@@ -31,20 +31,22 @@ const FAQ = () => {
       question: 'What are “test CAPS”?',
       answer: '“Test CAPS” are CAPS usable on our testnet. Real CAPS will come on mainnet.',
     },
-  ];
-  
+  ]
+
   return (
     <Container>
       <Wrapper>
         <Title>How it works ?</Title>
         <SSubtitle>FAQ</SSubtitle>
         <SSectionsWrapper>
-          {sections.map((x, index) => <Section key={index} section={x} />)}
+          {sections.map((x, index) => (
+            <Section key={index} section={x} />
+          ))}
         </SSectionsWrapper>
       </Wrapper>
     </Container>
-  );
-};
+  )
+}
 
 const SSubtitle = styled.div`
   font-size: 3.2rem;
@@ -54,7 +56,7 @@ const SSubtitle = styled.div`
     font-size: 4rem;
     text-align: left;
   }
-`;
+`
 
 const SSectionsWrapper = styled.div`
   margin-top: 0.8rem;
@@ -62,6 +64,6 @@ const SSectionsWrapper = styled.div`
   ${({ theme }) => theme.mediaQueries.lg} {
     margin-top: 8rem;
   }
-`;
+`
 
-export default FAQ;
+export default FAQ

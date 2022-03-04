@@ -18,6 +18,8 @@ export const sizes: Sizes = {
   },
 }
 
-export default {
+const sizesBase = {
   sizes,
-};
+}
+
+export default sizesBase

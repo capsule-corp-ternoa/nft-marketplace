@@ -1,3 +1,3 @@
-import { ALL_TABS_ID } from "./constants";
+import { ALL_TABS_ID } from './constants'
 
-export type TabsIdType = typeof ALL_TABS_ID[number];
+export type TabsIdType = typeof ALL_TABS_ID[number]

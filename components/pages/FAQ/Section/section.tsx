@@ -1,20 +1,20 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
+import React, { useState } from 'react'
+import styled from 'styled-components'
 
-import Icon from 'components/ui/Icon';
+import Icon from 'components/ui/Icon'
 
 export interface QuestionProps {
-  className?: string;
-  section: { question: string; answer: string };
+  className?: string
+  section: { question: string; answer: string }
 }
 
 const Question: React.FC<QuestionProps> = ({ className, section }) => {
-  const { answer, question } = section;
-  const [isExpanded, setIsExpanded] = useState(false);
+  const { answer, question } = section
+  const [isExpanded, setIsExpanded] = useState(false)
 
   const toggleQuestion = (): void => {
-    setIsExpanded((prevState) => !prevState);
-  };
+    setIsExpanded((prevState) => !prevState)
+  }
 
   return (
     <SSection className={className}>
@@ -28,8 +28,8 @@ const Question: React.FC<QuestionProps> = ({ className, section }) => {
         <SAnswer isExpanded={isExpanded}>{answer}</SAnswer>
       </SDataContainer>
     </SSection>
-  );
-};
+  )
+}
 
 const SSection = styled.div`
   display: flex;
@@ -37,7 +37,7 @@ const SSection = styled.div`
   align-items: flex-start;
   justify-content: flex-start;
   margin-top: 3.2rem;
-`;
+`
 
 const SIconContainer = styled.div<{ isExpanded: boolean }>`
   > * {
@@ -53,7 +53,7 @@ const SIconContainer = styled.div<{ isExpanded: boolean }>`
       transform: translateY(5px) rotate(90deg);
     `}
   }
-`;
+`
 
 const SDataContainer = styled.div`
   display: flex;
@@ -63,7 +63,7 @@ const SDataContainer = styled.div`
   ${({ theme }) => theme.mediaQueries.lg} {
     max-width: 65rem;
   }
-`;
+`
 
 const SQuestion = styled.div<{ isExpanded: boolean }>`
   display: flex;
@@ -77,8 +77,8 @@ const SQuestion = styled.div<{ isExpanded: boolean }>`
   transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 
   ${({ isExpanded, theme }) =>
-      isExpanded &&
-      `
+    isExpanded &&
+    `
       color: ${theme.colors.primary500};
     `}
 
@@ -86,7 +86,7 @@ const SQuestion = styled.div<{ isExpanded: boolean }>`
     font-size: 2.4rem;
     margin-top: 0;
   }
-`;
+`
 
 const SAnswer = styled.div<{ isExpanded: boolean }>`
   display: none;
@@ -99,6 +99,6 @@ const SAnswer = styled.div<{ isExpanded: boolean }>`
     `
     display: inline-block;
   `}
-`;
+`
 
-export default Question;
+export default Question

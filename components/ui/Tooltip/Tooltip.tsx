@@ -1,10 +1,10 @@
-import React from 'react';
-import Information from 'components/assets/information';
-import styled from 'styled-components';
+import React from 'react'
+import Information from 'components/assets/information'
+import styled from 'styled-components'
 
 interface Props {
-  className?: string;
-  text: string;
+  className?: string
+  text: string
 }
 
 const Tooltip = ({ className, text }: Props) => (
@@ -12,7 +12,7 @@ const Tooltip = ({ className, text }: Props) => (
     <InformationIcon />
     <Popover>{text}</Popover>
   </TooltipContainer>
-);
+)
 
 const TooltipContainer = styled.div`
   display: flex;
@@ -32,12 +32,12 @@ const TooltipContainer = styled.div`
   ${({ theme }) => theme.mediaQueries.md} {
     position: relative;
   }
-`;
+`
 
 const InformationIcon = styled(Information)`
   width: 2rem;
   fill: ${({ theme }) => theme.colors.contrast};
-`;
+`
 
 const Popover = styled.span`
   background: ${({ theme }) => theme.colors.invertedContrast};
@@ -59,6 +59,6 @@ const Popover = styled.span`
   ${({ theme }) => theme.mediaQueries.md} {
     bottom: 150%;
   }
-`;
+`
 
-export default Tooltip;
+export default Tooltip

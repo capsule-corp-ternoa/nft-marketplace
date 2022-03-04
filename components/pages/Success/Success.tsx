@@ -1,17 +1,17 @@
-import React from 'react';
-import Link from 'next/link';
-import styled from 'styled-components';
+import React from 'react'
+import Link from 'next/link'
+import styled from 'styled-components'
 
-import { Container, Wrapper } from 'components/layout';
-import Button from 'components/ui/Button';
-import Icon from 'components/ui/Icon';
+import { Container, Wrapper } from 'components/layout'
+import Button from 'components/ui/Button'
+import Icon from 'components/ui/Icon'
 
 export interface SuccessProps {
-  title: string;
-  text?: string;
-  buttonText: string;
-  returnUrl: string;
-  subText?: string;
+  title: string
+  text?: string
+  buttonText: string
+  returnUrl: string
+  subText?: string
 }
 
 const Success = ({ title, text, buttonText, returnUrl, subText }: SuccessProps) => (
@@ -32,12 +32,12 @@ const Success = ({ title, text, buttonText, returnUrl, subText }: SuccessProps) 
       </SButtonContainer>
     </Wrapper>
   </Container>
-);
+)
 
 const SIcon = styled(Icon)`
   max-width: 40rem;
   margin: 0 auto;
-`;
+`
 
 const STitle = styled.h2`
   color: ${({ theme }) => theme.colors.contrast};
@@ -45,7 +45,7 @@ const STitle = styled.h2`
   font-size: 4rem;
   margin: 4rem 0 0;
   text-align: center;
-`;
+`
 
 const SText = styled.div`
   color: ${({ theme }) => theme.colors.contrast};
@@ -53,7 +53,7 @@ const SText = styled.div`
   font-size: 2.4rem;
   margin-top: 2.4rem;
   text-align: center;
-`;
+`
 
 const SSubText = styled.div`
   color: ${({ theme }) => theme.colors.contrast};
@@ -61,12 +61,12 @@ const SSubText = styled.div`
   font-size: 1.6rem;
   margin-top: 2.4rem;
   text-align: center;
-`;
+`
 
 const SButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 3.2rem;
-`;
+`
 
-export default Success;
+export default Success

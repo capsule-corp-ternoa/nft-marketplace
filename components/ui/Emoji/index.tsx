@@ -1,1 +1,1 @@
-export { default } from './Emoji';
+export { default } from './Emoji'

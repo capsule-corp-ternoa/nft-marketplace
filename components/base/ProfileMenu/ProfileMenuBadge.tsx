@@ -1,25 +1,19 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from 'react'
+import styled from 'styled-components'
 
-import { Picture, AVATAR_VARIANT_BADGE } from 'components/base/Avatar';
-import { UserType } from 'interfaces';
+import { Picture, AVATAR_VARIANT_BADGE } from 'components/base/Avatar'
+import { UserType } from 'interfaces'
 
 interface Props {
-  className?: string;
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;
-  tokenAmount?: string | number;
-  tokenSymbol?: string;
-  user: UserType;
+  className?: string
+  onClick?: React.MouseEventHandler<HTMLButtonElement>
+  tokenAmount?: string | number
+  tokenSymbol?: string
+  user: UserType
 }
 
-const ProfileMenuBadge = ({
-  className,
-  onClick,
-  tokenAmount,
-  tokenSymbol,
-  user,
-}: Props) => {
-  const { name, picture, verified } = user;
+const ProfileMenuBadge = ({ className, onClick, tokenAmount, tokenSymbol, user }: Props) => {
+  const { name, picture, verified } = user
 
   return (
     <SBadgeContainer className={className} onClick={onClick}>
@@ -28,16 +22,11 @@ const ProfileMenuBadge = ({
         <STokenSymbol>{tokenSymbol}</STokenSymbol>
       </STokenContainer>
       <SPictureContainer>
-        <Picture
-          isVerified={verified}
-          name={name}
-          picture={picture}
-          variant={AVATAR_VARIANT_BADGE}
-        />
+        <Picture isVerified={verified} name={name} picture={picture} variant={AVATAR_VARIANT_BADGE} />
       </SPictureContainer>
     </SBadgeContainer>
-  );
-};
+  )
+}
 
 const SBadgeContainer = styled.button`
   display: flex;
@@ -49,7 +38,7 @@ const SBadgeContainer = styled.button`
   border-radius: 2.4rem;
   cursor: pointer;
   padding: 0.4rem;
-`;
+`
 
 const STokenContainer = styled.div`
   color: ${({ theme }) => theme.colors.invertedContrast};
@@ -64,7 +53,7 @@ const STokenContainer = styled.div`
   ${({ theme }) => theme.mediaQueries.sm} {
     margin: 0 1.6rem;
   }
-`;
+`
 
 const STokenAmount = styled.span`
   font-family: ${({ theme }) => theme.fonts.bold};
@@ -73,7 +62,7 @@ const STokenAmount = styled.span`
   ${({ theme }) => theme.mediaQueries.sm} {
     font-size: 1.6rem;
   }
-`;
+`
 
 const STokenSymbol = styled.span`
   font-family: ${({ theme }) => theme.fonts.light};
@@ -83,10 +72,10 @@ const STokenSymbol = styled.span`
   ${({ theme }) => theme.mediaQueries.sm} {
     font-size: 1.4rem;
   }
-`;
+`
 
 const SPictureContainer = styled.div`
   cursor: pointer;
-`;
+`
 
-export default ProfileMenuBadge;
+export default ProfileMenuBadge

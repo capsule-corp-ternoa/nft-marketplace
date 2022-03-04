@@ -1,23 +1,23 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
 export const Advice = styled.span`
   color: ${({ theme }) => theme.colors.primary500};
   font-family: ${({ theme }) => theme.fonts.regular};
   font-size: 1.6rem;
   line-height: 1.3;
-`;
+`
 
 export const Insight = styled.span`
   color: ${({ theme }) => theme.colors.neutral300};
   font-family: ${({ theme }) => theme.fonts.regular};
   font-size: 1.2rem;
   line-height: 1.3;
-`;
+`
 
 export const InsightLight = styled(Insight)`
   font-family: ${({ theme }) => theme.fonts.light};
   font-size: 1rem;
-`;
+`
 
 export const Subtitle = styled.h3`
   display: flex;
@@ -27,7 +27,7 @@ export const Subtitle = styled.h3`
   font-size: 2rem;
   line-height: 1.3;
   margin: 0;
-`;
+`
 
 export const Title = styled.h2`
   display: inline-block;
@@ -45,4 +45,4 @@ export const Title = styled.h2`
     font-size: 6.4rem;
     text-align: left;
   }
-`;
+`

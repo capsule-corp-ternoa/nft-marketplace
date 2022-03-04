@@ -1,13 +1,13 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from 'react'
+import styled from 'styled-components'
 
-import Media from 'components/base/Media';
-import Modal, { MODAL_SHOWCASE_VARIANT } from 'components/ui/Modal';
+import Media from 'components/base/Media'
+import Modal, { MODAL_SHOWCASE_VARIANT } from 'components/ui/Modal'
 
 export interface ModalShowcaseProps {
-  media: string;
-  type: string | null;
-  setExpanded: (b: boolean) => void;
+  media: string
+  type: string | null
+  setExpanded: (b: boolean) => void
 }
 
 const ModalShowcase: React.FC<ModalShowcaseProps> = ({ media, setExpanded, type }) => (
@@ -16,7 +16,7 @@ const ModalShowcase: React.FC<ModalShowcaseProps> = ({ media, setExpanded, type 
       <Media src={media} type={type} />
     </SMediaContainer>
   </Modal>
-);
+)
 
 const SMediaContainer = styled.div`
   display: flex;
@@ -37,6 +37,6 @@ const SMediaContainer = styled.div`
     width: ${({ theme }) => theme.sizes.cardWidth.xl};
     height: ${({ theme }) => theme.sizes.cardHeight.xl};
   }
-`;
+`
 
-export default ModalShowcase;
+export default ModalShowcase

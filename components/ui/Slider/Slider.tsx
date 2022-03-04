@@ -1,27 +1,18 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from 'react'
+import styled from 'styled-components'
 
 interface Props {
-  className?: string;
-  id?: string;
-  max?: string | number;
-  min?: string | number;
-  onBlur?: React.FocusEventHandler<HTMLInputElement>;
-  onChange: React.ChangeEventHandler<HTMLInputElement>;
-  step?: string | number;
-  value: string | number | readonly string[];
+  className?: string
+  id?: string
+  max?: string | number
+  min?: string | number
+  onBlur?: React.FocusEventHandler<HTMLInputElement>
+  onChange: React.ChangeEventHandler<HTMLInputElement>
+  step?: string | number
+  value: string | number | readonly string[]
 }
 
-const Slider = ({
-  className,
-  id,
-  max,
-  min,
-  onBlur,
-  onChange,
-  step,
-  value,
-}: Props) => (
+const Slider = ({ className, id, max, min, onBlur, onChange, step, value }: Props) => (
   <div className={className}>
     <SliderContainer>
       <SliderInput
@@ -36,7 +27,7 @@ const Slider = ({
       />
     </SliderContainer>
   </div>
-);
+)
 
 const SliderContainer = styled.div`
   width: 100%;
@@ -47,7 +38,7 @@ const SliderContainer = styled.div`
   backdrop-filter: blur(0.8rem);
   border-radius: 2.4rem;
   padding: 0 2.4rem;
-`;
+`
 
 const SliderInput = styled.input`
   width: 100%;
@@ -81,8 +72,7 @@ const SliderInput = styled.input`
     background: ${({ theme }) => theme.colors.primary500};
     border-radius: 50%;
     cursor: pointer;
-    transition: box-shadow 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
-      left 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+    transition: box-shadow 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, left 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
       bottom 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
 
     &:hover {
@@ -99,8 +89,7 @@ const SliderInput = styled.input`
     border: none;
     border-radius: 50%;
     cursor: pointer;
-    transition: box-shadow 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
-      left 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+    transition: box-shadow 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, left 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
       bottom 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
 
     &:hover {
@@ -115,6 +104,6 @@ const SliderInput = styled.input`
   ::-moz-range-progress {
     background-color: ${({ theme }) => theme.colors.primary500};
   }
-`;
+`
 
-export default Slider;
+export default Slider

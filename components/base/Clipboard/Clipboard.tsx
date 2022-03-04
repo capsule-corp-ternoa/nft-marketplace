@@ -1,46 +1,37 @@
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
+import React, { useEffect, useState } from 'react'
+import styled from 'styled-components'
 
-import {
-  AVATAR_VARIANT_TYPE,
-  AVATAR_VARIANT_BANNER,
-} from 'components/base/Avatar';
-import Icon from 'components/ui/Icon';
-import { clipboardCopy } from 'utils/functions';
-import { middleEllipsis } from 'utils/strings';
+import { AVATAR_VARIANT_TYPE, AVATAR_VARIANT_BANNER } from 'components/base/Avatar'
+import Icon from 'components/ui/Icon'
+import { clipboardCopy } from 'utils/functions'
+import { middleEllipsis } from 'utils/strings'
 
 interface Props {
-  address: string;
-  className?: string;
-  isCopyLabelIndicator?: boolean;
-  isEllipsis?: boolean;
-  variant?: AVATAR_VARIANT_TYPE;
+  address: string
+  className?: string
+  isCopyLabelIndicator?: boolean
+  isEllipsis?: boolean
+  variant?: AVATAR_VARIANT_TYPE
 }
 
-const Clipboard = ({
-  address,
-  className,
-  isCopyLabelIndicator = true,
-  isEllipsis = false,
-  variant,
-}: Props) => {
-  const [isCopyIndicator, setIsCopyIndicator] = useState(false);
+const Clipboard = ({ address, className, isCopyLabelIndicator = true, isEllipsis = false, variant }: Props) => {
+  const [isCopyIndicator, setIsCopyIndicator] = useState(false)
 
   useEffect(() => {
     if (isCopyIndicator) {
       const timer = setTimeout(() => {
-        setIsCopyIndicator(false);
-      }, 1500);
-      return () => clearTimeout(timer);
+        setIsCopyIndicator(false)
+      }, 1500)
+      return () => clearTimeout(timer)
     }
-  }, [isCopyIndicator]);
+  }, [isCopyIndicator])
 
   return (
     <SAddressWrapper
       className={className}
       onClick={() => {
-        clipboardCopy(address);
-        setIsCopyIndicator(true);
+        clipboardCopy(address)
+        setIsCopyIndicator(true)
       }}
     >
       {isEllipsis ? middleEllipsis(address, 12) : address}
@@ -53,8 +44,8 @@ const Clipboard = ({
         <SCopyIcon name="copyPaste" variant={variant} />
       )}
     </SAddressWrapper>
-  );
-};
+  )
+}
 
 const SAddressWrapper = styled.span`
   position: relative;
@@ -71,7 +62,7 @@ const SAddressWrapper = styled.span`
       fill: ${({ theme }) => theme.colors.primary500};
     }
   }
-`;
+`
 
 const SSuccessContainer = styled.div<{ variant?: AVATAR_VARIANT_TYPE }>`
   ${({ variant }) =>
@@ -85,18 +76,18 @@ const SSuccessContainer = styled.div<{ variant?: AVATAR_VARIANT_TYPE }>`
       height: 1.6rem;
     }
     `}
-`;
+`
 
 const SCheckIcon = styled(Icon)`
   width: 1.2rem;
   fill: ${({ theme }) => theme.colors.primary500};
   margin-left: 0.8rem;
-`;
+`
 
 const SLabel = styled.span`
   margin-left: 0.4rem;
   flex: 1 0 auto;
-`;
+`
 
 const SCopyIcon = styled(Icon)<{ variant?: AVATAR_VARIANT_TYPE }>`
   width: 1.2rem;
@@ -114,6 +105,6 @@ const SCopyIcon = styled(Icon)<{ variant?: AVATAR_VARIANT_TYPE }>`
       height: 1.6rem;
     }
     `}
-`;
+`
 
-export default Clipboard;
+export default Clipboard

@@ -1,4 +1,4 @@
-import { Colors, Shadows } from './types';
+import { Colors, Shadows } from './types'
 
 export const colors: Colors = {
   whiteBlur: 'rgba(255, 255, 255, 0.55)',
@@ -39,13 +39,15 @@ export const colors: Colors = {
   success600: '#11A889',
   success700: '#098C71',
   success800: '#045847',
-};
+}
 
 export const shadows: Shadows = {
   popupShadow: '0 0.2rem 1.2rem rgba(0, 0, 0, 0.15)',
-};
+}
 
-export default {
+const colorsBase = {
   colors,
   shadows,
-};
+}
+
+export default colorsBase

@@ -1,16 +1,11 @@
-import React from 'react';
+import React from 'react'
 
 interface SearchProps {
-  className?: string;
+  className?: string
 }
 
 const Search = ({ className }: SearchProps) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className={className}
-    viewBox="0 0 15 15"
-    fill="none"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 15 15" fill="none">
     <path
       fillRule="evenodd"
       clipRule="evenodd"
@@ -24,6 +19,6 @@ const Search = ({ className }: SearchProps) => (
       fill="#686464"
     />
   </svg>
-);
+)
 
-export default Search;
+export default Search

@@ -1,20 +1,20 @@
-import React, { useState } from 'react';
-import Link from 'next/link';
-import styled from 'styled-components';
+import React, { useState } from 'react'
+import Link from 'next/link'
+import styled from 'styled-components'
 
-import { ModalWallet } from 'components/base/Modal';
-import { ProfileMenuBadge, ProfileMenuDropdown } from 'components/base/ProfileMenu';
-import Button from 'components/ui/Button';
+import { ModalWallet } from 'components/base/Modal'
+import { ProfileMenuBadge, ProfileMenuDropdown } from 'components/base/ProfileMenu'
+import Button from 'components/ui/Button'
 
-import { computeCaps } from 'utils/strings';
-import { useApp } from 'redux/hooks';
+import { computeCaps } from 'utils/strings'
+import { useApp } from 'redux/hooks'
 
 const FloatingHeader: React.FC = () => {
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [isModalWalletExpanded, setIsModalWalletExpanded] = useState(false);
-  const [isProfileMenuExpanded, setIsProfileMenuExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false)
+  const [isModalWalletExpanded, setIsModalWalletExpanded] = useState(false)
+  const [isProfileMenuExpanded, setIsProfileMenuExpanded] = useState(false)
 
-  const { user } = useApp();
+  const { user } = useApp()
 
   return (
     <>
@@ -49,8 +49,8 @@ const FloatingHeader: React.FC = () => {
             <Button
               color="invertedContrast"
               onClick={() => {
-                setIsModalWalletExpanded(true);
-                setIsExpanded(false);
+                setIsModalWalletExpanded(true)
+                setIsExpanded(false)
               }}
               size="medium"
               suppressHydrationWarning
@@ -65,8 +65,8 @@ const FloatingHeader: React.FC = () => {
       </SHeaderContainer>
       {isModalWalletExpanded && <ModalWallet setExpanded={setIsModalWalletExpanded} />}
     </>
-  );
-};
+  )
+}
 
 const SHeaderContainer = styled.div<{ isExpanded: boolean }>`
   display: flex;
@@ -93,7 +93,7 @@ const SHeaderContainer = styled.div<{ isExpanded: boolean }>`
   ${({ theme }) => theme.mediaQueries.lg} {
     display: none;
   }
-`;
+`
 
 const SExpandedHeaderWrapper = styled.div`
   display: flex;
@@ -101,21 +101,21 @@ const SExpandedHeaderWrapper = styled.div`
   width: 100%;
   padding-left: 1.6rem;
   padding-bottom: 0.8rem;
-`;
+`
 
 const SLink = styled.a`
   color: ${({ theme }) => theme.colors.invertedContrast};
   font-family: ${({ theme }) => theme.fonts.bold};
   font-size: 1.6rem;
   margin-bottom: 0.8rem;
-`;
+`
 
 const SWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
-`;
+`
 
 const SBurgerContainer = styled.button`
   padding: 1.2rem 0.8rem;
@@ -133,7 +133,7 @@ const SBurgerContainer = styled.button`
   &:hover {
     opacity: 0.8;
   }
-`;
+`
 
 const SBurgerBox = styled.span`
   width: 4rem;
@@ -141,7 +141,7 @@ const SBurgerBox = styled.span`
   display: inline-block;
   position: relative;
   perspective: 8rem;
-`;
+`
 
 const SBurgerInner = styled.span<{ isExpanded: boolean }>`
   display: block;
@@ -152,12 +152,15 @@ const SBurgerInner = styled.span<{ isExpanded: boolean }>`
   background-color: ${({ theme }) => theme.colors.invertedContrast};
   border-radius: 0.4rem;
   position: absolute;
-  transition: transform 0.15s cubic-bezier(0.645, 0.045, 0.355, 1), background-color 0s 0.1s cubic-bezier(0.645, 0.045, 0.355, 1);
+  transition: transform 0.15s cubic-bezier(0.645, 0.045, 0.355, 1),
+    background-color 0s 0.1s cubic-bezier(0.645, 0.045, 0.355, 1);
   transition-property: transform;
   transition-duration: 0.15s;
   transition-timing-function: ease;
 
-  ${({ isExpanded }) => isExpanded && `
+  ${({ isExpanded }) =>
+    isExpanded &&
+    `
     background-color: transparent !important;
     transform: rotateY(180deg);
   `}
@@ -180,7 +183,9 @@ const SBurgerInner = styled.span<{ isExpanded: boolean }>`
   &::after {
     bottom: -10px;
 
-    ${({ isExpanded }) => isExpanded && `
+    ${({ isExpanded }) =>
+      isExpanded &&
+      `
       transform: translate3d(0, -10px, 0) rotate(-45deg);
     `}
   }
@@ -188,16 +193,18 @@ const SBurgerInner = styled.span<{ isExpanded: boolean }>`
   &::before {
     top: -10px;
 
-    ${({ isExpanded }) => isExpanded && `
+    ${({ isExpanded }) =>
+      isExpanded &&
+      `
       transform: translate3d(0, 10px, 0) rotate(45deg);
     `}
   }
-`;
+`
 
 const SProfileMenuBadge = styled(ProfileMenuBadge)`
   background-color: transparent;
   border-color: ${({ theme }) => theme.colors.invertedContrast};
-`;
+`
 
 const SProfileMenuDropdown = styled(ProfileMenuDropdown)`
   top: -23rem;
@@ -216,6 +223,6 @@ const SProfileMenuDropdown = styled(ProfileMenuDropdown)`
     right: 3.2rem;
     transform: translateY(0.8rem);
   }
-`;
+`
 
-export default FloatingHeader;
+export default FloatingHeader

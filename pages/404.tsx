@@ -1,5 +1,5 @@
-import React from 'react';
-import { Error, ERROR_PAGE_404 } from 'components/pages/Error';
+import React from 'react'
+import { Error, ERROR_PAGE_404 } from 'components/pages/Error'
 
 const Error404Page = () => (
   <Error
@@ -7,6 +7,6 @@ const Error404Page = () => (
     title="Error 404 · page not found"
     variant={ERROR_PAGE_404}
   />
-);
+)
 
-export default Error404Page;
+export default Error404Page

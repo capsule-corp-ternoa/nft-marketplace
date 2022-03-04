@@ -60,20 +60,20 @@ const FollowAvatar = ({
   useEffect(() => {
     let shouldUpdate = true
     const initStatus = async () => {
-      if (user) {
-        try {
+      try {
+        if (user) {
           const { isFollowing } = await isUserFollowing(profileWalletId, user.walletId)
           if (shouldUpdate) setIsFollowing(isFollowing)
-
-          const count = await getFollowersCount(profileWalletId)
-          if (shouldUpdate) {
-            setFollowersCount(count)
-            setIsFollowLoading(false)
-          }
-        } catch (error) {
-          console.log(error)
-          if (shouldUpdate) setIsFollowLoading(false)
         }
+
+        const count = await getFollowersCount(profileWalletId)
+        if (shouldUpdate) {
+          setFollowersCount(count)
+          setIsFollowLoading(false)
+        }
+      } catch (error) {
+        console.log(error)
+        if (shouldUpdate) setIsFollowLoading(false)
       }
     }
 

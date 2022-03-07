@@ -47,7 +47,7 @@ const Landing = ({
         const artist = await getArtistHighlight()
         if (artist.walletId === undefined) throw new Error('')
         const { countFollowers } = await getUserNFTsStat(artist.walletId, true) ?? {}
-        const artistNFTs = await getNFTs('1', '6', { owner: artist.walletId })
+        const artistNFTs = await getNFTs('1', '6', { creator: artist.walletId })
 
         if (shouldUpdate) {
           setArtistHighlight({...artist, nbFollowers: countFollowers})

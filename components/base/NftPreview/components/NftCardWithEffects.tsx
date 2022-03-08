@@ -19,6 +19,7 @@ interface Props {
   blurValue: number
   coverNFT: File | null
   className?: string
+  disabled?: boolean
   effect: NftEffectType
   originalNFT: File
   setBlurValue: (v: number) => void
@@ -64,6 +65,7 @@ const NftCardWithEffects = ({
   blurValue,
   className,
   coverNFT,
+  disabled = false,
   effect,
   originalNFT,
   setBlurValue,
@@ -96,39 +98,59 @@ const NftCardWithEffects = ({
     <SWrapper className={className}>
       {returnType(originalNFT, effect === NFT_EFFECT_BLUR ? blurValue : 0)}
       {effect === NFT_EFFECT_BLUR && (
-        <SSlider id="blurredSlider" max={15} min={1} onChange={handleBlurredChange} step={1} value={blurValue} />
+        <SCardWrapper>
+          {disabled ? (
+            <SChipContainer>
+              <Chip color="whiteBlur" icon="fingerMark" size="medium" text="Blur" variant="round" />
+            </SChipContainer>
+          ) : (
+            <SSlider id="blurredSlider" max={15} min={1} onChange={handleBlurredChange} step={1} value={blurValue} />
+          )}
+        </SCardWrapper>
       )}
-      {effect === NFT_EFFECT_PROTECT && <SIcon name="whiteWaterMark" />}
+      {effect === NFT_EFFECT_PROTECT && (
+        <SCardWrapper>
+          <SIcon name="whiteWaterMark" />
+          {disabled && (
+            <SChipContainer>
+              <Chip color="whiteBlur" icon="fingerMark" size="medium" text="Protect" variant="round" />
+            </SChipContainer>
+          )}
+        </SCardWrapper>
+      )}
       {effect === NFT_EFFECT_SECRET && (
-        <SSecretWrapper>
-          <SCoverWrapper>
-            {coverNFT === null ? (
-              <NftUpload
-                content={
-                  <SecretUploadDescription>
-                    <SecretUploadTopDescription>Upload the preview of your secret.</SecretUploadTopDescription>
-                    <SPurchaseAdvise>Once purchased, the owner will be able to see your NFT</SPurchaseAdvise>
-                  </SecretUploadDescription>
-                }
-                inputId="uploadOriginalNft"
-                isSecretOption
-                note={`JPEG, JPG, PNG, GIF ${!isRN ? ', MP4 or MOV' : ''}. Max 30mb.`}
-                onChange={handleSecretFileUpload}
-              />
-            ) : (
-              <NftUpload
-                content={returnType(coverNFT)}
-                inputId="reUploadOriginalNft"
-                isMinimal
-                isSecretOption
-                onChange={handleSecretFileUpload}
-              />
-            )}
-          </SCoverWrapper>
-          <SSecretChipContainer isCoverNft={Boolean(coverNFT)}>
-            <Chip color="whiteBlur" icon="fingerMark" size="medium" text="Secret" variant="round" />
-          </SSecretChipContainer>
-        </SSecretWrapper>
+        <SCardWrapper>
+          {disabled ? (
+            <SChipContainer>
+              <Chip color="whiteBlur" icon="fingerMark" size="medium" text="Secret" variant="round" />
+            </SChipContainer>
+          ) : (
+            <SCoverWrapper>
+              {coverNFT === null ? (
+                <NftUpload
+                  content={
+                    <SecretUploadDescription>
+                      <SecretUploadTopDescription>Upload the preview of your secret.</SecretUploadTopDescription>
+                      <SPurchaseAdvise>Once purchased, the owner will be able to see your NFT</SPurchaseAdvise>
+                    </SecretUploadDescription>
+                  }
+                  inputId="uploadOriginalNft"
+                  isSecretOption
+                  note={`JPEG, JPG, PNG, GIF ${!isRN ? ', MP4 or MOV' : ''}. Max 30mb.`}
+                  onChange={handleSecretFileUpload}
+                />
+              ) : (
+                <NftUpload
+                  content={returnType(coverNFT)}
+                  inputId="reUploadOriginalNft"
+                  isMinimal
+                  isSecretOption
+                  onChange={handleSecretFileUpload}
+                />
+              )}
+            </SCoverWrapper>
+          )}
+        </SCardWrapper>
       )}
     </SWrapper>
   )
@@ -189,25 +211,14 @@ const SIcon = styled(Icon)`
   }
 `
 
-const SSecretWrapper = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
+const SCardWrapper = styled.div`
   width: 100%;
-  height: auto;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 2.4rem 0 0;
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    padding: 2rem 0 0;
-  }
-
-  ${({ theme }) => theme.mediaQueries.xl} {
-    padding: 2.4rem 0 0;
-  }
+  position: absolute;
 `
 
 const SecretUploadDescription = styled.div`
@@ -235,16 +246,11 @@ const SPurchaseAdvise = styled.span`
   }
 `
 
-const SSecretChipContainer = styled.div<{ isCoverNft?: boolean }>`
-  margin: 1.6rem auto 0;
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    display: ${({ isCoverNft }) => (isCoverNft ? 'flex' : 'none')};
-  }
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    display: flex;
-  }
+const SChipContainer = styled.div`
+  position: absolute;
+  bottom: 2.4rem;
+  margin: 0 auto;
+  z-index: 100;
 `
 
 export default React.memo(NftCardWithEffects)

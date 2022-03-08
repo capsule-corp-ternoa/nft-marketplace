@@ -10,7 +10,7 @@ interface Props {
   showThumbnailSelector: boolean
   thumbnailTimecode: number
   setThumbnailTimecode: (x: number) => void
-  effect: NftEffectType
+  selectedEffect: NftEffectType
 }
 
 const secToMn = (n: number) =>
@@ -23,12 +23,12 @@ const ThumbnailSelector = ({
   showThumbnailSelector,
   thumbnailTimecode,
   setThumbnailTimecode,
-  effect,
+  selectedEffect,
 }: Props) => {
   const [thumbnailDuration, setThumbnailDuration] = useState(0)
   const [thumbnailSrc, setThumbnailSrc] = useState('')
   const thumbnailRef = useRef(null)
-  const thumbnailNFT = effect === NFT_EFFECT_DEFAULT ? originalNFT : ((coverNFT || originalNFT) as File)
+  const thumbnailNFT = selectedEffect === NFT_EFFECT_DEFAULT ? originalNFT : ((coverNFT || originalNFT) as File)
 
   /* If NFT (original or cover) changes, we reset thumbnail source, timecode and duration */
   useEffect(() => {

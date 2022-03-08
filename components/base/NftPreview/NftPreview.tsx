@@ -23,7 +23,7 @@ interface Props {
   blurValue: number
   className?: string
   coverNFT: File | null
-  effect: NftEffectType
+  selectedEffect: NftEffectType
   originalNFT: File | null
   setBlurValue: (n: number) => void
   setCoverNFT: (f: File | null) => void
@@ -46,7 +46,7 @@ const NftPreview = ({
   blurValue,
   className,
   coverNFT,
-  effect,
+  selectedEffect,
   originalNFT,
   setBlurValue,
   setCoverNFT,
@@ -113,13 +113,13 @@ const NftPreview = ({
           </SReuploadWrapper>
         )}
       </SHeader>
-      {effect !== undefined && (
+      {selectedEffect !== undefined && (
         <SWrapper>
           <SMobileCardWrapper>
             <NftCardWithEffects
               blurValue={blurValue}
               coverNFT={coverNFT}
-              effect={effect}
+              effect={selectedEffect}
               originalNFT={originalNFT}
               setBlurValue={setBlurValue}
               setCoverNFT={setCoverNFT}
@@ -127,35 +127,33 @@ const NftPreview = ({
               setError={setError}
             />
           </SMobileCardWrapper>
-          <SSelect color="primary500" text={effect}>
+          <SSelect color="primary500" text={selectedEffect}>
             {(setSelectExpanded) => (
               <>
-                {NFT_EFFECTS_ORDERED.filter((effectType) => handleAllowedEffect(originalNFT, effectType)).map(
-                  (effectType, id) => {
-                    const isEffectDisabled = NFT_EFFECTS_DISABLED.includes(effectType)
-                    if (effectType === effect) return null
+                {NFT_EFFECTS_ORDERED.filter((effect) => handleAllowedEffect(originalNFT, effect)).map((effect, id) => {
+                  const isEffectDisabled = NFT_EFFECTS_DISABLED.includes(effect)
+                  if (effect === selectedEffect) return null
 
-                    return (
-                      <SItemContainer
-                        key={id}
-                        disabled={isEffectDisabled}
-                        onClick={() => {
-                          if (isEffectDisabled) return
+                  return (
+                    <SItemContainer
+                      key={id}
+                      disabled={isEffectDisabled}
+                      onClick={() => {
+                        if (isEffectDisabled) return
 
-                          setSelectExpanded(false)
-                          setEffect(effectType)
-                        }}
-                      >
-                        <SItemWrapper>
-                          {effectType}
-                          {isEffectDisabled && (
-                            <Chip color="primary200" size="small" text="Coming soon" variant="rectangle" />
-                          )}
-                        </SItemWrapper>
-                      </SItemContainer>
-                    )
-                  }
-                )}
+                        setSelectExpanded(false)
+                        setEffect(effect)
+                      }}
+                    >
+                      <SItemWrapper>
+                        {effect}
+                        {isEffectDisabled && (
+                          <Chip color="primary200" size="small" text="Coming soon" variant="rectangle" />
+                        )}
+                      </SItemWrapper>
+                    </SItemContainer>
+                  )
+                })}
               </>
             )}
           </SSelect>
@@ -163,22 +161,22 @@ const NftPreview = ({
         </SWrapper>
       )}
       <SFieldset>
-        {NFT_EFFECTS_ORDERED.filter((effectType) => handleAllowedEffect(originalNFT, effectType)).map((effectType) => {
-          const isEffectDisabled = NFT_EFFECTS_DISABLED.includes(effectType)
+        {NFT_EFFECTS_ORDERED.filter((effect) => handleAllowedEffect(originalNFT, effect)).map((effect) => {
+          const isEffectDisabled = NFT_EFFECTS_DISABLED.includes(effect)
           return (
-            <SLabelWrapper key={effectType}>
+            <SLabelWrapper key={effect}>
               <SLabel
-                htmlFor={isEffectDisabled ? undefined : `NftType_${effectType}`}
-                isSelected={effect === effectType}
+                htmlFor={isEffectDisabled ? undefined : `NftType_${effect}`}
+                isSelected={selectedEffect === effect}
                 disabled={isEffectDisabled}
               >
                 <SCardContainer>
-                  <SCardWrapper isSelected={effect === effectType}>
+                  <SCardWrapper isSelected={selectedEffect === effect}>
                     <NftCardWithEffects
                       blurValue={blurValue}
                       coverNFT={coverNFT}
                       disabled={isEffectDisabled}
-                      effect={effectType}
+                      effect={effect}
                       originalNFT={originalNFT}
                       setBlurValue={setBlurValue}
                       setCoverNFT={setCoverNFT}
@@ -201,7 +199,7 @@ const NftPreview = ({
                   {isEffectDisabled ? (
                     <Chip color="primary200" size="medium" text="Coming soon" variant="rectangle" />
                   ) : (
-                    <Radio checked={effect === effectType} label={effectType} onChange={() => setEffect(effectType)} />
+                    <Radio checked={selectedEffect === effect} label={effect} onChange={() => setEffect(effect)} />
                   )}
                 </SRadioWrapper>
               </SLabel>
@@ -209,10 +207,10 @@ const NftPreview = ({
               <HiddenShell>
                 <HiddenInput
                   type="radio"
-                  id={`NftType_${effectType}`}
-                  name={`NftType_${effectType}`}
-                  onClick={() => setEffect(effectType)}
-                  value={effectType}
+                  id={`NftType_${effect}`}
+                  name={`NftType_${effect}`}
+                  onClick={() => setEffect(effect)}
+                  value={effect}
                 />
               </HiddenShell>
             </SLabelWrapper>

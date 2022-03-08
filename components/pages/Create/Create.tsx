@@ -66,14 +66,16 @@ const Create = ({
 
   const [blurValue, setBlurValue] = useState<number>(DEFAULT_BLUR_VALUE)
   const [coverNFT, setCoverNFT] = useState<File | null>(null) // Cover NFT used for secret effect
-  const [effect, setEffect] = useState<NftEffectType>(NFT_EFFECT_DEFAULT)
+  const [selectedEffect, setSelectedEffect] = useState<NftEffectType>(NFT_EFFECT_DEFAULT)
   const [nftData, setNFTData] = useState(initalValue)
   const [canAddToSeriesValue, setCanAddToSeriesValue] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
   const { categories, description, name, quantity, seriesId } = nftData
   const showThumbnailSelector =
     (coverNFT && mime.lookup(coverNFT.name).toString().indexOf('video') !== -1) ||
-    (effect === NFT_EFFECT_DEFAULT && originalNFT && mime.lookup(originalNFT.name).toString().indexOf('video') !== -1)
+    (selectedEffect === NFT_EFFECT_DEFAULT &&
+      originalNFT &&
+      mime.lookup(originalNFT.name).toString().indexOf('video') !== -1)
 
   useEffect(() => {
     let shouldUpdate = true
@@ -121,7 +123,7 @@ const Create = ({
     description &&
     validateQuantity(quantity, 10) &&
     originalNFT &&
-    (effect !== NFT_EFFECT_SECRET || coverNFT) &&
+    (selectedEffect !== NFT_EFFECT_SECRET || coverNFT) &&
     canAddToSeriesValue &&
     !isLoading
 
@@ -155,12 +157,12 @@ const Create = ({
       setIsModalMintExpanded(true)
 
       if (originalNFT !== null) {
-        if (effect === NFT_EFFECT_BLUR || effect === NFT_EFFECT_PROTECT) {
-          const processedNFT = await processFile(originalNFT, effect, setError, blurValue)
+        if (selectedEffect === NFT_EFFECT_BLUR || selectedEffect === NFT_EFFECT_PROTECT) {
+          const processedNFT = await processFile(originalNFT, selectedEffect, setError, blurValue)
           if (processedNFT === undefined)
-            throw new Error(`Elements are undefined after file processing using ${effect} effect.`)
+            throw new Error(`Elements are undefined after file processing using ${selectedEffect} effect.`)
           setPreviewNFT(processedNFT)
-        } else if (effect === NFT_EFFECT_SECRET) {
+        } else if (selectedEffect === NFT_EFFECT_SECRET) {
           if (coverNFT === null) throw new Error('Please add a cover NFT using a secret effect.')
           setPreviewNFT(coverNFT)
         }
@@ -209,11 +211,11 @@ const Create = ({
           <NftPreview
             blurValue={blurValue}
             coverNFT={coverNFT}
-            effect={effect}
+            selectedEffect={selectedEffect}
             originalNFT={originalNFT}
             setBlurValue={setBlurValue}
             setCoverNFT={setCoverNFT}
-            setEffect={setEffect}
+            setEffect={setSelectedEffect}
             setError={setError}
             setIsLoading={setIsLoading}
             setOriginalNFT={setOriginalNFT}
@@ -233,7 +235,7 @@ const Create = ({
                   showThumbnailSelector={showThumbnailSelector}
                   thumbnailTimecode={thumbnailTimecode}
                   setThumbnailTimecode={setThumbnailTimecode}
-                  effect={effect}
+                  selectedEffect={selectedEffect}
                 />
               </InputShell>
             )}

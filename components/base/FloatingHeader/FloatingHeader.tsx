@@ -38,14 +38,7 @@ const FloatingHeader: React.FC = () => {
               <SBurgerInner isExpanded={isExpanded} />
             </SBurgerBox>
           </SBurgerContainer>
-          {user ? (
-            <SProfileMenuBadge
-              onClick={() => setIsProfileMenuExpanded((prevState) => !prevState)}
-              tokenAmount={user?.capsAmount ? computeCaps(Number(user.capsAmount)) : 0}
-              tokenSymbol="CAPS"
-              user={user}
-            />
-          ) : (
+          {user === undefined || user === null || user._id === '' ? (
             <Button
               color="invertedContrast"
               onClick={() => {
@@ -53,9 +46,15 @@ const FloatingHeader: React.FC = () => {
                 setIsExpanded(false)
               }}
               size="medium"
-              suppressHydrationWarning
-              text="Connect Wallet"
+              text="Connect"
               variant="contained"
+            />
+          ) : (
+            <SProfileMenuBadge
+              onClick={() => setIsProfileMenuExpanded((prevState) => !prevState)}
+              tokenAmount={user?.capsAmount ? computeCaps(Number(user.capsAmount)) : 0}
+              tokenSymbol="CAPS"
+              user={user}
             />
           )}
         </SWrapper>

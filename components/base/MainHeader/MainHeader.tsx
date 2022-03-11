@@ -48,21 +48,20 @@ const MainHeader: React.FC = () => {
                   </>
                 </Link>
               )}
-              {user ? (
-                <ProfileMenuBadge
-                  onClick={() => setIsProfileMenuExpanded((prevState) => !prevState)}
-                  tokenAmount={user?.capsAmount ? computeCaps(Number(user.capsAmount)) : 0}
-                  tokenSymbol="CAPS"
-                  user={user}
-                />
-              ) : (
+              {user === undefined || user === null || user._id === '' ? (
                 <Button
                   color="contrast"
                   onClick={() => setIsModalWalletExpanded(true)}
                   size="medium"
-                  suppressHydrationWarning
                   text="Connect"
                   variant="outlined"
+                />
+              ) : (
+                <ProfileMenuBadge
+                  onClick={() => setIsProfileMenuExpanded((prevState) => !prevState)}
+                  tokenAmount={user.capsAmount ? computeCaps(Number(user.capsAmount)) : 0}
+                  tokenSymbol="CAPS"
+                  user={user}
                 />
               )}
             </SNavButtonsCointainer>

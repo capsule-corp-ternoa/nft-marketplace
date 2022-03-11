@@ -1,5 +1,4 @@
 import React from 'react'
-import Image from 'next/image'
 import { useMarketplaceData } from 'redux/hooks'
 
 interface LogoProps {
@@ -11,7 +10,8 @@ const LogoTernoa = ({ className, onClick }: LogoProps) => {
   const { logo } = useMarketplaceData()
 
   return logo ? (
-    <Image src={logo} alt="Marketplace Logo" className={className} onClick={onClick} width={500} height={500} />
+    // eslint-disable-next-line @next/next/no-img-element
+    <img src={logo} alt="Marketplace Logo" className={className} onClick={onClick} />
   ) : (
     <svg xmlns="http://www.w3.org/2000/svg" className={className} onClick={onClick} viewBox="0 0 319 91" fill="none">
       <path

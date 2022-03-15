@@ -63,6 +63,7 @@ const ModalMint: React.FC<ModalProps> = ({
   const [mintReponse, setMintResponse] = useState<boolean | null>(null);
   const [startUploadTime, setStartUploadTime] = useState<any>(null);
   const [alreadySentSocketTimeout, setAlreadySentSocketTimeout] = useState(false);
+  const hasSecret = false;
   const router = useRouter();
 
   const modalSubtitle = showQR
@@ -74,7 +75,7 @@ const ModalMint: React.FC<ModalProps> = ({
   const { categories, description, name, seriesId } = NFTData;
   const progressQuantity =
     1 +
-    Number(quantity) +
+    (hasSecret ? Number(quantity) : 0)+
     ((previewNFT && mime.lookup(previewNFT.name).toString().indexOf('video') !== -1) ||
     (!previewNFT && originalNFT && mime.lookup(originalNFT.name).toString().indexOf('video') !== -1)
       ? 1
@@ -234,48 +235,62 @@ const ModalMint: React.FC<ModalProps> = ({
       const result = await uploadIPFS(videoThumbnailFile as File, setProgressData, uploadIndex);
       videoThumbnailHash = result.hashOrURL;
     }
-    const cryptedMediaType = mime.lookup(originalNFT.name);
-    //Encrypt and upload secrets
-    //Parallel
-    const cryptPromises = Array.from({ length: quantity ?? 0 }).map((_x, i) => {
-      return cryptAndUploadNFT(
-        originalNFT,
-        cryptedMediaType as string,
-        publicPGPs[i] as string,
-        setProgressData,
-        uploadIndex + 1 + i
-      );
-    });
-    const cryptResults = await Promise.all(cryptPromises);
-    /* SEQUENTIAL
-    const cryptResults = [] as any
-    for (let i=0; i<quantity; i++){
-      const singleResult = await cryptAndUploadNFT(originalNFT, cryptedMediaType as string, publicPGPs[i] as string, setProgressData, 1+i)
-      cryptResults.push(singleResult)
-    }*/
-    const cryptNFTsJSONs = cryptResults.map((r: any) => r[0]);
-    const publicPGPsIPFS = cryptResults.map((r: any) => r[1]);
-    const results = cryptNFTsJSONs.map((result: any, i: number) => {
-      const data = {
-        title: name,
-        description,
-        image: videoThumbnailHash !== '' ? videoThumbnailHash : previewHash,
-        properties: {
-          publicPGP: publicPGPsIPFS[i].hashOrURL,
-          preview: {
-            ipfs: previewHash,
-            mediaType,
+    let results = null
+    if (hasSecret){
+      //Encrypt and upload secrets
+      const cryptedMediaType = mime.lookup(originalNFT.name);
+      const cryptPromises = Array.from({ length: quantity ?? 0 }).map((_x, i) => {
+        return cryptAndUploadNFT(
+          originalNFT,
+          cryptedMediaType as string,
+          publicPGPs[i] as string,
+          setProgressData,
+          uploadIndex + 1 + i
+        );
+      });
+      const cryptResults = await Promise.all(cryptPromises);
+      const cryptNFTsJSONs = cryptResults.map((r: any) => r[0]);
+      const publicPGPsIPFS = cryptResults.map((r: any) => r[1]);
+      results = cryptNFTsJSONs.map((result: any, i: number) => {
+        const data = {
+          title: name,
+          description,
+          image: videoThumbnailHash !== '' ? videoThumbnailHash : previewHash,
+          properties: {
+            publicPGP: publicPGPsIPFS[i].hashOrURL,
+            preview: {
+              ipfs: previewHash,
+              mediaType,
+            },
+            cryptedMedia: {
+              ipfs: result.hashOrURL,
+              cryptedMediaType,
+            },
           },
-          cryptedMedia: {
-            ipfs: result.hashOrURL,
-            cryptedMediaType,
+        };
+        const finalBlob = new Blob([JSON.stringify(data)], { type: 'application/json' });
+        const finalFile = new File([finalBlob], 'final json');
+        return uploadIPFS(finalFile);
+      });
+    }else{
+      // NFT without secret
+      results = Array.from({ length: quantity ?? 0 }).map(_x => {
+        const data = {
+          title: name,
+          description,
+          image: videoThumbnailHash !== '' ? videoThumbnailHash : previewHash,
+          properties: {
+            preview: {
+              ipfs: previewHash,
+              mediaType,
+            },
           },
-        },
-      };
-      const finalBlob = new Blob([JSON.stringify(data)], { type: 'application/json' });
-      const finalFile = new File([finalBlob], 'final json');
-      return uploadIPFS(finalFile);
-    });
+        };
+        const finalBlob = new Blob([JSON.stringify(data)], { type: 'application/json' });
+        const finalFile = new File([finalBlob], 'final json');
+        return uploadIPFS(finalFile);
+      })
+    }
     const JSONHASHES = await Promise.all(results);
     return {
       categories: categories.map((x) => x.code),

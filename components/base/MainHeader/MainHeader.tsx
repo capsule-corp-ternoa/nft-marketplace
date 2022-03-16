@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 import { ModalWallet } from 'components/base/Modal'
 import { ProfileMenuBadge, ProfileMenuDropdown } from 'components/base/ProfileMenu'
-import Button from 'components/ui/Button'
+import Button, { AnchorButton } from 'components/ui/Button'
 import Icon from 'components/ui/Icon'
 import { Container, Wrapper } from 'components/layout'
 
@@ -44,7 +44,7 @@ const MainHeader: React.FC = () => {
               {isNftCreationEnabled && (
                 <Link href="/create" passHref>
                   <>
-                    <Button color="contrast" href="/create" size="medium" text="Create NFT" variant="outlined" />
+                    <AnchorButton color="contrast" href="/create" size="medium" text="Create NFT" variant="outlined" />
                   </>
                 </Link>
               )}

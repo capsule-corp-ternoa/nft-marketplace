@@ -3,7 +3,7 @@ import Link from 'next/link'
 import styled from 'styled-components'
 
 import Clipboard from 'components/base/Clipboard'
-import Button from 'components/ui/Button'
+import { AnchorButton } from 'components/ui/Button'
 import Icon from 'components/ui/Icon'
 
 import Picture from './components/Picture'
@@ -252,7 +252,7 @@ const SDiscoverButtonWrapper = styled.div`
   }
 `
 
-const SDiscoverButton = styled(Button)`
+const SDiscoverButton = styled(AnchorButton)`
   margin-left: 0.8rem;
 `
 

@@ -6,7 +6,7 @@ import Countdown from 'components/base/Countdown'
 import NftCard from 'components/base/NftCard'
 import { Showcase3D } from 'components/base/Showcase'
 import Avatar from 'components/base/Avatar'
-import Button from 'components/ui/Button'
+import { AnchorButton } from 'components/ui/Button'
 import { NftType } from 'interfaces/index'
 import { computeCaps } from 'utils/strings'
 
@@ -74,7 +74,7 @@ const Hero = ({ NFTs, mode }: HeroProps) => {
           )}
         </SSellWrapper>
         <SButtonWrapper>
-          <Button
+          <AnchorButton
             color="primary500"
             href={`/nft/${selectedNFT.id}`}
             text={mode === HERO_MODE_AUCTION ? 'Place a bid' : 'Buy'}

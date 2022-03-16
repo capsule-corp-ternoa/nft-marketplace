@@ -5,7 +5,7 @@ import randomstring from 'randomstring'
 import Link from 'next/link'
 
 import { ModalLoader, QRCode } from 'components/base/Modal'
-import Button from 'components/ui/Button'
+import { AnchorButton } from 'components/ui/Button'
 import Icon from 'components/ui/Icon'
 import Modal from 'components/ui/Modal'
 import { useApp } from 'redux/hooks'
@@ -83,7 +83,7 @@ const ModalEdit: React.FC<ModalEditProps> = ({ setExpanded, data }) => {
           <SCheckIcon name="checkMark" />
           <SButtonCointainer>
             <Link href="/profile" passHref>
-              <Button
+              <AnchorButton
                 color="invertedContrast"
                 href="/profile"
                 size="medium"

@@ -3,7 +3,7 @@ import Link from 'next/link'
 import styled from 'styled-components'
 import { Container, Wrapper } from 'components/layout'
 import Icon from 'components/ui/Icon'
-import Button from 'components/ui/Button'
+import { AnchorButton } from 'components/ui/Button'
 import { Colors } from 'style/theme/types'
 
 export const NO_NFT_VARIANT_SOLD_OUT = 'sold_out'
@@ -29,7 +29,7 @@ const NoNFTComponent = ({ body, className, href, linkLabel, title, variant }: Pr
           <SLinkWrapper>
             <Link href={href} passHref>
               <>
-                <Button color="contrast" href={href} text={linkLabel} size="medium" variant="outlined" />
+                <AnchorButton color="contrast" href={href} text={linkLabel} size="medium" variant="outlined" />
               </>
             </Link>
           </SLinkWrapper>

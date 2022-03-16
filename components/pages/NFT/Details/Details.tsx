@@ -8,7 +8,7 @@ import Link from 'next/link'
 import { middleEllipsis } from '../../../../utils/strings'
 import { getUsers } from 'actions/user'
 import Avatar, { AVATAR_VARIANT_BADGE, AVATAR_VARIANT_TRANSACTION } from 'components/base/Avatar'
-import Button from 'components/ui/Button'
+import Button, { AnchorButton } from 'components/ui/Button'
 import Chip from 'components/ui/Chip'
 import { EXPLORER_URL, MARKETPLACE_ID } from 'utils/constant'
 import { Loader } from 'components/ui/Icon'
@@ -269,7 +269,7 @@ const Details: React.FC<DetailsProps> = ({
           </SRowDatas>
         </SRowWrapper>
         <SChipButtonWrapper>
-          <Button
+          <AnchorButton
             color="primary500"
             disabled={isTransactionViewDisabled}
             href={`${!isTransactionViewDisabled ? `${EXPLORER_URL}/nft/${id}?extrinsic=${extrinsicId}` : '#'}`}

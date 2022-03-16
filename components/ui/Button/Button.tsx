@@ -14,10 +14,17 @@ interface IButton {
   size?: 'small' | 'medium'
   variant?: 'contained' | 'outlined'
 }
-interface Props extends IButton {
+
+interface AnchorButtonProps extends IButton {
   className?: string
   emoji?: string
-  href?: string
+  href: string
+  icon?: IconNameType
+  text?: string
+}
+interface ButtonProps extends IButton {
+  className?: string
+  emoji?: string
   icon?: IconNameType
   onClick?: React.MouseEventHandler<HTMLButtonElement>
   suppressHydrationWarning?: boolean
@@ -124,69 +131,64 @@ const ButtonStyle = css<IButton>`
   }
 `
 
-const Button = React.forwardRef<HTMLAnchorElement, Props>(
+export const AnchorButton = React.forwardRef<HTMLAnchorElement, AnchorButtonProps>(
   (
-    {
-      className,
-      color,
-      disabled,
-      emoji,
-      href,
-      icon,
-      isLoading = false,
-      noHover = false,
-      onClick,
-      size = 'medium',
-      suppressHydrationWarning,
-      text,
-      variant = 'contained',
-    },
+    { className, color, disabled, emoji, href, icon, noHover = false, size = 'medium', text, variant = 'contained' },
     ref
-  ) => {
-    if (href !== null && href !== undefined) {
-      return (
-        <SAnchor
-          className={className}
-          color={color}
-          disabled={disabled}
-          href={href}
-          isIconOnly={text === undefined}
-          noHover={noHover}
-          ref={ref}
-          size={size}
-          variant={variant}
-        >
-          {emoji && <SEmoji isEmojiOnly={text === undefined} size={size} symbol={emoji} />}
-          {icon && <SIcon isIconOnly={text === undefined} name={icon} size={size} />}
-          {text}
-        </SAnchor>
-      )
-    }
+  ) => (
+    <SAnchor
+      className={className}
+      color={color}
+      disabled={disabled}
+      href={href}
+      isIconOnly={text === undefined}
+      noHover={noHover}
+      ref={ref}
+      size={size}
+      variant={variant}
+    >
+      {emoji && <SEmoji isEmojiOnly={text === undefined} size={size} symbol={emoji} />}
+      {icon && <SIcon isIconOnly={text === undefined} name={icon} size={size} />}
+      {text}
+    </SAnchor>
+  )
+)
 
-    return (
-      <SButton
-        className={className}
-        color={color}
-        disabled={disabled}
-        isIconOnly={text === undefined}
-        noHover={noHover}
-        onClick={onClick}
-        size={size}
-        variant={variant}
-        suppressHydrationWarning={suppressHydrationWarning}
-      >
-        {isLoading ? (
-          <SLoader color={color ?? 'invertedContrast'} size={size} variant={variant} />
-        ) : (
-          <>
-            {emoji && <SEmoji isEmojiOnly={text === undefined} size={size} symbol={emoji} />}
-            {icon && <SIcon isIconOnly={text === undefined} name={icon} size={size} />}
-            {text}
-          </>
-        )}
-      </SButton>
-    )
-  }
+const Button = ({
+  className,
+  color,
+  disabled,
+  emoji,
+  icon,
+  isLoading = false,
+  noHover = false,
+  onClick,
+  size = 'medium',
+  suppressHydrationWarning,
+  text,
+  variant = 'contained',
+}: ButtonProps) => (
+  <SButton
+    className={className}
+    color={color}
+    disabled={disabled}
+    isIconOnly={text === undefined}
+    noHover={noHover}
+    onClick={onClick}
+    size={size}
+    variant={variant}
+    suppressHydrationWarning={suppressHydrationWarning}
+  >
+    {isLoading ? (
+      <SLoader color={color ?? 'invertedContrast'} size={size} variant={variant} />
+    ) : (
+      <>
+        {emoji && <SEmoji isEmojiOnly={text === undefined} size={size} symbol={emoji} />}
+        {icon && <SIcon isIconOnly={text === undefined} name={icon} size={size} />}
+        {text}
+      </>
+    )}
+  </SButton>
 )
 
 const SLoader = styled(Loader)<{ color: keyof Colors; variant?: 'contained' | 'outlined' }>`
@@ -220,5 +222,5 @@ const SButton = styled.button.withConfig({
   ${ButtonStyle}
 `
 
-Button.displayName = 'Button'
+AnchorButton.displayName = 'AnchorButton'
 export default Button

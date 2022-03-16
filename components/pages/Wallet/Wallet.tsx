@@ -6,7 +6,7 @@ import Clipboard from 'components/base/Clipboard'
 import { Container, Title, Wrapper } from 'components/layout'
 import { UserType } from 'interfaces'
 import { computeCaps } from 'utils/strings'
-import Button from 'components/ui/Button'
+import { AnchorButton } from 'components/ui/Button'
 
 export interface WalletProps {
   user: UserType
@@ -33,7 +33,7 @@ const Wallet = ({ user }: WalletProps) => {
 
           <SCapsAmount>{capsAmount ? computeCaps(Number(capsAmount)) : 0} CAPS</SCapsAmount>
           <SButtonContainer>
-            <Button
+            <AnchorButton
               color="primary500"
               href="https://www.ternoa.com/"
               size="medium"

@@ -2,7 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 import styled from 'styled-components'
 
-import Button from 'components/ui/Button'
+import { AnchorButton } from 'components/ui/Button'
 import Chip from 'components/ui/Chip'
 
 // TODO: delete on mainnet
@@ -22,7 +22,7 @@ const BetaBanner: React.FC = () => {
       </SText>
       <Link href="/faq" passHref>
         <SButtonContainer>
-          <Button color="invertedContrast" href="/faq" size="small" text="More infos" variant="contained" />
+          <AnchorButton color="invertedContrast" href="/faq" size="small" text="More infos" variant="contained" />
         </SButtonContainer>
       </Link>
     </SBannerContainer>

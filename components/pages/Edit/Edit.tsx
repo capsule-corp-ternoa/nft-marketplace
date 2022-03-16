@@ -6,7 +6,7 @@ import { reviewRequested as requestReview } from 'actions/user'
 // import { padlock } from 'components/assets';
 import { Banner as AvatarBanner } from 'components/base/Avatar'
 import { Advice, Container, Form, FormSideLeft, FormSideRight, Title, Wrapper } from 'components/layout'
-import Button from 'components/ui/Button'
+import Button, { AnchorButton } from 'components/ui/Button'
 import Icon from 'components/ui/Icon'
 import { Input, TextArea } from 'components/ui/Input'
 import Modal from 'components/ui/Modal'
@@ -121,7 +121,7 @@ const Edit = ({ user }: Props) => {
         <SBannerContainer>
           <SBannerIMG src={data.banner} draggable="false" alt="banner" />
           <SReturnButtonContainer>
-            <Button
+            <AnchorButton
               color="invertedContrast"
               icon="arrowLeft"
               href="/profile"
@@ -141,7 +141,14 @@ const Edit = ({ user }: Props) => {
               twitterName={twitterName}
               walletId={walletId}
             />
-            <Button color="neutral600" icon="arrowLeft" href="/profile" text="Return" size="small" variant="outlined" />
+            <AnchorButton
+              color="neutral600"
+              icon="arrowLeft"
+              href="/profile"
+              text="Return"
+              size="small"
+              variant="outlined"
+            />
           </SAvatarBannerContainer>
           <STopContainer>
             <STitle>Edit your profile</STitle>

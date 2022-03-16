@@ -5,7 +5,7 @@ import NftsGrid from 'components/base/NftsGrid'
 import { getCreatorNFTS, getLikedNFTs, getOwnedNFTS, getUserNFTsStat } from 'actions/nft'
 import { getFollowers, getFollowed } from 'actions/follower'
 import { Container, Wrapper } from 'components/layout/Container'
-import Button from 'components/ui/Button'
+import { AnchorButton } from 'components/ui/Button'
 import Tabs from 'components/ui/Tabs'
 import { NftType, UserType } from 'interfaces'
 import { useApp } from 'redux/hooks'
@@ -533,7 +533,7 @@ const Profile = ({ user, userOwnedlNfts, userOwnedNftsHasNextPage }: ProfileProp
       <SBannerContainer>
         <SBannerIMG src={banner ?? '/defaultBanner.jpeg'} draggable="false" alt="banner" />
         <SEditButtonMobileWrapper>
-          <Button color="invertedContrast" icon="edit" href="/edit" size="medium" variant="contained" />
+          <AnchorButton color="invertedContrast" icon="edit" href="/edit" size="medium" variant="contained" />
         </SEditButtonMobileWrapper>
       </SBannerContainer>
       <Wrapper>
@@ -547,7 +547,14 @@ const Profile = ({ user, userOwnedlNfts, userOwnedNftsHasNextPage }: ProfileProp
             walletId={walletId}
           />
           <SEditButtonDesktopWrapper>
-            <Button color="neutral600" icon="edit" href="/edit" text="Edit profile" size="small" variant="outlined" />
+            <AnchorButton
+              color="neutral600"
+              icon="edit"
+              href="/edit"
+              text="Edit profile"
+              size="small"
+              variant="outlined"
+            />
           </SEditButtonDesktopWrapper>
         </SAvatarBannerContainer>
       </Wrapper>

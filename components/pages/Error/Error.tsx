@@ -2,7 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 import styled from 'styled-components'
 import { Container, Wrapper } from 'components/layout'
-import Button from 'components/ui/Button'
+import { AnchorButton } from 'components/ui/Button'
 import Icon from 'components/ui/Icon'
 
 export const ERROR_PAGE_404 = 'error404'
@@ -23,7 +23,7 @@ const Error = ({ description, title, variant }: ErrorProps) => (
       <SLinkWrapper>
         <Link href="/" passHref>
           <>
-            <Button color={variant === 'error500' ? 'danger400' : 'primary500'} href="/" text="Return to home" />
+            <AnchorButton color={variant === 'error500' ? 'danger400' : 'primary500'} href="/" text="Return to home" />
           </>
         </Link>
       </SLinkWrapper>

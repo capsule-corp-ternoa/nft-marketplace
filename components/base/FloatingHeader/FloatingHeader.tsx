@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
 
 import { ProfileMenuBadge, ProfileMenuDropdown } from 'components/base/ProfileMenu';
 import Button from 'components/ui/Button';
+import { WalletConnectContext } from 'components/providers';
 
 import { UserType } from 'interfaces/index';
 import { computeCaps } from 'utils/strings';
@@ -22,6 +23,8 @@ const FloatingHeader: React.FC<FloatingHeaderProps> = ({
   const [, setSearchValue] = useState('' as string);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isProfileMenuExpanded, setIsProfileMenuExpanded] = useState(false);
+
+  const walletConnect = useContext(WalletConnectContext);
 
   const updateKeywordSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.currentTarget.value);
@@ -54,6 +57,15 @@ const FloatingHeader: React.FC<FloatingHeaderProps> = ({
             <Link href="/faq">
               <a className={style.Link}>How it works</a>
             </Link>
+            <Button
+              color="contrast"
+              onClick={() => {
+                walletConnect.disconnectWallet()
+              }}
+              size="medium"
+              text="Disconnect Wallet"
+              variant="outlined"
+            />
           </div>
         </div>
       )}
@@ -75,7 +87,7 @@ const FloatingHeader: React.FC<FloatingHeaderProps> = ({
             </>
           )}
         </div>
-        {user ? (
+        {/* {user ? (
           <SProfileMenuBadge
             onClick={() => setIsProfileMenuExpanded(prevState => !prevState)}
             tokenAmount={
@@ -84,19 +96,18 @@ const FloatingHeader: React.FC<FloatingHeaderProps> = ({
             tokenSymbol="CAPS"
             user={user}
           />
-        ) : (
-          <Button
-            color="contrast"
-            onClick={() => {
-              onModelOpen();
-              setModalExpand(true);
-              setIsExpanded(false);
-            }}
-            size="medium"
-            text="Connect Wallet"
-            variant="outlined"
-          />
-        )}
+        ) : ( */}
+        <Button
+          color="contrast"
+          disabled={!walletConnect.isClient}
+          onClick={() => {
+            walletConnect.connectWallet()
+          }}
+          size="medium"
+          text="Connect Wallet"
+          variant="outlined"
+        />
+        {/* )} */}
       </div>
       {user && isProfileMenuExpanded && (
         <SProfileMenuDropdown
@@ -110,7 +121,7 @@ const FloatingHeader: React.FC<FloatingHeaderProps> = ({
 
 const SProfileMenuBadge = styled(ProfileMenuBadge)`
   background-color: transparent;
-  border-color: ${({theme}) => theme.colors.invertedContrast};
+  border-color: ${({ theme }) => theme.colors.invertedContrast};
 `;
 
 const SProfileMenuDropdown = styled(ProfileMenuDropdown)`
@@ -124,7 +135,7 @@ const SProfileMenuDropdown = styled(ProfileMenuDropdown)`
     border-right: 2.4rem solid transparent;
     z-index: 101;
     border-top: ${({ theme }) =>
-      `1.2rem solid ${theme.colors.contrast}`};
+    `1.2rem solid ${theme.colors.contrast}`};
     content: "";
     position: absolute;
     bottom: 0;

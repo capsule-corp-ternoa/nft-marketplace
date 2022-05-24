@@ -13,6 +13,7 @@ import 'style/nprogress.scss';
 import { AppProps } from 'next/dist/shared/lib/router/router';
 import { actions } from 'redux/rn/actions';
 import { useAppDispatch } from 'redux/hooks';
+import { WalletConnectProvider } from 'components/providers';
 
 Router.events.on('routeChangeStart', () => NProgress.start());
 Router.events.on('routeChangeComplete', () => NProgress.done());
@@ -21,7 +22,7 @@ Router.events.on('routeChangeError', () => NProgress.done());
 const AppWrapper: React.FC<AppProps> = (props) => {
   return (
     <Provider store={store}>
-      <App {...props}/>
+      <App {...props} />
     </Provider>
   )
 }
@@ -65,7 +66,9 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
       </Head>
 
       <GlobalStyle />
-      <Component {...pageProps} />
+      <WalletConnectProvider>
+        <Component {...pageProps} />
+      </WalletConnectProvider>
 
       {!cookiesConsent && !hide && (
         <div className="cookies">

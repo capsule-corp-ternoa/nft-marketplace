@@ -61,13 +61,18 @@ const ModalMint: React.FC<ModalProps> = ({
   const [mintReponse, setMintResponse] = useState<boolean | null>(null)
   const [startUploadTime, setStartUploadTime] = useState<any>(null)
   const [alreadySentSocketTimeout, setAlreadySentSocketTimeout] = useState(false)
+
   const router = useRouter();
+
   const { categories, description, name, seriesId } = NFTData;
+
   const progressQuantity = 1 + Number(quantity) + ((
       (previewNFT && mime.lookup(previewNFT.name).toString().indexOf("video") !== -1) || 
       (!previewNFT && originalNFT && mime.lookup(originalNFT.name).toString().indexOf("video") !== -1)
     ) ? 1 : 0)
+
   const elapsedUploadTime = (startUploadTime && startUploadTime instanceof Date) ? (+new Date() - +startUploadTime) : 0
+
   const generalPercentage = () => {
     let percentage = 0
     if (progressData.length === progressQuantity) {
@@ -79,8 +84,11 @@ const ModalMint: React.FC<ModalProps> = ({
     }
     return Math.ceil(percentage)
   }
+
   const speed = Math.floor((uploadSize * (generalPercentage() / 100)) / elapsedUploadTime)
+
   const remainingTime = Math.ceil(((elapsedUploadTime / generalPercentage()) * (100 - generalPercentage())))
+
   const handleMintSocketProcess = () => {
     const socket = connectIo(`/socket/createNft`, { session, socketUrl: SOCKET_URL }, undefined, 20 * 60 * 1000);
     setStateSocket(socket)
@@ -94,14 +102,17 @@ const ModalMint: React.FC<ModalProps> = ({
         setShowQR(true);
       }
     });
+
     socket.once('connect_error', (e: any) => {
       console.error('connection error socket', e);
       setError("Connection error, please try again")
     });
+
     socket.once('CONNECTION_FAILURE', (data: any) => {
       console.error('connection failure socket', data)
       setError(data.msg)
     });
+
     socket.once('MINTING_NFT_ERROR', ({ reason }: { success: boolean, reason: string }) => {
       setMintResponse(false)
       if (reason==="fees"){
@@ -110,6 +121,7 @@ const ModalMint: React.FC<ModalProps> = ({
         setError("An error has occured.")
       }
     });
+
     socket.once('PGPS_READY', async ({ publicPgpKeys }: { publicPgpKeys: string[] }) => {
       socket.emit('PGPS_READY_RECEIVED')
       setShowQR(false)
@@ -147,9 +159,11 @@ const ModalMint: React.FC<ModalProps> = ({
         console.log(err);
       }
     });
+
     socket.once('disconnect', () => {
       setModalCreate(false);
     });
+    
     return () => {
       if (socket && socket.connected) {
         socket.close();

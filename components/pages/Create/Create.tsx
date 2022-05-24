@@ -165,7 +165,9 @@ const Create = ({
 
   const initMintingNFT = async () => {
     try {
-      if (!user) throw new Error('Please login to create an NFT.');
+      // if (!user) throw new Error('Please login to create an NFT.');
+
+      console.log('[MINTING]: INIT')
       setModalCreate(true);
 
       if (originalNFT !== null) {
@@ -187,6 +189,9 @@ const Create = ({
           setPreviewNFT(coverNFT);
         }
       }
+
+      console.log('[MINTING]: PROCESS FILE')
+
 
       setQRData({
         ...QRData,
@@ -340,7 +345,7 @@ const Create = ({
         </SAdvice>
         <SButton
           color='primary'
-          disabled={!(isDataValid && user)}
+          // disabled={!(isDataValid && user)}
           onClick={uploadFiles}
           text="Create NFT"
         />

@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import WalletConnect, { CLIENT_EVENTS } from '@walletconnect/client';
-import { WALLET_CONNECT, CHAINS, ternoaCommonRpcMethods } from 'utils/chains.const';
+import { WALLET_CONNECT_CLIENT_PARAMS, CHAINS, TERNOA_RPC_METHODS } from 'utils/chains.const';
 import { ClientTypes, PairingTypes, SessionTypes } from "@walletconnect/types";
 import QRCodeModal from "@walletconnect/legacy-modal";
 import { getAppMetadata } from "@walletconnect/utils";
@@ -28,13 +28,15 @@ const WalletConnector: React.FC<WalletConnectorProps> = ({
   useEffect(() => {
     init();
   }, []);
+
   useEffect(() => {
     if (session) {
       showRequestorPanel();
     } else {
       closeRequestorPanel();
     }
-  }, [session])
+  }, [session]);
+
   useEffect(() => {
     if (client) {
       subscribeToEvents();
@@ -49,12 +51,14 @@ const WalletConnector: React.FC<WalletConnectorProps> = ({
       }
     }
   }, [client]);
+
   const ternoaChains = [CHAINS.TERNOA.STAGING, CHAINS.TERNOA.TESTNET];
   const ternoaChainIds = ternoaChains.map(chain => chain.id);
-  const ternoaRpcMethods = ternoaCommonRpcMethods;
+  const ternoaRpcMethods = TERNOA_RPC_METHODS;
+
   const init = async () => {
     const _client: WalletConnect = await WalletConnect.init({
-      projectId: WALLET_CONNECT.projectId,
+      projectId: WALLET_CONNECT_CLIENT_PARAMS.projectId,
       relayUrl: 'wss://relay.walletconnect.com',
       metadata: {
         name: 'Marketplace Dapp WalletConnect',
@@ -65,12 +69,14 @@ const WalletConnector: React.FC<WalletConnectorProps> = ({
     });
     setClient(_client);
   };
+
   const subscribeToEvents = () => {
     console.log('subscribeToEvents');
     (client as WalletConnect).on(CLIENT_EVENTS.pairing.proposal, async (proposal: PairingTypes.Proposal) => {
       console.log('session.proposal', proposal);
       // uri should be shared with the Wallet either through QR Code scanning or mobile deep linking
       const { uri: _uri } = proposal.signal.params;
+      console.log('_uri', _uri)
       setUri(_uri);
       console.log("EVENT", "QR Code Modal open", _uri);
       QRCodeModal.open(_uri, () => {
@@ -79,32 +85,39 @@ const WalletConnector: React.FC<WalletConnectorProps> = ({
         setModalVisible(false);
       });
     });
-    (client as WalletConnect).on(CLIENT_EVENTS.pairing.created, async (proposal: PairingTypes.Settled) => {
-      console.log('pairing.created', proposal);
+
+    (client as WalletConnect).on(CLIENT_EVENTS.session.response, async (proposal: PairingTypes.Settled) => {
+      console.log('pairing.created 1', proposal);
+
     });
+
     (client as WalletConnect).on(CLIENT_EVENTS.session.created, async (proposal: PairingTypes.Settled) => {
-      console.log('pairing.created', proposal);
+      console.log('pairing.created 2', proposal);
       QRCodeModal.close();
       setPairingSuccess(true)
       setModalVisible(true);
     });
-    
   };
+
   const showRequestorPanel = () => {
     setRequestorVisible(true);
-    setModalVisible(true)
-  }
+    setModalVisible(true);
+  };
+
   const closeRequestorPanel = () => {
     setRequestorVisible(false);
     setModalVisible(false);
-  }
+  };
+
   const onPairingSuccessClick = () => {
     setPairingSuccess(false);
-  }
+  };
+
   const handleClose = () => {
     setModalVisible(false);
     setModalExpand(false);
-  }
+  };
+
   const connect = async () => {
     const _session = await (client as WalletConnect).connect({
       metadata: getAppMetadata(),
@@ -120,78 +133,122 @@ const WalletConnector: React.FC<WalletConnectorProps> = ({
     setSession(_session);
   };
 
+  const pgpReadyEvent = async () => {
+    const requestMethod = 'PGPS_READY_RECEIVED';
+    const requestParams = '';
+    const requestChainId = CHAINS.TERNOA.STAGING.id;
+    onRequestSend(requestMethod, requestParams, requestChainId )
+  }
+
   const onRequestSend = async (requestMethod: string, requestParams: string, requestChainId: string) => {
-    console.log('onRequestSend', requestMethod, requestParams, requestChainId);
-    let parsedParams
-    switch (requestMethod) {
-      case "sign_message":
-        parsedParams = requestParams;
-        break;
-        case "mint_nft":
+    try {
+
+      console.log('onRequestSend', requestMethod, requestParams, requestChainId);
+      let parsedParams
+      switch (requestMethod) {
+        case "sign_message":
           parsedParams = requestParams;
           break;
-      default:
-        try {
-          parsedParams = JSON.parse(requestParams);
-        }
-        catch(e) {
-          return setTransactionResult({ status: 'error', message: 'Invalid JSON' });
+        // case "nfts_mint":
+        //   parsedParams = JSON.parse(requestParams);
+        //   break;
+        default:
+          try {
+            parsedParams = JSON.parse(requestParams);
+          }
+          catch (e) {
+            return setTransactionResult({ status: 'error', message: 'Invalid JSON' });
           }
           break;
-        }
-    const request: ClientTypes.RequestParams = {
-      topic: session?.topic as string,
-      chainId: requestChainId,
-      request: {
-        method: requestMethod,
-        params: requestParams ? parsedParams : null,
-      },
-    }
-    console.log('onRequestSend', request, requestChainId, requestMethod, requestParams);
-    const result = await client?.request(request).catch(err => {
+      };
+
+      const request: ClientTypes.RequestParams = {
+        topic: session?.topic as string,
+        chainId: requestChainId,
+        request: {
+          method: requestMethod,
+          params: requestParams ? parsedParams : null,
+        },
+      };
+
+      console.log('request', request)
+      console.log('request topic', session?.topic)
+      console.log('request chainId', requestChainId)
+      console.log('request method', requestMethod)
+      console.log('request params', requestParams)
+
+      console.log('onRequestSend', request, requestChainId, requestMethod, requestParams);
+      const result = await client?.request(request)
+
+      console.log('REQUEST result', result);
+
+      const { event, params } = result;
+
+      switch (event) {
+        case 'PGPS_READY':
+          pgpReadyEvent()
+          break;
+        default:
+          console.log('no case', result)
+          break;
+      }
+
+      setTransactionResult(result);
+
+    } catch (err) {
       console.log('REQUEST err', err);
       return { status: 'error', message: err.message }
-    })
-    console.log('REQUEST result', result);
-    setTransactionResult(result);
-}
+    }
+  };
+
   const onSessionDisconnect = () => {
     const { topic } = session as SessionTypes.Settled;
     (client as WalletConnect).disconnect({ topic } as ClientTypes.DisconnectParams);
     QRCodeModal.close();
     setModalExpand(false);
   };
-  const PairingSuccess = () => (<>
-    <div className={style.Text}>
-      <div>Pairing success!</div>
-    </div>
-    <div className={style.Text}>
-      <button onClick={onPairingSuccessClick}>OK</button>
-    </div>
-  </>);
+
+  const PairingSuccess = () => (
+    <>
+      <div className={style.Text}>
+        <div>Pairing success!</div>
+      </div>
+      <div className={style.Text}>
+        <button onClick={onPairingSuccessClick}>OK</button>
+      </div>
+    </>
+  );
+
   const RequestPanel = useCallback(({ _handleDisconnect, _handleSend }) => {
     console.log('Request Panel');
     const [requestMethod, setRequestMethod] = useState<string | null>(ternoaRpcMethods[0]);
     const [requestParams, setRequestParams] = useState<string | null>(null);
     const [requestChainId, setRequestChainId] = useState<string | null>(CHAINS.TERNOA.STAGING.id);
+
     const handleRequestMethodChange = (event: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
       setRequestMethod(event.target.value);
 
     };
+
     const handleRequestParamsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       console.log('handleRequestParamsChange', event.target.value);
       setRequestParams(event.target.value);
     };
+
     const handleRequestChainIdChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
       setRequestChainId(event.target.value);
     };
+
     const handleDisconnect = () => {
-      _handleDisconnect()
-    }
+      _handleDisconnect();
+    };
+
     const handleSend = () => {
-      _handleSend(requestMethod, requestParams, requestChainId)
-    }
-    const currentSession = (session as SessionTypes.Settled)
+      _handleSend(requestMethod, requestParams, requestChainId);
+    };
+
+    const currentSession = (session as SessionTypes.Settled);
+
     return (
       <>
         <div className={style.Text}>
@@ -223,41 +280,49 @@ const WalletConnector: React.FC<WalletConnectorProps> = ({
       </>
     );
   }, [session]);
-  const handleTransactionResultClick = ()=>{
+
+  const handleTransactionResultClick = () => {
     setTransactionResult(null);
   };
+
   const TransactionResult = () => {
     return (
       <>
-      <div className={style.Text}>
-        Transaction result: <br />{transactionResult.status === 'success' ? 'Success' : 'Error'} <br />Message: {transactionResult.message}
-      </div>
         <div className={style.Text}>
-            <button onClick={handleTransactionResultClick}>OK</ button>
-      </div>
+          Transaction result: <br />{transactionResult.status === 'success' ? 'Success' : 'Error'} <br />Message: {transactionResult.message}
+        </div>
+        <div className={style.Text}>
+          <button onClick={handleTransactionResultClick}>OK</ button>
+        </div>
       </>
     );
   };
 
-  return <>
-    { modalVisible ?
-      (<div id="walletConnect" className={style.Background}>
-        <div className={style.Container}>
-          <Close
-            onClick={handleClose}
-            className={style.Close}
-          />
-          {pairingSuccess ?
-            <PairingSuccess />
-            : null}
-          {requestorVisible && !pairingSuccess ?
-            <>
-            {transactionResult ? <TransactionResult /> :  <RequestPanel key="request-panel" _handleSend={onRequestSend} _handleDisconnect={onSessionDisconnect} />}
-            </>
-            : null}
-        </div>
-      </div>)
-      : null}
-  </>;
+  return (
+    <>
+      {modalVisible ?
+        (<div id="walletConnect" className={style.Background}>
+          <div className={style.Container}>
+            <Close
+              onClick={handleClose}
+              className={style.Close}
+            />
+            {pairingSuccess ?
+              <PairingSuccess />
+              : null}
+            {requestorVisible && !pairingSuccess ?
+              <>
+                {transactionResult ? <TransactionResult /> : <RequestPanel key="request-panel" _handleSend={onRequestSend} _handleDisconnect={onSessionDisconnect} />}
+              </>
+              : null}
+          </div>
+        </div>)
+        : null}
+    </>
+  );
 };
+
 export default WalletConnector;
+
+
+// ["Public","3","testttt","http:wewewe.we","http:wewewe.we/img"]

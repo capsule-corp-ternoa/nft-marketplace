@@ -59,7 +59,7 @@ const WalletConnector: React.FC<WalletConnectorProps> = ({
   const init = async () => {
     const _client: WalletConnect = await WalletConnect.init({
       projectId: WALLET_CONNECT_CLIENT_PARAMS.projectId,
-      relayUrl: 'wss://relay.walletconnect.com',
+      relayUrl: WALLET_CONNECT_CLIENT_PARAMS.relayUrl,
       metadata: {
         name: 'Marketplace Dapp WalletConnect',
         description: 'Marketplace Dapp WalletConnect',

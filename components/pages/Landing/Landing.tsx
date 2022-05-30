@@ -44,7 +44,7 @@ const Landing = ({
         {heroNFTs?.length === 3 && (
           <Hero capsDollarValue={capsDollarValue} NFTs={heroNFTs} mode={HERO_MODE_SELL} />
         )}
-        {totalCountNFT === 0 && (
+        {/* {totalCountNFT === 0 && (
           <NoNFTComponent
             body={
               <>
@@ -57,9 +57,9 @@ const Landing = ({
             title="All NFTs are sold !"
             variant={NO_NFT_VARIANT_SOLD_OUT}
           />
-        )}
+        )} */}
       </Wrapper>
-      {popularNfts?.length > 0 && (
+      {/* {popularNfts?.length > 0 && (
         <Wrapper>
           <Showcase
             category="Most popular"
@@ -68,8 +68,8 @@ const Landing = ({
             setUser={setWalletUser}
           />
         </Wrapper>
-      )}
-      {bestSellingNfts?.length > 0 && (
+      )} */}
+      {/* {bestSellingNfts?.length > 0 && (
         <Wrapper>
           <Showcase
             category="Best sellers"
@@ -78,8 +78,8 @@ const Landing = ({
             setUser={setWalletUser}
           />
         </Wrapper>
-      )}
-      {users?.length > 0 && (
+      )} */}
+      {/* {users?.length > 0 && (
         <Wrapper>
           <ArtCreators
             NFTs={NFTCreators}
@@ -91,7 +91,7 @@ const Landing = ({
             <a className={style.Button}>See more</a>
           </Link>
         </Wrapper>
-      )}
+      )} */}
       <Footer />
       <FloatingHeader user={walletUser} setModalExpand={setModalExpand} />
     </Container>

@@ -57,11 +57,16 @@ export const WalletConnectProvider: React.FC<IWalletConnectProviderProps> = ({
   }, [client]);
 
   const init = async () => {
-    console.log('[WALLET CONNECT]: INIT');
-    const _client: WalletConnectClient = await WalletConnectClient.init(
-      WALLET_CONNECT_CLIENT_PARAMS
-    );
-    setClient(_client);
+    console.log('[WALLET CONNECT]: INIT', WALLET_CONNECT_CLIENT_PARAMS);
+    try{
+      const _client: WalletConnectClient = await WalletConnectClient.init(
+        WALLET_CONNECT_CLIENT_PARAMS
+      );
+      setClient(_client);
+    }catch(err){
+      console.log('WALLET CONNECT:INIT: err', err)
+    }
+    
   };
 
   const connect = async () => {

@@ -85,7 +85,7 @@ export const TERNOA_CHAINS = [CHAINS.TERNOA.STAGING, CHAINS.TERNOA.TESTNET];
 export const TERNOA_CHAINS_IDS = TERNOA_CHAINS.map((chain) => chain.id);
 
 export const WALLET_CONNECT_CLIENT_PARAMS = {
-  projectId: "qwerty",
+  projectId: "d9adfc7ea82be63ba28088d62b96e927",
   relayUrl: 'wss://wallet-connectrelay.ternoa.network',
   metadata: {
     name: 'Marketplace Dapp WalletConnect',

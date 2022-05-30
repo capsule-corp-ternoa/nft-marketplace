@@ -10,6 +10,8 @@ import { connect as connectIo } from 'utils/socket/socket.helper';
 import { encryptCookie } from 'utils/cookie';
 import { NODE_API_URL, SOCKET_URL } from 'utils/constant';
 import { getUser } from 'actions/user';
+import { WalletConnectorProps } from '../WalletConnector/WalletConnector';
+
 export interface TernoaWalletProps {
   setModalExpand: (b: boolean) => void;
 }

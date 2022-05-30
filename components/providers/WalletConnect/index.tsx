@@ -221,7 +221,7 @@ export const WalletConnectProvider: React.FC<IWalletConnectProviderProps> = ({
     }
   };
 
-  const handlePgpsReadyEvent = async (_pgpKeys) => {
+  const handlePgpsReadyEvent = async (_pgpKeys:any) => {
     onRequestSend('PGPS_READY_RECEIVED', _pgpKeys);
     setPublicPgpKeys(_pgpKeys)
     // setIsEventPgpReady(true);
@@ -288,7 +288,7 @@ export const WalletConnectProvider: React.FC<IWalletConnectProviderProps> = ({
   //   };
   // }
 
-  const handleRequestResult = async (result: object) => {
+  const handleRequestResult = async (result: any) => {
     try {
       const { event, params } = result;
       switch (event) {

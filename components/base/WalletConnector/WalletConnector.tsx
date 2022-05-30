@@ -197,7 +197,7 @@ const WalletConnector: React.FC<WalletConnectorProps> = ({
 
     } catch (err) {
       console.log('REQUEST err', err);
-      return { status: 'error', message: err.message }
+      return { status: 'error', message: `${err}` }
     }
   };
 
